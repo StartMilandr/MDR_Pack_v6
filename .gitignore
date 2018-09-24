@@ -1,0 +1,5 @@
+*.v
+PACK_Gen/Files/Examples/LedFlasher/VC1/Listings/
+PACK_Gen/Files/Examples/LedFlasher/VC1/Objects/
+PACK_Gen/Files/Examples/
+PACK_Gen/Files/Keil/FLM/

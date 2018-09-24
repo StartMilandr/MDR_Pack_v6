@@ -1,0 +1,1 @@
+SVDConv.exe MDR1986VE9x_RST.svd -o out -b out/logVE9x.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr

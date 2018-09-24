@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
+  <vendor>Milandr.</vendor>                                       <!-- device vendor name -->
+
+  <vendorID>Milandr</vendorID>                                    <!-- device vendor short name -->
+  <!--#BE1-->  
+  <name>MDR1986VE1_BKP</name>
+  <series>ARMCM1</series>
+  <!--#BE3-->  
+  <!--name>MDR1986BE3_BKP</name>
+  <series>ARMCM1</series-->
+  <!--#BE9x, #VC1-->
+  <!--name>MDR1986BE9x_BKP</name>
+  <series>ARMCM3</series-->
+  <!--#BE4, #BK214, #BK234 -->
+  <!--name>MDR1986BE4_RST</name>
+  <series>ARMCM0</series-->
+  
+  <version>1.6</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
+  <description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 144MHz, etc. </description><!--#BE1-->
+  <!--description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 80MHz, etc. </description--><!--#BE3-->
+  <!--description>ARM 32-bit Cortex-M3 Microcontroller based device, CPU clock up to 80MHz, etc. </description--><!--#BE9x-->
+  <!--description>ARM 32-bit Cortex-M3 Microcontroller based device with DSP Core, CPU clock up to 100MHz, etc. </description--><!--#VC1-->  
+  <!--description>ARM 32-bit Cortex-M0 Microcontroller based device, CPU clock up to 36MHz, etc. </description--><!--#BE4,#BK214,#BK234  -->
+
+  <cpu>                      
+    <!--#BE1, #BE3 -->                                     <!-- details about the cpu embedded in the device -->
+    <name>CM1</name>
+    <revision>r1p0</revision>
+    <!--#BE9x,#VC1-->
+    <!--name>CM3</name>
+    <revision>r2p1</revision-->
+    <!--#BE4,#BK214,#BK234-->
+    <!--name>CM0</name>
+    <revision>r0p0</revision-->
+
+    <endian>little</endian>
+    <mpuPresent>false</mpuPresent>
+    <fpuPresent>false</fpuPresent>
+    <!--nvicPrioBits>3</nvicPrioBits--><!--#BE9x,#VC1-->
+    <nvicPrioBits>2</nvicPrioBits><!--#BE1,#BE3,#BE4,#BK214,#BK234-->
+
+    <vendorSystickConfig>false</vendorSystickConfig>
+  </cpu>
+  <addressUnitBits>8</addressUnitBits>                            <!-- byte addressable memory -->
+  <width>32</width>                                               <!-- bus width is 32 bits -->
+  <!-- default settings implicitly inherited by subsequent sections -->
+  <size>32</size>                                                 <!-- this is the default size (number of bits) of all peripherals
+                                                                       and register that do not define "size" themselves -->
+  <access>read-write</access>                                     <!-- default access permission for all subsequent registers -->
+  <resetValue>0x00000000</resetValue>                             <!-- by default all bits of the registers are initialized to 0 on reset -->
+  <resetMask>0xFFFFFFFF</resetMask>                               <!-- by default all 32Bits of the registers are used -->
+
+  <!-- Peripherals -->
+  <peripherals>
+    <!-- BKP and RTC -->
+    <peripheral>
+      <name>MDR_BKP</name>
+      <version>1.0</version>
+      <description>Backup and RTC Control</description>
+      <groupName>BKP and RTC</groupName>
+      <baseAddress>0x400D8000</baseAddress><!--#BE1,#BE3,#BE9x,#VC1-->
+      <!--baseAddress>0x40060000</baseAddress--><!--#BE4,#BK214,#BK234-->
+
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x54</size>
+        <usage>registers</usage>
+      </addressBlock>
+
+      <registers>
+        <!-- REG_x -->
+        <register>
+          <dim>14</dim>
+          <dimIncrement>4</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,A,B,C,D</dimIndex>
+          <name>REG_0%s</name>
+
+          <description>User backup registers</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+
+        <!-- REG_0E -->
+        <register>
+          <name>REG_0E</name>
+          <description>REG_OE Control register</description>
+          <addressOffset>0x00000038</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000BF7F</resetMask><!--#BE1,#BE3-->
+          <!--resetMask>0x00007FFF</resetMask--><!--#BE9x,#VC1-->
+          <!--resetMask>0x0000FFFF</resetMask--><!--#BE4,#BK214,#BK234-->
+          <fields>
+            <!--LOW-->
+            <field>
+              <name>LOW</name>
+              <description>DUcc Freq control</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__LOW_</headerEnumName>
+                <enumeratedValue>
+                  <name>10MHz</name>
+                  <description>CPU Clock less then 10MHz</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>200KHz</name>
+                  <description>CPU Clock less then 200KHz</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>500KHz</name>
+                  <description>CPU Clock less then 500KHz</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1MHz</name>
+                  <description>CPU Clock less then 1MHz</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>GensOffz</name>
+                  <description>Generators Off</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>40MHz</name>
+                  <description>CPU Clock less then 40MHz</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>80MHz</name>
+                  <description>CPU Clock less then 80MHz</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>above_80MHz</name>
+                  <description>CPU Clock above 10MHz</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--SelectRI-->
+            <field>
+              <name>SelectRI</name>
+              <description>DUcc extra I, should be equals to LOW field!</description>
+              <bitRange>[5:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__SelRI_</headerEnumName>
+                <enumeratedValue>
+                  <name>10MHz</name>
+                  <description>Additional I ~ 300uA</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>200KHz</name>
+                  <description>Additional I ~ 6.6uA</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>500KHz</name>
+                  <description>Additional I ~ 20A</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1MHz</name>
+                  <description>Additional I ~ 80uA</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>GensOffz</name>
+                  <description>Additional I ~ 2uA</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>40MHz</name>
+                  <description>Additional I ~ 900uA</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>80MHz</name>
+                  <description>Additional I ~ 4.4mA</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>above_80MHz</name>
+                  <description>Additional I ~ 19mA</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--StandAlone-->
+            <!--#BE1,#BE3-->
+            <field>
+              <name>StandAlone</name>
+              <description>Switch to StandAlone mode</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__StandAlone_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Microcontroller mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Switch to interface IC</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--JtagA-->
+            <!--#BE9x,#VC1-->
+            <!--field>
+              <name>Jtag_A</name>
+              <description>Enable Jtag_A interface</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__JtagA_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+            
+            <!--JtagB-->
+            <!--#BE9x,#VC1-->
+            <!--field>
+              <name>Jtag_B</name>
+              <description>Enable Jtag_B interface</description>
+              <bitRange>[7:7]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__JtagB_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+            
+            <!--Trim dDUcc-->
+            <field>
+              <name>Trim_dDUcc</name>
+              <description>Ducc adjust voltages</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__dDUcc_</headerEnumName>
+                <enumeratedValue>
+                  <name>+0.1</name>
+                  <description>DUcc += 0.1 V</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.06</name>
+                  <description>DUcc += 0.06 V</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.04</name>
+                  <description>DUcc += 0.04 V</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.01</name>
+                  <description>DUcc += 0.01 V</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.01</name>
+                  <description>DUcc -= 0.01 V</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.04</name>
+                  <description>DUcc -= 0.04 V</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.6</name>
+                  <description>DUcc -= 0.06 V</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.1</name>
+                  <description>DUcc -= 0.1 V</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            
+            <!--FPOR-->
+            <field>
+              <name>FPOR</name>
+              <description>Power Reset Flag</description>
+              <bitRange>[11:11]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__FPOR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Low</name>
+                  <description>No Bootloader</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>High</name>
+                  <description>Bootloader completed</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            
+            <!--Trim DUcc-->
+            <!--#BE1, #BE9x,#VC1,#BE4,#BK214,#BK234-->
+            <field>
+              <name>Trim_DUcc</name>
+              <description>Select DUcc voltage</description>
+              <bitRange>[13:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__DUcc_</headerEnumName>
+                <enumeratedValue>
+                  <name>1.8</name>
+                  <description>DUcc = 1.8 V</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.6</name>
+                  <description>DUcc = 1.6 V</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.4</name>
+                  <description>DUcc = 1.4 V</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.2</name>
+                  <description>DUcc = 1.2 V</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            
+            <!--Trim DUcc-->
+            <!--#BE3-->
+            <!--field>
+              <name>Trim_DUcc</name>
+              <description>Select DUcc voltage</description>
+              <bitRange>[13:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__DUcc_</headerEnumName>
+                <enumeratedValue>
+                  <name>1.8</name>
+                  <description>DUcc = 1.8 V</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.6</name>
+                  <description>DUcc = 1.6 V</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.4</name>
+                  <description>DUcc = 1.4 V</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Forbiden</name>
+                  <description>Forbiden value</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+            
+            <!--COVDET-->
+            <!--#BE4,#BK214,#BK234-->
+            <!--field>
+              <name>COVDET</name>
+              <description>Breaking access flag</description>
+              <bitRange>[14:14]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__COVDET_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No dreaking access detected</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Breaking access detected</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+            
+            <!--MODE-->
+            <!--#BE9,#VC1-->
+            <!--field>
+              <name>MODE</name>
+              <description>Bootloading Mode</description>
+              <bitRange>[14:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__MODE_</headerEnumName>
+                <enumeratedValue>
+                  <name>IntFlash_JtagB</name>
+                  <description>Execute from internal flash with Jtag_B</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>IntFlash_JtagA</name>
+                  <description>Execute from internal flash with Jtag_A</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ExtMem_JtagB</name>
+                  <description>Execute from external memory with Jtag_B</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ExtMem_JtagOff</name>
+                  <description>Execute from external memory without any Jtag</description>
+                  <value>3</value>
+                </enumeratedValue-->
+                <!--#BE9, DELETE for #VC1-->
+                <!--enumeratedValue>
+                  <name>Uart_PD01</name>
+                  <description>Uart bootloader, pins PD[1:0]</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Uart_PF01</name>
+                  <description>Uart bootloader, pins PF[1:0]</description>
+                  <value>6</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+
+            <!--I_LimEn-->
+            <!--#BE1, #BE3,#BE4,#BK214,#BK234-->
+            <field>
+              <name>I_LimEn</name>
+              <description>Enable I 150mA protection</description>
+              <bitRange>[15:15]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__Ilim_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+
+          </fields>
+        </register>
+
+        <!-- REG_0F -->
+        <register>
+          <name>REG_0F</name>
+          <description>REG_OF Control register</description>
+          <addressOffset>0x0000003C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFBFFF</resetMask>
+          <fields>
+            <!--LSE_ON-->
+            <field>
+              <name>LSE_ON</name>
+              <description>LSE generator enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RTC__LSE_ON_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Disable state</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Enable state</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--LSE_BYP-->
+            <field>
+              <name>LSE_BYP</name>
+              <description>LSE generator </description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RTC__LSE_BYP_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Use for external resonator</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Use for external generator</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RTC_SEL-->
+            <field>
+              <name>RTC_SEL</name>
+              <description>Select Clock for RTC</description>
+              <bitRange>[3:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>LSI</name>
+                  <description>RTC use LSI clock</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>LSE</name>
+                  <description>RTC use LSE clock</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSIRTC</name>
+                  <description>RTC use HSIRTC clock</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSERTC</name>
+                  <description>RTC use HSERTC clock</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>                            
+            </field>
+            <!--RTC_EN-->
+            <field derivedFrom="LSE_ON">
+              <name>RTC_EN</name>
+              <description>RTC enable</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!--RTC_CAL-->
+            <field>
+              <name>RTC_CAL</name>
+              <description>RTC calibration</description>
+              <bitRange>[12:5]</bitRange>              
+            </field>
+            <!--RTC_CAL-->
+            <field>
+              <name>LSE_RDY</name>
+              <description>LSE frequency ready</description>
+              <bitRange>[13:13]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>No frequency or unstable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Frequency ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field> 
+            <!--LSI_ON-->
+            <field derivedFrom="LSE_ON">
+              <name>LSI_ON</name>
+              <description>LSI generator enable</description>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <!--LSI_TRIM-->
+            <field>
+              <name>LSI_TRIM</name>
+              <description>LSI frequency adjust</description>
+              <bitRange>[20:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue> 
+                  <name>69KHz</name>
+                  <description>LSI frequency tuner</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>65KHz</name><value>1</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>60KHz</name><value>2</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>58KHz</name><value>3</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>52KHz</name><value>4</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>50KHz</name><value>5</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>49KHz</name><value>6</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>45KHz</name><value>7</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>44KHz</name><value>8</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>42KHz</name><value>9</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>40KHz</name><value>10</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>39KHz</name><value>11</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>37KHz</name><value>12</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>36KHz</name><value>13</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>35KHz</name><value>14</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>33KHz</name><value>15</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>32KHz</name><value>16</value></enumeratedValue>
+              </enumeratedValues>              
+            </field>
+            <!--LSI_RDY-->
+            <field derivedFrom="LSE_RDY">
+              <name>LSI_RDY</name>
+              <description>LSI frequency ready</description>
+              <bitRange>[21:21]</bitRange>
+            </field>
+            <!--HSI_ON-->
+            <field derivedFrom="LSE_ON">
+              <name>HSI_ON</name>
+              <description>HSI generator enable</description>
+              <bitRange>[22:22]</bitRange>
+            </field>
+            <!--HSI_RDY-->
+            <field derivedFrom="LSE_RDY">
+              <name>HSI_RDY</name>
+              <description>HSI frequency ready</description>
+              <bitRange>[23:23]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!--HSI_TRIM-->
+            <field>
+              <name>HSI_TRIM</name>
+              <description>HSI frequency adjust</description>
+              <bitRange>[29:24]</bitRange>              
+            </field>
+            <!--Standby-->
+            <field>
+              <name>Standby</name>
+              <description>Standby sleep mode</description>
+              <bitRange>[30:30]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Normal mode, DUcc is On</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Standby mode, DUcc is Off</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RTC_RESET-->
+            <field>
+              <name>RTC_RESET</name>
+              <description>Reset RTC bit</description>
+              <bitRange>[31:31]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>RTC active state</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Reset</name>
+                  <description>RTC in Reset state</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+
+        <!-- RTC_CNT -->
+        <register>
+          <name>RTC_CNT</name>
+          <description>Count periods of PRL</description>
+          <addressOffset>0x00000040</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>          
+
+        <!-- RTC_DIV -->
+        <register>
+          <name>RTC_DIV</name>
+          <description>Counts RTC Clock to get PRL value</description>
+          <addressOffset>0x00000044</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC DIV value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+
+        <!-- RTC_PRL -->
+        <register>
+          <name>RTC_PRL</name>
+          <description>Period value for DIV counter</description>
+          <addressOffset>0x00000048</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC PRL value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+
+        <!-- RTC_ALRM -->
+        <register>
+          <name>RTC_ALRM</name>
+          <description>Event value for CNT counter</description>
+          <addressOffset>0x0000004C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>Alarm value of CNT</description>
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+
+        <!-- RTC_CS -->
+        <register>
+          <name>RTC_CS</name>
+          <description>RTC Control and Status</description>
+          <addressOffset>0x00000050</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000007F</resetMask>
+          <fields>
+            <!--OWF-->
+            <field>
+              <name>OWF</name>
+              <description>CNT Overflow flag, clear by set 1</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No Event</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Event</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--SECF-->
+            <field derivedFrom="OWF">
+              <name>SECF</name>
+              <description>DIV == PRL Event, clear by set 1</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <!--ALRF-->
+            <field derivedFrom="OWF">
+              <name>ALRF</name>
+              <description>CNT == ALRM Event, clear by set 1</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <!--OWF_IE-->
+            <field derivedFrom="OWF">
+              <name>OWF_IE</name>
+              <description>Enable IRQ by OWF</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <!--SECF_IE-->
+            <field derivedFrom="OWF">
+              <name>SECF_IE</name>
+              <description>Enable IRQ by SECF</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!--ALRF_IE-->
+            <field derivedFrom="OWF">
+              <name>ALRF_IE</name>
+              <description>Enable IRQ by ALRF</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <!--WEC-->
+            <field>
+              <name>WEC</name>
+              <description>RTC Busy flag</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Registers available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Busy</name>
+                  <description>Registers unavailable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+
+          </fields>
+        </register>
+
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+
+    <!-- peripherals end-->
+  </peripherals>
+
+</device>  

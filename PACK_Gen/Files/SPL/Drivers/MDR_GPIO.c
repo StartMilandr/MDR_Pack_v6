@@ -1,15 +1,19 @@
 #include <MDR_GPIO.h>
 
-//#define CLR_RXTX     MDR_GPIO_RXTX__Pin_Msk
-//#define CLR_OE       MDR_GPIO_OE__Pin_Msk
+//  РњР°СЃРєРё РґР»СЏ СЃС‚РёСЂР°РЅРёСЏ Р±РёС‚
 #define CLR_FUNC     MDR_GPIO_FUNC__Pin_Msk
-//#define CLR_ANALOG   MDR_GPIO_ANALOG__Pin_Msk
-//#define CLR_PULL    (MDR_GPIO_PULL_Down__Pin_Msk | MDR_GPIO_PULL_UP__Pin_Msk)
 #define CLR_PD      (MDR_GPIO_PD_Driver__Pin_Msk | MDR_GPIO_PD_Schmitt__Pin_Msk)
-//#define CLR_PWR      MDR_GPIO_PWR__Pin_Msk
-//#define CLR_GFEN     MDR_GPIO_GFEN_Pin__Msk
 
+//  РџР°СЂР°РјРµС‚СЂС‹ РґР»СЏ РЅР°СЃС‚СЂРѕР№РєРё РїРёРЅРѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+const MDR_PinDig_PermRegs PinDig_PermRegsDef = 
+{
+  .ANALOG  = 1,
+  .PD      = VAL2FLD(MDR_PIN_PullPush, MDR_GPIO_PD_Driver__Pin) | VAL2FLD(MDR_Off, MDR_GPIO_PD_Schmitt__Pin),
+  .PWR     = MDR_PIN_SLOW,
+  .GFEN    = MDR_Off
+};
 
+//  РџСЂРёРІСЏР·РєР° РїРѕСЂС‚РѕРІ Рє РІРєР»СЋС‡РµРЅРёСЋ С‚Р°РєС‚РёСЂРѕРІР°РЅРёСЏ
 const MDR_GPIO_Port   GPIO_A_Port = {
   .PORTx            =  MDR_PORTA,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_A,
@@ -76,7 +80,8 @@ const MDR_GPIO_Port   GPIO_I_Port = {
 };
 #endif
 
-// =========== Cброс регистров блока в исходное состояние ===============
+
+// =========== CР±СЂРѕСЃ СЂРµРіРёСЃС‚СЂРѕРІ Р±Р»РѕРєР° РІ РёСЃС…РѕРґРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ ===============
 void MDR_Port_Reset(MDR_PORT_Type *GPIO_Port)
 {
   GPIO_Port->ANALOG = 0;
@@ -89,26 +94,9 @@ void MDR_Port_Reset(MDR_PORT_Type *GPIO_Port)
   GPIO_Port->GFEN = 0;  
 }
 
-// ========================= Доступ к пинам =============================
-void MDR_Port_SetPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
-{
-  GPIO_Port->RXTX |= pinSelect;
-}  
 
-void MDR_Port_ClearPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
-{
-  GPIO_Port->RXTX &= ~pinSelect;
-}
-
-uint32_t MDR_Port_GetPins(MDR_PORT_Type *GPIO_Port)
-{
-  return GPIO_Port->RXTX;
-}
-
-
-// =========== Функции настройки портов GPIO, базовая реализация ===============
-
-void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_GPIO_CfgRegs *cfgRegs)
+// =========== Р¤СѓРЅРєС†РёРё РЅР°СЃС‚СЂРѕР№РєРё РїРѕСЂС‚РѕРІ GPIO, Р±Р°Р·РѕРІР°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ ===============
+void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_GPIO_CfgRegs *cfgRegs)
 {
   uint32_t i, i2;
   uint32_t bitInd;
@@ -182,7 +170,7 @@ void MDR_Port_InitAnalog(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect)
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);    
 }
 
-// ======= Вспомогательные функции, для логгирования и отладки ===========
+// ======= Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё, РґР»СЏ Р»РѕРіРіРёСЂРѕРІР°РЅРёСЏ Рё РѕС‚Р»Р°РґРєРё ===========
 
 void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_CfgRegs *cfgRegs)
 {
@@ -198,6 +186,7 @@ void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_CfgRegs *cfgRegs)
 
 void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_CfgRegs *cfgRegs)
 {
+#ifndef PORT_JTAG
   GPIO_Port->RXTX   = cfgRegs->RXTX;
   GPIO_Port->OE     = cfgRegs->OE;
   GPIO_Port->FUNC   = cfgRegs->FUNC;
@@ -206,11 +195,21 @@ void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_CfgRegs *cfgRegs)
   GPIO_Port->PD     = cfgRegs->PD;
   GPIO_Port->PWR    = cfgRegs->PWR;
   GPIO_Port->GFEN   = cfgRegs->GFEN;
+#else
+  GPIO_Port->RXTX   = cfgRegs->RXTX   & (~JTAG_PINS(GPIO_Port));
+  GPIO_Port->OE     = cfgRegs->OE     & (~JTAG_PINS(GPIO_Port));
+  GPIO_Port->FUNC   = cfgRegs->FUNC   & (~JTAG_PINS_x2(GPIO_Port));
+  GPIO_Port->ANALOG = cfgRegs->ANALOG & (~JTAG_PINS(GPIO_Port));
+  GPIO_Port->PULL   = cfgRegs->PULL   & (~JTAG_PINS_HILO(GPIO_Port));
+  GPIO_Port->PD     = cfgRegs->PD     & (~JTAG_PINS_HILO(GPIO_Port));
+  GPIO_Port->PWR    = cfgRegs->PWR    & (~JTAG_PINS_x2(GPIO_Port));
+  GPIO_Port->GFEN   = cfgRegs->GFEN   & (~JTAG_PINS(GPIO_Port));  
+#endif  
 }
 
-// ============  По-пиновая реализация с выделенными групповыми настройками  =================
-// VarRegs  - часто изменяемые настройки (Variable)
-// PermRegs - групповые настройки (Permanent - редко изменяемые настройки)
+// ============  РџРѕ-РїРёРЅРѕРІР°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ СЃ РІС‹РґРµР»РµРЅРЅС‹РјРё РіСЂСѓРїРїРѕРІС‹РјРё РЅР°СЃС‚СЂРѕР№РєР°РјРё  =================
+// VarRegs  - С‡Р°СЃС‚Рѕ РёР·РјРµРЅСЏРµРјС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё (Variable)
+// PermRegs - РіСЂСѓРїРїРѕРІС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё (Permanent - СЂРµРґРєРѕ РёР·РјРµРЅСЏРµРјС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё)
 
 typedef struct {
   uint32_t RXTX;
@@ -220,7 +219,7 @@ typedef struct {
 } MDR_Pin_VarRegs;
 
 
-// Variable настройки в структуру
+// Variable РЅР°СЃС‚СЂРѕР№РєРё РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
 __STATIC_INLINE void ToVarRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, MDR_Pin_VarRegs *VarRegs)
 {
   VarRegs->RXTX = 0;
@@ -236,8 +235,8 @@ __STATIC_INLINE void ToVarRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, MDR_Pin_VarR
   }
 }
 
-// Permanent настройки в структуру
-void MDR_Port_InitPermRegs(MDR_PIN_PD OutDriver, MDR_OnOff InpSchmEn, MDR_PIN_PWR Power, MDR_OnOff InpFilterEn, MDR_Pin_PermRegs *PinPermRegs)
+// Permanent РЅР°СЃС‚СЂРѕР№РєРё РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
+void MDR_Port_InitDigPermRegs(MDR_PIN_PD OutDriver, MDR_PIN_PWR Power, MDR_OnOff InpSchmEn, MDR_OnOff InpFilterEn, MDR_PinDig_PermRegs *PinPermRegs)
 {
   PinPermRegs->ANALOG  = 1;
   PinPermRegs->PD      = VAL2FLD(OutDriver, MDR_GPIO_PD_Driver__Pin) | VAL2FLD(InpSchmEn, MDR_GPIO_PD_Schmitt__Pin);
@@ -245,7 +244,7 @@ void MDR_Port_InitPermRegs(MDR_PIN_PD OutDriver, MDR_OnOff InpSchmEn, MDR_PIN_PW
   PinPermRegs->GFEN    = InpFilterEn;  
 }
 
-// Обнуление масок CLR и SET перед накоплением в них настроек Variable и Permanent
+// РћР±РЅСѓР»РµРЅРёРµ РјР°СЃРѕРє CLR Рё SET РїРµСЂРµРґ РЅР°РєРѕРїР»РµРЅРёРµРј РІ РЅРёС… РЅР°СЃС‚СЂРѕРµРє Variable Рё Permanent
 void MDR_Port_MaskClear(MDR_Port_ApplyMask *ApplyMask)
 {
   ApplyMask->MaskCLR.RXTX    = 0;
@@ -267,8 +266,8 @@ void MDR_Port_MaskClear(MDR_Port_ApplyMask *ApplyMask)
   ApplyMask->MaskSET.GFEN    = 0;
 }
 
-// Внесение настроек Variable и Permanent в маски CLR и SET для указанных маской PinSelect пинов
-void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_Pin_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask)
+// Р’РЅРµСЃРµРЅРёРµ РЅР°СЃС‚СЂРѕРµРє Variable Рё Permanent РІ РјР°СЃРєРё CLR Рё SET РґР»СЏ СѓРєР°Р·Р°РЅРЅС‹С… РјР°СЃРєРѕР№ PinSelect РїРёРЅРѕРІ
+void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask)
 {
   MDR_Pin_VarRegs pinVarRegs;
 
@@ -312,8 +311,8 @@ void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
   } 
 }
 
-// Внесение настроек Variable и Permanent в маски CLR и SET для одного пина
-void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_Pin_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask)
+// Р’РЅРµСЃРµРЅРёРµ РЅР°СЃС‚СЂРѕРµРє Variable Рё Permanent РІ РјР°СЃРєРё CLR Рё SET РґР»СЏ РѕРґРЅРѕРіРѕ РїРёРЅР°
+void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask)
 {
   uint32_t ind2;
   uint32_t clrBit, clrBit2, clrHiLo;
@@ -346,7 +345,7 @@ void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
 }
 
 
-//  Применение масок CLR и SET в порт
+//  РџСЂРёРјРµРЅРµРЅРёРµ РјР°СЃРѕРє CLR Рё SET РІ РїРѕСЂС‚
 void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask)
 {
   MDR_GPIO_CfgRegs tmpRegs;
@@ -365,8 +364,8 @@ void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask)
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);
 }
 
-//  Применение настроек сразу в порт для указанных маской PinSelect пинов
-void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_Pin_PermRegs *PinPermRegs) 
+//  РџСЂРёРјРµРЅРµРЅРёРµ РЅР°СЃС‚СЂРѕРµРє СЃСЂР°Р·Сѓ РІ РїРѕСЂС‚ РґР»СЏ СѓРєР°Р·Р°РЅРЅС‹С… РјР°СЃРєРѕР№ PinSelect РїРёРЅРѕРІ
+void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs) 
 {
   uint32_t i, i2;
   uint32_t bitInd;
@@ -407,8 +406,8 @@ void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOu
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);
 }
 
-//  Применение настроек в порт для одного пина
-void MDR_Port_InitPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_Pin_PermRegs *PinPermRegs)
+//  РџСЂРёРјРµРЅРµРЅРёРµ РЅР°СЃС‚СЂРѕРµРє РІ РїРѕСЂС‚ РґР»СЏ РѕРґРЅРѕРіРѕ РїРёРЅР°
+void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs)
 {
   uint32_t ind2;
   uint32_t clrBit, clrBit2, clrHiLo;  
@@ -437,8 +436,8 @@ void MDR_Port_InitPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOu
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);
 }
 
-//  Конвертация в MDR_GPIO_CfgRegs для вызова первого варианта
-void MDR_Port_ToCfgRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_Pin_PermRegs *PinPermRegs, MDR_GPIO_CfgRegs *cfgRegs)
+//  РљРѕРЅРІРµСЂС‚Р°С†РёСЏ РІ MDR_GPIO_CfgRegs РґР»СЏ РІС‹Р·РѕРІР° РїРµСЂРІРѕРіРѕ РІР°СЂРёР°РЅС‚Р°
+void MDR_Port_ToCfgRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_GPIO_CfgRegs *cfgRegs)
 {
   MDR_Pin_VarRegs pinVarRegs;  
   

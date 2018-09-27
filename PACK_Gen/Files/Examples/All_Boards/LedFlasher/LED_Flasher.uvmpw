@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\VC1\LED_Flasher_VC1.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE1\LED_Flasher_VE1.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE3\LED_Flasher_VE3.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE4\LED_Flasher_BE4.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE91\LED_Flasher_VE91.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VK214\LED_Flasher_VK214.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+  </project>
+
+  <project>
+    <PathAndName>.\VK234\LED_Flasher_VK234.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE92\LED_Flasher_VE92.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE93\LED_Flasher_VE93.uvprojx</PathAndName>
+  </project>
+
+</ProjectWorkspace>

@@ -92,7 +92,7 @@
           <debug      svd="Keil/SVD/MDR1986VK214.svd"/>
           <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VK214.FLM"    start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VE4.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK214.pdf" title="1986VE4 Reference Manual"/-->
 
           <description>
@@ -153,7 +153,7 @@
           <debug      svd="Keil/SVD/MDR1986VK234.svd"/>
           <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VK234.FLM"       start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VE4.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
 
           <description>
@@ -636,9 +636,9 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
     </condition>
-    <condition id="CON_MDR_Support">
+    <condition id="CON_MDR_UseFuncs">
       <description>Support types and funcs</description>
-      <require Cclass="Drivers" Cgroup="Support"/>
+      <require Cclass="Drivers" Cgroup="UseFuncs"/>
     </condition>
     <condition id="CON_MDR1986VE4">
       <description>Cortex-M0 MDR1986VE4 device</description>
@@ -671,9 +671,6 @@
       <description>Cortex-M3 device with DSP Core</description>
       <accept Dname="MDR1901VC1"/>
     </condition>
-
-
-
     <condition id="Startup ARM">
       <description>Startup assembler file for ARMCC</description>
       <require Tcompiler="ARMCC"/>
@@ -759,40 +756,123 @@
       </files>
     </component>
 
-    <!--Device.Support-->
-    <component Cclass="Drivers" Cgroup="Support" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Types and Functions for SPL</description>
-      <files>
-        <file category="include" name="SPL/Devices/Defines/"/>
-        <file category="include" name="SPL/Support/"/>
-        <file category="header"  name="SPL/Support/MDR_Funcs.h"/>
-        <file category="source"  name="SPL/Support/MDR_Funcs.c"/>
-      </files>
-    </component>
     <!-- RST_CLOCK Driver -->
-    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_Support">
+    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_UseFuncs">
       <description>PORT driver for MDR1986VExx Series</description>
       <files>
-        <file category="include" name="SPL/Devices/Defines/"/>
-        <file category="include" name="SPL/Support/"/>
-        <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h"/>
-        <file category="source"  name="SPL/Drivers/MDR_RST_Clock.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_RST_Clock.c" version="2.0.0"/>
       </files>
     </component>
     <!-- GPIO PORT Driver -->
-    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_Support">
+    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_UseFuncs">
       <description>PORT driver for MDR1986VExx Series</description>
       <files>
-        <file category="include" name="SPL/Devices/Defines/"/>
-        <file category="include" name="SPL/Support/"/>
-        <file category="header"  name="SPL/Drivers/MDR_GPIO.h"/>
-        <file category="source"  name="SPL/Drivers/MDR_GPIO.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_GPIO.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_GPIO.c" version="2.0.0"/>
+      </files>
+    </component>
+    <!-- SysTimer -->
+    <component Cclass="Drivers" Cgroup="SysTimer" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Core System Timer</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_SysTimer.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_SysTimer.c" version="2.0.0"/>
+      </files>
+    </component>    
+
+    <!--Device.Support-->
+    <component Cclass="Drivers" Cgroup="UseFuncs" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Types and Functions for SPL</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_Funcs.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_Funcs.c" version="2.0.0"/>
       </files>
     </component>
 
+    <!--UnitTests-->
+    <component Cclass="UnitTests" Cgroup="RST Test" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Unit test for RST funcs</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"        version="2.0.0"/>
+        <file category="include" name="SPL/UnitTests/"              version="2.0.0"/>
+        <file category="header"  name="SPL/UnitTests/MDR_TestRST.h" version="2.0.0"/>
+        <file category="source"  name="SPL/UnitTests/MDR_TestRST.c" version="2.0.0"/>
+      </files>
+    </component>    
+    <component Cclass="UnitTests" Cgroup="GPIO Test" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Unit test for GPIO funcs</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"         version="2.0.0"/>
+        <file category="include" name="SPL/UnitTests/"               version="2.0.0"/>
+        <file category="header"  name="SPL/UnitTests/MDR_TestGPIO.h" version="2.0.0"/>
+        <file category="source"  name="SPL/UnitTests/MDR_TestGPIO.c" version="2.0.0"/>
+      </files>
+    </component>    
+    <component Cclass="UnitTests" Cgroup="BKP Test" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Unit test for BKP funcs</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"        version="2.0.0"/>
+        <file category="include" name="SPL/UnitTests/"              version="2.0.0"/>
+        <file category="header"  name="SPL/UnitTests/MDR_TestBKP.h" version="2.0.0"/>
+        <file category="source"  name="SPL/UnitTests/MDR_TestBKP.c" version="2.0.0"/>
+      </files>
+    </component>    
+
+    <!--Boards-->
+    <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>LED flasher control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"   version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"    version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"            version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LEDs.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_LEDs.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
+      </files>
+    </component> 
+    <component Cclass="Board Support" Cgroup="Buttons" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Buttons control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_Buttons.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_Buttons.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
+      </files>
+    </component> 
 
   </components>
 
+  <examples>
+    <example name="LED Flasher" folder="Examples/All_Boards/LedFlasher" doc="ReadMe.txt" version="2.0.0">
+      <description>Board LED flashing</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="LED_Flasher.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+      </attributes>
+    </example>
+  </examples>
 
+  <boards>
+    <board vendor="Milandr" name="All_Boards" revision="Vx" salesContact="info@milandr.ru" orderForm="http://www.milandr.ru">
+      <description>Unspecified Milandr Board</description>
+      <mountedDevice             deviceIndex="0" Dvendor="Milandr:99" Dname="MDR1986VE91"/>
+      <compatibleDevice          deviceIndex="0" Dvendor="Milandr:99" Dfamily="StartMilandr"/>
+      <debugInterface adapter="J-Link Lite"      connector="Mini-USB"/>
+    </board>
+  </boards>
 
 </package>

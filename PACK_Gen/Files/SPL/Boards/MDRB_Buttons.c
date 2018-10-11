@@ -3,9 +3,6 @@
   
 //==================    Привязка кнопок к портам ==============  
 //  Порты, к которым подключены кнопки
-//#if defined (MDRB_BTN_GPIO_Ex1)
-//  #define KEY_PORT_COUNT  2
-//  static const MDR_GPIO_Port* _KEY_PortUpdate[KEY_PORT_COUNT] = {MDRB_BTN_GPIO, MDRB_BTN_GPIO_Ex1};
 #if defined (MDRB_BTN_GPIO_Ex2)
   #define KEY_PORT_COUNT  3
   static const MDR_GPIO_Port* _KEY_PortUpdate[KEY_PORT_COUNT] = {MDRB_BTN_GPIO, MDRB_BTN_GPIO_Ex1, MDRB_BTN_GPIO_Ex2};
@@ -27,27 +24,33 @@
   // ========== 5 кнопок на плате=============
   #define KEY_COUNT  5
   #define KEY_MASK   0x001FUL
-  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2, MDRB_BTN_PORT_KEY3, 
-                                                       MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY5};
-  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,  MDRB_BTN_PIN_KEY3, 
-                                                       MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY5};
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT + 1] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2, MDRB_BTN_PORT_KEY3, 
+                                                           MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY5, MDRB_BTN_PORT_KEY_P1};
+  static const uint32_t       _KEY_Pins[KEY_COUNT + 1]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,  MDRB_BTN_PIN_KEY3, 
+                                                           MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY5,  MDRB_BTN_PIN_KEY_P1};
 #elif defined (MDRB_BTN_PIN_KEY4)
   // ========== 4 кнопки на плате=============
   #define KEY_COUNT  4
   #define KEY_MASK   0x000FUL
-  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2, MDRB_BTN_PORT_KEY3, 
-                                                       MDRB_BTN_PORT_KEY4};
-  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,  MDRB_BTN_PIN_KEY3, 
-                                                       MDRB_BTN_PIN_KEY4};
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT + 2] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY3, 
+                                                           MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY_P1, MDRB_BTN_PORT_KEY_P2};
+  static const uint32_t       _KEY_Pins[KEY_COUNT + 2]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY3, 
+                                                           MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY_P1,  MDRB_BTN_PIN_KEY_P1};
 #else
   Buttons configuration need to be added!
 #endif
 
                                                    
 //=================   Инициализация кнопок =================
-static uint32_t _debounceTicks  = MS_TO_TIKS(10, 8000000);
+#define DEBOUNCE_DELAY_MS_DEF     1
+static uint32_t _debounceTicks  = MS_TO_CLOCKS(DEBOUNCE_DELAY_MS_DEF, HSI_FREQ_HZ);
                                                    
-void MDRB_Buttons_Init(uint32_t debounce_tick)
+void MDRB_Buttons_ChangeDebounceTick(uint32_t debounce_tick)
+{
+  _debounceTicks = debounce_tick;
+}
+                                                       
+void MDRB_Buttons_InitTick(uint32_t debounce_tick)
 {
   _debounceTicks = debounce_tick;
   
@@ -68,20 +71,20 @@ void MDRB_Buttons_Init(uint32_t debounce_tick)
 
 // =============    Проверка нажатия кнопки ===================
 #ifdef MDRB_BTNs_PUSH_TO_GND
-  #define KEY_PUSHED(port, pin)  (!(MDR_GPIO_GetMaskSet (port, pin)))  
+  #define KEY_PUSHED    MDR_GPIO_GetMaskClr
 #else
-  #define KEY_PUSHED(port, pin)    (MDR_GPIO_GetMaskSet (port, pin))
+  #define KEY_PUSHED    MDR_GPIO_GetMaskSet
 #endif
 
-bool MDRB_IsKeyPushedEx(MDRB_Keys key, uint32_t debounceTicks)
+bool MDRB_IsKeyPushedEx(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSel, uint32_t debounceTicks)
 {
-  bool result = KEY_PUSHED(_KEY_Ports[key], _KEY_Pins[key]);
-  if (debounceTicks == 0)
+  bool result = KEY_PUSHED(GPIO_Port, pinSel);
+  if ((debounceTicks == 0) || (result == false))
     return result;
   
   MDR_Delay(debounceTicks);
   
-  if (KEY_PUSHED(_KEY_Ports[key], _KEY_Pins[key]) == result)
+  if (KEY_PUSHED(GPIO_Port, pinSel) == result)
     return result;
   else
     return false;
@@ -90,9 +93,9 @@ bool MDRB_IsKeyPushedEx(MDRB_Keys key, uint32_t debounceTicks)
 bool MDRB_IsKeyPushed(MDRB_Keys key, bool use_debounce)
 {
   if (use_debounce)
-    return MDRB_IsKeyPushedEx(key, _debounceTicks);
+    return MDRB_IsKeyPushedEx(_KEY_Ports[key], _KEY_Pins[key], _debounceTicks);
   else
-    return MDRB_IsKeyPushedEx(key, 0);
+    return MDRB_IsKeyPushedEx(_KEY_Ports[key], _KEY_Pins[key], 0);
 }
 
 bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce)
@@ -104,49 +107,10 @@ bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce)
   return true;
 }
 
-//uint32_t BRD_Is_BntAct_Select (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_SEL, BRD_BTN_PIN_SEL);
-//}
-
-//uint32_t BRD_Is_BntAct_Up (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_UP, BRD_BTN_PIN_UP);
-//}
-
-//#ifdef BRD_BTN_PIN_DOWN
-//uint32_t BRD_Is_BntAct_Down (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_DOWN, BRD_BTN_PIN_DOWN);
-//}
-//#endif
-
-//#ifdef BRD_BTN_PIN_LEFT
-//uint32_t BRD_Is_BntAct_Left (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_LEFT, BRD_BTN_PIN_LEFT);
-//}
-//#endif
-
-//#ifdef BRD_BTN_PIN_RIGHT
-//uint32_t BRD_Is_BntAct_Right (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_RIGHT, BRD_BTN_PIN_RIGHT);
-//}
-//#endif
-
-//#ifdef BRD_BTN_PIN_BACK
-//uint32_t BRD_Is_BntAct_Back (void)
-//{
-//	return PORT_READ_PIN(BRD_BTN_PORT_BACK, BRD_BTN_PIN_BACK);
-//}
-//#endif
-
-
 //  ================    Keil Buttons API ===============
 int32_t 	Buttons_Initialize (void)
 {
-  MDRB_Buttons_Init(0);
+  MDRB_Buttons_InitTick(0);
   return 0;
 }
   

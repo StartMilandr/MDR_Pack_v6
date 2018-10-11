@@ -15,7 +15,7 @@
   #define USE_BOARD_VE92
 #elif defined (USE_MDR1986VE93)
   #define USE_BOARD_VE93
-  #elif defined (USE_MDR1986VE94)
+#elif defined (USE_MDR1986VE94)
   #define USE_BOARD_VE91
 #elif defined (USE_MDR1901VC1)
   #define USE_BOARD_VC1

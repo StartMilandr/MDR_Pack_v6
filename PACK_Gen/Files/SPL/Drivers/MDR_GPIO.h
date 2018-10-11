@@ -70,6 +70,8 @@ void MDR_Port_Reset(MDR_PORT_Type *GPIO_Port);
 // ========================= Доступ к пинам =============================
 __STATIC_INLINE uint32_t MDR_Port_Get       (MDR_PORT_Type *GPIO_Port) {return GPIO_Port->RXTX;}
 __STATIC_INLINE     bool MDR_Port_GetMaskSet(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {return (GPIO_Port->RXTX & pinSelect) == pinSelect;}
+__STATIC_INLINE     bool MDR_Port_GetMaskClr(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {return ((~GPIO_Port->RXTX) & pinSelect) == pinSelect;}
+
 
 #ifndef PORT_JTAG
 __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX  = portData;}
@@ -138,7 +140,8 @@ void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
 //  Добавление в маски настроек одного пина
 void MDR_Port_MaskAddPin(uint32_t BitInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask);
 //  Применение маски в порт
-void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask);
+void MDR_Port_MaskApply(  MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask);
+void MDR_Port_MaskApplyEx(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask, MDR_GPIO_CfgRegs *readRegs);
 
 
 // ======= Вспомогательные функции, для логгирования и отладки ===========
@@ -190,41 +193,45 @@ __STATIC_INLINE void MDR_GPIO_ClockOn(const MDR_GPIO_Port *GPIO_Port)
 
   // Аналоги функций базовой реализации, только со структурой MDR_GPIO_Port вместо MDR_PORT_Type
 
-  #define MDR_GPIO_Reset(GP)                  MDR_Port_Reset((GP)->PORTx)
+  #define MDR_GPIO_Reset(GP)                    MDR_Port_Reset((GP)->PORTx)
 
   // Вариант настройки 1
-  #define MDR_GPIO_Init(GP, Sel, Cfg)         MDR_Port_Init((GP)->PORTx, (Sel), (Cfg))
-  #define MDR_GPIO_InitAnalog(GP, Sel)        MDR_Port_InitAnalog((GP)->PORTx, (Sel))
+  #define MDR_GPIO_Init(GP, Sel, Cfg)           MDR_Port_Init((GP)->PORTx, (Sel), (Cfg))
+  #define MDR_GPIO_InitAnalog(GP, Sel)          MDR_Port_InitAnalog((GP)->PORTx, (Sel))
 
-  #define MDR_GPIO_Set(GP, Data)              MDR_Port_Set(GP)->PORTx, Data)
+  #define MDR_GPIO_Set(GP, Data)                MDR_Port_Set(GP)->PORTx, Data)
 
-  #define MDR_GPIO_SetPins(GP, Sel)           MDR_Port_SetPins((GP)->PORTx, Sel)
-  #define MDR_GPIO_ClearPins(GP, Sel)         MDR_Port_ClearPins((GP)->PORTx, Sel)
-  #define MDR_GPIO_SwitchPins(GP, Sel)        MDR_Port_SwitchPins((GP)->PORTx, Sel)
-  #define MDR_GPIO_Get(GP)                    MDR_Port_Get((GP)->PORTx)
-  #define MDR_GPIO_GetMaskSet(GP, Sel)        MDR_Port_GetMaskSet((GP)->PORTx, Sel)
+  #define MDR_GPIO_SetPins(GP, Sel)             MDR_Port_SetPins((GP)->PORTx, Sel)
+  #define MDR_GPIO_ClearPins(GP, Sel)           MDR_Port_ClearPins((GP)->PORTx, Sel)
+  #define MDR_GPIO_SwitchPins(GP, Sel)          MDR_Port_SwitchPins((GP)->PORTx, Sel)
+  #define MDR_GPIO_Get(GP)                      MDR_Port_Get((GP)->PORTx)
+  #define MDR_GPIO_GetMaskSet(GP, Sel)          MDR_Port_GetMaskSet((GP)->PORTx, Sel)
+  #define MDR_GPIO_GetMaskClr(GP, Sel)          MDR_Port_GetMaskClr((GP)->PORTx, Sel)
+
 
   // Вариант настройки 2
-  #define MDR_GPIO_InitDigPermRegs            MDR_Port_InitDigPermRegs
+  #define MDR_GPIO_InitDigPermRegs              MDR_Port_InitDigPermRegs
 
   #define MDR_GPIO_InitDig(GP, Sel, IO, F, pPerm)     MDR_Port_InitDig((GP)->PORTx, (Sel), (IO), (F), (pPerm))
   #define MDR_GPIO_InitDigPin(GP, Ind, IO, F, pPerm)  MDR_Port_InitDigPin((GP)->PORTx, (Ind), (IO), (F), (pPerm))
 
-  #define MDR_GPIO_ToCfgRegs                  MDR_Port_ToCfgRegs
-  #define MDR_GPIO_MaskClear                  MDR_Port_MaskClear
-  #define MDR_GPIO_MaskAdd                    MDR_Port_MaskAdd
-  #define MDR_GPIO_MaskAddPin                 MDR_Port_MaskAddPin
-  #define MDR_GPIO_MaskApply(GP, msk)         MDR_Port_MaskApply((GP)->PORTx, (msk))
+  #define MDR_GPIO_ToCfgRegs                    MDR_Port_ToCfgRegs
+  #define MDR_GPIO_MaskClear                    MDR_Port_MaskClear
+  #define MDR_GPIO_MaskAdd                      MDR_Port_MaskAdd
+  #define MDR_GPIO_MaskAddPin                   MDR_Port_MaskAddPin
+  #define MDR_GPIO_MaskApply(GP, msk)           MDR_Port_MaskApply((GP)->PORTx, (msk))
+  #define MDR_GPIO_MaskApplyEx(GP, msk, rdCfg)  MDR_Port_MaskApplyEx((GP)->PORTx, (msk), (rdCfg))
 
-  #define MDR_GPIO_ReadRegs(GP, CfgRegs)      MDR_Port_ReadRegs((GP)->PORTx, (CfgRegs))
-  #define MDR_GPIO_WriteRegs(GP, CfgRegs)     MDR_Port_WriteRegs((GP)->PORTx, (CfgRegs))
+
+  #define MDR_GPIO_ReadRegs(GP, CfgRegs)        MDR_Port_ReadRegs((GP)->PORTx, (CfgRegs))
+  #define MDR_GPIO_WriteRegs(GP, CfgRegs)       MDR_Port_WriteRegs((GP)->PORTx, (CfgRegs))
 
   // Настройка пинов/пина в функции порт по умолчанию
-  #define MDR_GPIO_InitOutDef(GP, Sel)        MDR_GPIO_InitDig   ((GP), (Sel), MDR_Pin_Out, MDR_PIN_PORT, &PinDig_PermRegsDef)
-  #define MDR_GPIO_InitPinOutDef(GP, Ind)     MDR_GPIO_InitDigPin((GP), (Ind), MDR_Pin_Out, MDR_PIN_PORT, &PinDig_PermRegsDef)
+  #define MDR_GPIO_InitOutDef(GP, Sel)          MDR_GPIO_InitDig   ((GP), (Sel), MDR_Pin_Out, MDR_PIN_PORT, &PinDig_PermRegsDef)
+  #define MDR_GPIO_InitPinOutDef(GP, Ind)       MDR_GPIO_InitDigPin((GP), (Ind), MDR_Pin_Out, MDR_PIN_PORT, &PinDig_PermRegsDef)
 
-  #define MDR_GPIO_InitInDef(GP, Sel)        MDR_GPIO_InitDig   ((GP), (Sel), MDR_Pin_In, MDR_PIN_PORT, &PinDig_PermRegsDef)
-  #define MDR_GPIO_InitPinInDef(GP, Ind)     MDR_GPIO_InitDigPin((GP), (Ind), MDR_Pin_In, MDR_PIN_PORT, &PinDig_PermRegsDef)
+  #define MDR_GPIO_InitInDef(GP, Sel)           MDR_GPIO_InitDig   ((GP), (Sel), MDR_Pin_In, MDR_PIN_PORT, &PinDig_PermRegsDef)
+  #define MDR_GPIO_InitPinInDef(GP, Ind)        MDR_GPIO_InitDigPin((GP), (Ind), MDR_Pin_In, MDR_PIN_PORT, &PinDig_PermRegsDef)
 
 
 //  Отключение тактирования

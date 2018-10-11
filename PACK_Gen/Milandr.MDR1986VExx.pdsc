@@ -675,6 +675,24 @@
       <description>Startup assembler file for ARMCC</description>
       <require Tcompiler="ARMCC"/>
     </condition>
+
+    <condition id="CON_LCD_12864x">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+    </condition>
+    <condition id="CON_LCD_10T7">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+    </condition>
+
   </conditions>
 
   <components>
@@ -844,7 +862,33 @@
         <file category="source"  name="SPL/Boards/MDRB_Buttons.c" version="2.0.0"/>
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
-    </component> 
+    </component>
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_LCD_12864x">
+      <description>Buttons control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD.h"     version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD_Font.h"      version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_LCD_MT_12864x.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"   attr="config" version="2.0.0"/>
+      </files>
+    </component>     
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_LCD_10T7">
+      <description>Buttons control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD.h"     version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD_Font.h"      version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_LCD_MT_10T7.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"   attr="config" version="2.0.0"/>
+      </files>
+    </component>     
+
+
 
   </components>
 
@@ -857,13 +901,61 @@
       </project>
       <attributes>
         <component Cclass="Device"        Cgroup="Startup"/>
-        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
+        <!--component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/-->
+      </attributes>
+    </example>
+
+    <example name="Buttons Checker" folder="Examples/All_Boards/ButtonsChecker" doc="ReadMe.txt" version="2.0.0">
+      <description>Board LED flashing</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="ButtonsChecker.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
       </attributes>
     </example>
+
+    <example name="LCD String" folder="Examples/All_Boards/LCD_String" doc="ReadMe.txt" version="2.0.0">
+      <description>Board LED flashing</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="LCD_String.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>
+
+    <example name="ClockTestCPU" folder="Examples/All_Boards/ClockTestCPU" doc="ReadMe.txt" version="2.0.0">
+      <description>Test CPU clock sources</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="ClockTestCPU.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>    
+
   </examples>
 
   <boards>

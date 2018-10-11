@@ -203,6 +203,10 @@ typedef enum IRQn
 
 
 //  Clock Enable bits
+#define   MDR_CLK_EN_REG_BKP            PER2_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b          PER2_CLOCK_b
+#define   MDR_RST_PER__BKP_CLK_EN_Pos   MDR_RST_PER2__BKP_CLK_EN_Pos
+
 #define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER2_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER2_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_C  &MDR_CLOCK->PER2_CLOCK

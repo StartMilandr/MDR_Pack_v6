@@ -295,14 +295,14 @@ void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
       ApplyMask->MaskCLR.PWR     |= clrBit2;
       ApplyMask->MaskCLR.GFEN    |= bitInd;
       
-      ApplyMask->MaskCLR.RXTX    |= (pinVarRegs.RXTX      << i);
-      ApplyMask->MaskCLR.OE      |= (pinVarRegs.OE        << i);
-      ApplyMask->MaskCLR.FUNC    |= (pinVarRegs.FUNC      << i2);
-      ApplyMask->MaskCLR.ANALOG  |= (PinPermRegs->ANALOG  << i);
-      ApplyMask->MaskCLR.PULL    |= (pinVarRegs.PULL      << i);
-      ApplyMask->MaskCLR.PD      |= (PinPermRegs->PD      << i);  
-      ApplyMask->MaskCLR.PWR     |= (PinPermRegs->PWR     << i2);
-      ApplyMask->MaskCLR.GFEN    |= (PinPermRegs->GFEN    << i);
+      ApplyMask->MaskSET.RXTX    |= (pinVarRegs.RXTX      << i);
+      ApplyMask->MaskSET.OE      |= (pinVarRegs.OE        << i);
+      ApplyMask->MaskSET.FUNC    |= (pinVarRegs.FUNC      << i2);
+      ApplyMask->MaskSET.ANALOG  |= (PinPermRegs->ANALOG  << i);
+      ApplyMask->MaskSET.PULL    |= (pinVarRegs.PULL      << i);
+      ApplyMask->MaskSET.PD      |= (PinPermRegs->PD      << i);  
+      ApplyMask->MaskSET.PWR     |= (PinPermRegs->PWR     << i2);
+      ApplyMask->MaskSET.GFEN    |= (PinPermRegs->GFEN    << i);
 
       PinSelect &= ~bitInd;
       if (PinSelect == 0)
@@ -346,12 +346,10 @@ void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
 
 
 //  Применение масок CLR и SET в порт
-void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask)
-{
-  MDR_GPIO_CfgRegs tmpRegs;
+void MDR_Port_MaskApplyEx(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask, MDR_GPIO_CfgRegs *readRegs)
+{  
+  MDR_GPIO_CfgRegs tmpRegs = *readRegs;
   
-  MDR_Port_ReadRegs(GPIO_Port, &tmpRegs);
-   
   tmpRegs.RXTX    = (tmpRegs.RXTX   & ~ApplyMask->MaskCLR.RXTX)   | ApplyMask->MaskSET.RXTX;
   tmpRegs.OE      = (tmpRegs.OE     & ~ApplyMask->MaskCLR.OE)     | ApplyMask->MaskSET.OE;
   tmpRegs.FUNC    = (tmpRegs.FUNC   & ~ApplyMask->MaskCLR.FUNC)   | ApplyMask->MaskSET.FUNC;
@@ -362,6 +360,16 @@ void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask)
   tmpRegs.GFEN    = (tmpRegs.GFEN   & ~ApplyMask->MaskCLR.GFEN)   | ApplyMask->MaskSET.GFEN;
   
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);
+}
+
+
+void MDR_Port_MaskApply(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask)
+{
+  MDR_GPIO_CfgRegs tmpRegs;
+  
+  MDR_Port_ReadRegs(GPIO_Port, &tmpRegs);
+  
+  MDR_Port_MaskApplyEx(GPIO_Port, ApplyMask, &tmpRegs);
 }
 
 //  Применение настроек сразу в порт для указанных маской PinSelect пинов

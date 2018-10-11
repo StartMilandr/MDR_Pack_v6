@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\VC1\ButtonsChecker_VC1.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE1\ButtonsChecker_VE1.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE3\ButtonsChecker_VE3.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE4\ButtonsChecker_VE4.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE91\ButtonsChecker_VE91.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VK214\ButtonsChecker_VK214.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VK234\ButtonsChecker_VK234.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE92\ButtonsChecker_VE92.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE93\ButtonsChecker_VE93.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+  </project>
+
+</ProjectWorkspace>

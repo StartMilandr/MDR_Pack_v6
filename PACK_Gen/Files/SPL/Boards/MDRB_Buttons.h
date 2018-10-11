@@ -6,36 +6,33 @@
 #include  <MDR_GPIO.h>
 #include  <MDR_Funcs.h>
 
+// Если отделных копок не хватает, они заменяются сочетанием существующих
+
 typedef enum {
     MDRB_Key1 = 0
   , MDRB_Key2 = 1
-#ifdef MDRB_BTN_PIN_KEY3 
   , MDRB_Key3 = 2
-#endif
-#ifdef MDRB_BTN_PIN_KEY4 
   , MDRB_Key4 = 3
-#endif
-#ifdef MDRB_BTN_PIN_KEY5 
   , MDRB_Key5 = 4
-#endif
-#ifdef MDRB_BTN_PIN_KEY6 
   , MDRB_Key6 = 5
-#endif
 } MDRB_Keys;
 
 //===================  Инициализация и опрос нажатия  ==================
 // Время проверки на дребезг контактов
 #define DEBOUNCE_MS_DEF        10
 
-void MDRB_Buttons_Init(uint32_t debounce_tick);
+void MDRB_Buttons_InitTick(uint32_t debounce_tick);
 bool MDRB_IsKeyPushed(MDRB_Keys key, bool use_debounce);
-bool MDRB_IsKeyPushedEx(MDRB_Keys key, uint32_t debounceTicks);
+bool MDRB_IsKeyPushedEx(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSel, uint32_t debounceTicks);
+
+void MDRB_Buttons_ChangeDebounceTick(uint32_t debounce_tick);
 
 //  Вернет True если кнопка была нажата и отпущена, 
 //  Содержит бесконечный цикл ожидания отжатия кнопки!
 bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce);
 
-#define MDRB_Buttons_InitEx(debounce_ms, CPU_FregHz)    MDRB_Buttons_Init(MS_TO_TIKS((debounce_ms), (CPU_FregHz)))
+#define MDRB_Buttons_Init(debounce_ms, CPU_FregHz)                  MDRB_Buttons_InitTick(MS_TO_DELAY_LOOPS((debounce_ms), (CPU_FregHz)))
+#define MDRB_Buttons_ChangeDebounceDelay(debounce_ms, CPU_FregHz)   MDRB_Buttons_ChangeDebounceTick(MS_TO_DELAY_LOOPS((debounce_ms), (CPU_FregHz)))
 
 // =================   Именованные определения, для удобства вызова ==========================
 #define MDRB_Btn_Up            MDRB_Key1
@@ -59,13 +56,8 @@ bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce);
 #define MDRB_BntClicked_Down(use_debounce)    MDRB_IsKeyClicked(MDRB_Btn_Down,   (use_debounce))
 #define MDRB_BntClicked_Left(use_debounce)    MDRB_IsKeyClicked(MDRB_Btn_Left,   (use_debounce))
 
-#if defined (MDRB_BTN_PIN_KEY5)
-  #define MDRB_BntClicked_Select(use_debounce)  MDRB_IsKeyClicked(MDRB_Btn_Select, (use_debounce))
-#endif
-
-#if defined (MDRB_BTN_PIN_KEY6)
-  #define MDRB_BntClicked_Back(use_debounce)    MDRB_IsKeyClicked(MDRB_Btn_Back,   (use_debounce))
-#endif
+#define MDRB_BntClicked_Select(use_debounce)  MDRB_IsKeyClicked(MDRB_Btn_Select, (use_debounce))
+#define MDRB_BntClicked_Back(use_debounce)    MDRB_IsKeyClicked(MDRB_Btn_Back,   (use_debounce))
 
 
 //  ================    Keil Buttons API ===============

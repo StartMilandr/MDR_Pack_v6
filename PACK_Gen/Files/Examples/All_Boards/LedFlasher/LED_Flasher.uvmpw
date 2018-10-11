@@ -13,6 +13,7 @@
 
   <project>
     <PathAndName>.\VE1\LED_Flasher_VE1.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
@@ -20,7 +21,7 @@
   </project>
 
   <project>
-    <PathAndName>.\VE4\LED_Flasher_BE4.uvprojx</PathAndName>
+    <PathAndName>.\VE4\LED_Flasher_VE4.uvprojx</PathAndName>
   </project>
 
   <project>
@@ -29,7 +30,6 @@
 
   <project>
     <PathAndName>.\VK214\LED_Flasher_VK214.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>

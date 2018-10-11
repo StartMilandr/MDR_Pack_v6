@@ -245,6 +245,9 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
+#define   MDR_CLK_EN_REG_BKP      PER_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b    PER_CLOCK_b
+
 #define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_C  &MDR_CLOCK->PER_CLOCK
@@ -258,6 +261,16 @@ typedef enum IRQn
 #define   MDR_CLK_EN_BIT_PORT_D   MDR_RST_PER__PORTD_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_E   MDR_RST_PER__PORTE_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_F   MDR_RST_PER__PORTF_CLK_EN_Pos
+
+#define   MDR_JTAG_A_PORT         MDR_PORTB
+#define   MDR_JTAG_A_PINS         0x0000001FUL
+#define   MDR_JTAG_A_PINS_FUNC    0x000003FFUL
+#define   MDR_JTAG_A_PINS_PD      0x001F001FUL
+
+#define   MDR_JTAG_B_PORT         MDR_PORTD
+#define   MDR_JTAG_B_PINS         0x0000001FUL
+#define   MDR_JTAG_B_PINS_FUNC    0x000003FFUL
+#define   MDR_JTAG_B_PINS_PD      0x001F001FUL
 
 
 /** @} */ /* End of group MDR1901VC1 */

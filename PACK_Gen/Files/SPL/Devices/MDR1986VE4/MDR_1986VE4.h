@@ -225,18 +225,22 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
-#define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER2_CLOCK
-#define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER2_CLOCK
-#define   MDR_CLK_EN_ADDR_PORT_C  &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_REG_BKP            PER2_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b          PER2_CLOCK_b
+#define   MDR_RST_PER__BKP_CLK_EN_Pos   MDR_RST_PER2__BKP_CLK_EN_Pos
 
-#define   MDR_CLK_EN_BIT_PORT_A   MDR_RST_PER2__PORTA_CLK_EN_Pos
-#define   MDR_CLK_EN_BIT_PORT_B   MDR_RST_PER2__PORTB_CLK_EN_Pos
-#define   MDR_CLK_EN_BIT_PORT_C   MDR_RST_PER2__PORTC_CLK_EN_Pos
+#define   MDR_CLK_EN_ADDR_PORT_A        &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_ADDR_PORT_B        &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_ADDR_PORT_C        &MDR_CLOCK->PER2_CLOCK
 
-#define   MDR_JTAG_A_PORT         MDR_PORTA
-#define   MDR_JTAG_A_PINS         0x000000C0UL
-#define   MDR_JTAG_A_PINS_FUNC    0x0000F000UL
-#define   MDR_JTAG_A_PINS_PD      0x00C000C0UL
+#define   MDR_CLK_EN_BIT_PORT_A         MDR_RST_PER2__PORTA_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_B         MDR_RST_PER2__PORTB_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_C         MDR_RST_PER2__PORTC_CLK_EN_Pos
+
+#define   MDR_JTAG_A_PORT               MDR_PORTA
+#define   MDR_JTAG_A_PINS               0x000000C0UL
+#define   MDR_JTAG_A_PINS_FUNC          0x0000F000UL
+#define   MDR_JTAG_A_PINS_PD            0x00C000C0UL
 
 
 /** @} */ /* End of group MDR1986VE4 */

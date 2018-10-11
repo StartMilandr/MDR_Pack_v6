@@ -250,6 +250,9 @@ typedef enum IRQn
 #define   MDR_EXIST_HSE2
 
 //  Clock Enable bits
+#define   MDR_CLK_EN_REG_BKP      PER_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b    PER_CLOCK_b
+
 #define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_C  &MDR_CLOCK->PER_CLOCK

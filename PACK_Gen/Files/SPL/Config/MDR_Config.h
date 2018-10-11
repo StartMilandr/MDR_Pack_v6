@@ -44,7 +44,7 @@
 #define HSE_TIMEOUT     0x8000UL
 
 #define LSE_FREQ_HZ     (32768UL)
-#define LSE_TIMEOUT     0x0600UL
+#define LSE_TIMEOUT     0x8000UL
 
 
 //  External Generator for Ethernet PHY

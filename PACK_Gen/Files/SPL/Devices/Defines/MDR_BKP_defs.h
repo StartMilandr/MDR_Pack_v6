@@ -41,8 +41,8 @@ extern "C" {
 
 typedef enum {
   MDR_LOWRI_le10MHz   = 0,                  /*!< 10MHz   : CPU Clock less then 10MHz  : +I ~ 300uA                             */
-  MDR_LOWRI_le100KHz  = 1,                  /*!< 200KHz  : CPU Clock less then 200KHz : +I ~ 6.6uA                             */
-  MDR_LOWRI_le500KMHz = 2,                  /*!< 500KHz  : CPU Clock less then 500KHz : +I ~ 20A                               */
+  MDR_LOWRI_le200KHz  = 1,                  /*!< 200KHz  : CPU Clock less then 200KHz : +I ~ 6.6uA                             */
+  MDR_LOWRI_le500KHz  = 2,                  /*!< 500KHz  : CPU Clock less then 500KHz : +I ~ 20A                               */
   MDR_LOWRI_le1MHz    = 3,                  /*!< 1MHz    : CPU Clock less then 1MHz   : +I ~ 80uA                              */
   MDR_LOWRI_GensOff   = 4,                  /*!< GensOffz: Generators Off             : +I ~ 2uA                               */
   MDR_LOWRI_le40MHz   = 5,                  /*!< 40MHz   : CPU Clock less then 40MHz  : +I ~ 900uA                             */

@@ -444,6 +444,16 @@ void MDRB_LCD_Print(const char* string, uint8_t y)
     MDRB_LCD_PutSymbol (0x20, i, y);
 }
 
+void MDRB_LCD_ClearLine(uint8_t y)
+{
+  uint8_t i;
+  
+  // Заполнение массива пустыми символами
+  for (i = 0; i < LCD_SCREEN_WIDTH; i++)
+    MDRB_LCD_PutSymbol (0x20, i, y);
+}
+
+
 // Вывод изображения
 void MDRB_LCD_PutImage (const uint8_t* image, uint8_t top, uint8_t left, uint8_t bottom, uint8_t right)
 {

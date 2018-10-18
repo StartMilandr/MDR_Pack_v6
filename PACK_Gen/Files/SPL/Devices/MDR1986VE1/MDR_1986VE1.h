@@ -160,6 +160,9 @@ typedef enum IRQn
 /*===============  Backup and RST ==============*/
 #include "MDR_BKP_VE1_defs.h"
 
+/*===============  EEPROM Controller=============*/
+#include "MDR_EEPROM_defs.h"
+
 /*===============  GPIO Port ===================*/
 #include "MDR_GPIO_defs.h"
 
@@ -203,7 +206,8 @@ typedef enum IRQn
 #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address */
+#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
 #define ADDR_BKP_BASE         (0x400D8000UL)                              /*!< Backup and RTC Base Address */
 
 #define ADDR_PORTA_BASE       (0x400A8000UL)                              /*!< GPIO PORT_A Base Address */
@@ -224,8 +228,9 @@ typedef enum IRQn
   * @{
   */
 
+#define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
-#define MDR_BKP                        ((MDR_BKP_Type   *) ADDR_BKP_BASE)
+#define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
@@ -242,8 +247,14 @@ typedef enum IRQn
 #define   MDR_EXIST_HSE2
 
 //  Clock Enable bits
-#define   MDR_CLK_EN_REG_BKP      PER_CLOCK
-#define   MDR_CLK_EN_REG_BKP_b    PER_CLOCK_b
+#define   MDR_CLK_EN_REG_EEPROM     PER_CLOCK
+#define   MDR_CLK_EN_REG_EEPROM_b   PER_CLOCK_b
+
+#define   MDR_CLK_EN_REG_PER        PER_CLOCK
+#define   MDR_CLK_EN_REG_PER_b      PER_CLOCK_b
+
+#define   MDR_CLK_EN_REG_BKP        PER_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b      PER_CLOCK_b
 
 #define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER_CLOCK

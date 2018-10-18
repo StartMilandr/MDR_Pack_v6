@@ -27,6 +27,8 @@
 #if defined (USE_MDR1986VE9x) || defined (USE_MDR1901VC1)
   //#define USE_JTAG_A
   #define USE_JTAG_B
+#elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) ||  defined (USE_MDR1986VK234)
+  #define USE_JTAG_A  
 #endif
 
 //================  Парамется подключенных осциляторов ================

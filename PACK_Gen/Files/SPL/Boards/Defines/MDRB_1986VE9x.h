@@ -4,17 +4,20 @@
 
 #if defined (USE_BOARD_VE91)  || defined (USE_BOARD_VE92) || defined (USE_BOARD_VE93) || defined (USE_BOARD_VE94)
 
+//===================================    Частота тактирования    ========================================
+#define HSE_PLL_MUL_MAX     MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+
 //  ---------------  SPI Definition ----------------
     // SPI1 PortF
-	  #define MDRB_SPI1_F_PIN_CLK	   PORT_Pin_1
+	  #define MDRB_SPI1_F_PIN_CLK	     PORT_Pin_1
 	  #define MDRB_SPI1_F_PIN_TX		   PORT_Pin_0
 	  #define MDRB_SPI1_F_PIN_RX		   PORT_Pin_3
 	  #define MDRB_SPI1_F_PIN_CS		   PORT_Pin_2    
 
-	  #define MDRB_SPI1_F_PORT_CLK    RST_CLK_PCLK_PORTF
+	  #define MDRB_SPI1_F_PORT_CLK     RST_CLK_PCLK_PORTF
 	  #define MDRB_SPI1_F_PORT			   MDR_PORTF
-    #define MDRB_SPI1_F_PINS        (MDRB_SPI1_F_PIN_CLK | MDRB_SPI1_F_PIN_TX | MDRB_SPI1_F_PIN_RX | MDRB_SPI1_F_PIN_CS)
-    #define MDRB_SPI1_F_PINS_FUNC   PORT_FUNC_ALTER
+    #define MDRB_SPI1_F_PINS         (MDRB_SPI1_F_PIN_CLK | MDRB_SPI1_F_PIN_TX | MDRB_SPI1_F_PIN_RX | MDRB_SPI1_F_PIN_CS)
+    #define MDRB_SPI1_F_PINS_FUNC    PORT_FUNC_ALTER
     
     #define MDRB_SPI1_F_PINS_FUNC_CLEAR  (~ ((3 << (1 * 2)) | \
                                             (3 << (0 * 2)) | \

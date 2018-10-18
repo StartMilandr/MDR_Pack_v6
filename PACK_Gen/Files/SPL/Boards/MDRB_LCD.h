@@ -18,7 +18,8 @@
   #define LCD_SCREEN_WIDTH    16   // Ширина дисплея (в символах 8x8)
 
   void MDRB_LCD_PutSymbol   (uint8_t symbol, uint8_t x, uint8_t y);                     // Вывод символа
-  
+
+  void MDRB_LCD_ClearLine   (uint8_t y);                                                // Стирание строки
   void MDRB_LCD_Print       (const char* string, uint8_t y);                            // Вывод строки  
   void MDRB_LCD_ScrollString(const char* string, uint8_t y, uint8_t shift);             // Горизональное перемещение строки. Необходимо менять shift.
   void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t y, uint8_t strLength);  //  Автономное горизональное перемещение строки.

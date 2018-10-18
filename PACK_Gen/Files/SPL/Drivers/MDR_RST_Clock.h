@@ -8,20 +8,11 @@
 
 //==========   Вспомогательные функции стабилизации потребления и доступа к EEPROM ==============
 // Стабилизация потребления в зависимости от частоты
-#define MDR_RST_BKP_LowRI   MDR_BKP_LOW_RI
+#define MDR_RST_BKP_LowRI     MDR_BKP_LOW_RI
 
 //  Такты паузы ядра для доступа к данным EEPROM. 
 //  EEPROM не работает быстрее чем 25МГц. Считывается за раз четыре 32-разрядных слова.
-typedef enum {
-	EEPROM_Delay_le25MHz  = 0,
-  EEPROM_Delay_le50MHz  = 1, 
-  EEPROM_Delay_le75MHz  = 2, 
-  EEPROM_Delay_le100MHz = 3,
-  EEPROM_Delay_le125MHz = 4,
-  EEPROM_Delay_le150MHz = 5,
-  EEPROM_Delay_le175MHz = 6,
-  EEPROM_Delay_le200MHz = 7
-} MDR_RST_EEPROM_Delay;
+#define MDR_RST_EEPROM_Delay  MDR_EEPROM_DELAY
 
 //  Функции пересчета частоты в параметры SelectRI, LOW  и DelayEEPROM
 MDR_RST_EEPROM_Delay MDR_FreqCPU_ToDelayEEPROM(uint32_t CPU_FregHz);

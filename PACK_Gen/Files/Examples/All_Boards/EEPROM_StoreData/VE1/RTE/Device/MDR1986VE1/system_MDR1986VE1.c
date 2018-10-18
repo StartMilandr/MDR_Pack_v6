@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_MDR1986BE4.c
- * @brief    CMSIS Cortex-M0 Device Peripheral Access Layer Source File for
- *           Device MDR1986BE4
+ * @file     system_MDR1986VE1.c
+ * @brief    CMSIS Cortex-M1 Device Peripheral Access Layer Source File for
+ *           Device MDR1986VE1
  * @version  V5.00
  * @date     10. January 2018
  ******************************************************************************/
@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-#include "MDR_1986BE4.h"
+#include "MDR_1986VE1.h"
 #include "MDR_Config.h"
 
 

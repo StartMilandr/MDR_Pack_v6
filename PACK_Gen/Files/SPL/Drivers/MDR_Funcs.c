@@ -1,5 +1,6 @@
 #include "MDR_Funcs.h"
 
+//===================    Функция ожидания с таймаутом  ===================
 bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)
 {
   while (timeoutCycles != 0)
@@ -11,6 +12,8 @@ bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)
   return false;
 }
 
+
+//=========================    Задержка =======================
 void MDR_Delay(uint32_t Ticks)
 {
   volatile uint32_t i = Ticks;
@@ -18,6 +21,33 @@ void MDR_Delay(uint32_t Ticks)
    while (--i);
   
   //for (; i > 0; i--);  // - Больше циклов, сильнее зависит от оптимизации
+}
+
+
+//=====================    Псевдо-случайное значение ===================
+uint32_t MDR_ToPseudoRand(uint32_t value)
+{ 
+  uint32_t hash = 0;
+  uint32_t i = 0;
+  uint8_t* key = (uint8_t *)&value;
+
+  for (i = 0; i < 4; i++)
+  {
+    hash += key[i];
+    hash += (hash << 10);
+    hash ^= (hash >> 6);
+  }
+
+  for (i = 0; i < 256; i++)
+  {
+    hash += (hash << 10);
+    hash ^= (hash >> 6);
+  }
+
+  hash += (hash << 3);
+  hash ^= (hash >> 11);
+  hash += (hash << 15);
+  return hash;
 }
 
 //============    Log for debug ============

@@ -33,6 +33,7 @@ bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce);
 
 #define MDRB_Buttons_Init(debounce_ms, CPU_FregHz)                  MDRB_Buttons_InitTick(MS_TO_DELAY_LOOPS((debounce_ms), (CPU_FregHz)))
 #define MDRB_Buttons_ChangeDebounceDelay(debounce_ms, CPU_FregHz)   MDRB_Buttons_ChangeDebounceTick(MS_TO_DELAY_LOOPS((debounce_ms), (CPU_FregHz)))
+#define MDRB_Buttons_ChangeFreqCPU                                  MDRB_Buttons_ChangeDebounceDelay
 
 // =================   Именованные определения, для удобства вызова ==========================
 #define MDRB_Btn_Up            MDRB_Key1

@@ -48,7 +48,8 @@ void MDR_Delay(uint32_t Ticks);
 #define MDR_Delay_ms(mSec, CPU_FregHz)          MDR_Delay(MS_TO_DELAY_LOOPS((mSec), (CPU_FregHz)))
 #define MDR_Delay_us(uSec, CPU_FregHz)          MDR_Delay(US_TO_DELAY_LOOPS((uSec), (CPU_FregHz)))
 
-
+//=====================    Псевдо-случайное значение ===================
+uint32_t MDR_ToPseudoRand(uint32_t value);
 
 
 //===========================    Битовые поля ===========================
@@ -59,6 +60,7 @@ void MDR_Delay(uint32_t Ticks);
 //  Доступ к полям в слове
 #define VAL2FLD(value, field)      _VAL2FLD(field, value)
 #define FLD_CLEAR(value, mask)     ((uint32_t)(value) & (~(mask)))
+
 
 //=========================    Log for debug ===========================
 //#define DEBUG_LOG_ENA   // Для активации можно добавить в настройки проекта, закладка C/C++ поле define: DEBUG_LOG_ENA

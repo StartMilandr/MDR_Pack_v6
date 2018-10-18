@@ -16,7 +16,7 @@ bool MDR_RST_ResetBlock(uint32_t timeoutCycles, MDR_BKP_HSI_TRIM freqTrim)
     return false;
 
   // PER_CLOCK
-  MDR_CLOCK->MDR_CLK_EN_REG_BKP_b.RST_CLK_EN  = MDR_On;
+  MDR_CLOCK->MDR_CLK_EN_REG_PER_b.RST_CLK_EN  = MDR_On;
 
 //  MDR_CLOCK->CLOCK_STATUS  
   MDR_CLOCK->CPU_CLOCK   = 0;                 /*!< (@ 0x0000000C) CPU Clock Control                                          */
@@ -192,23 +192,11 @@ __STATIC_INLINE void RST_BKP_ClockRestore_loc(void)
 }
 
 //==========   Вспомогательные функции стабилизации потребления и доступа к EEPROM ==============
-MDR_RST_EEPROM_Delay MDR_FreqCPU_ToDelayEEPROM(uint32_t CPU_FregHz)
-{
-  if      (CPU_FregHz < 25E+6)  return EEPROM_Delay_le25MHz;
-	else if (CPU_FregHz < 50E+6)  return EEPROM_Delay_le50MHz;
-	else if (CPU_FregHz < 75E+6)  return EEPROM_Delay_le75MHz;
-	else if (CPU_FregHz < 100E+6) return EEPROM_Delay_le100MHz;
-	else if (CPU_FregHz < 125E+6) return EEPROM_Delay_le125MHz;
-  else if (CPU_FregHz < 150E+6) return EEPROM_Delay_le150MHz;
-  else if (CPU_FregHz < 175E+6) return EEPROM_Delay_le175MHz;
-  else return EEPROM_Delay_le200MHz;
-}
-
 MDR_RST_BKP_LowRI MDR_FreqCPU_ToLowRI(uint32_t CPU_FregHz)
 {
-	if      (CPU_FregHz >  80E+6) return MDR_LOWRI_gt80MHz;
-	else if (CPU_FregHz >  40E+6) return MDR_LOWRI_le80MHz;
-	else if (CPU_FregHz >  10E+6) return MDR_LOWRI_le40MHz;  
+  if      (CPU_FregHz >  80E+6) return MDR_LOWRI_gt80MHz;
+  else if (CPU_FregHz >  40E+6) return MDR_LOWRI_le80MHz;
+  else if (CPU_FregHz >  10E+6) return MDR_LOWRI_le40MHz;  
   else if (CPU_FregHz >   1E+3) return MDR_LOWRI_le10MHz;
   else if (CPU_FregHz > 500E+3) return MDR_LOWRI_le1MHz;
   else if (CPU_FregHz > 200E+3)	return MDR_LOWRI_le500KHz;
@@ -216,6 +204,39 @@ MDR_RST_BKP_LowRI MDR_FreqCPU_ToLowRI(uint32_t CPU_FregHz)
   else 
     return MDR_LOWRI_GensOff;
 }
+
+
+#ifndef MDR_EEPROM_36MHz
+  #define EEPROM_DELAY_HSI    EEPROM_Delay_le25MHz
+  #define EEPROM_DELAY_LSI    EEPROM_Delay_le25MHz
+  #define EEPROM_DELAY_LSE    EEPROM_Delay_le25MHz
+  #define EEPROM_DELAY_HSE    EEPROM_Delay_le25MHz
+
+  MDR_RST_EEPROM_Delay MDR_FreqCPU_ToDelayEEPROM(uint32_t CPU_FregHz)
+  {
+    if      (CPU_FregHz < 25E+6)  return EEPROM_Delay_le25MHz;
+    else if (CPU_FregHz < 50E+6)  return EEPROM_Delay_le50MHz;
+    else if (CPU_FregHz < 75E+6)  return EEPROM_Delay_le75MHz;
+    else if (CPU_FregHz < 100E+6) return EEPROM_Delay_le100MHz;
+    else if (CPU_FregHz < 125E+6) return EEPROM_Delay_le125MHz;
+    else if (CPU_FregHz < 150E+6) return EEPROM_Delay_le150MHz;
+    else if (CPU_FregHz < 175E+6) return EEPROM_Delay_le175MHz;
+    else return EEPROM_Delay_le200MHz;
+  }
+#else
+  #define EEPROM_DELAY_HSI    EEPROM_Delay_le18MHz
+  #define EEPROM_DELAY_LSI    EEPROM_Delay_le18MHz
+  #define EEPROM_DELAY_LSE    EEPROM_Delay_le18MHz
+  #define EEPROM_DELAY_HSE    EEPROM_Delay_le18MHz  
+  
+  MDR_RST_EEPROM_Delay MDR_FreqCPU_ToDelayEEPROM(uint32_t CPU_FregHz)
+  {
+    if (CPU_FregHz <= 18E+6) 
+      return EEPROM_Delay_le18MHz;
+    else 
+      return EEPROM_Delay_le36MHz;
+  }
+#endif
 
 
 __STATIC_INLINE void RST_SetLowRI_loc(MDR_RST_BKP_LowRI lowRI)
@@ -235,7 +256,15 @@ void MDR_RST_SetLowRI(MDR_RST_BKP_LowRI lowRI)
 
 void MDR_RST_SetDelayEEPROM(MDR_RST_EEPROM_Delay delayEEPROM)
 {
+  // Включение тактирования EEPROM
+  uint32_t regPerClock = MDR_CLOCK->MDR_CLK_EN_REG_EEPROM;
+  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM = regPerClock | (1UL << MDR_RST_PER__EEPROM_CLK_EN_Pos); 
 
+  //  Выставление задержки
+  MDR_EEPROM->CMD_b.DELAY = delayEEPROM;
+  
+  //  Восстановление тактирования
+  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM = regPerClock;
 }
 
 //=============   Выбор тактирования для CPU ==============
@@ -267,7 +296,7 @@ bool MDR_CPU_SetClock_HSI(uint32_t timeoutCycles, MDR_BKP_HSI_TRIM freqTrim)
     // Стабилизация потребления под частоту CPU
     RST_SetLowRI_loc(MDR_LOWRI_le10MHz);
     // Время доступа к EEPROM
-    MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);
+    MDR_RST_SetDelayEEPROM(EEPROM_DELAY_HSI);
     
     result = true;
   }
@@ -295,7 +324,7 @@ bool MDR_CPU_SetClock_HSI_div2(MDR_CLK_DIV_256 divC3, uint32_t timeoutCycles, MD
     // Стабилизация потребления под частоту CPU
     RST_SetLowRI_loc(MDR_LOWRI_le10MHz);
     // Время доступа к EEPROM
-    MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);    
+    MDR_RST_SetDelayEEPROM(EEPROM_DELAY_HSI);    
     
     //  Предварительное переключение мультиплексоров
     MDR_CLOCK->CPU_CLOCK = TO_CPU_CLOCK(MDR_HSIE2_HSI_div2, MDR_CPU_C1, divC3, MDR_HCLK_HSI);
@@ -323,7 +352,7 @@ bool MDR_CPU_SetClock_HSI_C1(MDR_CLK_DIV_256 divC3, uint32_t timeoutCycles, MDR_
     // Стабилизация потребления под частоту CPU
     RST_SetLowRI_loc(MDR_LOWRI_le10MHz);
     // Время доступа к EEPROM
-    MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);     
+    MDR_RST_SetDelayEEPROM(EEPROM_DELAY_HSI);     
     
     //  Предварительное переключение мультиплексоров
     MDR_CLOCK->CPU_CLOCK = TO_CPU_CLOCK(MDR_HSIE2_HSI, MDR_CPU_C1, divC3, MDR_HCLK_HSI);
@@ -422,7 +451,7 @@ bool MDR_CPU_SetClock_LSI(uint32_t timeoutCycles, MDR_BKP_LSI_TRIM freqTrim)
   // Стабилизация потребления под частоту CPU
   RST_SetLowRI_loc(MDR_LOWRI_le200KHz);
   // Время доступа к EEPROM
-  MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);  
+  MDR_RST_SetDelayEEPROM(EEPROM_DELAY_LSI);  
   
   //  Восстановление тактирования BKP
   RST_BKP_ClockRestore_loc();
@@ -446,7 +475,7 @@ bool MDR_CPU_SetClock_LSE(MDR_OnOff byPass, uint32_t timeoutCycles)
   // Стабилизация потребления под частоту CPU
   RST_SetLowRI_loc(MDR_LOWRI_le200KHz);
   // Время доступа к EEPROM
-  MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz); 
+  MDR_RST_SetDelayEEPROM(EEPROM_DELAY_LSE); 
   
   //  Восстановление тактирования BKP
   RST_BKP_ClockRestore_loc();
@@ -470,7 +499,7 @@ bool MDR_CPU_SetClock_HSE(MDR_OnOff byPass, MDR_RST_BKP_LowRI lowRI, MDR_CLK_DIV
       // Стабилизация потребления под частоту CPU
       RST_SetLowRI_loc(lowRI);
       // Время доступа к EEPROM
-      MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);
+      MDR_RST_SetDelayEEPROM(EEPROM_DELAY_HSE);
       
       //  Предварительное переключение мультиплексоров
       MDR_CLOCK->CPU_CLOCK =   TO_CPU_CLOCK(MDR_HSIE2_HSE, MDR_CPU_C1, divC3, MDR_HCLK_HSI);
@@ -499,7 +528,7 @@ bool MDR_CPU_SetClock_HSE_div2(MDR_OnOff byPass, MDR_CLK_DIV_256 divC3, uint32_t
       // Стабилизация потребления под частоту CPU
       RST_SetLowRI_loc(MDR_LOWRI_le10MHz);
       // Время доступа к EEPROM
-      MDR_RST_SetDelayEEPROM(EEPROM_Delay_le25MHz);      
+      MDR_RST_SetDelayEEPROM(EEPROM_DELAY_HSE);      
       
       //  Предварительное переключение мультиплексоров
       MDR_CLOCK->CPU_CLOCK = TO_CPU_CLOCK(MDR_HSIE2_HSE_div2, MDR_CPU_C1, divC3, MDR_HCLK_HSI);

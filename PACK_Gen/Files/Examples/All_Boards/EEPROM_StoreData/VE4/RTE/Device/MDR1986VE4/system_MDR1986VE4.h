@@ -1,13 +1,13 @@
 /**************************************************************************//**
- * @file     system_MDR1986BE4.h
+ * @file     system_MDR1986VE4.h
  * @brief    CMSIS Cortex-M0 Device Peripheral Access Layer Header File for
- *           Device MDR1986BE4
+ *           Device MDR1986VE4
  * @version  V5.00
  * @date     10. January 2018
  ******************************************************************************/
 
-#ifndef SYSTEM_MDR1986BE4_H
-#define SYSTEM_MDR1986BE4_H
+#ifndef SYSTEM_MDR1986VE4_H
+#define SYSTEM_MDR1986VE4_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,4 +38,4 @@ extern void SystemCoreClockUpdate (void);
 }
 #endif
 
-#endif /* SYSTEM_MDR1986BE4_H */
+#endif /* SYSTEM_MDR1986VE4_H */

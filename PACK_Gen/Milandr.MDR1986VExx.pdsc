@@ -800,7 +800,22 @@
         <file category="source"  name="SPL/Drivers/MDR_SysTimer.c" version="2.0.0"/>
       </files>
     </component>    
-
+    <!-- EEPROM -->
+    <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Core System Timer</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_EEPROM.c" version="2.0.0"/>
+      </files>
+    </component> 
+    <!-- BKP RTC -->
+    <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Core System Timer</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_BKP_RTC.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_BKP_RTC.c" version="2.0.0"/>
+      </files>
+    </component>
     <!--Device.Support-->
     <component Cclass="Drivers" Cgroup="UseFuncs" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Types and Functions for SPL</description>
@@ -903,7 +918,7 @@
         <component Cclass="Device"        Cgroup="Startup"/>
         <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
-        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
         <!--component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/-->
       </attributes>
@@ -919,7 +934,7 @@
         <component Cclass="Device"        Cgroup="Startup"/>
         <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
-        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
       </attributes>
@@ -934,7 +949,7 @@
       <attributes>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
-        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
       </attributes>
     </example>
@@ -949,12 +964,48 @@
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
-        <component Cclass="Support"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="LED"          Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
       </attributes>
     </example>    
+
+    <example name="EEPROM_StoreData" folder="Examples/All_Boards/EEPROM_StoreData" doc="ReadMe.txt" version="2.0.0">
+      <description>Store data to EEPROM's main and info page. </description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="EEPROM_StoreData.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+        <component Cclass="Drivers"       Cgroup="SysTimer"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="Backup and RTC"  Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="EEPROM"       Cversion="2.0" condition="CON_MDR_ALL"/>
+      </attributes>
+    </example>
+
+    <example name="EEPROM_Test" folder="Examples/All_Boards/EEPROM_Test" doc="ReadMe.txt" version="2.0.0">
+      <description>Store data to EEPROM's main and info page. </description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="EEPROM_Test.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+        <component Cclass="Drivers"       Cgroup="EEPROM"       Cversion="2.0" condition="CON_MDR_ALL"/>
+      </attributes>
+    </example>
 
   </examples>
 

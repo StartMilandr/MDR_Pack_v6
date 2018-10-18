@@ -127,6 +127,9 @@ typedef enum IRQn
 /*===============  Backup and RST ==============*/
 #include "MDR_BKP_VE4x_defs.h"
 
+/*===============  EEPROM Controller=============*/
+#include "MDR_EEPROM_36MHz_defs.h"
+
 /*===============  GPIO Port ===================*/
 #include "MDR_GPIO_defs.h"
 
@@ -170,7 +173,8 @@ typedef enum IRQn
 #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address */
+#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
 #define ADDR_BKP_BASE         (0x40060000UL)                              /*!< Backup and RTC Base Address */
 
 #define ADDR_PORTA_BASE       (0x40080000UL)                              /*!< GPIO PORT_A Base Address */
@@ -189,8 +193,9 @@ typedef enum IRQn
   * @{
   */
 
+#define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
-#define MDR_BKP                        ((MDR_BKP_Type   *) ADDR_BKP_BASE)
+#define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
@@ -203,22 +208,25 @@ typedef enum IRQn
 
 
 //  Clock Enable bits
-#define   MDR_CLK_EN_REG_BKP            PER2_CLOCK
-#define   MDR_CLK_EN_REG_BKP_b          PER2_CLOCK_b
-#define   MDR_RST_PER__BKP_CLK_EN_Pos   MDR_RST_PER2__BKP_CLK_EN_Pos
+#define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
+#define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
 
-#define   MDR_CLK_EN_ADDR_PORT_A  &MDR_CLOCK->PER2_CLOCK
-#define   MDR_CLK_EN_ADDR_PORT_B  &MDR_CLOCK->PER2_CLOCK
-#define   MDR_CLK_EN_ADDR_PORT_C  &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_REG_BKP              PER2_CLOCK
+#define   MDR_CLK_EN_REG_BKP_b            PER2_CLOCK_b
+#define   MDR_RST_PER__BKP_CLK_EN_Pos     MDR_RST_PER2__BKP_CLK_EN_Pos
 
-#define   MDR_CLK_EN_BIT_PORT_A   MDR_RST_PER2__PORTA_CLK_EN_Pos
-#define   MDR_CLK_EN_BIT_PORT_B   MDR_RST_PER2__PORTB_CLK_EN_Pos
-#define   MDR_CLK_EN_BIT_PORT_C   MDR_RST_PER2__PORTC_CLK_EN_Pos
+#define   MDR_CLK_EN_ADDR_PORT_A          &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_ADDR_PORT_B          &MDR_CLOCK->PER2_CLOCK
+#define   MDR_CLK_EN_ADDR_PORT_C          &MDR_CLOCK->PER2_CLOCK
 
-#define   MDR_JTAG_A_PORT         MDR_PORTA
-#define   MDR_JTAG_A_PINS         0x000000C0UL
-#define   MDR_JTAG_A_PINS_FUNC    0x0000F000UL
-#define   MDR_JTAG_A_PINS_PD      0x00C000C0UL
+#define   MDR_CLK_EN_BIT_PORT_A           MDR_RST_PER2__PORTA_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_B           MDR_RST_PER2__PORTB_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_C           MDR_RST_PER2__PORTC_CLK_EN_Pos
+
+#define   MDR_JTAG_A_PORT                 MDR_PORTA
+#define   MDR_JTAG_A_PINS                 0x000000C0UL
+#define   MDR_JTAG_A_PINS_FUNC            0x0000F000UL
+#define   MDR_JTAG_A_PINS_PD              0x00C000C0UL
 
 
 /** @} */ /* End of group MDR1986VK234 */

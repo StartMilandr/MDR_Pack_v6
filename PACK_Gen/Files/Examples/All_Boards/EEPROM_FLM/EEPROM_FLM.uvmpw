@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\EEPROM_FLM_VE1\EEPROM_FLM_VE1.uvproj</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
+  </project>
+
+  <project>
+    <PathAndName>.\EEPROM_FLM_VE9x\EEPROM_FLM_VE9x.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\EEPROM_FLM_VE4\EEPROM_FLM_VE4.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\EEPROM_FLM_VKx\EEPROM_FLM_VKx.uvproj</PathAndName>
+  </project>
+
+</ProjectWorkspace>

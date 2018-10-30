@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\EEPROM_StoreData</IncludePath>
+              <IncludePath>..\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -382,7 +382,17 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_EEPROM_BuffWRRD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_EEPROM_BuffWRRD.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_EEPROM_PageWRRD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_EEPROM_PageWRRD.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -473,7 +483,7 @@
     <files>
       <file attr="config" category="header" name="SPL\Config\MDRB_BoardSelect.h" version="2.0.0">
         <instance index="0">RTE\Board_Support\MDR1986VE3\MDRB_BoardSelect.h</instance>
-        <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_LCD_12864x"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_CM1CM3"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

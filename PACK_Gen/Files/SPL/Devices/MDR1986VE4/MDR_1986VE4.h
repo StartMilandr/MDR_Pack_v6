@@ -151,7 +151,7 @@ typedef enum IRQn
 #include "MDR_BKP_VE4x_defs.h"
 
 /*===============  EEPROM Controller=============*/
-#include "MDR_EEPROM_36MHz_defs.h"
+#include "MDR_EEPROM_18MHz_defs.h"
 
 /*===============  GPIO Port ===================*/
 #include "MDR_GPIO_defs.h"

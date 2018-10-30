@@ -24,7 +24,6 @@
 
   <project>
     <PathAndName>.\VE91\EEPROM_Test_VE91.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -36,6 +35,11 @@
   <project>
     <PathAndName>.\VE93\EEPROM_Test_VE93.uvprojx</PathAndName>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\VE4\EEPROM_Test_VE4.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

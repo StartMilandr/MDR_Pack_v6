@@ -33,9 +33,12 @@ extern "C" {
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
 /* ========================================================  EEPROM Size  ======================================================== */
-#define MDR_EEPROM_PAGE_WORD_COUNT        1024                              // 32bit words in Page
-#define MDR_EEPROM_PAGE_SIZE              (4 * MDR_EEPROM_PAGE_WORD_COUNT)  // 4KB Page
-#define MDR_EEPROM_PAGE_COUNT             32                                // 128KB in Total
+#define MDR_EEPROM_PAGE_WORD_COUNT        0x400UL                           // 1024 32bit words in Page
+#define MDR_EEPROM_PAGE_SIZE             (4 * MDR_EEPROM_PAGE_WORD_COUNT)   // 4KB Page
+#define MDR_EEPROM_MAIN_PAGE_COUNT        32                                // 128KB in Total
+#define MDR_EEPROM_INFO_PAGE_COUNT        1                                 // 4KB in Total
+
+#define MDR_EEPROM_PAGE_ADDR_MASK         0xFFFUL
 
 /* ========================================================  EEPROM_CMD  ========================================================= */
 typedef enum {

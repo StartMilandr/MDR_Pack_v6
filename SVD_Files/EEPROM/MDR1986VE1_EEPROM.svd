@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
+  <vendor>Milandr.</vendor>                                       <!-- device vendor name -->
+
+  <vendorID>Milandr</vendorID>                                    <!-- device vendor short name -->
+  <!--#BE1, #BE3,#BE9x,#VC1-->  
+  <name>MDR1986VE1_EEPROM</name>
+  <series>ARMCM1</series>
+  <!--#BE4, #BK214, #BK234 -->
+  <!--name>MDR1986BE4_EEPROM</name>
+  <series>ARMCM0</series-->
+  
+  <version>1.6</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
+  <description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 144MHz, etc. </description><!--#BE1-->
+  <!--description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 80MHz, etc. </description--><!--#BE3-->
+  <!--description>ARM 32-bit Cortex-M3 Microcontroller based device, CPU clock up to 80MHz, etc. </description--><!--#BE9x-->
+  <!--description>ARM 32-bit Cortex-M3 Microcontroller based device with DSP Core, CPU clock up to 100MHz, etc. </description--><!--#VC1-->  
+  <!--description>ARM 32-bit Cortex-M0 Microcontroller based device, CPU clock up to 36MHz, etc. </description--><!--#BE4,#BK214,#BK234  -->
+
+  <cpu>                      
+    <!--#BE1, #BE3,#BE9x,#VC1-->  
+    <name>CM1</name>
+    <revision>r1p0</revision>
+    <!--#BE4,#BK214,#BK234-->
+    <!--name>CM0</name>
+    <revision>r0p0</revision-->
+
+    <endian>little</endian>
+    <mpuPresent>false</mpuPresent>
+    <fpuPresent>false</fpuPresent>
+    <!--nvicPrioBits>3</nvicPrioBits--><!--#BE9x,#VC1-->
+    <nvicPrioBits>2</nvicPrioBits><!--#BE1,#BE3,#BE4,#BK214,#BK234-->
+
+    <vendorSystickConfig>false</vendorSystickConfig>
+  </cpu>
+  <addressUnitBits>8</addressUnitBits>                            <!-- byte addressable memory -->
+  <width>32</width>                                               <!-- bus width is 32 bits -->
+  <!-- default settings implicitly inherited by subsequent sections -->
+  <size>32</size>                                                 <!-- this is the default size (number of bits) of all peripherals
+                                                                       and register that do not define "size" themselves -->
+  <access>read-write</access>                                     <!-- default access permission for all subsequent registers -->
+  <resetValue>0x00000000</resetValue>                             <!-- by default all bits of the registers are initialized to 0 on reset -->
+  <resetMask>0xFFFFFFFF</resetMask>                               <!-- by default all 32Bits of the registers are used -->
+
+  <!-- Peripherals -->
+  <peripherals>
+    <!-- EEPROM -->
+    <peripheral>
+      <name>MDR_EEPROM</name>
+      <version>1.0</version>
+      <description>EEPROM Control</description>
+      <groupName>EEPROM Control</groupName>
+      <baseAddress>0x40018000</baseAddress>
+
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x14</size>
+        <usage>registers</usage>
+      </addressBlock>
+
+      <registers>
+        <!-- CMD -->
+        <register>
+          <name>CMD</name>
+          <description>EEPROM Control register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000020</resetValue>
+          <resetMask>0x000003FF</resetMask>
+          <fields>
+            <!--CON-->
+            <field>
+              <name>CON</name>
+              <description>Enable memory access through EEPROM controller</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__CON_</headerEnumName>
+                <enumeratedValue>
+                  <name>Normal Access</name>
+                  <description>Normal access to memory</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Controller Access</name>
+                  <description>Access to memory though registers</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--WR-->
+            <field>
+              <name>WR</name>
+              <description>Write operation</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__WR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No write operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Write operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RD-->
+            <field>
+              <name>RD</name>
+              <description>Read operation</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__RD_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No read operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Read operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--Delay--><!--#BE1, #BE3,#BE9x,#VC1--> 
+            <field>
+              <name>DELAY</name>
+              <description>Memory access CPU delay tacts</description>
+              <bitRange>[5:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__DELAY_</headerEnumName>
+                <enumeratedValue>
+                  <name>le25MHz</name>
+                  <description>CPU freq is up to 25MHz</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le50MHz</name>
+                  <description>CPU freq is up to 50MHz</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le75MHz</name>
+                  <description>CPU freq is up to 75MHz</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le100MHz</name>
+                  <description>CPU freq is up to 100MHz</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le125MHz</name>
+                  <description>CPU freq is up to 125MHz</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le150MHz</name>
+                  <description>CPU freq is up to 150MHz</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le175MHz</name>
+                  <description>CPU freq is up to 175MHz</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le200MHz</name>
+                  <description>CPU freq is up to 200MHz</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--Delay--><!--#BE4,#BK214,#BK234-->
+            <!--field>
+              <name>DELAY</name>
+              <description>Memory access CPU delay tacts</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__DELAY_</headerEnumName>
+                <enumeratedValue>
+                  <name>le18MHz</name>
+                  <description>CPU freq is up to 18MHz</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le36MHz</name>
+                  <description>CPU freq is up to 36MHz</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field-->
+
+            <!--XE-->
+            <field>
+              <name>XE</name>
+              <description>Enable ADDR[16..9]</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__XE_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--YE-->
+            <field derivedFrom="XE">
+              <name>YE</name>
+              <description>Enable ADDR[8..2]</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <!--SE-->
+            <field derivedFrom="XE">
+              <name>SE</name>
+              <description>RD Amplifier enable</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <!--IFREN-->
+            <field>
+              <name>IFREN</name>
+              <description>Select main or info memory</description>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__IFREN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Main</name>
+                  <description>Main memory</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Info</name>
+                  <description>Info memory</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--ERASE-->
+            <field>
+              <name>ERASE</name>
+              <description>Erase string at ADDR[16:0]</description>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__ERASE_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No erase operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Erase operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--MAS1-->
+            <field derivedFrom="XE">
+              <name>MAS1</name>
+              <description>Erase whole block with ERASE</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!--PROG-->
+            <field>
+              <name>PROG</name>
+              <description>Programm EEPROM_DI to ADDR[16:0]</description>
+              <bitRange>[12:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__PROG_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No programm operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Programm operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--NVSTR-->
+            <field>
+              <name>NVSTR</name>
+              <description>Memory access mode</description>
+              <bitRange>[13:13]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__NVSTR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Read</name>
+                  <description>Read mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Write</name>
+                  <description>Programming or erase mode</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- ADDR -->
+        <register>
+          <name>ADDR</name>
+          <description>Address register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- DI -->
+        <register>
+          <name>DI</name>
+          <description>Write data register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- DO -->
+        <register>
+          <name>DO</name>
+          <description>Read data register</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- KEY -->
+        <register>
+          <name>KEY</name>
+          <description>Unlock block register</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+
+    <!-- peripherals end-->
+  </peripherals>
+
+</device>  

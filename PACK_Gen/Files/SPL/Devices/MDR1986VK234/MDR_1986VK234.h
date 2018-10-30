@@ -128,7 +128,7 @@ typedef enum IRQn
 #include "MDR_BKP_VE4x_defs.h"
 
 /*===============  EEPROM Controller=============*/
-#include "MDR_EEPROM_36MHz_defs.h"
+#include "MDR_EEPROM_18MHz_defs.h"
 
 /*===============  GPIO Port ===================*/
 #include "MDR_GPIO_defs.h"
@@ -208,6 +208,9 @@ typedef enum IRQn
 
 
 //  Clock Enable bits
+#define   MDR_CLK_EN_REG_PER              PER2_CLOCK
+#define   MDR_CLK_EN_REG_PER_b            PER2_CLOCK_b
+
 #define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
 #define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
 

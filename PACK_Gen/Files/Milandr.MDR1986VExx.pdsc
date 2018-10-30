@@ -29,7 +29,7 @@
           <debug      svd="Keil/SVD/MDR1986VE4.svd"/>
           <memory     id="IROM1"                          start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VE4.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VE4_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/1986VE4Y.pdf" title="1986VE4 Reference Manual"/-->
 
           <description>
@@ -92,7 +92,7 @@
           <debug      svd="Keil/SVD/MDR1986VK214.svd"/>
           <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VE4.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK214.pdf" title="1986VE4 Reference Manual"/-->
 
           <description>
@@ -153,7 +153,7 @@
           <debug      svd="Keil/SVD/MDR1986VK234.svd"/>
           <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VE4.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
 
           <description>
@@ -215,7 +215,7 @@
         <memory     id="IROM1"                          start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
         <memory     id="IRAM2"                          start="0x20100000"  size="0x4000"     init   ="0"   default="1"/>
-        <algorithm  name="Keil/FLM/MDR1986VEx.FLM"      start="0x00000000"  size="0x20000" RAMstart="0x20100000" RAMsize="0x4000" default="1"/>
+        <algorithm  name="Keil/FLM/MDR1986VE1_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20100000" RAMsize="0x4000" default="1"/>
 
         <!-- MDR1986VE1 -->
         <device Dname="MDR1986VE1">
@@ -333,11 +333,10 @@
       <subFamily DsubFamily="Cortex-M3">
         <!--Core description-->
         <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="80000000"/>
-        <!--compile    header="SPL/Devices/MDR1986VE9x/MDR1986VE9x.h" define="USE_MDR1986VE9x"/-->
         <debug      svd="Keil/SVD/MDR1986VE9x.svd"/>
         <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
-        <algorithm  name="Keil/FLM/MDR1986VE9x.FLM"     start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
+        <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
         <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
 
         <!-- MDR1986VE91 -->
@@ -553,11 +552,10 @@
       <subFamily DsubFamily="Cortex-M3 with DSP">
         <!--Core description-->
         <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="100000000"/>
-        <!--compile    header="SPL/Devices/MDR1986VE9x/MDR1986VE9x.h" define="USE_MDR1986VE9x"/-->
         <debug      svd="Keil/SVD/MDR1901VC1.svd"/>
         <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
-        <algorithm  name="Keil/FLM/MDR1986VE9x.FLM"     start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
+        <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
         <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
 
         <!-- MDR1901VC1 -->
@@ -676,7 +674,7 @@
       <require Tcompiler="ARMCC"/>
     </condition>
 
-    <condition id="CON_LCD_12864x">
+    <condition id="CON_MDR_CM1CM3">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE1"/>
       <accept Dname="MDR1986VE3"/>
@@ -686,7 +684,7 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
     </condition>
-    <condition id="CON_LCD_10T7">
+    <condition id="CON_MDR_CM0">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE4"/>
       <accept Dname="MDR1986VK214"/>
@@ -801,13 +799,22 @@
       </files>
     </component>    
     <!-- EEPROM -->
-    <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM1CM3">
       <description>Core System Timer</description>
       <files>
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM.c" version="2.0.0"/>
       </files>
     </component> 
+    <!-- EEPROM 18MHz-->
+    <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM0">
+      <description>Core System Timer</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_EEPROM_18MHz.c" version="2.0.0"/>
+      </files>
+    </component> 
+
     <!-- BKP RTC -->
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Core System Timer</description>
@@ -878,7 +885,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_LCD_12864x">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM1CM3">
       <description>Buttons control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
@@ -890,7 +897,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"   attr="config" version="2.0.0"/>
       </files>
     </component>     
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_LCD_10T7">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM0">
       <description>Buttons control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
@@ -1006,6 +1013,14 @@
         <component Cclass="Drivers"       Cgroup="EEPROM"       Cversion="2.0" condition="CON_MDR_ALL"/>
       </attributes>
     </example>
+
+    <example name="EEPROM_FLM" folder="Examples/All_Boards/EEPROM_FLM" doc="ReadMe.txt" version="2.0.0">
+      <description>Store data to EEPROM's main and info page. </description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="EEPROM_FLM.uvmpw"/>
+      </project>
+    </example>    
 
   </examples>
 

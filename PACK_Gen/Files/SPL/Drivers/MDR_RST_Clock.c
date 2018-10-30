@@ -206,7 +206,7 @@ MDR_RST_BKP_LowRI MDR_FreqCPU_ToLowRI(uint32_t CPU_FregHz)
 }
 
 
-#ifndef MDR_EEPROM_36MHz
+#ifndef MDR_EEPROM_18MHz
   #define EEPROM_DELAY_HSI    EEPROM_Delay_le25MHz
   #define EEPROM_DELAY_LSI    EEPROM_Delay_le25MHz
   #define EEPROM_DELAY_LSE    EEPROM_Delay_le25MHz

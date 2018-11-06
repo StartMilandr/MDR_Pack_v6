@@ -1,3 +1,7 @@
 *.v
 
 PACK_Gen/Files/Examples/SPL_Build/
+*.sfd
+*.SFR
+*.exe
+*.dll

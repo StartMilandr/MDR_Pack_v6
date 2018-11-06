@@ -1,0 +1,7 @@
+copy /Y "_src\MDR1901VC1.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1901VC1.svd"
+copy /Y "_src\MDR1986VE1.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VE1.svd"
+copy /Y "_src\MDR1986VE3.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VE3.svd"
+copy /Y "_src\MDR1986VE4.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VE4.svd"
+copy /Y "_src\MDR1986VE9x.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VE9x.svd"
+copy /Y "_src\MDR1986VK214.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VK214.svd"
+copy /Y "_src\MDR1986VK234.svd"  "..\PACK_Gen\Files\Keil\SVD\MDR1986VK234.svd"

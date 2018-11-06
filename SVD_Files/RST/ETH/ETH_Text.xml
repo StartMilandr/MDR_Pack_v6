@@ -1,0 +1,26 @@
+#ETH_RMASK_VE1
+<resetMask>0x3FFFFFFF</resetMask>
+
+#ETH_RMASK_VE3
+<resetMask>0xFFFFFFFF</resetMask>
+
+#ETH2_CLK_VE3
+<field>
+  <name>ETH2_CLK_EN</name>
+  <description>Ethernet2 MAC Clock Enable</description>
+  <bitRange>[30:30]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__ETH__MAC2_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>MAC Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>MAC Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>

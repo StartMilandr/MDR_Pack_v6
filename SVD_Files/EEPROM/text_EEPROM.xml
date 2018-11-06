@@ -1,0 +1,71 @@
+#DELAY_VEx
+<field>
+  <name>DELAY</name>
+  <description>Memory access CPU delay tacts</description>
+  <bitRange>[5:3]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_EEPROM_CMD__DELAY_</headerEnumName>
+    <enumeratedValue>
+      <name>le25MHz</name>
+      <description>CPU freq is up to 25MHz</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le50MHz</name>
+      <description>CPU freq is up to 50MHz</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le75MHz</name>
+      <description>CPU freq is up to 75MHz</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le100MHz</name>
+      <description>CPU freq is up to 100MHz</description>
+      <value>3</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le125MHz</name>
+      <description>CPU freq is up to 125MHz</description>
+      <value>4</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le150MHz</name>
+      <description>CPU freq is up to 150MHz</description>
+      <value>5</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le175MHz</name>
+      <description>CPU freq is up to 175MHz</description>
+      <value>6</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le200MHz</name>
+      <description>CPU freq is up to 200MHz</description>
+      <value>7</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#DELAY_VE4x
+<field>
+  <name>DELAY</name>
+  <description>Memory access CPU delay tacts</description>
+  <bitRange>[3:3]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_EEPROM_CMD__DELAY_</headerEnumName>
+    <enumeratedValue>
+      <name>le18MHz</name>
+      <description>CPU freq is up to 18MHz</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>le36MHz</name>
+      <description>CPU freq is up to 36MHz</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>

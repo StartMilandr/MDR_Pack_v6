@@ -1,0 +1,177 @@
+<register>
+  <name>PER_CLOCK</name>
+  <description>Peripherials Clock Control</description>
+  <addressOffset>0x0000001C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000010</resetValue>
+  <!-- #PER_RMASK -->
+  <fields>
+    <!-- #PER_Item00 -->
+    <!-- #PER_Item01 -->
+    <!-- PER_CLOCK.USB_CLK_EN -->
+    <field>
+      <name>USB_CLK_EN</name>
+      <description>USB Clock Enable</description>
+      <bitRange>[2:2]</bitRange>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__PER__SSP_CLOCK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>              
+    </field>
+    <!-- PER_CLOCK.EEPROM_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>EEPROM_CLK_EN</name>
+      <description>EEPROM Controller Clock Enable</description>
+      <bitRange>[3:3]</bitRange>
+    </field>
+    <!-- PER_CLOCK.RST_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>RST_CLK_EN</name>
+      <description>RST Clock Enable</description>
+      <bitRange>[4:4]</bitRange>
+    </field>
+    <!-- PER_CLOCK.DMA_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>DMA_CLK_EN</name>
+      <description>DMA Clock Enable</description>
+      <bitRange>[5:5]</bitRange>
+    </field>
+    <!-- PER_CLOCK.UART1_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>UART1_CLK_EN</name>
+      <description>UART1 Clock Enable</description>
+      <bitRange>[6:6]</bitRange>
+    </field>
+    <!-- PER_CLOCK.UART2_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>UART2_CLK_EN</name>
+      <description>UART2 Clock Enable</description>
+      <bitRange>[7:7]</bitRange>
+    </field>
+    <!-- PER_CLOCK.SPI1_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>SPI1_CLK_EN</name>
+      <description>SPI1 Clock Enable</description>
+      <bitRange>[8:8]</bitRange>
+    </field>
+    <!-- #PER_Item09 -->
+    <!-- #PER_Item10 -->
+    <!-- PER_CLOCK.PWR_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PWR_CLK_EN</name>
+      <description>Power Clock Enable</description>
+      <bitRange>[11:11]</bitRange>
+    </field>
+    <!-- PER_CLOCK.WWDT_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>WWDT_CLK_EN</name>
+      <description>WWDT Clock Enable</description>
+      <bitRange>[12:12]</bitRange>
+    </field>
+    <!-- PER_CLOCK.IWDT_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>IWDT_CLK_EN</name>
+      <description>IWDT Clock Enable</description>
+      <bitRange>[13:13]</bitRange>
+    </field>
+    <!-- PER_CLOCK.TIMER1_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>TIMER1_CLK_EN</name>
+      <description>TIMER1 Clock Enable</description>
+      <bitRange>[14:14]</bitRange>
+    </field>
+    <!-- PER_CLOCK.TIMER2_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>TIMER2_CLK_EN</name>
+      <description>TIMER2 Clock Enable</description>
+      <bitRange>[15:15]</bitRange>
+    </field>
+    <!-- PER_CLOCK.TIMER3_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>TIMER3_CLK_EN</name>
+      <description>TIMER3 Clock Enable</description>
+      <bitRange>[16:16]</bitRange>
+    </field>            
+    <!-- PER_CLOCK.ADC_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>ADC_CLK_EN</name>
+      <description>ADC Clock Enable</description>
+      <bitRange>[17:17]</bitRange>
+    </field>
+    <!-- PER_CLOCK.DAC_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>DAC_CLK_EN</name>
+      <description>DAC Clock Enable</description>
+      <bitRange>[18:18]</bitRange>
+    </field>
+    <!-- #PER_Item19 -->
+    <!-- PER_CLOCK.SPI2_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>SPI2_CLK_EN</name>
+      <description>SPI2 Clock Enable</description>
+      <bitRange>[20:20]</bitRange>
+    </field>
+    <!-- PER_CLOCK.PORTA_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTA_CLK_EN</name>
+      <description>GPIO PORT_A Clock Enable</description>
+      <bitRange>[21:21]</bitRange>
+    </field>
+    <!-- PER_CLOCK.PORTB_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTB_CLK_EN</name>
+      <description>GPIO PORT_B Clock Enable</description>
+      <bitRange>[22:22]</bitRange>
+    </field>
+    <!-- PER_CLOCK.PORTC_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTC_CLK_EN</name>
+      <description>GPIO PORT_C Clock Enable</description>
+      <bitRange>[23:23]</bitRange>
+    </field>
+    <!-- PER_CLOCK.PORTD_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTD_CLK_EN</name>
+      <description>GPIO PORT_D Clock Enable</description>
+      <bitRange>[24:24]</bitRange>
+    </field>
+    <!-- PER_CLOCK.PORTE_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTE_CLK_EN</name>
+      <description>GPIO PORT_E Clock Enable</description>
+      <bitRange>[25:25]</bitRange>
+    </field>
+    <!-- #PER_Item26 -->
+    <!-- PER_CLOCK.BKP_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>BKP_CLK_EN</name>
+      <description>Backup Clock Enable</description>
+      <bitRange>[27:27]</bitRange>
+    </field>
+    <!-- #PER_Item28 -->
+    <!-- PER_CLOCK.PORTF_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>PORTF_CLK_EN</name>
+      <description>GPIO PORT_F Clock Enable</description>
+      <bitRange>[29:29]</bitRange>
+    </field>
+    <!-- PER_CLOCK.EBC_CLK_EN -->
+    <field derivedFrom="USB_CLK_EN">
+      <name>EBC_CLK_EN</name>
+      <description>External Bus Clock Enable</description>
+      <bitRange>[30:30]</bitRange>
+    </field>
+    <!-- #PER_Item31 -->
+    <!-- PER_CLOCK fields end-->
+  </fields>
+</register>

@@ -1,1 +1,0 @@
-SVDConv.exe MDR1901VC1_RST.svd -o out -b out/logVC1.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr

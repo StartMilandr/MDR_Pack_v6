@@ -1,0 +1,169 @@
+#GPIO__ADDR__VEx
+<baseAddress>0x400A8000</baseAddress>
+
+#GPIO__ADDR___VE4
+<baseAddress>0x40080000</baseAddress>
+
+
+#GPIO__SIZE_SC
+<size>0x2C</size>
+
+#GPIO__SIZEx
+<size>0x20</size>
+
+
+#GPIO__ADDR_B
+<baseAddress>0x400B0000</baseAddress>
+
+#GPIO__ADDR_C
+<baseAddress>0x400B8000</baseAddress>
+
+#GPIO__ADDR_VE4_B
+<baseAddress>0x40088000</baseAddress>
+
+#GPIO__ADDR_VE4_C
+<baseAddress>0x40090000</baseAddress>
+
+#GPIO_PORT_D
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTD</name>
+  <baseAddress>0x400C0000</baseAddress>
+</peripheral>
+
+#GPIO_PORT_E
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTE</name>
+  <baseAddress>0x400C8000</baseAddress>
+</peripheral>
+
+#GPIO_PORT_F
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTF</name>
+  <baseAddress>0x400E8000</baseAddress>
+</peripheral>
+
+#GPIO_PORT_G
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTG</name>
+  <baseAddress>0x40118000</baseAddress>
+</peripheral>
+
+#GPIO_PORT_H
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTH</name>
+  <baseAddress>0x40138000</baseAddress>
+</peripheral>
+
+#GPIO_PORT_I
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTI</name>
+  <baseAddress>0x40140000</baseAddress>
+</peripheral>
+
+
+#GPIO_SETCLR
+
+#GPIO__SETCLR_ON
+<!-- SETTX -->
+<register>
+  <name>SETTX</name>
+  <description>Set RXTX by MASK</description>
+  <addressOffset>0x00000020</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0000FFFF</resetMask>
+  <modifiedWriteValues>oneToSet</modifiedWriteValues>
+  <fields>
+    <field>
+      <dim>16</dim>
+      <dimIncrement>1</dimIncrement>
+      <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+      <name>Pin_%s</name>
+      <description>Set 1 to pin</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_GPIO__PIN_SETTX_</headerEnumName>
+        <enumeratedValue>
+          <name>Inactive</name>
+          <description>Do nothing</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>Selected</name>
+          <description>Set High level to pin with reg RXTX</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+  </fields>
+</register>
+<!-- CLRTX -->
+<register>
+  <name>CLRTX</name>
+  <description>CLR RXTX by MASK</description>
+  <addressOffset>0x00000024</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0000FFFF</resetMask>
+  <modifiedWriteValues>oneToClear</modifiedWriteValues>
+  <fields>
+    <field>
+      <dim>16</dim>
+      <dimIncrement>1</dimIncrement>
+      <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+      <name>Pin_%s</name>
+      <description>Clear pin to 0</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_GPIO__PIN_CLRTX_</headerEnumName>
+        <enumeratedValue>
+          <name>Inactive</name>
+          <description>Do nothing</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>Selected</name>
+          <description>Set Low level to pin with reg RXTX</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+  </fields>
+</register>
+<!-- RDTX -->
+<register>
+  <name>RDTX</name>
+  <description>Value of RXTX in Port mode</description>
+  <addressOffset>0x00000028</addressOffset>
+  <size>32</size>
+  <access>read-only</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0000FFFF</resetMask>
+  <fields>
+    <field>
+      <dim>16</dim>
+      <dimIncrement>1</dimIncrement>
+      <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+      <name>Pin_%s</name>
+      <description>Pin data value</description>
+      <bitRange>[0:0]</bitRange>
+      <enumeratedValues>
+        <headerEnumName>MDR_GPIO__PIN_RDTX_</headerEnumName>
+        <enumeratedValue>
+          <name>Low</name>
+          <description>LOW Level Voltage</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>High</name>
+          <description>HIGH Level Voltage</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+  </fields>
+</register>

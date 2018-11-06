@@ -1,0 +1,193 @@
+#RST_USBPLL_RDY
+<field>
+  <name>PLL_USB_RDY</name>
+  <description>PLL USP ready</description>
+  <bitRange>[0:0]</bitRange>
+  <access>read-only</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__STATUS__PLL_USB_RDY_</headerEnumName>
+    <enumeratedValue>
+      <name>NotReady</name>
+      <description>PLL not ready</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Ready</name>
+      <description>PLL ready</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_PLL_USB_ON
+<field>
+  <name>PLL_USB_ON</name>
+  <description>PLL USB Enable</description>
+  <bitRange>[0:0]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PLL__USB_EN_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>PLL Off</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>PLL On</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_PLL_USB_PLD
+<field>
+  <name>PLL_USB_PLD</name>
+  <description>PLL USB Restart</description>
+  <bitRange>[1:1]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PLL__USB_PLD_</headerEnumName>
+    <enumeratedValue>
+      <name>RestartOff</name>
+      <description>PLL restart inactive</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>DoRestart</name>
+      <description>PLL Do Restart</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_PLL_USB_MUL
+<field>
+  <name>PLL_USB_MUL</name>
+  <description>PLL USB Mul, [x1 .. x16]</description>
+  <bitRange>[7:4]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PLL__USB_MUL_</headerEnumName>
+    <enumeratedValue><name>x1</name><description>PLL mul x1</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>x2</name><description>PLL mul x2</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>x3</name><description>PLL mul x3</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>x4</name><description>PLL mul x4</description><value>3</value></enumeratedValue>
+    <enumeratedValue><name>x5</name><description>PLL mul x5</description><value>4</value></enumeratedValue>
+    <enumeratedValue><name>x6</name><description>PLL mul x6</description><value>5</value></enumeratedValue>
+    <enumeratedValue><name>x7</name><description>PLL mul x7</description><value>6</value></enumeratedValue>
+    <enumeratedValue><name>x8</name><description>PLL mul x8</description><value>7</value></enumeratedValue>
+    <enumeratedValue><name>x9</name><description>PLL mul x9</description><value>8</value></enumeratedValue>
+    <enumeratedValue><name>x10</name><description>PLL mul x10</description><value>9</value></enumeratedValue>
+    <enumeratedValue><name>x11</name><description>PLL mul x11</description><value>10</value></enumeratedValue>
+    <enumeratedValue><name>x12</name><description>PLL mul x12</description><value>11</value></enumeratedValue>
+    <enumeratedValue><name>x13</name><description>PLL mul x13</description><value>12</value></enumeratedValue>
+    <enumeratedValue><name>x14</name><description>PLL mul x14</description><value>13</value></enumeratedValue>
+    <enumeratedValue><name>x15</name><description>PLL mul x15</description><value>14</value></enumeratedValue>
+    <enumeratedValue><name>x16</name><description>PLL mul x16</description><value>15</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_REG_USB_CLOCK
+<register>
+  <name>USB_CLOCK</name>
+  <description>USB Clock Control</description>
+  <addressOffset>0x00000010</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x00000117</resetMask>
+  <fields>
+    <!-- USB_CLOCK.USB_C1_SEL -->
+    <field>
+      <name>USB_C1_SEL</name>
+      <description>USB_C1 mux freq select</description>
+      <bitRange>[1:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__USB__C1_</headerEnumName>
+        <enumeratedValue>
+          <name>HSI</name>
+          <description>USB_C1 output is HSI</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>HSI/2</name>
+          <description>USB_C1 output is HSI/2</description>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>HSE</name>
+          <description>USB_C1 output is HSE</description>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>HSE/2</name>
+          <description>USB_C1 output is HSE/2</description>
+          <value>3</value>
+        </enumeratedValue>                                
+      </enumeratedValues>
+    </field>
+    <!-- USB_CLOCK.USB_C2_SEL -->
+    <field>
+      <name>USB_C2_SEL</name>
+      <description>USB_C2 mux freq select</description>
+      <bitRange>[2:2]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__USB__C2_</headerEnumName>
+        <enumeratedValue>
+          <name>USB_C1</name>
+          <description>Freq from CPU_C1 mux direct</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>PLLUSBo</name>
+          <description>Freq from CPU_C1 mux through PLL_USB</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- USB_CLOCK.USB_C3_SEL -->
+    <field>
+      <name>USB_C3_SEL</name>
+      <description>USB_C3 Input Select</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__USB__C3_</headerEnumName>
+        <enumeratedValue>
+          <name>USB_C2</name>
+          <description>C3 Input is freq from C2</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>USB_C2_div2</name>
+          <description>C3 Input is freq from C2/2</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- USB_CLOCK.USB_EN -->
+    <field>
+      <name>USB_EN</name>
+      <description>USB Clock Enable</description>
+      <bitRange>[8:8]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__USB__CLOCK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- USB_CLOCK fields end-->
+  </fields>
+</register>

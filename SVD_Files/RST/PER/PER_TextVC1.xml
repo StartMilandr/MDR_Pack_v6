@@ -1,0 +1,72 @@
+#PER_RMASK
+<resetMask>0xFFFFFFFF</resetMask>
+
+#PER_Item00
+<field>
+  <name>SSP3_CLK_EN</name>
+  <description>SSP3 Clock Enable</description>
+  <bitRange>[0:0]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PER__SSP3_CLOCK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#PER_Item01
+<field derivedFrom="SSP3_CLK_EN">
+  <name>SSP4_CLK_EN</name>
+  <description>SSP4 Clock Enable</description>
+  <bitRange>[1:1]</bitRange>
+</field>
+
+#PER_Item09
+<field derivedFrom="USB_CLK_EN">
+  <name>SDIO_CLK_EN</name>
+  <description>SDIO Clock Enable</description>
+  <bitRange>[9:9]</bitRange>
+</field>
+
+#PER_Item10
+<field derivedFrom="USB_CLK_EN">
+  <name>I2C_CLK_EN</name>
+  <description>I2C Clock Enable</description>
+  <bitRange>[10:10]</bitRange>
+</field>
+
+#PER_Item19
+<field derivedFrom="USB_CLK_EN">
+  <name>CMP_CLK_EN</name>
+  <description>Comparator Clock Enable</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+
+#PER_Item26
+<field derivedFrom="USB_CLK_EN">
+  <name>UART3_CLK_EN</name>
+  <description>UART3 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+
+#PER_Item28
+<field derivedFrom="USB_CLK_EN">
+  <name>AUC_CLK_EN</name>
+  <description>AUC Clock Enable</description>
+  <bitRange>[28:28]</bitRange>
+</field>
+
+#PER_Item31
+<field derivedFrom="USB_CLK_EN">
+  <name>CRYPTO_CLK_EN</name>
+  <description>CRYPTO Clock Enable</description>
+  <bitRange>[31:31]</bitRange>
+</field>

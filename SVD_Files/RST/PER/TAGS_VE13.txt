@@ -1,0 +1,16 @@
+[FILES]
+f1=PER_TextVEx.xml
+
+[TAGS]
+#PER_RMASK=f1
+#PER_RMASK_R=#PER_RMASK_VE13
+#PER_Item00=f1
+#PER_Item01=f1
+#PER_Item09=f1
+#PER_Item10=f1
+#PER_Item19=f1
+#PER_Item26=f1
+#PER_Item28=f1
+#PER_Item31=f1
+
+

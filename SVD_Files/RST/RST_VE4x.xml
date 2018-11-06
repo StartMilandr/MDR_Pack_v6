@@ -1,0 +1,177 @@
+    #RST_REG_PER1_H_VE4
+    #RST_REG_PER1_RM_VE4
+    #RST_REG_PER1_fields1
+    #RST_REG_PER1_DMA
+    #RST_REG_PER1_fields_214
+    #RST_REG_PER1_fields_End    
+
+
+
+
+#RST_REG_PER1_H_VE4
+<!--#BE4,#BK214,#BK234-->
+<register>
+  <name>PER1_CLOCK</name>
+  <description>Peripherials Clock Control1</description>
+  <addressOffset>0x00000010</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000030</resetValue>
+
+#RST_REG_PER1_RM_VE4
+  <resetMask>0x0000003F</resetMask>
+
+#RST_REG_PER1_RM_VE214
+  <resetMask>0x00003FFF</resetMask>
+
+#RST_REG_PER1_RM_VE234
+  <resetMask>0x0000001F</resetMask-->
+
+#RST_REG_PER1_fields1
+  <fields>
+    <!-- PER1_CLOCK.PER1_C1_SEL -->
+    <field>
+      <name>PER1_C1_SEL</name>
+      <description>PER1_C1 mux freq select</description>
+      <bitRange>[1:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__PER1__C1_</headerEnumName>
+        <enumeratedValue>
+          <name>LSI</name>
+          <description>PER1_C1 output is LSI</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>LSI/2</name>
+          <description>PER1_C1 output is LSI/2</description>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>LSE</name>
+          <description>PER1_C1 output is LSE</description>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>LSE/2</name>
+          <description>PER1_C1 output is LSE/2</description>
+          <value>3</value>
+        </enumeratedValue>                                
+      </enumeratedValues>
+    </field>
+    <!-- PER1_CLOCK.PER1_C2_SEL -->
+    <field>
+      <name>PER1_C2_SEL</name>
+      <description>PER1_C2 mux freq select</description>
+      <bitRange>[3:2]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__PER1__C2_</headerEnumName>
+        <enumeratedValue>
+          <name>CPU_C1</name>
+          <description>PER1_C2 output is CPU_C1</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>PER1_C1</name>
+          <description>PER1_C2 output is PER1_C1</description>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>PLLCPUo</name>
+          <description>PER1_C2 output is PLLCPUo</description>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>HSI_C1</name>
+          <description>PER1_C2 output is HSI_C1</description>
+          <value>3</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- PER1_CLOCK.DEBUG_EN -->
+    <field>
+      <name>DEBUG_EN</name>
+      <description>Debug clock enable</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__PER1__DEBUG_CLK</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>Debug disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>Debug enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+
+#RST_REG_PER1_DMA
+    <!-- PER1_CLOCK.DMA_EN -->
+    <!--#BE4,#BK234-->
+    <field>
+      <name>DMA_EN</name>
+      <description>DMA clock enable</description>
+      <bitRange>[5:5]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__PER1__DMA_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>DMA clock disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>DMA clock enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+
+#RST_REG_PER1_fields_214
+    <!--#BK214-->
+    <field derivedFrom="PER1_C2_SEL">
+      <name>TIM2_C2_SEL</name>
+      <description>TIM2_C2 mux freq select</description>
+      <bitRange>[7:6]</bitRange>
+      <access>read-write</access>
+    </field>
+    <!--#BK214-->
+    <field derivedFrom="PER1_C2_SEL">
+      <name>UART1_C2_SEL</name>
+      <description>UART1_C2 mux freq select</description>
+      <bitRange>[9:8]</bitRange>
+      <access>read-write</access>
+    </field>
+    <!--#BK214-->
+    <field derivedFrom="PER1_C2_SEL">
+      <name>UART1_C2_SEL</name>
+      <description>UART2_C2 mux freq select</description>
+      <bitRange>[11:10]</bitRange>
+      <access>read-write</access>
+    </field>
+    <!--#BK214-->
+    <field derivedFrom="PER1_C2_SEL">
+      <name>SSP2_C2_SEL</name>
+      <description>SSP2_C2 mux freq select</description>
+      <bitRange>[13:12]</bitRange>
+      <access>read-write</access>
+    </field>
+
+#RST_REG_PER1_fields_End    
+    <!-- PER1_CLOCK fields end-->
+  </fields>
+</register>
+
+
+
+
+
+
+
+

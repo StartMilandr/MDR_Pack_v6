@@ -1,1 +1,0 @@
-SVDConv.exe MDR1986BE1_RST.svd -o out -b out/logBE1.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr

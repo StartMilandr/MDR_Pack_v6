@@ -1,0 +1,15 @@
+[FILES]
+f1=PER_TextVC1.xml
+
+[TAGS]
+#PER_RMASK=f1
+#PER_Item00=f1
+#PER_Item01=f1
+#PER_Item09=f1
+#PER_Item10=f1
+#PER_Item19=f1
+#PER_Item26=f1
+#PER_Item28=f1
+#PER_Item31=f1
+
+

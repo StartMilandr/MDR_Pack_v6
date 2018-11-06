@@ -1,0 +1,105 @@
+#RST_REG_ADC
+<register>
+  <name>ADC_CLOCK</name>
+  <description>ADC Clock Control</description>
+  <addressOffset>0x00000014</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <!-- #ADC_RMASK --> 
+  <resetMask>0x00002F33</resetMask>
+  <fields>
+    <!-- ADC_CLOCK.ADC_C1_SEL -->
+    <field>
+      <name>ADC_C1_SEL</name>
+      <description>ADC_C1 mux freq select</description>
+      <bitRange>[1:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__ADC__C1_</headerEnumName>
+        <enumeratedValue>
+          <name>CPU_C1</name>
+          <description>ADC_C1 output is CPU_C1</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>USB_C1</name>
+          <description>ADC_C1 output is USB_C1</description>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>CPU_C2</name>
+          <description>ADC_C1 output is CPU_C2</description>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>USB_C2</name>
+          <description>ADC_C1 output is USB_C2</description>
+          <value>3</value>
+        </enumeratedValue>                                
+      </enumeratedValues>
+    </field>
+    <!-- ADC_CLOCK.ADC_C2_SEL -->
+    <field>
+      <name>ADC_C2_SEL</name>
+      <description>ADC_C2 mux freq select</description>
+      <bitRange>[5:4]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__ADC__C2_</headerEnumName>
+        <enumeratedValue>
+          <name>LSE</name>
+          <description>ADC_C2 output is LSE</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>LSI</name>
+          <description>ADC_C2 output is LSI</description>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>ADC_C1</name>
+          <description>ADC_C2 output is ADC_C1</description>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>HSI_C1</name>
+          <description>ADC_C2 output is HSI_C1</description>
+          <value>3</value>
+        </enumeratedValue>                                
+      </enumeratedValues>
+    </field>
+    <!-- ADC_CLOCK.ADC_C3_SEL -->
+    <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
+      <name>ADC_C3_SEL</name>
+      <description>ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]</description>
+      <bitRange>[11:8]</bitRange>
+      <access>read-write</access>
+    </field>
+    <!-- ADC_CLOCK.ADC_CLK_EN -->
+    <field>
+      <name>ADC_CLK_EN</name>
+      <description>ADC Clock Enable</description>
+      <bitRange>[13:13]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__ADC__CLK_EN_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>ADC clock disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>ADC clock enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- #ADC_AUC_C1 -->
+    <!-- #ADC_AUC_C2 -->
+    <!-- #ADC_AUC_C3 -->
+    <!-- #ADC_AUC_EN -->
+    <!-- ADC_CLOCK fields end-->
+  </fields>
+</register>

@@ -1,0 +1,73 @@
+#ADC_RMASK_VE19
+<resetMask>0x00002F33</resetMask>
+
+#ADC_RMASK_VE3_VC1
+<resetMask>0x8F332F33</resetMask>
+
+#ADC_AUC_C1
+<field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C1_SEL">
+  <name>AUC_C1_SEL</name>
+  <description>AUC_C1 mux input select</description>
+  <bitRange>[17:16]</bitRange>
+  <access>read-write</access>
+</field>
+
+#ADC_AUC_C2
+<field>
+  <name>AUC_C2_SEL</name>
+  <description>AUC_C2 mux input select</description>
+  <bitRange>[21:20]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__ADC__AUC_C2_</headerEnumName>
+    <enumeratedValue>
+      <name>AUC_C1</name>
+      <description>AUC_C2 output is AUC_C1 select</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PLLCPUo</name>
+      <description>AUC_C2 output is PLLCPUo</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PLLUSBo</name>
+      <description>AUC_C2 output is PLLUSBo</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>0</name>
+      <description>No signal from AUC_C2</description>
+      <value>3</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#ADC_AUC_C3
+<field derivedFrom="ADC_C3_SEL">
+  <name>AUC_C3_SEL</name>
+  <description>AUC_C3 mux input select</description>
+  <bitRange>[27:24]</bitRange>
+  <access>read-write</access>
+</field>
+
+#ADC_AUC_EN
+<field>
+  <name>AUC_CLK_EN</name>
+  <description>AudioCodec Clock Enable</description>
+  <bitRange>[31:31]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__ADC__AUC_EN_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>AUC clock disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>AUC clock enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>

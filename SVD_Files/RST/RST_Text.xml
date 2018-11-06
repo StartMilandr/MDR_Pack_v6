@@ -1,0 +1,559 @@
+#RST_SIZE_VE1
+<size>0x38</size>
+
+#RST_SIZE_VE3
+<size>0x40</size>
+
+#RST_SIZE_VC1
+<size>0x3C</size>
+
+#RST_SIZE_VE49
+<size>0x30</size>
+
+    
+#RST_STAT_RMASK_VE13_VC1 
+<resetMask>0x0000000F</resetMask>
+
+#RST_STAT_RMASK_VE9
+<resetMask>0x00000007</resetMask>
+
+#RST_STAT_RMASK_VE4
+<resetMask>0x00000006</resetMask>
+
+#RST_HSE2_RDY
+<field>
+  <name>HSE2_RDY</name>
+  <description>HSE2 generator ready</description>
+  <bitRange>[3:3]</bitRange>
+  <access>read-only</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__STATUS__HSE2_RDY_</headerEnumName>
+    <enumeratedValue>
+      <name>NotReady</name>
+      <description>HSE2 not ready</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Ready</name>
+      <description>HSE2 ready</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+//------------  PLL Control ----------
+
+#RST_PLL_RMASK_VE139
+<resetMask>0x00000FFF</resetMask>
+
+#RST_PLL_RMASK_VE4
+<resetMask>0x0000020C</resetMask>
+
+#RST_PLL_RMASK_VC1
+<resetMask>0x00F30FFF</resetMask>
+
+
+
+
+
+//--------- HS_CONTROL-------------
+
+#RST_HS_RMASK_VE13
+<resetMask>0x0000000F</resetMask>
+
+#RST_HS_RMASK_VEx
+<resetMask>0x00000003</resetMask>
+
+#RST_HS_HSE2
+<field>
+  <name>HSE2_ON</name>
+  <description>HSE2 Enable</description>
+  <bitRange>[2:2]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__HS__HSE2_EN_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>HSE2 Off</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>HSE2 On</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>HSE2_BYP</name>
+  <description>HSE2 Bypass Mode</description>
+  <bitRange>[3:3]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__HS__HSE2_BYP_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>HSE2 forms Clock from external oscillator</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>HSE2 passes Clock from external generator</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+//--------- CAN_CLOCK-------------
+
+#RST_REG_CAN
+<register>
+  <name>CAN_CLOCK</name>
+  <description>CAN's Clock Control</description>
+  <addressOffset>0x00000020</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0300FFFF</resetMask>
+  <fields>
+    <!-- CAN_CLOCK.CAN1_BRG -->
+    <field>
+      <name>CAN1_BRG</name>
+      <description>HCLK divider to get CAN1_CLOCK, [/1, /2, /4 .. /128]</description>
+      <bitRange>[2:0]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__CAN1__BRG_</headerEnumName>
+        <enumeratedValue><name>div1</name><description>div by 1</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>div2</name><description>div by 2</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>div4</name><description>div by 4</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>div8</name><description>div by 8</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>div16</name><description>div by 16</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>div32</name><description>div by 32</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>div64</name><description>div by 64</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>div128</name><description>div by 128</description><value>7</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- CAN_CLOCK.CAN2_BRG -->
+    <field derivedFrom="MDR_RST_CLOCK.CAN_CLOCK.CAN1_BRG">
+      <name>CAN2_BRG</name>
+      <description>HCLK freq divider to get CAN2_CLOCK, [/1, /2, /4 .. /128]</description>
+      <bitRange>[10:8]</bitRange>
+      <access>read-write</access>
+    </field>
+    <!-- CAN_CLOCK.CAN1_CLK_EN -->
+    <field>
+      <name>CAN1_CLK_EN</name>
+      <description>CAN1_CLOCK enable</description>
+      <bitRange>[24:24]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__CAN__CAN1_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>CAN1 Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>CAN1 Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- CAN_CLOCK.CAN2_CLK_EN -->
+    <field>
+      <name>CAN2_CLK_EN</name>
+      <description>CAN2_CLOCK enable</description>
+      <bitRange>[25:25]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__CAN__CAN2_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>CAN2 Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>CAN2 Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- CAN_CLOCK fields end-->
+  </fields>
+</register>
+
+//--------- TIM_CLOCK-------------
+
+#RST_TIM_RMASK_VEx
+<resetMask>0x07070707</resetMask>
+
+#RST_TIM_RMASK_VE4
+<resetMask>0x03000707</resetMask>
+
+
+#RST_TIM1_DESCR_VEx
+<description>HCLK freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_TIM1_DESCR_VE4
+<description>PER1_C2 freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_TIM1_DESCR_VE214
+<description>TIM1_C2 freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+
+#RST_TIM2_DESCR_VEx
+<description>HCLK freq divider to get TIM2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_TIM2_DESCR_VE4
+<description>PER1_C2 freq divider to get TIM2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_TIM2_DESCR_VE214
+<description>TIM2_C2 freq divider to get TIM2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+
+#RST_TIM3_BRG
+<field derivedFrom="TIM1_BRG">
+  <name>TIM3_BRG</name>
+  <description>HCLK freq divider to get TIM3_CLOCK, [/1, /2, /4 .. /128]</description>
+  <bitRange>[18:16]</bitRange>
+  <access>read-write</access>
+</field>
+
+#RST_TIM3_EN
+<field>
+  <name>TIM3_CLK_EN</name>
+  <description>TIM3_CLOCK enable</description>
+  <bitRange>[26:26]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__TIM__TIM3_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>Timer3 Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>Timer3 Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+//--------- UART_CLOCK-------------
+
+#RST_UART_RMASK_VE13VC1
+<resetMask>0x07070707</resetMask>
+
+#RST_UART_RMASK_VE49
+<resetMask>0x03000707</resetMask>
+
+#RST_UART1_DESCR_VEx
+<description>HCLK freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_UART1_DESCR_VE4
+<description>PER1_C2 freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_UART1_DESCR_VE214
+<description>UART1_C2 freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+
+#RST_UART2_DESCR_VEx
+<description>HCLK freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_UART2_DESCR_VE4
+<description>PER1_C2 freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_UART2_DESCR_VE214
+<description>UART1_C2 freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_TIM4_BRG
+<field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+  <name>TIM4_BRG</name>
+  <description>HCLK freq divider to get TIM4_CLOCK, [/1, /2, /4 .. /128]</description>
+  <bitRange>[18:16]</bitRange>
+  <access>read-write</access>
+</field>
+
+#RST_UART3_BRG
+<field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+  <name>UART3_BRG</name>
+  <description>HCLK freq divider to get UART3_CLOCK, [/1, /2, /4 .. /128]</description>
+  <bitRange>[18:16]</bitRange>
+  <access>read-write</access>
+</field>
+
+#RST_TIM4_EN
+<field>
+  <name>TIM4_CLK_EN</name>
+  <description>TIM4_CLOCK enable</description>
+  <bitRange>[26:26]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__UART__TIM4_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>Timer4 Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>Timer4 Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_UART3_EN
+<field>
+  <name>UART3_CLK_EN</name>
+  <description>UART3_CLOCK enable</description>
+  <bitRange>[26:26]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__UART__UART3_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>UART3 Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>UART3 Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+//--------- SSP_CLOCK-------------
+
+#RST_SSP_RMASK_VEx
+<resetMask>0x07070707</resetMask>
+
+#RST_SSP_RMASK_VE4      
+<resetMask>0x01000007</resetMask>
+
+
+#RST_SSP1_DESCR_VEx
+<description>HCLK freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_SSP1_DESCR_VE4
+<description>PER1_C2 freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+#RST_SSP1_DESCR_VE214
+<description>SSP1_C2 freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]</description>
+
+
+#RST_SSP2_BRG
+<field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">            
+  <name>SSP2_BRG</name>
+  <description>HCLK freq divider to get SSP2_CLOCK, [/1, /2, /4 .. /128]</description>
+  <bitRange>[10:8]</bitRange>
+  <access>read-write</access>
+</field>
+
+#RST_SSP3_BRG
+<field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+  <name>SSP3_BRG</name>
+  <description>HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128]</description>
+  <bitRange>[18:16]</bitRange>
+  <access>read-write</access>
+</field>
+
+
+#RST_SSP2_EN
+<field>
+  <name>SSP2_CLK_EN</name>
+  <description>SSP2_CLOCK Enable</description>
+  <bitRange>[25:25]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__SSP__SSP2_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>SSP2 Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>SSP2 Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#RST_SSP3_EN
+<field>
+  <name>SSP3_CLK_EN</name>
+  <description>SSP3_CLOCK Enable</description>
+  <bitRange>[26:26]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__SSP__SSP3_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>SSP3 Clock Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>SSP3 Clock Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+//---------- VE3 UART_SSP -------------
+
+#RST_REG_UARTSSP
+<register>
+  <name>UART_SSP_CLOCK</name>
+  <description>UART and SSP Clock Control</description>
+  <addressOffset>0x0000003C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x07070707</resetMask>
+  <fields>
+    <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+      <name>UART3_BRG</name>
+      <description>HCLK freq divider to get UART3_CLOCK, [/1, /2, /4 .. /128]</description>
+      <bitRange>[2:0]</bitRange>
+      <access>read-write</access>           
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+      <name>UART4_BRG</name>
+      <description>HCLK freq divider to get UART4_CLOCK, [/1, /2, /4 .. /128]</description>
+      <bitRange>[10:8]</bitRange>
+      <access>read-write</access>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+      <name>SSP3_BRG</name>
+      <description>HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128]</description>
+      <bitRange>[18:16]</bitRange>
+      <access>read-write</access>
+    </field>
+    <field>
+      <name>UART3_CLK_EN</name>
+      <description>UART3_CLOCK enable</description>
+      <bitRange>[24:24]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__UARTSSP__UART3_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>UART3 Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>UART3 Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>UART4_CLK_EN</name>
+      <description>UART4_CLOCK enable</description>
+      <bitRange>[25:25]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__UARTSSP__UART4_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>UART4 Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>UART4 Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>SSP3_CLK_EN</name>
+      <description>SSP3_CLOCK enable</description>
+      <bitRange>[26:26]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <headerEnumName>MDR_RST__UARTSSP__SSP3_CLK_</headerEnumName>
+        <enumeratedValue>
+          <name>Off</name>
+          <description>SSP3 Clock Disabled</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>On</name>
+          <description>SSP3 Clock Enabled</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <!-- UART_SSP_CLOCK fields end-->
+  </fields>
+</register>
+
+//--------  REG PER2
+
+#RST_REG_PER2
+<register>
+  <name>PER2_CLOCK</name>
+  <description>Peripherials Clock Control 2</description>
+  <addressOffset>0x00000038</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x000001FF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>AUC_CLK_EN</name>
+      <description>AudioCodec Clock Enable</description>
+      <bitRange>[0:0]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>LED_CLK_EN</name>
+      <description>LED Clock Enable</description>
+      <bitRange>[1:1]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>KEY_CLK_EN</name>
+      <description>Keyboard Clock Enable</description>
+      <bitRange>[2:2]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>PORTG_CLK_EN</name>
+      <description>PORT_G Clock Enable</description>
+      <bitRange>[3:3]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>UART3_CLK_EN</name>
+      <description>UART3 Clock Enable</description>
+      <bitRange>[4:4]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>UART4_CLK_EN</name>
+      <description>UART4 Clock Enable</description>
+      <bitRange>[5:5]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>SSP4_CLK_EN</name>
+      <description>SSP4 Clock Enable</description>
+      <bitRange>[6:6]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>PORTH_CLK_EN</name>
+      <description>PORT_H Clock Enable</description>
+      <bitRange>[7:7]</bitRange>
+    </field>
+    <field derivedFrom="MDR_RST_CLOCK.PER_CLOCK.USB_CLK_EN">
+      <name>PORTI_CLK_EN</name>
+      <description>PORT_I Clock Enable</description>
+      <bitRange>[8:8]</bitRange>
+    </field>
+    <!-- PER2_CLOCK fields end-->
+  </fields>
+</register>

@@ -1,0 +1,50 @@
+#PER2_RMASK_VE4
+<resetMask>0x000FFFFF</resetMask>
+
+#PER2_RMASK_VE214
+<resetMask>0x0007FDFF</resetMask>
+
+#PER2_RMASK_VE234
+<resetMask>0x000FF3FF</resetMask>
+
+#PER2_Item05
+<field derivedFrom="SPI1_CLK_EN">
+  <name>DMA_CLK_EN</name>
+  <description>DMA Clock Enable</description>
+  <bitRange>[5:5]</bitRange>
+</field>
+
+#PER2_Item06_VE4
+<field derivedFrom="SPI1_CLK_EN">
+  <name>CMP_CLK_EN</name>
+  <description>CMP Clock Enable</description>
+  <bitRange>[6:6]</bitRange>
+</field>
+
+#PER2_Item06_VE214
+<field derivedFrom="SPI1_CLK_EN">
+  <name>I2C_CLK_EN</name>
+  <description>I2C Clock Enable</description>
+  <bitRange>[6:6]</bitRange>
+</field>
+
+#PER2_Item07_VE4
+<field derivedFrom="SPI1_CLK_EN">
+  <name>DAC_CLK_EN</name>
+  <description>DAC Clock Enable</description>
+  <bitRange>[7:7]</bitRange>
+</field>
+
+#PER2_Item07_VE214
+<field derivedFrom="SPI1_CLK_EN">
+  <name>LCD_CLK_EN</name>
+  <description>LCD Clock Enable</description>
+  <bitRange>[7:7]</bitRange>
+</field>
+
+#PER2_Item19
+<field derivedFrom="SPI1_CLK_EN">
+  <name>CRC_CLK_EN</name>
+  <description>CRC Clock Enable</description>
+  <bitRange>[19:19]</bitRange>
+</field>

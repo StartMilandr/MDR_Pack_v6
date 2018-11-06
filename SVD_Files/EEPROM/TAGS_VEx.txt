@@ -1,0 +1,8 @@
+[FILES]
+f1=text_EEPROM.xml
+
+[TAGS]
+#DELAY=f1
+#DELAY_R=#DELAY_VEx
+
+

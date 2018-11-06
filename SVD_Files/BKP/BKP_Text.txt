@@ -1,0 +1,279 @@
+#BKP__ADDR_VE19
+<baseAddress>0x400D8000</baseAddress>
+
+#BKP__ADDR_VE4
+<baseAddress>0x40060000</baseAddress>
+
+#BKP__RESMSK_VE1
+<resetMask>0x0000BF7F</resetMask>
+
+#BKP__RESMSK_VE4
+<resetMask>0x0000FFFF</resetMask>
+
+#BKP__RESMSK_VE9
+<resetMask>0x00007FFF</resetMask>
+
+
+#BKP_JTAGA
+
+#BKP__JTAGA_ON
+<field>
+  <name>Jtag_A</name>
+  <description>Enable Jtag_A interface</description>
+  <bitRange>[6:6]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__JtagA_</headerEnumName>
+    <enumeratedValue>
+      <name>Disable</name>
+      <description>Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Enable</name>
+      <description>Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_JTAGB
+
+#BKP__JTAGB_ON
+<field>
+  <name>Jtag_B</name>
+  <description>Enable Jtag_B interface</description>
+  <bitRange>[7:7]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__JtagB_</headerEnumName>
+    <enumeratedValue>
+      <name>Disable</name>
+      <description>Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Enable</name>
+      <description>Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_LimI
+
+#BKP__LimI_ON
+<field>
+  <name>I_LimEn</name>
+  <description>Enable I 150mA protection</description>
+  <bitRange>[15:15]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__Ilim_</headerEnumName>
+    <enumeratedValue>
+      <name>Disable</name>
+      <description>Disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Enable</name>
+      <description>Enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_ALONE
+
+#BKP__ALONE_ON
+<field>
+  <name>StandAlone</name>
+  <description>Switch to StandAlone mode</description>
+  <bitRange>[6:6]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__StandAlone_</headerEnumName>
+    <enumeratedValue>
+      <name>Disable</name>
+      <description>Microcontroller mode</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Enable</name>
+      <description>Switch to interface IC</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_COVDET
+
+#BKP__COVDET_ON
+<field>
+  <name>COVDET</name>
+  <description>Breaking access flag</description>
+  <bitRange>[14:14]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__COVDET_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>No dreaking access detected</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>Breaking access detected</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_MODE
+
+#BKP__MODE_VE9
+<field>
+  <name>MODE</name>
+  <description>Bootloading Mode</description>
+  <bitRange>[14:12]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__MODE_</headerEnumName>
+    <enumeratedValue>
+      <name>IntFlash_JtagB</name>
+      <description>Execute from internal flash with Jtag_B</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>IntFlash_JtagA</name>
+      <description>Execute from internal flash with Jtag_A</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>ExtMem_JtagB</name>
+      <description>Execute from external memory with Jtag_B</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>ExtMem_JtagOff</name>
+      <description>Execute from external memory without any Jtag</description>
+      <value>3</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Uart_PD01</name>
+      <description>Uart bootloader, pins PD[1:0]</description>
+      <value>5</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Uart_PF01</name>
+      <description>Uart bootloader, pins PF[1:0]</description>
+      <value>6</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#BKP__MODE_VC1
+<field>
+  <name>MODE</name>
+  <description>Bootloading Mode</description>
+  <bitRange>[14:12]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__MODE_</headerEnumName>
+    <enumeratedValue>
+      <name>IntFlash_JtagB</name>
+      <description>Execute from internal flash with Jtag_B</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>IntFlash_JtagA</name>
+      <description>Execute from internal flash with Jtag_A</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>ExtMem_JtagB</name>
+      <description>Execute from external memory with Jtag_B</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>ExtMem_JtagOff</name>
+      <description>Execute from external memory without any Jtag</description>
+      <value>3</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Uart_PF01</name>
+      <description>Uart bootloader, pins PF[1:0]</description>
+      <value>6</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+
+#BKP_TRIM_DU
+
+#BKP__TRIM_DU_ON
+<field>
+  <name>Trim_DUcc</name>
+  <description>Select DUcc voltage</description>
+  <bitRange>[13:12]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__DUcc_</headerEnumName>
+    <enumeratedValue>
+      <name>1.8</name>
+      <description>DUcc = 1.8 V</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>1.6</name>
+      <description>DUcc = 1.6 V</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>1.4</name>
+      <description>DUcc = 1.4 V</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>1.2</name>
+      <description>DUcc = 1.2 V</description>
+      <value>3</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#BKP__TRIM_DU_VE3
+<field>
+  <name>Trim_DUcc</name>
+  <description>Select DUcc voltage</description>
+  <bitRange>[13:12]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_BKP_0E__DUcc_</headerEnumName>
+    <enumeratedValue>
+      <name>1.8</name>
+      <description>DUcc = 1.8 V</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>1.6</name>
+      <description>DUcc = 1.6 V</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>1.4</name>
+      <description>DUcc = 1.4 V</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Forbiden</name>
+      <description>Forbiden value</description>
+      <value>3</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>

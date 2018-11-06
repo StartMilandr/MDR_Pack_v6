@@ -1,0 +1,54 @@
+#PER1_RMASK_VE4x
+<resetValue>0x00000030</resetValue>
+<resetMask>0x0000003F</resetMask>
+
+#PER1_RMASK_VE214
+<resetValue>0x00000010</resetValue>
+<resetMask>0x00003FDF</resetMask>
+
+#PER1_DMA
+<field>
+  <name>DMA_EN</name>
+  <description>DMA clock enable</description>
+  <bitRange>[5:5]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PER1__DMA_CLK_</headerEnumName>
+    <enumeratedValue>
+      <name>Off</name>
+      <description>DMA clock disabled</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>On</name>
+      <description>DMA clock enabled</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#PER1_BE214
+<field derivedFrom="PER1_C2_SEL">
+  <name>TIM2_C2_SEL</name>
+  <description>TIM2_C2 mux freq select</description>
+  <bitRange>[7:6]</bitRange>
+  <access>read-write</access>
+</field>
+<field derivedFrom="PER1_C2_SEL">
+  <name>UART1_C2_SEL</name>
+  <description>UART1_C2 mux freq select</description>
+  <bitRange>[9:8]</bitRange>
+  <access>read-write</access>
+</field>
+<field derivedFrom="PER1_C2_SEL">
+  <name>UART2_C2_SEL</name>
+  <description>UART2_C2 mux freq select</description>
+  <bitRange>[11:10]</bitRange>
+  <access>read-write</access>
+</field>
+<field derivedFrom="PER1_C2_SEL">
+  <name>SSP2_C2_SEL</name>
+  <description>SSP2_C2 mux freq select</description>
+  <bitRange>[13:12]</bitRange>
+  <access>read-write</access>
+</field>

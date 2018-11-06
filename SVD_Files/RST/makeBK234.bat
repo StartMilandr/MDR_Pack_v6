@@ -1,1 +1,0 @@
-SVDConv.exe MDR1986VK234_RST.svd -o out -b out/logVK234.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr

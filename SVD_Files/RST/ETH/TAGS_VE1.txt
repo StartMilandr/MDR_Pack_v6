@@ -1,0 +1,8 @@
+[FILES]
+f1=ETH_Text.xml
+
+[TAGS]
+#ETH_RMASK=f1
+#ETH_RMASK_R=#ETH_RMASK_VE1
+#ETH2_CLK_VE3=
+

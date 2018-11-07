@@ -9,3 +9,6 @@ call "../GPIO/Run.bat"
 
 cd C:\CODE\PACK\__SVD\Exe
 call "../EEPROM/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../ADC/Run.bat

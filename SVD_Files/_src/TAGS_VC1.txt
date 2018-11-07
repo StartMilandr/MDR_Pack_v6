@@ -3,6 +3,7 @@ f1=../BKP/BKP_VC1.txt
 f2=../GPIO/GPIO_VE9x.txt
 f3=../RST/RST_VC1.txt
 f4=../EEPROM/EEPROM_VEx.txt
+f5=../ADC/ADC_VE9x.txt
 
 [TAGS]
 #BKP=f1
@@ -12,6 +13,7 @@ f4=../EEPROM/EEPROM_VEx.txt
 #RST=f3
 #RST_R=#RST_VC1
 #EEPROM=f4
+#ADC=f5
 
 [TAGS_New]
 #USB=
@@ -28,8 +30,6 @@ f4=../EEPROM/EEPROM_VEx.txt
 #WWDT_R=
 #IWDT=
 #IWDT_R=
-#ADC=
-#ADC_R=
 #DAC=
 #DAC_R=
 #COMP=

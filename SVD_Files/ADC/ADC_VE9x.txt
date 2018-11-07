@@ -1,0 +1,633 @@
+#ADC
+<!-- ADC -->
+<peripheral>
+  <name>MDR_ADC</name>
+  <version>2.0</version>
+  <description>Successive Approximation ADC</description>
+  <groupName>ADC</groupName>
+  <!-- #ADC_ADDR -->
+  <baseAddress>0x40088000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <!-- #ADC_SIZE -->
+    <size>0x30</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- ADC1_Cfg -->
+    <register>
+      <name>ADC1_Cfg</name>
+      <description>ADC1 config register</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #ADC1_RMASK -->
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>ADON</name>
+          <description>Enable ADC</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>Disabled</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>On</name>
+              <description>Enabled</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>GO</name>
+          <description>Start single ADC mesurement</description>
+          <bitRange>[1:1]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Inactive</name>
+              <description>Autoclear to zero after start</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Start</name>
+              <description>Start measurement</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CLKS</name>
+          <description>Select Clock</description>
+          <bitRange>[2:2]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>CPU_Clock</name>
+              <description>CPU_Clock used</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>ADC_Clock</name>
+              <description>ADC_Clock used</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SAMPLE</name>
+          <description>Single or Continuous measurement</description>
+          <bitRange>[3:3]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Single</name>
+              <description>Single measurement by GO</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Continuouse</name>
+              <description>Continuous measurement, until stop by ADON</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CHS</name>
+          <description>Active channel select</description>
+          <bitRange>[8:4]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <!-- #ADC1_CHS -->
+            <enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD0, Ref+</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD1, Ref-</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Channel_2</name><description>Signal on PD2</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Channel_3</name><description>Signal on PD3</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Channel_4</name><description>Signal on PD4</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>Channel_5</name><description>Signal on PD5</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>Channel_6</name><description>Signal on PD6</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>Channel_7</name><description>Signal on PD7</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>Channel_8</name><description>Signal on PD8</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>Channel_9</name><description>Signal on PD9</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>Channel_10</name><description>Signal on PD10</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>Channel_11</name><description>Signal on PD11</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>Channel_12</name><description>Signal on PD12</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>Channel_13</name><description>Signal on PD13</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>Channel_14</name><description>Signal on PD14</description><value>14</value></enumeratedValue>
+            <enumeratedValue><name>Channel_15</name><description>Signal on PD15</description><value>15</value></enumeratedValue>
+            <enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+            <enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CHCH</name>
+          <description>Channel switching enable</description>
+          <bitRange>[9:9]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Measure only CHS channel</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Enable</name>
+              <description>Measure channels selected in reg CHSEL</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RGNC</name>
+          <description>Signal limiters enable</description>
+          <bitRange>[10:10]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Flag STATUSx.AWOIFEN inactive</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Enable</name>
+              <description>Flag STATUSx.AWOIFEN enable</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>M_REF</name>
+          <description>Signal amplitude reference</description>
+          <bitRange>[11:11]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Internal</name>
+              <description>Signal in [GND..AUcc]</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>External</name>
+              <description>Signal in [ADC_Ref-..ADC_Ref+]</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>DIV_CLK</name>
+          <description>Divider for CPU_Clock usage</description>
+          <bitRange>[15:12]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>div_1</name><description>CLK = CPU_CLK</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>div_2</name><description>CLK = CPU_CLK/2</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>div_4</name><description>CLK = CPU_CLK/4</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>div_8</name><description>CLK = CPU_CLK/8</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>div_16</name><description>CLK = CPU_CLK/16</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>div_32</name><description>CLK = CPU_CLK/32</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>div_64</name><description>CLK = CPU_CLK/64</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>div_128</name><description>CLK = CPU_CLK/128</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>div_256</name><description>CLK = CPU_CLK/256</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>div_512</name><description>CLK = CPU_CLK/512</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>div_1024</name><description>CLK = CPU_CLK/1024</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>div_2048</name><description>CLK = CPU_CLK/2048</description><value>11</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <!-- #ADC_SYNC_CONV -->        
+        <field>
+          <name>SYNC_CONV</name>
+          <description>ADC1 and ADC2 sync measurement</description>
+          <bitRange>[16:16]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>NoSync</name>
+              <description>No sync ADC1 and ADC2</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Sync</name>
+              <description>ADC1 and ADC2 sync enable</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>TS_EN</name>
+          <description>Thermosensor enable</description>
+          <bitRange>[17:17]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Thermosensor power off</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Enable</name>
+              <description>Thermosensor power on</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>TS_BUFF_EN</name>
+          <description>Thermosensor buffer enable</description>
+          <bitRange>[18:18]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Thermosensor buffer disabled</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Enable</name>
+              <description>Thermosensor buffer enabled</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SEL_TS</name>
+          <description>Output temperature from Thermosensor</description>
+          <bitRange>[19:19]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Channel 31 signal is undefined</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Selected</name>
+              <description>Channel 31 signal is temperature</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SEL_VREF</name>
+          <description>Output Vref=1.23 from Thermosensor</description>
+          <bitRange>[20:20]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>Channel 30 signal is undefined</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Selected</name>
+              <description>Channel 30 signal is VRef</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <!-- #ADC_TR -->
+        <field>
+          <name>TR</name>
+          <description>Trim Vref from Thermosensor</description>
+          <bitRange>[24:21]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Vref_1v23</name><description>1.23V typically</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v213</name><description>1.213V typically</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v211</name><description>1.211V typically</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v208</name><description>1.208V typically</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v206</name><description>1.206V typically</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v203</name><description>1.203V typically</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v200</name><description>1.200V typically</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v197</name><description>1.197V typically</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>Vref_1v193</name><description>1.193V typically</description><value>8</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Delay_GO</name>
+          <description>Delay after channels switching in CPU_CLK</description>
+          <bitRange>[27:25]</bitRange>
+          <access>read-write</access>
+          <!-- #ADC_DELAY_GO -->
+          <enumeratedValues>
+            <enumeratedValue><name>1</name><description>1 period of CPU_CLK</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>2</name><description>2 periods of CPU_CLK</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>3</name><description>3 periods of CPU_CLK</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>4</name><description>4 periods of CPU_CLK</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>5</name><description>5 periods of CPU_CLK</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>6</name><description>6 periods of CPU_CLK</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>7</name><description>7 periods of CPU_CLK</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>8</name><description>8 periods of CPU_CLK</description><value>7</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <!-- #ADC_DELAY_ADC -->
+        <field>
+          <name>Delay_ADC</name>
+          <description>Delay between ADC1 and ADC2 start</description>
+          <bitRange>[31:28]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>1</name><description>1 period of CPU_CLK</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>2</name><description>2 periods of CPU_CLK</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>3</name><description>3 periods of CPU_CLK</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>4</name><description>4 periods of CPU_CLK</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>5</name><description>5 periods of CPU_CLK</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>6</name><description>6 periods of CPU_CLK</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>7</name><description>7 periods of CPU_CLK</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>8</name><description>8 periods of CPU_CLK</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>9</name><description>9 period of CPU_CLK</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>10</name><description>10 periods of CPU_CLK</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>11</name><description>11 periods of CPU_CLK</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>12</name><description>12 periods of CPU_CLK</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>13</name><description>13 periods of CPU_CLK</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>14</name><description>14 periods of CPU_CLK</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>15</name><description>15 periods of CPU_CLK</description><value>14</value></enumeratedValue>
+            <enumeratedValue><name>16</name><description>16 periods of CPU_CLK</description><value>15</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
+        <!--Fields end-->
+      </fields>
+    </register>
+    <!-- ADC2_Cfg -->
+    <register>
+      <name>ADC2_Cfg</name>
+      <description>ADC2 config register</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #ADC2_RMASK -->
+      <resetMask>0x0E06FFFF</resetMask>
+      <fields>
+        <!-- #ADC2_CFG_VE9x_start -->
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.ADON">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.GO">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.CLKS">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.SAMPLE">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.CHS">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.CHCH">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.RGNC">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.M_REF">
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.DIV_CLK">
+        </field>
+        <field>
+          <name>ADC1_OP</name>
+          <description>ADC1 Setpoint Vref source</description>
+          <bitRange>[17:17]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Own</name>
+              <description>Own setpoint Vref</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Thermosensor</name>
+              <description>Setpoint Vref from Thermosensor</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <!-- #ADC2_CFG_VE9x_end -->
+        <field derivedFrom="ADC1_OP">
+          <name>ADC2_OP</name>
+          <description>ADC2 Setpoint Vref source</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="MDR_ADC.ADC1_Cfg.Delay_GO">
+        </field>
+      </fields>
+    </register>
+    <!-- ADC1_H_Level -->
+    <register>
+      <name>ADC1_H_Level</name>
+      <description>ADC High limit</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000FFF</resetMask>
+      <fields>
+        <field>
+          <name>Level</name>
+          <description>Signal limit level</description>
+          <bitRange>[11:0]</bitRange>
+          <access>read-write</access>
+        </field>        
+      </fields>
+    </register>      
+    <!-- #ADC2_H_LIM -->
+    <register derivedFrom="MDR_ADC.ADC1_H_Level">
+      <name>ADC2_H_Level</name>
+      <addressOffset>0x0000000C</addressOffset>
+    </register>
+    <!-- ADC1_L_Level -->
+    <register derivedFrom="ADC1_H_Level">
+      <name>ADC1_L_Level</name>
+      <description>ADC Low limit</description>
+      <addressOffset>0x00000010</addressOffset>
+    </register>
+    <!-- #ADC2_L_LIM -->
+    <register derivedFrom="MDR_ADC.ADC1_H_Level">
+      <name>ADC2_L_Level</name>
+      <addressOffset>0x00000014</addressOffset>
+    </register>
+    <!-- ADC1_Result -->
+    <register>
+      <name>ADC1_RESULT</name>
+      <description>ADC result register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000F0FFF</resetMask>
+      <fields>
+        <field>
+          <name>Value</name>
+          <description>Channel signal value</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>Channel</name>
+          <description>Channel index</description>
+          <bitRange>[20:16]</bitRange>
+          <enumeratedValues>
+            <!-- #ADC1_CHS -->
+            <enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD0, Ref+</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD1, Ref-</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Channel_2</name><description>Signal on PD2</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Channel_3</name><description>Signal on PD3</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Channel_4</name><description>Signal on PD4</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>Channel_5</name><description>Signal on PD5</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>Channel_6</name><description>Signal on PD6</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>Channel_7</name><description>Signal on PD7</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>Channel_8</name><description>Signal on PD8</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>Channel_9</name><description>Signal on PD9</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>Channel_10</name><description>Signal on PD10</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>Channel_11</name><description>Signal on PD11</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>Channel_12</name><description>Signal on PD12</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>Channel_13</name><description>Signal on PD13</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>Channel_14</name><description>Signal on PD14</description><value>14</value></enumeratedValue>
+            <enumeratedValue><name>Channel_15</name><description>Signal on PD15</description><value>15</value></enumeratedValue>
+            <enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+            <enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- #ADC2_Result -->
+    <register derivedFrom="MDR_ADC.ADC1_RESULT">
+      <name>ADC2_RESULT</name>
+      <addressOffset>0x0000001C</addressOffset>
+    </register>
+    <!-- ADC1_Status -->
+    <register>
+      <name>ADC1_STATUS</name>
+      <description>ADC status register</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000001F</resetMask>
+      <fields>
+        <field>
+          <name>Overwrite</name>
+          <description>Result overwritten flag</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Normal</name>
+              <description>No overwritten occure</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Overwrite</name>
+              <description>Result overwritten</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>AWOIFEN</name>
+          <description>Signal is out of limiters range</description>
+          <bitRange>[1:1]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>InRange</name>
+              <description>Signal in range</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>OutOfRange</name>
+              <description>Signal is out of range</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>EOCIF</name>
+          <description>Result ready to read</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>NoResult</name>
+              <description>Result is not ready</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Ready</name>
+              <description>Signal is ready to read</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>AWOIF_IE</name>
+          <description>Enable IRQ by AWOIFEN flag</description>
+          <bitRange>[3:3]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Disable</name>
+              <description>IRQ Disable</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Enable</name>
+              <description>IRQ Enable</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="AWOIF_IE">
+          <name>EOCIF_EN</name>
+          <description>Enable IRQ by EOCIF flag</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+      </fields>
+    </register>    
+    <!-- #ADC2_Status -->
+    <register derivedFrom="MDR_ADC.ADC1_STATUS">
+      <name>ADC2_STATUS</name>
+      <addressOffset>0x00000024</addressOffset>
+    </register>
+    <!-- ADC1_CHSEL -->
+    <register>
+      <name>ADC1_CHSEL</name>
+      <description>ADC channels select register</description>
+      <addressOffset>0x00000028</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #ADC1_CHSEL_RMASK -->
+      <resetMask>0xC000FFFF</resetMask>
+      <fields>
+        <!-- #ADC1_CHSEL_ITEMS -->
+        <field><name>Channel_0</name><description>Signal on PD7, Ref+</description><bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Not used in channels switching</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Selected</name><description>Using in channels switching</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="Channel_0"><name>Channel_1</name><description>Signal on PD8, Ref-</description><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_2</name><description>Signal on PD9</description><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_3</name><description>Signal on PD10</description><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_4</name><description>Signal on PD11</description><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_5</name><description>Signal on PD12</description><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_6</name><description>Signal on PD13</description><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_7</name><description>Signal on PD14</description><bitRange>[7:7]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_8</name><description>Signal on PD9</description><bitRange>[8:8]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_9</name><description>Signal on PD10</description><bitRange>[9:9]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_10</name><description>Signal on PD11</description><bitRange>[10:10]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_11</name><description>Signal on PD12</description><bitRange>[11:11]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_12</name><description>Signal on PD13</description><bitRange>[12:12]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_13</name><description>Signal on PD14</description><bitRange>[13:13]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_14</name><description>Signal on PD11</description><bitRange>[14:14]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_15</name><description>Signal on PD12</description><bitRange>[15:15]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_30</name><description>VRef from Thermosensor</description><bitRange>[30:30]</bitRange></field>
+        <field derivedFrom="Channel_0"><name>Channel_31</name><description>Temperature from Thermosensor</description><bitRange>[31:31]</bitRange></field>
+      </fields>    
+    </register>
+    <!-- #ADC2_REG_CHSEL -->    
+    <register derivedFrom="MDR_ADC.ADC1_CHSEL">
+      <name>ADC2_CHSEL</name>
+      <addressOffset>0x0000002C</addressOffset>
+    </register>
+    <!-- #ADC1_REG_TRIM -->
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>

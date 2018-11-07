@@ -1,0 +1,320 @@
+#ADC_ADDR_VEx
+<baseAddress>0x40088000</baseAddress>
+
+#ADC_ADDR_VE4x
+<baseAddress>0x40040000</baseAddress>
+
+#ADC_SIZE_VE9x
+<size>0x30</size>
+
+#ADC_SIZE_VE134x
+<size>0x34</size>
+
+#ADC1_RMASK_VE9x
+<resetMask>0xFFFFFFFF</resetMask>
+
+#ADC1_RMASK_VE134x
+<resetMask>0x0E1EFFFF</resetMask>
+
+#ADC2_RMASK_VE9x
+<resetMask>0x0E06FFFF</resetMask>
+
+#ADC2_RMASK_VE134x
+<resetMask>0x00020000</resetMask>
+
+#ADC_CHS_VE4x
+<enumeratedValue><name>Channel_0_RefN</name><description>Signal on PC4, Ref-</description><value>0</value></enumeratedValue>
+<enumeratedValue><name>Channel_1_RefP</name><description>Signal on PC3, Ref+</description><value>1</value></enumeratedValue>
+<enumeratedValue><name>Channel_2</name><description>Signal on PC2</description><value>2</value></enumeratedValue>
+<enumeratedValue><name>Channel_3</name><description>Signal on PC1</description><value>3</value></enumeratedValue>
+<enumeratedValue><name>Channel_4</name><description>Signal on PB9</description><value>4</value></enumeratedValue>
+<enumeratedValue><name>Channel_5</name><description>Signal on PB8</description><value>5</value></enumeratedValue>
+<enumeratedValue><name>Channel_6</name><description>Signal on PB7</description><value>6</value></enumeratedValue>
+<enumeratedValue><name>Channel_7</name><description>Signal on PB6</description><value>7</value></enumeratedValue>
+<enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+<enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+
+#ADC_CHS_VE13
+<enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD7, Ref+</description><value>0</value></enumeratedValue>
+<enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD8, Ref-</description><value>1</value></enumeratedValue>
+<enumeratedValue><name>Channel_2</name><description>Signal on PD9</description><value>2</value></enumeratedValue>
+<enumeratedValue><name>Channel_3</name><description>Signal on PD10</description><value>3</value></enumeratedValue>
+<enumeratedValue><name>Channel_4</name><description>Signal on PD11</description><value>4</value></enumeratedValue>
+<enumeratedValue><name>Channel_5</name><description>Signal on PD12</description><value>5</value></enumeratedValue>
+<enumeratedValue><name>Channel_6</name><description>Signal on PD13</description><value>6</value></enumeratedValue>
+<enumeratedValue><name>Channel_7</name><description>Signal on PD14</description><value>7</value></enumeratedValue>
+<enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+<enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+
+#ADC_CHS_VE9x
+<enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD0, Ref+</description><value>0</value></enumeratedValue>
+<enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD1, Ref-</description><value>1</value></enumeratedValue>
+<enumeratedValue><name>Channel_2</name><description>Signal on PD2</description><value>2</value></enumeratedValue>
+<enumeratedValue><name>Channel_3</name><description>Signal on PD3</description><value>3</value></enumeratedValue>
+<enumeratedValue><name>Channel_4</name><description>Signal on PD4</description><value>4</value></enumeratedValue>
+<enumeratedValue><name>Channel_5</name><description>Signal on PD5</description><value>5</value></enumeratedValue>
+<enumeratedValue><name>Channel_6</name><description>Signal on PD6</description><value>6</value></enumeratedValue>
+<enumeratedValue><name>Channel_7</name><description>Signal on PD7</description><value>7</value></enumeratedValue>
+<enumeratedValue><name>Channel_8</name><description>Signal on PD8</description><value>8</value></enumeratedValue>
+<enumeratedValue><name>Channel_9</name><description>Signal on PD9</description><value>9</value></enumeratedValue>
+<enumeratedValue><name>Channel_10</name><description>Signal on PD10</description><value>10</value></enumeratedValue>
+<enumeratedValue><name>Channel_11</name><description>Signal on PD11</description><value>11</value></enumeratedValue>
+<enumeratedValue><name>Channel_12</name><description>Signal on PD12</description><value>12</value></enumeratedValue>
+<enumeratedValue><name>Channel_13</name><description>Signal on PD13</description><value>13</value></enumeratedValue>
+<enumeratedValue><name>Channel_14</name><description>Signal on PD14</description><value>14</value></enumeratedValue>
+<enumeratedValue><name>Channel_15</name><description>Signal on PD15</description><value>15</value></enumeratedValue>
+<enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+<enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+
+#ADC_SYNC_CONV
+<field>
+  <name>SYNC_CONV</name>
+  <description>ADC1 and ADC2 sync measurement</description>
+  <bitRange>[16:16]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <enumeratedValue>
+      <name>NoSync</name>
+      <description>No sync ADC1 and ADC2</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>Sync</name>
+      <description>ADC1 and ADC2 sync enable</description>
+      <value>1</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#ADC_TR
+<field>
+  <name>TR</name>
+  <description>Trim Vref from Thermosensor</description>
+  <bitRange>[24:21]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <enumeratedValue><name>Vref_1v23</name><description>1.23V typically</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v213</name><description>1.213V typically</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v211</name><description>1.211V typically</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v208</name><description>1.208V typically</description><value>3</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v206</name><description>1.206V typically</description><value>4</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v203</name><description>1.203V typically</description><value>5</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v200</name><description>1.200V typically</description><value>6</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v197</name><description>1.197V typically</description><value>7</value></enumeratedValue>
+    <enumeratedValue><name>Vref_1v193</name><description>1.193V typically</description><value>8</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#ADC_DELAY_GO
+<enumeratedValues>
+  <enumeratedValue><name>1</name><description>1 period of CPU_CLK</description><value>0</value></enumeratedValue>
+  <enumeratedValue><name>2</name><description>2 periods of CPU_CLK</description><value>1</value></enumeratedValue>
+  <enumeratedValue><name>3</name><description>3 periods of CPU_CLK</description><value>2</value></enumeratedValue>
+  <enumeratedValue><name>4</name><description>4 periods of CPU_CLK</description><value>3</value></enumeratedValue>
+  <enumeratedValue><name>5</name><description>5 periods of CPU_CLK</description><value>4</value></enumeratedValue>
+  <enumeratedValue><name>6</name><description>6 periods of CPU_CLK</description><value>5</value></enumeratedValue>
+  <enumeratedValue><name>7</name><description>7 periods of CPU_CLK</description><value>6</value></enumeratedValue>
+  <enumeratedValue><name>8</name><description>8 periods of CPU_CLK</description><value>7</value></enumeratedValue>
+</enumeratedValues>
+
+
+#ADC_DELAY_ADC
+<field>
+  <name>Delay_ADC</name>
+  <description>Delay between ADC1 and ADC2 start</description>
+  <bitRange>[31:28]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <enumeratedValue><name>1</name><description>1 period of CPU_CLK</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>2</name><description>2 periods of CPU_CLK</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>3</name><description>3 periods of CPU_CLK</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>4</name><description>4 periods of CPU_CLK</description><value>3</value></enumeratedValue>
+    <enumeratedValue><name>5</name><description>5 periods of CPU_CLK</description><value>4</value></enumeratedValue>
+    <enumeratedValue><name>6</name><description>6 periods of CPU_CLK</description><value>5</value></enumeratedValue>
+    <enumeratedValue><name>7</name><description>7 periods of CPU_CLK</description><value>6</value></enumeratedValue>
+    <enumeratedValue><name>8</name><description>8 periods of CPU_CLK</description><value>7</value></enumeratedValue>
+    <enumeratedValue><name>9</name><description>9 period of CPU_CLK</description><value>8</value></enumeratedValue>
+    <enumeratedValue><name>10</name><description>10 periods of CPU_CLK</description><value>9</value></enumeratedValue>
+    <enumeratedValue><name>11</name><description>11 periods of CPU_CLK</description><value>10</value></enumeratedValue>
+    <enumeratedValue><name>12</name><description>12 periods of CPU_CLK</description><value>11</value></enumeratedValue>
+    <enumeratedValue><name>13</name><description>13 periods of CPU_CLK</description><value>12</value></enumeratedValue>
+    <enumeratedValue><name>14</name><description>14 periods of CPU_CLK</description><value>13</value></enumeratedValue>
+    <enumeratedValue><name>15</name><description>15 periods of CPU_CLK</description><value>14</value></enumeratedValue>
+    <enumeratedValue><name>16</name><description>16 periods of CPU_CLK</description><value>15</value></enumeratedValue>
+  </enumeratedValues>  
+</field>
+
+#ADC2_CFG_VE9x_start
+<field derivedFrom="MDR_ADC.ADC1_Cfg.ADON">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.GO">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.CLKS">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.SAMPLE">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.CHS">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.CHCH">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.RGNC">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.M_REF">
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.DIV_CLK">
+</field>
+
+#ADC2_CFG_VE9x_end
+<field derivedFrom="ADC1_OP">
+  <name>ADC2_OP</name>
+  <description>ADC2 Setpoint Vref source</description>
+  <bitRange>[18:18]</bitRange>
+</field>
+<field derivedFrom="MDR_ADC.ADC1_Cfg.Delay_GO">
+</field>
+
+#ADC2_H_LIM
+<register derivedFrom="MDR_ADC.ADC1_H_Level">
+  <name>ADC2_H_Level</name>
+  <addressOffset>0x0000000C</addressOffset>
+</register>
+
+#ADC2_L_LIM
+<register derivedFrom="MDR_ADC.ADC1_H_Level">
+  <name>ADC2_L_Level</name>
+  <addressOffset>0x00000014</addressOffset>
+</register>
+
+#ADC2_Result
+<register derivedFrom="MDR_ADC.ADC1_RESULT">
+  <name>ADC2_RESULT</name>
+  <addressOffset>0x0000001C</addressOffset>
+</register>
+
+#ADC2_Status
+<register derivedFrom="MDR_ADC.ADC1_STATUS">
+  <name>ADC2_STATUS</name>
+  <addressOffset>0x00000024</addressOffset>
+</register>
+
+#ADC1_CHSEL_RMASK_VE134x
+<resetMask>0xC00000FF</resetMask>
+
+#ADC1_CHSEL_RMASK_VE9x
+<resetMask>0xC000FFFF</resetMask>
+
+
+#ADC1_CHSEL_ITEMS_VE4x
+<field><name>Channel_0</name><description>Signal on PC4, Ref-</description><bitRange>[0:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Not used in channels switching</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Selected</name><description>Using in channels switching</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="Channel_0"><name>Channel_1</name><description>Signal on PC3, Ref+</description><bitRange>[1:1]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_2</name><description>Signal on PC2</description><bitRange>[2:2]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_3</name><description>Signal on PC1</description><bitRange>[3:3]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_4</name><description>Signal on PB9</description><bitRange>[4:4]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_5</name><description>Signal on PB8</description><bitRange>[5:5]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_6</name><description>Signal on PB7</description><bitRange>[6:6]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_7</name><description>Signal on PB6</description><bitRange>[7:7]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_30</name><description>VRef from Thermosensor</description><bitRange>[30:30]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_31</name><description>Temperature from Thermosensor</description><bitRange>[31:31]</bitRange></field>
+
+
+#ADC1_CHSEL_ITEMS_VE13
+<field><name>Channel_0</name><description>Signal on PD7, Ref+</description><bitRange>[0:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Not used in channels switching</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Selected</name><description>Using in channels switching</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="Channel_0"><name>Channel_1</name><description>Signal on PD8, Ref-</description><bitRange>[1:1]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_2</name><description>Signal on PD9</description><bitRange>[2:2]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_3</name><description>Signal on PD10</description><bitRange>[3:3]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_4</name><description>Signal on PD11</description><bitRange>[4:4]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_5</name><description>Signal on PD12</description><bitRange>[5:5]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_6</name><description>Signal on PD13</description><bitRange>[6:6]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_7</name><description>Signal on PD14</description><bitRange>[7:7]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_30</name><description>VRef from Thermosensor</description><bitRange>[30:30]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_31</name><description>Temperature from Thermosensor</description><bitRange>[31:31]</bitRange></field>
+
+#ADC1_CHSEL_ITEMS_VE9x
+<field><name>Channel_0</name><description>Signal on PD7, Ref+</description><bitRange>[0:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Not used in channels switching</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Selected</name><description>Using in channels switching</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="Channel_0"><name>Channel_1</name><description>Signal on PD8, Ref-</description><bitRange>[1:1]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_2</name><description>Signal on PD9</description><bitRange>[2:2]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_3</name><description>Signal on PD10</description><bitRange>[3:3]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_4</name><description>Signal on PD11</description><bitRange>[4:4]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_5</name><description>Signal on PD12</description><bitRange>[5:5]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_6</name><description>Signal on PD13</description><bitRange>[6:6]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_7</name><description>Signal on PD14</description><bitRange>[7:7]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_8</name><description>Signal on PD9</description><bitRange>[8:8]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_9</name><description>Signal on PD10</description><bitRange>[9:9]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_10</name><description>Signal on PD11</description><bitRange>[10:10]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_11</name><description>Signal on PD12</description><bitRange>[11:11]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_12</name><description>Signal on PD13</description><bitRange>[12:12]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_13</name><description>Signal on PD14</description><bitRange>[13:13]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_14</name><description>Signal on PD11</description><bitRange>[14:14]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_15</name><description>Signal on PD12</description><bitRange>[15:15]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_30</name><description>VRef from Thermosensor</description><bitRange>[30:30]</bitRange></field>
+<field derivedFrom="Channel_0"><name>Channel_31</name><description>Temperature from Thermosensor</description><bitRange>[31:31]</bitRange></field>
+
+#ADC2_REG_CHSEL
+<register derivedFrom="MDR_ADC.ADC1_CHSEL">
+  <name>ADC2_CHSEL</name>
+  <addressOffset>0x0000002C</addressOffset>
+</register>
+
+#ADC1_REG_TRIM
+<register>
+  <name>ADC1_TRIM</name>
+  <description>ADC TS_Vref trim register</description>
+  <addressOffset>0x00000030</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0000001E</resetMask>
+  <fields>
+    <field>
+      <name>TS_Trim</name>
+      <description>Trim Vref from Thermosensor</description>
+      <bitRange>[5:1]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <enumeratedValue><name>Vref_1v23</name><description>1.23V typically</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v213</name><description>1.213V typically</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v211</name><description>1.211V typically</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v208</name><description>1.208V typically</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v206</name><description>1.206V typically</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v203</name><description>1.203V typically</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v200</name><description>1.200V typically</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v197</name><description>1.197V typically</description><value>7</value></enumeratedValue>
+        <enumeratedValue><name>Vref_1v193</name><description>1.193V typically</description><value>8</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>SEL_VREF_BUF</name>
+      <description>Output Vref_Buf=1.23 from Thermosensor</description>
+      <bitRange>[6:6]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+        <enumeratedValue>
+          <name>Disable</name>
+          <description>Channel 30 signal is undefined</description>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>Selected</name>
+          <description>Channel 30 signal is VRef_Buf</description>
+          <value>1</value>
+        </enumeratedValue>
+      </enumeratedValues>
+    </field>     
+  </fields>
+</register>
+

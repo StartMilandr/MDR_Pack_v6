@@ -1,1 +1,1 @@
-SVDConv.exe ../_src/MDR1986VE1.svd -o out -b out/logVE1.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr
+SVDConv.exe ../_src/MDR1901VC1.svd -o out -b out/logVC1.txt --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr

@@ -1,0 +1,24 @@
+
+CMSIS-SVD SVD Consistency Checker / Header File Generator V3.3.18
+Copyright (C) 2010 - 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
+
+Arguments: "../_src/MDR1986VE9x.svd" -o "out" -b "out/logVE9x.txt" --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr 
+
+*** INFO M356: ../_src/MDR1986VE9x.svd
+  No Interrupt definitions found.
+
+*** INFO M125: ../_src/MDR1986VE9x.svd
+  SfrCC2 report:
+
+SfrCC2 PreProcessor V2.12.0.0
+Copyright (C) 2013 - 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+
+SfrCC2 PreProcessing Complete.  0 Warning(s),  0 Error(s)
+
+SfrCC Programm return value: 0
+SfrCC2 report end.
+
+
+
+Found 0 Error(s) and 0 Warning(s).
+

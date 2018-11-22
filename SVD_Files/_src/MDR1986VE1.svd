@@ -1,0 +1,3564 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
+  <vendor>Milandr</vendor>                                       <!-- device vendor name -->
+  <vendorID>Milandr</vendorID>                                    <!-- device vendor short name -->
+  <name>MDR1986VE1</name>
+  <series>ARMCM1</series>
+  <version>2.0</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
+  <description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 144MHz, etc. </description>
+
+  <cpu>                      
+    <name>CM1</name>
+    <revision>r1p0</revision>
+    <endian>little</endian>
+    <mpuPresent>false</mpuPresent>
+    <fpuPresent>false</fpuPresent>
+    <nvicPrioBits>2</nvicPrioBits>
+    <vendorSystickConfig>false</vendorSystickConfig>
+  </cpu>
+  <addressUnitBits>8</addressUnitBits>                            <!-- byte addressable memory -->
+  <width>32</width>                                               <!-- bus width is 32 bits -->
+  <!-- default settings implicitly inherited by subsequent sections -->
+  <size>32</size>                                                 <!-- this is the default size (number of bits) of all peripherals
+                                                                       and register that do not define "size" themselves -->
+  <access>read-write</access>                                     <!-- default access permission for all subsequent registers -->
+  <resetValue>0x00000000</resetValue>                             <!-- by default all bits of the registers are initialized to 0 on reset -->
+  <resetMask>0xFFFFFFFF</resetMask>                               <!-- by default all 32Bits of the registers are used -->
+
+  <!-- Peripherals -->
+  <peripherals>
+    <!-- #USB -->
+    <!-- #EEPROM -->
+    <peripheral>
+      <name>MDR_EEPROM</name>
+      <version>1.0</version>
+      <description>EEPROM Control</description>
+      <groupName>EEPROM Control</groupName>
+      <baseAddress>0x40018000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x14</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- CMD -->
+        <register>
+          <name>CMD</name>
+          <description>EEPROM Control register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000020</resetValue>
+          <resetMask>0x000003FF</resetMask>
+          <fields>
+            <!--CON-->
+            <field>
+              <name>CON</name>
+              <description>Enable memory access through EEPROM controller</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__CON_</headerEnumName>
+                <enumeratedValue>
+                  <name>Normal Access</name>
+                  <description>Normal access to memory</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Controller Access</name>
+                  <description>Access to memory though registers</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--WR-->
+            <field>
+              <name>WR</name>
+              <description>Write operation (test bit)</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__WR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No write operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Write operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RD-->
+            <field>
+              <name>RD</name>
+              <description>Read operation, (test bit)</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__RD_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No read operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Read operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #DELAY -->
+            <field>
+              <name>DELAY</name>
+              <description>Memory access CPU delay tacts</description>
+              <bitRange>[5:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__DELAY_</headerEnumName>
+                <enumeratedValue>
+                  <name>le25MHz</name>
+                  <description>CPU freq is up to 25MHz</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le50MHz</name>
+                  <description>CPU freq is up to 50MHz</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le75MHz</name>
+                  <description>CPU freq is up to 75MHz</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le100MHz</name>
+                  <description>CPU freq is up to 100MHz</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le125MHz</name>
+                  <description>CPU freq is up to 125MHz</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le150MHz</name>
+                  <description>CPU freq is up to 150MHz</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le175MHz</name>
+                  <description>CPU freq is up to 175MHz</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>le200MHz</name>
+                  <description>CPU freq is up to 200MHz</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--XE-->
+            <field>
+              <name>XE</name>
+              <description>Enable ADDR[16..9]</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__XE_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--YE-->
+            <field derivedFrom="XE">
+              <name>YE</name>
+              <description>Enable ADDR[8..2]</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <!--SE-->
+            <field derivedFrom="XE">
+              <name>SE</name>
+              <description>RD Amplifier enable</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <!--IFREN-->
+            <field>
+              <name>IFREN</name>
+              <description>Select main or info memory</description>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__IFREN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Main</name>
+                  <description>Main memory</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Info</name>
+                  <description>Info memory</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--ERASE-->
+            <field>
+              <name>ERASE</name>
+              <description>Erase string at ADDR[16:0]</description>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__ERASE_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No erase operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Erase operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--MAS1-->
+            <field derivedFrom="XE">
+              <name>MAS1</name>
+              <description>Erase whole block with ERASE</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!--PROG-->
+            <field>
+              <name>PROG</name>
+              <description>Programm EEPROM_DI to ADDR[16:0]</description>
+              <bitRange>[12:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__PROG_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>No programm operation</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>Programm operation</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--NVSTR-->
+            <field>
+              <name>NVSTR</name>
+              <description>Memory access mode</description>
+              <bitRange>[13:13]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_EEPROM_CMD__NVSTR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Read</name>
+                  <description>Read mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Write</name>
+                  <description>Programming or erase mode</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- ADDR -->
+        <register>
+          <name>ADDR</name>
+          <description>Address register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- DI -->
+        <register>
+          <name>DI</name>
+          <description>Write data register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- DO -->
+        <register>
+          <name>DO</name>
+          <description>Read data register</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- KEY -->
+        <register>
+          <name>KEY</name>
+          <description>Unlock block register</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #RST -->
+    <!-- RST_CLOCK -->
+    <peripheral>
+      <name>MDR_RST_CLOCK</name>
+      <version>1.0</version>
+      <description>CLock Control</description>
+      <groupName>RST_CLK</groupName>
+      <baseAddress>0x40020000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <!-- #RST_SIZE -->
+        <size>0x38</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- CLOCK STATUS -->
+        <register>
+          <name>CLOCK_STATUS</name>
+          <description>Clock Status Register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_STAT_RMASK -->
+          <resetMask>0x0000000F</resetMask>
+          <fields>      
+            <!-- #RST_USBPLL_RDY -->
+            <field>
+              <name>PLL_USB_RDY</name>
+              <description>PLL USP ready</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__STATUS__PLL_USB_RDY_</headerEnumName>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>PLL not ready</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>PLL ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLL_CPU_RDY</name>
+              <description>PLL CPU ready</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__STATUS__PLL_CPU_RDY_</headerEnumName>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>PLL not ready</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>PLL ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>HSE_RDY</name>
+              <description>HSE generator ready</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__STATUS__HSE_RDY_</headerEnumName>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>HSE not ready</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>HSE ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_HSE2_RDY -->
+            <field>
+              <name>HSE2_RDY</name>
+              <description>HSE2 generator ready</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__STATUS__HSE2_RDY_</headerEnumName>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>HSE2 not ready</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>HSE2 ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_DSP_RDY -->
+          </fields>
+        </register>
+        <!-- PLL CONTROL -->
+        <register>
+          <name>PLL_CONTROL</name>
+          <description>PLL Control Register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_PLL_RMASK -->
+          <resetMask>0x00000FFF</resetMask>
+          <fields>
+            <!-- #RST_PLL_USB_ON -->
+            <field>
+              <name>PLL_USB_ON</name>
+              <description>PLL USB Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__USB_EN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>PLL Off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>PLL On</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_PLL_USB_PLD -->
+            <field>
+              <name>PLL_USB_PLD</name>
+              <description>PLL USB Restart</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__USB_PLD_</headerEnumName>
+                <enumeratedValue>
+                  <name>RestartOff</name>
+                  <description>PLL restart inactive</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>DoRestart</name>
+                  <description>PLL Do Restart</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLL_CPU_ON</name>
+              <description>PLL CPU Enable</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__CPU_EN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>PLL Off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>PLL On</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLL_CPU_PLD</name>
+              <description>PLL CPU Restart</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__CPU_PLD_</headerEnumName>
+                <enumeratedValue>
+                  <name>RestartOff</name>
+                  <description>PLL restart inactive</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>DoRestart</name>
+                  <description>PLL Do Restart</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_PLL_USB_MUL -->
+            <field>
+              <name>PLL_USB_MUL</name>
+              <description>PLL USB Mul, [x1 .. x16]</description>
+              <bitRange>[7:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__USB_MUL_</headerEnumName>
+                <enumeratedValue><name>x1</name><description>PLL mul x1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>x2</name><description>PLL mul x2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>x3</name><description>PLL mul x3</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>x4</name><description>PLL mul x4</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>x5</name><description>PLL mul x5</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>x6</name><description>PLL mul x6</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>x7</name><description>PLL mul x7</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>x8</name><description>PLL mul x8</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>x9</name><description>PLL mul x9</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>x10</name><description>PLL mul x10</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>x11</name><description>PLL mul x11</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>x12</name><description>PLL mul x12</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>x13</name><description>PLL mul x13</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>x14</name><description>PLL mul x14</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>x15</name><description>PLL mul x15</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>x16</name><description>PLL mul x16</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLL_CPU_MUL</name>
+              <description>PLL CPU Mul, [x1 .. x16]</description>
+              <bitRange>[11:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PLL__CPU_MUL_</headerEnumName>
+                <enumeratedValue><name>x1</name><description>PLL mul x1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>x2</name><description>PLL mul x2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>x3</name><description>PLL mul x3</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>x4</name><description>PLL mul x4</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>x5</name><description>PLL mul x5</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>x6</name><description>PLL mul x6</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>x7</name><description>PLL mul x7</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>x8</name><description>PLL mul x8</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>x9</name><description>PLL mul x9</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>x10</name><description>PLL mul x10</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>x11</name><description>PLL mul x11</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>x12</name><description>PLL mul x12</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>x13</name><description>PLL mul x13</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>x14</name><description>PLL mul x14</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>x15</name><description>PLL mul x15</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>x16</name><description>PLL mul x16</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_PLL_DSP_VC1 -->
+            <!-- CONTROL fields end-->
+          </fields>
+        </register>
+        <!-- HS_CONTROL-->
+        <register>
+          <name>HS_CONTROL</name>
+          <description>HSE Generator Control</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_HS_RMASK -->
+          <resetMask>0x0000000F</resetMask>
+          <fields>
+            <field>
+              <name>HSE_ON</name>
+              <description>HSE Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__HS__HSE_EN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>HSE Off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>HSE On</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>HSE_BYP</name>
+              <description>HSE Bypass Mode</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__HS__HSE_BYP_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>HSE forms Clock from external oscillator</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>HSE passes Clock from external generator</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_HS_HSE2 -->
+            <field>
+              <name>HSE2_ON</name>
+              <description>HSE2 Enable</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__HS__HSE2_EN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>HSE2 Off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>HSE2 On</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>HSE2_BYP</name>
+              <description>HSE2 Bypass Mode</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__HS__HSE2_BYP_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>HSE2 forms Clock from external oscillator</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>HSE2 passes Clock from external generator</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- HS_CONTROL fields end -->
+          </fields>
+        </register>
+        <!-- CPU_CLOCK -->
+        <register>
+          <name>CPU_CLOCK</name>
+          <description>CPU Clock Control</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000003F7</resetMask>
+          <fields>
+            <!-- CPU_CLOCK.CPU_C1_SEL -->
+            <field>
+              <name>CPU_C1_SEL</name>
+              <description>CPU_C1 mux freq select</description>
+              <bitRange>[1:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CPU__C1_</headerEnumName>
+                <enumeratedValue>
+                  <name>HSI</name>
+                  <description>CPU_C1 output is HSI</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSI/2</name>
+                  <description>CPU_C1 output is HSI/2</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE</name>
+                  <description>CPU_C1 output is HSE</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE/2</name>
+                  <description>CPU_C1 output is HSE/2</description>
+                  <value>3</value>
+                </enumeratedValue>                                
+              </enumeratedValues>
+            </field>
+            <!-- CPU_CLOCK.CPU_C2_SEL -->
+            <field>
+              <name>CPU_C2_SEL</name>
+              <description>CPU_C2 mux freq select</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CPU__C2_</headerEnumName>
+                <enumeratedValue>
+                  <name>CPU_C1</name>
+                  <description>Freq from CPU_C1 mux direct</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PLLCPUo</name>
+                  <description>Freq from CPU_C1 mux through PLL</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- CPU_CLOCK.CPU_C3_SEL -->
+            <field>
+              <name>CPU_C3_SEL</name>
+              <description>CPU_C2 mux output freq devider, [/1, /2, /4 .. /256]</description>
+              <bitRange>[7:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CPU__C3_</headerEnumName>
+                <enumeratedValue><name>div1</name><description>div by 1</description><value>0b0xxx</value></enumeratedValue>
+                <enumeratedValue><name>div2</name><description>div by 2</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>div4</name><description>div by 4</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>div by 8</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>div16</name><description>div by 16</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>div32</name><description>div by 32</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>div64</name><description>div by 64</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>div128</name><description>div by 128</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>div256</name><description>div by 256</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- CPU_CLOCK.HCLK_SEL -->
+            <field>
+              <name>HCLK_SEL</name>
+              <description>Select Clock for CPU</description>
+              <bitRange>[9:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CPU__HCLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>HSI</name>
+                  <description>CPU clock is HSI</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>CPU_C3</name>
+                  <description>CPU clock is CPU_C3 output</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>LSE</name>
+                  <description>CPU clock is LSE</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>LSI</name>
+                  <description>CPU clock is LSI</description>
+                  <value>3</value>
+                </enumeratedValue>                                
+              </enumeratedValues>
+            </field>
+            <!-- CPU_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- #RST_REG_USB_CLOCK -->
+        <register>
+          <name>USB_CLOCK</name>
+          <description>USB Clock Control</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000117</resetMask>
+          <fields>
+            <!-- USB_CLOCK.USB_C1_SEL -->
+            <field>
+              <name>USB_C1_SEL</name>
+              <description>USB_C1 mux freq select</description>
+              <bitRange>[1:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__USB__C1_</headerEnumName>
+                <enumeratedValue>
+                  <name>HSI</name>
+                  <description>USB_C1 output is HSI</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSI/2</name>
+                  <description>USB_C1 output is HSI/2</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE</name>
+                  <description>USB_C1 output is HSE</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE/2</name>
+                  <description>USB_C1 output is HSE/2</description>
+                  <value>3</value>
+                </enumeratedValue>                                
+              </enumeratedValues>
+            </field>
+            <!-- USB_CLOCK.USB_C2_SEL -->
+            <field>
+              <name>USB_C2_SEL</name>
+              <description>USB_C2 mux freq select</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__USB__C2_</headerEnumName>
+                <enumeratedValue>
+                  <name>USB_C1</name>
+                  <description>Freq from CPU_C1 mux direct</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PLLUSBo</name>
+                  <description>Freq from CPU_C1 mux through PLL_USB</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- USB_CLOCK.USB_C3_SEL -->
+            <field>
+              <name>USB_C3_SEL</name>
+              <description>USB_C3 Input Select</description>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__USB__C3_</headerEnumName>
+                <enumeratedValue>
+                  <name>USB_C2</name>
+                  <description>C3 Input is freq from C2</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>USB_C2_div2</name>
+                  <description>C3 Input is freq from C2/2</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- USB_CLOCK.USB_EN -->
+            <field>
+              <name>USB_EN</name>
+              <description>USB Clock Enable</description>
+              <bitRange>[8:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__USB__CLOCK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- USB_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- #RST_REG_PER1 -->
+        <!-- #RST_REG_ADC -->
+        <register>
+          <name>ADC_CLOCK</name>
+          <description>ADC Clock Control</description>
+          <addressOffset>0x00000014</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #ADC_RMASK --> 
+          <resetMask>0x00002F33</resetMask>
+          <fields>
+            <!-- ADC_CLOCK.ADC_C1_SEL -->
+            <field>
+              <name>ADC_C1_SEL</name>
+              <description>ADC_C1 mux freq select</description>
+              <bitRange>[1:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ADC__C1_</headerEnumName>
+                <enumeratedValue>
+                  <name>CPU_C1</name>
+                  <description>ADC_C1 output is CPU_C1</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>USB_C1</name>
+                  <description>ADC_C1 output is USB_C1</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>CPU_C2</name>
+                  <description>ADC_C1 output is CPU_C2</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>USB_C2</name>
+                  <description>ADC_C1 output is USB_C2</description>
+                  <value>3</value>
+                </enumeratedValue>                                
+              </enumeratedValues>
+            </field>
+            <!-- ADC_CLOCK.ADC_C2_SEL -->
+            <field>
+              <name>ADC_C2_SEL</name>
+              <description>ADC_C2 mux freq select</description>
+              <bitRange>[5:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ADC__C2_</headerEnumName>
+                <enumeratedValue>
+                  <name>LSE</name>
+                  <description>ADC_C2 output is LSE</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>LSI</name>
+                  <description>ADC_C2 output is LSI</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ADC_C1</name>
+                  <description>ADC_C2 output is ADC_C1</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSI_C1</name>
+                  <description>ADC_C2 output is HSI_C1</description>
+                  <value>3</value>
+                </enumeratedValue>                                
+              </enumeratedValues>
+            </field>
+            <!-- ADC_CLOCK.ADC_C3_SEL -->
+            <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
+              <name>ADC_C3_SEL</name>
+              <description>ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]</description>
+              <bitRange>[11:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- ADC_CLOCK.ADC_CLK_EN -->
+            <field>
+              <name>ADC_CLK_EN</name>
+              <description>ADC Clock Enable</description>
+              <bitRange>[13:13]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ADC__CLK_EN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>ADC clock disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>ADC clock enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ADC_AUC_C1 -->
+            <!-- #ADC_AUC_C2 -->
+            <!-- #ADC_AUC_C3 -->
+            <!-- #ADC_AUC_EN -->
+            <!-- ADC_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- RTC_CLOCK-->
+        <register>
+          <name>RTC_CLOCK</name>
+          <description>RTC Clock Control</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000003FF</resetMask>
+          <fields>
+            <!-- RTC_CLOCK.HSE_SEL -->
+            <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
+              <name>HSE_SEL</name>
+              <description>RTC HSE freq devider, [/1, /2, /4 .. /256]</description>
+              <bitRange>[3:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- RTC_CLOCK.HSI_SEL -->
+            <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
+              <name>HSI_SEL</name>
+              <description>RTC HSI freq devider, [/1, /2, /4 .. /256]</description>
+              <bitRange>[7:4]</bitRange>
+              <access>read-write</access>
+            </field>            
+            <!-- RTC_CLOCK.HSE_RTC_EN -->
+            <field>
+              <name>HSE_RTC_EN</name>
+              <description>RTC HSE Clock enable</description>
+              <bitRange>[8:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__RTC__HSE_RTC_CLOCK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>RTC HSE Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>RTC HSE Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- RTC_CLOCK.HSI_RTC_EN -->
+            <field>
+              <name>HSI_RTC_EN</name>
+              <description>RTC HSI Clock enable</description>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__RTC__HSI_RTC_CLOCK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>RTC HSI Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>RTC HSI Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- RTC_CLOCK fields end-->
+          </fields>
+        </register>        
+        <!-- #RST_REG_PER -->
+        <register>
+          <name>PER_CLOCK</name>
+          <description>Peripherials Clock Control</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000010</resetValue>
+          <!-- #PER_RMASK -->
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <!-- #PER_Item00 -->
+            <field>
+              <name>CAN1_CLK_EN</name>
+              <description>CAN1 Clock Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PER__CAN1_CLOCK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #PER_Item01 -->
+            <field derivedFrom="CAN1_CLK_EN">
+              <name>CAN2_CLK_EN</name>
+              <description>CAN2 Clock Enable</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <!-- PER_CLOCK.USB_CLK_EN -->
+            <field>
+              <name>USB_CLK_EN</name>
+              <description>USB Clock Enable</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__PER__SSP_CLOCK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>              
+            </field>
+            <!-- PER_CLOCK.EEPROM_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>EEPROM_CLK_EN</name>
+              <description>EEPROM Controller Clock Enable</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <!-- PER_CLOCK.RST_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>RST_CLK_EN</name>
+              <description>RST Clock Enable</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!-- PER_CLOCK.DMA_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>DMA_CLK_EN</name>
+              <description>DMA Clock Enable</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <!-- PER_CLOCK.UART1_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>UART1_CLK_EN</name>
+              <description>UART1 Clock Enable</description>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <!-- PER_CLOCK.UART2_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>UART2_CLK_EN</name>
+              <description>UART2 Clock Enable</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <!-- PER_CLOCK.SPI1_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>SPI1_CLK_EN</name>
+              <description>SPI1 Clock Enable</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <!-- #PER_Item09 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>MIL1_CLK_EN</name>
+              <description>MIL1 Clock Enable</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <!-- #PER_Item10 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>MIL2_CLK_EN</name>
+              <description>MIL2 Clock Enable</description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PWR_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PWR_CLK_EN</name>
+              <description>Power Clock Enable</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!-- PER_CLOCK.WWDT_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>WWDT_CLK_EN</name>
+              <description>WWDT Clock Enable</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <!-- PER_CLOCK.IWDT_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>IWDT_CLK_EN</name>
+              <description>IWDT Clock Enable</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <!-- PER_CLOCK.TIMER1_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>TIMER1_CLK_EN</name>
+              <description>TIMER1 Clock Enable</description>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <!-- PER_CLOCK.TIMER2_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>TIMER2_CLK_EN</name>
+              <description>TIMER2 Clock Enable</description>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <!-- PER_CLOCK.TIMER3_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>TIMER3_CLK_EN</name>
+              <description>TIMER3 Clock Enable</description>
+              <bitRange>[16:16]</bitRange>
+            </field>            
+            <!-- PER_CLOCK.ADC_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>ADC_CLK_EN</name>
+              <description>ADC Clock Enable</description>
+              <bitRange>[17:17]</bitRange>
+            </field>
+            <!-- PER_CLOCK.DAC_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>DAC_CLK_EN</name>
+              <description>DAC Clock Enable</description>
+              <bitRange>[18:18]</bitRange>
+            </field>
+            <!-- #PER_Item19 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>TIMER4_CLK_EN</name>
+              <description>TIMER4 Clock Enable</description>
+              <bitRange>[19:19]</bitRange>
+            </field>
+            <!-- PER_CLOCK.SPI2_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>SPI2_CLK_EN</name>
+              <description>SPI2 Clock Enable</description>
+              <bitRange>[20:20]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTA_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTA_CLK_EN</name>
+              <description>GPIO PORT_A Clock Enable</description>
+              <bitRange>[21:21]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTB_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTB_CLK_EN</name>
+              <description>GPIO PORT_B Clock Enable</description>
+              <bitRange>[22:22]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTC_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTC_CLK_EN</name>
+              <description>GPIO PORT_C Clock Enable</description>
+              <bitRange>[23:23]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTD_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTD_CLK_EN</name>
+              <description>GPIO PORT_D Clock Enable</description>
+              <bitRange>[24:24]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTE_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTE_CLK_EN</name>
+              <description>GPIO PORT_E Clock Enable</description>
+              <bitRange>[25:25]</bitRange>
+            </field>
+            <!-- #PER_Item26 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>ARINC_RX_CLK_EN</name>
+              <description>ARINC_RX Clock Enable</description>
+              <bitRange>[26:26]</bitRange>
+            </field>
+            <!-- PER_CLOCK.BKP_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>BKP_CLK_EN</name>
+              <description>Backup Clock Enable</description>
+              <bitRange>[27:27]</bitRange>
+            </field>
+            <!-- #PER_Item28 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>ARINC_TX_CLK_EN</name>
+              <description>ARINC_TX Clock Enable</description>
+              <bitRange>[28:28]</bitRange>
+            </field>
+            <!-- PER_CLOCK.PORTF_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>PORTF_CLK_EN</name>
+              <description>GPIO PORT_F Clock Enable</description>
+              <bitRange>[29:29]</bitRange>
+            </field>
+            <!-- PER_CLOCK.EBC_CLK_EN -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>EBC_CLK_EN</name>
+              <description>External Bus Clock Enable</description>
+              <bitRange>[30:30]</bitRange>
+            </field>
+            <!-- #PER_Item31 -->
+            <field derivedFrom="USB_CLK_EN">
+              <name>SPI3_CLK_EN</name>
+              <description>SPI3 Clock Enable</description>
+              <bitRange>[31:31]</bitRange>
+            </field>
+            <!-- PER_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- #RST_REG_CAN -->
+        <register>
+          <name>CAN_CLOCK</name>
+          <description>CAN's Clock Control</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0300FFFF</resetMask>
+          <fields>
+            <!-- CAN_CLOCK.CAN1_BRG -->
+            <field>
+              <name>CAN1_BRG</name>
+              <description>HCLK divider to get CAN1_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CAN1__BRG_</headerEnumName>
+                <enumeratedValue><name>div1</name><description>div by 1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div2</name><description>div by 2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div4</name><description>div by 4</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>div by 8</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>div16</name><description>div by 16</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>div32</name><description>div by 32</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>div64</name><description>div by 64</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>div128</name><description>div by 128</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- CAN_CLOCK.CAN2_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.CAN_CLOCK.CAN1_BRG">
+              <name>CAN2_BRG</name>
+              <description>HCLK freq divider to get CAN2_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- CAN_CLOCK.CAN1_CLK_EN -->
+            <field>
+              <name>CAN1_CLK_EN</name>
+              <description>CAN1_CLOCK enable</description>
+              <bitRange>[24:24]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CAN__CAN1_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>CAN1 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>CAN1 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- CAN_CLOCK.CAN2_CLK_EN -->
+            <field>
+              <name>CAN2_CLK_EN</name>
+              <description>CAN2_CLOCK enable</description>
+              <bitRange>[25:25]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__CAN__CAN2_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>CAN2 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>CAN2 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- CAN_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- TIM_CLOCK -->
+        <register>
+          <name>TIM_CLOCK</name>
+          <description>Timer's Clock Control</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_TIM_RMASK -->
+          <resetMask>0x07070707</resetMask>
+          <fields>
+            <!-- TIM_CLOCK.TIM1_BRG -->
+            <field>
+              <name>TIM1_BRG</name>
+              <!-- #RST_TIM1_DESCR -->
+              <description>HCLK freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__TIM1__BRG_</headerEnumName>
+                <enumeratedValue><name>div1</name><description>div by 1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div2</name><description>div by 2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div4</name><description>div by 4</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>div by 8</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>div16</name><description>div by 16</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>div32</name><description>div by 32</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>div64</name><description>div by 64</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>div128</name><description>div by 128</description><value>7</value></enumeratedValue>
+              </enumeratedValues>              
+            </field>
+            <!-- TIM_CLOCK.TIM2_BRG -->
+            <field derivedFrom="TIM1_BRG">
+              <name>TIM2_BRG</name>
+              <!-- #RST_TIM2_DESCR -->
+              <description>HCLK freq divider to get TIM2_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- #RST_TIM3_BRG -->
+            <field derivedFrom="TIM1_BRG">
+              <name>TIM3_BRG</name>
+              <description>HCLK freq divider to get TIM3_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[18:16]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- TIM_CLOCK.TIM1_CLK_EN -->
+            <field>
+              <name>TIM1_CLK_EN</name>
+              <description>TIM1_CLOCK enable</description>
+              <bitRange>[24:24]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__TIM__TIM1_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Timer1 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Timer1 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- TIM_CLOCK.TIM2_CLK_EN -->
+            <field>
+              <name>TIM2_CLK_EN</name>
+              <description>TIM2_CLOCK enable</description>
+              <bitRange>[25:25]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__TIM__TIM2_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Timer2 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Timer2 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_TIM3_EN -->
+            <field>
+              <name>TIM3_CLK_EN</name>
+              <description>TIM3_CLOCK enable</description>
+              <bitRange>[26:26]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__TIM__TIM3_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Timer3 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Timer3 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- TIM_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- UART_CLOCK-->
+        <register>
+          <name>UART_CLOCK</name>
+          <description>UART's Clock Control</description>
+          <addressOffset>0x00000028</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_UART_RMASK -->
+          <resetMask>0x07070707</resetMask>
+          <fields>
+            <!-- UART_CLOCK.UART1_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>UART1_BRG</name>
+              <!-- #RST_UART1_DESCR -->
+              <description>HCLK freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- UART_CLOCK.UART2_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>UART2_BRG</name>
+              <!-- #RST_UART2_DESCR -->
+              <description>HCLK freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- #RST_TIM4_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>TIM4_BRG</name>
+              <description>HCLK freq divider to get TIM4_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[18:16]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- #RST_UART3_BRG -->
+            <!-- UART_CLOCK.UART1_CLK_EN -->
+            <field>
+              <name>UART1_CLK_EN</name>
+              <description>UART1_CLOCK enable</description>
+              <bitRange>[24:24]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__UART__UART1_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>UART1 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>UART1 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- UART_CLOCK.UART2_CLK_EN -->
+            <field>
+              <name>UART2_CLK_EN</name>
+              <description>UART2_CLOCK enable</description>
+              <bitRange>[25:25]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__UART__UART2_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>UART2 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>UART2 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_TIM4_EN -->
+            <field>
+              <name>TIM4_CLK_EN</name>
+              <description>TIM4_CLOCK enable</description>
+              <bitRange>[26:26]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__UART__TIM4_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Timer4 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Timer4 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_UART3_EN -->
+            <!-- UART_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- SSP_CLOCK -->
+        <register>
+          <name>SSP_CLOCK</name>
+          <description>SSP's Clock Control</description>
+          <addressOffset>0x0000002C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RST_SSP_RMASK -->
+          <resetMask>0x07070707</resetMask>
+          <fields>
+            <!-- SSP_CLOCK.SSP1_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>SSP1_BRG</name>
+              <!-- #RST_SSP1_DESCR -->
+              <description>HCLK freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- #RST_SSP2_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">            
+              <name>SSP2_BRG</name>
+              <description>HCLK freq divider to get SSP2_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- #RST_SSP3_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>SSP3_BRG</name>
+              <description>HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[18:16]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- SSP_CLOCK.SSP1_CLK_EN -->
+            <field>
+              <name>SSP1_CLK_EN</name>
+              <description>SSP1_CLOCK Enable</description>
+              <bitRange>[24:24]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__SSP__SSP1_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>SSP1 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>SSP1 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_SSP2_EN -->
+            <field>
+              <name>SSP2_CLK_EN</name>
+              <description>SSP2_CLOCK Enable</description>
+              <bitRange>[25:25]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__SSP__SSP2_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>SSP2 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>SSP2 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #RST_SSP3_EN -->
+            <field>
+              <name>SSP3_CLK_EN</name>
+              <description>SSP3_CLOCK Enable</description>
+              <bitRange>[26:26]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__SSP__SSP3_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>SSP3 Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>SSP3 Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- SSP_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- #RST_REG_DSP_CLOCK -->
+        <!-- #RST_REG_ETH_CLOCK -->
+        <register>
+          <name>ETH_CLOCK</name>
+          <description>Ethernet and MIL Clock Control</description>
+          <addressOffset>0x00000034</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #ETH_RMASK -->  
+          <resetMask>0x3FFFFFFF</resetMask>
+          <fields>
+            <!-- ETH_CLOCK.ETH_BRG -->
+            <field>
+              <name>ETH_BRG</name>
+              <description>Always set to 0!</description>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- ETH_CLOCK.MIL_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">            
+              <name>MIL_BRG</name>
+              <description>HCLK freq divider to get MAN_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- ETH_CLOCK.PHY_BRG -->
+            <field derivedFrom="MDR_RST_CLOCK.TIM_CLOCK.TIM1_BRG">
+              <name>PHY_BRG</name>
+              <description>HCLK freq divider to get PHY_CLOCK, [/1, /2, /4 .. /128]</description>
+              <bitRange>[18:16]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!-- ETH_CLOCK.ETH_CLK_EN -->
+            <field>
+              <name>ETH_CLK_EN</name>
+              <description>Ethernet MAC Clock Enable</description>
+              <bitRange>[24:24]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ETH__MAC_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>MAC Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>MAC Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- ETH_CLOCK.MIL_CLK_EN -->
+            <field>
+              <name>MIL_CLK_EN</name>
+              <description>MIL-STD CLOCK Enable</description>
+              <bitRange>[25:25]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ETH__MIL_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>MIL Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>MIL Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- ETH_CLOCK.SLEEP -->
+            <field>
+              <name>SLEEP</name>
+              <description>Switch to Sleep mode</description>
+              <bitRange>[26:26]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ETH__SLEEP_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Normal Mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>GoSLEEP</name>
+                  <description>Go to SLEEP</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- ETH_CLOCK.PHY_CLK_EN -->
+            <field>
+              <name>PHY_CLK_EN</name>
+              <description>Ethernet PHY CLOCK Enable</description>
+              <bitRange>[27:27]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ETH__PHY_CLK_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>MIL Clock Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>MIL Clock Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- ETH_CLOCK.PHY_CLK_SEL -->
+            <field>
+              <name>PHY_CLK_SEL</name>
+              <description>Ethernet PHY CLOCK Select</description>
+              <bitRange>[29:28]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RST__ETH__PHY_SEL_</headerEnumName>
+                <enumeratedValue>
+                  <name>HSI</name>
+                  <description>PHY Clock from HSI</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE</name>
+                  <description>PHY Clock from HSE</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PLLCPUo</name>
+                  <description>PHY Clock from PLLCPUo</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSE2</name>
+                  <description>PHY Clock from HSE2</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ETH2_CLK_VE3 -->
+            <!-- ETH_CLOCK fields end-->
+          </fields>
+        </register>
+        <!-- #RST_REG_SSP2 -->
+        <!-- #RST_REG_PER2 -->
+        <!-- #RST_REG_DSP_CTRL -->
+        <!-- #RST_REG_UARTSSP -->
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #DMA -->
+    <!-- #PWR -->
+    <!-- #WWDT -->
+    <!-- #IWDT -->
+    <!-- #ADC -->
+    <!-- ADC -->
+    <peripheral>
+      <name>MDR_ADC</name>
+      <version>2.0</version>
+      <description>Successive Approximation ADC</description>
+      <groupName>ADC</groupName>
+      <!-- #ADC_ADDR -->
+      <baseAddress>0x40088000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <!-- #ADC_SIZE -->
+        <size>0x34</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- ADC1_Cfg -->
+        <register>
+          <name>ADC1_Cfg</name>
+          <description>ADC1 config register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #ADC1_RMASK -->
+          <resetMask>0x0E1EFFFF</resetMask>
+          <fields>
+            <field>
+              <name>ADON</name>
+              <description>Enable ADC</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>GO</name>
+              <description>Start single ADC mesurement</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>Autoclear to zero after start</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Start</name>
+                  <description>Start measurement</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CLKS</name>
+              <description>Select Clock</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>CPU_Clock</name>
+                  <description>CPU_Clock used</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ADC_Clock</name>
+                  <description>ADC_Clock used</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SAMPLE</name>
+              <description>Single or Continuous measurement</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Single</name>
+                  <description>Single measurement by GO</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Continuouse</name>
+                  <description>Continuous measurement, until stop by ADON</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CHS</name>
+              <description>Active channel select</description>
+              <bitRange>[8:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <!-- #ADC1_CHS -->
+                <enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD7, Ref+</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD8, Ref-</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Channel_2</name><description>Signal on PD9</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Channel_3</name><description>Signal on PD10</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Channel_4</name><description>Signal on PD11</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Channel_5</name><description>Signal on PD12</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Channel_6</name><description>Signal on PD13</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Channel_7</name><description>Signal on PD14</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+                <enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CHCH</name>
+              <description>Channel switching enable</description>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Measure only CHS channel</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Measure channels selected in reg CHSEL</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RGNC</name>
+              <description>Signal limiters enable</description>
+              <bitRange>[10:10]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Flag STATUSx.AWOIFEN inactive</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Flag STATUSx.AWOIFEN enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>M_REF</name>
+              <description>Signal amplitude reference</description>
+              <bitRange>[11:11]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Internal</name>
+                  <description>Signal in [GND..AUcc]</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>External</name>
+                  <description>Signal in [ADC_Ref-..ADC_Ref+]</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DIV_CLK</name>
+              <description>Divider for CPU_Clock usage</description>
+              <bitRange>[15:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>div_1</name><description>CLK = CPU_CLK</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div_2</name><description>CLK = CPU_CLK/2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div_4</name><description>CLK = CPU_CLK/4</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div_8</name><description>CLK = CPU_CLK/8</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>div_16</name><description>CLK = CPU_CLK/16</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>div_32</name><description>CLK = CPU_CLK/32</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>div_64</name><description>CLK = CPU_CLK/64</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>div_128</name><description>CLK = CPU_CLK/128</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>div_256</name><description>CLK = CPU_CLK/256</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>div_512</name><description>CLK = CPU_CLK/512</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>div_1024</name><description>CLK = CPU_CLK/1024</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>div_2048</name><description>CLK = CPU_CLK/2048</description><value>11</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ADC_SYNC_CONV -->        
+            <field>
+              <name>TS_EN</name>
+              <description>Thermosensor enable</description>
+              <bitRange>[17:17]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Thermosensor power off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Thermosensor power on</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TS_BUFF_EN</name>
+              <description>Thermosensor buffer enable</description>
+              <bitRange>[18:18]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Thermosensor buffer disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Thermosensor buffer enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SEL_TS</name>
+              <description>Output temperature from Thermosensor</description>
+              <bitRange>[19:19]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Channel 31 signal is undefined</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Channel 31 signal is temperature</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SEL_VREF</name>
+              <description>Output Vref=1.23 from Thermosensor</description>
+              <bitRange>[20:20]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Channel 30 signal is undefined</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Channel 30 signal is VRef</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ADC_TR -->
+            <field>
+              <name>Delay_GO</name>
+              <description>Delay after channels switching in CPU_CLK</description>
+              <bitRange>[27:25]</bitRange>
+              <access>read-write</access>
+              <!-- #ADC_DELAY_GO -->
+              <enumeratedValues>
+                <enumeratedValue><name>1</name><description>1 period of CPU_CLK</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2</name><description>2 periods of CPU_CLK</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>3</name><description>3 periods of CPU_CLK</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>4</name><description>4 periods of CPU_CLK</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>5</name><description>5 periods of CPU_CLK</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>6</name><description>6 periods of CPU_CLK</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>7</name><description>7 periods of CPU_CLK</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>8</name><description>8 periods of CPU_CLK</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ADC_DELAY_ADC -->
+            <!--Fields end-->
+          </fields>
+        </register>
+        <!-- ADC2_Cfg -->
+        <register>
+          <name>ADC2_Cfg</name>
+          <description>ADC2 config register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #ADC2_RMASK -->
+          <resetMask>0x00020000</resetMask>
+          <fields>
+            <!-- #ADC2_CFG_VE9x_start -->
+            <field>
+              <name>ADC1_OP</name>
+              <description>ADC1 Setpoint Vref source</description>
+              <bitRange>[17:17]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Own</name>
+                  <description>Own setpoint Vref</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Thermosensor</name>
+                  <description>Setpoint Vref from Thermosensor</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #ADC2_CFG_VE9x_end -->
+          </fields>
+        </register>
+        <!-- ADC1_H_Level -->
+        <register>
+          <name>ADC1_H_Level</name>
+          <description>ADC High limit</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000FFF</resetMask>
+          <fields>
+            <field>
+              <name>Level</name>
+              <description>Signal limit level</description>
+              <bitRange>[11:0]</bitRange>
+              <access>read-write</access>
+            </field>        
+          </fields>
+        </register>      
+        <!-- #ADC2_H_LIM -->
+        <!-- ADC1_L_Level -->
+        <register derivedFrom="ADC1_H_Level">
+          <name>ADC1_L_Level</name>
+          <description>ADC Low limit</description>
+          <addressOffset>0x00000010</addressOffset>
+        </register>
+        <!-- #ADC2_L_LIM -->
+        <!-- ADC1_Result -->
+        <register>
+          <name>ADC1_RESULT</name>
+          <description>ADC result register</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000F0FFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Channel signal value</description>
+              <bitRange>[11:0]</bitRange>
+            </field>
+            <field>
+              <name>Channel</name>
+              <description>Channel index</description>
+              <bitRange>[20:16]</bitRange>
+              <enumeratedValues>
+                <!-- #ADC1_CHS -->
+                <enumeratedValue><name>Channel_0_RefP</name><description>Signal on PD7, Ref+</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Channel_1_RefN</name><description>Signal on PD8, Ref-</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Channel_2</name><description>Signal on PD9</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Channel_3</name><description>Signal on PD10</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Channel_4</name><description>Signal on PD11</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Channel_5</name><description>Signal on PD12</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Channel_6</name><description>Signal on PD13</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Channel_7</name><description>Signal on PD14</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>TS_VRef_1.23</name><description>Signal from Thermosensor</description><value>30</value></enumeratedValue>
+                <enumeratedValue><name>TS_Temperature</name><description>Signal from Thermosensor</description><value>31</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- #ADC2_Result -->
+        <!-- ADC1_Status -->
+        <register>
+          <name>ADC1_STATUS</name>
+          <description>ADC status register</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000001F</resetMask>
+          <fields>
+            <field>
+              <name>Overwrite</name>
+              <description>Result overwritten flag</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Normal</name>
+                  <description>No overwritten occure</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Overwrite</name>
+                  <description>Result overwritten</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>AWOIFEN</name>
+              <description>Signal is out of limiters range</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>InRange</name>
+                  <description>Signal in range</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OutOfRange</name>
+                  <description>Signal is out of range</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>EOCIF</name>
+              <description>Result ready to read</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NoResult</name>
+                  <description>Result is not ready</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Signal is ready to read</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>AWOIF_IE</name>
+              <description>Enable IRQ by AWOIFEN flag</description>
+              <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>IRQ Disable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>IRQ Enable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="AWOIF_IE">
+              <name>EOCIF_EN</name>
+              <description>Enable IRQ by EOCIF flag</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+          </fields>
+        </register>    
+        <!-- #ADC2_Status -->
+        <!-- ADC1_CHSEL -->
+        <register>
+          <name>ADC1_CHSEL</name>
+          <description>ADC channels select register</description>
+          <addressOffset>0x00000028</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #ADC1_CHSEL_RMASK -->
+          <resetMask>0xC00000FF</resetMask>
+          <fields>
+            <!-- #ADC1_CHSEL_ITEMS -->
+            <field><name>Channel_0</name><description>Signal on PD7, Ref+</description><bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Not used in channels switching</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Selected</name><description>Using in channels switching</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="Channel_0"><name>Channel_1</name><description>Signal on PD8, Ref-</description><bitRange>[1:1]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_2</name><description>Signal on PD9</description><bitRange>[2:2]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_3</name><description>Signal on PD10</description><bitRange>[3:3]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_4</name><description>Signal on PD11</description><bitRange>[4:4]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_5</name><description>Signal on PD12</description><bitRange>[5:5]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_6</name><description>Signal on PD13</description><bitRange>[6:6]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_7</name><description>Signal on PD14</description><bitRange>[7:7]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_30</name><description>VRef from Thermosensor</description><bitRange>[30:30]</bitRange></field>
+            <field derivedFrom="Channel_0"><name>Channel_31</name><description>Temperature from Thermosensor</description><bitRange>[31:31]</bitRange></field>
+          </fields>    
+        </register>
+        <!-- #ADC2_REG_CHSEL -->    
+        <!-- #ADC1_REG_TRIM -->
+        <register>
+          <name>ADC1_TRIM</name>
+          <description>ADC TS_Vref trim register</description>
+          <addressOffset>0x00000030</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000001E</resetMask>
+          <fields>
+            <field>
+              <name>TS_Trim</name>
+              <description>Trim Vref from Thermosensor</description>
+              <bitRange>[5:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Vref_1v23</name><description>1.23V typically</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v213</name><description>1.213V typically</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v211</name><description>1.211V typically</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v208</name><description>1.208V typically</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v206</name><description>1.206V typically</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v203</name><description>1.203V typically</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v200</name><description>1.200V typically</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v197</name><description>1.197V typically</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v193</name><description>1.193V typically</description><value>8</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SEL_VREF_BUF</name>
+              <description>Output Vref_Buf=1.23 from Thermosensor</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Channel 30 signal is undefined</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Channel 30 signal is VRef_Buf</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>     
+          </fields>
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #DAC -->
+    <!-- #BKP -->
+    <!-- BKP and RTC -->
+    <peripheral>
+      <name>MDR_BKP</name>
+      <version>1.0</version>
+      <description>Backup and RTC Control</description>
+      <groupName>BKP and RTC</groupName>
+      <!-- #BKP_ADDR -->
+      <baseAddress>0x400D8000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x54</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- REG_x -->
+        <register>
+          <dim>14</dim>
+          <dimIncrement>4</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,A,B,C,D</dimIndex>
+          <name>REG_0%s</name>
+          <description>User backup registers</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- REG_0E -->
+        <register>
+          <name>REG_0E</name>
+          <description>REG_OE Control register</description>
+          <addressOffset>0x00000038</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #BKP_RESMSK -->
+          <resetMask>0x0000BF7F</resetMask>
+          <fields>
+            <!--LOW-->
+            <field>
+              <name>LOW</name>
+              <description>DUcc Freq control</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__LOW_</headerEnumName>
+                <enumeratedValue>
+                  <name>10MHz</name>
+                  <description>CPU Clock less then 10MHz</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>200KHz</name>
+                  <description>CPU Clock less then 200KHz</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>500KHz</name>
+                  <description>CPU Clock less then 500KHz</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1MHz</name>
+                  <description>CPU Clock less then 1MHz</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>GensOffz</name>
+                  <description>Generators Off</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>40MHz</name>
+                  <description>CPU Clock less then 40MHz</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>80MHz</name>
+                  <description>CPU Clock less then 80MHz</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>above_80MHz</name>
+                  <description>CPU Clock above 10MHz</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--SelectRI-->
+            <field>
+              <name>SelectRI</name>
+              <description>DUcc extra I, should be equals to LOW field!</description>
+              <bitRange>[5:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__SelRI_</headerEnumName>
+                <enumeratedValue>
+                  <name>10MHz</name>
+                  <description>Additional I ~ 300uA</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>200KHz</name>
+                  <description>Additional I ~ 6.6uA</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>500KHz</name>
+                  <description>Additional I ~ 20A</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1MHz</name>
+                  <description>Additional I ~ 80uA</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>GensOffz</name>
+                  <description>Additional I ~ 2uA</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>40MHz</name>
+                  <description>Additional I ~ 900uA</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>80MHz</name>
+                  <description>Additional I ~ 4.4mA</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>above_80MHz</name>
+                  <description>Additional I ~ 19mA</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #BKP_ALONE -->
+            <field>
+              <name>StandAlone</name>
+              <description>Switch to StandAlone mode</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__StandAlone_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Microcontroller mode</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Switch to interface IC</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #BKP_JTAGA -->
+            <!-- #BKP_JTAGB -->
+            <!--Trim dDUcc-->
+            <field>
+              <name>Trim_dDUcc</name>
+              <description>Ducc adjust voltages</description>
+              <bitRange>[10:8]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__dDUcc_</headerEnumName>
+                <enumeratedValue>
+                  <name>+0.1</name>
+                  <description>DUcc += 0.1 V</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.06</name>
+                  <description>DUcc += 0.06 V</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.04</name>
+                  <description>DUcc += 0.04 V</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>+0.01</name>
+                  <description>DUcc += 0.01 V</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.01</name>
+                  <description>DUcc -= 0.01 V</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.04</name>
+                  <description>DUcc -= 0.04 V</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.6</name>
+                  <description>DUcc -= 0.06 V</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>-0.1</name>
+                  <description>DUcc -= 0.1 V</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--FPOR-->
+            <field>
+              <name>FPOR</name>
+              <description>Power Reset Flag</description>
+              <bitRange>[11:11]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__FPOR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Low</name>
+                  <description>No Bootloader</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>High</name>
+                  <description>Bootloader completed</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #BKP_TRIM_DU -->
+            <field>
+              <name>Trim_DUcc</name>
+              <description>Select DUcc voltage</description>
+              <bitRange>[13:12]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__DUcc_</headerEnumName>
+                <enumeratedValue>
+                  <name>1.8</name>
+                  <description>DUcc = 1.8 V</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.6</name>
+                  <description>DUcc = 1.6 V</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.4</name>
+                  <description>DUcc = 1.4 V</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>1.2</name>
+                  <description>DUcc = 1.2 V</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- #BKP_COVDET -->
+            <!-- #BKP_MODE -->
+            <!-- #BKP_LimI -->
+            <field>
+              <name>I_LimEn</name>
+              <description>Enable I 150mA protection</description>
+              <bitRange>[15:15]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_BKP_0E__Ilim_</headerEnumName>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Enabled</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- REG_0F -->
+        <register>
+          <name>REG_0F</name>
+          <description>REG_OF Control register</description>
+          <addressOffset>0x0000003C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFBFFF</resetMask>
+          <fields>
+            <!--LSE_ON-->
+            <field>
+              <name>LSE_ON</name>
+              <description>LSE generator enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RTC__LSE_ON_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Disable state</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Enable state</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--LSE_BYP-->
+            <field>
+              <name>LSE_BYP</name>
+              <description>LSE generator </description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_RTC__LSE_BYP_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Use for external resonator</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Use for external generator</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RTC_SEL-->
+            <field>
+              <name>RTC_SEL</name>
+              <description>Select Clock for RTC</description>
+              <bitRange>[3:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>LSI</name>
+                  <description>RTC use LSI clock</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>LSE</name>
+                  <description>RTC use LSE clock</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSIRTC</name>
+                  <description>RTC use HSIRTC clock</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>HSERTC</name>
+                  <description>RTC use HSERTC clock</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>                            
+            </field>
+            <!--RTC_EN-->
+            <field derivedFrom="LSE_ON">
+              <name>RTC_EN</name>
+              <description>RTC enable</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!--RTC_CAL-->
+            <field>
+              <name>RTC_CAL</name>
+              <description>RTC calibration</description>
+              <bitRange>[12:5]</bitRange>              
+            </field>
+            <!--RTC_CAL-->
+            <field>
+              <name>LSE_RDY</name>
+              <description>LSE frequency ready</description>
+              <bitRange>[13:13]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>NotReady</name>
+                  <description>No frequency or unstable</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Frequency ready</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field> 
+            <!--LSI_ON-->
+            <field derivedFrom="LSE_ON">
+              <name>LSI_ON</name>
+              <description>LSI generator enable</description>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <!--LSI_TRIM-->
+            <field>
+              <name>LSI_TRIM</name>
+              <description>LSI frequency adjust</description>
+              <bitRange>[20:16]</bitRange>              
+              <enumeratedValues>
+                <enumeratedValue> 
+                  <name>69KHz</name>
+                  <description>LSI frequency tuner</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>65KHz</name><value>1</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>60KHz</name><value>2</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>58KHz</name><value>3</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>52KHz</name><value>4</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>50KHz</name><value>5</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>49KHz</name><value>6</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>45KHz</name><value>7</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>44KHz</name><value>8</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>42KHz</name><value>9</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>40KHz</name><value>10</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>39KHz</name><value>11</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>37KHz</name><value>12</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>36KHz</name><value>13</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>35KHz</name><value>14</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>33KHz</name><value>15</value></enumeratedValue>
+                <enumeratedValue derivedFrom="69KHz"><name>32KHz</name><value>16</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--LSI_RDY-->
+            <field derivedFrom="LSE_RDY">
+              <name>LSI_RDY</name>
+              <description>LSI frequency ready</description>
+              <bitRange>[21:21]</bitRange>
+            </field>
+            <!--HSI_ON-->
+            <field derivedFrom="LSE_ON">
+              <name>HSI_ON</name>
+              <description>HSI generator enable</description>
+              <bitRange>[22:22]</bitRange>
+            </field>
+            <!--HSI_RDY-->
+            <field derivedFrom="LSE_RDY">
+              <name>HSI_RDY</name>
+              <description>HSI frequency ready</description>
+              <bitRange>[23:23]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!--HSI_TRIM-->
+            <field>
+              <name>HSI_TRIM</name>
+              <description>HSI frequency adjust</description>
+              <bitRange>[29:24]</bitRange>              
+            </field>
+            <!--Standby-->
+            <field>
+              <name>Standby</name>
+              <description>Standby sleep mode</description>
+              <bitRange>[30:30]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Normal mode, DUcc is On</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Enable</name>
+                  <description>Standby mode, DUcc is Off</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RTC_RESET-->
+            <field>
+              <name>RTC_RESET</name>
+              <description>Reset RTC bit</description>
+              <bitRange>[31:31]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Active</name>
+                  <description>RTC active state</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Reset</name>
+                  <description>RTC in Reset state</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_CNT -->
+        <register>
+          <name>RTC_CNT</name>
+          <description>Count periods of PRL</description>
+          <addressOffset>0x00000040</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- RTC_DIV -->
+        <register>
+          <name>RTC_DIV</name>
+          <description>Counts RTC Clock to get PRL value</description>
+          <addressOffset>0x00000044</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC DIV value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_PRL -->
+        <register>
+          <name>RTC_PRL</name>
+          <description>Period value for DIV counter</description>
+          <addressOffset>0x00000048</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC PRL value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_ALRM -->
+        <register>
+          <name>RTC_ALRM</name>
+          <description>Event value for CNT counter</description>
+          <addressOffset>0x0000004C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>Alarm value of CNT</description>
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_CS -->
+        <register>
+          <name>RTC_CS</name>
+          <description>RTC Control and Status</description>
+          <addressOffset>0x00000050</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000007F</resetMask>
+          <fields>
+            <!--OWF-->
+            <field>
+              <name>OWF</name>
+              <description>CNT Overflow flag, clear by set 1</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No Event</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Event</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--SECF-->
+            <field derivedFrom="OWF">
+              <name>SECF</name>
+              <description>DIV == PRL Event, clear by set 1</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <!--ALRF-->
+            <field derivedFrom="OWF">
+              <name>ALRF</name>
+              <description>CNT == ALRM Event, clear by set 1</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <!--OWF_IE-->
+            <field derivedFrom="OWF">
+              <name>OWF_IE</name>
+              <description>Enable IRQ by OWF</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <!--SECF_IE-->
+            <field derivedFrom="OWF">
+              <name>SECF_IE</name>
+              <description>Enable IRQ by SECF</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!--ALRF_IE-->
+            <field derivedFrom="OWF">
+              <name>ALRF_IE</name>
+              <description>Enable IRQ by ALRF</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <!--WEC-->
+            <field>
+              <name>WEC</name>
+              <description>RTC Busy flag</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Registers available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Busy</name>
+                  <description>Registers unavailable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #EBC -->
+    <!-- #ETHERNET -->
+
+    <!-- #CANs -->
+    <!-- #UARTs -->
+    <!-- #TIMERs -->
+    <!-- #SSPs  -->
+    <!-- #GPIOs -->
+    <peripheral>
+      <name>MDR_PORTA</name>
+      <version>1.0</version>
+      <description>GPIO Port Control</description>
+      <groupName>GPIO Ports</groupName>
+      <!-- #GPIO_ADDR -->
+      <baseAddress>0x400A8000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <!-- #GPIO_SIZE -->
+        <size>0x2C</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- RXTX -->
+        <register>
+          <name>RXTX</name>
+          <description>GPIO Pin Data</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pin data value</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_DATA_</headerEnumName>
+                <enumeratedValue>
+                  <name>Low</name>
+                  <description>LOW Level Voltage</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>High</name>
+                  <description>HIGH Level Voltage</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- OE -->
+        <register>
+          <name>OE</name>
+          <description>Output Enable Control</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pin data direction</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_DIR_</headerEnumName>
+                <enumeratedValue>
+                  <name>IN</name>
+                  <description>Input pin</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OUT</name>
+                  <description>Output pin</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- FUNC -->
+        <register>
+          <name>FUNC</name>
+          <description>Pin Functions in Digital mode</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>2</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>            
+              <description>Pin Digital Function</description>
+              <bitRange>[1:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_FUNC_</headerEnumName>
+                <enumeratedValue>
+                  <name>Port</name>
+                  <description>RXTX defined pin</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Main</name>
+                  <description>Main Periph defined pin</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Alter</name>
+                  <description>Alter Periph defined pin</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Override</name>
+                  <description>Override Periph defined pin</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- ANALOG -->
+        <register>
+          <name>ANALOG</name>
+          <description>Enable Digital Mode Control</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>            
+              <description>Enable Digital mode</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_DIGIT_</headerEnumName>
+                <enumeratedValue>
+                  <name>Analog</name>
+                  <description>Pin works with Analog signal</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Digital</name>
+                  <description>Pin works with Digital signal</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- PULL -->
+        <register>
+          <name>PULL</name>
+          <description>PULL Up and Down Control</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Down_Pin_0</name>
+              <description>Pull Down Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_DOWN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No pull selected</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>DOWN</name>
+                  <description>Pin pulled down to GND</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_1</name><bitRange>[1:1]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_2</name><bitRange>[2:2]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_3</name><bitRange>[3:3]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_4</name><bitRange>[4:4]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_5</name><bitRange>[5:5]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_6</name><bitRange>[6:6]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_7</name><bitRange>[7:7]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_8</name><bitRange>[8:8]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_9</name><bitRange>[9:9]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_10</name><bitRange>[10:10]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_11</name><bitRange>[11:11]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_12</name><bitRange>[12:12]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_13</name><bitRange>[13:13]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_14</name><bitRange>[14:14]</bitRange></field>
+            <field derivedFrom="Down_Pin_0"><name>Down_Pin_15</name><bitRange>[15:15]</bitRange></field>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>UP_Pin_%s</name>            
+              <description>Pull Up Enable</description>
+              <bitRange>[16:16]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No pull selected</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UP</name>
+                  <description>Pin pulled up to Ucc</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- PD -->
+        <register>
+          <name>PD</name>
+          <description>Otput Driver Mode</description>
+          <addressOffset>0x00000014</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Driver_Pin_0</name>
+              <description>Driver mode for pin</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_DRIVER_</headerEnumName>
+                <enumeratedValue>
+                  <name>Driver</name>
+                  <description>Pull-Push driver</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>OpenDrain</name>
+                  <description>Work with line pulled up to Ucc</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_1</name><bitRange>[1:1]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_2</name><bitRange>[2:2]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_3</name><bitRange>[3:3]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_4</name><bitRange>[4:4]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_5</name><bitRange>[5:5]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_6</name><bitRange>[6:6]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_7</name><bitRange>[7:7]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_8</name><bitRange>[8:8]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_9</name><bitRange>[9:9]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_10</name><bitRange>[10:10]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_11</name><bitRange>[11:11]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_12</name><bitRange>[12:12]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_13</name><bitRange>[13:13]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_14</name><bitRange>[14:14]</bitRange></field>
+            <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_15</name><bitRange>[15:15]</bitRange></field>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Schmitt_Pin_%s</name>            
+              <description>Schmitt trigger enable</description>
+              <bitRange>[16:16]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_SHMITT_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Schmitt 200mv</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Schmitt 400mv</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- PWR -->
+        <register>
+          <name>PWR</name>
+          <description>Output voltage switch rate</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>2</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>            
+              <description>Voltage levels switch rate</description>
+              <bitRange>[1:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_PWR_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Level switch disabled</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Slow</name>
+                  <description>Levels switch rate about 100ns</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Fast</name>
+                  <description>Levels switch rate about 20ns</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>MaxFast</name>
+                  <description>Levels switch rate about 10ns</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- GFEN -->
+        <register>
+          <name>GFEN</name>
+          <description>Input pulses filter</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Filter for pin</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_GFEN_</headerEnumName>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>Filter Off</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Filter pulses less then 10 ns</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- #GPIO_SETCLR -->
+        <!-- SETTX -->
+        <register>
+          <name>SETTX</name>
+          <description>Set RXTX by MASK</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Set 1 to pin</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_SETTX_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>Do nothing</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Set High level to pin with reg RXTX</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- CLRTX -->
+        <register>
+          <name>CLRTX</name>
+          <description>CLR RXTX by MASK</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Clear pin to 0</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_CLRTX_</headerEnumName>
+                <enumeratedValue>
+                  <name>Inactive</name>
+                  <description>Do nothing</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Set Low level to pin with reg RXTX</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- RDTX -->
+        <register>
+          <name>RDTX</name>
+          <description>Value of RXTX in Port mode</description>
+          <addressOffset>0x00000028</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pin data value</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <headerEnumName>MDR_GPIO__PIN_RDTX_</headerEnumName>
+                <enumeratedValue>
+                  <name>Low</name>
+                  <description>LOW Level Voltage</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>High</name>
+                  <description>HIGH Level Voltage</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- GPIO_PORTB -->
+    <peripheral derivedFrom="MDR_PORTA">
+      <name>MDR_PORTB</name>
+      <!-- #GPIO_B_ADDR -->  
+      <baseAddress>0x400B0000</baseAddress>
+    </peripheral>
+    <!-- GPIO_PORTC -->
+    <peripheral derivedFrom="MDR_PORTA">
+      <name>MDR_PORTC</name>
+      <!-- #GPIO_C_ADDR -->
+      <baseAddress>0x400B8000</baseAddress>
+    </peripheral>
+    <!-- #GPIO_PORT_D -->
+    <peripheral derivedFrom="MDR_PORTA">
+      <name>MDR_PORTD</name>
+      <baseAddress>0x400C0000</baseAddress>
+    </peripheral>
+    <!-- #GPIO_PORT_E -->
+    <peripheral derivedFrom="MDR_PORTA">
+      <name>MDR_PORTE</name>
+      <baseAddress>0x400C8000</baseAddress>
+    </peripheral>
+    <!-- #GPIO_PORT_F -->
+    <peripheral derivedFrom="MDR_PORTA">
+      <name>MDR_PORTF</name>
+      <baseAddress>0x400E8000</baseAddress>
+    </peripheral>
+    <!-- #GPIO_PORT_G -->
+    <!-- #GPIO_PORT_H -->
+    <!-- #GPIO_PORT_I -->
+
+    <!-- #MILs -->
+    <!-- #ARINKs -->
+
+    <!-- peripherals end-->
+  </peripherals>
+
+</device>  

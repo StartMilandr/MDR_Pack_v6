@@ -7,10 +7,12 @@ static const uint8_t LCD_Font[] = {0xEE,0x60,0x2F,0x6D,0xE1,0xCD,0xCF,0x68,0xEF,
 #define CHAR_9    0x39
 #define CHAR_A    0x41
 #define CHAR_F    0x46
+#define CHAR_a    0x61
+#define CHAR_f    0x66
 
 //  Задержка
-uint32_t _Delay_100ns = 15;
-uint32_t _Delay_200ns = 30;
+static uint32_t _Delay_100ns = 15;
+static uint32_t _Delay_200ns = 30;
 
 static void LCD_Initialize (void);
 
@@ -68,7 +70,7 @@ static MDR_Port_ApplyMask  applyGPIO_Pins[MDR_LCD_PortCount];
 static MDR_GPIO_CfgRegs  _TempPins[MDR_LCD_PortCount];
 
   
-void LCD_InitPins(void)
+static void LCD_InitPins(void)
 {
   uint32_t i;
   MDR_PinDig_PermRegs pinsPermRegs;
@@ -192,29 +194,22 @@ static uint8_t LCD_CharToCode(uint8_t symbol)
     return LCD_Font[symbol - CHAR_0];
   else if ((symbol >= CHAR_A) && (symbol <= CHAR_F))
     return LCD_Font[symbol - CHAR_A + 10];
+  else if ((symbol >= CHAR_a) && (symbol <= CHAR_f))
+    return LCD_Font[symbol - CHAR_a + 10];  
   else
     return 0;
 }
 
-void MDRB_LCD_Print(const char* string, uint8_t y)
+void MDRB_LCD_Print(const char* string)
 {
   uint8_t i;
   uint8_t fillSpaces = 0;
 
   // Start Writing
   LCD_WriteAddr(0);
-
-  // Write spaces  
-  if (y < LCD_SCREEN_WIDTH)
-  {  
-    for (i = 0; i < y; i++)
-      LCD_WriteData(0, 0);
-  }
-  else 
-    return;
-  
+ 
   //  Write Chars
-  for (i = y; i < LCD_SCREEN_WIDTH; i++)
+  for (i = 0; i < LCD_SCREEN_WIDTH; i++)
   {
     if (!string[i])
       fillSpaces = 1;
@@ -259,7 +254,7 @@ void MDRB_LCD_ScrollString (const char* string, uint8_t shift)
   char scroll[LCD_SCREEN_WIDTH + 1];  // Строка, получаемая в результате сдвига
 
   MDRB_LCD_ShiftString(string, shift, LCD_SCREEN_WIDTH, scroll);
-  MDRB_LCD_Print(scroll, 0);
+  MDRB_LCD_Print(scroll);
 }
 
 void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength)

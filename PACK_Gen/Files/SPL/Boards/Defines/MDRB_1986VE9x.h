@@ -4,8 +4,12 @@
 
 #if defined (USE_BOARD_VE91)  || defined (USE_BOARD_VE92) || defined (USE_BOARD_VE93) || defined (USE_BOARD_VE94)
 
-//===================================    Частота тактирования    ========================================
-#define HSE_PLL_MUL_MAX     MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+//===================================    Р§Р°СЃС‚РѕС‚Р° С‚Р°РєС‚РёСЂРѕРІР°РЅРёСЏ    ========================================
+  #define HSE_PLL_MUL_MAX         MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+  #define HSE_LOW_SELRI_MAX       MDR_LOWRI_gt80MHz
+  #define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le100MHz
+
+  #define MDR_CPU_SetClock_HSE_Max(bypass)  MDR_CPU_SetClock_HSE_PLL((bypass), HSE_PLL_MUL_MAX, HSE_LOW_SELRI_MAX, HSE_EEPROM_DELAY_MAX, MDR_CLK_div1, HSE_TIMEOUT)
 
 //  ---------------  SPI Definition ----------------
     // SPI1 PortF

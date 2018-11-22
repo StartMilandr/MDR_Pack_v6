@@ -196,7 +196,7 @@ void LCD_ShowTestName(uint32_t testInd)
 #else
   //  Вывод источника тактирования
   sprintf(mess, "%d", (uint8_t)testInd);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
 #endif 
   
   LCD_PIN_RELEASE; 
@@ -217,7 +217,7 @@ void LCD_ShowTestResult(uint32_t result)
   static char mess[LCD_SCREEN_WIDTH];
     
   sprintf(mess, "%d  %d", (uint8_t)activeTest, (uint8_t)result);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
 #endif 
   
   LCD_PIN_RELEASE;

@@ -29,7 +29,7 @@
   
 #else
   //  ===== Display MT-10T7 ======
-  void MDRB_LCD_Print       (const char* string, uint8_t y);                            // Вывод строки    
+  void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
   void MDRB_LCD_ScrollString(const char* string, uint8_t shift);                        // Горизональное перемещение строки. Необходимо менять shift.
   
   void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);             //  Автономное горизональное перемещение строки.

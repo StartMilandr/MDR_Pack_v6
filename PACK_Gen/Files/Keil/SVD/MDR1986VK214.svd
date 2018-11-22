@@ -1787,6 +1787,52 @@
         </register>
         <!-- #ADC2_REG_CHSEL -->    
         <!-- #ADC1_REG_TRIM -->
+        <register>
+          <name>ADC1_TRIM</name>
+          <description>ADC TS_Vref trim register</description>
+          <addressOffset>0x00000030</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000001E</resetMask>
+          <fields>
+            <field>
+              <name>TS_Trim</name>
+              <description>Trim Vref from Thermosensor</description>
+              <bitRange>[5:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Vref_1v23</name><description>1.23V typically</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v213</name><description>1.213V typically</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v211</name><description>1.211V typically</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v208</name><description>1.208V typically</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v206</name><description>1.206V typically</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v203</name><description>1.203V typically</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v200</name><description>1.200V typically</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v197</name><description>1.197V typically</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Vref_1v193</name><description>1.193V typically</description><value>8</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SEL_VREF_BUF</name>
+              <description>Output Vref_Buf=1.23 from Thermosensor</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Disable</name>
+                  <description>Channel 30 signal is undefined</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Selected</name>
+                  <description>Channel 30 signal is VRef_Buf</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>     
+          </fields>
+        </register>
         <!-- Registers end-->
       </registers>
       <!-- peripheral end-->

@@ -298,7 +298,7 @@ void LCD_ShowResult(uint32_t cpuFreqHz)
 #else
   //  Вывод источника тактирования
   sprintf(mess, "%d %d", (uint8_t)activeClockSrc, cpuFreqHz);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
 #endif  
 
 #ifdef LCD_PIN_CONFLICT  
@@ -346,7 +346,7 @@ void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x
 #else
   //  Вывод источника тактирования
   sprintf(mess, "%d EEEE", (uint8_t)activeClockSrc);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
 #endif
   
 #ifdef LCD_PIN_CONFLICT

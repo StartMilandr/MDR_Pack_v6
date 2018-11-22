@@ -4,7 +4,11 @@
 #ifdef USE_MDR1901VC1
 
 //===================================    Частота тактирования    ========================================
-#define HSE_PLL_MUL_MAX     MDR_x12   //  HSE_max = 8MHz * 12 = 96MHz  (100MHz по спецификации)
+#define HSE_PLL_MUL_MAX         MDR_x12                 //  HSE_max = 8MHz * 12 = 96MHz  (100MHz по спецификации)
+#define HSE_LOW_SELRI_MAX       MDR_LOWRI_gt80MHz
+#define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le100MHz
+
+#define MDR_CPU_SetClock_HSE_Max(bypass)  MDR_CPU_SetClock_HSE_PLL((bypass), HSE_PLL_MUL_MAX, HSE_LOW_SELRI_MAX, HSE_EEPROM_DELAY_MAX, MDR_CLK_div1, HSE_TIMEOUT)
 
 //===================================    Заметки по плате    ========================================
 //  MDR_JTAG_A_PORT   MDR_PORTB [pin0..pin4]
@@ -39,17 +43,36 @@
     #define PIN_PC6     MDR_Pin_6   //  Right
     #define PIN_PC7     MDR_Pin_7   //          LCD_E
 
-    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B
-    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B
-    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B
-    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B
-    #define PIN_PD8     MDR_Pin_8   //                              ExtMem_CE
-    #define PIN_PD9     MDR_Pin_9   //          LCD_RES
+    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                ADC_Ch0/ref+
+    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                ADC_Ch1/ref-
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B                ADC_Ch2
+    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B                ADC_Ch3
+    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B                ADC_Ch4
+    #define PIN_PD5     MDR_Pin_5   //                                          ADC_Ch5
+    #define PIN_PD6     MDR_Pin_6   //                                          ADC_Ch6
+    #define PIN_PD7     MDR_Pin_7   //                                          ADC_Ch7
+    #define PIN_PD8     MDR_Pin_8   //                              ExtMem_CE   ADC_Ch8
+    #define PIN_PD9     MDR_Pin_9   //          LCD_RES                         ADC_Ch9    
+    #define PIN_PD10    MDR_Pin_10  //                                          ADC_Ch10
+    #define PIN_PD11    MDR_Pin_11  //                                          ADC_Ch11
+    #define PIN_PD12    MDR_Pin_12  //                                          ADC_Ch12
+    #define PIN_PD13    MDR_Pin_13  //                                          ADC_Ch13
+    #define PIN_PD14    MDR_Pin_14  //                                          ADC_Ch14
+    #define PIN_PD15    MDR_Pin_15  //                                          ADC_Ch15
 
     #define PIN_PE4     MDR_Pin_4   //          LCD_E1
     #define PIN_PE5     MDR_Pin_5   //          LCD_E2
     #define PIN_PE11    MDR_Pin_11  //          LCD_A0
+
+
+
+//  --------------  ADC Definition  ------------
+    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch6
+    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch7
+
+    #define MDRB_ADC_PIN_ALL          0xFFFFUL
+    #define MDRB_ADC_PIN_ALL_JTAG_B   0xFFE0UL
+    #define MDRB_ADC_PIN_ALL_LCD      0xFCFFUL    
 
 
 //  --------------  Buttons Definition  ------------

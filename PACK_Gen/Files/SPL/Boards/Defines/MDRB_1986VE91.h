@@ -33,16 +33,22 @@
     #define PIN_PC13      MDR_Pin_13  //  Left
     #define PIN_PC14      MDR_Pin_14  //  Right
 
-    #define PIN_PD0       MDR_Pin_0   //                    JTAG_B
-    #define PIN_PD1       MDR_Pin_1   //                    JTAG_B
-    #define PIN_PD2       MDR_Pin_2   //                    JTAG_B
-    #define PIN_PD3       MDR_Pin_3   //                    JTAG_B
-    #define PIN_PD4       MDR_Pin_4   //                    JTAG_B
-    #define PIN_PD10      MDR_Pin_10  //  LED_1
-    #define PIN_PD11      MDR_Pin_11  //  LED_2
-    #define PIN_PD12      MDR_Pin_12  //  LED_3
-    #define PIN_PD13      MDR_Pin_13  //  LED_4
-    #define PIN_PD14      MDR_Pin_14  //  LED_5
+    #define PIN_PD0       MDR_Pin_0   //                    JTAG_B                ADC_Ch0/ref+
+    #define PIN_PD1       MDR_Pin_1   //                    JTAG_B                ADC_Ch1/ref-
+    #define PIN_PD2       MDR_Pin_2   //                    JTAG_B                ADC_Ch2
+    #define PIN_PD3       MDR_Pin_3   //                    JTAG_B                ADC_Ch3
+    #define PIN_PD4       MDR_Pin_4   //                    JTAG_B                ADC_Ch4
+    #define PIN_PD5       MDR_Pin_5   //                                          ADC_Ch5
+    #define PIN_PD6       MDR_Pin_6   //                                          ADC_Ch6
+    #define PIN_PD7       MDR_Pin_7   //                                          ADC_Ch7 - TuneResistor
+    #define PIN_PD8       MDR_Pin_8   //                                          ADC_Ch8
+    #define PIN_PD9       MDR_Pin_9   //                                          ADC_Ch9    
+    #define PIN_PD10      MDR_Pin_10  //  LED_1                                   ADC_Ch10
+    #define PIN_PD11      MDR_Pin_11  //  LED_2                                   ADC_Ch11
+    #define PIN_PD12      MDR_Pin_12  //  LED_3                                   ADC_Ch12
+    #define PIN_PD13      MDR_Pin_13  //  LED_4                                   ADC_Ch13
+    #define PIN_PD14      MDR_Pin_14  //  LED_5                                   ADC_Ch14
+    #define PIN_PD15      MDR_Pin_15  //                                          ADC_Ch15    
 
     #define PIN_PE4       MDR_Pin_4   //          LCD_E1
     #define PIN_PE5       MDR_Pin_5   //          LCD_E2
@@ -51,6 +57,16 @@
 
 
 #include "MDRB_1986VE9x.h"
+
+//  --------------  ADC Definition  ------------
+    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch7
+    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch8
+    
+    #define MDRB_ADC_CH_TUNE           MDRB_ADC_CH_IN1
+    
+    #define MDRB_ADC_PIN_ALL          0xFFFFUL
+    #define MDRB_ADC_PIN_ALL_JTAG_B   0xFFE0UL        
+    #define MDRB_ADC_PIN_ALL_LED      0x83FFUL
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_C

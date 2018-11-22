@@ -814,7 +814,6 @@
         <file category="source"  name="SPL/Drivers/MDR_EEPROM_18MHz.c" version="2.0.0"/>
       </files>
     </component> 
-
     <!-- BKP RTC -->
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Core System Timer</description>
@@ -832,35 +831,32 @@
         <file category="source"  name="SPL/Drivers/MDR_Funcs.c" version="2.0.0"/>
       </files>
     </component>
-
-    <!--UnitTests-->
-    <component Cclass="UnitTests" Cgroup="RST Test" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Unit test for RST funcs</description>
+    <!--ADC-->
+    <component Cclass="Drivers" Cgroup="ADC" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>SAR ADC Control functions</description>
       <files>
-        <file category="include" name="SPL/Devices/Defines/"        version="2.0.0"/>
-        <file category="include" name="SPL/UnitTests/"              version="2.0.0"/>
-        <file category="header"  name="SPL/UnitTests/MDR_TestRST.h" version="2.0.0"/>
-        <file category="source"  name="SPL/UnitTests/MDR_TestRST.c" version="2.0.0"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_ADC.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_ADC.c" version="2.0.0"/>
+      </files>
+    </component>
+    <!--PER_Clock-->
+    <component Cclass="Drivers" Cgroup="PER_Clock" Cversion="2.0" condition="CON_MDR_CM1CM3">
+      <description>Peripherial clock select functions</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_PER_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_PER_Clock.c" version="2.0.0"/>
       </files>
     </component>    
-    <component Cclass="UnitTests" Cgroup="GPIO Test" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Unit test for GPIO funcs</description>
+    <component Cclass="Drivers" Cgroup="PER_Clock" Cversion="2.0" condition="CON_MDR_CM0">
+      <description>Peripherial clock select functions</description>
       <files>
-        <file category="include" name="SPL/Devices/Defines/"         version="2.0.0"/>
-        <file category="include" name="SPL/UnitTests/"               version="2.0.0"/>
-        <file category="header"  name="SPL/UnitTests/MDR_TestGPIO.h" version="2.0.0"/>
-        <file category="source"  name="SPL/UnitTests/MDR_TestGPIO.c" version="2.0.0"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_PER_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_PER_ClockVE4.c" version="2.0.0"/>
       </files>
-    </component>    
-    <component Cclass="UnitTests" Cgroup="BKP Test" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Unit test for BKP funcs</description>
-      <files>
-        <file category="include" name="SPL/Devices/Defines/"        version="2.0.0"/>
-        <file category="include" name="SPL/UnitTests/"              version="2.0.0"/>
-        <file category="header"  name="SPL/UnitTests/MDR_TestBKP.h" version="2.0.0"/>
-        <file category="source"  name="SPL/UnitTests/MDR_TestBKP.c" version="2.0.0"/>
-      </files>
-    </component>    
+    </component> 
 
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
@@ -909,7 +905,6 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"   attr="config" version="2.0.0"/>
       </files>
     </component>     
-
 
 
   </components>
@@ -1011,6 +1006,25 @@
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
         <component Cclass="Drivers"       Cgroup="EEPROM"       Cversion="2.0" condition="CON_MDR_ALL"/>
+      </attributes>
+    </example>
+
+    <example name="ADC_Test" folder="Examples/All_Boards/ADC_Test" doc="ReadMe.txt" version="2.0.0">
+      <description>ADC SAR use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="ADC_Test.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="ADC"          Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="SysTimer"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
       </attributes>
     </example>
 

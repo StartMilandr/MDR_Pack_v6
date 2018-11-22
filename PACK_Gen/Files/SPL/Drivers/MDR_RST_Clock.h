@@ -3,7 +3,7 @@
 
 #include "MDR_Config.h"
 #include <MDR_Types.h>
-#include "MDR_Funcs.h"
+#include <MDR_Funcs.h>
 
 
 //==========   Вспомогательные функции стабилизации потребления и доступа к EEPROM ==============
@@ -120,5 +120,6 @@ bool MDR_CPU_SetClock_HSE_div2_PLL(MDR_OnOff byPass, MDR_MUL_x16 pllMul, MDR_RST
 
 #define MDR_CPU_SetClock_HSE_PLL_def(bypass, mul, lowRI, dEE)          MDR_CPU_SetClock_HSE_PLL     ((bypass), (mul), (lowRI), (dEE), MDR_CLK_div1, HSE_TIMEOUT)
 #define MDR_CPU_SetClock_HSE_div2_PLL_def(bypass, mul, lowRI, dEE)     MDR_CPU_SetClock_HSE_div2_PLL((bypass), (mul), (lowRI), (dEE), MDR_CLK_div1, HSE_TIMEOUT)
+
 
 #endif //MDR_RST_CLOCK_H

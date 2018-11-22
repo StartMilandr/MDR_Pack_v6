@@ -337,7 +337,7 @@ void LCD_ShowActiveTest(TestActive testItem)
   
 #else
   sprintf(mess, "%d %d", (uint8_t)testItem, cpuFreqHz);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
   
 #endif 
   
@@ -354,7 +354,7 @@ void LCD_ShowTestResult(TestResult result)
 #else
   static char mess[10];
   sprintf(mess, "%d", (uint8_t)result);
-  MDRB_LCD_Print(mess, 0);
+  MDRB_LCD_Print(mess);
   
 #endif 
   

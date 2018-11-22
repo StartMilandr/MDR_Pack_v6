@@ -1,0 +1,527 @@
+#GPIO_VE3
+<peripheral>
+  <name>MDR_PORTA</name>
+  <version>1.0</version>
+  <description>GPIO Port Control</description>
+  <groupName>GPIO Ports</groupName>
+  <!-- #GPIO_ADDR -->
+  <baseAddress>0x400A8000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <!-- #GPIO_SIZE -->
+    <size>0x2C</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- RXTX -->
+    <register>
+      <name>RXTX</name>
+      <description>GPIO Pin Data</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Pin data value</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_DATA_</headerEnumName>
+            <enumeratedValue>
+              <name>Low</name>
+              <description>LOW Level Voltage</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>High</name>
+              <description>HIGH Level Voltage</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- OE -->
+    <register>
+      <name>OE</name>
+      <description>Output Enable Control</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Pin data direction</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_DIR_</headerEnumName>
+            <enumeratedValue>
+              <name>IN</name>
+              <description>Input pin</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>OUT</name>
+              <description>Output pin</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- FUNC -->
+    <register>
+      <name>FUNC</name>
+      <description>Pin Functions in Digital mode</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>2</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>            
+          <description>Pin Digital Function</description>
+          <bitRange>[1:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_FUNC_</headerEnumName>
+            <enumeratedValue>
+              <name>Port</name>
+              <description>RXTX defined pin</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Main</name>
+              <description>Main Periph defined pin</description>
+              <value>1</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Alter</name>
+              <description>Alter Periph defined pin</description>
+              <value>2</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Override</name>
+              <description>Override Periph defined pin</description>
+              <value>3</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- ANALOG -->
+    <register>
+      <name>ANALOG</name>
+      <description>Enable Digital Mode Control</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>            
+          <description>Enable Digital mode</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_DIGIT_</headerEnumName>
+            <enumeratedValue>
+              <name>Analog</name>
+              <description>Pin works with Analog signal</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Digital</name>
+              <description>Pin works with Digital signal</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- PULL -->
+    <register>
+      <name>PULL</name>
+      <description>PULL Up and Down Control</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>Down_Pin_0</name>
+          <description>Pull Down Enable</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_DOWN_</headerEnumName>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>No pull selected</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>DOWN</name>
+              <description>Pin pulled down to GND</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_1</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_2</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_3</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_4</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_5</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_6</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_7</name><bitRange>[7:7]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_8</name><bitRange>[8:8]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_9</name><bitRange>[9:9]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_10</name><bitRange>[10:10]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_11</name><bitRange>[11:11]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_12</name><bitRange>[12:12]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_13</name><bitRange>[13:13]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_14</name><bitRange>[14:14]</bitRange></field>
+        <field derivedFrom="Down_Pin_0"><name>Down_Pin_15</name><bitRange>[15:15]</bitRange></field>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>UP_Pin_%s</name>            
+          <description>Pull Up Enable</description>
+          <bitRange>[16:16]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>No pull selected</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>UP</name>
+              <description>Pin pulled up to Ucc</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- PD -->
+    <register>
+      <name>PD</name>
+      <description>Otput Driver Mode</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>Driver_Pin_0</name>
+          <description>Driver mode for pin</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_DRIVER_</headerEnumName>
+            <enumeratedValue>
+              <name>Driver</name>
+              <description>Pull-Push driver</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>OpenDrain</name>
+              <description>Work with line pulled up to Ucc</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_1</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_2</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_3</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_4</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_5</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_6</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_7</name><bitRange>[7:7]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_8</name><bitRange>[8:8]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_9</name><bitRange>[9:9]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_10</name><bitRange>[10:10]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_11</name><bitRange>[11:11]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_12</name><bitRange>[12:12]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_13</name><bitRange>[13:13]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_14</name><bitRange>[14:14]</bitRange></field>
+        <field derivedFrom="Driver_Pin_0"><name>Driver_Pin_15</name><bitRange>[15:15]</bitRange></field>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Schmitt_Pin_%s</name>            
+          <description>Schmitt trigger enable</description>
+          <bitRange>[16:16]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_SHMITT_</headerEnumName>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>Schmitt 200mv</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>On</name>
+              <description>Schmitt 400mv</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- PWR -->
+    <register>
+      <name>PWR</name>
+      <description>Output voltage switch rate</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>2</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>            
+          <description>Voltage levels switch rate</description>
+          <bitRange>[1:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_PWR_</headerEnumName>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>Level switch disabled</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Slow</name>
+              <description>Levels switch rate about 100ns</description>
+              <value>1</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Fast</name>
+              <description>Levels switch rate about 20ns</description>
+              <value>2</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>MaxFast</name>
+              <description>Levels switch rate about 10ns</description>
+              <value>3</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- GFEN -->
+    <register>
+      <name>GFEN</name>
+      <description>Input pulses filter</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Filter for pin</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_GFEN_</headerEnumName>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>Filter Off</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>On</name>
+              <description>Filter pulses less then 10 ns</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- #GPIO_SETCLR -->
+    <!-- SETTX -->
+    <register>
+      <name>SETTX</name>
+      <description>Set RXTX by MASK</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <modifiedWriteValues>oneToSet</modifiedWriteValues>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Set 1 to pin</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_SETTX_</headerEnumName>
+            <enumeratedValue>
+              <name>Inactive</name>
+              <description>Do nothing</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Selected</name>
+              <description>Set High level to pin with reg RXTX</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- CLRTX -->
+    <register>
+      <name>CLRTX</name>
+      <description>CLR RXTX by MASK</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Clear pin to 0</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_CLRTX_</headerEnumName>
+            <enumeratedValue>
+              <name>Inactive</name>
+              <description>Do nothing</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Selected</name>
+              <description>Set Low level to pin with reg RXTX</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- RDTX -->
+    <register>
+      <name>RDTX</name>
+      <description>Value of RXTX in Port mode</description>
+      <addressOffset>0x00000028</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <dim>16</dim>
+          <dimIncrement>1</dimIncrement>
+          <dimIndex>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15</dimIndex>
+          <name>Pin_%s</name>
+          <description>Pin data value</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <headerEnumName>MDR_GPIO__PIN_RDTX_</headerEnumName>
+            <enumeratedValue>
+              <name>Low</name>
+              <description>LOW Level Voltage</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>High</name>
+              <description>HIGH Level Voltage</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>
+<!-- GPIO_PORTB -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTB</name>
+  <!-- #GPIO_B_ADDR -->  
+  <baseAddress>0x400B0000</baseAddress>
+</peripheral>
+<!-- GPIO_PORTC -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTC</name>
+  <!-- #GPIO_C_ADDR -->
+  <baseAddress>0x400B8000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_D -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTD</name>
+  <baseAddress>0x400C0000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_E -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTE</name>
+  <baseAddress>0x400C8000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_F -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTF</name>
+  <baseAddress>0x400E8000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_G -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTG</name>
+  <baseAddress>0x40118000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_H -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTH</name>
+  <baseAddress>0x40138000</baseAddress>
+</peripheral>
+<!-- #GPIO_PORT_I -->
+<peripheral derivedFrom="MDR_PORTA">
+  <name>MDR_PORTI</name>
+  <baseAddress>0x40140000</baseAddress>
+</peripheral>
+

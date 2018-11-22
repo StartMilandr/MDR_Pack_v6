@@ -168,6 +168,8 @@ typedef enum IRQn
 
 #define MDR_PORT_Type  MDR_PORT_Type__Ext
 
+/*===============  ADC SAR ===================*/
+#include "MDR_ADC_VE1VE3_def.h"
 
 /*@}*/ /* end of group MDR1986VE3_Peripherals */
 
@@ -208,6 +210,7 @@ typedef enum IRQn
 /* Peripheral memory map */
 #define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
 #define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
+#define ADDR_ADC_BASE         (0x40088000UL)                              /*!< ADC SAR Base Address        */
 #define ADDR_BKP_BASE         (0x400D8000UL)                              /*!< Backup and RTC Base Address */
 
 #define ADDR_PORTA_BASE       (0x400A8000UL)                              /*!< GPIO PORT_A Base Address */
@@ -236,6 +239,9 @@ typedef enum IRQn
 #define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
+#define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
+#define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
@@ -283,6 +289,9 @@ typedef enum IRQn
 #define   MDR_CLK_EN_BIT_PORT_G     MDR_RST_PER2__PORTG_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_H     MDR_RST_PER2__PORTH_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_I     MDR_RST_PER2__PORTI_CLK_EN_Pos
+
+#define   MDR_ADC_IN_PORTD
+
 
 
 /** @} */ /* End of group MDR1986VE3 */

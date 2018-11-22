@@ -4,7 +4,11 @@
 #ifdef USE_MDR1986VE3
 
 //===================================    Частота тактирования    ========================================
-#define HSE_PLL_MUL_MAX     MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+#define HSE_PLL_MUL_MAX         MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+#define HSE_LOW_SELRI_MAX       MDR_LOWRI_gt80MHz
+#define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le100MHz
+
+#define MDR_CPU_SetClock_HSE_Max(bypass)  MDR_CPU_SetClock_HSE_PLL((bypass), HSE_PLL_MUL_MAX, HSE_LOW_SELRI_MAX, HSE_EEPROM_DELAY_MAX, MDR_CLK_div1, HSE_TIMEOUT)
 
 //===================================    Заметки по плате    ========================================
 
@@ -27,10 +31,17 @@
     #define PIN_PB6       MDR_Pin_6   //  LED_7
     #define PIN_PB7       MDR_Pin_7   //  LED_8
 
+    #define PIN_PD7       MDR_Pin_7   //                      ADC_Ch0/Ref+
+    #define PIN_PD8       MDR_Pin_8   //                      ADC_Ch1/Ref-
+    #define PIN_PD9       MDR_Pin_9   //                      ADC_Ch2
+    #define PIN_PD10      MDR_Pin_10  //                      ADC_Ch3
+    #define PIN_PD11      MDR_Pin_11  //                      ADC_Ch4
+    #define PIN_PD12      MDR_Pin_12  //          LCD_RES     ADC_Ch5
+    #define PIN_PD13      MDR_Pin_13  //                      ADC_Ch6
+    #define PIN_PD14      MDR_Pin_14  //                      ADC_Ch7
+
     #define PIN_PC0       MDR_Pin_0   //          LCD_RW
-    #define PIN_PC2       MDR_Pin_2   //          LCD_E
-    
-    #define PIN_PD12      MDR_Pin_12  //          LCD_RES
+    #define PIN_PC2       MDR_Pin_2   //          LCD_E    
 
     #define PIN_PE12      MDR_Pin_12  //          LCD_A0
     #define PIN_PE13      MDR_Pin_13  //          LCD_E1
@@ -43,6 +54,16 @@
     #define PIN_PG14      MDR_Pin_14  //  Select
     #define PIN_PG13      MDR_Pin_13  //  Back
 
+//  --------------  ADC Definition  ------------
+    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch0
+    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch1
+    #define MDRB_ADC_CH_IN3            ADC_Signal_Ch2
+    #define MDRB_ADC_CH_IN4            ADC_Signal_Ch3
+
+    #define MDRB_ADC_CH_TUNE           MDRB_ADC_CH_IN1
+
+    #define MDRB_ADC_PIN_ALL          0x7F80UL
+    #define MDRB_ADC_PIN_ALL_LCD      0x6F80UL 
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_G

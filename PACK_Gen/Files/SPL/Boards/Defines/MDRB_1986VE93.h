@@ -14,6 +14,8 @@
 //  MDR_JTAG_B_PORT   MDR_PORTD [pin0..pin4]
 
 //  Переопределение пинов для удобства поиска конфликтов
+    //  Корпус H16.48-1B:
+    //  Port_A[7..0]: 8 Pins available only
     #define PIN_PA0     MDR_Pin_0   //          LCD_D0
     #define PIN_PA1     MDR_Pin_1   //          LCD_D1
     #define PIN_PA2     MDR_Pin_2   //          LCD_D2
@@ -23,30 +25,42 @@
     #define PIN_PA6     MDR_Pin_6   //          LCD_D6
     #define PIN_PA7     MDR_Pin_7   //          LCD_D7
 
+    //  Port_B[6..0]
     #define PIN_PB0     MDR_Pin_0   //                    JTAG_A
     #define PIN_PB1     MDR_Pin_1   //                    JTAG_A
     #define PIN_PB2     MDR_Pin_2   //                    JTAG_A
     #define PIN_PB3     MDR_Pin_3   //                    JTAG_A
     #define PIN_PB4     MDR_Pin_4   //                    JTAG_A
 
-
+    //  Port_C[0..0]: 1 Pin available only!
     #define PIN_PC0     MDR_Pin_0   //  Select
-
-    #define PIN_PD0     MDR_Pin_0   //  UP                JTAG_B
-    #define PIN_PD1     MDR_Pin_1   //  Down              JTAG_B
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B
-    #define PIN_PD3     MDR_Pin_3   //          LCD_E     JTAG_B
-    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B
     
+    //  Port_D[3..0]
+    #define PIN_PD0     MDR_Pin_0   //  UP                JTAG_B                ADC_Ch0/ref+
+    #define PIN_PD1     MDR_Pin_1   //  Down              JTAG_B                ADC_Ch1/ref-
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B                ADC_Ch2 - TuneResistor
+    #define PIN_PD3     MDR_Pin_3   //          LCD_E     JTAG_B                ADC_Ch3
+    
+    //  Port_E[6,3,2,0]
     #define PIN_PE3     MDR_Pin_3   //  Left
     #define PIN_PE6     MDR_Pin_6   //  Right
 
+    //  Port_F[5..0]
     #define PIN_PF0     MDR_Pin_0   //  LED1,   LCD_E1
     #define PIN_PF1     MDR_Pin_1   //  LED2,   LCD_E2
     #define PIN_PF2     MDR_Pin_2   //          LCD_RES
     #define PIN_PF3     MDR_Pin_3   //          LCD_RW
     #define PIN_PF4     MDR_Pin_4   //          LCD_A0  
+
+//  --------------  ADC Definition  ------------
+    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch2
     
+    #define MDRB_ADC_CH_TUNE           MDRB_ADC_CH_IN1
+    
+    #define MDRB_ADC_PIN_ALL          0x000FUL
+    //#define MDRB_ADC_PIN_ALL_JTAG_B   0x0000UL        
+    #define MDRB_ADC_PIN_ALL_LCD      0x0007UL
+
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1        MDR_GPIO_D

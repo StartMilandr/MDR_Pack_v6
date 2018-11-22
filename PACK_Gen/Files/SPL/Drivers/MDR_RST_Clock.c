@@ -549,7 +549,7 @@ bool MDR_CPU_SetClock_HSE_PLL(MDR_OnOff byPass, MDR_MUL_x16 pllMul, MDR_RST_BKP_
   bool result = false;
   
   //  Доступ к флагам BKP
-  RST_BKP_ClockOn_loc();   
+  RST_BKP_ClockOn_loc();
   
   //  Переход на HSI
   if (CPU_SetClock_HSI_loc(timeoutCycles, HSI_FREQ_TRIM))

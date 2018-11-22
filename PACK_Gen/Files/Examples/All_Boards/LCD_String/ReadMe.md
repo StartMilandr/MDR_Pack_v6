@@ -9,7 +9,7 @@
 
 
 ## Подключение Jtag (с которым проверялся пример)
-1986VE91: JtagB
-1986VE92: JtagB
-1986VE93:   JtagA!
-1986VC1 : JtagB
+  - 1986VE91: JtagB
+  - 1986VE92: JtagB
+  - 1986VE93:   JtagA!
+  - 1986VC1 : JtagB

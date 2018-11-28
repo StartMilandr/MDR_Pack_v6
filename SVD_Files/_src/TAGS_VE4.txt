@@ -4,6 +4,7 @@ f2=../GPIO/GPIO_VE4.txt
 f3=../RST/RST_VE4.txt
 f4=../EEPROM/EEPROM_VE4x.txt
 f5=../ADC/ADC_VE4x.txt
+f6=../SSP/SSP_VE4.txt
 
 [TAGS]
 #BKP=f1
@@ -14,6 +15,7 @@ f5=../ADC/ADC_VE4x.txt
 #RST_R=#RST_VE4
 #EEPROM=f4
 #ADC=f5
+#SSPs=f6
 
 [TAGS_New]
 #USB=
@@ -40,8 +42,6 @@ f5=../ADC/ADC_VE4x.txt
 #UARTs_R=
 #TIMERs=
 #TIMERs_R=
-#SSPs=
-#SSPs_R=
 #ADCUI=
 #ADCUI_R=
 #CRC=

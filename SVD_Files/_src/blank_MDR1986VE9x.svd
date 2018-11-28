@@ -14,7 +14,7 @@
     <endian>little</endian>
     <mpuPresent>false</mpuPresent>
     <fpuPresent>false</fpuPresent>
-    <nvicPrioBits>3</nvicPrioBits><!--#BE9x,#VC1-->
+    <nvicPrioBits>3</nvicPrioBits>
     <vendorSystickConfig>false</vendorSystickConfig>
   </cpu>
   <addressUnitBits>8</addressUnitBits>                            <!-- byte addressable memory -->

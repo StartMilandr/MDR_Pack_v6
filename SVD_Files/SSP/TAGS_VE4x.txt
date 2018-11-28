@@ -1,0 +1,11 @@
+[FILES]
+f1=SSP_text.xml
+
+[TAGS]
+#SSP1_ADDR=f1
+#SSP1_ADDR_R=#SSP1_ADDR_VE4x
+
+[TAGS_New]
+#SSP2=
+#SSP3=
+#SSP4=

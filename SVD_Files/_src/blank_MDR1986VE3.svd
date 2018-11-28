@@ -6,7 +6,7 @@
   <name>MDR1986VE3</name>
   <series>ARMCM1</series>
   <version>2.0</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
-  <description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 80MHz, etc. </description><!--#BE3-->
+  <description>ARM 32-bit Cortex-M1 Microcontroller based device, CPU clock up to 80MHz, etc. </description>
 
   <cpu>                      
     <name>CM1</name>

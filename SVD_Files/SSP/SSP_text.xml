@@ -1,0 +1,35 @@
+#SSP1_ADDR_VE4x
+<baseAddress>0x40000000</baseAddress>
+
+#SSP1_ADDR_VExVC1
+<baseAddress>0x40040000</baseAddress>
+
+#SSP2_VExVC1
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP2</name>
+  <baseAddress>0x400A0000</baseAddress>
+</peripheral>
+
+#SSP3_VE13
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP3</name>
+  <baseAddress>0x400F8000</baseAddress>
+</peripheral>
+
+#SSP3_VC1
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP3</name>
+  <baseAddress>0x40000000</baseAddress>
+</peripheral>
+
+#SSP4_VE3
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP4</name>
+  <baseAddress>0x40130000</baseAddress>
+</peripheral>
+
+#SSP4_VC1
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP4</name>
+  <baseAddress>0x40008000</baseAddress>
+</peripheral>

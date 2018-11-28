@@ -1,0 +1,439 @@
+#SSPs
+<!-- SSP1 -->
+<peripheral>
+  <name>MDR_SSP1</name>
+  <version>2.0</version>
+  <description>Synchronous Serial Port</description>
+  <groupName>SSP</groupName>
+  <!-- #SSP1_ADDR -->
+  <baseAddress>0x40040000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <size>0x28</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- CR0 -->
+    <register>
+      <name>CR0</name>
+      <description>Control Register 0</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>DSS</name>
+          <description>Data Size Select</description>
+          <bitRange>[3:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>bits_4</name><description>Word of 4 bits</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>bits_5</name><description>Word of 5 bits</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>bits_6</name><description>Word of 6 bits</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>bits_7</name><description>Word of 7 bits</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>bits_8</name><description>Word of 8 bits</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>bits_9</name><description>Word of 9 bits</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>bits_10</name><description>Word of 10 bits</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>bits_11</name><description>Word of 11 bits</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>bits_12</name><description>Word of 12 bits</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>bits_13</name><description>Word of 13 bits</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>bits_14</name><description>Word of 14 bits</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>bits_15</name><description>Word of 15 bits</description><value>14</value></enumeratedValue>
+            <enumeratedValue><name>bits_16</name><description>Word of 16 bits</description><value>15</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>FRF</name>
+          <description>Frame Format</description>
+          <bitRange>[5:4]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>SPI</name><description>Motorola SPI protocol</description><value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>SSI</name><description>Texas Instruments SSI protocol</description><value>1</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Microwire</name><description>National Semiconductor Microwire protocol</description><value>2</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SPO</name>
+          <description>SPI Clock Polarity</description>
+          <bitRange>[6:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Idle_Low</name><description>Idle state is Low</description><value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Idle_High</name><description>Idle state is High</description><value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SPH</name>
+          <description>SPI Capture Clock Phase</description>
+          <bitRange>[7:7]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Leading</name><description>Capture data on leading edge</description><value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Trailing</name><description>Capture data on trailing edge</description><value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SCR</name>
+          <description>Signal CLock Rate</description>
+          <bitRange>[15:8]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!-- CR1 -->
+    <register>
+      <name>CR1</name>
+      <description>Control Register 1</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>
+        <field>
+          <name>LBM</name>
+          <description>Loop Back Mode</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Normal</name>
+              <description>No overwritten occure</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>LoopBack</name>
+              <description>Result overwritten</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SSE</name>
+          <description>Synchronous Serial Enable</description>
+          <bitRange>[1:1]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Off</name>
+              <description>SSP Disable</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>On</name>
+              <description>SSP Enable</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>MS</name>
+          <description>Master or Slave mode</description>
+          <bitRange>[2:2]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>Master</name>
+              <description>Master Mode</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>Slave</name>
+              <description>Slave Mode</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>SOD</name>
+          <description>Slave mode Output Disable</description>
+          <bitRange>[3:3]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue>
+              <name>SlaveTxEna</name>
+              <description>Slave mode transmit enable</description>
+              <value>0</value>
+            </enumeratedValue>
+            <enumeratedValue>
+              <name>SlaveTxDis</name>
+              <description>Slave mode transmit disable</description>
+              <value>1</value>
+            </enumeratedValue>
+          </enumeratedValues>
+        </field>        
+      </fields>
+    </register>
+    <!-- Data -->
+    <register>
+      <name>DR</name>
+      <description>FIFO_Rx and FIFO_Tx access</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>Data</name>
+          <description>Data value</description>
+          <bitRange>[16:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!-- SR -->
+    <register>
+      <name>SR</name>
+      <description>Status Register</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000003</resetValue>
+      <resetMask>0x0000001F</resetMask>
+      <fields>
+        <field>
+          <name>TFE</name>
+          <description>FIFO_TX is Empty</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Flag Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="TFE">
+          <name>TNF</name>
+          <description>FIFO_TX is Not Full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="TFE">
+          <name>RNE</name>
+          <description>FIFO_RX is Not Empty</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="TFE">
+          <name>RFF</name>
+          <description>FIFO_RX is Full</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="TFE">
+          <name>BSY</name>
+          <description>Transfer in progress</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CPSR -->
+    <register>
+      <name>CPSR</name>
+      <description>Clock Prescaller Register</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>CPSDVSR</name>
+          <description>Clock Prescaller</description>
+          <bitRange>[7:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!-- IMSC -->
+    <register>
+      <name>IMSC</name>
+      <description>IRQ Mask Set-Clear</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>
+        <field>
+          <name>RORIM</name>
+          <description>Enable IRQ on FIFO_RX overrun</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Flag Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RORIM">
+          <name>RTIM</name>
+          <description>Enable IQR on RX timeout for 32bits</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RORIM">
+          <name>RXIM</name>
+          <description>Enable IQR on FIFO_RX ge 4 words</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RORIM">
+          <name>TXIM</name>
+          <description>Enable IQR on FIFO_TX le 4 words</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- RIS -->
+    <register>
+      <name>RIS</name>
+      <description>Raw Interupt Status</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000008</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RORRIS</name>
+          <description>FIFO_RX is overrun</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RTRIS</name>
+          <description>RX timeout for 32bits</description>
+          <bitRange>[1:1]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RXRIS</name>
+          <description>FIFO_RX gt words</description>
+          <bitRange>[2:2]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>TXRIS</name>
+          <description>FIFO_TX le words</description>
+          <bitRange>[3:3]</bitRange>
+          <access>read-only</access>
+        </field>
+      </fields>
+    </register>
+    <!-- MIS -->
+    <register>
+      <name>MIS</name>
+      <description>Masked Interupt Status</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RORMIS</name>
+          <description>FIFO_RX is overrun</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RTMIS</name>
+          <description>RX timeout for 32bits</description>
+          <bitRange>[1:1]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>RXMIS</name>
+          <description>FIFO_RX ge 4 words</description>
+          <bitRange>[2:2]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+          <name>TXMIS</name>
+          <description>FIFO_TX le 4 words</description>
+          <bitRange>[3:3]</bitRange>
+          <access>read-only</access>
+        </field>
+      </fields>
+    </register>
+    <!-- ICR -->
+    <register>
+      <name>ICR</name>
+      <description>Interupt Clear Register</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>write-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000003</resetMask>
+      <fields>
+        <field>
+          <name>RORIC</name>
+          <description>Clear FIFO_RX overrun flag</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear Flag</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RORIC">
+          <name>RTIC</name>
+          <description>Clear RX timeout flag</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- DMACR -->
+    <register>
+      <name>DMACR</name>
+      <description>DMA Control Register</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000003</resetMask>
+      <fields>
+        <field>
+          <name>RXDMAE</name>
+          <description>Enable DMA by FIFO_RX has data</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Disable</name><description>Disable DMA</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Enable</name><description>Enable DMA</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RXDMAE">
+          <name>TXDMAE</name>
+          <description>Enable DMA by FIFO_TX not Full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>
+<!-- #SSP2 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP2</name>
+  <baseAddress>0x400A0000</baseAddress>
+</peripheral>
+<!-- #SSP3 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP3</name>
+  <baseAddress>0x400F8000</baseAddress>
+</peripheral>
+<!-- #SSP4 -->

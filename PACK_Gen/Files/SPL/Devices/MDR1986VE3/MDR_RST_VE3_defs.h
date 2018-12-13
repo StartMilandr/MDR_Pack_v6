@@ -147,11 +147,11 @@ typedef struct {
       __IM  uint32_t                    : 5;
       __IOM MDR_BRG_DIV_128  UART4_BRG  : 3;          /*!< [10..8] HCLK freq divider to get UART4_CLOCK, [/1, /2, /4 .. /128]   */
       __IM  uint32_t                    : 5;
-      __IOM MDR_BRG_DIV_128  SSP3_BRG   : 3;          /*!< [18..16] HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128]   */
+      __IOM MDR_BRG_DIV_128  SSP4_BRG   : 3;          /*!< [18..16] HCLK freq divider to get SSP4_CLOCK, [/1, /2, /4 .. /128]   */
       __IM  uint32_t                    : 5;
       __IOM MDR_OnOff      UART3_CLK_EN : 1;          /*!< [24..24] UART3_CLOCK enable                                          */
       __IOM MDR_OnOff      UART4_CLK_EN : 1;          /*!< [25..25] UART4_CLOCK enable                                          */
-      __IOM MDR_OnOff       SSP3_CLK_EN : 1;          /*!< [26..26] SSP3_CLOCK enable                                           */
+      __IOM MDR_OnOff       SSP4_CLK_EN : 1;          /*!< [26..26] SSP4_CLOCK enable                                           */
       __IM uint32_t                     : 5;
 } MDR_RST_UARTSSP_Bits;
 
@@ -159,14 +159,14 @@ typedef struct {
 #define MDR_RST_UARTSSP__UART3_BRG_Msk    (0x7UL)        /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART3_BRG (Bitfield-Mask: 0x07)     */
 #define MDR_RST_UARTSSP__UART4_BRG_Pos    (8UL)          /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART4_BRG (Bit 8)                   */
 #define MDR_RST_UARTSSP__UART4_BRG_Msk    (0x700UL)      /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART4_BRG (Bitfield-Mask: 0x07)     */
-#define MDR_RST_UARTSSP__SSP3_BRG_Pos     (16UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_BRG (Bit 16)                   */
-#define MDR_RST_UARTSSP__SSP3_BRG_Msk     (0x70000UL)    /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_BRG (Bitfield-Mask: 0x07)      */
+#define MDR_RST_UARTSSP__SSP4_BRG_Pos     (16UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_BRG (Bit 16)                   */
+#define MDR_RST_UARTSSP__SSP4_BRG_Msk     (0x70000UL)    /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_BRG (Bitfield-Mask: 0x07)      */
 #define MDR_RST_UARTSSP__UART3_CLK_EN_Pos (24UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART3_CLK_EN (Bit 24)               */
 #define MDR_RST_UARTSSP__UART3_CLK_EN_Msk (0x1000000UL)  /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART3_CLK_EN (Bitfield-Mask: 0x01)  */
 #define MDR_RST_UARTSSP__UART4_CLK_EN_Pos (25UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART4_CLK_EN (Bit 25)               */
 #define MDR_RST_UARTSSP__UART4_CLK_EN_Msk (0x2000000UL)  /*!< MDR_RST_CLOCK UART_SSP_CLOCK: UART4_CLK_EN (Bitfield-Mask: 0x01)  */
-#define MDR_RST_UARTSSP__SSP3_CLK_EN_Pos  (26UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_CLK_EN (Bit 26)                */
-#define MDR_RST_UARTSSP__SSP3_CLK_EN_Msk  (0x4000000UL)  /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_CLK_EN (Bitfield-Mask: 0x01)   */
+#define MDR_RST_UARTSSP__SSP4_CLK_EN_Pos  (26UL)         /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_CLK_EN (Bit 26)                */
+#define MDR_RST_UARTSSP__SSP4_CLK_EN_Msk  (0x4000000UL)  /*!< MDR_RST_CLOCK UART_SSP_CLOCK: SSP3_CLK_EN (Bitfield-Mask: 0x01)   */
 
 
 /* =============================================  RST CLOCK Block  ========================================================= */

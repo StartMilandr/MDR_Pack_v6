@@ -22,48 +22,88 @@
     #define PIN_PA4     MDR_Pin_4   //          LCD_D4
     #define PIN_PA5     MDR_Pin_5   //          LCD_D5
     #define PIN_PA6     MDR_Pin_6   //          LCD_D6
-    #define PIN_PA7     MDR_Pin_7   //          LCD_D7    
+    #define PIN_PA7     MDR_Pin_7   //          LCD_D7
+    #define PIN_PA8     MDR_Pin_8   //                              SSP2_CLK
+    #define PIN_PA9     MDR_Pin_9   //                              SSP2_FSS
+    #define PIN_PA10    MDR_Pin_10  //                              SSP2_TX
+    #define PIN_PA11    MDR_Pin_11  //                              SSP2_RS
+    #define PIN_PA12    MDR_Pin_12  //                            SSP1_RX
+    #define PIN_PA13    MDR_Pin_13  //                            SSP1_TX
+    #define PIN_PA14    MDR_Pin_14  //                            SSP1_CLK
+    #define PIN_PA15    MDR_Pin_15  //                            SSP1_FSS
 
     #define PIN_PB0     MDR_Pin_0   //                    JTAG_A
     #define PIN_PB1     MDR_Pin_1   //                    JTAG_A
     #define PIN_PB2     MDR_Pin_2   //                    JTAG_A
     #define PIN_PB3     MDR_Pin_3   //                    JTAG_A
     #define PIN_PB4     MDR_Pin_4   //                    JTAG_A      
+    #define PIN_PB5     MDR_Pin_5   //                                SSP3_TX
+    #define PIN_PB6     MDR_Pin_6   //                                SSP3_FSS
+    #define PIN_PB7     MDR_Pin_7   //                                SSP3_RX
+    #define PIN_PB8     MDR_Pin_8   //                                SSP3_CLK
+    #define PIN_PB9     MDR_Pin_9   //                                
+    #define PIN_PB10    MDR_Pin_10  //                                
     #define PIN_PB11    MDR_Pin_11  //  LED_5
-    #define PIN_PB12    MDR_Pin_12  //  LED_4
-    #define PIN_PB13    MDR_Pin_13  //  LED_3
-    #define PIN_PB14    MDR_Pin_14  //  LED_2
-    #define PIN_PB15    MDR_Pin_15  //  LED_1
+    #define PIN_PB12    MDR_Pin_12  //  LED_4                       SSP2_CLK
+    #define PIN_PB13    MDR_Pin_13  //  LED_3                       SSP2_FSS
+    #define PIN_PB14    MDR_Pin_14  //  LED_2                       SSP2_TX
+    #define PIN_PB15    MDR_Pin_15  //  LED_1                       SSP2_RX
 
-    #define PIN_PC0     MDR_Pin_0   //  Select
+    #define PIN_PC0     MDR_Pin_0   //  Select                          SSP4_FSS
     #define PIN_PC2     MDR_Pin_2   //          LCD_RW    
-    #define PIN_PC3     MDR_Pin_3   //  Up
-    #define PIN_PC4     MDR_Pin_4   //  Down
-    #define PIN_PC5     MDR_Pin_5   //  Left
+    #define PIN_PC3     MDR_Pin_3   //  Up                              SSP4_RX
+    #define PIN_PC4     MDR_Pin_4   //  Down                            SSP4_TX
+    #define PIN_PC5     MDR_Pin_5   //  Left                            SSP4_CLK
     #define PIN_PC6     MDR_Pin_6   //  Right
     #define PIN_PC7     MDR_Pin_7   //          LCD_E
+    #define PIN_PC8     MDR_Pin_8   //                                SSP3_TX
+    #define PIN_PC9     MDR_Pin_9   //                                SSP3_FSS
+    #define PIN_PC10    MDR_Pin_10  //                                SSP3_RX
+    #define PIN_PC11    MDR_Pin_11  //                                SSP3_CLK
+    #define PIN_PC12    MDR_Pin_12  //                                  SSP4_FSS
+    #define PIN_PC13    MDR_Pin_13  //                                  SSP4_CLK
+    #define PIN_PC14    MDR_Pin_14  //                                  SSP4_TX
+    #define PIN_PC15    MDR_Pin_15  //                                  SSP4_RX
 
-    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                ADC_Ch0/ref+
-    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                ADC_Ch1/ref-
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B                ADC_Ch2
-    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B                ADC_Ch3
-    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B                ADC_Ch4
-    #define PIN_PD5     MDR_Pin_5   //                                          ADC_Ch5
-    #define PIN_PD6     MDR_Pin_6   //                                          ADC_Ch6
-    #define PIN_PD7     MDR_Pin_7   //                                          ADC_Ch7
-    #define PIN_PD8     MDR_Pin_8   //                              ExtMem_CE   ADC_Ch8
-    #define PIN_PD9     MDR_Pin_9   //          LCD_RES                         ADC_Ch9    
-    #define PIN_PD10    MDR_Pin_10  //                                          ADC_Ch10
-    #define PIN_PD11    MDR_Pin_11  //                                          ADC_Ch11
-    #define PIN_PD12    MDR_Pin_12  //                                          ADC_Ch12
-    #define PIN_PD13    MDR_Pin_13  //                                          ADC_Ch13
-    #define PIN_PD14    MDR_Pin_14  //                                          ADC_Ch14
-    #define PIN_PD15    MDR_Pin_15  //                                          ADC_Ch15
+    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                  ADC_Ch0/ref+
+    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                  ADC_Ch1/ref-
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP1_TX         ADC_Ch2
+    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B  SSP1_FSS        ADC_Ch3
+    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B  SSP1_RX         ADC_Ch4
+    #define PIN_PD5     MDR_Pin_5   //                            SSP1_CLK        ADC_Ch5
+    #define PIN_PD6     MDR_Pin_6   //                                            ADC_Ch6
+    #define PIN_PD7     MDR_Pin_7   //                                            ADC_Ch7
+    #define PIN_PD8     MDR_Pin_8   //          ExtMem_CE                         ADC_Ch8
+    #define PIN_PD9     MDR_Pin_9   //          LCD_RES                           ADC_Ch9    
+    #define PIN_PD10    MDR_Pin_10  //                                            ADC_Ch10
+    #define PIN_PD11    MDR_Pin_11  //                                            ADC_Ch11
+    #define PIN_PD12    MDR_Pin_12  //                              SSP2_FSS      ADC_Ch12
+    #define PIN_PD13    MDR_Pin_13  //                              SSP2_RX       ADC_Ch13
+    #define PIN_PD14    MDR_Pin_14  //                              SSP2_CLK      ADC_Ch14
+    #define PIN_PD15    MDR_Pin_15  //                              SSP2_TX       ADC_Ch15
 
-    #define PIN_PE4     MDR_Pin_4   //          LCD_E1
-    #define PIN_PE5     MDR_Pin_5   //          LCD_E2
+    #define PIN_PE0     MDR_Pin_0   //                                  SSP4_FSS
+    #define PIN_PE1     MDR_Pin_1   //                                  SSP4_CLK
+    #define PIN_PE2     MDR_Pin_2   //                                  SSP4_TX
+    #define PIN_PE3     MDR_Pin_3   //                                  SSP4_RX
+    #define PIN_PE4     MDR_Pin_4   //          LCD_E1              SSP2_TX
+    #define PIN_PE5     MDR_Pin_5   //          LCD_E2              SSP2_FSS
+    #define PIN_PE6     MDR_Pin_6   //                              SSP2_RX
+    #define PIN_PE7     MDR_Pin_7   //                              SSP2_CLK
     #define PIN_PE11    MDR_Pin_11  //          LCD_A0
+    #define PIN_PE12    MDR_Pin_12  //                            SSP1_RX
+    #define PIN_PE13    MDR_Pin_13  //                            SSP1_TX
+    #define PIN_PE14    MDR_Pin_14  //                            SSP1_CLK
+    #define PIN_PE15    MDR_Pin_15  //                            SSP1_FSS
 
+    #define PIN_PF2     MDR_Pin_2   //                                  SSP4_RX
+    #define PIN_PF3     MDR_Pin_3   //                                  SSP4_TX
+    #define PIN_PF4     MDR_Pin_4   //                                  SSP4_CLK
+    #define PIN_PF5     MDR_Pin_5   //                                  SSP4_FSS
+    #define PIN_PF12    MDR_Pin_12  //                                SSP3_TX
+    #define PIN_PF13    MDR_Pin_13  //                                SSP3_FSS
+    #define PIN_PF14    MDR_Pin_14  //                                SSP3_RX
+    #define PIN_PF15    MDR_Pin_15  //                                SSP3_CLK
 
 
 //  --------------  ADC Definition  ------------
@@ -157,6 +197,315 @@
                                         MDR_PORTA->RXTX |= (value & 0xFF);
                                     
     #define MDRB_LCD_BusRead()          (uint8_t)(MDR_PORTA->RXTX & 0xFF);
+
+
+//  ---------------  SPI1 Pin Definition ----------------
+  //  PORT_A: SSP1_PA[12,13,14,15] - Alter
+  #define MDRB_SPI1_FSS_PA15_Ind	     15
+	#define MDRB_SPI1_CLK_PA14_Ind	     14
+	#define MDRB_SPI1_RX_PA12_Ind 	     12
+	#define MDRB_SPI1_TX_PA13_Ind		     13
+
+  #define MDRB_SPI1_FSS_PA15_Msk	     PORT_Pin_15
+	#define MDRB_SPI1_CLK_PA14_Msk		   PORT_Pin_14
+	#define MDRB_SPI1_RX_PA12_Msk 		   PORT_Pin_12
+	#define MDRB_SPI1_TX_PA13_Msk		     PORT_Pin_13
+
+  #define MDRB_SPI1_FSS_PA15_Port	     MDR_GPIO_A
+	#define MDRB_SPI1_CLK_PA14_Port		   MDR_GPIO_A
+	#define MDRB_SPI1_RX_PA12_Port 		   MDR_GPIO_A
+	#define MDRB_SPI1_TX_PA13_Port		   MDR_GPIO_A
+  
+  #define MDRB_SPI1_FSS_PA15_Func	     MDR_PIN_ALT
+	#define MDRB_SPI1_CLK_PA14_Func		   MDR_PIN_ALT
+	#define MDRB_SPI1_RX_PA12_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI1_TX_PA13_Func		   MDR_PIN_ALT
+
+  //  PORT_D: SSP1_PD[2,3,4,5] - Alter
+  #define MDRB_SPI1_FSS_PD3_Ind	       3
+	#define MDRB_SPI1_CLK_PD5_Ind	       5
+	#define MDRB_SPI1_RX_PD4_Ind 	       4
+	#define MDRB_SPI1_TX_PD2_Ind		     2
+
+  #define MDRB_SPI1_FSS_PD3_Msk	       PORT_Pin_3
+	#define MDRB_SPI1_CLK_PD5_Msk		     PORT_Pin_5
+	#define MDRB_SPI1_RX_PD4_Msk 		     PORT_Pin_4
+	#define MDRB_SPI1_TX_PD2_Msk		     PORT_Pin_2
+
+  #define MDRB_SPI1_FSS_PD3_Port	     MDR_GPIO_D
+	#define MDRB_SPI1_CLK_PD5_Port		   MDR_GPIO_D
+	#define MDRB_SPI1_RX_PD4_Port 		   MDR_GPIO_D
+	#define MDRB_SPI1_TX_PD2_Port		     MDR_GPIO_D
+  
+  #define MDRB_SPI1_FSS_PD3_Func	     MDR_PIN_ALT
+	#define MDRB_SPI1_CLK_PD5_Func		   MDR_PIN_ALT
+	#define MDRB_SPI1_RX_PD4_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI1_TX_PD2_Func		     MDR_PIN_ALT
+
+  //  PORT_E: SSP1_PE[12,13,14,15] - Alter
+  #define MDRB_SPI1_FSS_PE15_Ind	     15
+	#define MDRB_SPI1_CLK_PE14_Ind	     14
+	#define MDRB_SPI1_RX_PE12_Ind 	     12
+	#define MDRB_SPI1_TX_PE13_Ind		     13
+
+  #define MDRB_SPI1_FSS_PE15_Msk	     PORT_Pin_15
+	#define MDRB_SPI1_CLK_PE14_Msk		   PORT_Pin_14
+	#define MDRB_SPI1_RX_PE12_Msk 		   PORT_Pin_12
+	#define MDRB_SPI1_TX_PE13_Msk		     PORT_Pin_13
+
+  #define MDRB_SPI1_FSS_PE15_Port	     MDR_GPIO_E
+	#define MDRB_SPI1_CLK_PE14_Port		   MDR_GPIO_E
+	#define MDRB_SPI1_RX_PE12_Port 		   MDR_GPIO_E
+	#define MDRB_SPI1_TX_PE13_Port		   MDR_GPIO_E
+  
+  #define MDRB_SPI1_FSS_PE15_Func	     MDR_PIN_ALT
+	#define MDRB_SPI1_CLK_PE14_Func		   MDR_PIN_ALT
+	#define MDRB_SPI1_RX_PE12_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI1_TX_PE13_Func       MDR_PIN_ALT
+  
+
+//  ---------------  SPI2 Pin Definition ----------------
+  //  PORT_A: SSP2_PA[8,9,10,11] - Alter
+  #define MDRB_SPI2_FSS_PA9_Ind	       9
+	#define MDRB_SPI2_CLK_PA8_Ind	       8
+	#define MDRB_SPI2_RX_PA11_Ind 	     11
+	#define MDRB_SPI2_TX_PA10_Ind		     10
+  
+  #define MDRB_SPI2_FSS_PA9_Msk	       PORT_Pin_9
+	#define MDRB_SPI2_CLK_PA8_Msk		     PORT_Pin_8
+	#define MDRB_SPI2_RX_PA11_Msk 		   PORT_Pin_11
+	#define MDRB_SPI2_TX_PA10_Msk		     PORT_Pin_10
+
+  #define MDRB_SPI2_FSS_PA9_Port	     MDR_GPIO_A
+	#define MDRB_SPI2_CLK_PA8_Port		   MDR_GPIO_A
+	#define MDRB_SPI2_RX_PA11_Port 		   MDR_GPIO_A
+	#define MDRB_SPI2_TX_PA10_Port		   MDR_GPIO_A
+  
+  #define MDRB_SPI2_FSS_PA9_Func	     MDR_PIN_ALT
+	#define MDRB_SPI2_CLK_PA8_Func		   MDR_PIN_ALT
+	#define MDRB_SPI2_RX_PA11_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI2_TX_PA10_Func		   MDR_PIN_ALT
+
+
+  //  PORT_B: SSP2_PB[12,13,14,15] - Alter
+  #define MDRB_SPI2_FSS_PB13_Ind	     13
+	#define MDRB_SPI2_CLK_PB12_Ind	     12
+	#define MDRB_SPI2_RX_PB15_Ind 	     15
+	#define MDRB_SPI2_TX_PB14_Ind		     14
+
+  #define MDRB_SPI2_FSS_PB13_Msk	     PORT_Pin_13
+	#define MDRB_SPI2_CLK_PB12_Msk		   PORT_Pin_12
+	#define MDRB_SPI2_RX_PB15_Msk 		   PORT_Pin_15
+	#define MDRB_SPI2_TX_PB14_Msk		     PORT_Pin_14
+
+  #define MDRB_SPI2_FSS_PB13_Port	     MDR_GPIO_B
+	#define MDRB_SPI2_CLK_PB12_Port		   MDR_GPIO_B
+	#define MDRB_SPI2_RX_PB15_Port 		   MDR_GPIO_B
+	#define MDRB_SPI2_TX_PB14_Port		   MDR_GPIO_B
+  
+  #define MDRB_SPI2_FSS_PB13_Func	     MDR_PIN_ALT
+	#define MDRB_SPI2_CLK_PB12_Func		   MDR_PIN_ALT
+	#define MDRB_SPI2_RX_PB15_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI2_TX_PB14_Func		   MDR_PIN_ALT
+
+  //  PORT_D: SSP2_PD[12,13,14,15] - Alter
+  #define MDRB_SPI2_FSS_PD12_Ind	     12
+	#define MDRB_SPI2_CLK_PD14_Ind	     14
+	#define MDRB_SPI2_RX_PD13_Ind 	     13
+	#define MDRB_SPI2_TX_PD15_Ind		     15
+
+  #define MDRB_SPI2_FSS_PD12_Msk	     PORT_Pin_12
+	#define MDRB_SPI2_CLK_PD14_Msk		   PORT_Pin_14
+	#define MDRB_SPI2_RX_PD13_Msk 		   PORT_Pin_13
+	#define MDRB_SPI2_TX_PD15_Msk		     PORT_Pin_15
+
+  #define MDRB_SPI2_FSS_PD12_Port	     MDR_GPIO_D
+	#define MDRB_SPI2_CLK_PD14_Port		   MDR_GPIO_D
+	#define MDRB_SPI2_RX_PD13_Port 		   MDR_GPIO_D
+	#define MDRB_SPI2_TX_PD15_Port		   MDR_GPIO_D
+  
+  #define MDRB_SPI2_FSS_PD12_Func	     MDR_PIN_ALT
+	#define MDRB_SPI2_CLK_PD14_Func		   MDR_PIN_ALT
+	#define MDRB_SPI2_RX_PD13_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI2_TX_PD15_Func		   MDR_PIN_ALT
+
+  //  PORT_E: SSP2_PE[4,5,6,7] - Alter
+  #define MDRB_SPI2_FSS_PE5_Ind	       5
+	#define MDRB_SPI2_CLK_PE7_Ind	       7
+	#define MDRB_SPI2_RX_PE6_Ind 	       6
+	#define MDRB_SPI2_TX_PE4_Ind		     4
+
+  #define MDRB_SPI2_FSS_PE5_Msk	       PORT_Pin_5
+	#define MDRB_SPI2_CLK_PE7_Msk		     PORT_Pin_7
+	#define MDRB_SPI2_RX_PE6_Msk 		     PORT_Pin_6
+	#define MDRB_SPI2_TX_PE4_Msk		     PORT_Pin_4
+
+  #define MDRB_SPI2_FSS_PE5_Port	     MDR_GPIO_E
+	#define MDRB_SPI2_CLK_PE7_Port		   MDR_GPIO_E
+	#define MDRB_SPI2_RX_PE6_Port 		   MDR_GPIO_E
+	#define MDRB_SPI2_TX_PE4_Port	  	   MDR_GPIO_E
+  
+  #define MDRB_SPI2_FSS_PE5_Func	     MDR_PIN_ALT
+	#define MDRB_SPI2_CLK_PE7_Func		   MDR_PIN_ALT
+	#define MDRB_SPI2_RX_PE6_Func 		   MDR_PIN_ALT
+	#define MDRB_SPI2_TX_PE4_Func		     MDR_PIN_ALT
+
+
+//  ---------------  SPI3 Pin Definition ----------------
+  //  PORT_B: SSP3_PB[5,6,7,8] - Alter
+  #define MDRB_SPI3_FSS_PB6_Ind	       6
+	#define MDRB_SPI3_CLK_PB8_Ind	       8
+	#define MDRB_SPI3_RX_PB7_Ind 	       7
+	#define MDRB_SPI3_TX_PB5_Ind		     5
+
+  #define MDRB_SPI3_FSS_PB6_Msk	     PORT_Pin_6
+	#define MDRB_SPI3_CLK_PB8_Msk		   PORT_Pin_8
+	#define MDRB_SPI3_RX_PB7_Msk 		   PORT_Pin_7
+	#define MDRB_SPI3_TX_PB5_Msk		   PORT_Pin_5
+
+  #define MDRB_SPI3_FSS_PB6_Port	   MDR_GPIO_B
+	#define MDRB_SPI3_CLK_PB8_Port		 MDR_GPIO_B
+	#define MDRB_SPI3_RX_PB7_Port 		 MDR_GPIO_B
+	#define MDRB_SPI3_TX_PB5_Port		   MDR_GPIO_B
+  
+  #define MDRB_SPI3_FSS_PB6_Func	   MDR_PIN_ALT
+	#define MDRB_SPI3_CLK_PB8_Func		 MDR_PIN_ALT
+	#define MDRB_SPI3_RX_PB7_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI3_TX_PB5_Func		   MDR_PIN_ALT
+
+  //  PORT_C: SSP3_PC[8,9,10,11] - Alter
+  #define MDRB_SPI3_FSS_PC9_Ind	     9
+	#define MDRB_SPI3_CLK_PC11_Ind	   11
+	#define MDRB_SPI3_RX_PC10_Ind 	   10
+	#define MDRB_SPI3_TX_PC8_Ind		   8
+
+  #define MDRB_SPI3_FSS_PC9_Msk	     PORT_Pin_9
+	#define MDRB_SPI3_CLK_PC11_Msk		 PORT_Pin_11
+	#define MDRB_SPI3_RX_PC10_Msk 		 PORT_Pin_10
+	#define MDRB_SPI3_TX_PC8_Msk		   PORT_Pin_8
+
+  #define MDRB_SPI3_FSS_PC9_Port	   MDR_GPIO_C
+	#define MDRB_SPI3_CLK_PC11_Port		 MDR_GPIO_C
+	#define MDRB_SPI3_RX_PC10_Port 		 MDR_GPIO_C
+	#define MDRB_SPI3_TX_PC8_Port		   MDR_GPIO_C
+  
+  #define MDRB_SPI3_FSS_PC9_Func	   MDR_PIN_ALT
+	#define MDRB_SPI3_CLK_PC11_Func		 MDR_PIN_ALT
+	#define MDRB_SPI3_RX_PC10_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI3_TX_PC8_Func		   MDR_PIN_ALT
+  
+  //  PORT_F: SSP3_PF[12,13,14,15] - Alter
+  #define MDRB_SPI3_FSS_PF13_Ind	   13
+	#define MDRB_SPI3_CLK_PF15_Ind	   15
+	#define MDRB_SPI3_RX_PF14_Ind 	   14
+	#define MDRB_SPI3_TX_PF12_Ind		   12
+
+  #define MDRB_SPI3_FSS_PF13_Msk	   PORT_Pin_13
+	#define MDRB_SPI3_CLK_PF15_Msk		 PORT_Pin_15
+	#define MDRB_SPI3_RX_PF14_Msk 		 PORT_Pin_14
+	#define MDRB_SPI3_TX_PF12_Msk		   PORT_Pin_12
+
+  #define MDRB_SPI3_FSS_PF13_Port	   MDR_GPIO_F
+	#define MDRB_SPI3_CLK_PF15_Port		 MDR_GPIO_F
+	#define MDRB_SPI3_RX_PF14_Port 		 MDR_GPIO_F
+	#define MDRB_SPI3_TX_PF12_Port		 MDR_GPIO_F
+  
+  #define MDRB_SPI3_FSS_PF13_Func	   MDR_PIN_ALT
+	#define MDRB_SPI3_CLK_PF15_Func		 MDR_PIN_ALT
+	#define MDRB_SPI3_RX_PF14_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI3_TX_PF12_Func		 MDR_PIN_ALT  
+  
+  
+
+//  ---------------  SPI4 Pin Definition ----------------
+  //  PORT_C: SSP4_PC[0,3,4,5] - Alter
+  #define MDRB_SPI4_FSS_PC0_Ind	     0
+	#define MDRB_SPI4_CLK_PC5_Ind	     5
+	#define MDRB_SPI4_RX_PC3_Ind 	     3
+	#define MDRB_SPI4_TX_PC4_Ind		   4
+
+  #define MDRB_SPI4_FSS_PC0_Msk	     PORT_Pin_0
+	#define MDRB_SPI4_CLK_PC5_Msk		   PORT_Pin_5
+	#define MDRB_SPI4_RX_PC3_Msk 		   PORT_Pin_3
+	#define MDRB_SPI4_TX_PC4_Msk		   PORT_Pin_4
+
+  #define MDRB_SPI4_FSS_PC0_Port	   MDR_GPIO_C
+	#define MDRB_SPI4_CLK_PC5_Port		 MDR_GPIO_C
+	#define MDRB_SPI4_RX_PC3_Port 		 MDR_GPIO_C
+	#define MDRB_SPI4_TX_PC4_Port		   MDR_GPIO_C
+  
+  #define MDRB_SPI4_FSS_PC0_Func	   MDR_PIN_ALT
+	#define MDRB_SPI4_CLK_PC5_Func		 MDR_PIN_ALT
+	#define MDRB_SPI4_RX_PC3_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI4_TX_PC4_Func		   MDR_PIN_ALT
+
+  //  PORT_C: SSP4_PC[12,13,14,15] - Alter
+  #define MDRB_SPI4_FSS_PC12_Ind	   12
+	#define MDRB_SPI4_CLK_PC13_Ind	   13
+	#define MDRB_SPI4_RX_PC15_Ind      15
+	#define MDRB_SPI4_TX_PC14_Ind		   14
+
+  #define MDRB_SPI4_FSS_PC12_Msk	   PORT_Pin_12
+	#define MDRB_SPI4_CLK_PC13_Msk		 PORT_Pin_13
+	#define MDRB_SPI4_RX_PC15_Msk 		 PORT_Pin_15
+	#define MDRB_SPI4_TX_PC14_Msk		   PORT_Pin_14
+
+  #define MDRB_SPI4_FSS_PC12_Port	   MDR_GPIO_C
+	#define MDRB_SPI4_CLK_PC13_Port		 MDR_GPIO_C
+	#define MDRB_SPI4_RX_PC15_Port 		 MDR_GPIO_C
+	#define MDRB_SPI4_TX_PC14_Port		 MDR_GPIO_C
+  
+  #define MDRB_SPI4_FSS_PC12_Func	   MDR_PIN_ALT
+	#define MDRB_SPI4_CLK_PC13_Func		 MDR_PIN_ALT
+	#define MDRB_SPI4_RX_PC15_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI4_TX_PC14_Func		 MDR_PIN_ALT
+
+  //  PORT_E: SSP4_PE[0,1,2,3] - Alter
+  #define MDRB_SPI4_FSS_PE0_Ind	     0
+	#define MDRB_SPI4_CLK_PE1_Ind	     1
+	#define MDRB_SPI4_RX_PE3_Ind 	     3
+	#define MDRB_SPI4_TX_PE2_Ind		   2
+
+  #define MDRB_SPI4_FSS_PE0_Msk	     PORT_Pin_0
+	#define MDRB_SPI4_CLK_PE1_Msk		   PORT_Pin_1
+	#define MDRB_SPI4_RX_PE3_Msk 		   PORT_Pin_3
+	#define MDRB_SPI4_TX_PE2_Msk		   PORT_Pin_2
+
+  #define MDRB_SPI4_FSS_PE0_Port	   MDR_GPIO_E
+	#define MDRB_SPI4_CLK_PE1_Port		 MDR_GPIO_E
+	#define MDRB_SPI4_RX_PE3_Port 		 MDR_GPIO_E
+	#define MDRB_SPI4_TX_PE2_Port		   MDR_GPIO_E
+  
+  #define MDRB_SPI4_FSS_PE0_Func	   MDR_PIN_ALT
+	#define MDRB_SPI4_CLK_PE1_Func		 MDR_PIN_ALT
+	#define MDRB_SPI4_RX_PE3_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI4_TX_PE2_Func		   MDR_PIN_ALT
+
+  //  PORT_F: SSP4_PF[2,3,4,5] - Alter
+  #define MDRB_SPI4_FSS_PF5_Ind	     5
+	#define MDRB_SPI4_CLK_PF4_Ind	     4
+	#define MDRB_SPI4_RX_PF2_Ind 	     2
+	#define MDRB_SPI4_TX_PF3_Ind		   3
+
+  #define MDRB_SPI4_FSS_PF5_Msk	     PORT_Pin_5
+	#define MDRB_SPI4_CLK_PF4_Msk		   PORT_Pin_4
+	#define MDRB_SPI4_RX_PF2_Msk 		   PORT_Pin_2
+	#define MDRB_SPI4_TX_PF3_Msk		   PORT_Pin_3
+
+  #define MDRB_SPI4_FSS_PF5_Port	   MDR_GPIO_F
+	#define MDRB_SPI4_CLK_PF4_Port		 MDR_GPIO_F
+	#define MDRB_SPI4_RX_PF2_Port 		 MDR_GPIO_F
+	#define MDRB_SPI4_TX_PF3_Port		   MDR_GPIO_F
+  
+  #define MDRB_SPI4_FSS_PF5_Func	   MDR_PIN_ALT
+	#define MDRB_SPI4_CLK_PF4_Func		 MDR_PIN_ALT
+	#define MDRB_SPI4_RX_PF2_Func 		 MDR_PIN_ALT
+	#define MDRB_SPI4_TX_PF3_Func		   MDR_PIN_ALT
+
+
+
+
+
 
 
 //  ----------  SDIO Definition ---------------

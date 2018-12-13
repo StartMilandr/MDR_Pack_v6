@@ -33,23 +33,23 @@
     #define PIN_PB4     MDR_Pin_4   //                    JTAG_A
 
     //  Port_C[0..0]: 1 Pin available only!
-    #define PIN_PC0     MDR_Pin_0   //  Select
+    #define PIN_PC0     MDR_Pin_0   //  Select                    SSP2_FSS
     
     //  Port_D[3..0]
     #define PIN_PD0     MDR_Pin_0   //  UP                JTAG_B                ADC_Ch0/ref+
     #define PIN_PD1     MDR_Pin_1   //  Down              JTAG_B                ADC_Ch1/ref-
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B                ADC_Ch2 - TuneResistor
-    #define PIN_PD3     MDR_Pin_3   //          LCD_E     JTAG_B                ADC_Ch3
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP2_RX       ADC_Ch2 - TuneResistor
+    #define PIN_PD3     MDR_Pin_3   //          LCD_E     JTAG_B  SSP2_FSS      ADC_Ch3
     
     //  Port_E[6,3,2,0]
     #define PIN_PE3     MDR_Pin_3   //  Left
     #define PIN_PE6     MDR_Pin_6   //  Right
 
     //  Port_F[5..0]
-    #define PIN_PF0     MDR_Pin_0   //  LED1,   LCD_E1
-    #define PIN_PF1     MDR_Pin_1   //  LED2,   LCD_E2
-    #define PIN_PF2     MDR_Pin_2   //          LCD_RES
-    #define PIN_PF3     MDR_Pin_3   //          LCD_RW
+    #define PIN_PF0     MDR_Pin_0   //  LED1,   LCD_E1            SSP1_TX
+    #define PIN_PF1     MDR_Pin_1   //  LED2,   LCD_E2            SSP1_CLK
+    #define PIN_PF2     MDR_Pin_2   //          LCD_RES           SSP1_FSS
+    #define PIN_PF3     MDR_Pin_3   //          LCD_RW            SSP1_RX
     #define PIN_PF4     MDR_Pin_4   //          LCD_A0  
 
 //  --------------  ADC Definition  ------------
@@ -146,6 +146,30 @@
 
 
     #define MDRB_LCD_CONFLICT_LED
+
+//  ---------------  SPI1 Pin Definition ----------------
+    //  PORT_F: SSP1_PF0,PF1,PF2,PF3 - Alter
+    #define MDRB_SPI1_FSS_PF2_Ind	       2
+    #define MDRB_SPI1_CLK_PF1_Ind	       1
+    #define MDRB_SPI1_RX_PF3_Ind 	       3
+    #define MDRB_SPI1_TX_PF0_Ind		     0
+
+    #define MDRB_SPI1_FSS_PF2_Msk	       PORT_Pin_2
+    #define MDRB_SPI1_CLK_PF1_Msk		     PORT_Pin_1
+    #define MDRB_SPI1_RX_PF3_Msk 		     PORT_Pin_3
+    #define MDRB_SPI1_TX_PF0_Msk		     PORT_Pin_0
+
+    #define MDRB_SPI1_FSS_PF2_Port	     MDR_GPIO_F
+    #define MDRB_SPI1_CLK_PF1_Port		   MDR_GPIO_F
+    #define MDRB_SPI1_RX_PF3_Port 		   MDR_GPIO_F
+    #define MDRB_SPI1_TX_PF0_Port		     MDR_GPIO_F
+    
+    #define MDRB_SPI1_FSS_PF2_Func	     MDR_PIN_ALT
+    #define MDRB_SPI1_CLK_PF1_Func		   MDR_PIN_ALT
+    #define MDRB_SPI1_RX_PF3_Func 		   MDR_PIN_ALT
+    #define MDRB_SPI1_TX_PF0_Func		     MDR_PIN_ALT
+
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

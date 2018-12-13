@@ -7,9 +7,9 @@
 static void ADC_Set_C1C3_loc(uint32_t regADC, uint32_t selC1, MDR_CLK_DIV_256 divClk)
 {
   regADC &= ~ADC_CLEAR_C1;
-  regADC |= VAL2FLD_Pos(selC1,  MDR_RST_ADC__ADC_C1_SEL) 
-          | VAL2FLD_Pos(divClk, MDR_RST_ADC__ADC_C3_SEL)
-          | VAL2FLD_Pos(MDR_On, MDR_RST_ADC__ADC_CLK_EN);
+  regADC |= VAL2FLD_Pos(selC1,  MDR_RST_ADC__ADC_C1_SEL_Pos) 
+          | VAL2FLD_Pos(divClk, MDR_RST_ADC__ADC_C3_SEL_Pos)
+          | VAL2FLD_Pos(MDR_On, MDR_RST_ADC__ADC_CLK_EN_Pos);
   
   MDR_CLOCK->ADC_CLOCK = regADC;  
 }
@@ -40,7 +40,7 @@ void MDR_ADC_SetClockEx_InputPER(MDR_CLK_SEL_LSIE2 selLSIE, MDR_CLK_DIV_256 divC
 {
   uint32_t regPER1 = MDR_CLOCK->PER1_CLOCK;
   regPER1 &= ~MDR_RST_PER1__PER1_C1_SEL_Msk;
-  MDR_CLOCK->PER1_CLOCK = regPER1 | VAL2FLD_Pos(selLSIE, MDR_RST_PER1__PER1_C1_SEL);  
+  MDR_CLOCK->PER1_CLOCK = regPER1 | VAL2FLD_Pos(selLSIE, MDR_RST_PER1__PER1_C1_SEL_Pos);  
   
   MDR_ADC_SetClock_InputPER(divClk);
 }
@@ -49,7 +49,7 @@ void MDR_ADC_SetClockEx_InputCPU(MDR_CLK_SEL_HSIE2 selInp, MDR_CLK_DIV_256 divCl
 {
   uint32_t regCPU = MDR_CLOCK->CPU_CLOCK;
   regCPU &= ~MDR_RST_CPU__C1_SEL_Msk;
-  MDR_CLOCK->CPU_CLOCK = regCPU | VAL2FLD_Pos(selInp, MDR_RST_CPU__C1_SEL);  
+  MDR_CLOCK->CPU_CLOCK = regCPU | VAL2FLD_Pos(selInp, MDR_RST_CPU__C1_SEL_Pos);  
 
   MDR_ADC_SetClock_InputCPU(divClk);  
 }
@@ -58,7 +58,7 @@ void MDR_ADC_SetClockEx_RTSHSI(MDR_CLK_DIV_256 divHSI, MDR_CLK_DIV_256 divClk)
 {
   uint32_t regADC = MDR_CLOCK->RTC_CLOCK;
   regADC &= ~MDR_RST_RTC__HSI_SEL_Msk;
-  MDR_CLOCK->RTC_CLOCK = regADC | VAL2FLD_Pos(divHSI, MDR_RST_RTC__HSI_SEL);  
+  MDR_CLOCK->RTC_CLOCK = regADC | VAL2FLD_Pos(divHSI, MDR_RST_RTC__HSI_SEL_Pos);  
 
   MDR_ADC_SetClock_RTSHSI(divClk);
 }

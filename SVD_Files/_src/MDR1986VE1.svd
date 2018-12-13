@@ -3158,12 +3158,12 @@
               <enumeratedValues>
                 <enumeratedValue>
                   <name>Normal</name>
-                  <description>No overwritten occure</description>
+                  <description>Normal operation</description>
                   <value>0</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>LoopBack</name>
-                  <description>Result overwritten</description>
+                  <description>TX send to RX test mode</description>
                   <value>1</value>
                 </enumeratedValue>
               </enumeratedValues>
@@ -3237,7 +3237,7 @@
             <field>
               <name>Data</name>
               <description>Data value</description>
-              <bitRange>[16:0]</bitRange>
+              <bitRange>[15:0]</bitRange>
               <access>read-write</access>
             </field>
           </fields>
@@ -3257,29 +3257,45 @@
               <description>FIFO_TX is Empty</description>
               <bitRange>[0:0]</bitRange>
               <enumeratedValues>
-                <enumeratedValue><name>Off</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
-                <enumeratedValue><name>On</name><description>Flag Active</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>TX_NotEmpty</name><description>FIFO_TX is Not Empty</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>TX_Empty</name><description>FIFO_TX is Empty</description><value>1</value></enumeratedValue>
               </enumeratedValues>
             </field>
-            <field derivedFrom="TFE">
+            <field>
               <name>TNF</name>
               <description>FIFO_TX is Not Full</description>
               <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>TX_Full</name><description>FIFO_TX is Full</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>TX_NotFull</name><description>FIFO_TX is Not Full</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
             </field>
-            <field derivedFrom="TFE">
+            <field>
               <name>RNE</name>
               <description>FIFO_RX is Not Empty</description>
               <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>RX_NotEmpty</name><description>FIFO_RX is Empty</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX_Empty</name><description>FIFO_RX is Not Empty</description><value>1</value></enumeratedValue>
+              </enumeratedValues>  
             </field>
-            <field derivedFrom="TFE">
+            <field>
               <name>RFF</name>
               <description>FIFO_RX is Full</description>
               <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>RX_NotFull</name><description>FIFO_RX is Not Full</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX_Full</name><description>FIFO_RX is Full</description><value>1</value></enumeratedValue>
+              </enumeratedValues> 
             </field>
-            <field derivedFrom="TFE">
+            <field>
               <name>BSY</name>
               <description>Transfer in progress</description>
               <bitRange>[4:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Idle</name><description>FIFO_RX is Not Full</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Busy</name><description>Transfering</description><value>1</value></enumeratedValue>
+              </enumeratedValues>           
             </field>
           </fields>
         </register>
@@ -3317,24 +3333,36 @@
               <bitRange>[0:0]</bitRange>
               <access>read-write</access>
               <enumeratedValues>
-                <enumeratedValue><name>Off</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
-                <enumeratedValue><name>On</name><description>Flag Active</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>NoEvent</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX_Overrun</name><description>Flag Active</description><value>1</value></enumeratedValue>
               </enumeratedValues>
             </field>
-            <field derivedFrom="RORIM">
+            <field>
               <name>RTIM</name>
               <description>Enable IQR on RX timeout for 32bits</description>
               <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>NoEvent</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX_Timeout</name><description>Flag Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
             </field>
-            <field derivedFrom="RORIM">
+            <field>
               <name>RXIM</name>
               <description>Enable IQR on FIFO_RX ge 4 words</description>
               <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>NoEvent</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX_HalfFull</name><description>Flag Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
             </field>
-            <field derivedFrom="RORIM">
+            <field>
               <name>TXIM</name>
               <description>Enable IQR on FIFO_TX le 4 words</description>
               <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>NoEvent</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>TX_HalfEmpty</name><description>Flag Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
             </field>
           </fields>
         </register>
@@ -3354,19 +3382,19 @@
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.RTIM">
               <name>RTRIS</name>
               <description>RX timeout for 32bits</description>
               <bitRange>[1:1]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.RXIM">
               <name>RXRIS</name>
               <description>FIFO_RX gt words</description>
               <bitRange>[2:2]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.TXIM">
               <name>TXRIS</name>
               <description>FIFO_TX le words</description>
               <bitRange>[3:3]</bitRange>
@@ -3390,19 +3418,19 @@
               <bitRange>[0:0]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.RTIM">
               <name>RTMIS</name>
               <description>RX timeout for 32bits</description>
               <bitRange>[1:1]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.RXIM">
               <name>RXMIS</name>
               <description>FIFO_RX ge 4 words</description>
               <bitRange>[2:2]</bitRange>
               <access>read-only</access>
             </field>
-            <field derivedFrom="MDR_SSP1.IMSC.RORIM">
+            <field derivedFrom="MDR_SSP1.IMSC.TXIM">
               <name>TXMIS</name>
               <description>FIFO_TX le 4 words</description>
               <bitRange>[3:3]</bitRange>

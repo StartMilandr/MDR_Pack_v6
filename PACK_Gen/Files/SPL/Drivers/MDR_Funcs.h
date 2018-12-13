@@ -59,7 +59,7 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 
 //  Доступ к полям в слове
 #define VAL2FLD(value, field)      _VAL2FLD(field, value)
-#define VAL2FLD_Pos(value, field)     ((uint32_t)(value) << field ## _Pos)
+#define VAL2FLD_Pos(value, pos)     ((uint32_t)(value) << pos)
 
 #define FLD_CLEAR(value, mask)     ((uint32_t)(value) & (~(mask)))
 

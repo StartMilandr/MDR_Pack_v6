@@ -5,6 +5,7 @@
 #include <MDR_Funcs.h>
 #include <MDR_Types.h>
 
+//==============================    ADC_CLOCK ===================================
 //  Выключение частоты ADC_Clock
 __STATIC_INLINE void MDR_ADC_SetClock_Off(void) {MDR_CLOCK->ADC_CLOCK &= ~MDR_RST_ADC__ADC_CLK_EN_Msk;}
 
@@ -37,6 +38,12 @@ void MDR_ADC_SetClock_RTSHSI(MDR_CLK_DIV_256 divClk);
   void MDR_ADC_SetClockEx_RTSHSI(MDR_CLK_DIV_256 divHSI, MDR_CLK_DIV_256 divClk);
 #endif
 
+//==============================    SSP_CLOCK ===================================
+#ifndef MDR_ADC_CLK_LIKE_VE4
+
+#else
+  
+#endif
 
 
 #endif  // _MDR_PER_CLOCK_H

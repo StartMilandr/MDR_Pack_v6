@@ -27,13 +27,13 @@ void MDR_ADC_Apply_CfgThermo(const MDR_ADC_CfgThermo *cfgThermo)
   
 #else
   // Включение
-  MDR_ADC->ADC1_Cfg |=  VAL2FLD_Pos(1,   MDR_ADC1_Cfg_TS_EN);
+  MDR_ADC->ADC1_Cfg |=  VAL2FLD_Pos(1,   MDR_ADC1_Cfg_TS_EN_Pos);
   // Подстройка
-  MDR_ADC->ADC1_Trim |= VAL2FLD_Pos(cfgThermo->TrimThermoVref, MDR_ADC_TRIM_TS_Trim);
+  MDR_ADC->ADC1_Trim |= VAL2FLD_Pos(cfgThermo->TrimThermoVref, MDR_ADC_TRIM_TS_Trim_Pos);
   
   //  Выбор Vref от термосенсора.
   if (cfgThermo->UseThermoVref == MDR_On)
-   MDR_ADC->ADC2_Cfg |=  VAL2FLD_Pos(1,   MDR_ADC2_Cfg_ADC1_OP);
+   MDR_ADC->ADC2_Cfg |=  VAL2FLD_Pos(1,   MDR_ADC2_Cfg_ADC1_OP_Pos);
 #endif 
 }
 
@@ -59,10 +59,10 @@ void MDR_ADC_Clear_CfgBase(MDR_ADCx_ItemType *ADCx)
 void MDR_ADC_Apply_CfgBase(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgBase * cfgBase)
 {
   uint32_t regCfg = ADCx->ADCx_Cfg;  
-  regCfg |=   VAL2FLD_Pos(cfgBase->ClockSource,      MDR_ADCx_Cfg_CLKS)
-            | VAL2FLD_Pos(cfgBase->MagRefExternal,   MDR_ADCx_Cfg_M_REF)
-            | VAL2FLD_Pos(cfgBase->CPU_ClockDiv,     MDR_ADCx_Cfg_DIV_CLK)
-            | VAL2FLD_Pos(cfgBase->SwitchDelay_GO,   MDR_ADC1_Cfg_Delay_GO);
+  regCfg |=   VAL2FLD_Pos(cfgBase->ClockSource,      MDR_ADCx_Cfg_CLKS_Pos)
+            | VAL2FLD_Pos(cfgBase->MagRefExternal,   MDR_ADCx_Cfg_M_REF_Pos)
+            | VAL2FLD_Pos(cfgBase->CPU_ClockDiv,     MDR_ADCx_Cfg_DIV_CLK_Pos)
+            | VAL2FLD_Pos(cfgBase->SwitchDelay_GO,   MDR_ADC1_Cfg_Delay_GO_Pos);
   
 #ifdef MDR_HAS_ADC2
   if (ADCx == MDR_ADC2)
@@ -87,8 +87,8 @@ void MDR_ADC_Clear_CfgIRQ(MDR_ADCx_ItemType *ADCx)
 
 void MDR_ADC_Apply_CfgIRQ(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgIRQ *cfgIRQ)
 {
-  ADCx->ADCx_Status |=  VAL2FLD_Pos(cfgIRQ->OnResult_IRQEna, MDR_ADC_STATUS_EOCIF_EN)
-                      | VAL2FLD_Pos(cfgIRQ->OnLimit_IRQEna,  MDR_ADC_STATUS_AWOIF_IE);
+  ADCx->ADCx_Status |=  VAL2FLD_Pos(cfgIRQ->OnResult_IRQEna, MDR_ADC_STATUS_EOCIF_EN_Pos)
+                      | VAL2FLD_Pos(cfgIRQ->OnLimit_IRQEna,  MDR_ADC_STATUS_AWOIF_IE_Pos);
 }
 
 void MDR_ADC_Change_CfgIRQ(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgIRQ * cfgIRQ)
@@ -135,7 +135,7 @@ void MDR_ADC_Apply_CfgLims(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgLimits *cf
 {
   ADCx->ADCx_L_Level = cfgSync->LowLevelLim;
   ADCx->ADCx_H_Level = cfgSync->HighLevelLim;
-  ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On,  MDR_ADCx_Cfg_RGNC);
+  ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On,  MDR_ADCx_Cfg_RGNC_Pos);
 }
 
 void MDR_ADC_Change_CfgLims(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgLimits *cfgSync)
@@ -223,7 +223,7 @@ static void ADC_Enable_loc(MDR_ADCx_ItemType *ADCx, uint32_t regCfg, bool cyclic
   //  Если заданы лимиты
   if (cfgLims)
   {
-    regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_RGNC);
+    regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_RGNC_Pos);
     ADCx->ADCx_H_Level = cfgLims->HighLevelLim;
     ADCx->ADCx_L_Level = cfgLims->LowLevelLim;
   }  
@@ -232,15 +232,15 @@ static void ADC_Enable_loc(MDR_ADCx_ItemType *ADCx, uint32_t regCfg, bool cyclic
   
   //  Цикличное преобразование до команды остановки
   if (cyclic)
-    regCfg |= VAL2FLD_Pos(MDR_ADC_SAMPLE_CONTINUOUS, MDR_ADCx_Cfg_SAMPLE);
+    regCfg |= VAL2FLD_Pos(MDR_ADC_SAMPLE_CONTINUOUS, MDR_ADCx_Cfg_SAMPLE_Pos);
   
   //  Запуск
-  ADCx->ADCx_Cfg = regCfg | runFlag | VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_ADON);
+  ADCx->ADCx_Cfg = regCfg | runFlag | VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_ADON_Pos);
 }
 
 static void ADC_Start_loc(MDR_ADCx_ItemType *ADCx, uint32_t regCfg, bool cyclic, const MDR_ADCx_CfgLimits *cfgLims)  
 {
-  ADC_Enable_loc(ADCx, regCfg, cyclic, cfgLims, VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_GO));
+  ADC_Enable_loc(ADCx, regCfg, cyclic, cfgLims, VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_GO_Pos));
 }
 
 
@@ -260,7 +260,7 @@ void MDR_ADC_StartChannel(MDR_ADCx_ItemType *ADCx, MDR_ADC_PinChannel channel, b
   
   //  Измерение одного канала
   regCfg &= ~CFG_START_CLEAR;  
-  regCfg |= VAL2FLD_Pos(channel, MDR_ADCx_Cfg_CHS);
+  regCfg |= VAL2FLD_Pos(channel, MDR_ADCx_Cfg_CHS_Pos);
   
   ADC_Start_loc(ADCx, regCfg, cyclic, cfgLims);
 }  
@@ -272,7 +272,7 @@ void MDR_ADC_StartSelected(MDR_ADCx_ItemType *ADCx, MDR_ADC_Select_PinChannels c
   
   //  Измерение нескольких каналов
   regCfg &= ~CFG_START_CLEAR;
-  regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH);
+  regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH_Pos);
   ADCx->ADCx_CHSEL = channelSelected.Select;
 
   //  Запуск
@@ -286,16 +286,16 @@ static void ADC_Init_ThermoSignal(MDR_ADC_ThermoSignal thermoSignal)
   uint32_t regCfg = MDR_ADC->ADC1_Cfg;
   
   //  Включение буферного усилителя
-  regCfg |= VAL2FLD_Pos(MDR_On,   MDR_ADC1_Cfg_TS_BUFF_EN);  
+  regCfg |= VAL2FLD_Pos(MDR_On,   MDR_ADC1_Cfg_TS_BUFF_EN_Pos);  
 
   // Выбор выходного сигнала термосенсора
 #ifdef MDR_HAS_ADC2
-  regCfg |=  VAL2FLD_Pos(thermoSignal + 1, MDR_ADC1_Cfg_SEL_TS);                  //  SEL_TS or SEL_Vref 
+  regCfg |=  VAL2FLD_Pos(thermoSignal + 1, MDR_ADC1_Cfg_SEL_TS_Pos);                  //  SEL_TS or SEL_Vref 
 #else
   if (thermoSignal <= MDR_ADC_ThermoSig_Vref)
-    regCfg |= VAL2FLD_Pos(thermoSignal + 1, MDR_ADC1_Cfg_SEL_TS);                 //  SEL_TS or SEL_Vref
+    regCfg |= VAL2FLD_Pos(thermoSignal + 1, MDR_ADC1_Cfg_SEL_TS_Pos);                 //  SEL_TS or SEL_Vref
   else
-    MDR_ADC->ADC1_Trim |= VAL2FLD_Pos(MDR_On, MDR_ADC_TRIM_SEL_VREF_BUF);         //  SEL_Vref_Buf
+    MDR_ADC->ADC1_Trim |= VAL2FLD_Pos(MDR_On, MDR_ADC_TRIM_SEL_VREF_BUF_Pos);         //  SEL_Vref_Buf
 #endif
   
   MDR_ADC->ADC1_Cfg = regCfg;
@@ -324,9 +324,9 @@ void MDR_ADC_StartThermoSignal(MDR_ADCx_ItemType *ADCx, MDR_ADC_ThermoSignal the
   //  Выбор канала с термосенсора
   regCfg = ADCx->ADCx_Cfg;
   if (thermoSignal == MDR_ADC_ThermoSig_Temper)
-    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Temper, MDR_ADCx_Cfg_CHS); // ch = 31 - themperature
+    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Temper, MDR_ADCx_Cfg_CHS_Pos); // ch = 31 - themperature
   else
-    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Vref, MDR_ADCx_Cfg_CHS);   // ch = 30 - vref 
+    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Vref, MDR_ADCx_Cfg_CHS_Pos);   // ch = 30 - vref 
   
   //  Запуск
   ADC_Start_loc(ADCx, regCfg, cyclic, cfgLims);
@@ -344,7 +344,7 @@ void MDR_ADC_StartThermoSignalSelected(MDR_ADCx_ItemType *ADCx, MDR_ADC_ThermoSi
   
   //  Выбор канала с термосенсора
   regCfg = ADCx->ADCx_Cfg;
-  regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH);
+  regCfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH_Pos);
   if (thermoSignal == MDR_ADC_ThermoSig_Temper)
     MDR_ADC->ADC1_CHSEL = (uint32_t)(1UL << (uint32_t)MDR_ADC_ChTS_Temper);
   else

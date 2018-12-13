@@ -11,40 +11,7 @@
 
   #define MDR_CPU_SetClock_HSE_Max(bypass)  MDR_CPU_SetClock_HSE_PLL((bypass), HSE_PLL_MUL_MAX, HSE_LOW_SELRI_MAX, HSE_EEPROM_DELAY_MAX, MDR_CLK_div1, HSE_TIMEOUT)
 
-//  ---------------  SPI Definition ----------------
-    // SPI1 PortF
-	  #define MDRB_SPI1_F_PIN_CLK	     PORT_Pin_1
-	  #define MDRB_SPI1_F_PIN_TX		   PORT_Pin_0
-	  #define MDRB_SPI1_F_PIN_RX		   PORT_Pin_3
-	  #define MDRB_SPI1_F_PIN_CS		   PORT_Pin_2    
 
-	  #define MDRB_SPI1_F_PORT_CLK     RST_CLK_PCLK_PORTF
-	  #define MDRB_SPI1_F_PORT			   MDR_PORTF
-    #define MDRB_SPI1_F_PINS         (MDRB_SPI1_F_PIN_CLK | MDRB_SPI1_F_PIN_TX | MDRB_SPI1_F_PIN_RX | MDRB_SPI1_F_PIN_CS)
-    #define MDRB_SPI1_F_PINS_FUNC    PORT_FUNC_ALTER
-    
-    #define MDRB_SPI1_F_PINS_FUNC_CLEAR  (~ ((3 << (1 * 2)) | \
-                                            (3 << (0 * 2)) | \
-                                            (3 << (3 * 2)) | \
-                                            (3 << (2 * 2))   \
-                                        ))
-    
-    //  SPI2 PortD
-	  #define MDRB_SPI2_D_PIN_CLK	   PORT_Pin_5
-	  #define MDRB_SPI2_D_PIN_TX		   PORT_Pin_6
-	  #define MDRB_SPI2_D_PIN_RX		   PORT_Pin_2
-	  #define MDRB_SPI2_D_PIN_CS		   PORT_Pin_3    
-
-	  #define MDRB_SPI2_D_PORT_CLK    RST_CLK_PCLK_PORTD
-	  #define MDRB_SPI2_D_PORT			   MDR_PORTD
-    #define MDRB_SPI2_D_PINS        (MDRB_SPI2_D_PIN_CLK | MDRB_SPI2_D_PIN_TX | MDRB_SPI2_D_PIN_RX | MDRB_SPI2_D_PIN_CS)
-    #define MDRB_SPI2_D_PINS_FUNC   PORT_FUNC_ALTER
-
-    #define MDRB_SPI2_D_PINS_FUNC_CLEAR  (~ ((3 << (5 * 2)) | \
-                                            (3 << (6 * 2)) | \
-                                            (3 << (2 * 2)) | \
-                                            (3 << (3 * 2))   \
-                                        ))
 //  ---------------  ExtBUS Definition ----------------
     //  Data: [PA0 .. PA15] = [D0 .. D15]    
     #define MDRB_EBC_DATA_PORT_LO8         MDR_PORTA

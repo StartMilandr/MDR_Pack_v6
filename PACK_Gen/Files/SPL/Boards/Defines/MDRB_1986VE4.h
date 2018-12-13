@@ -18,11 +18,16 @@
     #define PIN_PA2       MDR_Pin_2   //          LCD_D2
     #define PIN_PA3       MDR_Pin_3   //          LCD_D3
     #define PIN_PA4       MDR_Pin_4   //          LCD_A0
-    #define PIN_PA6       MDR_Pin_6   //                    JTAG_A
-    #define PIN_PA7       MDR_Pin_7   //                    JTAG_A    
+    #define PIN_PA6       MDR_Pin_6   //                  JTAG_A
+    #define PIN_PA7       MDR_Pin_7   //                  JTAG_A    
+    #define PIN_PA8       MDR_Pin_8   // 
+    #define PIN_PA9       MDR_Pin_9   // 
+    #define PIN_PA10      MDR_Pin_10  // 
     #define PIN_PA11      MDR_Pin_11  //  LED_1    
-    #define PIN_PA14      MDR_Pin_14  //          LCD_WR1
-    #define PIN_PA15      MDR_Pin_15  //          LCD_WR2
+    #define PIN_PA12      MDR_Pin_12  //                       SSP1_FSS
+    #define PIN_PA13      MDR_Pin_13  //                       SSP1_CLK
+    #define PIN_PA14      MDR_Pin_14  //          LCD_WR1      SSP1_RX
+    #define PIN_PA15      MDR_Pin_15  //          LCD_WR2      SSP1_TX
 
     #define PIN_PB6       MDR_Pin_6   //                             ADC_Ch7  - TuneResistor
     #define PIN_PB7       MDR_Pin_7   //                             ADC_Ch6
@@ -107,7 +112,29 @@
                                         MDR_PORTA->RXTX |= ((value) & 0x0FUL);
     
     #define LCD_IS_7SEG_DISPLAY
-    
+
+//  ---------------  SPI1 Pin Definition ----------------
+  //  PORT_A: SSP1_PA12,PC13,PC14,PC15 - Main
+  #define MDRB_SPI1_FSS_PA12_Ind	     12
+	#define MDRB_SPI1_CLK_PA13_Ind	     13
+	#define MDRB_SPI1_RX_PA14_Ind 	     14
+	#define MDRB_SPI1_TX_PA15_Ind		     15
+
+  #define MDRB_SPI1_FSS_PA12_Msk	     PORT_Pin_12
+	#define MDRB_SPI1_CLK_PA13_Msk		   PORT_Pin_13
+	#define MDRB_SPI1_RX_PA14_Msk 		   PORT_Pin_14
+	#define MDRB_SPI1_TX_PA15_Msk		     PORT_Pin_15
+
+  #define MDRB_SPI1_FSS_PA12_Port	     MDR_GPIO_A
+	#define MDRB_SPI1_CLK_PA13_Port		   MDR_GPIO_A
+	#define MDRB_SPI1_RX_PA14_Port 		   MDR_GPIO_A
+	#define MDRB_SPI1_TX_PA15_Port		   MDR_GPIO_A
+  
+  #define MDRB_SPI1_FSS_PA12_Func	     MDR_PIN_MAIN
+	#define MDRB_SPI1_CLK_PA13_Func		   MDR_PIN_MAIN
+	#define MDRB_SPI1_RX_PA14_Func 		   MDR_PIN_MAIN
+	#define MDRB_SPI1_TX_PA15_Func		   MDR_PIN_MAIN
+
 #else
    Please, select board in MDRB_BoardSelect.h!
 

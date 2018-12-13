@@ -856,7 +856,16 @@
         <file category="header"  name="SPL/Drivers/MDR_PER_Clock.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_PER_ClockVE4.c" version="2.0.0"/>
       </files>
-    </component> 
+    </component>
+    <!--SSP-->
+    <component Cclass="Drivers" Cgroup="SSP" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>SAR ADC Control functions</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_SSP.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_SSP.c" version="2.0.0"/>
+      </files>
+    </component>
 
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
@@ -910,7 +919,7 @@
   </components>
 
   <examples>
-    <example name="LED Flasher" folder="Examples/All_Boards/LedFlasher" doc="ReadMe.txt" version="2.0.0">
+    <example name="LED Flasher" folder="Examples/All_Boards/LedFlasher" doc="ReadMe.md" version="2.0.0">
       <description>Board LED flashing</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -926,7 +935,7 @@
       </attributes>
     </example>
 
-    <example name="Buttons Checker" folder="Examples/All_Boards/ButtonsChecker" doc="ReadMe.txt" version="2.0.0">
+    <example name="Buttons Checker" folder="Examples/All_Boards/ButtonsChecker" doc="ReadMe.md" version="2.0.0">
       <description>Board LED flashing</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -942,7 +951,7 @@
       </attributes>
     </example>
 
-    <example name="LCD String" folder="Examples/All_Boards/LCD_String" doc="ReadMe.txt" version="2.0.0">
+    <example name="LCD String" folder="Examples/All_Boards/LCD_String" doc="ReadMe.md" version="2.0.0">
       <description>Board LED flashing</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -956,7 +965,7 @@
       </attributes>
     </example>
 
-    <example name="ClockTestCPU" folder="Examples/All_Boards/ClockTestCPU" doc="ReadMe.txt" version="2.0.0">
+    <example name="ClockTestCPU" folder="Examples/All_Boards/ClockTestCPU" doc="ReadMe.md" version="2.0.0">
       <description>Test CPU clock sources</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -973,7 +982,7 @@
       </attributes>
     </example>    
 
-    <example name="EEPROM_StoreData" folder="Examples/All_Boards/EEPROM_StoreData" doc="ReadMe.txt" version="2.0.0">
+    <example name="EEPROM_StoreData" folder="Examples/All_Boards/EEPROM_StoreData" doc="ReadMe.md" version="2.0.0">
       <description>Store data to EEPROM's main and info page. </description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -992,7 +1001,7 @@
       </attributes>
     </example>
 
-    <example name="EEPROM_Test" folder="Examples/All_Boards/EEPROM_Test" doc="ReadMe.txt" version="2.0.0">
+    <example name="EEPROM_Test" folder="Examples/All_Boards/EEPROM_Test" doc="ReadMe.md" version="2.0.0">
       <description>Store data to EEPROM's main and info page. </description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -1009,7 +1018,7 @@
       </attributes>
     </example>
 
-    <example name="ADC_Test" folder="Examples/All_Boards/ADC_Test" doc="ReadMe.txt" version="2.0.0">
+    <example name="ADC_Test" folder="Examples/All_Boards/ADC_Test" doc="ReadMe.md" version="2.0.0">
       <description>ADC SAR use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
@@ -1028,7 +1037,7 @@
       </attributes>
     </example>
 
-    <example name="EEPROM_FLM" folder="Examples/All_Boards/EEPROM_FLM" doc="ReadMe.txt" version="2.0.0">
+    <example name="EEPROM_FLM" folder="Examples/All_Boards/EEPROM_FLM" doc="ReadMe.md" version="2.0.0">
       <description>Store data to EEPROM's main and info page. </description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>

@@ -140,13 +140,13 @@ typedef union {
 void MDR_ADC_StartSelected(MDR_ADCx_ItemType *ADCx, MDR_ADC_Select_PinChannels channelSelected, bool cyclic, const MDR_ADCx_CfgLimits *cfgLims);
 
 //  Повторный запуск измерения, если не был запущен непрерывный режим
-__STATIC_INLINE void MDR_ADC_StartNextGo(MDR_ADCx_ItemType *ADCx) {ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_GO);}
+__STATIC_INLINE void MDR_ADC_StartNextGo(MDR_ADCx_ItemType *ADCx) {ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_GO_Pos);}
 
 //  Остановка измерений для непрерывного режима.
 __STATIC_INLINE void MDR_ADC_Stop(MDR_ADCx_ItemType *ADCx) {ADCx->ADCx_Cfg &= ~(MDR_ADCx_Cfg_ADON_Msk | MDR_ADCx_Cfg_GO_Msk);}
 
 //  Отдельное включение АЦП. Обычно уже вставлено в функцию Start вместе с выставлением бита GO. 
-__STATIC_INLINE void MDR_ADC_Enable(MDR_ADCx_ItemType *ADCx)  {ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_ADON);}
+__STATIC_INLINE void MDR_ADC_Enable(MDR_ADCx_ItemType *ADCx)  {ADCx->ADCx_Cfg |= VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_ADON_Pos);}
 __STATIC_INLINE void MDR_ADC_Disable(MDR_ADCx_ItemType *ADCx) {ADCx->ADCx_Cfg &= ~MDR_ADCx_Cfg_ADON_Msk;}
 
 //  ============    Измерение внутренних сигналов от термосенсора ==============

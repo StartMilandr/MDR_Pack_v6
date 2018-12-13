@@ -161,6 +161,10 @@ typedef enum IRQn
 /*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE4VKx_def.h"
 
+/*=========  SSP - Synchronous Serial Port ========*/
+#include "MDR_SSP_def.h"
+
+
 /*@}*/ /* end of group MDR1986VE4_Peripherals */
 
 
@@ -193,20 +197,21 @@ typedef enum IRQn
   */
 
 /* Peripheral and SRAM base address */
-#define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-#define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-#define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+#define ADDR_FLASH_BASE       0x00000000UL                              /*!< (FLASH     ) Base Address */
+#define ADDR_SRAM_BASE        0x20000000UL                              /*!< (SRAM      ) Base Address */
+#define ADDR_PERIPH_BASE      0x40000000UL                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
-#define ADDR_ADC_BASE         (0x40040000UL)                              /*!< ADC SAR Base Address        */
-#define ADDR_BKP_BASE         (0x40060000UL)                              /*!< Backup and RTC Base Address */
+#define ADDR_EEPROM_BASE      0x40018000UL                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE   0x40020000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_ADC_BASE         0x40040000UL                              /*!< ADC SAR Base Address        */
+#define ADDR_BKP_BASE         0x40060000UL                              /*!< Backup and RTC Base Address */
 
-#define ADDR_PORTA_BASE       (0x40080000UL)                              /*!< GPIO PORT_A Base Address */
-#define ADDR_PORTB_BASE       (0x40088000UL)                              /*!< GPIO PORT_B Base Address */
-#define ADDR_PORTC_BASE       (0x40090000UL)                              /*!< GPIO PORT_C Base Address */
+#define ADDR_PORTA_BASE       0x40080000UL                              /*!< GPIO PORT_A Base Address */
+#define ADDR_PORTB_BASE       0x40088000UL                              /*!< GPIO PORT_B Base Address */
+#define ADDR_PORTC_BASE       0x40090000UL                              /*!< GPIO PORT_C Base Address */
 
+#define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -230,6 +235,7 @@ typedef enum IRQn
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
 #define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
 
+#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                       SPL_Configs                                         ================ */
@@ -261,7 +267,23 @@ typedef enum IRQn
 #define   MDR_JTAG_A_PINS_PD              0x00C000C0UL
 
 #define   MDR_ADC_CLK_LIKE_VE4
+//  ADC pins in Port_C and Port_B
 #define   MDR_ADC_IN_PORTS_CB
+
+//  SSP Block Clock enable
+#define   MDR_CLK_EN_ADDR_SSP1        (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_CLK_EN_MASK_SSP1          MDR_RST_PER2__SSP1_CLK_EN_Msk
+
+
+//  SSP_Clock freq configs
+#define   MDR_SSP_CLOCK_ADDR_SSP1     (&MDR_CLOCK->SSP_CLOCK)
+#define   MDR_SSP_CLOCK_ENA_MSK_SSP1    MDR_RST_SSP__SSP1_CLK_EN_Msk
+#define   MDR_SSP_CLOCK_BRG_POS_SSP1    MDR_RST_SSP__SSP1_BRG_Pos
+
+#define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
+
+
+
 
 /** @} */ /* End of group MDR1986VE4 */
 

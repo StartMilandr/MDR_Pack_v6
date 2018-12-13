@@ -206,8 +206,8 @@ typedef struct {
 #define MDR_RST_PER__UART1_CLK_EN_Msk   (0x40UL)          /*!< MDR_RST_CLOCK PER_CLOCK: UART1_CLK_EN (Bitfield-Mask: 0x01)    */
 #define MDR_RST_PER__UART2_CLK_EN_Pos   (7UL)             /*!< MDR_RST_CLOCK PER_CLOCK: UART2_CLK_EN (Bit 7)                  */
 #define MDR_RST_PER__UART2_CLK_EN_Msk   (0x80UL)          /*!< MDR_RST_CLOCK PER_CLOCK: UART2_CLK_EN (Bitfield-Mask: 0x01)    */
-#define MDR_RST_PER__SPI1_CLK_EN_Pos    (8UL)             /*!< MDR_RST_CLOCK PER_CLOCK: SPI1_CLK_EN (Bit 8)                   */
-#define MDR_RST_PER__SPI1_CLK_EN_Msk    (0x100UL)         /*!< MDR_RST_CLOCK PER_CLOCK: SPI1_CLK_EN (Bitfield-Mask: 0x01)     */
+#define MDR_RST_PER__SSP1_CLK_EN_Pos    (8UL)             /*!< MDR_RST_CLOCK PER_CLOCK: SPI1_CLK_EN (Bit 8)                   */
+#define MDR_RST_PER__SSP1_CLK_EN_Msk    (0x100UL)         /*!< MDR_RST_CLOCK PER_CLOCK: SPI1_CLK_EN (Bitfield-Mask: 0x01)     */
 #define MDR_RST_PER__MIL1_CLK_EN_Pos    (9UL)             /*!< MDR_RST_CLOCK PER_CLOCK: MIL1_CLK_EN (Bit 9)                   */
 #define MDR_RST_PER__MIL1_CLK_EN_Msk    (0x200UL)         /*!< MDR_RST_CLOCK PER_CLOCK: MIL1_CLK_EN (Bitfield-Mask: 0x01)     */
 #define MDR_RST_PER__MIL2_CLK_EN_Pos    (10UL)            /*!< MDR_RST_CLOCK PER_CLOCK: MIL2_CLK_EN (Bit 10)                  */
@@ -230,8 +230,8 @@ typedef struct {
 #define MDR_RST_PER__DAC_CLK_EN_Msk     (0x40000UL)       /*!< MDR_RST_CLOCK PER_CLOCK: DAC_CLK_EN (Bitfield-Mask: 0x01)      */
 #define MDR_RST_PER__TIMER4_CLK_EN_Pos  (19UL)            /*!< MDR_RST_CLOCK PER_CLOCK: TIMER4_CLK_EN (Bit 19)                */
 #define MDR_RST_PER__TIMER4_CLK_EN_Msk  (0x80000UL)       /*!< MDR_RST_CLOCK PER_CLOCK: TIMER4_CLK_EN (Bitfield-Mask: 0x01)   */
-#define MDR_RST_PER__SPI2_CLK_EN_Pos    (20UL)            /*!< MDR_RST_CLOCK PER_CLOCK: SPI2_CLK_EN (Bit 20)                  */
-#define MDR_RST_PER__SPI2_CLK_EN_Msk    (0x100000UL)      /*!< MDR_RST_CLOCK PER_CLOCK: SPI2_CLK_EN (Bitfield-Mask: 0x01)     */
+#define MDR_RST_PER__SSP2_CLK_EN_Pos    (20UL)            /*!< MDR_RST_CLOCK PER_CLOCK: SPI2_CLK_EN (Bit 20)                  */
+#define MDR_RST_PER__SSP2_CLK_EN_Msk    (0x100000UL)      /*!< MDR_RST_CLOCK PER_CLOCK: SPI2_CLK_EN (Bitfield-Mask: 0x01)     */
 #define MDR_RST_PER__PORTA_CLK_EN_Pos   (21UL)            /*!< MDR_RST_CLOCK PER_CLOCK: PORTA_CLK_EN (Bit 21)                 */
 #define MDR_RST_PER__PORTA_CLK_EN_Msk   (0x200000UL)      /*!< MDR_RST_CLOCK PER_CLOCK: PORTA_CLK_EN (Bitfield-Mask: 0x01)    */
 #define MDR_RST_PER__PORTB_CLK_EN_Pos   (22UL)            /*!< MDR_RST_CLOCK PER_CLOCK: PORTB_CLK_EN (Bit 22)                 */
@@ -252,8 +252,8 @@ typedef struct {
 #define MDR_RST_PER__PORTF_CLK_EN_Msk   (0x20000000UL)    /*!< MDR_RST_CLOCK PER_CLOCK: PORTF_CLK_EN (Bitfield-Mask: 0x01)    */
 #define MDR_RST_PER__EBC_CLK_EN_Pos     (30UL)            /*!< MDR_RST_CLOCK PER_CLOCK: EBC_CLK_EN (Bit 30)                   */
 #define MDR_RST_PER__EBC_CLK_EN_Msk     (0x40000000UL)    /*!< MDR_RST_CLOCK PER_CLOCK: EBC_CLK_EN (Bitfield-Mask: 0x01)      */
-#define MDR_RST_PER__SPI3_CLK_EN_Pos    (31UL)            /*!< MDR_RST_CLOCK PER_CLOCK: SPI3_CLK_EN (Bit 31)                  */
-#define MDR_RST_PER__SPI3_CLK_EN_Msk    (0x80000000UL)    /*!< MDR_RST_CLOCK PER_CLOCK: SPI3_CLK_EN (Bitfield-Mask: 0x01)     */
+#define MDR_RST_PER__SSP3_CLK_EN_Pos    (31UL)            /*!< MDR_RST_CLOCK PER_CLOCK: SPI3_CLK_EN (Bit 31)                  */
+#define MDR_RST_PER__SSP3_CLK_EN_Msk    (0x80000000UL)    /*!< MDR_RST_CLOCK PER_CLOCK: SPI3_CLK_EN (Bitfield-Mask: 0x01)     */
 
 
 /* =======================================================  CAN_CLOCK  ======================================================= */

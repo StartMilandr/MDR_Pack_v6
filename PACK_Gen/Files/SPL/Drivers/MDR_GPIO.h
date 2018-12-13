@@ -118,7 +118,7 @@ void MDR_Port_InitDigPermRegs(MDR_PIN_PD OutDriver, MDR_PIN_PWR Power, MDR_OnOff
 
 //  Инициализация пинов с дополнительными настройками и групповыми.
 void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs);
-void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd   , MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs);
+void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs);
 
 //  Конвертация в MDR_GPIO_CfgRegs для вызова первого варианта
 void MDR_Port_ToCfgRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_GPIO_CfgRegs *cfgRegs);
@@ -159,9 +159,17 @@ typedef struct {
   // Clock Enable
   volatile uint32_t*      RST_ClockEn_Addr;
   uint32_t       ClockEnaMask;
-//  //  JTag Protection
-//  uint32_t       JTag_nClr;
 } MDR_GPIO_Port;
+
+extern const MDR_GPIO_Port    GPIO_A_Port;
+extern const MDR_GPIO_Port    GPIO_B_Port;
+extern const MDR_GPIO_Port    GPIO_C_Port;
+extern const MDR_GPIO_Port    GPIO_D_Port;
+extern const MDR_GPIO_Port    GPIO_E_Port;
+extern const MDR_GPIO_Port    GPIO_F_Port;
+extern const MDR_GPIO_Port    GPIO_G_Port;
+extern const MDR_GPIO_Port    GPIO_H_Port;
+extern const MDR_GPIO_Port    GPIO_I_Port;
 
 #define MDR_GPIO_A            &GPIO_A_Port
 #define MDR_GPIO_B            &GPIO_B_Port
@@ -173,15 +181,6 @@ typedef struct {
 #define MDR_GPIO_H            &GPIO_H_Port
 #define MDR_GPIO_I            &GPIO_I_Port
 
-extern const MDR_GPIO_Port    GPIO_A_Port;
-extern const MDR_GPIO_Port    GPIO_B_Port;
-extern const MDR_GPIO_Port    GPIO_C_Port;
-extern const MDR_GPIO_Port    GPIO_D_Port;
-extern const MDR_GPIO_Port    GPIO_E_Port;
-extern const MDR_GPIO_Port    GPIO_F_Port;
-extern const MDR_GPIO_Port    GPIO_G_Port;
-extern const MDR_GPIO_Port    GPIO_H_Port;
-extern const MDR_GPIO_Port    GPIO_I_Port;
 
 extern const MDR_PinDig_PermRegs PinDig_PermRegsDef;
 

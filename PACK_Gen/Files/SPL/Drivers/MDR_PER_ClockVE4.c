@@ -1,6 +1,6 @@
 #include <MDR_PER_Clock.h>
 
-
+//=================   Задание частоты ADC_CLOCK ==================
 //  Выбор готовых частот, не влияют на настройки других блоков.
 #define   ADC_CLEAR_C1    (MDR_RST_ADC__ADC_CLK_EN_Msk | MDR_RST_ADC__ADC_C3_SEL_Msk | MDR_RST_ADC__ADC_C1_SEL_Msk)
 
@@ -63,3 +63,14 @@ void MDR_ADC_SetClockEx_RTSHSI(MDR_CLK_DIV_256 divHSI, MDR_CLK_DIV_256 divClk)
   MDR_ADC_SetClock_RTSHSI(divClk);
 }
 
+//=================   Выбор источника тактовой частоты для SSP_CLOCK ==================
+#ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK
+void MDR_SelectSrcFor_UartTimSSP_Clock(MDR_CLK_SEL_PER selClockSource)
+{
+  uint32_t regPER1 = MDR_CLOCK->PER1_CLOCK;
+  regPER1 &= ~MDR_RST_PER1__PER1_C2_SEL_Msk;
+  regPER1 |= VAL2FLD_Pos(selClockSource,  MDR_RST_PER1__PER1_C2_SEL_Pos);
+
+  MDR_CLOCK->PER1_CLOCK = regPER1;  
+}
+#endif

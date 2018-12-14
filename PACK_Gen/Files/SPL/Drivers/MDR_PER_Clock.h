@@ -5,7 +5,8 @@
 #include <MDR_Funcs.h>
 #include <MDR_Types.h>
 
-//==============================    ADC_CLOCK ===================================
+
+//=================   Выбор источника тактовой частоты для SSP_CLOCK ==================
 //  Выключение частоты ADC_Clock
 __STATIC_INLINE void MDR_ADC_SetClock_Off(void) {MDR_CLOCK->ADC_CLOCK &= ~MDR_RST_ADC__ADC_CLK_EN_Msk;}
 
@@ -38,11 +39,20 @@ void MDR_ADC_SetClock_RTSHSI(MDR_CLK_DIV_256 divClk);
   void MDR_ADC_SetClockEx_RTSHSI(MDR_CLK_DIV_256 divHSI, MDR_CLK_DIV_256 divClk);
 #endif
 
-//==============================    SSP_CLOCK ===================================
-#ifndef MDR_ADC_CLK_LIKE_VE4
+//  Дубликаты имен, согласно наименованиям на схеме тактирования в спецификации
+#define MDR_ADC_SetClock_CPU_C1(div)    MDR_ADC_SetClock_InputCPU(div)
+#define MDR_ADC_SetClock_HSI_C1(div)    MDR_ADC_SetClock_RTSHSI(div)
+#define MDR_ADC_SetClock_USB_C2(div)    MDR_ADC_SetClock_InputUSB(div)
+#define MDR_ADC_SetClock_PER1_C1(div)    MDR_ADC_SetClock_InputPER(div)
 
-#else
-  
+//=================   Выбор источника тактовой частоты для SSP_CLOCK ==================
+#ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK
+  //  Только для 1986VE4,VE214,VE234 
+  //  В остальных процессорах источник всегда HCLK (==CPU_CLK)
+  void MDR_SelectSrcFor_UartTimSSP_Clock(MDR_CLK_SEL_PER selClockSource);
+  //  Второе имя согласно схеме тактирования (для удобства)
+  #define MDR_PER_SetPER1_C2(sel)  MDR_SelectSrcFor_UartTimSSP_Clock(sel)
+
 #endif
 
 

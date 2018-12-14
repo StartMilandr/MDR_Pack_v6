@@ -281,8 +281,7 @@ typedef enum IRQn
 #define   MDR_SSP_CLOCK_BRG_POS_SSP1    MDR_RST_SSP__SSP1_BRG_Pos
 
 #define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
-
-
+#define   MDR_SSP_CLOCK_FROM_PER_CLOCK
 
 
 /** @} */ /* End of group MDR1986VE4 */

@@ -40,6 +40,10 @@ void MDRB_LED_Switch(uint32_t LEDs_Sel)
   #define MDRB_LED_COUNT  5
   static const uint32_t _LED_Pins[MDRB_LED_COUNT] = {MDRB_LED_1, MDRB_LED_2, MDRB_LED_3, MDRB_LED_4, MDRB_LED_5};
   
+#elif defined (MDRB_LED_4)
+  #define MDRB_LED_COUNT  4
+  static const uint32_t _LED_Pins[MDRB_LED_COUNT] = {MDRB_LED_1, MDRB_LED_2, MDRB_LED_3, MDRB_LED_4};  
+  
 #elif defined (MDRB_LED_2)
   #define MDRB_LED_COUNT  2
   static const uint32_t _LED_Pins[MDRB_LED_COUNT] = {MDRB_LED_1, MDRB_LED_2};

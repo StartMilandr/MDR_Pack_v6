@@ -111,7 +111,7 @@
     #define MDRB_LCD_BusWrite(value)    MDR_PORTA->RXTX &= 0xFFF0;          \
                                         MDR_PORTA->RXTX |= ((value) & 0x0FUL);
     
-    #define LCD_IS_7SEG_DISPLAY
+    #define LCD_MT_10T7_DISPLAY
 
 //  ---------------  SPI1 Pin Definition ----------------
   //  PORT_A: SSP1_PA12,PC13,PC14,PC15 - Main

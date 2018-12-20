@@ -12,8 +12,63 @@
 #include <stdio.h>
 
 
-#ifndef LCD_IS_7SEG_DISPLAY
-  //  ===== Display MT-12864J ======
+//============    Функции, общие для всех экранов =================
+//  Функции инициализации
+void MDRB_LCD_Init(uint32_t CPU_FreqHz);
+void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
+void MDRB_LCD_Clear(void);
+
+//  Переключение необходимых пинов для работы с LCD и возврат в конфигурацию перед захватом.
+void MDRB_LCD_CapturePins(void);
+void MDRB_LCD_ReleasePins(void);
+
+// Функция сдвига строки, для отображения бегущей строки
+void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidth, char* outString);
+
+
+//============    7-ми секционный экран MT-10T7 на демоплатах 1986VE4 =================
+#ifdef LCD_MT_10T7_DISPLAY
+
+  #define LCD_IS_7SEG_DISPLAY
+  #define LCD_SCREEN_WIDTH    10
+  
+  void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
+  void MDRB_LCD_ScrollString(const char* string, uint8_t shift);             // Горизональное перемещение строки. Необходимо менять shift.
+  void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);  //  Автономное горизональное перемещение строки.
+
+
+//============    10-ти секционный экран HTD-B083 на демоплатах 1986VK214(234) и счетчиках "Милур"   ===========      
+#elif defined (LCD_HTD_B083_DISPLAY)
+
+  #define LCD_IS_7SEG_DISPLAY
+  #define LCD_SCREEN_WIDTH    11  
+  
+  void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
+  void MDRB_LCD_ScrollString(const char* string, uint8_t shift);             // Горизональное перемещение строки. Необходимо менять shift.
+  void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);  //  Автономное горизональное перемещение строки.
+
+  //  LCD HTD Specific control
+  #include "MDRB_LCD_HTD_B083.h"
+  
+  //  Функции для работы с пользовательским регистром (переменной) типа LCD_HTD_REG128.
+  //  Можно сконфигурировать сразу несколько регистров (переменных) и затем записывать их в LCD.
+  //  Стирание всего регистра
+  void MDRB_HTD_RegClear(LCD_HTD_REG128 *lcdReg);
+  //  Стирание только цифровых индикаторов
+  void MDRB_HTD_RegClearStr(LCD_HTD_REG128 *lcdReg);
+  //  Запись цифровых индикаторов
+  void MDRB_HTD_RegWriteStr(LCD_HTD_REG128 *lcdReg, const char* string);
+  //  Вывод регистра в LCD экран - Show
+  void MDRB_HTD_RegApply(LCD_HTD_REG128 *lcdReg);
+  //  Вывод строки на цифровые индикаторы на LCD экране - Show
+  void MDRB_HTD_RegPring(LCD_HTD_REG128 *lcdReg, const char* string);
+
+  // Функции работы через глобальную переменную регистра - для упрощения вывода.
+  extern LCD_HTD_REG128 _MDR_LCD_Reg128;
+  
+  
+//============    Пиксельный экран MT-12864J на всех остальных демо-платах =================
+#else
 
   #define LCD_SCREEN_WIDTH    16   // Ширина дисплея (в символах 8x8)
 
@@ -26,31 +81,10 @@
   
   void MDRB_LCD_PutImage    (const uint8_t* image, uint8_t top,    uint8_t left,        // Вывод изображения
                                                    uint8_t bottom, uint8_t right);
-  
-#else
-  //  ===== Display MT-10T7 ======
-  void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
-  void MDRB_LCD_ScrollString(const char* string, uint8_t shift);                        // Горизональное перемещение строки. Необходимо менять shift.
-  
-  void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);             //  Автономное горизональное перемещение строки.
-  
-  
-  #define LCD_SCREEN_WIDTH    10
 #endif
 
-  //  Функции инициализации
-void MDRB_LCD_Init(uint32_t CPU_FreqHz);
-void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
-void MDRB_LCD_Clear (void);
- 
-void MDRB_LCD_CapturePins(void);
-void MDRB_LCD_ReleasePins(void);
 
-// Функция сдвига строки, для отображения бегущей строки
-void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidth, char* outString);
-
-
-//  Вариант использования
+//  Вариант вывода на экран
 //void LCD_ShowDelay(uint32_t presc, uint32_t delay)
 //{
 //  static char message[64];

@@ -15,7 +15,6 @@
 //============    Функции, общие для всех экранов =================
 //  Функции инициализации
 void MDRB_LCD_Init(uint32_t CPU_FreqHz);
-void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
 void MDRB_LCD_Clear(void);
 
 //  Переключение необходимых пинов для работы с LCD и возврат в конфигурацию перед захватом.
@@ -35,7 +34,9 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
   void MDRB_LCD_ScrollString(const char* string, uint8_t shift);             // Горизональное перемещение строки. Необходимо менять shift.
   void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);  //  Автономное горизональное перемещение строки.
-
+  
+  //  Пересчет задержек при смене частоты CPU
+  void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
 
 //============    10-ти секционный экран HTD-B083 на демоплатах 1986VK214(234) и счетчиках "Милур"   ===========      
 #elif defined (LCD_HTD_B083_DISPLAY)
@@ -66,6 +67,9 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   // Функции работы через глобальную переменную регистра - для упрощения вывода.
   extern LCD_HTD_REG128 _MDR_LCD_Reg128;
   
+  //  Экран работает при всех доступных частотах при MDR_Delay(0) в качестве четверти такта
+  #define _LCD_DELAY_TICK_DEF   0
+  #define MDRB_LCD_ChangeFreqCPU(x)   UNUSED(x)
   
 //============    Пиксельный экран MT-12864J на всех остальных демо-платах =================
 #else
@@ -81,6 +85,9 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   
   void MDRB_LCD_PutImage    (const uint8_t* image, uint8_t top,    uint8_t left,        // Вывод изображения
                                                    uint8_t bottom, uint8_t right);
+  
+  //  Пересчет задержек при смене частоты CPU
+  void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);  
 #endif
 
 

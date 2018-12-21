@@ -68,7 +68,7 @@ typedef struct {
   uint32_t    s118_W      : 1;
   uint32_t    s119_N3_k   : 1;
   
-  uint32_t    reserved    : 10;
+  uint32_t    reserved    : 9;
 } LCD_HTD_REG4_Bits;
 
 

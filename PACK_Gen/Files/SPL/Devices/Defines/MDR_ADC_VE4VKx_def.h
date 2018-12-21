@@ -70,7 +70,8 @@ typedef struct {
   __IOM MDR_OnOff           GO         : 1;            /*!< [1..1] Start single ADC mesurement                             */
   __IOM MDR_ADC_CLK_SEL     CLKS       : 1;            /*!< [2..2] Select Clock                                            */
   __IOM MDR_ADC_SAMPLE      SAMPLE     : 1;            /*!< [3..3] Single or Continuous measurement                        */
-  __IOM MDR_ADC_CHSEL       CHS        : 5;            /*!< [8..4] Active channel select                                   */ 
+  __IOM uint32_t            CHS        : 5;            /*!< [8..4] Active channel select                                   */ 
+  //__IOM MDR_ADC_CHSEL       CHS        : 5;            /*!< [8..4] Active channel select                                   */ 
   __IOM MDR_OnOff           CHCH       : 1;            /*!< [9..9] Channel switching enable                                */
   __IOM MDR_OnOff           RGNC       : 1;            /*!< [10..10] Signal limiters enable                                */
   __IOM MDR_ADC_MAGREF_SRC  M_REF      : 1;            /*!< [11..11] Signal amplitude reference                            */

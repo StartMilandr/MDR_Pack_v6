@@ -42,7 +42,7 @@ bool MDR_RST_ResetBlock(uint32_t timeoutCycles, MDR_BKP_HSI_TRIM freqTrim)
 #endif
  
 #if defined (USE_MDR1986BE4) || defined (USE_MDR1986BK214) || defined (USE_MDR1986BK234)
-  MDR_CLOCK->PER1_CLOCK  = 0;                 /*!< (@ 0x00000010) Peripherials Clock Control1                                */
+  MDR_CLOCK->PER1_CLOCK  = MDR_RST_PER1__DEBUG_EN_Msk;                 /*!< (@ 0x00000010) Peripherials Clock Control1                                */
 #endif  
   
   return true;
@@ -261,7 +261,7 @@ void MDR_RST_SetDelayEEPROM(MDR_RST_EEPROM_Delay delayEEPROM)
   MDR_CLOCK->MDR_CLK_EN_REG_EEPROM = regPerClock | (1UL << MDR_RST_PER__EEPROM_CLK_EN_Pos); 
 
   //  Выставление задержки
-  MDR_EEPROM->CMD_b.DELAY = delayEEPROM;
+  MDR_EEPROM->CMD = MaskClrSet(MDR_EEPROM->CMD, MDR_EEPROM_CMD_DELAY_Msk, VAL2FLD_Pos(delayEEPROM, MDR_EEPROM_CMD_DELAY_Pos));
   
   //  Восстановление тактирования
   MDR_CLOCK->MDR_CLK_EN_REG_EEPROM = regPerClock;

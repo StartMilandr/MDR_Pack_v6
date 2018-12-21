@@ -8,7 +8,7 @@ bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)
     if (checkFunc())
       return true;
     timeoutCycles--;
-  };
+  }
   return false;
 }
 
@@ -18,7 +18,7 @@ void MDR_Delay(uint32_t Ticks)
 {
   volatile uint32_t i = Ticks;
   if (i)
-   while (--i);
+    while (--i);
   
   //for (; i > 0; i--);  // - Больше циклов, сильнее зависит от оптимизации
 }

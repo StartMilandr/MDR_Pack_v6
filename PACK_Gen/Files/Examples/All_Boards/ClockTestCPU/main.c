@@ -49,10 +49,13 @@ typedef enum {
 #define CLK_SRC_COUNT  11
 #ifndef LCD_IS_7SEG_DISPLAY 
   static char* srcNames[CLK_SRC_COUNT] = {"LSE", "LSI", "HSIc3", "HSI", "HSI/2", "HSE", "HSE/2", "PLL_HSI", "P_HSI/2", "PLL_HSE", "P_HSE/2"};
+            // Indexes for 7SEG_DISPLAY:    0      1       2       3      4        5       6         7           8         9          10
 #endif
 
+ 
 #define CLK_DIV_COUNT  9
 static MDR_CLK_DIV_256 clkDivs[CLK_DIV_COUNT] = {MDR_CLK_div1, MDR_CLK_div2, MDR_CLK_div4, MDR_CLK_div8, MDR_CLK_div16, MDR_CLK_div32, MDR_CLK_div64, MDR_CLK_div128, MDR_CLK_div256};
+
 #ifndef LCD_IS_7SEG_DISPLAY 
   static char* divNames[CLK_DIV_COUNT] = {"1", "2", "4", "8", "16", "32", "64", "128", "256"};
 #endif
@@ -78,7 +81,7 @@ void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x
 //  Программа
 int main(void)
 { 
- // MDR_DebugerProtectDelay();
+  //MDR_DebugerProtectDelay();
    
   //  Сброс блока, тактирование от HSI
   MDR_RST_ResetBlock_def();
@@ -310,7 +313,7 @@ void LCD_ShowResult(uint32_t cpuFreqHz)
 void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x16 mulPLL)
 {
   static char mess[64];
-
+   
 #ifdef LCD_PIN_CONFLICT
   // Захват пинов для работы с экраном
   MDRB_LCD_CapturePins();
@@ -344,6 +347,11 @@ void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x
       break;
   }
 #else
+  
+  UNUSED(clockSrc);
+  UNUSED(divMuxC3);
+  UNUSED(mulPLL);
+  
   //  Вывод источника тактирования
   sprintf(mess, "%d EEEE", (uint8_t)activeClockSrc);
   MDRB_LCD_Print(mess);

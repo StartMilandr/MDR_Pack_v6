@@ -1,6 +1,5 @@
 #include <MDR_GPIO.h>
 #include <MDRB_LCD.h>
-//#include "MDRB_LCD_HTD_B083.h"
 #include <MDR_Funcs.h>
 
 static const uint8_t LCD_Font[] = {0x6F,0x28,0x5D,0x7C,0x3A,0x76,0x77,0x2C,0x7F, 0x7E,0x3F,0x73,0x47,0x79,0x57,0x17}; // 0-9, A,B,C,D,E,F
@@ -80,7 +79,7 @@ void MDRB_LCD_ReleasePins(void)
 // -------------------- Вывод в регистр LCD ----------------------
 static const MDR_GPIO_Port *LED_GPIO_CD = MDRB_LCD_PORT;
 static const MDR_GPIO_Port *LED_GPIO_LD = MDRB_LCD_PORT_LD;
-static uint32_t _delayTicks = 1;
+static uint32_t _delayTicks = _LCD_DELAY_TICK_DEF;
 
 static void MDRB_HTD_ApplyRegBits(uint32_t data32, uint32_t bitCount, uint32_t regValue)
 {
@@ -218,15 +217,11 @@ LCD_HTD_REG128 _MDR_LCD_Reg128;
 
 void MDRB_LCD_Init(uint32_t CPU_FreqHz)
 { 
-  
+  UNUSED(CPU_FreqHz);
+
   LCD_InitPins(); 
   MDRB_LCD_Clear();
 }  
-
-void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz)
-{
-  //_delayTicks
-}
 
 void MDRB_LCD_Print(const char* string)
 {

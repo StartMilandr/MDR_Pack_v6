@@ -29,8 +29,16 @@ static char* resultNames[STATUS_COUNT] = {"Success", "WriteCompleted", "E_WRRD",
 #define DATA_BLOCK_MAIN  MDR_EEPROM_LastBlock_Main
 #define DATA_PAGE_MAIN   EEPROM_Page7
 
-#define DATA_BLOCK_INFO  MDR_EEPROM_LastBlock_Info
-#define DATA_PAGE_INFO   EEPROM_Page1
+#define SHOW_ERROR_INFO_PAGE_BF   0
+
+#if SHOW_ERROR_INFO_PAGE_BF
+  #define DATA_BLOCK_INFO  MDR_EEPROM_LastBlock_Info
+  #define DATA_PAGE_INFO   EEPROM_Page1
+#else
+  #define DATA_BLOCK_INFO  EEPROM_Block1
+  #define DATA_PAGE_INFO   EEPROM_Page1
+#endif
+
 
 //  Тестирование записи буфера длиной 2 страницsы по 512 байт
 #define BUFF_WORD_COUNT  (MDR_EEPROM_PAGE_WORD_COUNT * 2)

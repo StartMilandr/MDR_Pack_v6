@@ -76,8 +76,8 @@ typedef struct {
       __IM  uint32_t                : 12;
 } MDR_RST_PER2_Bits;
 
-#define MDR_RST_PER2__SPI1_CLK_EN_Pos   (0UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: SPI1_CLK_EN (Bit 0)                       */
-#define MDR_RST_PER2__SPI1_CLK_EN_Msk   (0x1UL)          /*!< MDR_RST_CLOCK PER2_CLOCK: SPI1_CLK_EN (Bitfield-Mask: 0x01)         */
+#define MDR_RST_PER2__SSP1_CLK_EN_Pos   (0UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: SPI1_CLK_EN (Bit 0)                       */
+#define MDR_RST_PER2__SSP1_CLK_EN_Msk   (0x1UL)          /*!< MDR_RST_CLOCK PER2_CLOCK: SPI1_CLK_EN (Bitfield-Mask: 0x01)         */
 #define MDR_RST_PER2__UART1_CLK_EN_Pos  (1UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: UART1_CLK_EN (Bit 1)                      */
 #define MDR_RST_PER2__UART1_CLK_EN_Msk  (0x2UL)          /*!< MDR_RST_CLOCK PER2_CLOCK: UART1_CLK_EN (Bitfield-Mask: 0x01)        */
 #define MDR_RST_PER2__UART2_CLK_EN_Pos  (2UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: UART2_CLK_EN (Bit 2)                      */

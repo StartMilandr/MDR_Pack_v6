@@ -38,6 +38,10 @@
 
   <project>
     <PathAndName>.\SSP_TestVC1\SSP_TestVC1.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\SSP_TestVK234\SSP_TestVK234.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
   </project>
 

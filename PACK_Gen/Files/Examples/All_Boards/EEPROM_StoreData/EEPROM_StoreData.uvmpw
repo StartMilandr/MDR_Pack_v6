@@ -39,8 +39,12 @@
 
   <project>
     <PathAndName>.\VE4\EEPROM_StoreData_VE4.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\VK234\EEPROM_StoreData_VK234.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

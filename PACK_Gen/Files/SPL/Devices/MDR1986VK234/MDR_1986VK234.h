@@ -138,6 +138,9 @@ typedef enum IRQn
 /*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE4VKx_def.h"
 
+/*=========  SSP - Synchronous Serial Port ========*/
+#include "MDR_SSP_def.h"
+
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
 
 
@@ -184,6 +187,7 @@ typedef enum IRQn
 #define ADDR_PORTB_BASE       (0x40088000UL)                              /*!< GPIO PORT_B Base Address */
 #define ADDR_PORTC_BASE       (0x40090000UL)                              /*!< GPIO PORT_C Base Address */
 
+#define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -198,13 +202,16 @@ typedef enum IRQn
 
 #define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
-#define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
+#define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
+#define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
 #define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
 
+#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -216,6 +223,7 @@ typedef enum IRQn
 #define   MDR_CLK_EN_REG_PER_b            PER2_CLOCK_b
 
 #define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
+#define   MDR_CLK_EN_REG_EEPROM_b         PER2_CLOCK_b
 #define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
 
 #define   MDR_CLK_EN_REG_BKP              PER2_CLOCK
@@ -234,6 +242,23 @@ typedef enum IRQn
 #define   MDR_JTAG_A_PINS                 0x000000C0UL
 #define   MDR_JTAG_A_PINS_FUNC            0x0000F000UL
 #define   MDR_JTAG_A_PINS_PD              0x00C000C0UL
+
+#define   MDR_ADC_CLK_LIKE_VE4
+//  ADC pins in Port_C and Port_B
+#define   MDR_ADC_IN_PORTS_CB
+
+//  SSP Block Clock enable
+#define   MDR_CLK_EN_ADDR_SSP1        (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_CLK_EN_MASK_SSP1          MDR_RST_PER2__SSP1_CLK_EN_Msk
+
+
+//  SSP_Clock freq configs
+#define   MDR_SSP_CLOCK_ADDR_SSP1     (&MDR_CLOCK->SSP_CLOCK)
+#define   MDR_SSP_CLOCK_ENA_MSK_SSP1    MDR_RST_SSP__SSP1_CLK_EN_Msk
+#define   MDR_SSP_CLOCK_BRG_POS_SSP1    MDR_RST_SSP__SSP1_BRG_Pos
+
+#define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
+#define   MDR_SSP_CLOCK_FROM_PER_CLOCK
 
 
 /** @} */ /* End of group MDR1986VK234 */

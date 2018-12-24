@@ -15,13 +15,6 @@ typedef enum {
   SPI_CPHA1_CPOL1,
 } MDR_SPI_CPHA_CPOL;
 
-//typedef struct {
-//  MDR_OnOff             OnRxOver_IRQEna;        // Enable IRQ on FIFO_RX overrun, (write new data fault)
-//  MDR_OnOff             OnRxTimeout_IRQEna;     // Enable IRQ on RX Timout for 32 bit.
-//  MDR_OnOff             OnRxHalfFull_IRQEna;    // Enable IRQ on FIFO_Rx has >= 4 words
-//  MDR_OnOff             OnTxHalfEmpty_IRQEna;   // Enable IRQ on FIFO_TX has <= 4 words
-//} MDR_SSP_CfgIRQ;
-
 //  Прерывания возникают даже при не включенном блоке, поэтому вынесены в отдельные функции.
 //  Поэтому не инициализируются через Init
 typedef struct {
@@ -32,8 +25,6 @@ typedef struct {
   // BitRate                                    // BitRate = SSP_Clock / (PSR * (1 + SCR))
   uint8_t               DivSCR_0_255;           // 0 - 255, Serial Clock Rate
   uint8_t               DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
-  //  IRQ
-  //MDR_SSP_CfgIRQ       *pCfgIRQ;
   //  DMA
   MDR_OnOff             DMA_TX_Enable;
   MDR_OnOff             DMA_RX_Enable;

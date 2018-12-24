@@ -317,7 +317,20 @@ uint8_t NextIndexSSP(void)
 #elif defined (USE_MDR1986VK214)
   #define USE_BOARD_VK214
 #elif defined (USE_MDR1986VK234)
-  #define USE_BOARD_VK234 
+  //  см. MDRB_1986VK234.h
+  //  SSP1
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA13_Port, MDRB_SPI1_CLK_PA13_Ind, MDRB_SPI1_CLK_PA13_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA12_Port, MDRB_SPI1_FSS_PA12_Ind, MDRB_SPI1_FSS_PA12_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA14_Port,  MDRB_SPI1_RX_PA14_Ind,  MDRB_SPI1_RX_PA14_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA15_Port,  MDRB_SPI1_TX_PA15_Ind,  MDRB_SPI1_TX_PA15_Func};
+
+  const MDR_SSP_TypeEx * SSP_MASTER = MDR_SSP1ex;
+  
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Master = 
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};
 #endif
 
                                        

@@ -1,14 +1,21 @@
 #include "test_EEPROM_PageWRRD.h"
 
+#define SHOW_ERROR_INFO_PAGE  0
+
 #ifndef MDR_EEPROM_18MHz
   Вместо этого необходимо подключить модуль test_EEPROM_PageWRRD.c !
 #endif
 
 #define DATA_BLOCK_MAIN  MDR_EEPROM_LastBlock_Main
-#define DATA_BLOCK_INFO  MDR_EEPROM_LastBlock_Info
-
 #define DATA_PAGE_MAIN   MDR_EEPROM_LastPage_Main
-#define DATA_PAGE_INFO   EEPROM_Page1 //MDR_EEPROM_LastPage_Info
+
+#if SHOW_ERROR_INFO_PAGE
+  #define DATA_BLOCK_INFO  MDR_EEPROM_LastBlock_Info
+  #define DATA_PAGE_INFO   EEPROM_Page1
+#else
+  #define DATA_BLOCK_INFO  EEPROM_Block1
+  #define DATA_PAGE_INFO   EEPROM_Page1
+#endif
 
 //  Сдвиг начала записи буферов чтобы пересечь границу страниц. Только для MAIN.
 #define BUFF_DATA_OFFS_MAIN   (MDR_EEPROM_PAGE_WORD_COUNT - 16)
@@ -20,13 +27,13 @@ static uint32_t pageAddrInfo;
 typedef enum 
 {
   tst_OK,
+  tst_WriteFinished,
   tst_Err_Erase,
-  tst_Err_CheckData,
-  tst_WriteFinished
+  tst_Err_CheckData  
 } TestResult;
 
 #define STATUS_COUNT    4
-static char* resultNames[STATUS_COUNT] = {"Success", "EraseFault", "DataFault", "WriteCompleted"};
+static char* resultNames[STATUS_COUNT] = {"Success", "WriteCompleted", "EraseFault", "DataFault"};
 
 //----------  Варианты записываемых данных  -------------
 // На 8МГц много времени уходит на рассчет MDR_ToPseudoRand(),

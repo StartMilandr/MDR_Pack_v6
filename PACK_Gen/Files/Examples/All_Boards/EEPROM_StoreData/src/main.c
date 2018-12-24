@@ -34,7 +34,7 @@
   
 //----------  TestInterfaces ------------
 #define TEST_COUNT    4
-TestInterface * pTI[] = {&TI_EEPROM_PageWRRD_Main, &TI_EEPROM_PageWRRD_Info, &TI_EEPROM_Buff_Main, &TI_EEPROM_Buff_Main};
+TestInterface * pTI[] = {&TI_EEPROM_PageWRRD_Main, &TI_EEPROM_PageWRRD_Info, &TI_EEPROM_Buff_Main, &TI_EEPROM_Buff_Info};
 
 uint32_t activeTest;
 

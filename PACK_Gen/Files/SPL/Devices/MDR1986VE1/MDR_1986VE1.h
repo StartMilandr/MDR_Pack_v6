@@ -116,9 +116,7 @@ typedef enum IRQn
 
 /** @} */ /* End of group Configuration_of_CMSIS */
 
-
-//#include <core_cm1.h>                           /*!< Arm Cortex-M1 processor and core peripherals */
-#include <core_cm0.h>                           /*!< Arm Cortex-M1 processor and core peripherals */
+#include <core_cm1.h>                           /*!< Arm Cortex-M1 processor and core peripherals */
 #include "system_MDR1986VE1.h"                  /*!< MDR1986VE1 System */
 
 

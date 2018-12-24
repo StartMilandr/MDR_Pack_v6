@@ -680,7 +680,6 @@
       <description>Startup assembler file for ARMCC</description>
       <require Tcompiler="ARMCC"/>
     </condition>
-
     <condition id="CON_MDR_CM1CM3">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE1"/>
@@ -709,6 +708,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE4">
       <description>System Startup for Cortex-M0 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE4/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE4/startup_MDR1986VE4.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -720,6 +720,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>System Startup for Cortex-M0 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VK214/"/>
         <file category="source"  name="SPL/Devices/MDR1986VK214/startup_MDR1986VK214.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -731,6 +732,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>System Startup for Cortex-M0 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VK234/"/>
         <file category="source"  name="SPL/Devices/MDR1986VK234/startup_MDR1986VK234.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -742,6 +744,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE1">
       <description>System Startup for Cortex-M1 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE1/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE1/startup_MDR1986VE1.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -753,6 +756,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE3">
       <description>System Startup for Cortex-M1 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE3/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE3/startup_MDR1986VE3.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -764,6 +768,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE9x">
       <description>System Startup for Cortex-M3 device series</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE9x/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE9x/startup_MDR1986VE9x.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -775,6 +780,7 @@
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1901VC1">
       <description>System Startup for Cortex-M3 device with DSP Core</description>
       <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1901VC1/"/>
         <file category="source"  name="SPL/Devices/MDR1901VC1/startup_MDR1901VC1.s" attr="config" condition="Startup ARM" version="2.0.0"/>
@@ -948,6 +954,7 @@
         <environment name="uv" load="LED_Flasher.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -964,6 +971,7 @@
         <environment name="uv" load="ButtonsChecker.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <!--component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/-->
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -980,6 +988,7 @@
         <environment name="uv" load="LCD_String.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -994,6 +1003,7 @@
         <environment name="uv" load="ClockTestCPU.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -1011,6 +1021,7 @@
         <environment name="uv" load="EEPROM_StoreData.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -1030,6 +1041,7 @@
         <environment name="uv" load="EEPROM_Test.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -1040,6 +1052,14 @@
       </attributes>
     </example>
 
+    <example name="EEPROM_FLM" folder="Examples/All_Boards/EEPROM_FLM" doc="ReadMe.md" version="2.0.0">
+      <description>Store data to EEPROM's main and info page. </description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="EEPROM_FLM.uvmpw"/>
+      </project>
+    </example>    
+
     <example name="ADC_Test" folder="Examples/All_Boards/ADC_Test" doc="ReadMe.md" version="2.0.0">
       <description>ADC SAR use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
@@ -1047,6 +1067,7 @@
         <environment name="uv" load="ADC_Test.uvmpw"/>
       </project>
       <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
         <component Cclass="Device"        Cgroup="Startup"/>
         <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
@@ -1059,13 +1080,24 @@
       </attributes>
     </example>
 
-    <example name="EEPROM_FLM" folder="Examples/All_Boards/EEPROM_FLM" doc="ReadMe.md" version="2.0.0">
-      <description>Store data to EEPROM's main and info page. </description>
+    <example name="SSP_Test" folder="Examples/All_Boards/SSP_Test" doc="ReadMe.md" version="2.0.0">
+      <description>SSP use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project>
-        <environment name="uv" load="EEPROM_FLM.uvmpw"/>
+        <environment name="uv" load="SSP_Test.uvmpw"/>
       </project>
-    </example>    
+      <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="SSP"          Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>
 
   </examples>
 

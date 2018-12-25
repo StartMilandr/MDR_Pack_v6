@@ -136,6 +136,31 @@ typedef enum IRQn
 /*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE4VKx_def.h"
 
+/*=========  SSP - Synchronous Serial Port ========*/
+#include "MDR_SSP_def.h"
+
+
+
+
+//  ==========  Blocks from previouse PACK
+
+typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
+
+#define IS_BIT_STATUS(STATUS)	(((STATUS) == RESET) || ((STATUS) == SET))
+
+typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
+#define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
+
+typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
+
+#include "MDRP_UART_defs.h"
+#include "MDRP_I2C_defs.h"
+#include "MDRP_LCD_defs.h"
+#include "MDRP_WDT_defs.h"
+#include "MDRP_POWER_defs.h"
+#include "MDRP_ADCIU_VK234_defs.h"
+#include "MDRP_TIMER_defs.h"
+
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
 
 
@@ -182,6 +207,21 @@ typedef enum IRQn
 #define ADDR_PORTB_BASE       (0x40088000UL)                              /*!< GPIO PORT_B Base Address */
 #define ADDR_PORTC_BASE       (0x40090000UL)                              /*!< GPIO PORT_C Base Address */
 
+#define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
+
+
+#define MDR_UART1_BASE                 (0x40008000)
+#define MDR_UART2_BASE                 (0x40010000)
+#define MDR_I2C_BASE                   (0x40030000)
+#define MDR_LED_BASE			             (0x40038000)
+#define MDR_WWDG_BASE                  (0x40048000)
+#define MDR_IWDG_BASE                  (0x40050000)
+#define MDR_POWER_BASE                 (0x40058000)
+#define MDR_ADCIU_TypeDef              (0x40068000)
+#define MDR_TIMER1_BASE                (0x40070000)
+#define MDR_TIMER2_BASE                (0x40078000)
+
+#define uint_tim  uint16_t
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -196,12 +236,30 @@ typedef enum IRQn
 
 #define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
-#define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
+#define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
+#define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
 #define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
+
+#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
+
+//  Blocks from previouse PACK
+#define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
+#define MDR_UART2                      ((MDR_UART_TypeDef 	*) MDR_UART2_BASE)
+
+#define MDR_I2C                        ((MDR_I2C_TypeDef 	  *) MDR_I2C_BASE)
+#define MDR_LED                        ((MDR_LED_TypeDef 	  *) MDR_LED_BASE)
+
+#define MDR_WWDG                       ((MDR_WWDG_TypeDef 	*) MDR_WWDG_BASE)
+#define MDR_IWDG                       ((MDR_IWDG_TypeDef 	*) MDR_IWDG_BASE)
+#define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)
+#define MDR_ADCIU                      ((MDR_ADCIU_TypeDef 	*) MDR_ADCIU_BASE)
+#define MDR_TIMER1                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER1_BASE)
+#define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
 
 
 /* =========================================================================================================================== */
@@ -213,7 +271,9 @@ typedef enum IRQn
 #define   MDR_CLK_EN_REG_PER_b            PER2_CLOCK_b
 
 #define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
+#define   MDR_CLK_EN_REG_EEPROM_b         PER2_CLOCK_b
 #define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
+
 
 #define   MDR_CLK_EN_REG_BKP              PER2_CLOCK
 #define   MDR_CLK_EN_REG_BKP_b            PER2_CLOCK_b
@@ -231,6 +291,23 @@ typedef enum IRQn
 #define   MDR_JTAG_A_PINS               0x0000000CUL
 #define   MDR_JTAG_A_PINS_FUNC          0x000000F0UL
 #define   MDR_JTAG_A_PINS_PD            0x000C000CUL
+
+#define   MDR_ADC_CLK_LIKE_VE4
+//  ADC pins in Port_C and Port_B
+#define   MDR_ADC_IN_PORTS_CB
+
+//  SSP Block Clock enable
+#define   MDR_CLK_EN_ADDR_SSP1        (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_CLK_EN_MASK_SSP1          MDR_RST_PER2__SSP1_CLK_EN_Msk
+
+
+//  SSP_Clock freq configs
+#define   MDR_SSP_CLOCK_ADDR_SSP1     (&MDR_CLOCK->SSP_CLOCK)
+#define   MDR_SSP_CLOCK_ENA_MSK_SSP1    MDR_RST_SSP__SSP1_CLK_EN_Msk
+#define   MDR_SSP_CLOCK_BRG_POS_SSP1    MDR_RST_SSP__SSP1_BRG_Pos
+
+#define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
+#define   MDR_SSP_CLOCK_FROM_PER_CLOCK
 
 
 /** @} */ /* End of group MDR1986VK214 */

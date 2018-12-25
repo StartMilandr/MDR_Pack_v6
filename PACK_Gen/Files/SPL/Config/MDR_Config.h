@@ -58,4 +58,19 @@
 #define PLL_TIMEOUT_MS  100
 
 
+
+// ===========   Assert для драйверов от версии 1,5 =============
+#if (USE_ASSERT_INFO == 0)
+  #define assert_param(expr) ((void)0)
+#elif (USE_ASSERT_INFO == 1)
+  #define assert_param(expr) ((expr) ? (void)0 : assert_failed(ASSERT_INFO_FILE_ID, __LINE__))
+  void assert_failed(uint32_t file_id, uint32_t line);
+#elif (USE_ASSERT_INFO == 2)
+  #define assert_param(expr) ((expr) ? (void)0 : assert_failed(ASSERT_INFO_FILE_ID, __LINE__, #expr))
+  void assert_failed(uint32_t file_id, uint32_t line, const uint8_t* expr);
+#else
+  #error "Unsupported USE_ASSERT_INFO level"
+#endif /* USE_ASSERT_INFO */
+
+
 #endif  //  MDR_CONFIG_H

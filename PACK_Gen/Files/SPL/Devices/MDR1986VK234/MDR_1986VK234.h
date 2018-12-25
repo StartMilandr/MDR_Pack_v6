@@ -141,6 +141,29 @@ typedef enum IRQn
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
 
+
+//  ==========  Blocks from previouse PACK
+
+typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
+
+#define IS_BIT_STATUS(STATUS)	(((STATUS) == RESET) || ((STATUS) == SET))
+
+typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
+#define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
+
+typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
+
+
+#include "MDRP_CRC_defs.h"
+#include "MDRP_DMA_defs.h"
+#include "MDRP_POWER_defs.h"
+#include "MDRP_TIMER_defs.h"
+#include "MDRP_UART_defs.h"
+#include "MDRP_WDT_defs.h"
+#include "MDRP_ADCIU_VK234_defs.h"
+
+#define uint_tim  uint16_t
+
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
 
 
@@ -189,6 +212,20 @@ typedef enum IRQn
 
 #define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
 
+
+//  Blocks from previouse PACK
+#define MDR_UART1_BASE                 (0x40008000)
+#define MDR_UART2_BASE                 (0x40010000)
+#define MDR_DMA_BASE                   (0x40028000)
+#define MDR_WWDG_BASE                  (0x40048000)
+#define MDR_IWDG_BASE                  (0x40050000)
+#define MDR_POWER_BASE                 (0x40058000)
+#define MDR_TIMER1_BASE                (0x40070000)
+#define MDR_TIMER2_BASE                (0x40078000)
+#define MDR_CRC_BASE                   (0x40098000)
+#define MDR_ADCIU_TypeDef              (0x40068000)
+
+
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
 
@@ -212,6 +249,20 @@ typedef enum IRQn
 #define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
 
 #define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
+
+//  Blocks from previouse PACK
+#define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
+#define MDR_UART2                      ((MDR_UART_TypeDef 	*) MDR_UART2_BASE)
+#define MDR_DMA                        ((MDR_DMA_TypeDef 	  *) MDR_DMA_BASE)
+#define MDR_WWDG                       ((MDR_WWDG_TypeDef 	*) MDR_WWDG_BASE)
+#define MDR_IWDG                       ((MDR_IWDG_TypeDef 	*) MDR_IWDG_BASE)
+#define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)
+#define MDR_TIMER1                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER1_BASE)
+#define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
+#define MDR_CRC                        ((MDR_CRC_TypeDef 	  *) MDR_CRC_BASE)
+#define MDR_ADCIU                      ((MDR_ADCIU_TypeDef 	*) MDR_ADCIU_BASE)
+
+
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

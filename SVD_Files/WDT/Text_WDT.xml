@@ -1,0 +1,12 @@
+#WWDT_ADDR_VEx
+<baseAddress>0x40060000</baseAddress>
+
+#IWDT_ADDR_VEx
+<baseAddress>0x40068000</baseAddress>
+
+#WWDT_ADDR__VE4x
+<baseAddress>0x40048000</baseAddress>
+
+#IWDT_ADDR__VE4x
+<baseAddress>0x40050000</baseAddress>
+

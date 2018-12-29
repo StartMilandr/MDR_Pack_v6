@@ -1,5 +1,5 @@
-#ifndef _MDRP_ADCIU_VK234_DEFS_H
-#define _MDRP_ADCIU_VK234_DEFS_H
+#ifndef _MDR_ADCIU_VK234_DEFS_H
+#define _MDR_ADCIU_VK234_DEFS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -94,4 +94,4 @@ typedef struct {
 }
 #endif
 
-#endif  //  _MDRP_ADCIU_VK234_DEFS_H
+#endif  //  _MDR_ADCIU_VK234_DEFS_H

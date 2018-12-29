@@ -131,28 +131,6 @@
     
     #define LCD_HTD_B083_DISPLAY
 
-//  ---------------  SPI1 Pin Definition ----------------
-  //  PORT_A: SSP1_PA12,PC13,PC14,PC15 - Main
-  #define MDRB_SPI1_FSS_PA12_Ind	     12
-	#define MDRB_SPI1_CLK_PA13_Ind	     13
-	#define MDRB_SPI1_RX_PA14_Ind 	     14
-	#define MDRB_SPI1_TX_PA15_Ind		     15
-
-  #define MDRB_SPI1_FSS_PA12_Msk	     PORT_Pin_12
-	#define MDRB_SPI1_CLK_PA13_Msk		   PORT_Pin_13
-	#define MDRB_SPI1_RX_PA14_Msk 		   PORT_Pin_14
-	#define MDRB_SPI1_TX_PA15_Msk		     PORT_Pin_15
-
-  #define MDRB_SPI1_FSS_PA12_Port	     MDR_GPIO_A
-	#define MDRB_SPI1_CLK_PA13_Port		   MDR_GPIO_A
-	#define MDRB_SPI1_RX_PA14_Port 		   MDR_GPIO_A
-	#define MDRB_SPI1_TX_PA15_Port		   MDR_GPIO_A
-  
-  #define MDRB_SPI1_FSS_PA12_Func	     MDR_PIN_MAIN
-	#define MDRB_SPI1_CLK_PA13_Func		   MDR_PIN_MAIN
-	#define MDRB_SPI1_RX_PA14_Func 		   MDR_PIN_MAIN
-	#define MDRB_SPI1_TX_PA15_Func		   MDR_PIN_MAIN
-
 #else
    Please, select board in MDRB_BoardSelect.h!
 

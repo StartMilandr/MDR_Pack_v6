@@ -139,8 +139,12 @@ typedef enum IRQn
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
 
+/*=========  WWDT - IWDT ========*/
+#include "MDR_WWDT_defs.h"
+#include "MDR_IWDT_defs.h"
 
-
+/*=========  LCD Controller ========*/
+#include "MDR_LCD_VK214_defs.h"
 
 //  ==========  Blocks from previouse PACK
 
@@ -158,7 +162,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #include "MDRP_LCD_defs.h"
 #include "MDRP_WDT_defs.h"
 #include "MDRP_POWER_defs.h"
-#include "MDRP_ADCIU_VK234_defs.h"
+#include "MDRP_ADCIU_VK214_defs.h"
 #include "MDRP_TIMER_defs.h"
 
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
@@ -193,27 +197,31 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
   */
 
 /* Peripheral and SRAM base address */
-#define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-#define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-#define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+#define ADDR_FLASH_BASE        0x00000000UL                              /*!< (FLASH     ) Base Address */
+#define ADDR_SRAM_BASE         0x20000000UL                              /*!< (SRAM      ) Base Address */
+#define ADDR_PERIPH_BASE       0x40000000UL                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
-#define ADDR_ADC_BASE         (0x40040000UL)                              /*!< ADC SAR Base Address        */
-#define ADDR_BKP_BASE         (0x40060000UL)                              /*!< Backup and RTC Base Address */
+#define ADDR_EEPROM_BASE       0x40018000UL                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE    0x40020000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_ADC_BASE          0x40040000UL                              /*!< ADC SAR Base Address        */
+#define ADDR_BKP_BASE          0x40060000UL                              /*!< Backup and RTC Base Address */
 
-#define ADDR_PORTA_BASE       (0x40080000UL)                              /*!< GPIO PORT_A Base Address */
-#define ADDR_PORTB_BASE       (0x40088000UL)                              /*!< GPIO PORT_B Base Address */
-#define ADDR_PORTC_BASE       (0x40090000UL)                              /*!< GPIO PORT_C Base Address */
+#define ADDR_PORTA_BASE        0x40080000UL                              /*!< GPIO PORT_A Base Address */
+#define ADDR_PORTB_BASE        0x40088000UL                              /*!< GPIO PORT_B Base Address */
+#define ADDR_PORTC_BASE        0x40090000UL                              /*!< GPIO PORT_C Base Address */
 
-#define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
+#define ADDR_SSP1_BASE         0x40000000UL                              /*!< SSP Base Address      */
+
+#define ADDR_WWDT_BASE         0x40048000UL
+#define ADDR_IWDT_BASE         0x40050000UL
+#define ADDR_LCD_BASE          0x400380000UL
+
 
 
 #define MDR_UART1_BASE                 (0x40008000)
 #define MDR_UART2_BASE                 (0x40010000)
 #define MDR_I2C_BASE                   (0x40030000)
-#define MDR_LED_BASE			             (0x40038000)
 #define MDR_WWDG_BASE                  (0x40048000)
 #define MDR_IWDG_BASE                  (0x40050000)
 #define MDR_POWER_BASE                 (0x40058000)
@@ -247,13 +255,16 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 #define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
 
+#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+
+#define MDR_LCD                        ((MDR_LCD_Type *) ADDR_LCD_BASE)
+
 //  Blocks from previouse PACK
 #define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_TypeDef 	*) MDR_UART2_BASE)
 
 #define MDR_I2C                        ((MDR_I2C_TypeDef 	  *) MDR_I2C_BASE)
-#define MDR_LED                        ((MDR_LED_TypeDef 	  *) MDR_LED_BASE)
-
 #define MDR_WWDG                       ((MDR_WWDG_TypeDef 	*) MDR_WWDG_BASE)
 #define MDR_IWDG                       ((MDR_IWDG_TypeDef 	*) MDR_IWDG_BASE)
 #define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)

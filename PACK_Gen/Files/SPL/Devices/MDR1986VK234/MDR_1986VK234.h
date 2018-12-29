@@ -141,6 +141,11 @@ typedef enum IRQn
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
 
+/*=========  WWDT - IWDT ========*/
+#include "MDR_WWDT_defs.h"
+#include "MDR_IWDT_defs.h"
+
+
 
 //  ==========  Blocks from previouse PACK
 
@@ -196,21 +201,24 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
   */
 
 /* Peripheral and SRAM base address */
-#define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-#define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-#define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+#define ADDR_FLASH_BASE        0x00000000UL                              /*!< (FLASH     ) Base Address */
+#define ADDR_SRAM_BASE         0x20000000UL                              /*!< (SRAM      ) Base Address */
+#define ADDR_PERIPH_BASE       0x40000000UL                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
-#define ADDR_ADC_BASE         (0x40040000UL)                              /*!< ADC SAR Base Address        */
-#define ADDR_BKP_BASE         (0x40060000UL)                              /*!< Backup and RTC Base Address */
+#define ADDR_EEPROM_BASE       0x40018000UL                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE    0x40020000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_ADC_BASE          0x40040000UL                              /*!< ADC SAR Base Address        */
+#define ADDR_BKP_BASE          0x40060000UL                              /*!< Backup and RTC Base Address */
 
-#define ADDR_PORTA_BASE       (0x40080000UL)                              /*!< GPIO PORT_A Base Address */
-#define ADDR_PORTB_BASE       (0x40088000UL)                              /*!< GPIO PORT_B Base Address */
-#define ADDR_PORTC_BASE       (0x40090000UL)                              /*!< GPIO PORT_C Base Address */
+#define ADDR_PORTA_BASE        0x40080000UL                              /*!< GPIO PORT_A Base Address */
+#define ADDR_PORTB_BASE        0x40088000UL                              /*!< GPIO PORT_B Base Address */
+#define ADDR_PORTC_BASE        0x40090000UL                              /*!< GPIO PORT_C Base Address */
 
-#define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
+#define ADDR_SSP1_BASE         0x40000000UL                              /*!< SSP Base Address      */
+
+#define ADDR_WWDT_BASE         0x40048000UL
+#define ADDR_IWDT_BASE         0x40050000UL
 
 
 //  Blocks from previouse PACK
@@ -250,6 +258,9 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 #define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
 
+#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+
 //  Blocks from previouse PACK
 #define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_TypeDef 	*) MDR_UART2_BASE)
@@ -261,7 +272,6 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
 #define MDR_CRC                        ((MDR_CRC_TypeDef 	  *) MDR_CRC_BASE)
 #define MDR_ADCIU                      ((MDR_ADCIU_TypeDef 	*) MDR_ADCIU_BASE)
-
 
 
 /* =========================================================================================================================== */

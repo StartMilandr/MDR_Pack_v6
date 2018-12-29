@@ -172,6 +172,10 @@ typedef enum IRQn
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
 
+/*=========  WWDT - IWDT ========*/
+#include "MDR_WWDT_defs.h"
+#include "MDR_IWDT_defs.h"
+
 /*@}*/ /* end of group MDR1986VE1_Peripherals */
 
 
@@ -226,6 +230,9 @@ typedef enum IRQn
 #define ADDR_SSP2_BASE        0x400A0000UL
 #define ADDR_SSP3_BASE        0x400F8000UL
 
+#define ADDR_WWDT_BASE         0x40060000UL
+#define ADDR_IWDT_BASE         0x40068000UL
+
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -255,6 +262,10 @@ typedef enum IRQn
 #define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
 #define MDR_SSP2                       ((MDR_SSP_Type *)   ADDR_SSP2_BASE)
 #define MDR_SSP3                       ((MDR_SSP_Type *)   ADDR_SSP3_BASE)
+
+#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

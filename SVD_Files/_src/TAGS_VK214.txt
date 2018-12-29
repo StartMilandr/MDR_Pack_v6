@@ -5,6 +5,8 @@ f3=../RST/RST_VE214.txt
 f4=../EEPROM/EEPROM_VE4x.txt
 f5=../ADC/ADC_VE4x.txt
 f6=../SSP/SSP_VE4.txt
+f7=../WDT/WDT_VE4x.txt
+f8=../Uniq/LCD_VK214.xml
 
 [TAGS]
 #BKP=f1
@@ -16,6 +18,8 @@ f6=../SSP/SSP_VE4.txt
 #EEPROM=f4
 #ADC=f5
 #SSPs=f6
+#WDT=f7
+#LCD=f8
 
 [TAGS_New]
 #USB=
@@ -28,10 +32,6 @@ f6=../SSP/SSP_VE4.txt
 #I2C_R=
 #PWR=
 #PWR_R=
-#WWDT=
-#WWDT_R=
-#IWDT=
-#IWDT_R=
 #DAC=
 #DAC_R=
 #COMP=
@@ -44,5 +44,4 @@ f6=../SSP/SSP_VE4.txt
 #TIMERs_R=
 #ADCUI=
 #ADCUI_R=
-#LCD=
-#LCD_R=
+

@@ -1585,8 +1585,247 @@
     <!-- #DMA -->
     <!-- #I2C -->
     <!-- #PWR -->
-    <!-- #WWDT -->
-    <!-- #IWDT -->
+    <!-- #WDT -->
+    <!-- WWDT -->
+    <peripheral>
+      <name>MDR_WWDT</name>
+      <version>1.0</version>
+      <description>Window Watchdog Timer</description>
+      <groupName>WDT</groupName>
+      <!-- #WWDT_ADDR -->
+      <baseAddress>0x40060000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x0C</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- CR -->
+        <register>
+          <name>CR</name>
+          <description>WWDT Control register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000007F</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <!--T-->
+            <field>
+              <name>T</name>
+              <description>Counter</description>
+              <bitRange>[6:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!--WDGA-->
+            <field>
+              <name>WDGA</name>
+              <description>Enable</description>
+              <bitRange>[7:7]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_WWDG_EN_</headerEnumName>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>  
+        </register>
+        <!-- CFR -->
+        <register>
+          <name>CFR</name>
+          <description>WWDT Config register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000007F</resetValue>
+          <resetMask>0x000003FF</resetMask>
+          <fields>
+            <!--W-->
+            <field>
+              <name>W</name>
+              <description>Window value</description>
+              <bitRange>[6:0]</bitRange>
+              <access>read-write</access>
+            </field>
+            <!--WGTB-->
+            <field>
+              <name>WGTB</name>
+              <description>Clock Divider</description>
+              <bitRange>[8:7]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_CFR_WGTB__</headerEnumName>
+                <enumeratedValue><name>div1</name><description>CLK = LSI/4096/1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div2</name><description>CLK = LSI/4096/2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div4</name><description>CLK = LSI/4096/4</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>CLK = LSI/4096/8</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--EWI-->
+            <field>
+              <name>EWI</name>
+              <description>Early Window Interrupt</description>
+              <bitRange>[9:9]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_CFR_EWI__</headerEnumName>
+                <enumeratedValue><name>Off</name><description>Disabled IRQ on T=0x40</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled IRQ on T=0x40</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>        
+          </fields>  
+        </register>
+        <!-- SR -->
+        <register>
+          <name>SR</name>
+          <description>WWDT Status register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000001</resetMask>
+          <fields>
+            <!--EWIF-->
+            <field>
+              <name>EWIF</name>
+              <description>Early Window Flag</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_SR_EWIF__</headerEnumName>
+                <enumeratedValue><name>Off</name><description>Event Off</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Onn</name><description>Event On</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>    
+          </fields>  
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- IWDT -->
+    <peripheral>
+      <name>MDR_IWDT</name>
+      <version>1.0</version>
+      <description>Independent Watchdog Timer</description>
+      <groupName>WDT</groupName>
+      <!-- #IWDT_ADDR -->
+      <baseAddress>0x40068000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x10</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- KR -->
+        <register>
+          <name>KR</name>
+          <description>Key register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <!--KEY-->
+            <field>
+              <name>KEY</name>
+              <description>Enable, start and reload control</description>
+              <bitRange>[15:0]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- PR -->
+        <register>
+          <name>PR</name>
+          <description>Clock Prescaler register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000007</resetMask>
+          <fields>
+            <!--PR-->
+            <field>
+              <name>PR</name>
+              <description>Prescaler Register</description>
+              <bitRange>[2:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <headerEnumName>MDR_IWDT_PR__</headerEnumName>
+                <enumeratedValue><name>div4</name><description>LSI div 4</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>LSI div 8</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div16</name><description>LSI div 16</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div32</name><description>LSI div 32</description><value>3</value></enumeratedValue>            
+                <enumeratedValue><name>div64</name><description>LSI div 64</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>div128</name><description>LSI div 128</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>div256</name><description>LSI div 256</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>div256_1</name><description>LSI div 256</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>  
+        </register>
+        <!-- RLR -->
+        <register>
+          <name>RLR</name>
+          <description>Reload Period Register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000FFF</resetValue>
+          <resetMask>0x00000FFF</resetMask>
+          <fields>
+            <!--PRL-->
+            <field>
+              <name>PRL</name>
+              <description>Timer Period Value</description>
+              <bitRange>[11:0]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- SR -->
+        <register>
+          <name>SR</name>
+          <description>Status Regster</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000003</resetMask>
+          <fields>
+            <!--PVU-->
+            <field>
+              <name>PVU</name>
+              <description>PR busy</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <headerEnumName>MDR_IWDT_PVU__</headerEnumName>
+                <enumeratedValue><name>Ready</name><description>PR ready for write</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Busy</name><description>PR busy</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <!--RVU-->
+            <field>
+              <name>RVU</name>
+              <description>PRL busy</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <headerEnumName>MDR_IWDT_RVU__</headerEnumName>
+                <enumeratedValue><name>Ready</name><description>PRL ready for write</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Busy</name><description>PRL busy</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+          </fields>  
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #ADC -->
     <!-- ADC -->
     <peripheral>

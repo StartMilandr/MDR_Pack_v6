@@ -905,13 +905,37 @@
       </files>
     </component>
     <!-- ADCIU Driver -->
-    <component Cclass="Drivers" Cgroup="ADCIU" Cversion="1.9" condition="CON_MDR1986VK234">
+    <component Cclass="Drivers" Cgroup="ADCIU" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>ADCIU driver</description>
       <files>
         <file category="header" name="SPL/Drivers/MDR_ADCIU_VK234.h"/>
         <file category="source" name="SPL/Drivers/MDR_ADCIU_VK234.c"/>
       </files>
     </component>    
+	  <!-- WWDG Driver -->
+    <component Cclass="Drivers" Cgroup="WWDG" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>WWDG driver</description>
+      <files>
+        <file category="header" name="SPL/Drivers/MDR_WWDT.h"/>
+        <file category="source" name="SPL/Drivers/MDR_WWDT.c"/>
+      </files>
+    </component>    
+    <!-- IWDG Driver -->
+    <component Cclass="Drivers" Cgroup="IWDG" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>IWDG driver</description>
+      <files>
+        <file category="header" name="SPL/Drivers/MDR_IWDT.h"/>
+        <file category="source" name="SPL/Drivers/MDR_IWDT.c"/>
+      </files>
+    </component>
+    <!-- LCD Driver -->
+    <component Cclass="Drivers" Cgroup="LCD" Cversion="2.0" condition="CON_MDR1986VK214">
+      <description>I2C driver</description>
+      <files>
+        <file category="header" name="SPL/Drivers/MDR_LCD_VK214.h"/>
+        <file category="source" name="SPL/Drivers/MDR_LCD_VK214.c"/>
+      </files>
+    </component>  
 
     <!-- START: Previouse PACK blocks -->
     <!-- DMA Driver -->
@@ -921,15 +945,7 @@
         <file category="header" name="SPL/Drivers/MDR32F9Qx_dma.h"/>
         <file category="source" name="SPL/Drivers/MDR32F9Qx_dma.c"/>
       </files>
-    </component>
-    <!-- IWDG Driver -->
-    <component Cclass="Drivers" Cgroup="IWDG" Cversion="1.9" condition="CON_MDR_ALL">
-      <description>IWDG driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_iwdg.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_iwdg.c"/>
-      </files>
-    </component>
+    </component>    
     <!-- POWER Driver -->
     <component Cclass="Drivers" Cgroup="POWER" Cversion="1.9" condition="CON_MDR_ALL">
       <description>POWER driver</description>
@@ -954,14 +970,6 @@
         <file category="source" name="SPL/Drivers/MDR32F9Qx_uart.c"/>
       </files>
     </component>
-	  <!-- WWDG Driver -->
-    <component Cclass="Drivers" Cgroup="WWDG" Cversion="1.9" condition="CON_MDR_ALL">
-      <description>WWDG driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_wwdg.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_wwdg.c"/>
-      </files>
-    </component>
     <!-- CRC  Driver -->
     <component Cclass="Drivers" Cgroup="CRC" Cversion="1.9" condition="CON_MDR1986VK234">
       <description>CRC driver</description>
@@ -977,15 +985,7 @@
         <file category="header" name="SPL/Drivers/MDR32F9Qx_i2c.h"/>
         <file category="source" name="SPL/Drivers/MDR32F9Qx_i2c.c"/>
       </files>
-    </component>
-    <!-- LCD Driver -->
-    <component Cclass="Drivers" Cgroup="LCD" Cversion="1.9" condition="CON_MDR1986VK214">
-      <description>I2C driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_led.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_led.c"/>
-      </files>
-    </component>      
+    </component>    
     <!-- END: Previouse PACK blocks -->
 
 

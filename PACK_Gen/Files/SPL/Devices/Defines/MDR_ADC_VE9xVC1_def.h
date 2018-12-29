@@ -103,12 +103,22 @@ typedef enum {                                   /*!< MDR_ADC_ADC1_Cfg_Delay_GO 
   MDR_ADC_DelayADC_15         = 15               /*!< 16 periods of CPU_CLK                                                 */
 } MDR_ADC_DelayADC;
 
+//  Compiler_V6 padding warning fix
+#define fix_Compiler_v6   1
+#if fix_Compiler_v6
+  #define FIX_MDR_ADC_CHSEL         uint32_t
+  #define FIX_MDR_ADC_TRIM_TS_Vref  uint32_t
+#else
+  #define FIX_MDR_ADC_CHSEL         MDR_ADC_CHSEL
+  #define FIX_MDR_ADC_TRIM_TS_Vref  MDR_ADC_TRIM_TS_Vref
+#endif
+
 typedef struct {
   __IOM MDR_OnOff            ADON       : 1;            /*!< [0..0] Enable ADC                                              */
   __IOM MDR_OnOff            GO         : 1;            /*!< [1..1] Start single ADC mesurement                             */
   __IOM MDR_ADC_CLK_SEL      CLKS       : 1;            /*!< [2..2] Select Clock                                            */
   __IOM MDR_ADC_SAMPLE       SAMPLE     : 1;            /*!< [3..3] Single or Continuous measurement                        */
-  __IOM MDR_ADC_CHSEL        CHS        : 5;            /*!< [8..4] Active channel select                                    */
+  __IOM FIX_MDR_ADC_CHSEL    CHS        : 5;            /*!< [8..4] Active channel select                                    */
   __IOM MDR_OnOff            CHCH       : 1;            /*!< [9..9] Channel switching enable                                */
   __IOM MDR_OnOff            RGNC       : 1;            /*!< [10..10] Signal limiters enable                                */
   __IOM MDR_ADC_MAGREF_SRC   M_REF      : 1;            /*!< [11..11] Signal magnitude reference                            */
@@ -118,7 +128,7 @@ typedef struct {
   __IOM MDR_OnOff            TS_BUFF_EN : 1;            /*!< [18..18] Thermosensor buffer enable                            */
   __IOM MDR_OnOff            SEL_TS     : 1;            /*!< [19..19] Output temperature from Thermosensor                  */
   __IOM MDR_OnOff            SEL_VREF   : 1;            /*!< [20..20] Output Vref=1.23 from Thermosensor                    */
-  __IOM MDR_ADC_TRIM_TS_Vref TR         : 4;            /*!< [24..21] Trim Vref from Thermosensor                           */
+  __IOM FIX_MDR_ADC_TRIM_TS_Vref TR         : 4;            /*!< [24..21] Trim Vref from Thermosensor                           */
   __IOM MDR_ADC_DelayGO      Delay_GO   : 3;            /*!< [27..25] Delay after channels switching in CPU_CLK             */
   __IOM MDR_ADC_DelayADC     Delay_ADC  : 4;            /*!< [31..28] Delay between ADC1 and ADC2 start                     */
 } MDR_ADC1_Cfg_Bits;

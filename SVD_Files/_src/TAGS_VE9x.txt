@@ -5,6 +5,7 @@ f3=../RST/RST_VE9x.txt
 f4=../EEPROM/EEPROM_VEx.txt
 f5=../ADC/ADC_VE9x.txt
 f6=../SSP/SSP_VE9x.txt
+f7=../WDT/WDT_VEx.txt
 
 [TAGS]
 #BKP=f1
@@ -16,6 +17,7 @@ f6=../SSP/SSP_VE9x.txt
 #EEPROM=f4
 #ADC=f5
 #SSPs=f6
+#WDT=f7
 
 [TAGS_New]
 #USB=
@@ -28,10 +30,6 @@ f6=../SSP/SSP_VE9x.txt
 #I2C_R=
 #PWR=
 #PWR_R=
-#WWDT=
-#WWDT_R=
-#IWDT=
-#IWDT_R=
 #DAC=
 #DAC_R=
 #COMP=

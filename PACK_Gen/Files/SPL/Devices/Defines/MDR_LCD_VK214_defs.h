@@ -78,7 +78,7 @@ typedef struct {
   __IOM MDR_LCD_CR_VLCD   VLCDOn     : 1;            /*!< [7..7] Select Vlcd power                                                  */
   __IOM uint32_t          DIV        : 16;           /*!< [23..8] Clock div                                                         */
   __IOM MDR_LCD_CR_CLK    CLK_SEL    : 1;            /*!< [24..24] Clock Select                                                     */
-  __IM  uint32_t                     : 8;
+  __IM  uint32_t                     : 7;
 } MDR_LCD_CR_Bits;
 
 #define MDR_LCD_CR_Mux_Pos          (0UL)                     /*!< MDR_LCD_VK214 CR: Mux (Bit 0)                         */
@@ -101,10 +101,9 @@ typedef struct {
 
 /* ========================================  LCD Struct  ======================================== */
 typedef struct {                                /*!< (@ 0x40038000) MDR_LCD_VK214 Structure                                    */
-  
   union {
-    __IOM uint32_t    CR;                          /*!< (@ 0x00000000) LCD Control register                                       */
-    MDR_LCD_CR_Bits   CR_Bits;
+    __IOM uint32_t    CR;                       /*!< (@ 0x00000000) LCD Control register                                       */
+    MDR_LCD_CR_Bits   CR_b;
   } ;
   __IOM uint32_t  ROW1;                         /*!< (@ 0x00000004) Base memory data string                                    */
   __IOM uint32_t  ROW2;                         /*!< (@ 0x00000008) Base memory data string                                    */

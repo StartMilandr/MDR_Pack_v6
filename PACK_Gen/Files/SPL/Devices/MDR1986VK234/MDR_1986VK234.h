@@ -145,7 +145,8 @@ typedef enum IRQn
 #include "MDR_WWDT_defs.h"
 #include "MDR_IWDT_defs.h"
 
-
+/*=========  ADC IU ========*/
+#include "MDR_ADCIU_VK234_defs.h"
 
 //  ==========  Blocks from previouse PACK
 
@@ -165,7 +166,6 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #include "MDRP_TIMER_defs.h"
 #include "MDRP_UART_defs.h"
 #include "MDRP_WDT_defs.h"
-#include "MDRP_ADCIU_VK234_defs.h"
 
 #define uint_tim  uint16_t
 

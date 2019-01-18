@@ -103,10 +103,10 @@
 	#define MDRB_SPI1_RX_PA14_Ind 	     14
 	#define MDRB_SPI1_TX_PA15_Ind		     15
 
-  #define MDRB_SPI1_FSS_PA12_Msk	     PORT_Pin_12
-	#define MDRB_SPI1_CLK_PA13_Msk		   PORT_Pin_13
-	#define MDRB_SPI1_RX_PA14_Msk 		   PORT_Pin_14
-	#define MDRB_SPI1_TX_PA15_Msk		     PORT_Pin_15
+  #define MDRB_SPI1_FSS_PA12_Msk	     MDR_Pin_12
+	#define MDRB_SPI1_CLK_PA13_Msk		   MDR_Pin_13
+	#define MDRB_SPI1_RX_PA14_Msk 		   MDR_Pin_14
+	#define MDRB_SPI1_TX_PA15_Msk		     MDR_Pin_15
 
   #define MDRB_SPI1_FSS_PA12_Port	     MDR_GPIO_A
 	#define MDRB_SPI1_CLK_PA13_Port		   MDR_GPIO_A

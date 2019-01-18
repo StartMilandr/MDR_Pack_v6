@@ -98,7 +98,6 @@ typedef struct {
 #define MDR_RST_PER2__EEPROM_CLK_EN_Msk (0x8UL)          /*!< MDR_RST_CLOCK PER2_CLOCK: EEPROM_CLK_EN (Bitfield-Mask: 0x01)       */
 #define MDR_RST_PER2__RST_CLK_EN_Pos    (4UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bit 4)                        */
 #define MDR_RST_PER2__RST_CLK_EN_Msk    (0x10UL)         /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bitfield-Mask: 0x01)          */
-
 #define MDR_RST_PER2__I2C_CLK_EN_Pos    (6UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: I2C_CLK_EN (Bit 6)                        */
 #define MDR_RST_PER2__I2C_CLK_EN_Msk    (0x40UL)         /*!< MDR_RST_CLOCK PER2_CLOCK: I2C_CLK_EN (Bitfield-Mask: 0x01)          */
 #define MDR_RST_PER2__LCD_CLK_EN_Pos    (7UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: LCD_CLK_EN (Bit 7)                        */

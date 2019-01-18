@@ -381,9 +381,9 @@
           <GroupName>user</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>main_VK234.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\main_VK234.c</FilePath>
             </File>
           </Files>
         </Group>

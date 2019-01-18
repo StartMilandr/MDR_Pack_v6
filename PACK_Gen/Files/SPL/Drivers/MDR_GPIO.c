@@ -267,6 +267,38 @@ void MDR_Port_MaskClear(MDR_Port_ApplyMask *ApplyMask)
 }
 
 // Внесение настроек Variable и Permanent в маски CLR и SET для указанных маской PinSelect пинов
+void MDR_Port_MaskAddAnalog(uint32_t PinSelect, MDR_Port_ApplyMask *ApplyMask)
+{
+  uint32_t i, i2;
+  uint32_t bitInd;
+  uint32_t clrBit2, clrHiLo;
+  
+  for (i = 0; i < MDR_GPIO_Pin_Count; ++i)
+  {
+    bitInd = 1 << i;
+    if (PinSelect & bitInd)
+    {  
+      i2 = i << 1;
+      clrBit2 = CLR_FUNC << i2;
+      clrHiLo = CLR_PD   << i;
+            
+      ApplyMask->MaskCLR.RXTX    |= bitInd;
+      ApplyMask->MaskCLR.OE      |= bitInd;
+      ApplyMask->MaskCLR.FUNC    |= clrBit2;
+      ApplyMask->MaskCLR.ANALOG  |= bitInd;
+      ApplyMask->MaskCLR.PULL    |= clrHiLo;
+      ApplyMask->MaskCLR.PD      |= clrHiLo;      
+      ApplyMask->MaskCLR.PWR     |= clrBit2;
+      ApplyMask->MaskCLR.GFEN    |= bitInd;
+
+      PinSelect &= ~bitInd;
+      if (PinSelect == 0)
+        break;
+    }
+  } 
+}
+
+
 void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask)
 {
   MDR_Pin_VarRegs pinVarRegs;

@@ -146,6 +146,9 @@ typedef enum IRQn
 /*=========  LCD Controller ========*/
 #include "MDR_LCD_VK214_defs.h"
 
+/*=========  ADC IU ========*/
+#include "MDR_ADCIU_VK214_defs.h"
+
 //  ==========  Blocks from previouse PACK
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
@@ -162,7 +165,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #include "MDRP_LCD_defs.h"
 #include "MDRP_WDT_defs.h"
 #include "MDRP_POWER_defs.h"
-#include "MDRP_ADCIU_VK214_defs.h"
+
 #include "MDRP_TIMER_defs.h"
 
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
@@ -215,7 +218,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 #define ADDR_WWDT_BASE         0x40048000UL
 #define ADDR_IWDT_BASE         0x40050000UL
-#define ADDR_LCD_BASE          0x400380000UL
+#define ADDR_LCD_BASE          0x40038000UL
 
 
 

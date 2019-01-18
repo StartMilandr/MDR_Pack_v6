@@ -136,9 +136,12 @@ typedef struct {
 void MDR_Port_MaskClear(MDR_Port_ApplyMask *ApplyMask);
 
 //  Добавление в маски настроек группы пинов
+//    Пины в аналоговую функцию
+void MDR_Port_MaskAddAnalog(uint32_t PinSelect, MDR_Port_ApplyMask *ApplyMask);
+//    Пины в цифровую функцию
 void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask);
 //  Добавление в маски настроек одного пина
-void MDR_Port_MaskAddPin(uint32_t BitInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask);
+void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask);
 //  Применение маски в порт
 void MDR_Port_MaskApply(  MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask);
 void MDR_Port_MaskApplyEx(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask, MDR_GPIO_CfgRegs *readRegs);
@@ -216,6 +219,7 @@ __STATIC_INLINE void MDR_GPIO_ClockOn(const MDR_GPIO_Port *GPIO_Port)
 
   #define MDR_GPIO_ToCfgRegs                    MDR_Port_ToCfgRegs
   #define MDR_GPIO_MaskClear                    MDR_Port_MaskClear
+  #define MDR_GPIO_MaskAddAnalog                MDR_Port_MaskAddAnalog
   #define MDR_GPIO_MaskAdd                      MDR_Port_MaskAdd
   #define MDR_GPIO_MaskAddPin                   MDR_Port_MaskAddPin
   #define MDR_GPIO_MaskApply(GP, msk)           MDR_Port_MaskApply((GP)->PORTx, (msk))

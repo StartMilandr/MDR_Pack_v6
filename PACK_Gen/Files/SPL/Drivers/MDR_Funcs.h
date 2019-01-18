@@ -14,7 +14,7 @@ bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc);
 //  Задержка в количестве пустых циклов
 void MDR_Delay(uint32_t Ticks);
 
-#define MDR_DebugerProtectDelay()     MDR_Delay(20000000)
+#define MDR_DebugerProtectDelay()     MDR_Delay(2000000)
 
 //  Минимальное количество тактов на исполнение одного пустого цикла 
 //  (Зависит от настроек компилятора и самого компилятора)
@@ -66,6 +66,16 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 static __inline uint32_t MaskClrSet(uint32_t value, uint32_t maskClr, uint32_t maskSet)
 {
   return (value & (~maskClr)) | maskSet;
+}
+
+static __inline uint32_t MaskClr(uint32_t value, uint32_t maskClr)
+{
+  return (value & (~maskClr));
+}
+
+static __inline uint32_t MaskSet(uint32_t value, uint32_t maskSet)
+{
+  return (value | maskSet);
 }
 
 //================    Макрос для подавления ворнингов от неиспользуемых параметров =======================

@@ -13,34 +13,40 @@
 //===================================    Заметки по плате    ========================================
 
 //  Переопределение пинов для удобства поиска конфликтов
-    #define PIN_PA0       MDR_Pin_0   //
-    #define PIN_PA1       MDR_Pin_1   //
-    #define PIN_PA2       MDR_Pin_2   //
-    #define PIN_PA3       MDR_Pin_3   //
-    #define PIN_PA4       MDR_Pin_4   //          
-    #define PIN_PA5       MDR_Pin_5   //           
-    #define PIN_PA6       MDR_Pin_6   //              JTAG_A SWCLK
-    #define PIN_PA7       MDR_Pin_7   //              JTAG_A SWDIO
-    #define PIN_PA8       MDR_Pin_8   // 
-    #define PIN_PA9       MDR_Pin_9   // 
-    #define PIN_PA10      MDR_Pin_10  // 
-    #define PIN_PA11      MDR_Pin_11  //                  
-    #define PIN_PA12      MDR_Pin_12  //          SSP1_FSS
-    #define PIN_PA13      MDR_Pin_13  //          SSP1_CLK
-    #define PIN_PA14      MDR_Pin_14  //          SSP1_RX
-    #define PIN_PA15      MDR_Pin_15  //          SSP1_TX
+    #define PIN_PA0       MDR_Pin_0   //      LCD_S0
+    #define PIN_PA1       MDR_Pin_1   //      LCD_S1
+    #define PIN_PA2       MDR_Pin_2   //      LCD_S2
+    #define PIN_PA3       MDR_Pin_3   //      LCD_S3
+    #define PIN_PA4       MDR_Pin_4   //      LCD_S4  
+    #define PIN_PA5       MDR_Pin_5   //      LCD_S5   
+    #define PIN_PA6       MDR_Pin_6   //      LCD_S6      JTAG_A SWCLK
+    #define PIN_PA7       MDR_Pin_7   //      LCD_S7      JTAG_A SWDIO
+    #define PIN_PA8       MDR_Pin_8   //      LCD_S8
+    #define PIN_PA9       MDR_Pin_9   //      LCD_S9
+    #define PIN_PA10      MDR_Pin_10  //      LCD_S10
+    #define PIN_PA11      MDR_Pin_11  //      LCD_S11          
+    #define PIN_PA12      MDR_Pin_12  //      LCD_S12  SSP1_FSS
+    #define PIN_PA13      MDR_Pin_13  //      LCD_S13  SSP1_CLK
+    #define PIN_PA14      MDR_Pin_14  //      LCD_S14  SSP1_RX
+    #define PIN_PA15      MDR_Pin_15  //      LCD_S15  SSP1_TX
 
-    #define PIN_PB6       MDR_Pin_6   //                             ADC_Ch7  
-    #define PIN_PB7       MDR_Pin_7   //                             ADC_Ch6
-    #define PIN_PB8       MDR_Pin_8   //                             ADC_Ch5   
-    #define PIN_PB9       MDR_Pin_9   //                             ADC_Ch4 - TuneResistor
-    #define PIN_PB11      MDR_Pin_11  //                     
+    #define PIN_PB6       MDR_Pin_6   //      LCD_COM1               ADC_Ch7  
+    #define PIN_PB7       MDR_Pin_7   //      LCD_COM2               ADC_Ch6
+    #define PIN_PB8       MDR_Pin_8   //      LCD_COM3               ADC_Ch5   
+    #define PIN_PB9       MDR_Pin_9   //      LCD_COM4               ADC_Ch4 - TuneResistor
+    #define PIN_PB10      MDR_Pin_10  //      LCD_S16
+    #define PIN_PB11      MDR_Pin_11  //      LCD_S17
+    #define PIN_PB12      MDR_Pin_12  //      LCD_S18
+    #define PIN_PB13      MDR_Pin_13  //      LCD_S19
+    #define PIN_PB14      MDR_Pin_14  //      LCD_S20
 
     #define PIN_PC1       MDR_Pin_1   //                             ADC_Ch3
     #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2
     #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+
-    #define PIN_PC4       MDR_Pin_4   //                             ADC_Ch0/Ref- 
-    
+    #define PIN_PC4       MDR_Pin_4   //                             ADC_Ch0/Ref-     
+    #define PIN_PC5       MDR_Pin_5   //      LCD_S21
+    #define PIN_PC6       MDR_Pin_6   //      LCD_S22
+    #define PIN_PC7       MDR_Pin_7   //      LCD_S23
     #define PIN_PC8       MDR_Pin_8   // KEY1
     #define PIN_PC9       MDR_Pin_9   // KEY2
     #define PIN_PC14      MDR_Pin_14  //    LED1 
@@ -95,10 +101,10 @@
 	#define MDRB_SPI1_RX_PA14_Ind 	     14
 	#define MDRB_SPI1_TX_PA15_Ind		     15
 
-  #define MDRB_SPI1_FSS_PA12_Msk	     PORT_Pin_12
-	#define MDRB_SPI1_CLK_PA13_Msk		   PORT_Pin_13
-	#define MDRB_SPI1_RX_PA14_Msk 		   PORT_Pin_14
-	#define MDRB_SPI1_TX_PA15_Msk		     PORT_Pin_15
+  #define MDRB_SPI1_FSS_PA12_Msk	     MDR_Pin_12
+	#define MDRB_SPI1_CLK_PA13_Msk		   MDR_Pin_13
+	#define MDRB_SPI1_RX_PA14_Msk 		   MDR_Pin_14
+	#define MDRB_SPI1_TX_PA15_Msk		     MDR_Pin_15
 
   #define MDRB_SPI1_FSS_PA12_Port	     MDR_GPIO_A
 	#define MDRB_SPI1_CLK_PA13_Port		   MDR_GPIO_A
@@ -110,6 +116,18 @@
 	#define MDRB_SPI1_RX_PA14_Func 		   MDR_PIN_MAIN
 	#define MDRB_SPI1_TX_PA15_Func		   MDR_PIN_MAIN
 
+//  ----------  LCD Definition ---------------
+    // Initialization                 //  seg0-seg15
+    #define MDRB_LCD_PORT             MDR_GPIO_A
+    #define MDRB_LCD_PINs             MDR_Pin_All
+                                      //  PB6-PB9: COM1 - COM4, PB10-PB14: seg16 - seg20
+    #define MDRB_LCD_PORT_EX1         MDR_GPIO_B
+    #define MDRB_LCD_PINs_EX1         (PIN_PB6 | PIN_PB7 | PIN_PB8 | PIN_PB9 | PIN_PB10 | PIN_PB11 | PIN_PB12 | PIN_PB13 | PIN_PB14)
+                                      //  seg21-seg23
+    #define MDRB_LCD_PORT_EX2         MDR_GPIO_C
+    #define MDRB_LCD_PINs_EX2         (PIN_PC5 | PIN_PC6 | PIN_PC7)
+
+    #define LCD_XT13468PSPA_DISPLAY
     
 
 #else

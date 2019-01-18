@@ -708,11 +708,11 @@
       <accept Dname="MDR1986VK214"/>
       <accept Dname="MDR1986VK234"/>
     </condition>
-    <condition id="CON_MDR_CM0VK">
+    <!--condition id="CON_MDR_CM0VK">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VK214"/>
       <accept Dname="MDR1986VK234"/>
-    </condition>
+    </condition-->
 
   </conditions>
 
@@ -1035,7 +1035,19 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"   attr="config" version="2.0.0"/>
       </files>
     </component>     
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM0VK">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR1986VK214">
+      <description>Buttons control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD.h"     version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_LCD_XT13468PSPA.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_LCD_XT13468PSPA.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"  attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>Buttons control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
@@ -1046,7 +1058,7 @@
         <file category="source"  name="SPL/Boards/MDRB_LCD_HTD_B083.c" version="2.0.0"/>
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"  attr="config" version="2.0.0"/>
       </files>
-    </component>     
+    </component>
 
   </components>
 

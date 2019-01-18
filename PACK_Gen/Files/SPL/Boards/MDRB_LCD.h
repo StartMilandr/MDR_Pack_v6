@@ -38,7 +38,7 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   //  Пересчет задержек при смене частоты CPU
   void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
 
-//============    10-ти секционный экран HTD-B083 на демоплатах 1986VK214(234) и счетчиках "Милур"   ===========      
+//============    11-ти секционный экран HTD-B083 на демоплатах 1986VK234 и трехфазных счетчиках "Милур"   ===========      
 #elif defined (LCD_HTD_B083_DISPLAY)
 
   #define LCD_IS_7SEG_DISPLAY
@@ -71,6 +71,55 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   #define _LCD_DELAY_TICK_DEF   0
   #define MDRB_LCD_ChangeFreqCPU(x)   UNUSED(x)
   
+//============    8-ми секционный экран HTD-B083 на демоплатах 1986VK214 и однофазных счетчиках "Милур"   ===========      
+#elif defined (LCD_XT13468PSPA_DISPLAY)
+
+  #define LCD_IS_7SEG_DISPLAY
+  #define LCD_SCREEN_WIDTH    8
+  
+  void MDRB_LCD_Print       (const char* string);                            // Вывод строки    
+  void MDRB_LCD_ScrollString(const char* string, uint8_t shift);             // Горизональное перемещение строки. Необходимо менять shift.
+  void MDRB_LCD_ScrollStringLeft(const char* inpString, uint8_t strLength);  //  Автономное горизональное перемещение строки.
+
+  //  LCD XT13468PSPA Specific control
+  #include "MDRB_LCD_XT13468PSPA.h"
+
+  
+  //  Функции для работы с пользовательской структурой (переменной) типа LCD_XT_DATA.
+  //  На экран выводится основная структура. Альтернативная используется при организации мигания.
+  typedef enum {
+    LCD_XT_NUM1,
+    LCD_XT_NUM2,
+    LCD_XT_NUM3,
+    LCD_XT_NUM4,
+    LCD_XT_NUM5,
+    LCD_XT_NUM6,
+    LCD_XT_NUM7,
+    LCD_XT_NUM8
+  } MDRB_XT_NUM_Item;
+
+  #define LCD_XT_NUM_HIGH   LCD_XT_NUM8
+
+  //  Стирание всего регистра
+  void MDRB_XT_DataClear(LCD_XT_DATA *lcdData);   
+  //  Стирание только цифровых индикаторов  
+  void MDRB_XT_DataClearStr(LCD_XT_DATA *lcdData);
+  //  Стирание только одного цифрового индикатора
+  void MDRB_XT_DataClearNUM(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem);
+  //  Запись символа в один индикатор
+  static void MDRB_XT_AddChar(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem, uint8_t symbol);
+  //  Запись цифровых индикаторов
+  void MDRB_XT_DataWriteStr(LCD_XT_DATA *lcdData, const char* string);
+  
+  //  Вывод регистра в LCD экран - Show
+  void MDRB_XT_DataApply(LCD_XT_DATA *lcdData, MDR_OnOff toAlterMem);
+  //  Вывод строки на цифровые индикаторы на LCD экране - Show
+  void MDRB_XT_DataPring(LCD_XT_DATA *lcdData, const char* string, MDR_OnOff toAlterMem);
+
+  extern LCD_XT_DATA _MDR_LCD_Data;
+  
+  
+
 //============    Пиксельный экран MT-12864J на всех остальных демо-платах =================
 #else
 

@@ -1,0 +1,2424 @@
+#ADCUI_234
+<peripheral>
+  <name>MDR_ADCUI</name>
+  <version>2.0</version>
+  <description>Energy Counter Block</description>
+  <groupName>ADCUI</groupName>
+  <baseAddress>0x40068000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <size>0x124</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- CTRL1 -->
+    <register>
+      <name>CTRL1</name>
+      <description>ADCUI Control1 Register</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xF83FBFC3</resetMask>
+      <fields>
+        <field>
+          <name>I0EN</name>
+          <description>Channel enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>V0EN</name><bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>I1EN</name><bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>V1EN</name><bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>I2EN</name><bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>V2EN</name><bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="I0EN">
+          <name>IIEN</name><bitRange>[6:6]</bitRange>
+        </field>
+        <field>
+          <name>RESOL</name>
+          <description>Data resolution</description>
+          <bitRange>[7:7]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>bit_16</name><description>16 bit data</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>bit_24</name><description>24 bit data</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>ZXLPF</name>
+          <description>V0 cross zero LPF enable</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>PER_Length</name>
+          <description>Period to calc aver period and dPhase</description>
+          <bitRange>[11:9]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Period_1</name><description>1 period</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Period_2</name><description>2 periods</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Period_3</name><description>4 periods</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Period_4</name><description>8 periods</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Period_5</name><description>16 periods</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>Period_6</name><description>32 periods</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>Period_7</name><description>64 periods</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>Period_8</name><description>128 periods</description><value>7</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>APNOLOAD</name>
+          <description>Active Energy min level to accumulate</description>
+          <bitRange>[13:12]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>All</name><description>Accunulate All Energy</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>lv_012</name><description>Pass E less than 0.012%</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>lv_0061</name><description>Pass E less than 0.0061%</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>lv_00305</name><description>Pass E less than 0.00305%</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="APNOLOAD">
+          <name>VARNOLOAD</name>
+          <description>Reactive Energy min level to accumulate</description>
+          <bitRange>[16:15]</bitRange>
+        </field>
+        <field derivedFrom="APNOLOAD">
+          <name>VANOLOAD</name>
+          <description>Full Energy min level to accumulate</description>
+          <bitRange>[18:17]</bitRange>
+        </field>
+        <field>
+          <name>FREQSEL</name>
+          <description>Enable V0 period detection to FxMD0.PER_FREQ</description>
+          <bitRange>[19:19]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Hold Last value</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>VREF_SEL</name>
+          <description>ADC Vref select</description>
+          <bitRange>[20:20]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Internal</name><description>Internal Vref source</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>External</name><description>External Vref source</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>BUF_BYP</name>
+          <description>Bypass Vref buffer</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Buffered</name><description>Vref through buffer</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>NotBuffered</name><description>Vref bypass buffer</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>CHOP_EN</name>
+          <description>Chopper Mode Select</description>
+          <bitRange>[22:22]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Normal</name><description>Normal mode</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Chopper</name><description>Chopper mode</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>CHOP_FREQ</name>
+          <description>Chopper Frequency</description>
+          <bitRange>[24:23]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>fADC_div2</name><description>ADC freq div 2</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>fADC_div4</name><description>ADC freq div 4</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>fADC_div8</name><description>ADC freq div 8</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>fADC_div16</name><description>ADC freq div 16</description><value>3</value></enumeratedValue>            
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ZXRMS</name>
+          <description>RMS Update mode</description>
+          <bitRange>[27:27]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Continuous</name><description>Continuous RMS update</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>OnZeroV0</name><description>Update on V0 cross zero level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>RESET_DIG</name>
+          <description>Digital Logic Reset</description>
+          <bitRange>[28:28]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Working mode</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Reset</name><description>Logic in reset</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>IBOOST</name>
+          <description>Boost I mode</description>
+          <bitRange>[29:29]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Normal</name><description>Working mode</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Boost</name><description>Boost I enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>OSR_CONF</name>
+          <description>ADC Output Sampling Rate</description>
+          <bitRange>[31:30]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>4kHz</name><description>Sampling at 4kHz</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>8kHz</name><description>Sampling at 8kHz</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>16kHz</name><description>Sampling at 16kHz</description><value>2</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!-- CTRL2 -->
+    <register>
+      <name>CTRL2</name>
+      <description>ADCUI Control2 Register</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>SAGLVL</name>
+          <description>V0 min OK level</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>SAGCYC</name>
+          <description>Count of V0 half periods to calc V0 level</description>
+          <bitRange>[23:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CTRL3 -->
+    <register>
+      <name>CTRL3</name>
+      <description>ADCUI Control3 Register</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000FFF</resetMask>
+      <fields>
+        <field>
+          <name>ZTXOUT</name>
+          <description>V0 cross zero timeout</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0CTR -->
+    <register>
+      <name>F0CTR</name>
+      <description>FxCTR register</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>I0NTEN</name>
+          <description>Integrator enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="I0NTEN">
+          <name>I3NTEN</name><bitRange>[1:1]</bitRange>
+        </field>
+        <field>        
+          <name>VASEL</name>
+          <description>Select source for FullEnergy  </description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FullEnergy</name><description>I0DAT and VDAT can store FullEnergy</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>I_RMS</name><description>I0DAT and VDAT can store I_RMS</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RARS</name>
+          <description>Active Energy Accumulator Reset</description>
+          <bitRange>[3:3]</bitRange>
+          <access>write-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Accumulator sets to zero</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RRRS</name>
+          <description>Reactive Energy Accumulator Reset</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RVRS</name>
+          <description>Full Energy Accumulator Reset</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field>
+          <name>I0GAIN</name>
+          <description>PGA value</description>
+          <bitRange>[7:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>Signal amplification 0dB</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Signal amplification 6dB</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>x4</name><description>Signal amplification 12dB</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>x8</name><description>Signal amplification 18dB</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="I0GAIN">
+          <name>VGAIN</name>
+          <bitRange>[9:8]</bitRange>
+        </field>
+        <field>
+          <name>VPHASE</name>
+          <description>Phase V0 adjustment by step of +-124us</description>
+          <bitRange>[17:10]</bitRange>
+          <access>read-write</access>
+        </field>
+        <field derivedFrom="I0GAIN">
+          <name>I3GAIN</name>
+          <bitRange>[19:18]</bitRange>
+        </field>
+        <field>
+          <name>IRMSOS</name>
+          <description>RMS calibration of channel I</description>
+          <bitRange>[31:20]</bitRange>
+          <access>read-write</access>
+        </field>
+        <!--Fields end-->
+      </fields>
+    </register>
+    <!-- F0WC -->
+    <register>
+      <name>F0WC</name>
+      <description>Active energy calibration</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTOS</name>
+          <description>Calibr bias of active energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>WGAIN</name>
+          <description>Calibr gain of active energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+        <!--Fields end-->
+      </fields>
+    </register>
+    <!-- F0WATTP -->
+    <register>
+      <name>F0WATTP</name>
+      <description>Positive Active Energy accumulator</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTHRP</name>
+          <description>High 32 bits of Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0WATTN -->
+    <register>
+      <name>F0WATTN</name>
+      <description>Negative Active Energy accumulator</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>WATTHRN</name>
+          <description>High 32 bits of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F0VC -->
+    <register>
+      <name>F0VC</name>
+      <description>Reactive energy calibration</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAROS</name>
+          <description>Calibr bias of reactive energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VARGAIN</name>
+          <description>Calibr gain of reactive energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VARP -->
+    <register>
+      <name>F0VARP</name>
+      <description>Positive Reactive Energy accumulator</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VARHRP</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VARN -->
+    <register>
+      <name>F0VARN</name>
+      <description>Negative Reactive Energy accumulator</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>VARHRN</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F0AC -->
+    <register>
+      <name>F0AC</name>
+      <description>V0 RMS calibration</description>
+      <addressOffset>0x00000028</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFF0FFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMSOS</name>
+          <description>Calibr bias of V0 RMS</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>VAGAIN</name>
+          <description>Calibr gain of Full energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VR -->
+    <register>
+      <name>F0VR</name>
+      <description>Full Energy accumulator</description>
+      <addressOffset>0x0000002C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAHR</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0MD0 -->
+    <register>
+      <name>F0MD0</name>
+      <description>FxMD0 register</description>
+      <addressOffset>0x00000030</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFF1FF</resetMask>
+      <fields>
+        <field>
+          <name>VSEL</name>
+          <description>Select source for FxVDAT</description>
+          <bitRange>[1:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_V</name><description>ADC_V output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ISEL</name>
+          <description>Select source for FxI0DAT</description>
+          <bitRange>[3:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_I0</name><description>ADC_I0 output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ACTS</name>
+          <description>Active Energy sign in last period</description>
+          <bitRange>[4:4]</bitRange>
+          <access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Pos</name><description>Positive sign</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Neg</name><description>Negative sign</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="ACTS">
+          <name>REACTS</name>
+          <description>Reactive Energy sign in last period</description>
+          <bitRange>[5:5]</bitRange>         
+        </field>
+        <field>
+          <name>IOGAIN</name>
+          <description>ADC Decimation gain</description>
+          <bitRange>[6:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>No gain</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Gain by +6dB</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="IOGAIN">
+          <name>V0GAIN</name>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="IOGAIN">
+          <name>I3GAIN</name>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field>
+          <name>PER_FREQ</name>
+          <description>Measured period of V</description>
+          <bitRange>[28:12]</bitRange>
+          <access>read-only</access>
+        </field>
+        <field>
+          <name>I3SEL</name>
+          <description>Select source for FxI3DAT</description>
+          <bitRange>[29:29]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>I3_LPF</name><description>Signal after LPF</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ADC_I3</name><description>ADC_I3 output</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>SEL_I_CH</name>
+          <description>Select I for calc power</description>
+          <bitRange>[31:30]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Auto_max</name><description>Select max of I0 and I3</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>I0</name><description>Calc Power by I0</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>I3</name><description>Calc Power by I3</description><value>2</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!-- F0MD1 -->
+    <register>
+      <name>F0MD1</name>
+      <description>FxMD1 register</description>
+      <addressOffset>0x00000034</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPKLVL</name>
+          <description>Imax level</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VPKLVL</name>
+          <description>Vmax level</description>
+          <bitRange>[31:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VPEAK -->
+    <register>
+      <name>F0VPEAK</name>
+      <description>VPEAK Result register</description>
+      <addressOffset>0x00000038</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Vmax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0IPEAK -->
+    <register>
+      <name>F0IPEAK</name>
+      <description>IPEAK Result register</description>
+      <addressOffset>0x0000003C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Imax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>    
+    <!-- F0VDAT -->
+    <register>
+      <name>F0VDAT</name>
+      <description>VDAT Result register</description>
+      <addressOffset>0x00000040</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VDAT</name>
+          <description>FIFO of V or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0I0DAT -->
+    <register>
+      <name>F0I0DAT</name>
+      <description>I0DAT Result register</description>
+      <addressOffset>0x00000044</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>I0DAT</name>
+          <description>FIFO of I0 or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0I3DAT -->
+    <register>
+      <name>F0I3DAT</name>
+      <description>I3DAT Result register</description>
+      <addressOffset>0x00000048</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>I3DAT</name>
+          <description>FIFO of I3 or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VRMS -->
+    <register>
+      <name>F0VRMS</name>
+      <description>VRMS Result register</description>
+      <addressOffset>0x0000004C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS</name>
+          <description>RMS of V</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0VRMS2 -->
+    <register>
+      <name>F0VRMS2</name>
+      <description>VRMS^2 Result register</description>
+      <addressOffset>0x00000050</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS2</name>
+          <description>RMS of V^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0IRMS -->
+    <register>
+      <name>F0IRMS</name>
+      <description>IRMS Result register</description>
+      <addressOffset>0x00000054</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS</name>
+          <description>RMS of I</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0IRMS2 -->
+    <register>
+      <name>F0IRMS2</name>
+      <description>IRMS^2 Result register</description>
+      <addressOffset>0x00000058</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS2</name>
+          <description>RMS of I^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0STAT -->
+    <register>
+      <name>F0STAT</name>
+      <description>Status Register</description>
+      <addressOffset>0x0000005C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMP</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange><access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VF_FLL</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange><access>read-only</access>
+        </field>
+        <field>
+          <name>VF_OVER</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_EMP</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_FLL</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>IF_OVER</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>SAGF</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKVF</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKIF</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVP</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVP</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAOV</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZTXVF</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field>
+          <name>ICHANNEL</name><description>Timeout of V cross zero</description>
+          <bitRange>[13:13]</bitRange><access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>I0</name><description>I0 is active</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>I3</name><description>I3 is active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>           
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>FAULTCON</name><description>Active I switched</description>
+          <bitRange>[14:14]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>APSIGN</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>APNLDFL</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VARSIGN</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VARNLDFL</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VANLDFL</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZEROCRS</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>I3F_EMP</name><description>FIFO_I3DAT is Empty</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>I3F_FLL</name><description>FIFO_I3DAT is Full</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>I3F_OVER</name><description>FIFO_I3DAT is Overflow</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVN</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVN</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F0MASK -->
+    <register>
+      <name>F0MASK</name>
+      <description>IRQ Mask Register</description>
+      <addressOffset>0x00000060</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMPM</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_FLLM</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_OVERM</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>      
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_EMPM</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_FLLM</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_OVERM</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>SAGFM</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKVFM</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKIFM</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVPM</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVPM</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAOVM</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZTXVFM</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>FAULTCONM</name><description>Active I switched</description>
+          <bitRange>[14:14]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APSIGNM</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APNLDFLM</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARSIGNM</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARNLDFLM</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VANLDFLM</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZEROCRSM</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>I3F_EMPM</name><description>FIFO_I3DAT is Empty</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>I3F_FLLM</name><description>FIFO_I3DAT is Full</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>I3F_OVERM</name><description>FIFO_I3DAT is Overflow</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVNM</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVNM</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1CTR -->
+    <register>
+      <name>F1CTR</name>
+      <description>FxCTR register</description>
+      <addressOffset>0x00000064</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>INTEN</name>
+          <description>Integrator enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>        
+          <name>VASEL</name>
+          <description>Select source for FullEnergy  </description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FullEnergy</name><description>IDAT and VDAT can store FullEnergy</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>I_RMS</name><description>IDAT and VDAT can store I_RMS</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RARS</name>
+          <description>Active Energy Accumulator Reset</description>
+          <bitRange>[3:3]</bitRange>
+          <access>write-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Accumulator sets to zero</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RRRS</name>
+          <description>Reactive Energy Accumulator Reset</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RVRS</name>
+          <description>Full Energy Accumulator Reset</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field>
+          <name>IGAIN</name>
+          <description>PGA value</description>
+          <bitRange>[7:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>Signal amplification 0dB</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Signal amplification 6dB</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>x4</name><description>Signal amplification 12dB</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>x8</name><description>Signal amplification 18dB</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="IGAIN">
+          <name>VGAIN</name>
+          <bitRange>[9:8]</bitRange>
+        </field>
+        <field>
+          <name>VPHASE</name>
+          <description>Phase V adjustment by step of +-124us</description>
+          <bitRange>[17:10]</bitRange>
+          <access>read-write</access>
+        </field>
+        <field>
+          <name>IRMSOS</name>
+          <description>RMS calibration of channel I</description>
+          <bitRange>[31:20]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!-- F1WC -->
+    <register>
+      <name>F1WC</name>
+      <description>Active energy calibration</description>
+      <addressOffset>0x00000068</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTOS</name>
+          <description>Calibr bias of active energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>WGAIN</name>
+          <description>Calibr gain of active energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+        <!--Fields end-->
+      </fields>
+    </register>
+    <!-- F1WATTP -->
+    <register>
+      <name>F1WATTP</name>
+      <description>Positive Active Energy accumulator</description>
+      <addressOffset>0x0000006C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTHRP</name>
+          <description>High 32 bits of Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1WATTN -->
+    <register>
+      <name>F1WATTN</name>
+      <description>Negative Active Energy accumulator</description>
+      <addressOffset>0x00000070</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>WATTHRN</name>
+          <description>High 32 bits of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F1VC -->
+    <register>
+      <name>F1VC</name>
+      <description>Reactive energy calibration</description>
+      <addressOffset>0x00000074</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAROS</name>
+          <description>Calibr bias of reactive energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VARGAIN</name>
+          <description>Calibr gain of reactive energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VARP -->
+    <register>
+      <name>F1VARP</name>
+      <description>Positive Reactive Energy accumulator</description>
+      <addressOffset>0x00000078</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VARHRP</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VARN -->
+    <register>
+      <name>F1VARN</name>
+      <description>Negative Reactive Energy accumulator</description>
+      <addressOffset>0x0000007C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>VARHRN</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F1AC -->
+    <register>
+      <name>F1AC</name>
+      <description>V RMS calibration</description>
+      <addressOffset>0x00000080</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFF0FFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMSOS</name>
+          <description>Calibr bias of V RMS</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>VAGAIN</name>
+          <description>Calibr gain of Full energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VR -->
+    <register>
+      <name>F1VR</name>
+      <description>Full Energy accumulator</description>
+      <addressOffset>0x00000084</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAHR</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1MD0 -->
+    <register>
+      <name>F1MD0</name>
+      <description>FxMD0 register</description>
+      <addressOffset>0x00000088</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFF1FF</resetMask>
+      <fields>
+        <field>
+          <name>VSEL</name>
+          <description>Select source for FxVDAT</description>
+          <bitRange>[1:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_V</name><description>ADC_V output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ISEL</name>
+          <description>Select source for FxI0DAT</description>
+          <bitRange>[3:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_I</name><description>ADC_I output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ACTS</name>
+          <description>Active Energy sign in last period</description>
+          <bitRange>[4:4]</bitRange>
+          <access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Pos</name><description>Positive sign</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Neg</name><description>Negative sign</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="ACTS">
+          <name>REACTS</name>
+          <description>Reactive Energy sign in last period</description>
+          <bitRange>[5:5]</bitRange>         
+        </field>
+        <field>
+          <name>IGAIN</name>
+          <description>ADC Decimation gain</description>
+          <bitRange>[6:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>No gain</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Gain by +6dB</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="IGAIN">
+          <name>VGAIN</name>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field>
+          <name>PER_FREQ</name>
+          <description>Measured period of V</description>
+          <bitRange>[28:12]</bitRange>
+          <access>read-only</access>
+        </field>
+      </fields>
+    </register>
+    <!-- F1MD1 -->
+    <register>
+      <name>F1MD1</name>
+      <description>FxMD1 register</description>
+      <addressOffset>0x0000008C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPKLVL</name>
+          <description>Imax level</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VPKLVL</name>
+          <description>Vmax level</description>
+          <bitRange>[31:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1MD2 -->
+    <register>
+      <name>F1MD2</name>
+      <description>FxMD2 register</description>
+      <addressOffset>0x00000090</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x001FFFF</resetMask>
+      <fields>
+        <field>
+          <name>PhaseV_toV0</name>
+          <description>Phase V1 ref to V0</description>
+          <bitRange>[16:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VPEAK -->
+    <register>
+      <name>F1VPEAK</name>
+      <description>VPEAK Result register</description>
+      <addressOffset>0x00000094</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Vmax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1IPEAK -->
+    <register>
+      <name>F1IPEAK</name>
+      <description>IPEAK Result register</description>
+      <addressOffset>0x00000098</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Imax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>    
+    <!-- F1VDAT -->
+    <register>
+      <name>F1VDAT</name>
+      <description>VDAT Result register</description>
+      <addressOffset>0x0000009C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VDAT</name>
+          <description>FIFO of V or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1IDAT -->
+    <register>
+      <name>F1IDAT</name>
+      <description>IDAT Result register</description>
+      <addressOffset>0x000000A0</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IDAT</name>
+          <description>FIFO of I or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VRMS -->
+    <register>
+      <name>F1VRMS</name>
+      <description>VRMS Result register</description>
+      <addressOffset>0x000000A4</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS</name>
+          <description>RMS of V</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1VRMS2 -->
+    <register>
+      <name>F1VRMS2</name>
+      <description>VRMS^2 Result register</description>
+      <addressOffset>0x000000A8</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS2</name>
+          <description>RMS of V^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1IRMS -->
+    <register>
+      <name>F1IRMS</name>
+      <description>IRMS Result register</description>
+      <addressOffset>0x000000AC</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS</name>
+          <description>RMS of I</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1IRMS2 -->
+    <register>
+      <name>F1IRMS2</name>
+      <description>IRMS^2 Result register</description>
+      <addressOffset>0x000000B0</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS2</name>
+          <description>RMS of I^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1STAT -->
+    <register>
+      <name>F1STAT</name>
+      <description>Status Register</description>
+      <addressOffset>0x000000B4</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMP</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange><access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VF_FLL</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange><access>read-only</access>
+        </field>
+        <field>
+          <name>VF_OVER</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_EMP</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_FLL</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>IF_OVER</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>SAGF</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKVF</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKIF</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVP</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVP</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAOV</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZTXVF</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>APSIGN</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>APNLDFL</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VARSIGN</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VARNLDFL</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VANLDFL</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZEROCRS</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVN</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVN</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F1MASK -->
+    <register>
+      <name>F1MASK</name>
+      <description>IRQ Mask Register</description>
+      <addressOffset>0x000000B8</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMPM</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_FLLM</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_OVERM</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>      
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_EMPM</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_FLLM</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_OVERM</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>SAGFM</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKVFM</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKIFM</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVPM</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVPM</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAOVM</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZTXVFM</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APSIGNM</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APNLDFLM</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARSIGNM</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARNLDFLM</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VANLDFLM</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZEROCRSM</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVNM</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVNM</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2CTR -->
+    <register>
+      <name>F2CTR</name>
+      <description>FxCTR register</description>
+      <addressOffset>0x000000BC</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>INTEN</name>
+          <description>Integrator enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>        
+          <name>VASEL</name>
+          <description>Select source for FullEnergy  </description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FullEnergy</name><description>IDAT and VDAT can store FullEnergy</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>I_RMS</name><description>IDAT and VDAT can store I_RMS</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RARS</name>
+          <description>Active Energy Accumulator Reset</description>
+          <bitRange>[3:3]</bitRange>
+          <access>write-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Accumulator sets to zero</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RRRS</name>
+          <description>Reactive Energy Accumulator Reset</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RARS">
+          <name>RVRS</name>
+          <description>Full Energy Accumulator Reset</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field>
+          <name>IGAIN</name>
+          <description>PGA value</description>
+          <bitRange>[7:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>Signal amplification 0dB</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Signal amplification 6dB</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>x4</name><description>Signal amplification 12dB</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>x8</name><description>Signal amplification 18dB</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="IGAIN">
+          <name>VGAIN</name>
+          <bitRange>[9:8]</bitRange>
+        </field>
+        <field>
+          <name>VPHASE</name>
+          <description>Phase V adjustment by step of +-124us</description>
+          <bitRange>[17:10]</bitRange>
+          <access>read-write</access>
+        </field>
+        <field>
+          <name>IRMSOS</name>
+          <description>RMS calibration of channel I</description>
+          <bitRange>[31:20]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!-- F2WC -->
+    <register>
+      <name>F2WC</name>
+      <description>Active energy calibration</description>
+      <addressOffset>0x000000C0</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTOS</name>
+          <description>Calibr bias of active energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>WGAIN</name>
+          <description>Calibr gain of active energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2WATTP -->
+    <register>
+      <name>F2WATTP</name>
+      <description>Positive Active Energy accumulator</description>
+      <addressOffset>0x000000C4</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>WATTHRP</name>
+          <description>High 32 bits of Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2WATTN -->
+    <register>
+      <name>F2WATTN</name>
+      <description>Negative Active Energy accumulator</description>
+      <addressOffset>0x000000C8</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>WATTHRN</name>
+          <description>High 32 bits of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F2VC -->
+    <register>
+      <name>F2VC</name>
+      <description>Reactive energy calibration</description>
+      <addressOffset>0x000000CC</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAROS</name>
+          <description>Calibr bias of reactive energy</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VARGAIN</name>
+          <description>Calibr gain of reactive energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VARP -->
+    <register>
+      <name>F2VARP</name>
+      <description>Positive Reactive Energy accumulator</description>
+      <addressOffset>0x000000D0</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VARHRP</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VARN -->
+    <register>
+      <name>F2VARN</name>
+      <description>Negative Reactive Energy accumulator</description>
+      <addressOffset>0x000000D4</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>      
+      <fields>
+        <field>
+          <name>VARHRN</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>          
+        </field>
+      </fields>
+    </register>
+    <!-- F2AC -->
+    <register>
+      <name>F2AC</name>
+      <description>V RMS calibration</description>
+      <addressOffset>0x000000D8</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0FFF0FFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMSOS</name>
+          <description>Calibr bias of V RMS</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>VAGAIN</name>
+          <description>Calibr gain of Full energy</description>
+          <bitRange>[27:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VR -->
+    <register>
+      <name>F2VR</name>
+      <description>Full Energy accumulator</description>
+      <addressOffset>0x000000DC</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VAHR</name>
+          <description>High 32 bits of of 57bits Accumulator</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2MD0 -->
+    <register>
+      <name>F2MD0</name>
+      <description>FxMD0 register</description>
+      <addressOffset>0x000000E0</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFF1FF</resetMask>
+      <fields>
+        <field>
+          <name>VSEL</name>
+          <description>Select source for FxVDAT</description>
+          <bitRange>[1:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_V</name><description>ADC_V output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ISEL</name>
+          <description>Select source for FxI0DAT</description>
+          <bitRange>[3:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ADC_I</name><description>ADC_I output</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ActivePower</name><description>Active Power</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>ReactivePower</name><description>Reactive Power</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FullPower</name><description>Full Power</description><value>3</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>ACTS</name>
+          <description>Active Energy sign in last period</description>
+          <bitRange>[4:4]</bitRange>
+          <access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Pos</name><description>Positive sign</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Neg</name><description>Negative sign</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="ACTS">
+          <name>REACTS</name>
+          <description>Reactive Energy sign in last period</description>
+          <bitRange>[5:5]</bitRange>         
+        </field>
+        <field>
+          <name>IGAIN</name>
+          <description>ADC Decimation gain</description>
+          <bitRange>[6:6]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>No gain</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Gain by +6dB</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="IGAIN">
+          <name>VGAIN</name>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field>
+          <name>PER_FREQ</name>
+          <description>Measured period of V</description>
+          <bitRange>[28:12]</bitRange>
+          <access>read-only</access>
+        </field>
+      </fields>
+    </register>
+    <!-- F2MD1 -->
+    <register>
+      <name>F2MD1</name>
+      <description>FxMD1 register</description>
+      <addressOffset>0x000000E4</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPKLVL</name>
+          <description>Imax level</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>VPKLVL</name>
+          <description>Vmax level</description>
+          <bitRange>[31:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2MD2 -->
+    <register>
+      <name>F2MD2</name>
+      <description>FxMD2 register</description>
+      <addressOffset>0x000000E8</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x001FFFF</resetMask>
+      <fields>
+        <field>
+          <name>PhaseV_toV0</name>
+          <description>Phase V1 ref to V0</description>
+          <bitRange>[16:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VPEAK -->
+    <register>
+      <name>F2VPEAK</name>
+      <description>VPEAK Result register</description>
+      <addressOffset>0x000000EC</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Vmax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2IPEAK -->
+    <register>
+      <name>F2IPEAK</name>
+      <description>IPEAK Result register</description>
+      <addressOffset>0x000000F0</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IPEAK</name>
+          <description>Imax measured, write any to clear</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>    
+    <!-- F2VDAT -->
+    <register>
+      <name>F2VDAT</name>
+      <description>VDAT Result register</description>
+      <addressOffset>0x000000F4</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VDAT</name>
+          <description>FIFO of V or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2IDAT -->
+    <register>
+      <name>F2IDAT</name>
+      <description>IDAT Result register</description>
+      <addressOffset>0x000000F8</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IDAT</name>
+          <description>FIFO of I or Power</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VRMS -->
+    <register>
+      <name>F2VRMS</name>
+      <description>VRMS Result register</description>
+      <addressOffset>0x000000FC</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS</name>
+          <description>RMS of V</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2VRMS2 -->
+    <register>
+      <name>F2VRMS2</name>
+      <description>VRMS^2 Result register</description>
+      <addressOffset>0x00000100</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VRMS2</name>
+          <description>RMS of V^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2IRMS -->
+    <register>
+      <name>F2IRMS</name>
+      <description>IRMS Result register</description>
+      <addressOffset>0x00000104</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS</name>
+          <description>RMS of I</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2IRMS2 -->
+    <register>
+      <name>F2IRMS2</name>
+      <description>IRMS^2 Result register</description>
+      <addressOffset>0x00000108</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>IRMS2</name>
+          <description>RMS of I^2</description>
+          <bitRange>[23:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- F2STAT -->
+    <register>
+      <name>F2STAT</name>
+      <description>Status Register</description>
+      <addressOffset>0x0000010C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMP</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange><access>read-only</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VF_FLL</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange><access>read-only</access>
+        </field>
+        <field>
+          <name>VF_OVER</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_EMP</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>IF_FLL</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>IF_OVER</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>SAGF</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKVF</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>PEAKIF</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVP</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVP</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAOV</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZTXVF</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>APSIGN</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>APNLDFL</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VARSIGN</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VARNLDFL</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMP">
+          <name>VANLDFL</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>ZEROCRS</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>WATTOVN</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_OVER">
+          <name>VAROVN</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+   <!-- F2MASK -->
+    <register>
+      <name>F2MASK</name>
+      <description>IRQ Mask Register</description>
+      <addressOffset>0x00000110</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>VF_EMPM</name><description>FIFO_VDAT is Empty</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_FLLM</name><description>FIFO_VDAT is Full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VF_OVERM</name><description>FIFO_VDAT is Overflow</description>
+          <bitRange>[2:2]</bitRange>      
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_EMPM</name><description>FIFO_IDAT is Empty</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_FLLM</name><description>FIFO_IDAT is Full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>IF_OVERM</name><description>FIFO_IDAT is Overflow</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>SAGFM</name><description>V is less than CTRL2.SAGLVL</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKVFM</name><description>V exceeds F0MD1.VPKLVL</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>PEAKIFM</name><description>I exceeds F0MD1.VPKLVL</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVPM</name><description>FxWATTP value overflow</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVPM</name><description>FxVARP value overflow</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAOVM</name><description>FxVR value overflow</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZTXVFM</name><description>Timeout of V cross zero</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APSIGNM</name><description>ActivePower sign changed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>APNLDFLM</name><description>ActivePower less CNTL1.APNOLOAD</description>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARSIGNM</name><description>ReactivePower sign changed</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VARNLDFLM</name><description>ReactivePower less CNTL1.VARNOLOAD</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VANLDFLM</name><description>FullPower less CNTL1.VANOLOAD</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>ZEROCRSM</name><description>V crossed zero</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>WATTOVNM</name><description>FxWATTN value overflow</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="VF_EMPM">
+          <name>VAROVNM</name><description>FxVARN value overflow</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CCAL1 -->
+    <register>
+      <name>CCAL1</name>
+      <description>Calibration Register 1</description>
+      <addressOffset>0x00000114</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>V0BGAIN</name>
+          <description>V0 calibration gain</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>I0BGAIN</name>
+          <description>I0 calibration gain</description>
+          <bitRange>[23:12]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CCAL2 -->
+    <register>
+      <name>CCAL2</name>
+      <description>Calibration Register 2</description>
+      <addressOffset>0x00000118</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>V1BGAIN</name>
+          <description>V1 calibration gain</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>I1BGAIN</name>
+          <description>I1 calibration gain</description>
+          <bitRange>[23:12]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CCAL3 -->
+    <register>
+      <name>CCAL3</name>
+      <description>Calibration Register 3</description>
+      <addressOffset>0x0000011C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>V2BGAIN</name>
+          <description>V2 calibration gain</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+        <field>
+          <name>I2BGAIN</name>
+          <description>I2 calibration gain</description>
+          <bitRange>[23:12]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CCAL4 -->
+    <register>
+      <name>CCAL4</name>
+      <description>Calibration Register 4</description>
+      <addressOffset>0x00000120</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000FFF</resetMask>
+      <fields>
+        <field>
+          <name>I3BGAIN</name>
+          <description>I3 calibration gain</description>
+          <bitRange>[11:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>

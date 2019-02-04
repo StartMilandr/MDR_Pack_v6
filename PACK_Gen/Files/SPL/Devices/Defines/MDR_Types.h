@@ -31,13 +31,13 @@
 
 
 typedef enum {
-  MDR_Off   = 0,
-  MDR_On   = 1,
+  MDR_Off  = 0,
+  MDR_On   = 1
 } MDR_OnOff;
 
 typedef enum {
   MDR_OFF_INV   = 0,
-  MDR_ON_INV    = 1,
+  MDR_ON_INV    = 1
 } MDR_ONOFF_INV;
 
 typedef enum {
@@ -61,7 +61,7 @@ typedef enum {
 
 typedef enum {
   MDR_div1          = 0,
-  MDR_div2          = 1,
+  MDR_div2          = 1
 } MDR_DIV_2;
 
 typedef enum {
@@ -73,7 +73,7 @@ typedef enum {
   MDR_CLK_div32     = 12,
   MDR_CLK_div64     = 13,
   MDR_CLK_div128    = 14,
-  MDR_CLK_div256    = 15,
+  MDR_CLK_div256    = 15
 } MDR_CLK_DIV_256;
 
 typedef enum {
@@ -84,19 +84,19 @@ typedef enum {
   MDR_BRG_div16     = 4,
   MDR_BRG_div32     = 5,
   MDR_BRG_div64     = 6,
-  MDR_BRG_div128    = 7,
+  MDR_BRG_div128    = 7
 } MDR_BRG_DIV_128;
 
 typedef enum {
   MDR_HSIE2_HSI             = 0,     //HSI
   MDR_HSIE2_HSI_div2        = 1,     //HSI/2
   MDR_HSIE2_HSE             = 2,     //HSE
-  MDR_HSIE2_HSE_div2        = 3,     //HSE/2
+  MDR_HSIE2_HSE_div2        = 3     //HSE/2
 } MDR_CLK_SEL_HSIE2;
 
 typedef enum {
   MDR_CPU_C1                = 0,     //CPU_C1
-  MDR_CPU_PLL               = 1,     //PLLCPUo
+  MDR_CPU_PLL               = 1     //PLLCPUo
 } MDR_CLK_SEL_CPU;
 
 typedef enum {
@@ -108,7 +108,7 @@ typedef enum {
 
 typedef enum {
   MDR_USB_C1                = 0,     //CPU_C1
-  MDR_USB_PLL               = 1,     //PLLCPUo
+  MDR_USB_PLL               = 1     //PLLCPUo
 } MDR_CLK_SEL_USB;
 
 typedef enum {
@@ -122,28 +122,28 @@ typedef enum {
   MDR_PER_CPU_C1            = 0,
   MDR_PER_PER1_C1           = 1,
   MDR_PER_PLLCPUo           = 2,
-  MDR_PER_HSI_C1            = 3,
+  MDR_PER_HSI_C1            = 3
 } MDR_CLK_SEL_PER;
 
 typedef enum {
   MDR_ADC_C1_CPU_C1            = 0,
   MDR_ADC_C1_USB_C1            = 1,
   MDR_ADC_C1_CPU_C2            = 2,
-  MDR_ADC_C1_USB_C2            = 3,
+  MDR_ADC_C1_USB_C2            = 3
 } MDR_CLK_ADC_C1;
 
 typedef enum {
   MDR_ADC_C2_LSE            = 0,
   MDR_ADC_C2_LSI            = 1,
   MDR_ADC_C2_ADC_C1         = 2,
-  MDR_ADC_C2_HSI_C1         = 3,
+  MDR_ADC_C2_HSI_C1         = 3
 } MDR_CLK_ADC_C2;
 
 typedef enum {
   MDR_AUC_C2_AUC_C1          = 0,
   MDR_AUC_C2_PLLCPUo         = 1,
   MDR_AUC_C2_PLLUSBo         = 2,
-  MDR_AUC_C2_Zero            = 3,
+  MDR_AUC_C2_Zero            = 3
 } MDR_CLK_AUC_C2;
 
 typedef enum {

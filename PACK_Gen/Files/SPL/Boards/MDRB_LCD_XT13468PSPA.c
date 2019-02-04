@@ -1,4 +1,3 @@
-//#include <MDRB_LCD_XT13468PSPA.h>
 #include <MDRB_LCD.h>
 #include <MDRB_LCD_Font_XT13468PSPA.h>
 
@@ -111,19 +110,12 @@ static int CharToFontIndex(uint8_t symbol)
 //#define NUM_OFFSET(n) (((uint32_t)n << 2) + 2)
 #define NUM_OFFSET(n) ((uint32_t)n << 1)
 
-static void MDRB_XT_AddChar(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem, uint8_t symbol)
+void MDRB_XT_AddChar(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem, uint8_t symbol)
 {
   int32_t fntIndex = CharToFontIndex(symbol);
   if (fntIndex < 0)
     return;
-  
-//  const uint32_t *pNum = &LCD_XT_Font[4 * fntIndex];
-//  
-//  lcdData->LCD_ROW1 |= (pNum[0] << (uint32_t)numItem);
-//  lcdData->LCD_ROW2 |= (pNum[1] << (uint32_t)numItem);
-//  lcdData->LCD_ROW3 |= (pNum[2] << (uint32_t)numItem);
-//  lcdData->LCD_ROW4 |= (pNum[3] << (uint32_t)numItem);  
-  
+    
   lcdData->LCD_ROW1 |= (LCD_XT_Font[4 * fntIndex] << NUM_OFFSET(numItem));
   lcdData->LCD_ROW2 |= (LCD_XT_Font[4 * fntIndex + 1] << NUM_OFFSET(numItem));
   lcdData->LCD_ROW3 |= (LCD_XT_Font[4 * fntIndex + 2] << NUM_OFFSET(numItem));

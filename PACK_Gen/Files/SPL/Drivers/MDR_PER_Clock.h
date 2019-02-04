@@ -55,6 +55,13 @@ void MDR_ADC_SetClock_RTSHSI(MDR_CLK_DIV_256 divClk);
 
 #endif
 
+//=================   Выбор источника тактовой частоты для ADCUI_CLOCK ==================
+#ifdef MDR_ADCUI_CLOCK_FROM_PER_CLOCK
+  void MDR_ADCUI_SetClock_PllCPU(MDR_CLK_DIV_256 divClk);
+  void MDR_ADCUI_SetClock_RTSHSI(MDR_CLK_DIV_256 divClk);
+  void MDR_ADCUI_SetClock_InputCPU(MDR_CLK_DIV_256 divClk);
+  void MDR_ADCUI_SetClock_InputPER(MDR_CLK_DIV_256 divClk);
+#endif
 
 #endif  // _MDR_PER_CLOCK_H
 

@@ -19,6 +19,18 @@ typedef struct {
   uint32_t    s32_PHASE : 1;
 } LCD_HTD_REG1_Bits;
 
+#define LCD_R1_T1_A        0x0001UL
+#define LCD_R1_T2_Ar       0x0002UL
+#define LCD_R1_T3_Al       0x0004UL
+#define LCD_R1_Tarif       0x0008UL
+#define LCD_R1_T4_R        0x0010UL
+#define LCD_R1_T5_Rl       0x0020UL
+#define LCD_R1_T6_Rr       0x0040UL
+#define LCD_R1_PlusV       0x4000UL
+#define LCD_R1_PlusH       0x8000UL
+#define LCD_R1_DotP8   0x40000000UL
+#define LCD_R1_Phase   0x80000000UL
+
 typedef struct {
   uint32_t    s33_F1_A  : 1;
   uint32_t    s34_F2_B  : 1;
@@ -27,15 +39,26 @@ typedef struct {
   uint32_t    s43_P7    : 1;
   uint32_t    s44_P6    : 1;
   uint32_t        NUM_4 : 7;  
-  uint32_t    s52_P6    : 1;
+  uint32_t    s52_P5    : 1;
   uint32_t        NUM_3 : 7;
   uint32_t    s60_TIME  : 1;
   uint32_t    s61_DATE  : 1;
-  uint32_t    s62_SYM   : 1;
+  uint32_t    s62_SUM   : 1;
   uint32_t    s63_P4    : 1;
   uint32_t    s64_P3    : 1;
 } LCD_HTD_REG2_Bits;  
 
+#define LCD_R2_F1_A        0x0001UL
+#define LCD_R2_F1_B        0x0002UL
+#define LCD_R2_F1_C        0x0004UL
+#define LCD_R2_DotP7       0x0400UL
+#define LCD_R2_DotP6       0x0800UL
+#define LCD_R2_DotP5   0x00100000UL
+#define LCD_R2_Time    0x08000000UL
+#define LCD_R2_Date    0x10000000UL
+#define LCD_R2_SUM     0x20000000UL
+#define LCD_R2_DotP4   0x40000000UL
+#define LCD_R2_DotP3   0x80000000UL
 
 typedef struct {
   uint32_t        NUM_2 : 7;  
@@ -48,6 +71,12 @@ typedef struct {
   uint32_t    s90_MONTH : 1;
   uint32_t       NUM_9L : 6;
 } LCD_HTD_REG3_Bits;
+
+#define LCD_R3_DotP2       0x0080UL
+#define LCD_R3_DotP1       0x8000UL
+#define LCD_R3_PP      0x00800000UL
+#define LCD_R3_K1      0x01000000UL
+#define LCD_R3_Month   0x02000000UL
 
 typedef struct {  
   uint32_t       NUM_9H   : 1;
@@ -70,6 +99,22 @@ typedef struct {
   
   uint32_t    reserved    : 9;
 } LCD_HTD_REG4_Bits;
+
+#define LCD_R4_Circ        0x0002UL
+#define LCD_R4_Batt        0x0200UL
+#define LCD_R4_Slash       0x0400UL
+#define LCD_R4_Akkum       0x0800UL
+#define LCD_R4_Lock        0x1000UL
+#define LCD_R4_N1_k        0x2000UL
+#define LCD_R4_var         0x4000UL
+#define LCD_R4_N7_h        0x8000UL
+#define LCD_R4_N2_k    0x00010000UL
+#define LCD_R4_V       0x00020000UL
+#define LCD_R4_N6_A    0x00040000UL
+#define LCD_R4_Hz      0x00080000UL
+#define LCD_R4_N8_h    0x00100000UL
+#define LCD_R4_W       0x00200000UL
+#define LCD_R4_N3_k    0x00400000UL
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */

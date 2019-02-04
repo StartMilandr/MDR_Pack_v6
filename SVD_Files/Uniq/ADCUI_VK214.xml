@@ -36,7 +36,7 @@
           <name>V0EN</name><bitRange>[1:1]</bitRange>
         </field>
         <field derivedFrom="I0EN">
-          <name>IIEN</name><bitRange>[6:6]</bitRange>
+          <name>I3EN</name><bitRange>[6:6]</bitRange>
         </field>
         <field>
           <name>RESOL</name>

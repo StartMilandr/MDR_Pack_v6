@@ -38,6 +38,7 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   //  Пересчет задержек при смене частоты CPU
   void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz);
 
+
 //============    11-ти секционный экран HTD-B083 на демоплатах 1986VK234 и трехфазных счетчиках "Милур"   ===========      
 #elif defined (LCD_HTD_B083_DISPLAY)
 
@@ -70,6 +71,7 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   //  Экран работает при всех доступных частотах при MDR_Delay(0) в качестве четверти такта
   #define _LCD_DELAY_TICK_DEF   0
   #define MDRB_LCD_ChangeFreqCPU(x)   UNUSED(x)
+  
   
 //============    8-ми секционный экран HTD-B083 на демоплатах 1986VK214 и однофазных счетчиках "Милур"   ===========      
 #elif defined (LCD_XT13468PSPA_DISPLAY)
@@ -107,7 +109,7 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   //  Стирание только одного цифрового индикатора
   void MDRB_XT_DataClearNUM(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem);
   //  Запись символа в один индикатор
-  static void MDRB_XT_AddChar(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem, uint8_t symbol);
+  void MDRB_XT_AddChar(LCD_XT_DATA *lcdData, MDRB_XT_NUM_Item numItem, uint8_t symbol);
   //  Запись цифровых индикаторов
   void MDRB_XT_DataWriteStr(LCD_XT_DATA *lcdData, const char* string);
   

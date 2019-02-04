@@ -101,24 +101,24 @@ typedef struct {
 /* =======================================================  ADC_CLOCK  ======================================================= */
 typedef struct {
       __IOM MDR_CLK_SEL_PER  ADC_C1_SEL   : 2;          /*!< [1..0] ADC_C1 mux freq select                                     */
-      __IOM MDR_CLK_SEL_PER  ADCIU_C1_SEL : 2;          /*!< [3..2] ADCIU_C1 mux freq select                                   */
-      __IOM MDR_CLK_DIV_256  ADCIU_C3_SEL : 4;          /*!< [7..4] ADCIU_C1 mux output freq devider, [/1, /2, /4 .. /256]     */
+      __IOM MDR_CLK_SEL_PER  ADCUI_C1_SEL : 2;          /*!< [3..2] ADCUI_C1 mux freq select                                   */
+      __IOM MDR_CLK_DIV_256  ADCUI_C3_SEL : 4;          /*!< [7..4] ADCUI_C1 mux output freq devider, [/1, /2, /4 .. /256]     */
       __IOM MDR_CLK_DIV_256  ADC_C3_SEL   : 4;          /*!< [11..8] ADC_C1 mux output freq devider, [/1, /2, /4 .. /256]      */
-      __IOM MDR_OnOff        ADCIU_CLK_EN : 1;          /*!< [12..12] ADCIU Clock Enable                                       */
+      __IOM MDR_OnOff        ADCUI_CLK_EN : 1;          /*!< [12..12] ADCUI Clock Enable                                       */
       __IOM MDR_OnOff        ADC_CLK_EN   : 1;          /*!< [13..13] ADC Clock Enable                                         */
       __IM  uint32_t                      : 18;
 } MDR_RST_ADC_Bits;
 
 #define MDR_RST_ADC__ADC_C1_SEL_Pos   (0UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_C1_SEL (Bit 0)                      */
 #define MDR_RST_ADC__ADC_C1_SEL_Msk   (0x3UL)            /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_C1_SEL (Bitfield-Mask: 0x03)        */
-#define MDR_RST_ADC__ADCIU_C1_SEL_Pos (2UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_C1_SEL (Bit 2)                    */
-#define MDR_RST_ADC__ADCIU_C1_SEL_Msk (0xcUL)            /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_C1_SEL (Bitfield-Mask: 0x03)      */
-#define MDR_RST_ADC__ADCIU_C3_SEL_Pos (4UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_C3_SEL (Bit 4)                    */
-#define MDR_RST_ADC__ADCIU_C3_SEL_Msk (0xf0UL)           /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_C3_SEL (Bitfield-Mask: 0x0f)      */
+#define MDR_RST_ADC__ADCUI_C1_SEL_Pos (2UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_C1_SEL (Bit 2)                    */
+#define MDR_RST_ADC__ADCUI_C1_SEL_Msk (0xcUL)            /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_C1_SEL (Bitfield-Mask: 0x03)      */
+#define MDR_RST_ADC__ADCUI_C3_SEL_Pos (4UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_C3_SEL (Bit 4)                    */
+#define MDR_RST_ADC__ADCUI_C3_SEL_Msk (0xf0UL)           /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_C3_SEL (Bitfield-Mask: 0x0f)      */
 #define MDR_RST_ADC__ADC_C3_SEL_Pos   (8UL)              /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_C3_SEL (Bit 8)                      */
 #define MDR_RST_ADC__ADC_C3_SEL_Msk   (0xf00UL)          /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_C3_SEL (Bitfield-Mask: 0x0f)        */
-#define MDR_RST_ADC__ADCIU_CLK_EN_Pos (12UL)             /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_CLK_EN (Bit 12)                   */
-#define MDR_RST_ADC__ADCIU_CLK_EN_Msk (0x1000UL)         /*!< MDR_RST_CLOCK ADC_CLOCK: ADCIU_CLK_EN (Bitfield-Mask: 0x01)      */
+#define MDR_RST_ADC__ADCUI_CLK_EN_Pos (12UL)             /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_CLK_EN (Bit 12)                   */
+#define MDR_RST_ADC__ADCUI_CLK_EN_Msk (0x1000UL)         /*!< MDR_RST_CLOCK ADC_CLOCK: ADCUI_CLK_EN (Bitfield-Mask: 0x01)      */
 #define MDR_RST_ADC__ADC_CLK_EN_Pos   (13UL)             /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_CLK_EN (Bit 13)                     */
 #define MDR_RST_ADC__ADC_CLK_EN_Msk   (0x2000UL)         /*!< MDR_RST_CLOCK ADC_CLOCK: ADC_CLK_EN (Bitfield-Mask: 0x01)        */
 

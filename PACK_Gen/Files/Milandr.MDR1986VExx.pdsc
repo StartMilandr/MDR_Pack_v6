@@ -896,20 +896,20 @@
         <file category="source"  name="SPL/Drivers/MDR_SSP.c" version="2.0.0"/>
       </files>
     </component>
-    <!-- ADCIU Driver -->
-    <component Cclass="Drivers" Cgroup="ADCIU" Cversion="2.0" condition="CON_MDR1986VK214">
-      <description>ADCIU driver</description>
+    <!-- ADCUI Driver -->
+    <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK214">
+      <description>ADCUI driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_ADCIU_VK214.h"/>
-        <file category="source" name="SPL/Drivers/MDR_ADCIU_VK214.c"/>
+        <file category="header" name="SPL/Drivers/MDR_ADCUI_VK214.h"/>
+        <file category="source" name="SPL/Drivers/MDR_ADCUI_VK214.c"/>
       </files>
     </component>
-    <!-- ADCIU Driver -->
-    <component Cclass="Drivers" Cgroup="ADCIU" Cversion="2.0" condition="CON_MDR1986VK234">
-      <description>ADCIU driver</description>
+    <!-- ADCUI Driver -->
+    <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK234">
+      <description>ADCUI driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_ADCIU_VK234.h"/>
-        <file category="source" name="SPL/Drivers/MDR_ADCIU_VK234.c"/>
+        <file category="header" name="SPL/Drivers/MDR_ADCUI_VK234.h"/>
+        <file category="source" name="SPL/Drivers/MDR_ADCUI_VK234.c"/>
       </files>
     </component>    
 	  <!-- WWDG Driver -->
@@ -1215,6 +1215,48 @@
       </attributes>
     </example>
 
+    <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">
+      <description>ADCUI Use cases</description>
+      <board name="BRD_1986VK214" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="VK214_ADCUI.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="ADCUI"        Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="SysTimer"     Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Drivers"       Cgroup="LCD"          Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR1986VK214"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>
+
+
+    <example name="VK234_ADCUI" folder="Examples/1986VK234/VK234_ADCUI" doc="ReadMe.md" version="2.0.0">
+      <description>ADCUI Use cases</description>
+      <board name="BRD_1986VK234" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="VK234_ADCUI.uvprojx"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Drivers"       Cgroup="ADCUI"        Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Drivers"       Cgroup="SysTimer"     Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR1986VK234"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>
+
   </examples>
 
   <boards>
@@ -1224,6 +1266,19 @@
       <compatibleDevice          deviceIndex="0" Dvendor="Milandr:99" Dfamily="StartMilandr"/>
       <debugInterface adapter="J-Link Lite"      connector="Mini-USB"/>
     </board>
+    <board vendor="Milandr" name="BRD_1986VK214" revision="Vx" salesContact="info@milandr.ru" orderForm="http://www.milandr.ru">
+      <description>1986VK214 Milandr Board</description>
+      <mountedDevice             deviceIndex="0" Dvendor="Milandr:99" Dname="MDR1986VK214"/>
+      <compatibleDevice          deviceIndex="0" Dvendor="Milandr:99" Dfamily="StartMilandr"/>
+      <debugInterface adapter="J-Link Lite"      connector="Mini-USB"/>
+    </board>
+    <board vendor="Milandr" name="BRD_1986VK234" revision="Vx" salesContact="info@milandr.ru" orderForm="http://www.milandr.ru">
+      <description>1986VK234 Milandr Board</description>
+      <mountedDevice             deviceIndex="0" Dvendor="Milandr:99" Dname="MDR1986VK234"/>
+      <compatibleDevice          deviceIndex="0" Dvendor="Milandr:99" Dfamily="StartMilandr"/>
+      <debugInterface adapter="J-Link Lite"      connector="Mini-USB"/>
+    </board>
+
   </boards>
 
 </package>

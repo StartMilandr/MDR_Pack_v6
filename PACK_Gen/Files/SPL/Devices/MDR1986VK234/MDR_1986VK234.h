@@ -59,9 +59,9 @@ typedef enum IRQn
 	EXT1_IRQn                 = 11,               /*!< EXT_INT0  Interrupt */
 	EXT2_IRQn                 = 12,               /*!< EXT_INT1  Interrupt */
 	EXT3_IRQn                 = 13,               /*!< EXT_INT2  Interrupt */
-	ADCIU_F1_IRQn             = 14,               /*!< ADCIU_F0 Interrupt */
-	ADCIU_F2_IRQn             = 15,               /*!< ADCIU_F1 Interrupt */
-	ADCIU_F3_IRQn             = 16,               /*!< ADCIU_F2 Interrupt */
+	ADCUI_F0_IRQn             = 14,               /*!< ADCUI_F0 Interrupt */
+	ADCUI_F1_IRQn             = 15,               /*!< ADCUI_F1 Interrupt */
+	ADCUI_F2_IRQn             = 16,               /*!< ADCUI_F2 Interrupt */
 } IRQn_Type;
 
 
@@ -146,7 +146,7 @@ typedef enum IRQn
 #include "MDR_IWDT_defs.h"
 
 /*=========  ADC IU ========*/
-#include "MDR_ADCIU_VK234_defs.h"
+#include "MDR_ADCUI_VK234_defs.h"
 
 //  ==========  Blocks from previouse PACK
 
@@ -220,6 +220,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define ADDR_WWDT_BASE         0x40048000UL
 #define ADDR_IWDT_BASE         0x40050000UL
 
+#define MDDR_ADCUI_BASE        0x40068000UL
 
 //  Blocks from previouse PACK
 #define MDR_UART1_BASE                 (0x40008000)
@@ -231,7 +232,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER1_BASE                (0x40070000)
 #define MDR_TIMER2_BASE                (0x40078000)
 #define MDR_CRC_BASE                   (0x40098000)
-#define MDR_ADCIU_TypeDef              (0x40068000)
+
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -252,14 +253,16 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
 #define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
-#define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
-#define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
-#define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
+#define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
+#define MDR_PORTB                      ((MDR_PORT_Type 	    *) ADDR_PORTB_BASE)
+#define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
 
-#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
+#define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
 
-#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
-#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+#define MDR_WWDT                       ((MDR_WWDT_Type      *) ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type      *) ADDR_IWDT_BASE)
+
+#define MDR_ADCUI                      ((MDR_ADCUI_TypeDef 	*) MDDR_ADCUI_BASE)
 
 //  Blocks from previouse PACK
 #define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
@@ -271,7 +274,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER1                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER1_BASE)
 #define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
 #define MDR_CRC                        ((MDR_CRC_TypeDef 	  *) MDR_CRC_BASE)
-#define MDR_ADCIU                      ((MDR_ADCIU_TypeDef 	*) MDR_ADCIU_BASE)
+
 
 
 /* =========================================================================================================================== */
@@ -320,6 +323,9 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 #define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
 #define   MDR_SSP_CLOCK_FROM_PER_CLOCK
+
+// ADCUI Clock defs
+#define   MDR_ADCUI_CLOCK_FROM_PER_CLOCK
 
 
 /** @} */ /* End of group MDR1986VK234 */

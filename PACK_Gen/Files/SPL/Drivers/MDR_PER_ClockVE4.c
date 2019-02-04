@@ -74,3 +74,41 @@ void MDR_SelectSrcFor_UartTimSSP_Clock(MDR_CLK_SEL_PER selClockSource)
   MDR_CLOCK->PER1_CLOCK = regPER1;  
 }
 #endif
+
+
+//=================   Выбор источника тактовой частоты для SSP_CLOCK ==================
+#ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK
+//  Выбор готовых частот, не влияют на настройки других блоков.
+#define   ADCUI_CLEAR_C1    (MDR_RST_ADC__ADCUI_CLK_EN_Msk | MDR_RST_ADC__ADCUI_C3_SEL_Msk | MDR_RST_ADC__ADCUI_C1_SEL_Msk)
+
+static void ADCUI_Set_C1C3_loc(uint32_t regADC, uint32_t selC1, MDR_CLK_DIV_256 divClk)
+{
+  regADC &= ~ADCUI_CLEAR_C1;
+  regADC |= VAL2FLD_Pos(selC1,  MDR_RST_ADC__ADCUI_C1_SEL_Pos) 
+          | VAL2FLD_Pos(divClk, MDR_RST_ADC__ADCUI_C3_SEL_Pos)
+          | VAL2FLD_Pos(MDR_On, MDR_RST_ADC__ADCUI_CLK_EN_Pos);
+  
+  MDR_CLOCK->ADC_CLOCK = regADC;  
+}
+
+void MDR_ADCUI_SetClock_PllCPU(MDR_CLK_DIV_256 divClk)
+{
+  ADCUI_Set_C1C3_loc(MDR_CLOCK->ADC_CLOCK, MDR_PER_PLLCPUo, divClk);
+}
+
+void MDR_ADCUI_SetClock_RTSHSI(MDR_CLK_DIV_256 divClk)
+{
+  ADCUI_Set_C1C3_loc(MDR_CLOCK->ADC_CLOCK, MDR_PER_HSI_C1, divClk);
+}
+
+void MDR_ADCUI_SetClock_InputCPU(MDR_CLK_DIV_256 divClk)
+{
+  ADCUI_Set_C1C3_loc(MDR_CLOCK->ADC_CLOCK, MDR_PER_CPU_C1, divClk);
+}
+
+void MDR_ADCUI_SetClock_InputPER(MDR_CLK_DIV_256 divClk)
+{
+  ADCUI_Set_C1C3_loc(MDR_CLOCK->ADC_CLOCK, MDR_PER_PER1_C1, divClk);
+}
+#endif
+

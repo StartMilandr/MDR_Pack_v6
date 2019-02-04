@@ -54,8 +54,8 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 
 //===========================    Битовые поля ===========================
 //  Доступ к регистрам по адресу
-#define REG32(x) (*((volatile uint32_t *)(x)))
-
+#define REG32(x)   (*((volatile uint32_t *)(x)))
+#define REG32_C(x) (*((const volatile uint32_t *)(x)))
 
 //  Доступ к полям в слове
 #define VAL2FLD(value, field)      _VAL2FLD(field, value)

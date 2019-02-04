@@ -54,8 +54,8 @@ typedef struct {
   //  Основные настройки
   MDR_OnOff       useExternalPower;
   MDR_LCD_SelCLK  clockSource;
-  uint16_t        frameDIV;       //  >= MDR_LCD_DIV_MIN
-  
+  uint16_t        frameDIV;       //  >= MDR_LCD_DIV_MIN  
+  uint16_t        reserved;       // for padding warning clear
   //  Настройки опции мигания дисплея, если NULL - мигание выключено
   MDR_LCD_CfgBlinky  *pBlinkCfg;
   //  Настройки мультиплексирования, если NULL - статический контроль (без мультиплексирования)
@@ -74,6 +74,7 @@ typedef struct {
   uint32_t SegmCom3;
 } MDR_LCD_SreenData;
 
+void MDR_LCD_ClearRegs(void);
 void MDR_LCD_SetScreen(MDR_LCD_SreenData *pData);
 void MDR_LCD_SetScreenAlt(MDR_LCD_SreenData *pData);
 

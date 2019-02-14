@@ -30,13 +30,21 @@
     #define PIN_PA14      MDR_Pin_14  //          SSP1_RX
     #define PIN_PA15      MDR_Pin_15  //          SSP1_TX
 
+    #define PIN_PB0       MDR_Pin_0   //                   UART1_TX
+    #define PIN_PB1       MDR_Pin_1   //                   UART1_RX
+    #define PIN_PB2       MDR_Pin_2   //
+    #define PIN_PB3       MDR_Pin_3   //
+    #define PIN_PB4       MDR_Pin_4   //
+    #define PIN_PB5       MDR_Pin_5   //
+
     #define PIN_PB6       MDR_Pin_6   //                             ADC_Ch7  
     #define PIN_PB7       MDR_Pin_7   //                             ADC_Ch6
     #define PIN_PB8       MDR_Pin_8   //                             ADC_Ch5   
     #define PIN_PB9       MDR_Pin_9   //                             ADC_Ch4 - TuneResistor
     #define PIN_PB11      MDR_Pin_11  //                      LCD_LOAD
 
-    #define PIN_PC1       MDR_Pin_1   //                             ADC_Ch3
+    #define PIN_PC0       MDR_Pin_0   //                   UART2_TX
+    #define PIN_PC1       MDR_Pin_1   //                   UART2_RX  ADC_Ch3
     #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2
     #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+
     #define PIN_PC4       MDR_Pin_4   //    LED1                     ADC_Ch0/Ref- 
@@ -130,6 +138,35 @@
     #define MDRB_LCD_PINS_LD          PIN_PB11
     
     #define LCD_HTD_B083_DISPLAY
+
+//  ---------------  UART1 Pin Definition ----------------
+  //  PORT_B: PB0, PB1 - Main
+  #define MDRB_UART1_TX_PB0_Ind	     0
+  #define MDRB_UART1_RX_PB1_Ind	     1
+
+  #define MDRB_UART1_TX_PB0_Msk	     MDR_Pin_0
+	#define MDRB_UART1_RX_PB1_Msk		   MDR_Pin_1
+
+  #define MDRB_UART1_TX_PB0_Port	   MDR_GPIO_B
+	#define MDRB_UART1_RX_PB1_Port		 MDR_GPIO_B
+  
+  #define MDRB_UART1_TX_PB0_Func	   MDR_PIN_MAIN
+	#define MDRB_UART1_RX_PB1_Func	   MDR_PIN_MAIN
+
+//  ---------------  UART2 Pin Definition ----------------
+  //  PORT_C: PC0, PC1 - Main
+  #define MDRB_UART2_TX_PC0_Ind	     0
+  #define MDRB_UART2_RX_PC1_Ind	     1
+
+  #define MDRB_UART2_TX_PC0_Msk	     MDR_Pin_0
+	#define MDRB_UART2_RX_PC1_Msk		   MDR_Pin_1
+
+  #define MDRB_UART2_TX_PC0_Port	   MDR_GPIO_C
+	#define MDRB_UART2_RX_PC1_Port		 MDR_GPIO_C
+  
+  #define MDRB_UART2_TX_PC0_Func	   MDR_PIN_MAIN
+	#define MDRB_UART2_RX_PC1_Func	   MDR_PIN_MAIN
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

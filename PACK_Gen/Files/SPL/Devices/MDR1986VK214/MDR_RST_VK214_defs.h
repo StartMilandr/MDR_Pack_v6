@@ -37,7 +37,7 @@ extern "C" {
 /* =======================================================  PER1_CLOCK  ======================================================= */
 typedef struct {
       __IOM MDR_CLK_SEL_LSIE2 PER1_C1_SEL  : 2;            /*!< [1..0] PER1_C1 mux freq select                                  */
-      __IOM MDR_CLK_SEL_PER   PER1_C2_SEL  : 2;            /*!< [3..2] PER1_C2 mux freq select                                  */
+      __IOM MDR_CLK_SEL_PER   TIM1_C2_SEL  : 2;            /*!< [3..2] PER1_C2 mux freq select                                  */
       __IOM MDR_OnOff         DEBUG_EN     : 1;            /*!< [4..4] Debug clock enable                                       */
       __IM  uint32_t                       : 1;
       __IOM MDR_CLK_SEL_PER   TIM2_C2_SEL  : 2;           /*!< [7..6] TIM2_C2 mux freq select                                   */
@@ -49,8 +49,8 @@ typedef struct {
 
 #define MDR_RST_PER1__PER1_C1_SEL_Pos  (0UL)              /*!< MDR_RST_CLOCK PER1_CLOCK: PER1_C1_SEL (Bit 0)                    */
 #define MDR_RST_PER1__PER1_C1_SEL_Msk  (0x3UL)            /*!< MDR_RST_CLOCK PER1_CLOCK: PER1_C1_SEL (Bitfield-Mask: 0x03)      */
-#define MDR_RST_PER1__PER1_C2_SEL_Pos  (2UL)              /*!< MDR_RST_CLOCK PER1_CLOCK: PER1_C2_SEL (Bit 2)                    */
-#define MDR_RST_PER1__PER1_C2_SEL_Msk  (0xcUL)            /*!< MDR_RST_CLOCK PER1_CLOCK: PER1_C2_SEL (Bitfield-Mask: 0x03)      */
+#define MDR_RST_PER1__TIM1_C2_SEL_Pos  (2UL)              /*!< MDR_RST_CLOCK PER1_CLOCK: TIM1_C2_SEL (Bit 2)                    */
+#define MDR_RST_PER1__TIM1_C2_SEL_Msk  (0xcUL)            /*!< MDR_RST_CLOCK PER1_CLOCK: TIM1_C2_SEL (Bitfield-Mask: 0x03)      */
 #define MDR_RST_PER1__DEBUG_EN_Pos     (4UL)              /*!< MDR_RST_CLOCK PER1_CLOCK: DEBUG_EN (Bit 4)                       */
 #define MDR_RST_PER1__DEBUG_EN_Msk     (0x10UL)           /*!< MDR_RST_CLOCK PER1_CLOCK: DEBUG_EN (Bitfield-Mask: 0x01)         */
 #define MDR_RST_PER1__DMA_EN_Pos       (5UL)              /*!< MDR_RST_CLOCK PER1_CLOCK: DMA_EN (Bit 5)                         */

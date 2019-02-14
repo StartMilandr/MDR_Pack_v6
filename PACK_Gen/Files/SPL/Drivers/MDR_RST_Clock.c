@@ -610,5 +610,15 @@ bool MDR_CPU_SetClock_HSE_div2_PLL(MDR_OnOff byPass, MDR_MUL_x16 pllMul, MDR_RST
   return result;  
 }
 
+//===============  Функции включения тактирования и подачи тактирования для блоков с BRG  ===============
+void MDR_PerClock_GateOpen(const MDR_PerClock_Cfg *pCfgClock, MDR_BRG_DIV_128 clockBRG)
+{
+  uint32_t regSSP_Clock = REG32(pCfgClock->ClockGate_Addr);
+  
+  regSSP_Clock &= ~(uint32_t)(MDR_BRG_DIV_128_CLR << pCfgClock->ClockGate_BRG_Pos);
+  regSSP_Clock |= (uint32_t)(clockBRG << pCfgClock->ClockGate_BRG_Pos) | pCfgClock->ClockGate_ClockOn_Msk;
+  
+  REG32(pCfgClock->ClockGate_Addr) = regSSP_Clock;
+};
 
 

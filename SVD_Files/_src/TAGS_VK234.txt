@@ -7,6 +7,8 @@ f5=../ADC/ADC_VE4x.txt
 f6=../SSP/SSP_VE4.txt
 f7=../WDT/WDT_VE4x.txt
 f8=../Uniq/ADCUI_VK234.xml
+f9=../UART/UART_VE4x.txt
+
 
 [TAGS]
 #BKP=f1
@@ -21,6 +23,7 @@ f8=../Uniq/ADCUI_VK234.xml
 #WDT=f7
 #ADCUI=f8
 #ADCUI_R=#ADCUI_234
+#UARTs=f9
 
 [TAGS_New]
 #USB=

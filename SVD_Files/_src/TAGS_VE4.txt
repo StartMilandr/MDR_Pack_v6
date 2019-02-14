@@ -6,6 +6,7 @@ f4=../EEPROM/EEPROM_VE4x.txt
 f5=../ADC/ADC_VE4x.txt
 f6=../SSP/SSP_VE4.txt
 f7=../WDT/WDT_VE4x.txt
+f8=../UART/UART_VE4x.txt
 
 [TAGS]
 #BKP=f1
@@ -18,6 +19,7 @@ f7=../WDT/WDT_VE4x.txt
 #ADC=f5
 #SSPs=f6
 #WDT=f7
+#UARTs=f8
 
 [TAGS_New]
 #USB=
@@ -36,8 +38,6 @@ f7=../WDT/WDT_VE4x.txt
 #COMP_R=
 #EBC=
 #EBC_R=
-#UARTs=
-#UARTs_R=
 #TIMERs=
 #TIMERs_R=
 #ADCUI=

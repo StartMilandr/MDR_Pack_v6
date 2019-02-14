@@ -3,6 +3,7 @@
 
 #include <MDR_Config.h>
 #include <MDR_Funcs.h>
+#include <MDR_RST_Clock.h>
 #include <MDR_GPIO.h>
 
 #include <MDR_SSP_def.h>
@@ -125,15 +126,10 @@ void MDR_SSP_ChangeFrameFormat(MDR_SSP_Type *SSPx, MDR_SSP_FrameFormat newFrameF
 
 //  Расширенная структура содержат дополнительную конфигурацию для включения тактирования и настройки прерывания
 typedef struct {
-  // GPIO Port
+  // SSP Block
   MDR_SSP_Type *     SSPx;
-  // Clock BRG
-  volatile uint32_t* Addr_SSPClock;
-  uint32_t           Msk_SSPClockEn;
-  uint32_t           Pos_SSPClockBRG;
-  // Clock Enable
-  volatile uint32_t* Addr_ClockEn;
-  uint32_t           ClockEnaMask;
+  // SSPClock and BRG
+  MDR_PerClock_Cfg   CfgClock;  
   //  IRQn
   IRQn_Type          SSPx_IRQn;
 } MDR_SSP_TypeEx;
@@ -163,7 +159,7 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
 //  Т.е. обеспечавают полную инициализацию блока "под ключ".
 typedef struct {
   //  Делитель частоты SSP_Clock
-  MDR_BRG_DIV_128 divSSP_Clock;
+  MDR_BRG_DIV_128 ClockBRG;
   //  Настройки блока SSP
   MDR_SSP_Config *cfgSSP;
   //  Инициализация прерываний в NVIC

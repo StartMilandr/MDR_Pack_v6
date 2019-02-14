@@ -96,6 +96,8 @@
     #define PIN_PE14    MDR_Pin_14  //                            SSP1_CLK
     #define PIN_PE15    MDR_Pin_15  //                            SSP1_FSS
 
+    #define PIN_PF0     MDR_Pin_0   //                                                      UART3_RX
+    #define PIN_PF1     MDR_Pin_1   //                                                      UART3_TX
     #define PIN_PF2     MDR_Pin_2   //                                  SSP4_RX
     #define PIN_PF3     MDR_Pin_3   //                                  SSP4_TX
     #define PIN_PF4     MDR_Pin_4   //                                  SSP4_CLK
@@ -503,7 +505,19 @@
 	#define MDRB_SPI4_TX_PF3_Func		   MDR_PIN_ALT
 
 
+//  ---------------  UART2 Pin Definition ----------------
+  //  PORT_F: PF0, PF1 - Main
+  #define MDRB_UART3_TX_PF1_Ind	      1
+  #define MDRB_UART3_RX_PF0_Ind	      0
 
+  #define MDRB_UART3_TX_PF1_Msk	      MDR_Pin_1
+	#define MDRB_UART3_RX_PF0_Msk		    MDR_Pin_0
+
+  #define MDRB_UART3_TX_PF1_Port	    MDR_GPIO_F
+	#define MDRB_UART3_RX_PF0_Port		  MDR_GPIO_F
+  
+  #define MDRB_UART3_TX_PF1_Func	    MDR_PIN_ALT
+	#define MDRB_UART3_RX_PF0_Func	    MDR_PIN_ALT
 
 
 

@@ -34,8 +34,8 @@
     #define PIN_PC0     MDR_Pin_0   //          LCD_RW
     #define PIN_PC1     MDR_Pin_1   //          
     #define PIN_PC2     MDR_Pin_2   //          LCD_E    
-    #define PIN_PC3     MDR_Pin_3   //          
-    #define PIN_PC4     MDR_Pin_4   //          
+    #define PIN_PC3     MDR_Pin_3   //                                                    UART1_TX
+    #define PIN_PC4     MDR_Pin_4   //                                                    UART1_RX    
     #define PIN_PC5     MDR_Pin_5   //                  SSP1_TX/RX
     #define PIN_PC6     MDR_Pin_6   //                  SSP1_RX/TX
     #define PIN_PC7     MDR_Pin_7   //                  SSP1_CLK
@@ -56,8 +56,8 @@
     #define PIN_PD10    MDR_Pin_10  //                       SSP2_FSS         ADC_Ch3    
     #define PIN_PD11    MDR_Pin_11  //                                        ADC_Ch4
     #define PIN_PD12    MDR_Pin_12  //          LCD_RES           SSP3_TX/RX  ADC_Ch5
-    #define PIN_PD13    MDR_Pin_13  //                                        ADC_Ch6
-    #define PIN_PD14    MDR_Pin_14  //                                        ADC_Ch7
+    #define PIN_PD13    MDR_Pin_13  //  LED_7                                 ADC_Ch6     UART2_TX
+    #define PIN_PD14    MDR_Pin_14  //  LED_8                                 ADC_Ch7     UART2_RX
 
 
     #define PIN_PE12    MDR_Pin_12  //          LCD_A0
@@ -356,6 +356,35 @@
 	#define MDRB_SPI4_CLK_PI12_Func		   MDR_PIN_ALT
 	#define MDRB_SPI4_RX_PI14_Func 		   MDR_PIN_ALT
 	#define MDRB_SPI4_TX_PI13_Func		   MDR_PIN_ALT
+
+//  ---------------  UART1 Pin Definition ----------------
+  //  PORT_C: PC3, PC4 - Main
+  #define MDRB_UART1_TX_PC3_Ind	     3
+  #define MDRB_UART1_RX_PC4_Ind	     4
+
+  #define MDRB_UART1_TX_PC3_Msk	     MDR_Pin_3
+	#define MDRB_UART1_RX_PC4_Msk		   MDR_Pin_4
+
+  #define MDRB_UART1_TX_PC3_Port	   MDR_GPIO_C
+	#define MDRB_UART1_RX_PC4_Port		 MDR_GPIO_C
+  
+  #define MDRB_UART1_TX_PC3_Func	   MDR_PIN_MAIN
+	#define MDRB_UART1_RX_PC4_Func	   MDR_PIN_MAIN
+
+//  ---------------  UART2 Pin Definition ----------------
+  //  PORT_D: PD13, PD14 - Main
+  #define MDRB_UART2_TX_PD13_Ind	   13
+  #define MDRB_UART2_RX_PD14_Ind	   14
+
+  #define MDRB_UART2_TX_PD13_Msk	   MDR_Pin_13
+	#define MDRB_UART2_RX_PD14_Msk		 MDR_Pin_14
+
+  #define MDRB_UART2_TX_PD13_Port	   MDR_GPIO_D
+	#define MDRB_UART2_RX_PD14_Port		 MDR_GPIO_D
+  
+  #define MDRB_UART2_TX_PD13_Func	   MDR_PIN_MAIN
+	#define MDRB_UART2_RX_PD14_Func	   MDR_PIN_MAIN
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

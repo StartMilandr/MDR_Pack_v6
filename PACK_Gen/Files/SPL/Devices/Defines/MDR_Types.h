@@ -87,15 +87,17 @@ typedef enum {
   MDR_BRG_div128    = 7
 } MDR_BRG_DIV_128;
 
+#define MDR_BRG_DIV_128_CLR   0x00FFUL
+
 typedef enum {
-  MDR_HSIE2_HSI             = 0,     //HSI
-  MDR_HSIE2_HSI_div2        = 1,     //HSI/2
-  MDR_HSIE2_HSE             = 2,     //HSE
+  MDR_HSIE2_HSI             = 0,    //HSI
+  MDR_HSIE2_HSI_div2        = 1,    //HSI/2
+  MDR_HSIE2_HSE             = 2,    //HSE
   MDR_HSIE2_HSE_div2        = 3     //HSE/2
 } MDR_CLK_SEL_HSIE2;
 
 typedef enum {
-  MDR_CPU_C1                = 0,     //CPU_C1
+  MDR_CPU_C1                = 0,    //CPU_C1
   MDR_CPU_PLL               = 1     //PLLCPUo
 } MDR_CLK_SEL_CPU;
 
@@ -107,7 +109,7 @@ typedef enum {
 } MDR_CLK_SEL_HCLK;
 
 typedef enum {
-  MDR_USB_C1                = 0,     //CPU_C1
+  MDR_USB_C1                = 0,    //CPU_C1
   MDR_USB_PLL               = 1     //PLLCPUo
 } MDR_CLK_SEL_USB;
 
@@ -126,10 +128,10 @@ typedef enum {
 } MDR_CLK_SEL_PER;
 
 typedef enum {
-  MDR_ADC_C1_CPU_C1            = 0,
-  MDR_ADC_C1_USB_C1            = 1,
-  MDR_ADC_C1_CPU_C2            = 2,
-  MDR_ADC_C1_USB_C2            = 3
+  MDR_ADC_C1_CPU_C1         = 0,
+  MDR_ADC_C1_USB_C1         = 1,
+  MDR_ADC_C1_CPU_C2         = 2,
+  MDR_ADC_C1_USB_C2         = 3
 } MDR_CLK_ADC_C1;
 
 typedef enum {

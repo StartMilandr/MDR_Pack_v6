@@ -8,6 +8,7 @@ f6=../SSP/SSP_VE4.txt
 f7=../WDT/WDT_VE4x.txt
 f8=../Uniq/LCD_VK214.xml
 f9=../Uniq/ADCUI_VK214.xml
+f10=../UART/UART_VE4x.txt
 
 [TAGS]
 #BKP=f1
@@ -23,6 +24,7 @@ f9=../Uniq/ADCUI_VK214.xml
 #LCD=f8
 #ADCUI=f9
 #ADCUI_R=#ADCUI_214
+#UARTs=f10
 
 [TAGS_New]
 #USB=
@@ -41,8 +43,6 @@ f9=../Uniq/ADCUI_VK214.xml
 #COMP_R=
 #EBC=
 #EBC_R=
-#UARTs=
-#UARTs_R=
 #TIMERs=
 #TIMERs_R=
 

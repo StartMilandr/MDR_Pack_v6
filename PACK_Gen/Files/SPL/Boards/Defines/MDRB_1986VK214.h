@@ -30,6 +30,12 @@
     #define PIN_PA14      MDR_Pin_14  //      LCD_S14  SSP1_RX
     #define PIN_PA15      MDR_Pin_15  //      LCD_S15  SSP1_TX
 
+    #define PIN_PB0       MDR_Pin_0   //                   UART1_TX
+    #define PIN_PB1       MDR_Pin_1   //                   UART1_RX
+    #define PIN_PB2       MDR_Pin_2   //
+    #define PIN_PB3       MDR_Pin_3   //
+    #define PIN_PB4       MDR_Pin_4   //
+    #define PIN_PB5       MDR_Pin_5   //
     #define PIN_PB6       MDR_Pin_6   //      LCD_COM1               ADC_Ch7  
     #define PIN_PB7       MDR_Pin_7   //      LCD_COM2               ADC_Ch6
     #define PIN_PB8       MDR_Pin_8   //      LCD_COM3               ADC_Ch5   
@@ -40,7 +46,8 @@
     #define PIN_PB13      MDR_Pin_13  //      LCD_S19
     #define PIN_PB14      MDR_Pin_14  //      LCD_S20
 
-    #define PIN_PC1       MDR_Pin_1   //                             ADC_Ch3
+    #define PIN_PC0       MDR_Pin_0   //                   UART2_TX
+    #define PIN_PC1       MDR_Pin_1   //                   UART2_RX  ADC_Ch3
     #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2
     #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+
     #define PIN_PC4       MDR_Pin_4   //                             ADC_Ch0/Ref-     
@@ -52,7 +59,7 @@
     #define PIN_PC14      MDR_Pin_14  //    LED1 
     #define PIN_PC15      MDR_Pin_15  //    LED2
 
-    
+   
 ////  --------------  ADC Definition  ------------
 //    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch4   //  PIN_PB8    
 //    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch5   //  PIN_PB6
@@ -117,18 +124,47 @@
 	#define MDRB_SPI1_TX_PA15_Func		   MDR_PIN_MAIN
 
 //  ----------  LCD Definition ---------------
-    // Initialization                 //  seg0-seg15
-    #define MDRB_LCD_PORT             MDR_GPIO_A
-    #define MDRB_LCD_PINs             MDR_Pin_All
-                                      //  PB6-PB9: COM1 - COM4, PB10-PB14: seg16 - seg20
-    #define MDRB_LCD_PORT_EX1         MDR_GPIO_B
-    #define MDRB_LCD_PINs_EX1         (PIN_PB6 | PIN_PB7 | PIN_PB8 | PIN_PB9 | PIN_PB10 | PIN_PB11 | PIN_PB12 | PIN_PB13 | PIN_PB14)
-                                      //  seg21-seg23
-    #define MDRB_LCD_PORT_EX2         MDR_GPIO_C
-    #define MDRB_LCD_PINs_EX2         (PIN_PC5 | PIN_PC6 | PIN_PC7)
+  // Initialization                 //  seg0-seg15
+  #define MDRB_LCD_PORT             MDR_GPIO_A
+  #define MDRB_LCD_PINs             MDR_Pin_All
+                                    //  PB6-PB9: COM1 - COM4, PB10-PB14: seg16 - seg20
+  #define MDRB_LCD_PORT_EX1         MDR_GPIO_B
+  #define MDRB_LCD_PINs_EX1         (PIN_PB6 | PIN_PB7 | PIN_PB8 | PIN_PB9 | PIN_PB10 | PIN_PB11 | PIN_PB12 | PIN_PB13 | PIN_PB14)
+                                    //  seg21-seg23
+  #define MDRB_LCD_PORT_EX2         MDR_GPIO_C
+  #define MDRB_LCD_PINs_EX2         (PIN_PC5 | PIN_PC6 | PIN_PC7)
 
-    #define LCD_XT13468PSPA_DISPLAY
-    
+  #define LCD_XT13468PSPA_DISPLAY
+  
+
+//  ---------------  UART1 Pin Definition ----------------
+  //  PORT_B: PB0, PB1 - Main
+  #define MDRB_UART1_TX_PB0_Ind	     0
+  #define MDRB_UART1_RX_PB1_Ind	     1
+
+  #define MDRB_UART1_TX_PB0_Msk	     MDR_Pin_0
+	#define MDRB_UART1_RX_PB1_Msk		   MDR_Pin_1
+
+  #define MDRB_UART1_TX_PB0_Port	   MDR_GPIO_B
+	#define MDRB_UART1_RX_PB1_Port		 MDR_GPIO_B
+  
+  #define MDRB_UART1_TX_PB0_Func	   MDR_PIN_MAIN
+	#define MDRB_UART1_RX_PB1_Func	   MDR_PIN_MAIN
+
+//  ---------------  UART2 Pin Definition ----------------
+  //  PORT_C: PC0, PC1 - Main
+  #define MDRB_UART2_TX_PC0_Ind	     0
+  #define MDRB_UART2_RX_PC1_Ind	     1
+
+  #define MDRB_UART2_TX_PC0_Msk	     MDR_Pin_0
+	#define MDRB_UART2_RX_PC1_Msk		   MDR_Pin_1
+
+  #define MDRB_UART2_TX_PC0_Port	   MDR_GPIO_C
+	#define MDRB_UART2_RX_PC1_Port		 MDR_GPIO_C
+  
+  #define MDRB_UART2_TX_PC0_Func	   MDR_PIN_MAIN
+	#define MDRB_UART2_RX_PC1_Func	   MDR_PIN_MAIN
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

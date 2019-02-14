@@ -36,36 +36,7 @@
         </enumeratedValue>                                
       </enumeratedValues>
     </field>
-    <!-- PER1_CLOCK.PER1_C2_SEL -->
-    <field>
-      <name>PER1_C2_SEL</name>
-      <description>PER1_C2 mux freq select</description>
-      <bitRange>[3:2]</bitRange>
-      <access>read-write</access>
-      <enumeratedValues>
-        <headerEnumName>MDR_RST__PER1__C2_</headerEnumName>
-        <enumeratedValue>
-          <name>CPU_C1</name>
-          <description>PER1_C2 output is CPU_C1</description>
-          <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-          <name>PER1_C1</name>
-          <description>PER1_C2 output is PER1_C1</description>
-          <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-          <name>PLLCPUo</name>
-          <description>PER1_C2 output is PLLCPUo</description>
-          <value>2</value>
-        </enumeratedValue>
-        <enumeratedValue>
-          <name>HSI_C1</name>
-          <description>PER1_C2 output is HSI_C1</description>
-          <value>3</value>
-        </enumeratedValue>
-      </enumeratedValues>
-    </field>
+    <!-- #PER1_C2_SEL -->
     <!-- PER1_CLOCK.DEBUG_EN -->
     <field>
       <name>DEBUG_EN</name>

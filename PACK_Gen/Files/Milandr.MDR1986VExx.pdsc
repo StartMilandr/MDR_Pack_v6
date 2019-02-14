@@ -889,13 +889,22 @@
     </component>
     <!--SSP-->
     <component Cclass="Drivers" Cgroup="SSP" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>SAR ADC Control functions</description>
+      <description>Synchronous Serial Port</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_SSP.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_SSP.c" version="2.0.0"/>
       </files>
     </component>
+    <!--UART-->
+    <component Cclass="Drivers" Cgroup="UART" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_UART.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_UART.c" version="2.0.0"/>
+      </files>
+    </component>    
     <!-- ADCUI Driver -->
     <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>ADCUI driver</description>
@@ -962,14 +971,6 @@
         <file category="source" name="SPL/Drivers/MDR32F9Qx_timer.c"/>
       </files>
     </component>    
-    <!-- UART Driver -->
-    <component Cclass="Drivers" Cgroup="UART" Cversion="1.9" condition="CON_MDR_ALL">
-      <description>UART driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_uart.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_uart.c"/>
-      </files>
-    </component>
     <!-- CRC  Driver -->
     <component Cclass="Drivers" Cgroup="CRC" Cversion="1.9" condition="CON_MDR1986VK234">
       <description>CRC driver</description>
@@ -1057,6 +1058,28 @@
         <file category="header"  name="SPL/Boards/MDRB_LCD_HTD_B083.h" version="2.0.0"/>
         <file category="source"  name="SPL/Boards/MDRB_LCD_HTD_B083.c" version="2.0.0"/>
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h"  attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Board Support" Cgroup="UART_Debug" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART Debug printf</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_UART_Debug.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_UART_Debug.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Board Support" Cgroup="UART_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART Debug printf</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_UART_PinSelect.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_UART_PinSelect.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
 
@@ -1212,6 +1235,26 @@
         <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="DisplayLCD"   Cversion="2.0"/>
+      </attributes>
+    </example>
+
+    <example name="UART_Test" folder="Examples/All_Boards/UART_Test" doc="ReadMe.md" version="2.0.0">
+      <description>UART use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="UART_Test.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UART"         Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="UART_Debug"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="UART_PinSelect"  Cversion="2.0" condition="CON_MDR_ALL"/>
       </attributes>
     </example>
 

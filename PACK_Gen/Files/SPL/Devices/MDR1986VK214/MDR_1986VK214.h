@@ -59,7 +59,7 @@ typedef enum IRQn
 	EXT1_IRQn                 = 11,               /*!< EXT_INT0  Interrupt  */
 	EXT2_IRQn                 = 12,               /*!< EXT_INT1  Interrupt  */
 	EXT3_IRQn                 = 13,               /*!< EXT_INT2  Interrupt  */
-    ADCIU_F0_IRQn             = 14,               /*!< ADCIU_F0 Interrupt   */
+  ADCUI_F0_IRQn             = 14,               /*!< ADCIU_F0 Interrupt   */
 } IRQn_Type;
 
 
@@ -149,6 +149,9 @@ typedef enum IRQn
 /*=========  ADC IU ========*/
 #include "MDR_ADCUI_VK214_defs.h"
 
+/*=========  UART ========*/
+#include <MDR_UART_Defs.h>
+
 //  ==========  Blocks from previouse PACK
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
@@ -160,7 +163,7 @@ typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
 
 typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
-#include "MDRP_UART_defs.h"
+
 #include "MDRP_I2C_defs.h"
 #include "MDRP_LCD_defs.h"
 #include "MDRP_WDT_defs.h"
@@ -220,16 +223,14 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define ADDR_IWDT_BASE         0x40050000UL
 #define ADDR_LCD_BASE          0x40038000UL
 
-#define MDRD_ADCIU_BASE        0x40068000UL
+#define ADDR_ADCIU_BASE        0x40068000UL
 
+#define ADDR_UART1_BASE        0x40008000UL
+#define ADDR_UART2_BASE        0x40010000UL
 
-#define MDR_UART1_BASE                 (0x40008000)
-#define MDR_UART2_BASE                 (0x40010000)
+//  Blocks from previouse PACK
 #define MDR_I2C_BASE                   (0x40030000)
-#define MDR_WWDG_BASE                  (0x40048000)
-#define MDR_IWDG_BASE                  (0x40050000)
 #define MDR_POWER_BASE                 (0x40058000)
-
 #define MDR_TIMER1_BASE                (0x40070000)
 #define MDR_TIMER2_BASE                (0x40078000)
 
@@ -263,15 +264,15 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_IWDT                       ((MDR_IWDT_Type      *) ADDR_IWDT_BASE)
 
 #define MDR_LCD                        ((MDR_LCD_Type       *) ADDR_LCD_BASE)
-#define MDR_ADCUI                      ((MDR_ADCUI_TypeDef 	*) MDRD_ADCIU_BASE)
+#define MDR_ADCUI                      ((MDR_ADCUI_TypeDef 	*) ADDR_ADCIU_BASE)
+
+#define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
+#define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
+
 
 //  Blocks from previouse PACK
-#define MDR_UART1                      ((MDR_UART_TypeDef 	*) MDR_UART1_BASE)
-#define MDR_UART2                      ((MDR_UART_TypeDef 	*) MDR_UART2_BASE)
 
 #define MDR_I2C                        ((MDR_I2C_TypeDef 	  *) MDR_I2C_BASE)
-#define MDR_WWDG                       ((MDR_WWDG_TypeDef 	*) MDR_WWDG_BASE)
-#define MDR_IWDG                       ((MDR_IWDG_TypeDef 	*) MDR_IWDG_BASE)
 #define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)
 #define MDR_TIMER1                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER1_BASE)
 #define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
@@ -285,15 +286,17 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define   MDR_CLK_EN_REG_PER              PER2_CLOCK
 #define   MDR_CLK_EN_REG_PER_b            PER2_CLOCK_b
 
+//----------------    EEPROM Definitions  --------------------
 #define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
 #define   MDR_CLK_EN_REG_EEPROM_b         PER2_CLOCK_b
 #define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
 
-
+//----------------    BKP Definitions  --------------------
 #define   MDR_CLK_EN_REG_BKP              PER2_CLOCK
 #define   MDR_CLK_EN_REG_BKP_b            PER2_CLOCK_b
 #define   MDR_RST_PER__BKP_CLK_EN_Pos     MDR_RST_PER2__BKP_CLK_EN_Pos
 
+//----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A          &MDR_CLOCK->PER2_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_B          &MDR_CLOCK->PER2_CLOCK
 #define   MDR_CLK_EN_ADDR_PORT_C          &MDR_CLOCK->PER2_CLOCK
@@ -302,30 +305,51 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define   MDR_CLK_EN_BIT_PORT_B           MDR_RST_PER2__PORTB_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_C           MDR_RST_PER2__PORTC_CLK_EN_Pos
 
-#define   MDR_JTAG_A_PORT               MDR_PORTB
-#define   MDR_JTAG_A_PINS               0x0000000CUL
-#define   MDR_JTAG_A_PINS_FUNC          0x000000F0UL
-#define   MDR_JTAG_A_PINS_PD            0x000C000CUL
+#define   MDR_JTAG_A_PORT                 MDR_PORTB
+#define   MDR_JTAG_A_PINS                 0x0000000CUL
+#define   MDR_JTAG_A_PINS_FUNC            0x000000F0UL
+#define   MDR_JTAG_A_PINS_PD              0x000C000CUL
 
+//----------------    ADC Definitions  --------------------
 #define   MDR_ADC_CLK_LIKE_VE4
 //  ADC pins in Port_C and Port_B
 #define   MDR_ADC_IN_PORTS_CB
 
-//  SSP Block Clock enable
-#define   MDR_CLK_EN_ADDR_SSP1        (&MDR_CLOCK->PER2_CLOCK)
-#define   MDR_CLK_EN_MASK_SSP1          MDR_RST_PER2__SSP1_CLK_EN_Msk
-
-
-//  SSP_Clock freq configs
-#define   MDR_SSP_CLOCK_ADDR_SSP1     (&MDR_CLOCK->SSP_CLOCK)
-#define   MDR_SSP_CLOCK_ENA_MSK_SSP1    MDR_RST_SSP__SSP1_CLK_EN_Msk
-#define   MDR_SSP_CLOCK_BRG_POS_SSP1    MDR_RST_SSP__SSP1_BRG_Pos
-
-#define   MDR_SSP_CLOCK_BRG_CLR_Mask    0x7UL
-#define   MDR_SSP_CLOCK_FROM_PER_CLOCK
-
+//----------------    ADCUI Definitions  --------------------
 //  ADCUI clock by 
 #define   MDR_ADCUI_CLOCK_FROM_PER_CLOCK
+
+//----------------    SSP Definitions  --------------------
+//  SSP Block Clock enable
+#define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_SSP1_CLK_EN_MSK             MDR_RST_PER2__SSP1_CLK_EN_Msk
+
+//  SSP_Clock freq configs
+#define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP_CLOCK)
+#define   MDR_SSP1_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP1_CLK_EN_Msk
+#define   MDR_SSP1_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP1_BRG_Pos
+
+#define   MDR_SSP_CLOCK_FROM_PER_CLOCK
+//  Только в ВК214, раздельный выбор частот для каждого блока!
+#define   MDR_PER_CLOCK_SELF_TIM_UART_SSP
+
+//----------------    UART Definitions  --------------------
+//  UART Block Clock enable
+#define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_UART1_CLK_EN_MSK            MDR_RST_PER2__UART1_CLK_EN_Msk
+#define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_UART2_CLK_EN_MSK            MDR_RST_PER2__UART2_CLK_EN_Msk
+
+//  UART_ClockGate configs
+#define   MDR_UART1_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
+#define   MDR_UART1_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART1_CLK_EN_Msk
+#define   MDR_UART1_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART1_BRG_Pos
+
+#define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
+#define   MDR_UART2_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART2_CLK_EN_Msk
+#define   MDR_UART2_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART2_BRG_Pos
+
+
 
 
 /** @} */ /* End of group MDR1986VK214 */

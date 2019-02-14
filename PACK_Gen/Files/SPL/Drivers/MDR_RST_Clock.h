@@ -99,7 +99,7 @@ bool MDR_CPU_SetClock_HSE_div2_PLL(MDR_OnOff byPass, MDR_MUL_x16 pllMul, MDR_RST
 
 
 //===============  Функции с параметрами по умолчанию из MDR_Config.h,  ===============
-//===============  который юстируется пользователем под проект и плату  ===============
+//===============  Этот файл модифицируется пользователем под проект и плату  =========
 
 #define MDR_RST_ResetBlock_def()                          MDR_RST_ResetBlock(HSI_TIMEOUT, HSI_FREQ_TRIM)
 
@@ -120,6 +120,26 @@ bool MDR_CPU_SetClock_HSE_div2_PLL(MDR_OnOff byPass, MDR_MUL_x16 pllMul, MDR_RST
 
 #define MDR_CPU_SetClock_HSE_PLL_def(bypass, mul, lowRI, dEE)          MDR_CPU_SetClock_HSE_PLL     ((bypass), (mul), (lowRI), (dEE), MDR_CLK_div1, HSE_TIMEOUT)
 #define MDR_CPU_SetClock_HSE_div2_PLL_def(bypass, mul, lowRI, dEE)     MDR_CPU_SetClock_HSE_div2_PLL((bypass), (mul), (lowRI), (dEE), MDR_CLK_div1, HSE_TIMEOUT)
+
+
+//===============  Функции включения тактирования и подачи тактирования для блоков с BRG  ===============
+typedef struct {
+  // Clock Enable reg: PER_CLock
+  volatile uint32_t* ClockEna_Addr;
+  uint32_t           ClockEna_Mask;
+  //  Clock On and BRG regs: Uart_Clock, SSP_Clock, Timer_Clock
+  volatile uint32_t* ClockGate_Addr;
+  uint32_t           ClockGate_ClockOn_Msk;
+  uint32_t           ClockGate_BRG_Pos;
+} MDR_PerClock_Cfg;
+
+//  Включение тактирования на блок для доступа к регистрам
+__STATIC_INLINE void MDR_PerClock_Enable(const MDR_PerClock_Cfg *pCfgClock)  {REG32(pCfgClock->ClockEna_Addr) |= pCfgClock->ClockEna_Mask;};
+__STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) &= ~pCfgClock->ClockEna_Mask;};
+
+//  Подача рабочей частоты Uart_Clock, SSP_Clock, Timer_Clock
+                void MDR_PerClock_GateOpen (const MDR_PerClock_Cfg *pCfgClock, MDR_BRG_DIV_128 clockBRG);
+__STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~pCfgClock->ClockGate_ClockOn_Msk;};
 
 
 #endif //MDR_RST_CLOCK_H

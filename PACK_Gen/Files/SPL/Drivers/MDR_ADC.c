@@ -18,12 +18,12 @@ void MDR_ADC_Apply_CfgThermo(const MDR_ADC_CfgThermo *cfgThermo)
 { 
 #ifdef MDR_HAS_ADC2
   // Включение и Подстройка
-  MDR_ADC->ADC1_Cfg |=  VAL2FLD_Pos(1,   MDR_ADC1_Cfg_TS_EN)
-                      | VAL2FLD_Pos(cfgThermo->TrimThermoVref, MDR_ADC1_Cfg_TR);
+  MDR_ADC->ADC1_Cfg |=  MDR_ADC1_Cfg_TS_EN_Msk
+                      | VAL2FLD_Pos(cfgThermo->TrimThermoVref, MDR_ADC1_Cfg_TR_Pos);
   
   //  Выбор Vref от термосенсора для обоих АЦП
   if (cfgThermo->UseThermoVref == MDR_On)
-    MDR_ADC->ADC2_Cfg |=  VAL2FLD_Pos(3,   MDR_ADC2_Cfg_ADC1_OP);
+    MDR_ADC->ADC2_Cfg |=  VAL2FLD_Pos(3,   MDR_ADC2_Cfg_ADC1_OP_Pos);
   
 #else
   // Включение
@@ -109,8 +109,8 @@ void MDR_ADC_Apply_CfgSync(const MDR_ADC_CfgSync *cfgSync)
 {
   uint32_t regCfg = MDR_ADC->ADC1_Cfg;
   
-  regCfg |=  VAL2FLD_Pos(cfgSync->SynMeasADCs_Ena,  MDR_ADC1_Cfg_SYNC_CONV)
-           | VAL2FLD_Pos(cfgSync->DelayBetweenADCs, MDR_ADC1_Cfg_Delay_ADC);  
+  regCfg |=  VAL2FLD_Pos(cfgSync->SynMeasADCs_Ena,  MDR_ADC1_Cfg_SYNC_CONV_Pos)
+           | VAL2FLD_Pos(cfgSync->DelayBetweenADCs, MDR_ADC1_Cfg_Delay_ADC_Pos);  
   
   MDR_ADC->ADC1_Cfg = regCfg;
 }
@@ -440,11 +440,11 @@ void MDR_ADC_StartSignalSyncro(MDR_ADC_Signal signalADC1, MDR_ADC_Signal signalA
   
   //  Выбор канала  
   if (signalADC2 < ADC_Signal_TS_Temper)
-    regCfg |=  VAL2FLD_Pos(signalADC2, MDR_ADCx_Cfg_CHS);
+    regCfg |=  VAL2FLD_Pos(signalADC2, MDR_ADCx_Cfg_CHS_Pos);
   else if (signalADC2 == ADC_Signal_TS_Temper)
-    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Temper, MDR_ADCx_Cfg_CHS); // ch = 31 - themperature
+    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Temper, MDR_ADCx_Cfg_CHS_Pos); // ch = 31 - themperature
   else
-    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Vref, MDR_ADCx_Cfg_CHS);   // ch = 30 - vref 
+    regCfg |= VAL2FLD_Pos(MDR_ADC_ChTS_Vref, MDR_ADCx_Cfg_CHS_Pos);   // ch = 30 - vref 
 
   //  Включение АЦП2
   ADC_Enable_loc(MDR_ADC2, regCfg, cyclic, cfgLimsADC2, 0);
@@ -464,7 +464,7 @@ void MDR_ADC_StartSelectedSyncro(MDR_ADC_Select_PinChannels channelsADC1, MDR_AD
   
   //  Выбор каналов
   MDR_ADC->ADC2_CHSEL = channelsADC2.Select;
-  regCfg |=  VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH);
+  regCfg |=  VAL2FLD_Pos(MDR_On, MDR_ADCx_Cfg_CHCH_Pos);
 
   //  Включение АЦП2
   ADC_Enable_loc(MDR_ADC2, regCfg, cyclic, cfgLimsADC2, 0);  

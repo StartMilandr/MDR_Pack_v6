@@ -31,6 +31,8 @@
     #define PIN_PB2     MDR_Pin_2   //                    JTAG_A
     #define PIN_PB3     MDR_Pin_3   //                    JTAG_A
     #define PIN_PB4     MDR_Pin_4   //                    JTAG_A
+    #define PIN_PB5     MDR_Pin_5   //                                                          UART1_TX
+    #define PIN_PB6     MDR_Pin_6   //                                                          UART1_RX
 
     //  Port_C[0..0]: 1 Pin available only!
     #define PIN_PC0     MDR_Pin_0   //  Select                    SSP2_FSS
@@ -169,7 +171,19 @@
     #define MDRB_SPI1_RX_PF3_Func 		   MDR_PIN_ALT
     #define MDRB_SPI1_TX_PF0_Func		     MDR_PIN_ALT
 
+//  ---------------  UART1 Pin Definition ----------------
+  //  PORT_B: PB5, PB6 - Main
+  #define MDRB_UART1_TX_PB5_Ind	     5
+  #define MDRB_UART1_RX_PB6_Ind	     6
 
+  #define MDRB_UART1_TX_PB5_Msk	     MDR_Pin_5
+	#define MDRB_UART1_RX_PB6_Msk		   MDR_Pin_6
+
+  #define MDRB_UART1_TX_PB5_Port	   MDR_GPIO_B
+	#define MDRB_UART1_RX_PB6_Port		 MDR_GPIO_B
+  
+  #define MDRB_UART1_TX_PB5_Func	   MDR_PIN_ALT
+	#define MDRB_UART1_RX_PB6_Func	   MDR_PIN_ALT
 
 #else
    Please, select board in MDRB_BoardSelect.h!

@@ -346,6 +346,21 @@
 	#define MDRB_SPI2_CLK_PF13_Func		   MDR_PIN_OVER
 	#define MDRB_SPI2_RX_PF14_Func 		   MDR_PIN_OVER
 	#define MDRB_SPI2_TX_PF16_Func		   MDR_PIN_OVER    
+  
+  
+//  ---------------  UART2 Pin Definition ----------------
+  //  PORT_F: PF0, PF1 - Main
+  #define MDRB_UART2_TX_PF1_Ind	      1
+  #define MDRB_UART2_RX_PF0_Ind	      0
+
+  #define MDRB_UART2_TX_PF1_Msk	      MDR_Pin_1
+	#define MDRB_UART2_RX_PF0_Msk		    MDR_Pin_0
+
+  #define MDRB_UART2_TX_PF1_Port	    MDR_GPIO_F
+	#define MDRB_UART2_RX_PF0_Port		  MDR_GPIO_F
+  
+  #define MDRB_UART2_TX_PF1_Func	    MDR_PIN_OVER
+	#define MDRB_UART2_RX_PF0_Func	    MDR_PIN_OVER  
     
 
 #else

@@ -27,26 +27,88 @@
   </enumeratedValues>
 </field>
 
+#PER1_C2_SEL
+<field>
+  <name>PER1_C2_SEL</name>
+  <description>PER1_C2 mux freq select</description>
+  <bitRange>[3:2]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__PER1__C2_</headerEnumName>
+    <enumeratedValue>
+      <name>CPU_C1</name>
+      <description>PER1_C2 output is CPU_C1</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PER1_C1</name>
+      <description>PER1_C2 output is PER1_C1</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PLLCPUo</name>
+      <description>PER1_C2 output is PLLCPUo</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>HSI_C1</name>
+      <description>PER1_C2 output is HSI_C1</description>
+      <value>3</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#TIM1_C2_SEL
+<field>
+  <name>TIM1_C2_SEL</name>
+  <description>TIM1_C2 mux freq select</description>
+  <bitRange>[3:2]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <headerEnumName>MDR_RST__TIM1__C2_</headerEnumName>
+    <enumeratedValue>
+      <name>CPU_C1</name>
+      <description>CPU_C1 clock selected</description>
+      <value>0</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PER1_C1</name>
+      <description>PER1_C1 clock selected</description>
+      <value>1</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>PLLCPUo</name>
+      <description>PLLCPUo clock selected</description>
+      <value>2</value>
+    </enumeratedValue>
+    <enumeratedValue>
+      <name>HSI_C1</name>
+      <description>HSI_C1 clock selected</description>
+      <value>3</value>
+    </enumeratedValue>
+  </enumeratedValues>
+</field>
+
 #PER1_BE214
-<field derivedFrom="PER1_C2_SEL">
+<field derivedFrom="TIM1_C2_SEL">
   <name>TIM2_C2_SEL</name>
   <description>TIM2_C2 mux freq select</description>
   <bitRange>[7:6]</bitRange>
   <access>read-write</access>
 </field>
-<field derivedFrom="PER1_C2_SEL">
+<field derivedFrom="TIM1_C2_SEL">
   <name>UART1_C2_SEL</name>
   <description>UART1_C2 mux freq select</description>
   <bitRange>[9:8]</bitRange>
   <access>read-write</access>
 </field>
-<field derivedFrom="PER1_C2_SEL">
+<field derivedFrom="TIM1_C2_SEL">
   <name>UART2_C2_SEL</name>
   <description>UART2_C2 mux freq select</description>
   <bitRange>[11:10]</bitRange>
   <access>read-write</access>
 </field>
-<field derivedFrom="PER1_C2_SEL">
+<field derivedFrom="TIM1_C2_SEL">
   <name>SSP2_C2_SEL</name>
   <description>SSP2_C2 mux freq select</description>
   <bitRange>[13:12]</bitRange>

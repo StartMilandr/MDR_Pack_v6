@@ -39,7 +39,7 @@
         </enumeratedValue>                                
       </enumeratedValues>
     </field>
-    <!-- PER1_CLOCK.PER1_C2_SEL -->
+    <!-- #PER1_C2_SEL -->
     <field>
       <name>PER1_C2_SEL</name>
       <description>PER1_C2 mux freq select</description>

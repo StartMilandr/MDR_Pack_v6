@@ -126,3 +126,40 @@ void MDR_ADC_SetClock_PER1_C1(MDR_CLK_DIV_256 divClk)
   }
 #endif
 
+
+//===============  Получение некоторых частот ===============
+static const uint32_t _CPU_C1_FreqHz[] = {HSI_FREQ_HZ, HSI_FREQ_HZ >> 1, HSE_FREQ_HZ, HSE_FREQ_HZ >> 1};
+
+uint32_t MDR_GetFreqHz_CPU_C1(void)
+{
+  return _CPU_C1_FreqHz[(uint32_t)MDR_CLOCK->CPU_CLOCK_b.CPU_C1_SEL];  
+}
+
+
+uint32_t MDR_GetFreqHz_PLLCPUo(void)
+{
+  return MDR_GetFreqHz_CPU_C1() * ((uint32_t)MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);  
+}
+
+static const uint32_t _PER1_C1_FreqHz[] = {LSI_FREQ_HZ, LSI_FREQ_HZ >> 1, LSE_FREQ_HZ, LSE_FREQ_HZ >> 1};
+
+uint32_t MDR_GetFreqHz_Per1_C1(void)
+{
+  return _PER1_C1_FreqHz[(uint32_t)MDR_CLOCK->PER1_CLOCK_b.PER1_C1_SEL];  
+}
+
+uint32_t _MDR_GetFreqHz_Per1_C2(MDR_CLK_SEL_PER selPER_C2)  
+{  
+  switch (selPER_C2)
+  {
+    case MDR_PER_CPU_C1: return MDR_GetFreqHz_CPU_C1();
+    case MDR_PER_PER1_C1: return MDR_GetFreqHz_Per1_C1();
+    case MDR_PER_PLLCPUo: return MDR_GetFreqHz_PLLCPUo();
+    case MDR_PER_HSI_C1: return HSI_FREQ_HZ;
+  }
+  return 0; // Error
+}
+
+
+
+

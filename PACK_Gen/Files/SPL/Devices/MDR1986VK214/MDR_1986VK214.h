@@ -319,6 +319,11 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 //  ADCUI clock by 
 #define   MDR_ADCUI_CLOCK_FROM_PER_CLOCK
 
+//----------------    PER CLOCK  --------------------
+//  Только в ВК214, раздельный выбор частот для каждого блока!
+#define   MDR_PER_CLOCK_SELF_TIM_UART_SSP
+#define   MDR_PER_CLOCK_LIKE_VE4
+
 //----------------    SSP Definitions  --------------------
 //  SSP Block Clock enable
 #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER2_CLOCK)
@@ -330,8 +335,6 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define   MDR_SSP1_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP1_BRG_Pos
 
 #define   MDR_SSP_CLOCK_FROM_PER_CLOCK
-//  Только в ВК214, раздельный выбор частот для каждого блока!
-#define   MDR_PER_CLOCK_SELF_TIM_UART_SSP
 
 //----------------    UART Definitions  --------------------
 //  UART Block Clock enable

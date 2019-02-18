@@ -282,14 +282,29 @@ void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pins
 //  Обычно частота задается в ПО, поэтому рациональней задать ее напрямую.
 uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART)
 {
-  uint32_t regBRG;
-  uint32_t cpuFreqHz = MDR_CPU_GetFreqHz(true);
+  uint32_t regBRG; 
+  uint32_t scrUartHz;
+
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+  //  VK214
+   if (exUART == MDR_UART1ex)
+     scrUartHz = MDR_GetFreqHz_UART1_C2();
+   else
+     scrUartHz = MDR_GetFreqHz_UART2_C2();
+
+#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
+  //  VK234  
+  scrUartHz = MDR_GetFreqHz_Per1_C2();    
+#else
+  //  VE4
+  scrUartHz = MDR_CPU_GetFreqHz(true);
+#endif  
   
   regBRG = REG32(exUART->CfgClock.ClockGate_Addr);  
   regBRG = (regBRG >> exUART->CfgClock.ClockGate_BRG_Pos) & MDR_RST_UART__UART1_BRG_Msk;
   
-  cpuFreqHz = cpuFreqHz << regBRG;   
-  return cpuFreqHz;
+  scrUartHz = scrUartHz << regBRG;   
+  return scrUartHz;
 }
 
 //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.

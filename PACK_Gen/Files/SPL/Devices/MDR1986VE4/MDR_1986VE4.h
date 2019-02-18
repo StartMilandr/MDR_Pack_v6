@@ -292,6 +292,9 @@ typedef enum IRQn
 //  ADC pins in Port_C and Port_B
 #define   MDR_ADC_IN_PORTS_CB
 
+//----------------    PER CLOCK  --------------------
+#define   MDR_PER_CLOCK_LIKE_VE4
+
 //----------------    SSP Definitions  --------------------
 //  SSP Block Clock enable
 #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER2_CLOCK)

@@ -65,7 +65,25 @@ void MDR_ADC_SetClock_HSI_C1(MDR_CLK_DIV_256 divClk);
 #endif
 
 
+//===============  Получение некоторых частот ===============
+uint32_t MDR_GetFreqHz_CPU_C1(void);
+uint32_t MDR_GetFreqHz_PLLCPUo(void);
 
+#ifdef MDR_PER_CLOCK_LIKE_VE4
+  uint32_t  MDR_GetFreqHz_Per1_C1(void);
+  uint32_t _MDR_GetFreqHz_Per1_C2(MDR_CLK_SEL_PER selPER_C2);
 
+  #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP
+    #define  MDR_GetFreqHz_UART1_C2()  _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.UART1_C2_SEL)
+    #define  MDR_GetFreqHz_UART2_C2()  _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.UART2_C2_SEL)
+    #define  MDR_GetFreqHz_SSP1_C2()   _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.SSP1_C2_SEL)
+    #define  MDR_GetFreqHz_SSP2_C2()   _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.SSP2_C2_SEL)
+    #define  MDR_GetFreqHz_TIM1_C2()   _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.TIM1_C2_SEL)
+    #define  MDR_GetFreqHz_TIM2_C2()   _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.TIM2_C2_SEL)
+  #else
+    #define  MDR_GetFreqHz_Per1_C2()   _MDR_GetFreqHz_Per1_C2(MDR_CLOCK->PER1_CLOCK_b.PER1_C2_SEL)  
+  #endif
+#endif
+  
 #endif  // _MDR_PER_CLOCK_H
 

@@ -3,6 +3,7 @@
 
 #include <MDR_Config.h>
 #include <MDR_RST_Clock.h>
+#include <MDR_PER_Clock.h>
 #include <MDR_GPIO.h>
 #include <MDR_UART_Defs.h>
 #include <MDR_UART_CfgRegs.h>

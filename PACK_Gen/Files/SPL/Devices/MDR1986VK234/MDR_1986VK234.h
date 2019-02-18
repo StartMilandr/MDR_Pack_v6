@@ -321,6 +321,9 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 //----------------    ADCUI Definitions  --------------------
 #define   MDR_ADCUI_CLOCK_FROM_PER_CLOCK
 
+//----------------    PER CLOCK  --------------------
+#define   MDR_PER_CLOCK_LIKE_VE4
+
 //----------------    SSP Definitions  --------------------
 //  SSP Block Clock enable
 #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER2_CLOCK)

@@ -8,6 +8,7 @@ f6=../SSP/SSP_VE4.txt
 f7=../WDT/WDT_VE4x.txt
 f8=../Uniq/ADCUI_VK234.xml
 f9=../UART/UART_VE4x.txt
+f10=../Timer/Timer_VE4.txt
 
 
 [TAGS]
@@ -24,6 +25,7 @@ f9=../UART/UART_VE4x.txt
 #ADCUI=f8
 #ADCUI_R=#ADCUI_234
 #UARTs=f9
+#TIMERs=f10
 
 [TAGS_New]
 #USB=
@@ -42,11 +44,5 @@ f9=../UART/UART_VE4x.txt
 #COMP_R=
 #EBC=
 #EBC_R=
-#UARTs=
-#UARTs_R=
-#TIMERs=
-#TIMERs_R=
-#SSPs=
-#SSPs_R=
 #CRC=
 #CRC_R=

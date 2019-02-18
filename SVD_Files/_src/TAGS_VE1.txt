@@ -7,6 +7,8 @@ f5=../ADC/ADC_VE13.txt
 f6=../SSP/SSP_VE1.txt
 f7=../WDT/WDT_VEx.txt
 f8=../UART/UART_VE19.txt
+f9=../Timer/Timer_VE13.txt
+
 
 [TAGS]
 #BKP=f1
@@ -20,6 +22,7 @@ f8=../UART/UART_VE19.txt
 #SSPs=f6
 #WDT=f7
 #UARTs=f8
+#TIMERs=f9
 
 [TAGS_New]
 #USB=
@@ -38,8 +41,6 @@ f8=../UART/UART_VE19.txt
 #COMP_R=
 #EBC=
 #EBC_R=
-#TIMERs=
-#TIMERs_R=
 #ETHERNET=
 #ETHERNET_R=
 #CANs=

@@ -4282,6 +4282,893 @@
       <baseAddress>0x40128000</baseAddress>
     </peripheral>
     <!-- #TIMERs -->
+    <!--TIMER1-->
+    <peripheral>
+      <name>MDR_TIMER1</name>
+      <version>1.0</version>
+      <description>TIMER Control</description>
+      <groupName>TIMER</groupName>
+      <baseAddress>0x40070000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <!-- #TIMER_SIZE -->
+        <size>0x90</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!--CNT-->
+        <register>
+          <name>CNT</name>
+          <description>Counter register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #TIMER_MASK -->
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Counter Value</description>
+              <!-- #TIMER_RANGE -->
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!--PSG-->
+        <register>
+          <name>PSG</name>
+          <description>Presample Gain</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Inc CNT by PSG clocks of TIM_CLOCK</description>
+              <bitRange>[15:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!--ARR-->
+        <register>
+          <name>ARR</name>
+          <description>Counter Period</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #TIMER_MASK -->
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Counter Value</description>
+              <!-- #TIMER_RANGE -->
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!--CNTRL-->
+        <register>
+          <name>CNTRL</name>
+          <description>Timer Control</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00000FFF</resetMask>
+          <fields>
+            <field>
+              <name>CNT_EN</name>
+              <description>Timer Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ARRB_EN</name>
+              <description>ARR update mode</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Immediately</name><description>Immediately update</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>OnCompleted</name><description>Update ARR when active period of CNT finished</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>WR_CMPL</name>
+              <description>Can write to CNT, ARR, PSG</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Ready</name><description>Ready to write</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>BUSY</name><description>Writing not completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DIR</name>
+              <description>Count Direction</description>
+              <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>UP</name><description>CNT counts from 0 to ARR</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>DOWN</name><description>CNT counts from ARR to 0</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>FDTS</name>
+              <description>Select Data Sampling frequency</description>
+              <bitRange>[5:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>TIM_CLK_div1</name><description>TIM_Clock to FDTS scale</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>TIM_CLK_div2</name><description>TIM_Clock to FDTS scale</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>TIM_CLK_div4</name><description>TIM_Clock to FDTS scale</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>TIM_CLK_div8</name><description>TIM_Clock to FDTS scale</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CNT_MODE</name>
+              <description>Counting mode</description>
+              <bitRange>[7:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>DIR_TIM_CLK</name><description>Count TIM_Clock pulses with DIR direction</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>UpDown_TIM_CLK</name><description>Count TIM_Clock pulses UP and Down</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>DIR_ExtEvents</name><description>Count External Events with DIR direction</description><value>2</value></enumeratedValue>
+                <!-- #TIMER_UpDown_Ext_nVE1 -->
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>EVENT_SEL</name>
+              <description>Events for counting</description>
+              <bitRange>[11:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Rise_TIM_CLK</name><description>CNT counts from 0 to ARR</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>CNT_eq_ARR_TIM1</name><description>CNT gets ARR in Timer1</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>CNT_eq_ARR_TIM2</name><description>CNT gets ARR in Timer2</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>CNT_eq_ARR_TIM3</name><description>CNT gets ARR in Timer3</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Event_Ch1</name><description>Event in Channel1</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Event_Ch2</name><description>Event in Channel2</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Event_Ch3</name><description>Event in Channel3</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Event_Ch4</name><description>Event in Channel4</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Rise_ETR</name><description>Rise front in ETR pin</description><value>8</value></enumeratedValue>
+                <!-- #TIMER_Event_9_VE1 -->
+                <enumeratedValue><name>Fall_ETR</name><description>Fall front in ETR pin</description><value>9</value></enumeratedValue>
+                <!-- #TIMER_Event_10_VE1 -->            
+                <enumeratedValue><name>CNT_eq_ARR_TIM4</name><description>CNT gets ARR in Timer4</description><value>10</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CCR1-->
+        <register>
+          <name>CCR1</name>
+          <description>CNT Compare Register</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #TIMER_MASK -->
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Captured or PWM Value</description>
+              <!-- #TIMER_RANGE -->
+              <bitRange>[31:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CCR2-->
+        <register derivedFrom="CCR1">
+          <name>CCR2</name>
+          <addressOffset>0x00000014</addressOffset>
+        </register>
+        <!--CCR3-->
+        <register derivedFrom="CCR1">
+          <name>CCR3</name>
+          <addressOffset>0x00000018</addressOffset>
+        </register>
+          <!--CCR4-->
+        <register derivedFrom="CCR1">
+          <name>CCR4</name>
+          <addressOffset>0x0000001C</addressOffset>
+        </register>
+        <!--CH1_CNTRL-->
+        <register>
+          <name>CH1_CNTRL</name>
+          <description>Capture and PWM Channel Control</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CHFLTR</name>
+              <description>Front hold to set Event</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>TIM_CLK</name><description>Filter Value</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2_TIM_CLK</name><description>Filter Value</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>4_TIM_CLK</name><description>Filter Value</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>8_TIM_CLK</name><description>Filter Value</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>6_FDTS_div2</name><description>Filter Value</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>8_FDTS_div2</name><description>Filter Value</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>6_FDTS_div4</name><description>Filter Value</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>8_FDTS_div4</name><description>Filter Value</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>6_FDTS_div8</name><description>Filter Value</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>8_FDTS_div8</name><description>Filter Value</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>5_FDTS_div16</name><description>Filter Value</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>6_FDTS_div16</name><description>Filter Value</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>8_FDTS_div16</name><description>Filter Value</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>5_FDTS_div32</name><description>Filter Value</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>6_FDTS_div32</name><description>Filter Value</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>8_FDTS_div32</name><description>Filter Value</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CHSEL</name>
+              <description>Event to capture in CCR</description>
+              <bitRange>[5:4]</bitRange>          
+              <enumeratedValues>
+                <enumeratedValue><name>Rise_Pin</name><description>Capture Event Select</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Fall_Pin</name><description>Capture Event Select</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Rise_NextCH</name><description>Capture Event Select</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Fall_NextCH</name><description>Capture Event Select</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CHPSC</name>
+              <description>Capture event decimation</description>
+              <bitRange>[7:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>EveryEvent</name><description>Pass event for capture</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Events_div2</name><description>Pass event for capture</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Events_div4</name><description>Pass event for capture</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Events_div8</name><description>Pass event for capture</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>OCCE</name>
+              <description>ETR pin Enable</description>
+              <bitRange>[8:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>OCCM</name>
+              <description>PWM Generate modes</description>
+              <bitRange>[11:9]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Ref_0</name><description>Ref signal for output</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Ref_1_eqCCRx</name><description>Ref signal for output</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Ref_0_eqCCRx</name><description>Ref signal for output</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Ref_sw_eqCCRx</name><description>Ref signal for output</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Ref0</name><description>Ref signal for output</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Ref_1</name><description>Ref signal for output</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Ref_nDir_inCCRs</name><description>Ref signal for output</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Ref_Dir_inCCRs</name><description>Ref signal for output</description><value>7</value></enumeratedValue>            
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="OCCE">
+              <name>BRKEN</name>
+              <description>Clear Ref by BRK</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="OCCE">
+              <name>ETREN</name>
+              <description>Clear Ref by BRK</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field>
+              <name>WR_CMPL</name>
+              <description>Can write to CCRx</description>
+              <bitRange>[14:14]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Ready</name><description>Ready to write</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>BUSY</name><description>Writing not completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CAP_nPWM</name>
+              <description>CAP or PWM Mode</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>PWM</name><description>PWM output</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>CAPTURE</name><description>Capture input signal</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CH2_CNTRL-->
+        <register  derivedFrom="CH1_CNTRL">
+          <name>CH2_CNTRL</name>
+          <addressOffset>0x00000024</addressOffset>
+        </register>
+        <!--CH3_CNTRL-->
+        <register derivedFrom="CH1_CNTRL">
+          <name>CH3_CNTRL</name>
+          <addressOffset>0x00000028</addressOffset>
+        </register>
+        <!--CH4_CNTRL-->
+        <register  derivedFrom="CH1_CNTRL">
+          <name>CH4_CNTRL</name>
+          <addressOffset>0x0000002C</addressOffset>
+        </register>
+        <!--CH1_CNTRL1-->
+        <register>
+          <name>CH1_CNTRL1</name>
+          <description>PWM Driver Control</description>
+          <addressOffset>0x00000030</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00001F1F</resetMask>
+          <fields>
+            <field>
+              <name>SelOE</name>
+              <description>Select Pin Output Enable</description>
+              <bitRange>[1:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>IN</name><description>Pin IN</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>OUT</name><description>Pin OUT</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>IO_byRef</name><description>Pin IN or OUT by Ref signal</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>IO_byDTG</name><description>Pin IN or OUT by DTG signal</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SelO</name>
+              <description>Select Output Signal</description>
+              <bitRange>[3:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Low</name><description>Outputs const GND</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>High</name><description>Outputs const Ucc</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Ref</name><description>Ref PWM signal</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>DTG</name><description>DTG PWM signal</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Inv</name>
+              <description>Invert Output Signal</description>
+              <bitRange>[4:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Not Inverted</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Inverted</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="SelOE">
+              <name>NSelOE</name>
+              <bitRange>[9:8]</bitRange>
+            </field>
+            <field derivedFrom="SelO">
+              <name>NSelO</name>
+              <bitRange>[11:10]</bitRange>
+            </field>
+            <field derivedFrom="Inv">
+              <name>NInv</name>
+              <bitRange>[12:12]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CH2_CNTRL1-->
+        <register  derivedFrom="CH1_CNTRL1">
+          <name>CH2_CNTRL1</name>
+          <addressOffset>0x00000034</addressOffset>
+        </register>
+        <!--CH3_CNTRL1-->
+        <register derivedFrom="CH1_CNTRL1">
+          <name>CH3_CNTRL1</name>
+          <addressOffset>0x00000038</addressOffset>
+        </register>
+        <!--CH4_CNTRL1-->
+        <register  derivedFrom="CH1_CNTRL1">
+          <name>CH4_CNTRL1</name>
+          <addressOffset>0x0000003C</addressOffset>
+        </register>
+        <!--CH1_DTG-->
+        <register>
+          <name>CH1_DTG</name>
+          <description>Dead Time Generator</description>
+          <addressOffset>0x00000040</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FF1F</resetMask>
+          <fields>
+            <field>
+              <name>DTG</name>
+              <description>DTG Prescaller</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>x0</name><description>Prescaler DTG</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>x1</name><description>Prescaler DTG</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>x2</name><description>Prescaler DTG</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>x3</name><description>Prescaler DTG</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>x4</name><description>Prescaler DTG</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>x5</name><description>Prescaler DTG</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>x6</name><description>Prescaler DTG</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>x7</name><description>Prescaler DTG</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>x8</name><description>Prescaler DTG</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>x9</name><description>Prescaler DTG</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>x10</name><description>Prescaler DTG</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>x11</name><description>Prescaler DTG</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>x12</name><description>Prescaler DTG</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>x13</name><description>Prescaler DTG</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>x14</name><description>Prescaler DTG</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>x15</name><description>Prescaler DTG</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>EDTS</name>
+              <description>DTG Clock Select</description>
+              <bitRange>[4:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>TIM_Clock</name><description>Pin IN</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>FDTS</name><description>Pin OUT</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DTGx</name>
+              <description>DTGx scale, Delay = DTGx*(DTG + 1)</description>
+              <bitRange>[15:8]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CH2_DTG-->
+        <register  derivedFrom="CH1_DTG">
+          <name>CH2_DTG</name>
+          <addressOffset>0x00000044</addressOffset>
+        </register>
+        <!--CH3_DTG-->
+        <register derivedFrom="CH1_DTG">
+          <name>CH3_DTG</name>
+          <addressOffset>0x00000048</addressOffset>
+        </register>
+        <!--CH4_DTG-->
+        <register  derivedFrom="CH1_DTG">
+          <name>CH4_DTG</name>
+          <addressOffset>0x0000004C</addressOffset>
+        </register>
+        <!--BRKETR_CNTRL-->
+        <register>
+          <name>BRKETR_CNTRL</name>
+          <description>Break and External Count Control</description>
+          <addressOffset>0x00000050</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>BRK_INV</name>
+              <description>Invert Break Signal</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Normal</name><description>Signal Not Inverted</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Invert</name><description>Signal Inverted</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="BRK_INV">
+              <name>ETR_INV</name>
+              <description>Invert External Count Signal</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field>
+              <name>ETR_PSC</name>
+              <description>External Count Div</description>
+              <bitRange>[3:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>div1</name><description>No prescaler</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>div2</name><description>Reduce freq by 2</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>div4</name><description>Reduce freq by 4</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>div8</name><description>Reduce freq by 8</description><value>3</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="MDR_TIMER1.CH1_CNTRL.CHFLTR">
+              <name>ETR_Filter</name>
+              <description>External Count Signal Filter</description>
+              <bitRange>[7:4]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--STATUS-->
+        <register>
+          <name>STATUS</name>
+          <description>Status Register</description>
+          <addressOffset>0x00000054</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0001FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CNT_ZERO</name>
+              <description>CNT Zero</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>CNT_ARR</name>
+              <description>CNT eq ARR</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>ETR_RE</name>
+              <description>ETR Rise Front</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>ETR_FE</name>
+              <description>ETR Fall Front</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>BRK</name>
+              <description>BRK High Level</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>CCR_CAP_CH1</name>
+              <description>Captured to CCR</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1">
+              <name>CCR_CAP_CH2</name>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1">
+              <name>CCR_CAP_CH3</name>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1">
+              <name>CCR_CAP_CH4</name>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>CCR_REF_CH1</name>
+              <description>PWM Rise Front</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1">
+              <name>CCR_REF_CH2</name>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1">
+              <name>CCR_REF_CH3</name>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1">
+              <name>CCR_REF_CH4</name>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO">
+              <name>CCR1_CAP_CH1</name>
+              <description>Captured to CCR1</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1">
+              <name>CCR1_CAP_CH2</name>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1">
+              <name>CCR1_CAP_CH3</name>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1">
+              <name>CCR1_CAP_CH4</name>
+              <bitRange>[16:16]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--IE-->
+        <register>
+          <name>IE</name>
+          <description>IRQ Enable</description>
+          <addressOffset>0x00000058</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0001FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CNT_ZERO_IE</name>
+              <description>CNT Zero</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>ENable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>CNT_ARR_IE</name>
+              <description>CNT eq ARR</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>ETR_RE_IE</name>
+              <description>ETR Rise Front</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>ETR_FE_IE</name>
+              <description>ETR Fall Front</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>BRK_IE</name>
+              <description>BRK High Level</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>CCR_CAP_CH1_IE</name>
+              <description>Captured to CCR</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_IE">
+              <name>CCR_CAP_CH2_IE</name>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_IE">
+              <name>CCR_CAP_CH3_IE</name>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_IE">
+              <name>CCR_CAP_CH4_IE</name>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>CCR_REF_CH1_IE</name>
+              <description>PWM Rise Front</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_IE">
+              <name>CCR_REF_CH2_IE</name>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_IE">
+              <name>CCR_REF_CH3_IE</name>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_IE">
+              <name>CCR_REF_CH4_IE</name>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_IE">
+              <name>CCR1_CAP_CH1_IE</name>
+              <description>Captured to CCR1</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_IE">
+              <name>CCR1_CAP_CH2_IE</name>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_IE">
+              <name>CCR1_CAP_CH3_IE</name>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_IE">
+              <name>CCR1_CAP_CH4_IE</name>
+              <bitRange>[16:16]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--DMA_RE-->
+        <register>
+          <name>DMA_RE</name>
+          <description>DMA Request Enable for TIMx_DMA_REQ</description>
+          <addressOffset>0x0000005C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0001FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CNT_ZERO_DMAE</name>
+              <description>CNT Zero</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>CNT_ARR_DMAE</name>
+              <description>CNT eq ARR</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>ETR_RE_DMAE</name>
+              <description>ETR Rise Front</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>ETR_FE_DMAE</name>
+              <description>ETR Fall Front</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>BRK_DMAE</name>
+              <description>BRK High Level</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>CCR_CAP_CH1_DMAE</name>
+              <description>Captured to CCR</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_DMAE">
+              <name>CCR_CAP_CH2_DMAE</name>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_DMAE">
+              <name>CCR_CAP_CH3_DMAE</name>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="CCR_CAP_CH1_DMAE">
+              <name>CCR_CAP_CH4_DMAE</name>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>CCR_REF_CH1_DMAE</name>
+              <description>PWM Rise Front</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_DMAE">
+              <name>CCR_REF_CH2_DMAE</name>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_DMAE">
+              <name>CCR_REF_CH3_DMAE</name>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="CCR_REF_CH1_DMAE">
+              <name>CCR_REF_CH4_DMAE</name>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="CNT_ZERO_DMAE">
+              <name>CCR1_CAP_CH1_DMAE</name>
+              <description>Captured to CCR1</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_DMAE">
+              <name>CCR1_CAP_CH2_DMAE</name>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_DMAE">
+              <name>CCR1_CAP_CH3_DMAE</name>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <field derivedFrom="CCR1_CAP_CH1_DMAE">
+              <name>CCR1_CAP_CH4_DMAE</name>
+              <bitRange>[16:16]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CH1_CNTRL2-->
+        <register>
+          <name>CH1_CNTRL2</name>
+          <description>CCR1 Control</description>
+          <addressOffset>0x00000060</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000000FF</resetMask>
+          <fields>
+            <field derivedFrom="MDR_TIMER1.CH1_CNTRL.CHSEL">
+              <name>CHSel1</name>
+              <description>Event to capture in CCR1</description>
+              <bitRange>[1:0]</bitRange>
+            </field>
+            <field>
+              <name>CCR1_En</name>
+              <description>Enable CCR1</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CCRRLD</name>
+              <description>CCR Reload Mode</description>
+              <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Immediately</name><description>Immediately update CCR and CCR1</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>byPreriodCNT</name><description>Update on period completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CH2_CNTRL2-->
+        <register  derivedFrom="CH1_CNTRL2">
+          <name>CH2_CNTRL2</name>
+          <addressOffset>0x00000064</addressOffset>
+        </register>
+        <!--CH3_CNTRL2-->
+        <register  derivedFrom="CH1_CNTRL2">
+          <name>CH3_CNTRL2</name>
+          <addressOffset>0x00000068</addressOffset>
+        </register>
+        <!--CH4_CNTRL2-->
+        <register  derivedFrom="CH1_CNTRL2">
+          <name>CH4_CNTRL2</name>
+          <addressOffset>0x0000006C</addressOffset>
+        </register>
+        <!--CCR11-->
+        <register derivedFrom="CCR1">
+          <name>CCR11</name>
+          <addressOffset>0x00000070</addressOffset>
+        </register>
+        <!--CCR21-->
+        <register derivedFrom="CCR1">
+          <name>CCR21</name>
+          <addressOffset>0x00000074</addressOffset>
+        </register>
+        <!--CCR31-->
+        <register derivedFrom="CCR1">
+          <name>CCR31</name>
+          <addressOffset>0x00000078</addressOffset>
+        </register>
+        <!--CCR41-->
+        <register derivedFrom="CCR1">
+          <name>CCR41</name>
+          <addressOffset>0x0000007C</addressOffset>
+        </register>
+        <!-- #TIMER_MDA_REX_VE1 -->
+        <!--DMA_RE1-->
+        <register derivedFrom="DMA_RE">
+          <name>DMA_RE1</name>
+          <description>DMA Request Enable for TIMx_DMA_REQ1</description>
+          <addressOffset>0x00000080</addressOffset>
+        </register>
+        <!--DMA_RE2-->
+        <register derivedFrom="DMA_RE">
+          <name>DMA_RE2</name>
+          <description>DMA Request Enable for TIMx_DMA_REQ2</description>
+          <addressOffset>0x00000084</addressOffset>
+        </register>
+        <!--DMA_RE3-->
+        <register derivedFrom="DMA_RE">
+          <name>DMA_RE3</name>
+          <description>DMA Request Enable for TIMx_DMA_REQ3</description>
+          <addressOffset>0x00000088</addressOffset>
+        </register>
+        <!--DMA_RE4-->
+        <register derivedFrom="DMA_RE">
+          <name>DMA_RE4</name>
+          <description>DMA Request Enable for TIMx_DMA_REQ4</description>
+          <addressOffset>0x0000008C</addressOffset>
+        </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #MDR_TIMER2 -->
+    <peripheral derivedFrom="MDR_TIMER1">
+      <name>MDR_TIMER2</name>
+      <baseAddress>0x40078000</baseAddress>
+    </peripheral>
+    <!-- #MDR_TIMER3 -->
+    <peripheral derivedFrom="MDR_TIMER1">
+      <name>MDR_TIMER3</name>
+      <baseAddress>0x40080000</baseAddress>
+    </peripheral>
+    <!-- #MDR_TIMER4 -->
+    <peripheral derivedFrom="MDR_TIMER1">
+      <name>MDR_TIMER4</name>
+      <baseAddress>0x40098000</baseAddress>
+    </peripheral>
     <!-- #SSPs  -->
     <!-- SSP1 -->
     <peripheral>

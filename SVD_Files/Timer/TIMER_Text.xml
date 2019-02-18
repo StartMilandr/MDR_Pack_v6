@@ -1,0 +1,72 @@
+#TIMER_SIZE_VE1x
+<size>0x90</size>
+
+#TIMER_SIZE_VEx
+<size>0x80</size>
+
+#TIMER_MASK16
+<resetMask>0x0000FFFF</resetMask>
+
+#TIMER_MASK32
+<resetMask>0xFFFFFFFF</resetMask>
+
+#TIMER_RANGE16
+<bitRange>[15:0]</bitRange>
+
+#TIMER_RANGE32
+<bitRange>[31:0]</bitRange>
+
+#TIMER_UpDown_Ext_nVE1
+<enumeratedValue><name>UpDown_ExtEvents</name><description>Count External Events UP and Down</description><value>3</value></enumeratedValue>
+
+#TIMER_Event_9_VE1
+<enumeratedValue><name>Fall_ETR</name><description>Fall front in ETR pin</description><value>9</value></enumeratedValue>
+
+#TIMER_Event_10_VE1
+<enumeratedValue><name>CNT_eq_ARR_TIM4</name><description>CNT gets ARR in Timer4</description><value>10</value></enumeratedValue>
+
+#TIMER_MDA_REX_VE1
+<!--DMA_RE1-->
+<register derivedFrom="DMA_RE">
+  <name>DMA_RE1</name>
+  <description>DMA Request Enable for TIMx_DMA_REQ1</description>
+  <addressOffset>0x00000080</addressOffset>
+</register>
+<!--DMA_RE2-->
+<register derivedFrom="DMA_RE">
+  <name>DMA_RE2</name>
+  <description>DMA Request Enable for TIMx_DMA_REQ2</description>
+  <addressOffset>0x00000084</addressOffset>
+</register>
+<!--DMA_RE3-->
+<register derivedFrom="DMA_RE">
+  <name>DMA_RE3</name>
+  <description>DMA Request Enable for TIMx_DMA_REQ3</description>
+  <addressOffset>0x00000088</addressOffset>
+</register>
+<!--DMA_RE4-->
+<register derivedFrom="DMA_RE">
+  <name>DMA_RE4</name>
+  <description>DMA Request Enable for TIMx_DMA_REQ4</description>
+  <addressOffset>0x0000008C</addressOffset>
+</register>
+
+
+#MDR_TIMER2
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER2</name>
+  <baseAddress>0x40078000</baseAddress>
+</peripheral>
+
+#MDR_TIMER3
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER3</name>
+  <baseAddress>0x40080000</baseAddress>
+</peripheral>
+
+#MDR_TIMER4
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER4</name>
+  <baseAddress>0x40098000</baseAddress>
+</peripheral>
+

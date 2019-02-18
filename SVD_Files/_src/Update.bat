@@ -15,3 +15,9 @@ call "../ADC/Run.bat
 
 cd C:\CODE\PACK\__SVD\Exe
 call "../SSP/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../UART/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../Timer/Run.bat

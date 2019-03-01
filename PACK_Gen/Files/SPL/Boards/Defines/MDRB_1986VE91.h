@@ -361,7 +361,9 @@
   
   #define MDRB_UART2_TX_PF1_Func	    MDR_PIN_OVER
 	#define MDRB_UART2_RX_PF0_Func	    MDR_PIN_OVER  
-    
+
+
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

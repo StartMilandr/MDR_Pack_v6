@@ -134,12 +134,15 @@ typedef struct {
 } MDR_PerClock_Cfg;
 
 //  Включение тактирования на блок для доступа к регистрам
-__STATIC_INLINE void MDR_PerClock_Enable(const MDR_PerClock_Cfg *pCfgClock)  {REG32(pCfgClock->ClockEna_Addr) |= pCfgClock->ClockEna_Mask;};
-__STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) &= ~pCfgClock->ClockEna_Mask;};
+__STATIC_INLINE void MDR_PerClock_Enable(const MDR_PerClock_Cfg *pCfgClock)  {REG32(pCfgClock->ClockEna_Addr) |= pCfgClock->ClockEna_Mask;}
+__STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) &= ~pCfgClock->ClockEna_Mask;}
 
 //  Подача рабочей частоты Uart_Clock, SSP_Clock, Timer_Clock
                 void MDR_PerClock_GateOpen (const MDR_PerClock_Cfg *pCfgClock, MDR_BRG_DIV_128 clockBRG);
-__STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~pCfgClock->ClockGate_ClockOn_Msk;};
+__STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~pCfgClock->ClockGate_ClockOn_Msk;}
+
+                void MDR_PerClock_SetBRG     (const MDR_PerClock_Cfg *pCfgClock, MDR_BRG_DIV_128 clockBRG);  //  Change BRG, not set Enable!
+__STATIC_INLINE void MDR_PerClock_SetGateOpen(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) |= pCfgClock->ClockGate_ClockOn_Msk;}
 
 
 #endif //MDR_RST_CLOCK_H

@@ -65,6 +65,13 @@ typedef enum {
 } MDR_DIV_2;
 
 typedef enum {
+  MDR_PSC_div1      = 0,
+  MDR_PSC_div2      = 1,
+  MDR_PSC_div4      = 2,
+  MDR_PSC_div8      = 3,
+} MDR_PSC_DIV_8;
+
+typedef enum {
   MDR_CLK_div1      = 0,
   MDR_CLK_div2      = 8,
   MDR_CLK_div4      = 9,

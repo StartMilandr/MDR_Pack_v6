@@ -830,7 +830,7 @@
     </component>    
     <!-- EEPROM -->
     <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM1CM3">
-      <description>Core System Timer</description>
+      <description>EEPROM Control</description>
       <files>
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM.c" version="2.0.0"/>
@@ -838,7 +838,7 @@
     </component> 
     <!-- EEPROM 18MHz-->
     <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM0">
-      <description>Core System Timer</description>
+      <description>EEPROM Control</description>
       <files>
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM_18MHz.c" version="2.0.0"/>
@@ -846,7 +846,7 @@
     </component> 
     <!-- BKP RTC -->
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Core System Timer</description>
+      <description>Backup and RTC</description>
       <files>
         <file category="header"  name="SPL/Drivers/MDR_BKP_RTC.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_BKP_RTC.c" version="2.0.0"/>
@@ -904,7 +904,16 @@
         <file category="header"  name="SPL/Drivers/MDR_UART.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_UART.c" version="2.0.0"/>
       </files>
-    </component>    
+    </component>
+    <!--Timer-->
+    <component Cclass="Drivers" Cgroup="Timer" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Timer driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_Timer.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_Timer.c" version="2.0.0"/>
+      </files>
+    </component>     
     <!-- ADCUI Driver -->
     <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>ADCUI driver</description>
@@ -939,7 +948,7 @@
     </component>
     <!-- LCD Driver -->
     <component Cclass="Drivers" Cgroup="LCD" Cversion="2.0" condition="CON_MDR1986VK214">
-      <description>I2C driver</description>
+      <description>LCD driver</description>
       <files>
         <file category="header" name="SPL/Drivers/MDR_LCD_VK214.h"/>
         <file category="source" name="SPL/Drivers/MDR_LCD_VK214.c"/>
@@ -962,15 +971,7 @@
         <file category="header" name="SPL/Drivers/MDR32F9Qx_power.h"/>
         <file category="source" name="SPL/Drivers/MDR32F9Qx_power.c"/>
       </files>
-    </component>
-    <!-- TIMER Driver -->
-    <component Cclass="Drivers" Cgroup="TIMER" Cversion="1.9" condition="CON_MDR_ALL">
-      <description>TIMER driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_timer.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_timer.c"/>
-      </files>
-    </component>    
+    </component>   
     <!-- CRC  Driver -->
     <component Cclass="Drivers" Cgroup="CRC" Cversion="1.9" condition="CON_MDR1986VK234">
       <description>CRC driver</description>
@@ -1014,7 +1015,7 @@
       </files>
     </component>
     <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM1CM3">
-      <description>Buttons control</description>
+      <description>Display MT 12864x control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1026,7 +1027,7 @@
       </files>
     </component>     
     <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR1986VE4">
-      <description>Buttons control</description>
+      <description>Display MT 10T7 control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1037,7 +1038,7 @@
       </files>
     </component>     
     <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR1986VK214">
-      <description>Buttons control</description>
+      <description>Display XT13468PSPA control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1049,7 +1050,7 @@
       </files>
     </component>
     <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR1986VK234">
-      <description>Buttons control</description>
+      <description>Display HTD B083 control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1072,7 +1073,7 @@
       </files>
     </component>
     <component Cclass="Board Support" Cgroup="UART_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>UART Debug printf</description>
+      <description>UART pins definitions</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1255,6 +1256,25 @@
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="UART_Debug"      Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="UART_PinSelect"  Cversion="2.0" condition="CON_MDR_ALL"/>
+      </attributes>
+    </example>
+
+    <example name="Timer_Test" folder="Examples/All_Boards/Timer_Test" doc="ReadMe.md" version="2.0.0">
+      <description>Timer use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project>
+        <environment name="uv" load="Timer_Test.uvmpw"/>
+      </project>
+      <attributes>
+        <component Cclass="CMSIS"         Cgroup="CORE"/>
+        <component Cclass="Device"        Cgroup="Startup"/>
+        <component Cclass="Drivers"       Cgroup="RST Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="GPIO Port"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="UseFuncs"     Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="Timer"         Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
+        <!--component Cclass="Board Support" Cgroup="UART_Debug"      Cversion="2.0" condition="CON_MDR_ALL"/-->
       </attributes>
     </example>
 

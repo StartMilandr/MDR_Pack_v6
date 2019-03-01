@@ -179,6 +179,9 @@ typedef enum IRQn
 /*=========  UART ========*/
 #include <MDR_UART_Defs.h>
 
+/*=========  TIMER ========*/
+#include <MDR_TimerVE13_Defs.h>
+
 /*@}*/ /* end of group MDR1986VE1_Peripherals */
 
 
@@ -233,12 +236,16 @@ typedef enum IRQn
 #define ADDR_SSP2_BASE        0x400A0000UL
 #define ADDR_SSP3_BASE        0x400F8000UL
 
-#define ADDR_WWDT_BASE         0x40060000UL
-#define ADDR_IWDT_BASE         0x40068000UL
+#define ADDR_WWDT_BASE        0x40060000UL
+#define ADDR_IWDT_BASE        0x40068000UL
 
-#define ADDR_UART1_BASE        0x40030000UL
-#define ADDR_UART2_BASE        0x40038000UL
+#define ADDR_UART1_BASE       0x40030000UL
+#define ADDR_UART2_BASE       0x40038000UL
 
+#define ADDR_TIMER1_BASE      0x40070000UL
+#define ADDR_TIMER2_BASE      0x40078000UL
+#define ADDR_TIMER3_BASE      0x40080000UL
+#define ADDR_TIMER4_BASE      0x40098000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -258,23 +265,48 @@ typedef enum IRQn
 #define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
 #define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
-#define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
-#define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
-#define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
-#define MDR_PORTD                      ((MDR_PORT_Type 	*) ADDR_PORTD_BASE)
-#define MDR_PORTE                      ((MDR_PORT_Type 	*) ADDR_PORTE_BASE)
-#define MDR_PORTF                      ((MDR_PORT_Type 	*) ADDR_PORTF_BASE)
+#define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
+#define MDR_PORTB                      ((MDR_PORT_Type 	    *) ADDR_PORTB_BASE)
+#define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
+#define MDR_PORTD                      ((MDR_PORT_Type 	    *) ADDR_PORTD_BASE)
+#define MDR_PORTE                      ((MDR_PORT_Type 	    *) ADDR_PORTE_BASE)
+#define MDR_PORTF                      ((MDR_PORT_Type 	    *) ADDR_PORTF_BASE)
 
-#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
-#define MDR_SSP2                       ((MDR_SSP_Type *)   ADDR_SSP2_BASE)
-#define MDR_SSP3                       ((MDR_SSP_Type *)   ADDR_SSP3_BASE)
+#define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
+#define MDR_SSP2                       ((MDR_SSP_Type       *) ADDR_SSP2_BASE)
+#define MDR_SSP3                       ((MDR_SSP_Type       *) ADDR_SSP3_BASE)
 
-#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
-#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+#define MDR_WWDT                       ((MDR_WWDT_Type      *) ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type      *) ADDR_IWDT_BASE)
 
 #define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
 
+#define MDR_TIMER1                     ((MDR_TIMER_Type 	  *) ADDR_TIMER1_BASE)
+#define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
+#define MDR_TIMER3                     ((MDR_TIMER_Type 	  *) ADDR_TIMER3_BASE)
+#define MDR_TIMER4                     ((MDR_TIMER_Type 	  *) ADDR_TIMER4_BASE)
+
+//  Timer Channels
+#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 4))
+#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 5))
+#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 6))
+#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 7))
+
+#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 4))
+#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 5))
+#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 6))
+#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 7))
+
+#define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 4))
+#define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 5))
+#define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 6))
+#define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 7))
+
+#define MDR_TIMER4_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER4_BASE + 4))
+#define MDR_TIMER4_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER4_BASE + 5))
+#define MDR_TIMER4_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER4_BASE + 6))
+#define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER4_BASE + 7))
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -352,6 +384,35 @@ typedef enum IRQn
 
 #define   MDR_UART1_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART1_BRG_Pos
 #define   MDR_UART2_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART2_BRG_Pos
+
+//----------------    TIMER Definitions  --------------------
+//  UART Block Clock enable
+#define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_TIMER4_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+
+#define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER__TIMER1_CLK_EN_Msk
+#define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER__TIMER2_CLK_EN_Msk
+#define   MDR_TIMER3_CLK_EN_MSK            MDR_RST_PER__TIMER3_CLK_EN_Msk
+#define   MDR_TIMER4_CLK_EN_MSK            MDR_RST_PER__TIMER4_CLK_EN_Msk
+
+//  UART_ClockGate configs
+#define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+#define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+#define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+#define   MDR_TIMER4_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
+
+#define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
+#define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk
+#define   MDR_TIMER3_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM3_CLK_EN_Msk
+#define   MDR_TIMER4_CLOCK_GATE_ENA_MSK    MDR_RST_UART__TIM4_CLK_EN_Msk
+
+#define   MDR_TIMER1_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM1_BRG_Pos
+#define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
+#define   MDR_TIMER3_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM3_BRG_Pos
+#define   MDR_TIMER4_CLOCK_GATE_BRG_POS    MDR_RST_UART__TIM4_BRG_Pos
+
 
 
 /** @} */ /* End of group MDR1986VE1 */

@@ -171,6 +171,9 @@ typedef enum IRQn
 /*=========  UART ========*/
 #include <MDR_UART_Defs.h>
 
+/*=========  TIMER ========*/
+#include <MDR_TimerVx_Defs.h>
+
 /*@}*/ /* end of group MDR1986VE4_Peripherals */
 
 
@@ -225,6 +228,10 @@ typedef enum IRQn
 #define ADDR_UART1_BASE        0x40008000UL
 #define ADDR_UART2_BASE        0x40010000UL
 
+#define ADDR_TIMER1_BASE      0x40070000UL
+#define ADDR_TIMER2_BASE      0x40078000UL
+
+
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
 
@@ -254,6 +261,21 @@ typedef enum IRQn
 
 #define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
+
+#define MDR_TIMER1                     ((MDR_TIMER_Type 	  *) ADDR_TIMER1_BASE)
+#define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
+
+//  Timer Channels
+#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 4))
+#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 5))
+#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 6))
+#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 7))
+
+#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 4))
+#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 5))
+#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 6))
+#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 7))
+
 
 /* =========================================================================================================================== */
 /* ================                                       SPL_Configs                                         ================ */

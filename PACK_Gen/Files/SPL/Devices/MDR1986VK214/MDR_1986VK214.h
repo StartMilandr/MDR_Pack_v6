@@ -152,6 +152,10 @@ typedef enum IRQn
 /*=========  UART ========*/
 #include <MDR_UART_Defs.h>
 
+/*=========  TIMER ========*/
+#include <MDR_TimerVx_Defs.h>
+
+
 //  ==========  Blocks from previouse PACK
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
@@ -165,11 +169,8 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 
 #include "MDRP_I2C_defs.h"
-#include "MDRP_LCD_defs.h"
-#include "MDRP_WDT_defs.h"
 #include "MDRP_POWER_defs.h"
 
-#include "MDRP_TIMER_defs.h"
 
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
 
@@ -228,13 +229,13 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define ADDR_UART1_BASE        0x40008000UL
 #define ADDR_UART2_BASE        0x40010000UL
 
+#define ADDR_TIMER1_BASE      0x40070000UL
+#define ADDR_TIMER2_BASE      0x40078000UL
+
 //  Blocks from previouse PACK
 #define MDR_I2C_BASE                   (0x40030000)
 #define MDR_POWER_BASE                 (0x40058000)
-#define MDR_TIMER1_BASE                (0x40070000)
-#define MDR_TIMER2_BASE                (0x40078000)
 
-#define uint_tim  uint16_t
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -269,13 +270,18 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
 
+#define MDR_TIMER1                     ((MDR_TIMER_Type 	  *) ADDR_TIMER1_BASE)
+#define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
+
+//  Timer Channels - there is only one channel in Timer
+#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 4))
+#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 4))
+
 
 //  Blocks from previouse PACK
 
 #define MDR_I2C                        ((MDR_I2C_TypeDef 	  *) MDR_I2C_BASE)
 #define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)
-#define MDR_TIMER1                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER1_BASE)
-#define MDR_TIMER2                     ((MDR_TIMER_TypeDef 	*) MDR_TIMER2_BASE)
 
 
 /* =========================================================================================================================== */

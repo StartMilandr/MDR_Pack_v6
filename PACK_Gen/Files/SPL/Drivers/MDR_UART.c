@@ -337,7 +337,7 @@ void MDR_UARTex_InitByBaud(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *
   //  Включение тактирования блока
   MDR_PerClock_Enable(&UARTex->CfgClock);  
   //  Подача частоты
-  MDR_PerClock_GateOpen(&UARTex->CfgClock, cfgEx->ClockBRG);      
+  MDR_PerClock_GateOpen(&UARTex->CfgClock, cfgEx->ClockBRG);
   //  Инициализация параметров UART
   MDR_UART_InitByBaud(UARTex->UARTx, cfgEx->pCfgUART, cfgBaud);
   //  Инициализация прерываний в NVIC, чтобы пользователь не забыл
@@ -363,7 +363,7 @@ void MDR_UART_ChangeRateEx(MDR_UART_Type *UART, const MDR_UART_cfgBaud *cfgBaud)
   uint32_t CR_tmp = UART->CR;
   uint32_t LCR_tmp = UART->LCR_H;
     
-  //  Stop UART
+  //  Stop UART - Не работает!
   //UART->CR &= ~MDR_UART_CR_EN_Msk;  
   
   //  Wait active transfer completed

@@ -35,7 +35,8 @@ extern "C" {
 
 
 /* ========================================  CNT, ARR, CCR, CCR1 ===================================================== */
-#define uint_tim   uint32_t
+#define uint_tim        uint16_t
+#define TIM_MAX_VALUE   0xFFFF
 
 typedef struct {
   __IOM uint32_t Value      : 16;       /*!< [15..0] Counter Value                                                     */

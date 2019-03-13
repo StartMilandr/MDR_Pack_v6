@@ -136,19 +136,19 @@ typedef struct {
 
 
 extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
-#define MDR_SSP1ex            &_MDR_SSP1ex
+#define MDR_SSP1ex            (&_MDR_SSP1ex)
 
 #ifdef MDR_SSP2
   extern const MDR_SSP_TypeEx  _MDR_SSP2ex;
-  #define MDR_SSP2ex          &_MDR_SSP2ex
+  #define MDR_SSP2ex          (&_MDR_SSP2ex)
 #endif
 #ifdef MDR_SSP3
   extern const MDR_SSP_TypeEx  _MDR_SSP3ex;
-  #define MDR_SSP3ex          &_MDR_SSP3ex
+  #define MDR_SSP3ex          (&_MDR_SSP3ex)
 #endif
 #ifdef MDR_SSP4
   extern const MDR_SSP_TypeEx  _MDR_SSP4ex;
-  #define MDR_SSP4ex          &_MDR_SSP4ex
+  #define MDR_SSP4ex          (&_MDR_SSP4ex)
 #endif
 
 //  Эти расширенные Функции Init/Finit включают/выключают 

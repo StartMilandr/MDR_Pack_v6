@@ -87,13 +87,13 @@ static void Test_Init(void)
   MDR_Timer_InitBRKETR(MDR_TIMER1ex, cfgBRKETR);
   
   //  PinsInit
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_nCH1, MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH1, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);
   
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_ETR, MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_BRK, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_ETR, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_BRK, MDR_PIN_FAST);
     
   // Sync Start
   MDR_Timer_Start(MDR_TIMER1ex);
@@ -101,10 +101,10 @@ static void Test_Init(void)
 
 static void Test_Finit(void)
 {
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_CH1);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_nCH1);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_CH2);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_nCH2);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH1);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH2);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH2);
    
   MDR_Timer_Stop(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER1ex);

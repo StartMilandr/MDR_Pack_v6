@@ -36,7 +36,8 @@ extern "C" {
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
 /* ========================================  CNT, ARR, CCR, CCR1 ===================================================== */
-#define uint_tim   uint32_t
+#define uint_tim        uint32_t
+#define TIM_MAX_VALUE   0xFFFFFFFF
 
 typedef struct {
   __IOM uint_tim    Value      : 32;    /*!< [31..0] Counter Value                                                     */

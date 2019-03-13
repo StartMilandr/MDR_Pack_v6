@@ -7,10 +7,10 @@
 
 
 //  ОПИСАНИЕ:
-//    Пример подсчета внешних импульсов на входе ETR.
-//    Таймер1 генерирует импульсы, которые подаются на вход ETR Таймера2.
-//    По прерываниям Таймера1 переключается светодиод1, По прерываниям Таймера2, переключается светодиод2.
-//    Изменения настройки фильтров, частоты сэмплирования и прочего отображаются на периоде мигания светодиодов.
+//    Timer1 генерирует импульсы на выходе CH1 и мигает светодиодом LED1 каждый период.
+//    Timer2 захватывает события переднего и заднего фронтов сигнала от Timer1_CH1.
+//      При каждом событии генерируется прерывание и переключается светодиод LED2.
+//    Мигания светодиода LED2 должны получиться в 2 раза чаще чем LED1.
 
 
 //  Test Interface functions
@@ -23,7 +23,7 @@ static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
 static void  Test_HandleTim3IRQ(void);
 
-TestInterface TI_PWM_CountETR = {
+TestInterface TI_CAP_Simplest = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
   .funcChange     = Test_Change,
@@ -40,45 +40,25 @@ TestInterface TI_PWM_CountETR = {
 #define TIM_PERIOD    3000
 #define LED2_PERIOD   4
 
-static const MDR_Timer_cfgBRKETR  cfgBRKETR = {
-  .Bits.BRK_INV = MDR_Off, 
-  .Bits.ETR_INV = MDR_Off, 
-  .Bits.ETR_PSC = MDR_TIM_BRKETR_ETR_div1,
-  .Bits.ETR_Filter = MDR_TIM_FLTR_TIM_CLK
-};
-
-static const MDR_Timer_CfgCountETR  cfgETR = {  
-  .cfgPeriod.clockBRG = TIM_BRG,
-  .cfgPeriod.period = LED2_PERIOD,
-  .cfgPeriod.startValue = 0,
-  .cfgPeriod.periodUpdateImmediately = MDR_Off,
-  
-  .cfgIRQ.SelectIRQ   = TIM_FL_CNT_ARR,
-  .cfgIRQ.priorityIRQ = 0,
-  .cfgIRQ.activateNVIC_IRQ = true,
-   
-  .selFrontETR = TIM_FrontRise,  
-  .countDir    = TIM_CountUp,
-  .clockDTS    = TIM_FDTS_TimClk_div1
-};
-
 static void Test_Init(void)
 {  
-  MDRB_LCD_Print("Count ETR", 3);
+  MDRB_LCD_Print("CAP Simplest", 3);
   MDRB_LCD_ClearLine(5);
     
   MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
   MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);  
   
-  //  Timer1_CH1 - Pulse output for ETR, show period with LED1
+  //  Timer1_CH1 - Pulse output for Capture
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
   MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD, 50);
+  
   MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
      
-  //  Timer2 Count ETR and, show period with LED2
-  MDR_Timer_InitCountETR(MDR_TIMER2ex, &cfgETR);
-  MDR_Timer_InitBRKETR(MDR_TIMER2ex, cfgBRKETR);
-  MDR_TimerCh_InitPinGPIO(&_pinTim2_ETR, MDR_PIN_FAST);
+  //  Timer2_CH1 - Capture Rise and Fall fronts from Timer1_CH1
+  MDR_Timer_InitPeriodDirIRQ(MDR_TIMER2ex, TIM_BRG, TIM_PSC, TIM_PERIOD, TIM_FL_CCR_CAP_CH1 | TIM_FL_CCR1_CAP_CH1, TIM_CountUp);
+  MDR_TimerCh_InitCAP(MDR_TIMER2_CH1, NULL);
+  
+  MDR_TimerCh_InitPinGPIO(&_pinTim2_CH1, MDR_PIN_FAST);
     
   // Sync Start
   MDR_Timer_StartSync(TIM1_StartMsk | TIM2_StartMsk);
@@ -119,7 +99,14 @@ static void Test_HandleTim1IRQ(void)
 
 static void Test_HandleTim2IRQ(void)
 {
-  MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
+  if (MDR_Timer_GetStatus(MDR_TIMER2) & TIM_FL_CCR_CAP_CH1)
+  {  
+    MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CCR_CAP_CH1);
+  }  
+  else if (MDR_Timer_GetStatus(MDR_TIMER2) & TIM_FL_CCR1_CAP_CH1)
+  {
+    MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CCR1_CAP_CH1);
+  }
   
   MDRB_LED_Switch(MDRB_LED_2);
 }

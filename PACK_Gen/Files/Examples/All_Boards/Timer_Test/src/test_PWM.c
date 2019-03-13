@@ -6,7 +6,7 @@
 #include "test_Defs.h"
 
 //  ОПИСАНИЕ:
-//  Пример генерации ШИМ по умолчанию - без задания опциональных настроек.
+//  Пример генерации ШИМ по умолчанию - без задания опциональных настроек, MDR_TimerCh_CfgPWM = NULL.
 
 //  Test Interface functions
 static void  Test_Init(void);
@@ -45,20 +45,20 @@ static void Test_Init(void)
   MDR_TimerCh_InitPWM (MDR_TIMER1_CH1, NULL, MDR_TIM_PWM_RefTgl_eqCCR,  PERIOD_VALUE / 3);
   MDR_TimerCh_InitPWM1(MDR_TIMER1_CH2, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, PERIOD_VALUE / 3, PERIOD_VALUE * 2 / 3);
   
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_nCH1, MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH1, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);
   
   //  Timer2
   MDR_Timer_InitPeriodDir(MDR_TIMER2ex, BRG_VALUE, PSC_VALUE2, PERIOD_VALUE, false, TIM_CountUpDown);
   MDR_TimerCh_InitPWM (MDR_TIMER2_CH3, NULL, MDR_TIM_PWM_RefTgl_eqCCR,  PERIOD_VALUE / 3);
   MDR_TimerCh_InitPWM1(MDR_TIMER2_CH4, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, PERIOD_VALUE / 3, PERIOD_VALUE * 2 / 3);  
 
-  MDR_TimerCH_InitPinGPIO(&_pinTim2_CH3,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim2_nCH3, MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim2_CH4,  MDR_PIN_FAST);
-  MDR_TimerCH_InitPinGPIO(&_pinTim2_nCH4, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim2_CH3,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim2_nCH3, MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim2_CH4,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&_pinTim2_nCH4, MDR_PIN_FAST);
 
   // Sync Start
   MDR_Timer_StartSync(TIM1_StartMsk | TIM2_StartMsk);
@@ -66,15 +66,15 @@ static void Test_Init(void)
 
 static void Test_Finit(void)
 {
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_CH1);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_nCH1);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_CH2);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim1_nCH2);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH1);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH2);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH2);
   
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim2_CH3);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim2_nCH3);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim2_CH4);
-  MDR_TimerCH_DeInitPinGPIO(&_pinTim2_nCH4);  
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim2_CH3);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim2_nCH3);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim2_CH4);
+  MDR_TimerCh_DeInitPinGPIO(&_pinTim2_nCH4);  
   
   MDR_Timer_StopSync(TIM1_StartMsk | TIM2_StartMsk);
   MDR_Timer_DeInit(MDR_TIMER1ex);

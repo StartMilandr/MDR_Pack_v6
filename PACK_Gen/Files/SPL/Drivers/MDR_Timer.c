@@ -104,22 +104,34 @@ static void MDR_Timer_ClearRegs(MDR_TIMER_Type *TIMER)
 
 
 //=====================   Timers Start and most usefull control ==================
-void MDR_Timer_SetCNT(MDR_TIMER_Type *TIMERx, uint_tim value)
+void MDR_Timer_ChangeCNT(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while (TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
   TIMERx->CNT = (uint32_t)value;
 }
 
-void MDR_Timer_SetPeriod(MDR_TIMER_Type *TIMERx, uint_tim value)
+void MDR_Timer_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while (TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
   TIMERx->ARR = (uint32_t)(value - 1);
 }
 
-void MDR_Timer_SetPSG(MDR_TIMER_Type *TIMERx, uint_tim value)
+void MDR_Timer_ChangePSG(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while (TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
   TIMERx->PSG = (uint32_t)value;
+}
+
+void MDR_TimerCh_ChangeCCR(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
+{
+  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0){};
+  TIMER_CH->CCR = (uint32_t)value;
+}
+
+void MDR_TimerCh_ChangeCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
+{
+  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0){};
+  TIMER_CH->CCR1 = (uint32_t)value;
 }
 
 
@@ -137,24 +149,20 @@ static void MDR_Timer_InitAndClear_loc(const MDR_TIMER_TypeEx *TIMERex)
   MDR_Timer_ClearRegs(TIMERex->TIMERx);  
 }
 
-static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint_tim period, bool enaIRQ, const uint32_t flags)
-{
-  //  Включение тактирования блока
-  //MDR_PerClock_Enable(&TIMERex->CfgClock);
-  
+static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint_tim period, const uint32_t selectIRQ, const uint32_t flags)
+{ 
   //  Set Timer Settings
-  //MDR_Timer_ClearRegs(TIMERex->TIMERx);
-  MDR_Timer_SetPeriod(TIMERex->TIMERx, period);
+  TIMERex->TIMERx->ARR = period;
 
-  TIMERex->TIMERx->IE = TIM_FL_CNT_ARR;
+  TIMERex->TIMERx->IE = selectIRQ;
   TIMERex->TIMERx->CNTRL = MDR_TIMER_CNTRL_CNT_EN_Msk | flags;
-  //  При включении таймера EN выставляется флаг CNT==ARR!?
-  //  Поэтому и NVIC инициализируется после включения таймера. 
+  //  При включении таймера EN выставляется флаг CNT==ARR и CNT==0 (STATUS = 0x3)
+  //  Поэтому NVIC инициализируется после включения таймера. 
   //  Иначе сразу произойдет прерывание при EN - не успеем стереть STATUS = 0  
   TIMERex->TIMERx->STATUS = 0;
   
   //  IRQ Enable
-  if (enaIRQ)
+  if (selectIRQ != 0)
   {
     //NVIC_ClearPendingIRQ(TIMERex->TIMERx_IRQn);
     NVIC_EnableIRQ(TIMERex->TIMERx_IRQn);
@@ -167,8 +175,11 @@ static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DI
 void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ)
 {
   MDR_Timer_InitAndClear_loc(TIMERex);
-  MDR_Timer_SetPSG(TIMERex->TIMERx, timClockPSG);  
-  MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, enaIRQ, 0);
+  TIMERex->TIMERx->PSG = timClockPSG;
+  if (enaIRQ)
+    MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, TIM_FL_CNT_ARR, 0);
+  else
+    MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, 0, 0);
 }
 
 static const uint32_t _TIM_DirFlags_CountClock[3] = {
@@ -179,9 +190,17 @@ static const uint32_t _TIM_DirFlags_CountClock[3] = {
 
 void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir)
 {  
+  if (enaIRQ)
+    MDR_Timer_InitPeriodDirIRQ(TIMERex, clockBRG, timClockPSG, period, TIM_FL_CNT_ARR, dir);
+  else
+    MDR_Timer_InitPeriodDirIRQ(TIMERex, clockBRG, timClockPSG, period, 0, dir);
+}
+
+void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir)
+{  
   MDR_Timer_InitAndClear_loc(TIMERex);  
-  MDR_Timer_SetPSG(TIMERex->TIMERx, timClockPSG);  
-  MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, enaIRQ, _TIM_DirFlags_CountClock[dir]);
+  TIMERex->TIMERx->PSG = timClockPSG;
+  MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, selectIRQ, _TIM_DirFlags_CountClock[dir]);
 }
 
 #ifdef TIMER4_EXIST
@@ -228,13 +247,9 @@ void MDR_Timer_DeInit(const MDR_TIMER_TypeEx *TIMERex)
 //=====================   Internal Counting, CNT_CLOCK = TIM_CLOCK/(PSG + 1), TIM_CLOCK = CLK / BRG ==================
 static void MDR_Timer_InitCount_loc(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgPeriod *cfgPeriod, const MDR_Timer_CfgIRQ *cfgIRQ, const uint32_t regCtrl)
 {
-  //  Включение тактирования блока
-  //MDR_PerClock_Enable(&TIMERex->CfgClock);  
-  //  Set Timer Settings
-  //MDR_Timer_ClearRegs(TIMERex->TIMERx);
-  
-  MDR_Timer_SetPeriod(TIMERex->TIMERx, cfgPeriod->period);
-  MDR_Timer_SetCNT(TIMERex->TIMERx, cfgPeriod->startValue);  
+  //  Set Timer Settings 
+  TIMERex->TIMERx->ARR = cfgPeriod->period;
+  TIMERex->TIMERx->CNT = cfgPeriod->startValue;
   
   TIMERex->TIMERx->IE = cfgIRQ->SelectIRQ;
   if (cfgPeriod->periodUpdateImmediately == MDR_On)  
@@ -260,7 +275,7 @@ static void MDR_Timer_InitCount_loc(const MDR_TIMER_TypeEx *TIMERex, const MDR_T
 void MDR_Timer_InitCountTimClock(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountClock *cfgCntClock)
 { 
   MDR_Timer_InitAndClear_loc(TIMERex);
-  MDR_Timer_SetPSG(TIMERex->TIMERx, cfgCntClock->timClockPSG);  
+  TIMERex->TIMERx->PSG = cfgCntClock->timClockPSG;
   MDR_Timer_InitCount_loc(TIMERex, &cfgCntClock->cfgPeriod, &cfgCntClock->cfgIRQ, _TIM_DirFlags_CountClock[cfgCntClock->countDir]);
 }
 
@@ -301,10 +316,10 @@ void MDR_Timer_InitCountETR(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_Cfg
 
 //=====================   Count Channel Capture Events, TIM_CLOCK = CLK / BRG ==================
 
-void MDR_Timer_CountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountCH *cfgCntCH)
+void MDR_Timer_InitCountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountCH *cfgCntCH)
 {
   uint32_t flCNTRL = _TIM_DirFlags_CountExtEvent[cfgCntCH->countDir]
-                   | VAL2FLD_Pos(cfgCntCH->selEventCH, MDR_TIMER_CNTRL_EVENT_SEL_Pos)
+                   | VAL2FLD_Pos(cfgCntCH->selEventCH + MDR_TIM_Event_Ch1, MDR_TIMER_CNTRL_EVENT_SEL_Pos)
                    | VAL2FLD_Pos(cfgCntCH->clockDTS,   MDR_TIMER_CNTRL_FDTS_Pos);
   
   MDR_Timer_InitAndClear_loc(TIMERex);
@@ -315,7 +330,7 @@ void MDR_Timer_CountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_Time
 //===================================    Timer channel Pins   =============================================
 //=========================================================================================================
 
-void MDR_TimerCH_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower)
+void MDR_TimerCh_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower)
 {
   MDR_PinDig_PermRegs pinPermCfg;
   
@@ -325,7 +340,7 @@ void MDR_TimerCH_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pin
   MDR_GPIO_InitDigPin(pinCfg->portGPIO, pinCfg->pinIndex, MDR_Pin_In, pinCfg->pinFunc, &pinPermCfg);
 }
 
-void MDR_TimerCH_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg)
+void MDR_TimerCh_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg)
 {
   MDR_GPIO_InitAnalog(pinCfg->portGPIO, 1 << pinCfg->pinIndex);
 }
@@ -418,7 +433,7 @@ static void MDR_TimerCh_DefaultPWM_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
   //  No DTG, ETR, BRK
 }
 
-void MDR_TimerCh_InitPWM (MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM *cfgPWM, MDR_TIM_PWM_Ref modeRef, uint_tim CCR)
+void MDR_TimerCh_InitPWM(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM *cfgPWM, MDR_TIM_PWM_Ref modeRef, uint_tim CCR)
 {
   MDR_TIMER_CH_CfgRegs cfgRegs;
 
@@ -436,7 +451,7 @@ void MDR_TimerCh_InitPWM (MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM 
   cfgRegs.CH_CNTRL |= VAL2FLD_Pos(modeRef, MDR_TIM_CHx_CNTRL_OCCM_Pos);  
 
   //  Apply
-  MDR_TimerCh_SetCCR(TIMER_CH, CCR);  
+  TIMER_CH->CCR = CCR;
   MDR_TimerCh_InitByCfgRegs(TIMER_CH, &cfgRegs);  
 }
  
@@ -460,8 +475,8 @@ void MDR_TimerCh_InitPWM1(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM 
   cfgRegs.CH_CNTRL2 |= MDR_TIM_CHx_CNTRL2_CCR1_En_Msk;
   
   //  Apply  
-  MDR_TimerCh_SetCCR (TIMER_CH, CCR);
-  MDR_TimerCh_SetCCR1(TIMER_CH, CCR1);
+  TIMER_CH->CCR  = CCR;
+  TIMER_CH->CCR1 = CCR1;
   MDR_TimerCh_InitByCfgRegs(TIMER_CH, &cfgRegs);  
 }
 
@@ -473,17 +488,6 @@ void MDR_TimerCh_DeInit(MDR_TIMER_CH_Type *TIMER_CH)
   TIMER_CH->CHx_DTG    = 0;
 }
 
-void MDR_TimerCh_SetCCR(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
-{
-  while (TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk != 0){};
-  TIMER_CH->CCR = (uint32_t)value;
-}
-
-void MDR_TimerCh_SetCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
-{
-  while (TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk != 0){};
-  TIMER_CH->CCR1 = (uint32_t)value;
-}
 
 // ------------  Простейшая инициализация вывода импульсов - PulsePWM  -----------------------
 void MDR_TimerPulse_InitPulse  (MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, uint8_t widthPerc)
@@ -494,9 +498,65 @@ void MDR_TimerPulse_InitPulse  (MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, ui
 
 void MDR_TimerPulse_ChangeWidth(MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, uint8_t widthPerc)
 {
-  uint_tim width = period / 100 * widthPerc;
-  MDR_TimerCh_SetCCR(TIMER_CH, width);
+  uint_tim width = period * widthPerc / 100;
+  MDR_TimerCh_ChangeCCR(TIMER_CH, width);
+}
+
+void MDR_TimerPulse_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim period, MDR_TIMER_CH_Type *TIMER_CH, uint8_t widthPerc)
+{ 
+  uint_tim width = period * widthPerc / 100;
+  
+  MDR_Timer_ChangePeriod(TIMERx, period);  
+  MDR_TimerCh_ChangeCCR(TIMER_CH, width);
 }
 
 
+//=========================================================================================================
+//=================================      Channel Capture Rise/Fall events (CAP)    =========================================
+//=========================================================================================================
+
+static void MDR_TimerCh_CfgCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MDR_TimerCH_CfgCAP *cfgCAP)
+{
+  cfgRegs->CH_CNTRL = VAL2FLD_Pos(cfgCAP->Filter,   MDR_TIM_CHx_CNTRL_CHFLTR_Pos)
+                    | VAL2FLD_Pos(cfgCAP->EventCAP, MDR_TIM_CHx_CNTRL_CHSEL_Pos)
+                    | VAL2FLD_Pos(cfgCAP->EventPSC, MDR_TIM_CHx_CNTRL_CHPSC_Pos)
+                    | MDR_TIM_CHx_CNTRL_CAP_Mode;
+  
+  cfgRegs->CH_CNTRL2 = VAL2FLD_Pos(cfgCAP->EventCAP1,  MDR_TIM_CHx_CNTRL2_CHSel1_Pos)
+                     | VAL2FLD_Pos(cfgCAP->enableCAP1, MDR_TIM_CHx_CNTRL2_CCR1_En_Pos)
+                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk;
+}
+
+static void MDR_TimerCh_DefaultCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
+{
+  cfgRegs->CH_CNTRL = VAL2FLD_Pos(MDR_TIM_FLTR_TIM_CLK,   MDR_TIM_CHx_CNTRL_CHFLTR_Pos)
+                    | VAL2FLD_Pos(MDR_TIM_CAP_RiseOnPin,  MDR_TIM_CHx_CNTRL_CHSEL_Pos)
+                    | VAL2FLD_Pos(MDR_PSC_div1,           MDR_TIM_CHx_CNTRL_CHPSC_Pos)
+                    | MDR_TIM_CHx_CNTRL_CAP_Mode;
+  
+  cfgRegs->CH_CNTRL2 = VAL2FLD_Pos(MDR_TIM_CAP1_FallOnPin,  MDR_TIM_CHx_CNTRL2_CHSel1_Pos)
+                     | VAL2FLD_Pos(true,                    MDR_TIM_CHx_CNTRL2_CCR1_En_Pos)
+                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk;  
+  
+}
+
+void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCH_CfgCAP *cfgCAP)
+{
+  MDR_TIMER_CH_CfgRegs cfgRegs;
+
+  cfgRegs.CH_CNTRL  = 0;
+  cfgRegs.CH_CNTRL1 = 0;
+  cfgRegs.CH_DTG    = 0;
+  cfgRegs.CH_CNTRL2 = 0;
+  
+  if (cfgCAP != NULL)
+    MDR_TimerCh_CfgCAP_ToCfgRegs(&cfgRegs, cfgCAP);
+  else
+    MDR_TimerCh_DefaultCAP_ToCfgRegs(&cfgRegs);
+
+  //  Apply
+  TIMER_CH->CCR = 0;
+  TIMER_CH->CCR1 = 0;
+  MDR_TimerCh_InitByCfgRegs(TIMER_CH, &cfgRegs);
+}
 

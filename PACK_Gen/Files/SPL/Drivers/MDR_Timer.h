@@ -26,29 +26,79 @@ typedef struct {
 } MDR_TIMER_TypeEx;
 
 extern const MDR_TIMER_TypeEx    _MDR_TIMER1ex;
-#define MDR_TIMER1ex            &_MDR_TIMER1ex
+#define MDR_TIMER1ex            (&_MDR_TIMER1ex)
 
 extern const MDR_TIMER_TypeEx    _MDR_TIMER2ex;
-#define MDR_TIMER2ex            &_MDR_TIMER2ex
+#define MDR_TIMER2ex            (&_MDR_TIMER2ex)
 
 #ifdef TIMER3_EXIST
   extern const MDR_TIMER_TypeEx  _MDR_TIMER3ex;
-  #define MDR_TIMER3ex          &_MDR_TIMER3ex
+  #define MDR_TIMER3ex          (&_MDR_TIMER3ex)
 #endif
 #ifdef TIMER4_EXIST
   extern const MDR_TIMER_TypeEx  _MDR_TIMER4ex;
-  #define MDR_TIMER4ex          &_MDR_TIMER4ex
+  #define MDR_TIMER4ex          (&_MDR_TIMER4ex)
 #endif
+
+
+#define TIM_FL_CNT_ZERO       MDR_TIM_EVENT_CNT_ZERO_Msk    
+#define TIM_FL_CNT_ARR        MDR_TIM_EVENT_CNT_ARR_Msk
+#define TIM_FL_ETR_RE         MDR_TIM_EVENT_ETR_RE_Msk
+#define TIM_FL_ETR_FE         MDR_TIM_EVENT_ETR_FE_Msk
+#define TIM_FL_BRK_Msk        MDR_TIM_EVENT_BRK_Msk
+#define TIM_FL_CCR_CAP_CH1    MDR_TIM_EVENT_CCR_CAP_CH1_Msk
+#define TIM_FL_CCR_CAP_CH2    MDR_TIM_EVENT_CCR_CAP_CH2_Msk
+#define TIM_FL_CCR_CAP_CH3    MDR_TIM_EVENT_CCR_CAP_CH2_Msk
+#define TIM_FL_CCR_CAP_CH4    MDR_TIM_EVENT_CCR_CAP_CH4_Msk
+#define TIM_FL_CCR_REF_CH1    MDR_TIM_EVENT_CCR_REF_CH1_Msk
+#define TIM_FL_CCR_REF_CH2    MDR_TIM_EVENT_CCR_REF_CH2_Msk
+#define TIM_FL_CCR_REF_CH3    MDR_TIM_EVENT_CCR_REF_CH3_Msk
+#define TIM_FL_CCR_REF_CH4    MDR_TIM_EVENT_CCR_REF_CH4_Msk
+#define TIM_FL_CCR1_CAP_CH1   MDR_TIM_EVENT_CCR1_CAP_CH1_Msk
+#define TIM_FL_CCR1_CAP_CH2   MDR_TIM_EVENT_CCR1_CAP_CH2_Msk
+#define TIM_FL_CCR1_CAP_CH3   MDR_TIM_EVENT_CCR1_CAP_CH3_Msk
+#define TIM_FL_CCR1_CAP_CH4   MDR_TIM_EVENT_CCR1_CAP_CH4_Msk
+
+
+//=====================   Ð£Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð°Ð½Ð¸ÑÐ¼Ð¸ Ð¸ DMA ==================
+__STATIC_INLINE void     MDR_Timer_ClearEvent(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->STATUS &= ~eventFlags;}
+__STATIC_INLINE uint32_t MDR_Timer_GetStatus(MDR_TIMER_Type *TIMERx) {return TIMERx->STATUS;}
+
+__STATIC_INLINE void MDR_Timer_EnableEventIQR (MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->IE |= eventFlags;}
+__STATIC_INLINE void MDR_Timer_DisableEventIQR(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->IE &= ~eventFlags;}
+
 
 //=========================================================================================================
 //================================      Counting TIM_Clock or Events   ====================================
 //=========================================================================================================
 
-//=====================   Simplest Timer Period IQR (like SystemTimer) ==================
+//=====================   ÐŸÑ€Ð¾ÑÑ‚ÐµÐ¹ÑˆÐ°Ñ Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ ÑÑ‡ÐµÑ‚Ð° Ñ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¸ÐµÐ¼ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð°Ð½Ð¸Ñ Ð¿Ð¾ Ð¿ÐµÑ€Ð¸Ð¾Ð´Ñƒ (Ð°Ð½Ð°Ð»Ð¾Ð³ SystemTimer) ==================
 
-//  ARR = period - 1, ïîýòîìó çàäàâàòü period > 0.
+//  ARR = period - 1, Ð¿Ð¾ÑÑ‚Ð¾Ð¼Ñƒ Ð·Ð°Ð´Ð°Ð²Ð°Ñ‚ÑŒ period > 0.
 void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ);
 
+
+//=====================   ÐŸÑ€Ð¾ÑÑ‚ÐµÐ¹ÑˆÐ°Ñ Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ ÑÑ‡ÐµÑ‚Ð° Ñ ÑƒÐºÐ°Ð·Ð°Ð½Ð¸ÐµÐ¼ Ð½Ð°Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ ÑÑ‡ÐµÑ‚Ð° Ð¸ Ð²Ñ‹Ð±Ð¾Ñ€Ð¾Ð¼ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð°Ð½Ð¸Ð¹ ==================
+typedef enum {
+  TIM_CountUp,
+  TIM_CountDown,
+  TIM_CountUpDown 
+} MDR_TIM_CountDir;
+
+#ifdef MDR_TIMER_Can_UpDown_ByExtEvents
+  #define MDR_TIM_Event_CountDir    MDR_TIM_CountDir
+#else
+  #define MDR_TIM_Event_CountDir    MDR_TIM_Dir
+#endif
+
+//  ÐÐ½Ð°Ð»Ð¾Ð³ MDR_Timer_InitPeriod, Ð½Ð¾ Ñ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒÑŽ ÑÐ²Ð½Ð¾ Ð·Ð°Ð´Ð°Ñ‚ÑŒ Ð½Ð°Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ ÑÑ‡ÐµÑ‚Ð°
+//  ÐœÐ¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ð¾Ð»ÐµÐ·Ð½Ð° Ð¿Ñ€Ð¸ Ð½ÐµÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ñ€ÐµÐ¶Ð¸Ð¼Ð°Ñ… Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÐ¸Ð³Ð½Ð°Ð»Ð° Ref
+void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir);
+//  ÐÐ½Ð°Ð»Ð¾Ð³ MDR_Timer_InitPeriodDir, Ð½Ð¾ Ñ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒÑŽ Ñ€Ð°Ð·Ñ€ÐµÑˆÐ¸Ñ‚ÑŒ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ñ‹Ðµ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð°Ð½Ð¸Ñ.
+void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir);
+
+
+//=====================   ÐšÐ°ÑÐºÐ°Ð´Ð½Ð¾Ðµ Ð¾Ð±ÑŠÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð¾Ð² ==================
 typedef enum {
   TIM_EventTIM1_CNT_ARR = 0,
   TIM_EventTIM2_CNT_ARR = 1,
@@ -74,7 +124,7 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128
   #define _TIM_CLOCK_GATES_MASK   (TIM1_StartMsk | TIM2_StartMsk)
 #endif
 
-//  Îäíîâðåìåííûé çàïóñê âîçìîæåí òîëüêî äëÿ 3-õ òàéìåðîâ!
+//  ÐžÐ´Ð½Ð¾Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ð¹ Ð·Ð°Ð¿ÑƒÑÐº Ð²Ð¾Ð·Ð¼Ð¾Ð¶ÐµÐ½ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ 3-Ñ… Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð¾Ð²!
 __STATIC_INLINE void MDR_Timer_StartSync(uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK |=  (selTimers & _TIM_CLOCK_GATES_MASK);}
 __STATIC_INLINE void MDR_Timer_StopSync (uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK &= ~(selTimers & _TIM_CLOCK_GATES_MASK);}
 
@@ -83,56 +133,23 @@ __STATIC_INLINE void MDR_Timer_StopSync (uint32_t selTimers) {MDR_CLOCK->TIM_CLO
   __STATIC_INLINE void MDR_Timer4_Stop (void) {MDR_CLOCK->UART_CLOCK &= ~MDR_RST_UART__TIM4_CLK_EN_Msk;}
 #endif
 
-//  Çàïóñò îòäåëüíîãî òàéìåðà
+//  Ð—Ð°Ð¿ÑƒÑÑ‚ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ð¾Ð³Ð¾ Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð°
 __STATIC_INLINE void MDR_Timer_Start(const MDR_TIMER_TypeEx *TIMERex) {MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);}
 __STATIC_INLINE void MDR_Timer_Stop(const MDR_TIMER_TypeEx  *TIMERex) {MDR_PerClock_GateClose  (&TIMERex->CfgClock);}
 
-//  Ôóíêöèè óïðàâëåíèÿ
-void MDR_Timer_SetCNT   (MDR_TIMER_Type *TIMERx, uint_tim value);
-void MDR_Timer_SetPeriod(MDR_TIMER_Type *TIMERx, uint_tim value);
-void MDR_Timer_SetPSG   (MDR_TIMER_Type *TIMERx, uint_tim value);
+//  Ð¤ÑƒÐ½ÐºÑ†Ð¸Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ - Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ð¾ÑÐ»Ðµ Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð° - Start!
+//  Ð˜Ð½Ð°Ñ‡Ðµ, Ð±ÐµÐ· Start Ð½Ðµ Ð¿Ð¾Ð´Ð°Ð½Ð° Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ð° TIM_CLOCK, Ð¸ Ð±Ð¸Ñ‚Ñ‹ WR_CMPL Ð½Ðµ ÑÐ±Ñ€Ð°ÑÑ‹Ð²Ð°ÑŽÑ‚ÑÑ ÑÐ¾Ð²ÑÐµÐ¼.
+//  Ð¡Ð±Ñ€Ð¾ÑÑÑ‚ÑÑ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ñ€Ð¸ Ð¿Ð¾Ð´Ð°Ñ‡Ðµ TIM_CLOCK, Ð¿Ñ€Ð¸ Start.
+void MDR_Timer_ChangeCNT   (MDR_TIMER_Type *TIMERx, uint_tim value);
+void MDR_Timer_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim value);
+void MDR_Timer_ChangePSG   (MDR_TIMER_Type *TIMERx, uint_tim value);
 
-//  Äåèíèöèàëèçàöèÿ
+//  Ð”ÐµÐ¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ
 void MDR_Timer_DeInit(const MDR_TIMER_TypeEx *TIMERex);
 
 
-//=====================   Óïðàâëåíèå ïðåðûâàíèÿìè è DMA ==================
-
-#define TIM_FL_CNT_ZERO       MDR_TIM_EVENT_CNT_ZERO_Msk    
-#define TIM_FL_CNT_ARR        MDR_TIM_EVENT_CNT_ARR_Msk
-#define TIM_FL_ETR_RE         MDR_TIM_EVENT_ETR_RE_Msk
-#define TIM_FL_ETR_FE         MDR_TIM_EVENT_ETR_FE_Msk
-#define TIM_FL_BRK_Msk        MDR_TIM_EVENT_BRK_Msk
-#define TIM_FL_CCR_CAP_CH1    MDR_TIM_EVENT_CCR_CAP_CH1_Msk
-#define TIM_FL_CCR_CAP_CH2    MDR_TIM_EVENT_CCR_CAP_CH2_Msk
-#define TIM_FL_CCR_CAP_CH3    MDR_TIM_EVENT_CCR_CAP_CH2_Msk
-#define TIM_FL_CCR_CAP_CH4    MDR_TIM_EVENT_CCR_CAP_CH4_Msk
-#define TIM_FL_CCR_REF_CH1    MDR_TIM_EVENT_CCR_REF_CH1_Msk
-#define TIM_FL_CCR_REF_CH2    MDR_TIM_EVENT_CCR_REF_CH2_Msk
-#define TIM_FL_CCR_REF_CH3    MDR_TIM_EVENT_CCR_REF_CH3_Msk
-#define TIM_FL_CCR_REF_CH4    MDR_TIM_EVENT_CCR_REF_CH4_Msk
-#define TIM_FL_CCR1_CAP_CH1   MDR_TIM_EVENT_CCR1_CAP_CH1_Msk
-#define TIM_FL_CCR1_CAP_CH2   MDR_TIM_EVENT_CCR1_CAP_CH2_Msk
-#define TIM_FL_CCR1_CAP_CH3   MDR_TIM_EVENT_CCR1_CAP_CH3_Msk
-#define TIM_FL_CCR1_CAP_CH4   MDR_TIM_EVENT_CCR1_CAP_CH4_Msk
-
-__STATIC_INLINE void MDR_Timer_ClearEvent(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->STATUS &= ~eventFlags;}
-
 
 //=====================   Common Defines for Other counting modes ==================
-
-typedef enum {
-  TIM_CountUp,
-  TIM_CountDown,
-  TIM_CountUpDown 
-} MDR_TIM_CountDir;
-
-#ifdef MDR_TIMER_Can_UpDown_ByExtEvents
-  #define MDR_TIM_Event_CountDir    MDR_TIM_CountDir
-#else
-  #define MDR_TIM_Event_CountDir    MDR_TIM_Dir
-#endif
-
 typedef enum {
   TIM_FrontRise = 0,
   TIM_FrontFall = 1
@@ -196,8 +213,8 @@ typedef struct {
   MDR_TIM_FDTS            clockDTS;       //  Sampling Frequency
 } MDR_Timer_CfgCountETR;
 
-//  Íàñòðîêè âûâîäà ETR ñáðàñûâàþòñÿ â 0 (reg BRKETR_CNTRL)
-//  Äëÿ íàñòðîéêè â äðóãèå çíà÷åíèÿ èñïîëüçîâàòü MDR_Timer_InitBRKETR()
+//  ÐÐ°ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð²Ñ‹Ð²Ð¾Ð´Ð° ETR ÑÐ±Ñ€Ð°ÑÑ‹Ð²Ð°ÑŽÑ‚ÑÑ Ð² 0 (reg BRKETR_CNTRL)
+//  Ð”Ð»Ñ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð² Ð´Ñ€ÑƒÐ³Ð¸Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ MDR_Timer_InitBRKETR()
 void MDR_Timer_InitCountETR(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountETR *cfgCntETR);
 
 
@@ -218,11 +235,10 @@ typedef struct {
   
   MDR_TIM_Event_CountDir  countDir;       //  Count Direction  
   MDR_TIM_FDTS            clockDTS;       //  Sampling Frequency
-  //MDR_TimerCH_CfgCAP      cfgCapCH;
 } MDR_Timer_CfgCountCH;
 
-//  Òðåáóåòñÿ ïîñëåäóþùàÿ íàñòðîéêà êàíàëà òàéìåðà â ôóíêöèþ çàõâàòà ïî âûáðàííîìó ñîáûòèþ!
-void MDR_Timer_CountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountCH *cfgCntCH);
+//  Ð¢Ñ€ÐµÐ±ÑƒÐµÑ‚ÑÑ Ð¿Ð¾ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð°Ñ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ° ÐºÐ°Ð½Ð°Ð»Ð° Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð° Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð·Ð°Ñ…Ð²Ð°Ñ‚Ð° Ð¿Ð¾ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð¼Ñƒ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸ÑŽ!
+void MDR_Timer_InitCountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgCountCH *cfgCntCH);
 
 
 //=========================================================================================================
@@ -241,40 +257,37 @@ __STATIC_INLINE void MDR_Timer_InitBRKETR(const MDR_TIMER_TypeEx *TIMERex, const
 //===================================    Timer channel Pins   =============================================
 //=========================================================================================================
 
-//  Ôóíêöèÿ èíèöèàëèçàöèè âûâîäîâ GPIO â ôóíêöèè âíåøíèõ ñèãíàëîâ òàéìåðà  (ETR, BRK) è êàíàëîâ äëÿ ðåæèìîâ çàõâàòà è ØÈÌ (CH, nCH)
+//  Ð¤ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð²Ñ‹Ð²Ð¾Ð´Ð¾Ð² GPIO Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð²Ð½ÐµÑˆÐ½Ð¸Ñ… ÑÐ¸Ð³Ð½Ð°Ð»Ð¾Ð² Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð°  (ETR, BRK) Ð¸ ÐºÐ°Ð½Ð°Ð»Ð¾Ð² Ð´Ð»Ñ Ñ€ÐµÐ¶Ð¸Ð¼Ð¾Ð² Ð·Ð°Ñ…Ð²Ð°Ñ‚Ð° Ð¸ Ð¨Ð˜Ðœ (CH, nCH)
 typedef struct {
   const MDR_GPIO_Port *portGPIO;
   uint32_t       pinIndex;
   MDR_PIN_FUNC   pinFunc;
 } MDR_Timer_CfgPinGPIO;
 
-void MDR_TimerCH_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower);
-void MDR_TimerCH_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg);
+void MDR_TimerCh_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower);
+void MDR_TimerCh_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg);
 
 
 //=========================================================================================================
 //======================================      Channel PWM    ==============================================
 //=========================================================================================================
-//  Ïðè óïðàùåííûõ íàñòðîéêàõ PWM (òå ÷òî áåç óêàçàíèÿ MDR_TimerCh_CfgPin) íàñòðàèâàþòñÿ îáà âûâîäà êàíàëà CH è nCH.
-//  Äëÿ âûâîäà íåîáõîäèìî íàñòðîèòü òîëüêî òå ïèíû â ôóíêöèè êàíàëà òàéìåðà, íà êîòîðûå íåîáõîäèìî âûâåñòè ñèãíàë.
-//  Ê ïðèìåðó, åñëè âûâîä nCH íå íóæåí, òî íå íàäî åãî íàñòðàèâàòü â ôóíêöèþ GPIO TimerX_nCHx.
+//  ÐŸÑ€Ð¸ ÑƒÐ¿Ñ€Ð°Ñ‰ÐµÐ½Ð½Ñ‹Ñ… Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ°Ñ… PWM (Ñ‚Ðµ Ñ‡Ñ‚Ð¾ Ð±ÐµÐ· ÑƒÐºÐ°Ð·Ð°Ð½Ð¸Ñ MDR_TimerCh_CfgPin) Ð½Ð°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°ÑŽÑ‚ÑÑ Ð¾Ð±Ð° Ð²Ñ‹Ð²Ð¾Ð´Ð° ÐºÐ°Ð½Ð°Ð»Ð° CH Ð¸ nCH.
+//  Ð”Ð»Ñ Ð²Ñ‹Ð²Ð¾Ð´Ð° Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¸Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ‚Ðµ Ð¿Ð¸Ð½Ñ‹ Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ ÐºÐ°Ð½Ð°Ð»Ð° Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð°, Ð½Ð° ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸ ÑÐ¸Ð³Ð½Ð°Ð».
+//  Ðš Ð¿Ñ€Ð¸Ð¼ÐµÑ€Ñƒ, ÐµÑÐ»Ð¸ Ð²Ñ‹Ð²Ð¾Ð´ nCH Ð½Ðµ Ð½ÑƒÐ¶ÐµÐ½, Ñ‚Ð¾ Ð½Ðµ Ð½Ð°Ð´Ð¾ ÐµÐ³Ð¾ Ð½Ð°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°Ñ‚ÑŒ Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ GPIO TimerX_nCHx.
 
 
-//  -------- Ïðîñòåéøàÿ ðåàëèçàöèÿ ãåíåðàöèè èìïóëüñîâ -----------
-//  Çàäàíèå ïåðèîäà èìïóëüñîâ äëÿ âñåõ êàíàëîâ òàéìåðà
+//  -------- ÐŸÑ€Ð¾ÑÑ‚ÐµÐ¹ÑˆÐ°Ñ Ñ€ÐµÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ð¸ Ð¸Ð¼Ð¿ÑƒÐ»ÑŒÑÐ¾Ð² -----------
+//  Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ Ð¿ÐµÑ€Ð¸Ð¾Ð´Ð° Ð¸Ð¼Ð¿ÑƒÐ»ÑŒÑÐ¾Ð² Ð´Ð»Ñ Ð²ÑÐµÑ… ÐºÐ°Ð½Ð°Ð»Ð¾Ð² Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð°
 #define MDR_TimerPulse_InitPeriod(timex, brg, psc, period)  MDR_Timer_InitPeriod(timex, brg, psc, period, false)
-//  Çàäàíèå êîýôôèöèåíòà çàïîëíåíèÿ â ïðîöåíòàõ, äëèòåëüíîñòü âûñîêîãî óðîâíÿ íà âûõîäå CH (0 íà nCH)
-//  Â ïàðàìåòðå period óêàçûâàòü çíà÷åíèå period èç MDR_TimerPulse_InitPeriod!
+  
+//  Ð—Ð°Ð´Ð°Ð½Ð¸Ðµ ÐºÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚Ð° Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð² Ð¿Ñ€Ð¾Ñ†ÐµÐ½Ñ‚Ð°Ñ…, Ð´Ð»Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð²Ñ‹ÑÐ¾ÐºÐ¾Ð³Ð¾ ÑƒÑ€Ð¾Ð²Ð½Ñ Ð½Ð° Ð²Ñ‹Ñ…Ð¾Ð´Ðµ CH (0 Ð½Ð° nCH)
+//  Ð’ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ðµ period ÑƒÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ period Ð¸Ð· MDR_TimerPulse_InitPeriod!
 void MDR_TimerPulse_InitPulse  (MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, uint8_t widthPerc);
 void MDR_TimerPulse_ChangeWidth(MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, uint8_t widthPerc);
 
+void MDR_TimerPulse_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim period, MDR_TIMER_CH_Type *TIMER_CH, uint8_t widthPerc);
                                               
-// ----- Ïîëíàÿ èíèöèàëèçàöèÿ ðåæèìà PWM ñî âñåìè íàñòðîéêàìè  -----
-                                              
-// Àíàëîã MDR_Timer_InitPeriod, íî ñ âîçìîæíîñòüþ ÿâíî çàäàòü íàïðàâëåíèå ñ÷åòà
-// Ìîæåò áûòü ïîëåçíà ïðè íåêîòîðûõ ðåæèìàõ ôîðìèðîâàíèÿ ñèãíàëà Ref
-void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir);
-                                              
+// ----- ÐŸÐ¾Ð»Ð½Ð°Ñ Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ñ€ÐµÐ¶Ð¸Ð¼Ð° PWM ÑÐ¾ Ð²ÑÐµÐ¼Ð¸ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ°Ð¼Ð¸  -----
 typedef struct {
   MDR_TIM_DTG_Presc   Presc;           // DTG Prescaller
   MDR_TIM_DTG_CLK     ClockSel;        // DTG Clock Select
@@ -327,23 +340,35 @@ void MDR_TimerCh_InitPWM1(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM 
 
 void MDR_TimerCh_DeInit(MDR_TIMER_CH_Type *TIMER_CH);
 
-void MDR_TimerCh_SetCCR(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value);
-void MDR_TimerCh_SetCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value);
+//  Ð¤ÑƒÐ½ÐºÑ†Ð¸Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ - Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ð¾ÑÐ»Ðµ Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð° - Start!
+//  Ð˜Ð½Ð°Ñ‡Ðµ, Ð±ÐµÐ· Start Ð½Ðµ Ð¿Ð¾Ð´Ð°Ð½Ð° Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ð° TIM_CLOCK, Ð¸ Ð±Ð¸Ñ‚Ñ‹ WR_CMPL Ð½Ðµ ÑÐ±Ñ€Ð°ÑÑ‹Ð²Ð°ÑŽÑ‚ÑÑ ÑÐ¾Ð²ÑÐµÐ¼.
+//  Ð¡Ð±Ñ€Ð¾ÑÑÑ‚ÑÑ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¿Ñ€Ð¸ Ð¿Ð¾Ð´Ð°Ñ‡Ðµ TIM_CLOCK, Ð¿Ñ€Ð¸ Start.
+void MDR_TimerCh_ChangeCCR (MDR_TIMER_CH_Type *TIMER_CH, uint_tim value);
+void MDR_TimerCh_ChangeCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value);
 
-//  Èíèöèàëèçàöèÿ êàíàëà ÷åðåç ðåãèñòðû íàñòðîåê - ìàêñèìàëüíîå áûñòðîäåéñòâèå, íî íåîáõîäèìî ðàçîáðàòüñÿ êàêèå áèòû âûñòàâëÿòü.
+//  Ð˜Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ ÐºÐ°Ð½Ð°Ð»Ð° Ñ‡ÐµÑ€ÐµÐ· Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ñ‹ Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐº - Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ð±Ñ‹ÑÑ‚Ñ€Ð¾Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ, Ð½Ð¾ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ Ñ€Ð°Ð·Ð¾Ð±Ñ€Ð°Ñ‚ÑŒÑÑ ÐºÐ°ÐºÐ¸Ðµ Ð±Ð¸Ñ‚Ñ‹ Ð²Ñ‹ÑÑ‚Ð°Ð²Ð»ÑÑ‚ÑŒ.
 void MDR_TimerCh_InitByCfgRegs(MDR_TIMER_CH_Type *TIMER_CH, MDR_TIMER_CH_CfgRegs *cfgRegs);
 
 
 //=========================================================================================================
-//=================================      Channel Capture (CAP)    =========================================
+//=================================      Channel Capture Rise/Fall events (CAP)    =========================================
 //=========================================================================================================
+//  Pin nCH does not used in Capture mode!
 
 typedef struct {
   MDR_TIM_FLTR            Filter;   
-  MDR_OnOff               Invert;         //  ETR Invert
   MDR_PSC_DIV_8           EventPSC;       //  div1, div2, div4, div8
-  MDR_TIM_CapEvent        CapEvent;       //  Channel Capture Event
+  MDR_TIM_EventCAP        EventCAP;       //  Event to capture to CCR
+  
+  bool                    enableCAP1;
+  MDR_TIM_EventCAP1       EventCAP1;      //  Event to capture to CCR1
 } MDR_TimerCH_CfgCAP;
+
+//  ÐŸÑ€Ð¸ *cfgCAP = NULL Ð½Ð°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°ÐµÑ‚ÑÑ Ð·Ð°Ñ…Ð²Ð°Ñ‚ Ñ„Ñ€Ð¾Ð½Ñ‚Ð° Ð² CCR Ð¸ ÑÑ€ÐµÐ·Ð° Ð² CCR1, Ñ„Ð¸Ð»ÑŒÑ‚Ñ€ Ð¸ Ð¿Ñ€Ð¾Ñ€ÐµÐ¶Ð¸Ð²Ð°Ð½Ð¸Ðµ Ð½Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÑŽÑ‚ÑÑ.
+void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCH_CfgCAP *cfgCAP);
+
+__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR (MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR;}
+__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR1(MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR1;}
 
 
 #endif //_MDR_TIMER_H

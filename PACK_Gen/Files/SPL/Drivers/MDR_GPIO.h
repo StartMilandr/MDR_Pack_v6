@@ -174,15 +174,15 @@ extern const MDR_GPIO_Port    GPIO_G_Port;
 extern const MDR_GPIO_Port    GPIO_H_Port;
 extern const MDR_GPIO_Port    GPIO_I_Port;
 
-#define MDR_GPIO_A            &GPIO_A_Port
-#define MDR_GPIO_B            &GPIO_B_Port
-#define MDR_GPIO_C            &GPIO_C_Port
-#define MDR_GPIO_D            &GPIO_D_Port
-#define MDR_GPIO_E            &GPIO_E_Port
-#define MDR_GPIO_F            &GPIO_F_Port
-#define MDR_GPIO_G            &GPIO_G_Port
-#define MDR_GPIO_H            &GPIO_H_Port
-#define MDR_GPIO_I            &GPIO_I_Port
+#define MDR_GPIO_A            (&GPIO_A_Port)
+#define MDR_GPIO_B            (&GPIO_B_Port)
+#define MDR_GPIO_C            (&GPIO_C_Port)
+#define MDR_GPIO_D            (&GPIO_D_Port)
+#define MDR_GPIO_E            (&GPIO_E_Port)
+#define MDR_GPIO_F            (&GPIO_F_Port)
+#define MDR_GPIO_G            (&GPIO_G_Port)
+#define MDR_GPIO_H            (&GPIO_H_Port)
+#define MDR_GPIO_I            (&GPIO_I_Port)
 
 
 extern const MDR_PinDig_PermRegs PinDig_PermRegsDef;

@@ -237,7 +237,7 @@
             <enumeratedValue><name>Rise_Pin</name><description>Capture Event Select</description><value>0</value></enumeratedValue>
             <enumeratedValue><name>Fall_Pin</name><description>Capture Event Select</description><value>1</value></enumeratedValue>
             <enumeratedValue><name>Rise_NextCH</name><description>Capture Event Select</description><value>2</value></enumeratedValue>
-            <enumeratedValue><name>Fall_NextCH</name><description>Capture Event Select</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Rise_NextNextCH</name><description>Capture Event Select</description><value>3</value></enumeratedValue>
           </enumeratedValues>
         </field>
         <field>
@@ -782,10 +782,16 @@
       <resetValue>0x00000000</resetValue>
       <resetMask>0x0000000FF</resetMask>
       <fields>
-        <field derivedFrom="MDR_TIMER1.CH1_CNTRL.CHSEL">
+        <field>
           <name>CHSel1</name>
           <description>Event to capture in CCR1</description>
           <bitRange>[1:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Rise_Pin</name><description>Capture Event Select</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Fall_Pin</name><description>Capture Event Select</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Fall_NextCH</name><description>Capture Event Select</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Fall_NextNextCH</name><description>Capture Event Select</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
         </field>
         <field>
           <name>CCR1_En</name>
@@ -803,6 +809,15 @@
           <enumeratedValues>
             <enumeratedValue><name>Immediately</name><description>Immediately update CCR and CCR1</description><value>0</value></enumeratedValue>
             <enumeratedValue><name>byPreriodCNT</name><description>Update on period completed</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CAP_CCR_Fix</name>
+          <description>CAP update CCRs fix</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
           </enumeratedValues>
         </field>
       </fields>

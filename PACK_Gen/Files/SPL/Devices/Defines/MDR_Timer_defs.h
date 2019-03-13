@@ -74,12 +74,19 @@ typedef enum {                      /*!< MDR_TIMER1_CH1_CNTRL_CHFLTR            
   MDR_TIM_FLTR_8_FDTS_div32 = 15,   /*!< 8_FDTS_div32 : Filter Value                                               */
 } MDR_TIM_FLTR;
 
-typedef enum {                    /*!< MDR_TIMER1_CH1_CNTRL_CHSEL                                                */
-  MDR_TIM_CAP_RiseOnPin  = 0,     /*!< Rise_Pin : Capture Event Select                                           */
-  MDR_TIM_CAP_FallOnPin  = 1,     /*!< Fall_Pin : Capture Event Select                                           */
-  MDR_TIM_CAP_RiseOnNextCh = 2,   /*!< Rise_NextCH : Capture Event Select                                        */
-  MDR_TIM_CAP_FallOnNextCh = 3,   /*!< Fall_NextCH : Capture Event Select                                        */
-} MDR_TIM_CapEvent;
+typedef enum {                        /*!< MDR_TIMER1_CH1_CNTRL_CHSEL                                              */
+  MDR_TIM_CAP_RiseOnPin  = 0,         /*!< Rise_Pin : Capture Event Select                                         */
+  MDR_TIM_CAP_FallOnPin  = 1,         /*!< Fall_Pin : Capture Event Select                                         */
+  MDR_TIM_CAP_RiseOnNextCh     = 2,   /*!< Rise_NextCH : Capture Event Select                                      */
+  MDR_TIM_CAP_RiseOnNextNextCh = 3,   /*!< Fall_NextCH : Capture Event Select                                      */
+} MDR_TIM_EventCAP;
+
+typedef enum {                        /*!< MDR_TIMER1_CH1_CNTRL_CHSEL                                              */
+  MDR_TIM_CAP1_RiseOnPin  = 0,        /*!< Rise_Pin : Capture Event Select                                         */
+  MDR_TIM_CAP1_FallOnPin  = 1,        /*!< Fall_Pin : Capture Event Select                                         */
+  MDR_TIM_CAP1_FallOnNextCh     = 2,  /*!< Fall_NextCH : Capture Event Select                                      */
+  MDR_TIM_CAP1_FallOnNextNextCh = 3,  /*!< Fall_NextNextCH : Capture Event Select                                      */
+} MDR_TIM_EventCAP1;
 
 typedef enum {                  /*!< MDR_TIMER1_CH1_CNTRL_CHPSC                                                */
   MDR_TIM_CapPSC_div1 = 0,      /*!< EveryEvent  : Pass event for capture                                      */
@@ -113,7 +120,7 @@ typedef enum {
 
 typedef struct {
   __IOM MDR_TIM_FLTR      CHFLTR      : 4;            /*!< [3..0] Front hold to set Event                                            */
-  __IOM MDR_TIM_CapEvent  CHSEL       : 2;            /*!< [5..4] Event to capture in CCR                                            */
+  __IOM MDR_TIM_EventCAP  CHSEL       : 2;            /*!< [5..4] Event to capture in CCR                                            */
   __IOM MDR_TIM_CapPSC    CHPSC       : 2;            /*!< [7..6] Capture event decimation                                           */
   __IOM MDR_OnOff         OCCE        : 1;            /*!< [8..8] ETR pin Enable                                                     */
   __IOM MDR_TIM_PWM_Ref   OCCM        : 3;            /*!< [11..9] PWM Generate modes                                                */
@@ -141,6 +148,9 @@ typedef struct {
 #define MDR_TIM_CHx_CNTRL_WR_CMPL_Msk  (0x4000UL)                /*!< MDR_TIMER1 CH4_CNTRL: WR_CMPL (Bitfield-Mask: 0x01)   */
 #define MDR_TIM_CHx_CNTRL_CAP_nPWM_Pos (15UL)                    /*!< MDR_TIMER1 CH4_CNTRL: CAP_nPWM (Bit 15)               */
 #define MDR_TIM_CHx_CNTRL_CAP_nPWM_Msk (0x8000UL)                /*!< MDR_TIMER1 CH4_CNTRL: CAP_nPWM (Bitfield-Mask: 0x01)  */
+
+#define MDR_TIM_CHx_CNTRL_CAP_Mode      MDR_TIM_CHx_CNTRL_CAP_nPWM_Msk
+#define MDR_TIM_CHx_CNTRL_PWM_Mode      0x0UL
 
 
 /* ========================================  CHx_CNTRL1 - GPIO PIN Driver  =================================================== */
@@ -315,9 +325,10 @@ typedef enum {
 
 
 typedef struct {
-  __IOM MDR_TIM_CapEvent    CHSel1 : 2;            /*!< [1..0] Event to capture in CCR1                                     */
+  __IOM MDR_TIM_EventCAP1   CHSel1 : 2;            /*!< [1..0] Event to capture in CCR1                                     */
   __IOM MDR_OnOff           CCR1_En: 1;            /*!< [2..2] Enable CCR1                                                  */
   __IOM MDR_TIM_CCR_Update  CCRRLD : 1;            /*!< [3..3] CCR Reload Mode                                              */
+  __IOM MDR_OnOff           CAP_Fix: 1;            /*!< [4..4] Fix capture - IQR waits CCR regs update                      */
 } MDR_TIM_CHx_CNTRL2_Bits;
 
 #define MDR_TIM_CHx_CNTRL2_CHSel1_Pos  (0UL)                     /*!< MDR_TIMER1 CH1_CNTRL2: CHSel1 (Bit 0)                 */
@@ -326,6 +337,8 @@ typedef struct {
 #define MDR_TIM_CHx_CNTRL2_CCR1_En_Msk (0x4UL)                   /*!< MDR_TIMER1 CH1_CNTRL2: CCR1_En (Bitfield-Mask: 0x01)  */
 #define MDR_TIM_CHx_CNTRL2_CCRRLD_Pos  (3UL)                     /*!< MDR_TIMER1 CH1_CNTRL2: CCRRLD (Bit 3)                 */
 #define MDR_TIM_CHx_CNTRL2_CCRRLD_Msk  (0x8UL)                   /*!< MDR_TIMER1 CH1_CNTRL2: CCRRLD (Bitfield-Mask: 0x01)   */
+#define MDR_TIM_CHx_CNTRL2_CAP_Fix_Pos (4UL)
+#define MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk (0x10UL)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

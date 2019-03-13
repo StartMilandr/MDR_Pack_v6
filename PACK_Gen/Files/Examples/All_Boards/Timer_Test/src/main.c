@@ -13,8 +13,24 @@ extern TestInterface TI_CountTimClock;
 extern TestInterface TI_Pulse;
 extern TestInterface TI_PWM_ClearBRKETR;
 extern TestInterface TI_PWM_CountETR;
+extern TestInterface TI_PWM_DTG;
+extern TestInterface TI_CAP_Simplest;
+extern TestInterface TI_CAP_Period;
+extern TestInterface TI_PWM_CountCAP;
 
-static  TestInterface *testStack[] = {&TI_PWM_CountETR, &TI_PWM_ClearBRKETR, &TI_Pulse, &TI_PWM, &TI_CountTimClock, &TI_CascadeTimer, &TI_SimplestFlash};
+static  TestInterface *testStack[] = {
+  &TI_PWM_CountCAP,
+  &TI_CAP_Period,
+  &TI_CAP_Simplest, 
+  &TI_PWM_DTG, 
+  &TI_PWM_CountETR, 
+  &TI_PWM_ClearBRKETR, 
+  &TI_Pulse, 
+  &TI_PWM, 
+  &TI_CountTimClock, 
+  &TI_CascadeTimer, 
+  &TI_SimplestFlash
+};
 
 uint32_t activeTest = 0;
 uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
@@ -63,13 +79,12 @@ int main(void)
       testStack[activeTest]->funcInit();
     }
 
-//    //  Изменение режима теста
-//    if (MDRB_BntClicked_Right(true))
-//    {
-//      //testStack[activeTest]->funcChange();
-//      testStack[activeTest]->funcExec();
-//    }    
-//    
+    //  Изменение режима теста
+    if (MDRB_BntClicked_Right(true))
+    {
+      testStack[activeTest]->funcChange();
+    }    
+    
     //  Запуск
     if (MDRB_BntClicked_Down(true))
     {

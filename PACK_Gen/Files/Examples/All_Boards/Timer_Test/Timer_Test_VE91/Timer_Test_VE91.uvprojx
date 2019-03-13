@@ -405,11 +405,6 @@
               <FilePath>..\src\test_CountTimClock.c</FilePath>
             </File>
             <File>
-              <FileName>MDRB_Timer_PinSelect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\MDRB_Timer_PinSelect.c</FilePath>
-            </File>
-            <File>
               <FileName>test_Pulse.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\test_Pulse.c</FilePath>
@@ -423,6 +418,26 @@
               <FileName>test_PWM_CountETR.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\test_PWM_CountETR.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_DTG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_DTG.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CAP_Simplest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CAP_Simplest.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CAP_Period.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CAP_Period.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_CountCAP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_CountCAP.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -468,6 +483,12 @@
         </targetInfos>
       </component>
       <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

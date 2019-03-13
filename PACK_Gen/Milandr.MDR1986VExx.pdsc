@@ -1083,6 +1083,13 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART pins definitions</description>
+      <files>
+        <file category="header"  name="SPL/Boards/MDRB_Timer_PinSelect.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_Timer_PinSelect.c" version="2.0.0"/>
+      </files>
+    </component>
 
   </components>
 

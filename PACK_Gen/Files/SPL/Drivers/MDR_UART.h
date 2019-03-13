@@ -196,18 +196,18 @@ typedef struct {
 } MDR_UART_TypeEx;
 
 extern const MDR_UART_TypeEx    _MDR_UART1ex;
-#define MDR_UART1ex            &_MDR_UART1ex
+#define MDR_UART1ex            (&_MDR_UART1ex)
 
 extern const MDR_UART_TypeEx   _MDR_UART2ex;
-#define MDR_UART2ex            &_MDR_UART2ex
+#define MDR_UART2ex            (&_MDR_UART2ex)
 
 #ifdef MDR_UART3
   extern const MDR_UART_TypeEx  _MDR_UART3ex;
-  #define MDR_UART3ex          &_MDR_UART3ex
+  #define MDR_UART3ex          (&_MDR_UART3ex)
 #endif
 #ifdef MDR_UART4
   extern const MDR_UART_TypeEx  _MDR_UART4ex;
-  #define MDR_UART4ex          &_MDR_UART4ex
+  #define MDR_UART4ex          (&_MDR_UART4ex)
 #endif
 
 

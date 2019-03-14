@@ -11,9 +11,7 @@
 //  Test Interface functions
 static void  Test_Init(void);
 static void  Test_Finit(void);
-static void  Test_Change(void);
-static void  Test_Exec(void);
-static void  Test_MainLoop(void);
+static void  Test_Empty(void);
 static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
 static void  Test_HandleTim3IRQ(void);
@@ -21,56 +19,52 @@ static void  Test_HandleTim3IRQ(void);
 TestInterface TI_SimplestFlash = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
-  .funcChange     = Test_Change,
-  .funcExec       = Test_Exec,
-  .funcMainLoop   = Test_MainLoop,
+  .funcChange     = Test_Empty,
+  .funcExec       = Test_Empty,
+  .funcMainLoop   = Test_Empty,
   .funcHandlerTim1 = Test_HandleTim1IRQ,
   .funcHandlerTim2 = Test_HandleTim2IRQ,
   .funcHandlerTim3 = Test_HandleTim3IRQ,
   .funcHandlerTim4 = Test_HandleTim3IRQ,
 };
 
-#define TIM_BRG       MDR_BRG_div16
-#define TIM_PSC       1000
-#define TIM_PERIOD    4000
 
 static void Test_Init(void)
 {
+#ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("Simplest Timer", 3);
   MDRB_LCD_Print("and Sync Run", 5);
+#else
+  MDRB_LCD_Print("1");
+#endif
   
-  MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3);
-  MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3, 0);
+  MDRB_LED_Init(LED_SEL);
+  MDRB_LED_Set (LED_SEL, 0);
   
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
-  MDR_Timer_InitPeriod(MDR_TIMER2ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
-  MDR_Timer_InitPeriod(MDR_TIMER3ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
+  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_Timer_InitPeriod(MDR_TIMER2ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+#ifdef  TIMER3_EXIST  
+  MDR_Timer_InitPeriod(MDR_TIMER3ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+#endif
   
-  MDR_Timer_StartSync(TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk);
+  MDR_Timer_StartSync(START_SYNC_SEL_MAX);
 }  
 
 static void Test_Finit(void)
 {
-  MDR_Timer_StopSync(TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk);
+  MDR_Timer_StopSync(START_SYNC_SEL_MAX);
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
+#ifdef  TIMER3_EXIST  
   MDR_Timer_DeInit(MDR_TIMER3ex);
+#endif
   
   LED_Uninitialize();
 }
 
-static void Test_Change(void)
+static void Test_Empty(void)
 {
 
-}
-
-static void Test_Exec(void)
-{
-
-}
-
-static void  Test_MainLoop(void)
-{
 }
 
 static void Test_HandleTim1IRQ(void)
@@ -89,7 +83,9 @@ static void Test_HandleTim2IRQ(void)
 
 static void Test_HandleTim3IRQ(void)
 {
+#ifdef  TIMER3_EXIST    
   MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);
   
   MDRB_LED_Switch(MDRB_LED_3);
+#endif
 }

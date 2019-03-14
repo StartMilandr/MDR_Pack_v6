@@ -57,6 +57,12 @@ void MDR_LCD_Init(const MDR_LCD_Cfg *pCfg)
   MDR_LCD->CR = regValue;
 }
 
+void MDR_LCD_DeInit(void)
+{
+  MDR_LCD->CR = 0;
+  MDR_CLOCK->PER2_CLOCK = MaskClr(MDR_CLOCK->PER2_CLOCK, MDR_RST_PER2__LCD_CLK_EN_Msk);
+}
+
 void MDR_LCD_BlinkyStart(MDR_LCD_BlinkFreq  blinkFreq, MDR_OnOff blinkToAlterData)
 {
   uint32_t regValue = MDR_LCD->CR;

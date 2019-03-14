@@ -152,13 +152,15 @@ static void MDR_Timer_InitAndClear_loc(const MDR_TIMER_TypeEx *TIMERex)
 static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint_tim period, const uint32_t selectIRQ, const uint32_t flags)
 { 
   //  Set Timer Settings
-  TIMERex->TIMERx->ARR = period;
+  TIMERex->TIMERx->ARR = period - 1;
 
   TIMERex->TIMERx->IE = selectIRQ;
   TIMERex->TIMERx->CNTRL = MDR_TIMER_CNTRL_CNT_EN_Msk | flags;
+  //  В 1986ВЕ9х:
   //  При включении таймера EN выставляется флаг CNT==ARR и CNT==0 (STATUS = 0x3)
   //  Поэтому NVIC инициализируется после включения таймера. 
   //  Иначе сразу произойдет прерывание при EN - не успеем стереть STATUS = 0  
+  //  Оставлено всем, для универсальности
   TIMERex->TIMERx->STATUS = 0;
   
   //  IRQ Enable
@@ -228,7 +230,11 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128
   uint32_t regCNTRL = _TIM_EventSel_CountTIMs[countEvent] | VAL2FLD_Pos(TIM_CntMode_DIR_ExtEvents, MDR_TIMER_CNTRL_CNT_MODE_Pos);
   
   MDR_Timer_InitAndClear_loc(TIMERex);  
-  MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, enaIRQ, regCNTRL);
+  
+  if (enaIRQ)
+    MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, TIM_FL_CNT_ARR, regCNTRL);
+  else
+    MDR_Timer_InitPeriod_loc(TIMERex, clockBRG, period, 0, regCNTRL);  
 }
 
 //=====================   DeInit ==================
@@ -248,7 +254,7 @@ void MDR_Timer_DeInit(const MDR_TIMER_TypeEx *TIMERex)
 static void MDR_Timer_InitCount_loc(const MDR_TIMER_TypeEx *TIMERex, const MDR_Timer_CfgPeriod *cfgPeriod, const MDR_Timer_CfgIRQ *cfgIRQ, const uint32_t regCtrl)
 {
   //  Set Timer Settings 
-  TIMERex->TIMERx->ARR = cfgPeriod->period;
+  TIMERex->TIMERx->ARR = cfgPeriod->period - 1;
   TIMERex->TIMERx->CNT = cfgPeriod->startValue;
   
   TIMERex->TIMERx->IE = cfgIRQ->SelectIRQ;
@@ -515,7 +521,7 @@ void MDR_TimerPulse_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim period, MDR_TI
 //=================================      Channel Capture Rise/Fall events (CAP)    =========================================
 //=========================================================================================================
 
-static void MDR_TimerCh_CfgCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MDR_TimerCH_CfgCAP *cfgCAP)
+static void MDR_TimerCh_CfgCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MDR_TimerCh_CfgCAP *cfgCAP)
 {
   cfgRegs->CH_CNTRL = VAL2FLD_Pos(cfgCAP->Filter,   MDR_TIM_CHx_CNTRL_CHFLTR_Pos)
                     | VAL2FLD_Pos(cfgCAP->EventCAP, MDR_TIM_CHx_CNTRL_CHSEL_Pos)
@@ -540,7 +546,7 @@ static void MDR_TimerCh_DefaultCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
   
 }
 
-void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCH_CfgCAP *cfgCAP)
+void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *cfgCAP)
 {
   MDR_TIMER_CH_CfgRegs cfgRegs;
 

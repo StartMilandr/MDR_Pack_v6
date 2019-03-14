@@ -6,30 +6,41 @@
 #include "test_Defs.h"
 
 //  Некоторые тесты можно закомментировать для рассмотрения только интересующих
+//  Счет импульсов TIM_CLOCK или внешних, каскадное включение таймеров
 extern TestInterface TI_SimplestFlash;
-extern TestInterface TI_CascadeTimer;
-extern TestInterface TI_PWM;
 extern TestInterface TI_CountTimClock;
-extern TestInterface TI_Pulse;
-extern TestInterface TI_PWM_ClearBRKETR;
+extern TestInterface TI_CascadeTimer;
 extern TestInterface TI_PWM_CountETR;
-extern TestInterface TI_PWM_DTG;
-extern TestInterface TI_CAP_Simplest;
-extern TestInterface TI_CAP_Period;
 extern TestInterface TI_PWM_CountCAP;
 
+//  Генерация ШИМ
+extern TestInterface TI_Pulse;
+extern TestInterface TI_PWM;
+extern TestInterface TI_PWM_ClearBRKETR;
+extern TestInterface TI_PWM_DTG;
+//  Захват фронтов на прямом входе канала таймера
+extern TestInterface TI_CAP_Simplest;
+extern TestInterface TI_CAP_Period;
+
+
 static  TestInterface *testStack[] = {
-  &TI_PWM_CountCAP,
-  &TI_CAP_Period,
-  &TI_CAP_Simplest, 
-  &TI_PWM_DTG, 
-  &TI_PWM_CountETR, 
-  &TI_PWM_ClearBRKETR, 
-  &TI_Pulse, 
-  &TI_PWM, 
-  &TI_CountTimClock, 
+  //  Режим внутреннего счета - Счет импульсов TIM_CLOCK
+  &TI_SimplestFlash,
+  &TI_CountTimClock,
   &TI_CascadeTimer, 
-  &TI_SimplestFlash
+  //  Вывод ШИМ на пины каналов таймeров
+  //  ПРОВЕРИТЬ, что выходы каналов таймеров не замкнуты друг на друга, после тестов с захватом!
+  &TI_Pulse,      // Simplest control to get pulses (PWM mode)
+  &TI_PWM,
+  &TI_PWM_DTG, 
+  &TI_PWM_ClearBRKETR,   
+  //  CAP mode
+  //  НЕОБХОДИМО внешнее подключение пинов с ШИМ к пинам захвата!
+  &TI_CAP_Simplest,
+  &TI_CAP_Period,
+  //  Режимы внешнего счета - импульсов на входе ETR и событий на каналах захвата
+  &TI_PWM_CountETR,   
+  &TI_PWM_CountCAP,
 };
 
 uint32_t activeTest = 0;
@@ -49,15 +60,15 @@ int main(void)
   MDRB_LCD_Init(freqCPU_Hz);
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
   
-  //  Для 1986VE4,VE214,VE234 частота UART_Clock формируется мультиплексорами
+  //  Для 1986VE4,VE214,VE234 частота TIM_Clock формируется мультиплексорами
   //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer
-  //  В остальных МК UART_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
-//#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-//  MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
-//  MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
-//#elif defined (MDR_PER_CLK_LIKE_VE4)
-//  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-//#endif
+  //  В остальных МК TIM_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
+#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
+  MDR_SetClock_Timer1(MDR_PER_PLLCPUo);
+  MDR_SetClock_Timer2(MDR_PER_PLLCPUo);
+#elif defined (MDR_PER_CLK_LIKE_VE4)
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+#endif
    
   //  Активный тест
   activeTest = 0;  
@@ -89,9 +100,8 @@ int main(void)
     if (MDRB_BntClicked_Down(true))
     {
       testStack[activeTest]->funcExec();
-    }
-    
-    //  ОБработчик цикла
+    }   
+    //  Main thread
     testStack[activeTest]->funcMainLoop();
   }  
 }

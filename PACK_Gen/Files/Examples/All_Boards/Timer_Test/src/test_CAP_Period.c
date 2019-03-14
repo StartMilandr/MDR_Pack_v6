@@ -1,6 +1,7 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
 #include <MDRB_LCD.h>
+#include <MDRB_UART_Debug.h>
 
 #include <math.h>
 
@@ -19,6 +20,10 @@
 //    При периоде ШИМ порядка 172 периодов TIM_CLOCK начинает не хватает быстродействия на исполнение обработчика прерывания.
 //    При считывании значений фронтов, данные переднего фронта обгоняют данные от заднего. Алгоритм выдает неправильные данные - RMS растет, а период увеличивается вместо уменьшения.
 //    Для захвата значений на высоких частота необходимо использовать DMA!
+//
+//    В 1986ВК214 сбой начинается с периодом ШИМ в 248 тактов, результат выводится в UART_Debug.
+//    Для наблюдения необходимо подключить переходник от UART через USB к РС.
+//    Лог получать в программах типа, Terminal или Putty.
 
 
 //  Test Interface functions
@@ -36,25 +41,27 @@ TestInterface TI_CAP_Period = {
   .funcFinit      = Test_Finit,
   .funcChange     = Test_Change,
   .funcExec       = Test_Exec,
-  .funcMainLoop   = Test_MainLoop,
+  .funcMainLoop   = Test_MainLoop,  
   .funcHandlerTim1 = Test_HandleTim1IRQ,
   .funcHandlerTim2 = Test_HandleTimIRQ_CAP,
   .funcHandlerTim3 = Test_HandleTimIRQ_CAP,
   .funcHandlerTim4 = Test_HandleTimIRQ_CAP,
 };
 
-#define TIM_BRG       MDR_BRG_div1
-#define TIM_PSC       0
-uint_tim  pulsePeriod = 200;
+#define   TIM_BRG       MDR_BRG_div1
+#define   TIM_PSC       0
 
 #define  AVER_COUNT    50
 uint32_t averInd;
-uint_tim valRE[AVER_COUNT + 1],   valFE[AVER_COUNT + 1];  //  RiseEdge and FallEdge
+uint_tim valRE[AVER_COUNT + 1], valFE[AVER_COUNT + 1];  //  RiseEdge and FallEdge
 uint32_t periods[AVER_COUNT], widthes[AVER_COUNT];
 
+bool doProcessResult = false;
+
+void CalcAndShowResult(void);
 
 //  Конфигурация аналогична test_CAP_Simlpest, где вместо структуры задается NULL
-static const MDR_TimerCH_CfgCAP cfgCAP = {
+static const MDR_TimerCh_CfgCAP cfgCAP = {
   .Filter   = MDR_TIM_FLTR_TIM_CLK, 
   .EventPSC = MDR_PSC_div1,
   .EventCAP = MDR_TIM_CAP_RiseOnPin,
@@ -62,28 +69,60 @@ static const MDR_TimerCH_CfgCAP cfgCAP = {
   .EventCAP1  = MDR_TIM_CAP1_FallOnPin
 };
 
-#define CAP_TIMERex       MDR_TIMER3ex
-#define CAP_TIMER         MDR_TIMER3
-#define CAP_TIMER_CH      MDR_TIMER3_CH2
-#define CAP_PIN_CH        _pinTim3_CH2
-#define CAP_TIMER_START   TIM3_StartMsk
-#define CAP_TIMER_EVENT   TIM_FL_CCR1_CAP_CH2
+#ifdef USE_MDR1986VK214
+  #define LCD_CONFLICT
+  #define TIM_SINGLE_CH
 
-void WaitAndShowResult(void);
+  #define CAP_TIMERex       MDR_TIMER2ex
+  #define CAP_TIMER         MDR_TIMER2
+  #define CAP_TIMER_CH      MDR_TIMER2_CH1
+  #define CAP_PIN_CH        _pinTim2_CH1
+  #define CAP_TIMER_START   TIM2_StartMsk
+  #define CAP_TIMER_EVENT   TIM_FL_CCR1_CAP_CH1
 
-static void LCD_ShowName(uint32_t period)
-{
-  static char message[64];
-  sprintf(message , "CAP Per=%d", period);
-  MDRB_LCD_Print (message, 3);  
-}
+  uint_tim  pulsePeriod = 250;
+
+#else
+  #define CAP_TIMERex       MDR_TIMER3ex
+  #define CAP_TIMER         MDR_TIMER3
+  #define CAP_TIMER_CH      MDR_TIMER3_CH2
+  #define CAP_PIN_CH        _pinTim3_CH2
+  #define CAP_TIMER_START   TIM3_StartMsk
+  #define CAP_TIMER_EVENT   TIM_FL_CCR1_CAP_CH2
+  
+  uint_tim  pulsePeriod = 200;
+#endif
+
+
+#if !(defined(LCD_CONFLICT) || defined(LCD_IS_7SEG_DISPLAY))
+  static void LCD_ShowName(uint32_t period)
+  {
+    static char message[64];
+    sprintf(message , "CAP Per=%d", period);
+    MDRB_LCD_Print (message, 3);  
+  }
+#endif
 
 static void Test_Init(void)
-{  
+{   
+  //  To LCD
+#ifndef LCD_IS_7SEG_DISPLAY
   LCD_ShowName(pulsePeriod);
-  
   MDRB_LCD_ClearLine(5);
   MDRB_LCD_ClearLine(7);
+  
+#elif defined (LCD_CONFLICT)
+  //  LCD conflicts with Timers channel
+  //  Show Test index and LCD Off
+  MDRB_LCD_Print("9");  
+  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  
+  MDR_LCD_DeInit();
+  MDR_UART_DBG_Init();
+#else
+  MDRB_LCD_Print("9");
+#endif  
      
   //  Timer1_CH1 - Pulse output for Capture
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG, TIM_PSC, pulsePeriod, false);
@@ -100,15 +139,10 @@ static void Test_Init(void)
   // Sync Start
   averInd = 0;
   MDR_Timer_StartSync(TIM1_StartMsk | CAP_TIMER_START);
-  //  Show Result
-  WaitAndShowResult();
 }  
 
 static void Test_Finit(void)
 {
-  MDRB_LCD_ClearLine(5);
-  MDRB_LCD_ClearLine(7);
-  
   MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
   MDR_TimerCh_DeInitPinGPIO(&CAP_PIN_CH);
 
@@ -117,6 +151,15 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(CAP_TIMERex);
   
   LED_Uninitialize();  
+  
+#ifdef LCD_CONFLICT 
+  MDR_UART_DBG_Finit();
+  // Restore LCD  
+  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
+#else  
+  MDRB_LCD_ClearLine(5);
+  MDRB_LCD_ClearLine(7);  
+#endif
 }
 
 static void Test_Change(void)
@@ -124,26 +167,25 @@ static void Test_Change(void)
   if (pulsePeriod > 2)
     --pulsePeriod;
   MDR_TimerPulse_ChangePeriod(MDR_TIMER1, pulsePeriod, MDR_TIMER1_CH1, 50);
-  LCD_ShowName(pulsePeriod);
+  
+#ifndef LCD_CONFLICT  
+  LCD_ShowName(pulsePeriod); 
+#endif
   
   Test_Exec();
 }
 
 static void Test_Exec(void)
 {  
+#ifndef LCD_CONFLICT
   MDRB_LCD_ClearLine(5);
   MDRB_LCD_ClearLine(7);
+#endif
+  
   // Restart Measure
   averInd = 0;
   MDR_Timer_EnableEventIQR(CAP_TIMER, CAP_TIMER_EVENT);
-  
-  WaitAndShowResult();
 }
-
-static void  Test_MainLoop(void)
-{
-}
-
 
 static void Test_HandleTim1IRQ(void)
 {
@@ -159,12 +201,24 @@ static void Test_HandleTimIRQ_CAP(void)
     
     ++averInd;
     if (averInd > AVER_COUNT + 1)
+    {
       MDR_Timer_DisableEventIQR(CAP_TIMER, CAP_TIMER_EVENT);   //  StopMeasure
+      doProcessResult = true;
+    }
         
     MDR_Timer_ClearEvent(CAP_TIMER, CAP_TIMER_EVENT);
   }
   
   NVIC_ClearPendingIRQ(CAP_TIMERex->TIMERx_IRQn);
+}
+
+static void Test_MainLoop(void)
+{
+  if (doProcessResult)
+  {
+    CalcAndShowResult();
+    doProcessResult = false;
+  }
 }
 
 static uint32_t calcRMS(uint32_t *pData, uint32_t count, uint32_t *pAver)
@@ -193,11 +247,11 @@ static uint32_t calcRMS(uint32_t *pData, uint32_t count, uint32_t *pAver)
   return sum;
 }
 
-void WaitAndShowResult(void)
+void CalcAndShowResult(void)
 {
   uint32_t i;
   uint32_t RMS, aver;
-  static char message[64];  
+
   //  Pass first value - no valid after restart by Test_Exec
   uint_tim *DataRE = valRE + 1;
   uint_tim *DataFE = valFE + 1;  
@@ -216,7 +270,9 @@ void WaitAndShowResult(void)
     else
       widthes[i] = (TIM_MAX_VALUE - DataRE[i]) + DataFE[i];
   }
-  
+
+#ifndef LCD_CONFLICT
+  static char message[64];  
   //  Period
   RMS = calcRMS(periods, AVER_COUNT-2, &aver);
   sprintf(message , "Per=%d  RMS=%d", aver, RMS);
@@ -225,6 +281,17 @@ void WaitAndShowResult(void)
   RMS = calcRMS(widthes, AVER_COUNT-2, &aver);
   sprintf(message , "Wid=%d  RMS=%d", aver, RMS);
   MDRB_LCD_Print (message, 7);
+  
+#else
+  printf("PWM=%d\n", pulsePeriod); 
+  //  Period
+  RMS = calcRMS(periods, AVER_COUNT-2, &aver);
+  printf("Per=%d  RMS=%d\n", aver, RMS);
+  //  Width
+  RMS = calcRMS(widthes, AVER_COUNT-2, &aver);
+  printf("Wid=%d  RMS=%d\n", aver, RMS);
+  
+#endif
 }
 
 

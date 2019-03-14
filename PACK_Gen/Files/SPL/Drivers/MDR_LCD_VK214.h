@@ -65,6 +65,8 @@ typedef struct {
 
 void MDR_LCD_Init(const MDR_LCD_Cfg *pCfg);
 
+void MDR_LCD_DeInit(void);
+
 
 //  ===================== Вывод информации на экран ======================
 typedef struct {

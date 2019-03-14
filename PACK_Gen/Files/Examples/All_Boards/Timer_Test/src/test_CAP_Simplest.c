@@ -16,23 +16,20 @@
 //  Test Interface functions
 static void  Test_Init(void);
 static void  Test_Finit(void);
-static void  Test_Change(void);
-static void  Test_Exec(void);
-static void  Test_MainLoop(void);
+static void  Test_Empty(void);
 static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
-static void  Test_HandleTim3IRQ(void);
 
 TestInterface TI_CAP_Simplest = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
-  .funcChange     = Test_Change,
-  .funcExec       = Test_Exec,
-  .funcMainLoop   = Test_MainLoop,
+  .funcChange     = Test_Empty,
+  .funcExec       = Test_Empty,
+  .funcMainLoop   = Test_Empty,
   .funcHandlerTim1 = Test_HandleTim1IRQ,
   .funcHandlerTim2 = Test_HandleTim2IRQ,
-  .funcHandlerTim3 = Test_HandleTim3IRQ,
-  .funcHandlerTim4 = Test_HandleTim3IRQ,
+  .funcHandlerTim3 = Test_Empty,
+  .funcHandlerTim4 = Test_Empty,
 };
 
 #define TIM_BRG       MDR_BRG_div16
@@ -40,16 +37,34 @@ TestInterface TI_CAP_Simplest = {
 #define TIM_PERIOD    3000
 #define LED2_PERIOD   4
 
+#ifdef USE_MDR1986VK214
+  #define LCD_CONFLICT
+  #define TIM_SINGLE_CH
+#endif
+
 static void Test_Init(void)
 {  
+  //  To LCD
+#ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("CAP Simplest", 3);
-  MDRB_LCD_ClearLine(5);
-    
+  
+#elif defined (LCD_CONFLICT)
+  //  LCD conflicts with Timers channel
+  //  Show Test index and LCD Off
+  MDRB_LCD_Print("8");  
+  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  
+  MDR_LCD_DeInit();
+#else
+  MDRB_LCD_Print("8");
+#endif 
+  
   MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
   MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);  
   
-  //  Timer1_CH1 - Pulse output for Capture
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
+  //  Timer1_CH1 - Pulse output for Capture 
+  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true); 
   MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD, 50);
   
   MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
@@ -74,20 +89,11 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(MDR_TIMER2ex);
   
   LED_Uninitialize();  
-}
-
-static void Test_Change(void)
-{
-
-}
-
-static void Test_Exec(void)
-{
-
-}
-
-static void  Test_MainLoop(void)
-{
+  
+#ifdef LCD_CONFLICT
+  // Restore LCD
+  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
+#endif  
 }
 
 static void Test_HandleTim1IRQ(void)
@@ -111,7 +117,7 @@ static void Test_HandleTim2IRQ(void)
   MDRB_LED_Switch(MDRB_LED_2);
 }
 
-static void Test_HandleTim3IRQ(void)
+static void  Test_Empty(void)
 {
-
 }
+

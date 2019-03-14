@@ -132,12 +132,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -384,6 +384,61 @@
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
             </File>
+            <File>
+              <FileName>test_SimplestFlash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_SimplestFlash.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CountTimClock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CountTimClock.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CascadeTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CascadeTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_Pulse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_Pulse.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_DTG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_DTG.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_ClearBRKETR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_ClearBRKETR.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CAP_Simplest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CAP_Simplest.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_CAP_Period.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_CAP_Period.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_CountETR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_CountETR.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_PWM_CountCAP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\test_PWM_CountCAP.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -421,7 +476,25 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
+      <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VK214">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
       <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Board Support" Cgroup="UART_Debug" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
@@ -434,6 +507,12 @@
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_UseFuncs">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Drivers" Cgroup="LCD" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VK214">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
@@ -457,6 +536,12 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
+      <component Cclass="Drivers" Cgroup="UART" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
       <component Cclass="Drivers" Cgroup="UseFuncs" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
@@ -467,7 +552,7 @@
     <files>
       <file attr="config" category="header" name="SPL\Config\MDRB_BoardSelect.h" version="2.0.0">
         <instance index="0">RTE\Board_Support\MDR1986VK214\MDRB_BoardSelect.h</instance>
-        <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="UART_Debug" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

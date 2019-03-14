@@ -93,6 +93,7 @@ typedef enum {
 
 //  Аналог MDR_Timer_InitPeriod, но с возможностью явно задать направление счета
 //  Может быть полезна при некоторых режимах формирования сигнала Ref
+//  ARR = period - 1, поэтому задавать period > 0.
 void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir);
 //  Аналог MDR_Timer_InitPeriodDir, но с возможностью разрешить необходимые прерывания.
 void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir);
@@ -110,6 +111,7 @@ typedef enum {
 #endif  
 } MDR_Timer_EventTimer;
 
+//  ARR = period - 1, поэтому задавать period > 0.
 void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, MDR_Timer_EventTimer countEvent, uint_tim period, bool enaIRQ);
 
 
@@ -362,10 +364,10 @@ typedef struct {
   
   bool                    enableCAP1;
   MDR_TIM_EventCAP1       EventCAP1;      //  Event to capture to CCR1
-} MDR_TimerCH_CfgCAP;
+} MDR_TimerCh_CfgCAP;
 
 //  При *cfgCAP = NULL настраивается захват фронта в CCR и среза в CCR1, фильтр и прореживание не используются.
-void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCH_CfgCAP *cfgCAP);
+void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *cfgCAP);
 
 __STATIC_INLINE uint_tim MDR_TimerCh_GetCCR (MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR;}
 __STATIC_INLINE uint_tim MDR_TimerCh_GetCCR1(MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR1;}

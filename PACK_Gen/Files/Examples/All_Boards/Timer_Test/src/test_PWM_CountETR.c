@@ -9,35 +9,36 @@
 //  ОПИСАНИЕ:
 //    Пример подсчета внешних импульсов на входе ETR.
 //    Таймер1 генерирует импульсы, которые подаются на вход ETR Таймера2.
-//    По прерываниям Таймера1 переключается светодиод1, По прерываниям Таймера2, переключается светодиод2.
-//    Изменения настройки фильтров, частоты сэмплирования и прочего отображаются на периоде мигания светодиодов.
+//    В прерываниях таймеров по периоду: 
+//      - Таймер1 переключается светодиод1, 
+//      - Таймер2 переключается светодиод2.
+//  В коде можно поменять настройки фильтров, частоты сэмплирования и прочего 
+//  для изучения их влияния на периоды мигания светодиодов.
+//
+//  В 1986ВК214 без подключения налюдается беспорядочное мигание светодиода (из-за наводок или утечек).
+//  При подключении TIM1_CH1 к TIM2_ETR мигания ожидаемо упорядочиваются.
 
 
 //  Test Interface functions
 static void  Test_Init(void);
 static void  Test_Finit(void);
-static void  Test_Change(void);
-static void  Test_Exec(void);
-static void  Test_MainLoop(void);
+static void  Test_Empty(void);
 static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
-static void  Test_HandleTim3IRQ(void);
+
 
 TestInterface TI_PWM_CountETR = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
-  .funcChange     = Test_Change,
-  .funcExec       = Test_Exec,
-  .funcMainLoop   = Test_MainLoop,
+  .funcChange     = Test_Empty,
+  .funcExec       = Test_Empty,
+  .funcMainLoop   = Test_Empty,  
   .funcHandlerTim1 = Test_HandleTim1IRQ,
   .funcHandlerTim2 = Test_HandleTim2IRQ,
-  .funcHandlerTim3 = Test_HandleTim3IRQ,
-  .funcHandlerTim4 = Test_HandleTim3IRQ,
+  .funcHandlerTim3 = Test_Empty,
+  .funcHandlerTim4 = Test_Empty,
 };
 
-#define TIM_BRG       MDR_BRG_div16
-#define TIM_PSC       1000
-#define TIM_PERIOD    3000
 #define LED2_PERIOD   4
 
 static const MDR_Timer_cfgBRKETR  cfgBRKETR = {
@@ -48,8 +49,8 @@ static const MDR_Timer_cfgBRKETR  cfgBRKETR = {
 };
 
 static const MDR_Timer_CfgCountETR  cfgETR = {  
-  .cfgPeriod.clockBRG = TIM_BRG,
-  .cfgPeriod.period = LED2_PERIOD,
+  .cfgPeriod.clockBRG   = TIM_BRG_LED,
+  .cfgPeriod.period     = LED2_PERIOD,
   .cfgPeriod.startValue = 0,
   .cfgPeriod.periodUpdateImmediately = MDR_Off,
   
@@ -63,16 +64,29 @@ static const MDR_Timer_CfgCountETR  cfgETR = {
 };
 
 static void Test_Init(void)
-{  
+{     
+  //  To LCD
+#ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("Count ETR", 3);
-  MDRB_LCD_ClearLine(5);
-    
+  
+#elif defined (LCD_CONFLICT)
+  //  LCD conflicts with Timers channel
+  //  Show Test index and LCD Off
+  MDRB_LCD_Print("10");  
+  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  
+  MDR_LCD_DeInit();
+#else
+  MDRB_LCD_Print("10");
+#endif
+  
   MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
-  MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);  
+  MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);
   
   //  Timer1_CH1 - Pulse output for ETR, show period with LED1
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG, TIM_PSC, TIM_PERIOD, true);
-  MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD, 50);
+  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD_LED, 50);
   MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
      
   //  Timer2 Count ETR and, show period with LED2
@@ -96,20 +110,6 @@ static void Test_Finit(void)
   LED_Uninitialize();  
 }
 
-static void Test_Change(void)
-{
-
-}
-
-static void Test_Exec(void)
-{
-
-}
-
-static void  Test_MainLoop(void)
-{
-}
-
 static void Test_HandleTim1IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
@@ -124,7 +124,6 @@ static void Test_HandleTim2IRQ(void)
   MDRB_LED_Switch(MDRB_LED_2);
 }
 
-static void Test_HandleTim3IRQ(void)
+static void Test_Empty(void)
 {
-
 }

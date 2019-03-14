@@ -55,7 +55,17 @@
 
   
 #elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
+  
+  const MDR_Timer_CfgPinGPIO _pinTim1_CH1  = {MDR_GPIO_A, 0,  MDR_PIN_MAIN};    // S0  - PA0
+  const MDR_Timer_CfgPinGPIO _pinTim1_nCH1 = {MDR_GPIO_A, 1,  MDR_PIN_MAIN};    // S1  - PA1
+  const MDR_Timer_CfgPinGPIO _pinTim1_ETR  = {MDR_GPIO_A, 8,  MDR_PIN_MAIN};    // S8  - PA8
+  const MDR_Timer_CfgPinGPIO _pinTim1_BRK  = {MDR_GPIO_A, 9,  MDR_PIN_MAIN};    // S9  - PA9
     
+  const MDR_Timer_CfgPinGPIO _pinTim2_CH1  = {MDR_GPIO_C, 2,  MDR_PIN_MAIN};    // ADC2 - PC2
+  const MDR_Timer_CfgPinGPIO _pinTim2_nCH1 = {MDR_GPIO_C, 3,  MDR_PIN_MAIN};    // ADC1 - PC3
+  const MDR_Timer_CfgPinGPIO _pinTim2_ETR  = {MDR_GPIO_C, 5,  MDR_PIN_MAIN};    // S21  - PC5
+  const MDR_Timer_CfgPinGPIO _pinTim2_BRK  = {MDR_GPIO_C, 6,  MDR_PIN_MAIN};    // S22  - PC6
 
+  
 #endif
 

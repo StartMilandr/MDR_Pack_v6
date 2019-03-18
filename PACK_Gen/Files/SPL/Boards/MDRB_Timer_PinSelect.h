@@ -65,8 +65,10 @@
   //  см. MDRB_1901VС1.h
 
   
-#elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
-                                                                           
+#elif defined (USE_MDR1986VE4) 
+
+#elif defined (USE_MDR1986VK214) 
+                                                                          
   extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;     // S0  - PA0
   extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;    // S1  - PA1
   extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;     // S8  - PA8
@@ -76,6 +78,30 @@
   extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH1;    // ADC1 - PC3
   extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;     // S21  - PC5
   extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK;     // S22  - PC6                                                                           
+
+#elif  defined (USE_MDR1986VK234)
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;    // PA0
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;   // PA1
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH2;    // PA2
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH2;   // PA3
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH3;    // PA4
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH3;   // PA5
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH4;    // PA6  
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH4;   // PA7    
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;    // PA8
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_BRK;    // PA9
+    
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH1;    // PC2
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH1;   // PC3
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH2;    // PB10
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH2;   // PB11
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH3;    // PB12
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH3;   // PB13
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH4;    // PB14
+  //  НЕТ _pinTim2_nCH4
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;    // PC6
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK;    // PC7
 
 #endif
 

@@ -298,20 +298,20 @@ typedef enum IRQn
 #define MDR_TIMER3                     ((MDR_TIMER_Type 	  *) ADDR_TIMER3_BASE)
 
 //  Timer Channels
-#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 4))
-#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 5))
-#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 6))
-#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 7))
+#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
+#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR2))
+#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR3))
+#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR4))
 
-#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 4))
-#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 5))
-#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 6))
-#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 7))
+#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
+#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR2))
+#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
+#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
 
-#define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 4))
-#define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 5))
-#define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 6))
-#define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER3_BASE + 7))
+#define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR1))
+#define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR2))
+#define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR3))
+#define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
 
 
 /* =========================================================================================================================== */

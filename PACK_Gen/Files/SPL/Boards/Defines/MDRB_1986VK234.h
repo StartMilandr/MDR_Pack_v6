@@ -13,17 +13,17 @@
 //===================================    Заметки по плате    ========================================
 
 //  Переопределение пинов для удобства поиска конфликтов
-    #define PIN_PA0       MDR_Pin_0   // KEY1 UP
-    #define PIN_PA1       MDR_Pin_1   // KEY2 Right
-    #define PIN_PA2       MDR_Pin_2   // KEY3 Down
-    #define PIN_PA3       MDR_Pin_3   // KEY4 Left
-    #define PIN_PA4       MDR_Pin_4   //          
-    #define PIN_PA5       MDR_Pin_5   //           
-    #define PIN_PA6       MDR_Pin_6   //              JTAG_A SWCLK
-    #define PIN_PA7       MDR_Pin_7   //              JTAG_A SWDIO
-    #define PIN_PA8       MDR_Pin_8   // 
-    #define PIN_PA9       MDR_Pin_9   // 
-    #define PIN_PA10      MDR_Pin_10  // 
+    #define PIN_PA0       MDR_Pin_0   // KEY1 UP                                    T1_CH1
+    #define PIN_PA1       MDR_Pin_1   // KEY2 Right                                 T1_nCH1
+    #define PIN_PA2       MDR_Pin_2   // KEY3 Down                                  T1_CH2
+    #define PIN_PA3       MDR_Pin_3   // KEY4 Left                                  T1_nCH2
+    #define PIN_PA4       MDR_Pin_4   // NC                                         T1_CH3
+    #define PIN_PA5       MDR_Pin_5   // NC                                         T1_nCH3
+    #define PIN_PA6       MDR_Pin_6   //              JTAG_A SWCLK                  T1_CH4
+    #define PIN_PA7       MDR_Pin_7   //              JTAG_A SWDIO                  T1_nCH4
+    #define PIN_PA8       MDR_Pin_8   // NC                                         T1_ETR
+    #define PIN_PA9       MDR_Pin_9   // NC                                         T1_BRK
+    #define PIN_PA10      MDR_Pin_10  // NC
     #define PIN_PA11      MDR_Pin_11  //                      LCD_DIN
     #define PIN_PA12      MDR_Pin_12  //          SSP1_FSS    LCD_DCLK
     #define PIN_PA13      MDR_Pin_13  //          SSP1_CLK
@@ -36,21 +36,24 @@
     #define PIN_PB3       MDR_Pin_3   //
     #define PIN_PB4       MDR_Pin_4   //
     #define PIN_PB5       MDR_Pin_5   //
-
-    #define PIN_PB6       MDR_Pin_6   //                             ADC_Ch7  
-    #define PIN_PB7       MDR_Pin_7   //                             ADC_Ch6
+    #define PIN_PB6       MDR_Pin_6   // NC                          ADC_Ch7  
+    #define PIN_PB7       MDR_Pin_7   // NC                          ADC_Ch6
     #define PIN_PB8       MDR_Pin_8   //                             ADC_Ch5   
     #define PIN_PB9       MDR_Pin_9   //                             ADC_Ch4 - TuneResistor
-    #define PIN_PB11      MDR_Pin_11  //                      LCD_LOAD
+    #define PIN_PB10      MDR_Pin_10  // NC                                         T2_CH2
+    #define PIN_PB11      MDR_Pin_11  //                      LCD_LOAD              T2_nCH2
+    #define PIN_PB12      MDR_Pin_12  //                                            T2_CH3    Mem_CS
+    #define PIN_PB13      MDR_Pin_13  // NC                                         T2_nCH3
+    #define PIN_PB14      MDR_Pin_14  // NC                                         T2_CH4
 
-    #define PIN_PC0       MDR_Pin_0   //                   UART2_TX
-    #define PIN_PC1       MDR_Pin_1   //                   UART2_RX  ADC_Ch3
-    #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2
-    #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+
+    #define PIN_PC0       MDR_Pin_0   //                   UART2_TX                           RS485_DI
+    #define PIN_PC1       MDR_Pin_1   //                   UART2_RX  ADC_Ch3                  RS485_RO
+    #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2        T2_CH1    RS485_DE_nRE
+    #define PIN_PC3       MDR_Pin_3   // NC                          ADC_Ch1/Ref+   T2_nCH1
     #define PIN_PC4       MDR_Pin_4   //    LED1                     ADC_Ch0/Ref- 
     #define PIN_PC5       MDR_Pin_5   //    LED2 
-    #define PIN_PC6       MDR_Pin_6   //    LED3
-    #define PIN_PC7       MDR_Pin_7   //    LED4
+    #define PIN_PC6       MDR_Pin_6   //    LED3                                    T2_ETR
+    #define PIN_PC7       MDR_Pin_7   //    LED4                                    T2_BRK
     
 //  --------------  ADC Definition  ------------
     #define MDRB_ADC_CH_IN1            ADC_Signal_Ch4   //  PIN_PB8    

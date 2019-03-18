@@ -43,25 +43,49 @@ TestInterface TI_PWM_CountCAP = {
 #define LED2_PERIOD   4
 
 #ifdef USE_MDR1986VK214
+  #define TIMex_PWM           MDR_TIMER1ex
+  #define TIM_PWM             MDR_TIMER1
+  #define TIM_PWM_CH          MDR_TIMER1_CH1
+  #define TIM_PWM_PIN_CH      _pinTim1_CH1
+  #define TIM_PWM_START_MSK   TIM1_StartMsk  
+
+  #define TIMex_CAP           MDR_TIMER2ex
+  #define TIM_CAP             MDR_TIMER2
+  #define TIM_CAP_CH          MDR_TIMER2_CH1
+  #define TIM_CAP_PIN_CH      _pinTim2_CH1
+  #define TIM_CAP_START_MSK   TIM2_StartMsk
+  #define TIM_CAP_EVENT       TIM_Event_CH1
+
   #define LCD_CONFLICT
-  #define TIM_SINGLE_CH
 
-  #define CAP_TIMERex       MDR_TIMER2ex
-  #define CAP_TIMER         MDR_TIMER2
-  #define CAP_TIMER_CH      MDR_TIMER2_CH1
-  #define CAP_PIN_CH        _pinTim2_CH1
-  #define CAP_TIMER_START   TIM2_StartMsk
-  #define CAP_EVENT_CH      TIM_Event_CH1
+#elif defined (USE_MDR1986VK234)
+  #define TIMex_PWM           MDR_TIMER1ex
+  #define TIM_PWM             MDR_TIMER1
+  #define TIM_PWM_CH          MDR_TIMER1_CH3
+  #define TIM_PWM_PIN_CH      _pinTim1_CH3
+  #define TIM_PWM_START_MSK   TIM1_StartMsk
 
-#else
+  #define TIMex_CAP           MDR_TIMER2ex
+  #define TIM_CAP             MDR_TIMER2
+  #define TIM_CAP_CH          MDR_TIMER2_CH3
+  #define TIM_CAP_PIN_CH      _pinTim2_CH3
+  #define TIM_CAP_START_MSK   TIM2_StartMsk
+  #define TIM_CAP_EVENT       TIM_Event_CH3
 
-  #define CAP_TIMERex       MDR_TIMER3ex
-  #define CAP_TIMER         MDR_TIMER3
-  #define CAP_TIMER_CH      MDR_TIMER3_CH2
-  #define CAP_PIN_CH        _pinTim3_CH2
-  #define CAP_TIMER_START   TIM3_StartMsk
-  #define CAP_EVENT_CH      TIM_Event_CH2
-  
+#elif defined (USE_MDR1986VE91)
+  #define TIMex_PWM           MDR_TIMER1ex
+  #define TIM_PWM             MDR_TIMER1
+  #define TIM_PWM_CH          MDR_TIMER1_CH1
+  #define TIM_PWM_PIN_CH      _pinTim1_CH1
+  #define TIM_PWM_START_MSK   TIM1_StartMsk
+
+  #define TIMex_CAP           MDR_TIMER3ex
+  #define TIM_CAP             MDR_TIMER3
+  #define TIM_CAP_CH          MDR_TIMER3_CH2
+  #define TIM_CAP_PIN_CH      _pinTim3_CH2
+  #define TIM_CAP_START_MSK   TIM3_StartMsk
+  #define TIM_CAP_EVENT       TIM_Event_CH2
+
 #endif
 
 static const MDR_Timer_CfgCountCH cfgCntCH = {
@@ -74,7 +98,7 @@ static const MDR_Timer_CfgCountCH cfgCntCH = {
   .cfgIRQ.priorityIRQ = 0,
   .cfgIRQ.activateNVIC_IRQ = true,
    
-  .selEventCH  = CAP_EVENT_CH,  
+  .selEventCH  = TIM_CAP_EVENT,  
   .countDir    = TIM_CountUp,
   .clockDTS    = TIM_FDTS_TimClk_div1
 };
@@ -107,29 +131,29 @@ static void Test_Init(void)
   
   MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
   MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);  
-  
+      
   //  Timer1_CH1 - Pulse output for ETR, show period with LED1
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
-  MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD_LED, 50);
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
+  MDR_Timer_InitPeriod(TIMex_PWM, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_TimerPulse_InitPulse(TIM_PWM_CH, TIM_PERIOD_LED, 50);
+  MDR_TimerCh_InitPinGPIO(&TIM_PWM_PIN_CH,  MDR_PIN_FAST);
      
   //  Timer2 Count CAP Events and show period with LED2
-  MDR_Timer_InitCountChannelEvent(CAP_TIMERex, &cfgCntCH);
-  MDR_TimerCh_InitCAP(CAP_TIMER_CH, &cfgCAP);
-  MDR_TimerCh_InitPinGPIO(&CAP_PIN_CH, MDR_PIN_FAST);
+  MDR_Timer_InitCountChannelEvent(TIMex_CAP, &cfgCntCH);
+  MDR_TimerCh_InitCAP(TIM_CAP_CH, &cfgCAP);
+  MDR_TimerCh_InitPinGPIO(&TIM_CAP_PIN_CH, MDR_PIN_FAST);
     
   // Sync Start
-  MDR_Timer_StartSync(TIM1_StartMsk | CAP_TIMER_START);
+  MDR_Timer_StartSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
-  MDR_TimerCh_DeInitPinGPIO(&CAP_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&TIM_CAP_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&TIM_CAP_PIN_CH);
 
-  MDR_Timer_StopSync(TIM1_StartMsk | CAP_TIMER_START);
-  MDR_Timer_DeInit(MDR_TIMER1ex);
-  MDR_Timer_DeInit(CAP_TIMERex);
+  MDR_Timer_StopSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
+  MDR_Timer_DeInit(TIMex_PWM);
+  MDR_Timer_DeInit(TIMex_CAP);
 
 #ifdef LCD_CONFLICT 
   // Restore LCD  
@@ -148,7 +172,7 @@ static void Test_HandleTim1IRQ(void)
 
 static void Test_HandleTimIRQ_CAP(void)
 {
-  MDR_Timer_ClearEvent(CAP_TIMER, TIM_FL_CNT_ARR);
+  MDR_Timer_ClearEvent(TIM_CAP, TIM_FL_CNT_ARR);
   
   MDRB_LED_Switch(MDRB_LED_2);
 }

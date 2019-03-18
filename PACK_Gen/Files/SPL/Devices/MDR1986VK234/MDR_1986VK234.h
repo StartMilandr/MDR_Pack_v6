@@ -273,15 +273,15 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
 
 //  Timer Channels
-#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 4))
-#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 5))
-#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 6))
-#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER1_BASE + 7))
+#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
+#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR2))
+#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR3))
+#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR4))
 
-#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 4))
-#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 5))
-#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 6))
-#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (ADDR_TIMER2_BASE + 7))
+#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
+#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR2))
+#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
+#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
 
 
 //  Blocks from previouse PACK
@@ -368,6 +368,30 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 
 #define   MDR_UART_CLOCK_FROM_PER_CLOCK
 
+
+//----------------    TIMER Definitions  --------------------
+//  UART Block Clock enable
+#define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+
+#define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER2__TIMER1_CLK_EN_Msk
+#define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER2__TIMER2_CLK_EN_Msk
+
+//  UART_ClockGate configs
+#define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+#define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+
+#define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
+#define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk
+
+#define   MDR_TIMER1_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM1_BRG_Pos
+#define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
+
+
+//  Enable Count UpDown by external events
+#define   MDR_TIMER_Can_UpDown_ByExtEvents
+
+#define   MDR_TIM_CLOCK_FROM_PER_CLOCK
 
 
 /** @} */ /* End of group MDR1986VK234 */

@@ -17,7 +17,7 @@
 //
 //  В 1986ВК214 без подключения налюдается беспорядочное мигание светодиода (из-за наводок или утечек).
 //  При подключении TIM1_CH1 к TIM2_ETR мигания ожидаемо упорядочиваются.
-
+//  В 1986ВК234 вывод TIM2_ETR подключен в светодиоду LED3, поэтому на нем удобно наблюдать период сигнала ETR. LED2 мигает с периодом LED2_PERIOD.
 
 //  Test Interface functions
 static void  Test_Init(void);
@@ -38,6 +38,28 @@ TestInterface TI_PWM_CountETR = {
   .funcHandlerTim3 = Test_Empty,
   .funcHandlerTim4 = Test_Empty,
 };
+
+#ifdef USE_MDR1986VK234
+  #define TIM_PWM             MDR_TIMER1ex
+  #define TIM_PWM_CH          MDR_TIMER1_CH3
+  #define TIM_PWM_PIN_CH      _pinTim1_CH3
+  #define TIM_PWM_START_MSK   TIM1_StartMsk
+
+  #define TIM_ETR             MDR_TIMER2ex
+  #define TIM_ETR_PIN         _pinTim2_ETR
+  #define TIM_ETR_START_MSK   TIM2_StartMsk
+
+#else
+  #define TIM_PWM             MDR_TIMER1ex
+  #define TIM_PWM_CH          MDR_TIMER1_CH1
+  #define TIM_PWM_PIN_CH      _pinTim1_CH1
+  #define TIM_PWM_START_MSK   TIM1_StartMsk
+
+  #define TIM_ETR             MDR_TIMER2ex
+  #define TIM_ETR_PIN         _pinTim2_ETR
+  #define TIM_ETR_START_MSK   TIM2_StartMsk
+#endif
+
 
 #define LED2_PERIOD   4
 
@@ -85,27 +107,27 @@ static void Test_Init(void)
   MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);
   
   //  Timer1_CH1 - Pulse output for ETR, show period with LED1
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
-  MDR_TimerPulse_InitPulse(MDR_TIMER1_CH1, TIM_PERIOD_LED, 50);
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
+  MDR_Timer_InitPeriod(TIM_PWM, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_TimerPulse_InitPulse(TIM_PWM_CH, TIM_PERIOD_LED, 50);
+  MDR_TimerCh_InitPinGPIO(&TIM_PWM_PIN_CH,  MDR_PIN_FAST);
      
   //  Timer2 Count ETR and, show period with LED2
-  MDR_Timer_InitCountETR(MDR_TIMER2ex, &cfgETR);
-  MDR_Timer_InitBRKETR(MDR_TIMER2ex, cfgBRKETR);
-  MDR_TimerCh_InitPinGPIO(&_pinTim2_ETR, MDR_PIN_FAST);
+  MDR_Timer_InitCountETR(TIM_ETR, &cfgETR);
+  MDR_Timer_InitBRKETR(TIM_ETR, cfgBRKETR);
+  MDR_TimerCh_InitPinGPIO(&TIM_ETR_PIN, MDR_PIN_FAST);
     
   // Sync Start
-  MDR_Timer_StartSync(TIM1_StartMsk | TIM2_StartMsk);
+  MDR_Timer_StartSync(TIM_PWM_START_MSK | TIM_ETR_START_MSK);
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim2_BRK);
+  MDR_TimerCh_DeInitPinGPIO(&TIM_PWM_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&TIM_ETR_PIN);
 
-  MDR_Timer_StopSync(TIM1_StartMsk | TIM2_StartMsk);
-  MDR_Timer_DeInit(MDR_TIMER1ex);
-  MDR_Timer_DeInit(MDR_TIMER2ex);
+  MDR_Timer_StopSync(TIM_PWM_START_MSK | TIM_ETR_START_MSK);
+  MDR_Timer_DeInit(TIM_PWM);
+  MDR_Timer_DeInit(TIM_ETR);
   
   LED_Uninitialize();  
 }

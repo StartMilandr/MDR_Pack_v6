@@ -13,16 +13,16 @@
 //===================================    Заметки по плате    ========================================
 
 //  Переопределение пинов для удобства поиска конфликтов
-    #define PIN_PA0       MDR_Pin_0   //      LCD_S0
-    #define PIN_PA1       MDR_Pin_1   //      LCD_S1
+    #define PIN_PA0       MDR_Pin_0   //      LCD_S0                                T1_CH1
+    #define PIN_PA1       MDR_Pin_1   //      LCD_S1                                T1_nCH1
     #define PIN_PA2       MDR_Pin_2   //      LCD_S2
     #define PIN_PA3       MDR_Pin_3   //      LCD_S3
     #define PIN_PA4       MDR_Pin_4   //      LCD_S4  
     #define PIN_PA5       MDR_Pin_5   //      LCD_S5   
     #define PIN_PA6       MDR_Pin_6   //      LCD_S6      JTAG_A SWCLK
     #define PIN_PA7       MDR_Pin_7   //      LCD_S7      JTAG_A SWDIO
-    #define PIN_PA8       MDR_Pin_8   //      LCD_S8
-    #define PIN_PA9       MDR_Pin_9   //      LCD_S9
+    #define PIN_PA8       MDR_Pin_8   //      LCD_S8                                T1_ETR
+    #define PIN_PA9       MDR_Pin_9   //      LCD_S9                                T1_BRK
     #define PIN_PA10      MDR_Pin_10  //      LCD_S10
     #define PIN_PA11      MDR_Pin_11  //      LCD_S11          
     #define PIN_PA12      MDR_Pin_12  //      LCD_S12  SSP1_FSS
@@ -48,11 +48,11 @@
 
     #define PIN_PC0       MDR_Pin_0   //                   UART2_TX
     #define PIN_PC1       MDR_Pin_1   //                   UART2_RX  ADC_Ch3
-    #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2
-    #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+
+    #define PIN_PC2       MDR_Pin_2   //                             ADC_Ch2        T2_CH1
+    #define PIN_PC3       MDR_Pin_3   //                             ADC_Ch1/Ref+   T2_nCH1
     #define PIN_PC4       MDR_Pin_4   //                             ADC_Ch0/Ref-     
-    #define PIN_PC5       MDR_Pin_5   //      LCD_S21
-    #define PIN_PC6       MDR_Pin_6   //      LCD_S22
+    #define PIN_PC5       MDR_Pin_5   //      LCD_S21                               T2_ETR
+    #define PIN_PC6       MDR_Pin_6   //      LCD_S22                               T2_BRK
     #define PIN_PC7       MDR_Pin_7   //      LCD_S23
     #define PIN_PC8       MDR_Pin_8   // KEY1
     #define PIN_PC9       MDR_Pin_9   // KEY2

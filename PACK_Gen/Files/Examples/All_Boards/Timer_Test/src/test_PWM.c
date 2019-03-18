@@ -27,25 +27,41 @@ TestInterface TI_PWM = {
   .funcHandlerTim4 = Test_Empty,
 };
 
-#define BRG_VALUE      MDR_BRG_div4
-#define PSC_VALUE1     100
-#define PSC_VALUE2      50
-#define PERIOD_VALUE   900
-
-
+//  Channel Select
 #ifdef USE_MDR1986VE91
+  #define TIM1_CH_SEL       MDR_TIMER1_CH1
+  #define TIM1_PIN_CH       _pinTim1_CH1
+  #define TIM1_PIN_nCH      _pinTim1_nCH1
+
   #define TIM2_CH_SEL       MDR_TIMER2_CH3
   #define TIM2_PIN_CH       _pinTim2_CH3
   #define TIM2_PIN_nCH      _pinTim2_nCH3
 
 #elif defined (USE_MDR1986VK214)
+  #define TIM1_CH_SEL       MDR_TIMER1_CH1
+  #define TIM1_PIN_CH       _pinTim1_CH1
+  #define TIM1_PIN_nCH      _pinTim1_nCH1
+
   #define TIM2_CH_SEL       MDR_TIMER2_CH1
   #define TIM2_PIN_CH       _pinTim2_CH1
   #define TIM2_PIN_nCH      _pinTim2_nCH1
 
   #define LCD_CONFLICT
-  #define TIM_SINGLE_CH
+  #define USE_SINGLE_CHANNEL
+
+#elif defined (USE_MDR1986VK234)
+  #define TIM1_CH_SEL       MDR_TIMER1_CH3
+  #define TIM1_PIN_CH       _pinTim1_CH3
+  #define TIM1_PIN_nCH      _pinTim1_nCH3
+
+  #define TIM2_CH_SEL       MDR_TIMER2_CH1
+  #define TIM2_PIN_CH       _pinTim2_CH1
+  #define TIM2_PIN_nCH      _pinTim2_nCH1
+  
+  #define USE_SINGLE_CHANNEL
+  
 #endif
+
 
 static void Test_Init(void)
 { 
@@ -66,27 +82,27 @@ static void Test_Init(void)
 #endif    
   
   //  Timer1
-  MDR_Timer_InitPeriodDir(MDR_TIMER1ex, BRG_VALUE, PSC_VALUE1, PERIOD_VALUE, false, TIM_CountUpDown);
+  MDR_Timer_InitPeriodDir(MDR_TIMER1ex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM, false, TIM_CountUpDown);
   
-  MDR_TimerCh_InitPWM (MDR_TIMER1_CH1, NULL, MDR_TIM_PWM_RefTgl_eqCCR,   PERIOD_VALUE / 3); 
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH1,  MDR_PIN_FAST);
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH1, MDR_PIN_FAST);
+  MDR_TimerCh_InitPWM (TIM1_CH_SEL, NULL, MDR_TIM_PWM_RefTgl_eqCCR,   TIM_PERIOD_PWM / 3); 
+  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_CH,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_nCH, MDR_PIN_FAST);
   
-#ifndef TIM_SINGLE_CH
-  MDR_TimerCh_InitPWM1(MDR_TIMER1_CH2, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, PERIOD_VALUE / 3, PERIOD_VALUE * 2 / 3);  
+#ifndef USE_SINGLE_CHANNEL
+  MDR_TimerCh_InitPWM1(MDR_TIMER1_CH2, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, TIM_PERIOD_PWM / 3, TIM_PERIOD_PWM * 2 / 3);  
   MDR_TimerCh_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
   MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);
 #endif
   
   //  Timer2
-  MDR_Timer_InitPeriodDir(MDR_TIMER2ex, BRG_VALUE, PSC_VALUE2, PERIOD_VALUE, false, TIM_CountUpDown);
-  MDR_TimerCh_InitPWM1(TIM2_CH_SEL, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, PERIOD_VALUE / 3, PERIOD_VALUE * 2 / 3);  
+  MDR_Timer_InitPeriodDir(MDR_TIMER2ex, TIM_BRG_PWM, TIM_PSG_PWM2, TIM_PERIOD_PWM, false, TIM_CountUpDown);
+  MDR_TimerCh_InitPWM1(TIM2_CH_SEL, NULL, MDR_TIM_PWM1_RefTgl_eqCCRx, TIM_PERIOD_PWM / 3, TIM_PERIOD_PWM * 2 / 3);  
 
   MDR_TimerCh_InitPinGPIO(&TIM2_PIN_CH,  MDR_PIN_FAST);
   MDR_TimerCh_InitPinGPIO(&TIM2_PIN_nCH, MDR_PIN_FAST);
 
-#ifndef TIM_SINGLE_CH
-  MDR_TimerCh_InitPWM (MDR_TIMER2_CH4, NULL, MDR_TIM_PWM_RefTgl_eqCCR,   PERIOD_VALUE / 3);  
+#ifndef USE_SINGLE_CHANNEL
+  MDR_TimerCh_InitPWM (MDR_TIMER2_CH4, NULL, MDR_TIM_PWM_RefTgl_eqCCR,   TIM_PERIOD_PWM / 3);  
   MDR_TimerCh_InitPinGPIO(&_pinTim2_CH4,  MDR_PIN_FAST);
   MDR_TimerCh_InitPinGPIO(&_pinTim2_nCH4, MDR_PIN_FAST);
 #endif
@@ -97,12 +113,12 @@ static void Test_Init(void)
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH1);
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH1);
+  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_nCH);
   MDR_TimerCh_DeInitPinGPIO(&TIM2_PIN_CH);
   MDR_TimerCh_DeInitPinGPIO(&TIM2_PIN_nCH);
   
-#ifndef TIM_SINGLE_CH  
+#ifndef USE_SINGLE_CHANNEL  
   MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH2);
   MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH2);
   MDR_TimerCh_DeInitPinGPIO(&_pinTim2_CH4);
@@ -116,7 +132,7 @@ static void Test_Finit(void)
 #ifdef LCD_CONFLICT  
   // Restore LCD
   MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
-#else  
+#elif !defined(LCD_IS_7SEG_DISPLAY)
   MDRB_LCD_ClearLine(5);
 #endif
 }

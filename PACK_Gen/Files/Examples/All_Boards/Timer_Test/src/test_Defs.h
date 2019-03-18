@@ -18,7 +18,6 @@ typedef struct {
   pTestFunc_void            funcHandlerTim4;
 } TestInterface;
 
-//  TestNames
 
 
 //  Time defines for microcontrollers for MaxFreq
@@ -31,13 +30,26 @@ typedef struct {
   #define TIM_PSG_LED       1000
   #define TIM_PERIOD_LED    4000
 
+  #define TIM_BRG_PWM       MDR_BRG_div4
+  #define TIM_PSG_PWM1      100
+  #define TIM_PSG_PWM2      50
+  #define TIM_PERIOD_PWM    800
+
 #elif defined (USE_MDR1901VC1)
 
 #elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
   #define TIM_BRG_LED       MDR_BRG_div4
   #define TIM_PSG_LED       1000
   #define TIM_PERIOD_LED    4000
+  
+  #define TIM_BRG_PWM       MDR_BRG_div1
+  #define TIM_PSG_PWM1      100
+  #define TIM_PSG_PWM2      50
+  #define TIM_PERIOD_PWM    900
 #endif
+
+
+
 
 //  Длительность мигания LCD перед его выключением, там где LCD конфликтует с ШИМ.
 #define LCD_HIDE_DELAY    2000

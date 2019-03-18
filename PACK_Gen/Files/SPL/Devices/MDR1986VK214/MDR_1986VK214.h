@@ -383,6 +383,8 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 //  Enable Count UpDown by external events
 #define MDR_TIMER_Can_UpDown_ByExtEvents
 
+#define MDR_TIMER_SINGLE_CH
+
 
 /** @} */ /* End of group MDR1986VK214 */
 

@@ -28,13 +28,13 @@ static  TestInterface *testStack[] = {
   &TI_SimplestFlash,
   &TI_CountTimClock,
   &TI_CascadeTimer, 
-  //  Вывод ШИМ на пины каналов таймeров
+  //  Вывод ШИМ на пины каналов таймeров (PWM)
   //  ПРОВЕРИТЬ, что выходы каналов таймеров не замкнуты друг на друга, после тестов с захватом!
   &TI_Pulse,      // Simplest control to get pulses (PWM mode)
   &TI_PWM,
   &TI_PWM_DTG, 
   &TI_PWM_ClearBRKETR,   
-  //  CAP mode
+  //  Режим захвата (CAP)
   //  НЕОБХОДИМО внешнее подключение пинов с ШИМ к пинам захвата!
   &TI_CAP_Simplest,
   &TI_CAP_Period,
@@ -66,7 +66,7 @@ int main(void)
 #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
   MDR_SetClock_Timer1(MDR_PER_PLLCPUo);
   MDR_SetClock_Timer2(MDR_PER_PLLCPUo);
-#elif defined (MDR_PER_CLK_LIKE_VE4)
+#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
 #endif
    

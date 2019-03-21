@@ -82,6 +82,10 @@ static void Test_Finit(void)
 #ifdef  TIMER3_EXIST  
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif
+
+#ifndef LCD_IS_7SEG_DISPLAY
+  MDRB_LCD_ClearLine(5);
+#endif
   
   LED_Uninitialize();
 }

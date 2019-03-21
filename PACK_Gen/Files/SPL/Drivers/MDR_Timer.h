@@ -85,11 +85,14 @@ typedef enum {
   TIM_CountUpDown 
 } MDR_TIM_CountDir;
 
-#ifdef MDR_TIMER_Can_UpDown_ByExtEvents
-  #define MDR_TIM_Event_CountDir    MDR_TIM_CountDir
-#else
-  #define MDR_TIM_Event_CountDir    MDR_TIM_Dir
+
+typedef enum {
+  TIM_Event_CountUp,
+  TIM_Event_CountDown,
+#ifdef MDR_TIMER_Can_UpDown_ByExtEvents    
+  TIM_Event_CountUpDown 
 #endif
+} MDR_TIM_Event_CountDir;
 
 //  Аналог MDR_Timer_InitPeriod, но с возможностью явно задать направление счета
 //  Может быть полезна при некоторых режимах формирования сигнала Ref

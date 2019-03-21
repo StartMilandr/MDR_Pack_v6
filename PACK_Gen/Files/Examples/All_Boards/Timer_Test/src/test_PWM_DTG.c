@@ -32,30 +32,6 @@ TestInterface TI_PWM_DTG = {
 };
 
 
-//  Channel Select
-#ifdef USE_MDR1986VE91
-  #define TIM1_CH_SEL       MDR_TIMER1_CH1
-  #define TIM1_PIN_CH       _pinTim1_CH1
-  #define TIM1_PIN_nCH      _pinTim1_nCH1
-
-#elif defined (USE_MDR1986VK214)
-  #define TIM1_CH_SEL       MDR_TIMER1_CH1
-  #define TIM1_PIN_CH       _pinTim1_CH1
-  #define TIM1_PIN_nCH      _pinTim1_nCH1
-
-  #define LCD_CONFLICT
-  #define USE_SINGLE_CHANNEL
-
-#elif defined (USE_MDR1986VK234)
-  #define TIM1_CH_SEL       MDR_TIMER1_CH3
-  #define TIM1_PIN_CH       _pinTim1_CH3
-  #define TIM1_PIN_nCH      _pinTim1_nCH3
-  
-  #define USE_SINGLE_CHANNEL  
-#endif
-
-
-
 static void Test_Init(void)
 {
   MDR_TimerCh_CfgPWM        cfgPWM =     {.use_nCH             = true,
@@ -64,7 +40,7 @@ static void Test_Init(void)
                                          };  
   MDR_TimerCh_CfgDTG        cfgDTG =     {.Presc    = MDR_TIM_DTG_x12,
                                           .ClockSel = TIM_DTG_CLK_TimClk,
-                                          .Mul = 100 
+                                          .Mul = 200 
                                          };
   MDR_TimerCh_CfgOptionsPWM cfgOptions = {.cfgPin_CH      = NULL,
                                           .cfgPin_nCH     = NULL,
@@ -93,35 +69,38 @@ static void Test_Init(void)
   cfgOptions.cfgDTG = &cfgDTG;
   cfgPWM.cfgOptions = &cfgOptions;
                                          
-  //  Timer1
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM, false);
+  //  PWM1
+  MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM, false);  
+  MDR_TimerCh_InitPWM (PWM1_TIM_CH, &cfgPWM, MDR_TIM_PWM_Ref1_ltCCR, TIM_PERIOD_PWM / 2);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_nCH, MDR_PIN_FAST);  
   
-  MDR_TimerCh_InitPWM(TIM1_CH_SEL, &cfgPWM,    MDR_TIM_PWM_Ref1_ltCCR, TIM_PERIOD_PWM / 2);
-  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_CH,  MDR_PIN_FAST);
-  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_nCH, MDR_PIN_FAST);  
-  
-#ifndef USE_SINGLE_CHANNEL
-  MDR_TimerCh_InitPWM(MDR_TIMER1_CH2, NULL, MDR_TIM_PWM_Ref1_ltCCR, TIM_PERIOD_PWM / 2);
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_CH2,  MDR_PIN_FAST);
-  MDR_TimerCh_InitPinGPIO(&_pinTim1_nCH2, MDR_PIN_FAST);  
+#ifdef USE_SECOND_CHANNEL
+  MDR_TimerCh_InitPWM(PWM1_TIM_CH_EX, NULL, MDR_TIM_PWM_Ref1_ltCCR, TIM_PERIOD_PWM / 2);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH_EX,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_nCH_EX, MDR_PIN_FAST);  
 #endif
   
-  // Sync Start
-  MDR_Timer_Start(MDR_TIMER1ex);
+  // Simple Start
+  MDR_Timer_Start(PWM1_TIMex);
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_nCH);
+  //  Stop
+  MDR_Timer_Stop(PWM1_TIMex);
   
-#ifndef USE_SINGLE_CHANNEL  
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_CH2);
-  MDR_TimerCh_DeInitPinGPIO(&_pinTim1_nCH2); 
+  //  Pins to third state
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_nCH);
+  
+#ifdef USE_SECOND_CHANNEL  
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH_EX);
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_nCH_EX); 
 #endif
   
-  MDR_Timer_Stop(MDR_TIMER1ex);
-  MDR_Timer_DeInit(MDR_TIMER1ex);
+  //  Finit Timer
+  MDR_Timer_DeInit(PWM1_TIMex);
   
 #ifdef LCD_CONFLICT 
   // Restore LCD

@@ -9,7 +9,51 @@
 #if   defined(USE_BOARD_VE1)
   //  см. MDRB_1986VE1.h
   
-                                       
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH4;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH4;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_BRK;
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH4;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH4;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK; 
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH4;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH4;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_BRK; 
+  
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_CH1; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH1; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_CH2; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH2; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_CH3; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH3; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_CH4; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH4; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_ETR; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_BRK; 
+
+
 #elif defined(USE_BOARD_VE3)
   //  см. MDRB_1986VE3.h
 

@@ -33,7 +33,6 @@ static void  Test_Finit(void);
 static void  Test_Change(void);
 static void  Test_Exec(void);
 static void  Test_MainLoop(void);
-static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTimIRQ_CAP(void);
 
 
@@ -43,7 +42,7 @@ TestInterface TI_CAP_Period = {
   .funcChange     = Test_Change,
   .funcExec       = Test_Exec,
   .funcMainLoop   = Test_MainLoop,  
-  .funcHandlerTim1 = Test_HandleTim1IRQ,
+  .funcHandlerTim1 = Test_HandleTimIRQ_CAP,
   .funcHandlerTim2 = Test_HandleTimIRQ_CAP,
   .funcHandlerTim3 = Test_HandleTimIRQ_CAP,
   .funcHandlerTim4 = Test_HandleTimIRQ_CAP,
@@ -71,70 +70,32 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
 };
 
 #if defined (USE_MDR1986VK214) 
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH1
-  #define TIM_PWM_PIN_CH      _pinTim1_CH1
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIMex_CAP           MDR_TIMER2ex
-  #define TIM_CAP             MDR_TIMER2
-  #define TIM_CAP_CH          MDR_TIMER2_CH1
-  #define TIM_CAP_PIN_CH      _pinTim2_CH1
-  #define TIM_CAP_START_MSK   TIM2_StartMsk
-  #define TIM_CAP_EVENT       TIM_FL_CCR1_CAP_CH1
-
-  #define LCD_CONFLICT
   #define OUT_TO_UART
-
   uint_tim  pulsePeriod = 250;
 
 #elif defined (USE_MDR1986VK234)
-
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH3
-  #define TIM_PWM_PIN_CH      _pinTim1_CH3
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIMex_CAP           MDR_TIMER2ex
-  #define TIM_CAP             MDR_TIMER2
-  #define TIM_CAP_CH          MDR_TIMER2_CH3
-  #define TIM_CAP_PIN_CH      _pinTim2_CH3
-  #define TIM_CAP_START_MSK   TIM2_StartMsk
-  #define TIM_CAP_EVENT       TIM_FL_CCR1_CAP_CH3
-
   #define OUT_TO_UART
-
   uint_tim  pulsePeriod = 290;
 
-#else
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH1
-  #define TIM_PWM_PIN_CH      _pinTim1_CH1
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIMex_CAP           MDR_TIMER3ex
-  #define TIM_CAP             MDR_TIMER3
-  #define TIM_CAP_CH          MDR_TIMER3_CH2
-  #define TIM_CAP_PIN_CH      _pinTim3_CH2
-  #define TIM_CAP_START_MSK   TIM3_StartMsk
-  #define TIM_CAP_EVENT       TIM_FL_CCR1_CAP_CH2
-  
+#elif defined (USE_MDR1986VE91)
   #define OUT_TO_LCD
-  
   uint_tim  pulsePeriod = 200;
+
+#elif defined (USE_MDR1986VE1)
+  #define OUT_TO_LCD
+  uint_tim  pulsePeriod = 300;
 #endif
+
+#define CAP_IRQ_byFALL       CAP_EVENT_FALL
 
 
 #if !(defined(LCD_CONFLICT) || defined(LCD_IS_7SEG_DISPLAY))
-  static void LCD_ShowName(uint32_t period)
-  {
-    static char message[64];
-    sprintf(message , "CAP Per=%d", period);
-    MDRB_LCD_Print (message, 3);  
-  }
+static void LCD_ShowName(uint32_t period)
+{
+  static char message[64];
+  sprintf(message , "CAP Per=%d", period);
+  MDRB_LCD_Print (message, 3);  
+}
 #endif
 
 static void Test_Init(void)
@@ -161,31 +122,44 @@ static void Test_Init(void)
   MDR_UART_DBG_Init();
 #endif
   
-  //  Timer1_CH1 - Pulse output for Capture
-  MDR_Timer_InitPeriod(TIMex_PWM, TIM_BRG, TIM_PSC, pulsePeriod, false);
-  MDR_TimerPulse_InitPulse(TIM_PWM_CH, pulsePeriod, 50);
-  
-  MDR_TimerCh_InitPinGPIO(&TIM_PWM_PIN_CH,  MDR_PIN_FAST);
+  //  PWM - Output pulses for Capture
+  MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG, TIM_PSC, pulsePeriod, false);
+  MDR_TimerPulse_InitPulse(PWM1_TIM_CH, pulsePeriod, 50);  
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH,  MDR_PIN_FAST);
      
   //  Timer2_CH1 - Capture Rise and Fall fronts from Timer1_CH1
-  MDR_Timer_InitPeriodDirIRQ(TIMex_CAP, TIM_BRG, TIM_PSC, TIM_MAX_VALUE, TIM_CAP_EVENT, TIM_CountUp);
-  MDR_TimerCh_InitCAP(TIM_CAP_CH, &cfgCAP);
-  
-  MDR_TimerCh_InitPinGPIO(&TIM_CAP_PIN_CH, MDR_PIN_FAST);
-    
-  // Sync Start
+  MDR_Timer_InitPeriodDirIRQ(CAP_TIMex, TIM_BRG, TIM_PSC, TIM_MAX_VALUE, CAP_IRQ_byFALL, TIM_CountUp);
+  MDR_TimerCh_InitCAP(CAP_TIM_CH, &cfgCAP);  
+  MDR_TimerCh_InitPinGPIO(&CAP_PIN_CH, MDR_PIN_FAST); 
+ 
+  // Start
   averInd = 0;
-  MDR_Timer_StartSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
+  
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StartSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
+#else
+  MDR_Timer_Start(CAP_TIMex);
+  MDR_Timer_Start(PWM1_TIMex);
+#endif  
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&TIM_PWM_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM_CAP_PIN_CH);
+  //  Stop
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StopSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
+#else
+  MDR_Timer_Stop(PWM1_TIMex);
+  MDR_Timer_Stop(CAP_TIMex);  
+#endif    
+  
+  //  Pins to third state
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&CAP_PIN_CH);
 
-  MDR_Timer_StopSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
-  MDR_Timer_DeInit(TIMex_PWM);
-  MDR_Timer_DeInit(TIMex_CAP);
+ //  Finit Timers
+  MDR_Timer_DeInit(CAP_TIMex);
+  MDR_Timer_DeInit(PWM1_TIMex);
   
   LED_Uninitialize();  
   
@@ -207,7 +181,7 @@ static void Test_Change(void)
 { 
   if (pulsePeriod > 2)
     --pulsePeriod;
-  MDR_TimerPulse_ChangePeriod(TIM_PWM, pulsePeriod, TIM_PWM_CH, 50);
+  MDR_TimerPulse_ChangePeriod(PWM1_TIM, pulsePeriod, PWM1_TIM_CH, 50);
   
 #ifdef OUT_TO_LCD  
   LCD_ShowName(pulsePeriod); 
@@ -225,32 +199,29 @@ static void Test_Exec(void)
   
   // Restart Measure
   averInd = 0;
-  MDR_Timer_EnableEventIQR(TIM_CAP, TIM_CAP_EVENT);
+  MDR_Timer_EnableEventIQR(CAP_TIM, CAP_IRQ_byFALL);
 }
 
-static void Test_HandleTim1IRQ(void)
-{
-}
 
 static void Test_HandleTimIRQ_CAP(void)
 {
   //  Irq by Fall front
-  if (MDR_Timer_GetStatus(TIM_CAP) & TIM_CAP_EVENT)
+  if (MDR_Timer_GetStatus(CAP_TIM) & CAP_IRQ_byFALL)
   {
-    valRE[averInd] = MDR_TimerCh_GetCCR(TIM_CAP_CH);
-    valFE[averInd] = MDR_TimerCh_GetCCR1(TIM_CAP_CH);
+    valRE[averInd] = MDR_TimerCh_GetCCR(CAP_TIM_CH);
+    valFE[averInd] = MDR_TimerCh_GetCCR1(CAP_TIM_CH);
     
     ++averInd;
     if (averInd > AVER_COUNT + 1)
     {
-      MDR_Timer_DisableEventIQR(TIM_CAP, TIM_CAP_EVENT);   //  StopMeasure
+      MDR_Timer_DisableEventIQR(CAP_TIM, CAP_IRQ_byFALL);   //  StopMeasure
       doProcessResult = true;
     }
         
-    MDR_Timer_ClearEvent(TIM_CAP, TIM_CAP_EVENT);
+    MDR_Timer_ClearEvent(CAP_TIM, CAP_IRQ_byFALL);
   }
   
-  NVIC_ClearPendingIRQ(TIMex_CAP->TIMERx_IRQn);
+  NVIC_ClearPendingIRQ(CAP_TIMex->TIMERx_IRQn);
 }
 
 static void Test_MainLoop(void)

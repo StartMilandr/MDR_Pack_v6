@@ -45,13 +45,13 @@ TestInterface TI_CascadeTimer = {
 static void Test_Init(void)
 {
 #ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Double Timer", 3);
+  MDRB_LCD_Print("Cascade Timer", 3);
 #else
   MDRB_LCD_Print("3");
 #endif
   
-  MDRB_LED_Init(LED_SEL_MAX);
-  MDRB_LED_Set(LED_SEL_MAX, 0);
+  MDRB_LED_Init(LED_SEL);
+  MDRB_LED_Set(LED_SEL, 0);
   
   //  Fastest Counter
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
@@ -76,12 +76,13 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
   
+#ifdef  TIMER4_EXIST  
+  MDR_Timer_Stop(MDR_TIMER4ex);
+  MDR_Timer_DeInit(MDR_TIMER4ex);
+#endif  
 #ifdef  TIMER3_EXIST   
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif  
-#ifdef  TIMER4_EXIST  
-  MDR_Timer_DeInit(MDR_TIMER4ex);
-#endif
   
   LED_Uninitialize();
 }

@@ -59,12 +59,21 @@ const MDR_TIMER_TypeEx _MDR_TIMER4ex = {
 
 
 //=====================   Timer AUX function ==================
-static void MDR_Timer_ClearRegs(MDR_TIMER_Type *TIMER)
+static void MDR_Timer_ClearRegs(const MDR_TIMER_TypeEx *TIMERex)
 {
+  MDR_TIMER_Type *TIMER = TIMERex->TIMERx;
+  
+  //  Stop, Enable Immediate Update
+  TIMER->CNTRL = MDR_TIMER_CNTRL_ARRB_EN_Pos;
+  
+  //  TIM_CLOCK On
+  //  Need to apply to CNT, PSG, ARR, CCRx shadow registers!
+  MDR_PerClock_GateOpen(&TIMERex->CfgClock, MDR_BRG_div1);
+  
+  //  Clear Regs
   TIMER->CNT = 0;
   TIMER->PSG = 0;
   TIMER->ARR = 0;
-  TIMER->CNTRL = 0;
   TIMER->CCR1 = 0;
   TIMER->CCR2 = 0;
   TIMER->CCR3 = 0;
@@ -100,6 +109,9 @@ static void MDR_Timer_ClearRegs(MDR_TIMER_Type *TIMER)
   TIMER->DMA_RE3 = 0;
   TIMER->DMA_RE4 = 0;
 #endif
+
+  //  TIM_CLOCK Off
+  MDR_PerClock_GateClose(&TIMERex->CfgClock);  
 }
 
 
@@ -146,7 +158,7 @@ static void MDR_Timer_InitAndClear_loc(const MDR_TIMER_TypeEx *TIMERex)
   //  Включение тактирования блока
   MDR_PerClock_Enable(&TIMERex->CfgClock);  
   //  Clear Regs
-  MDR_Timer_ClearRegs(TIMERex->TIMERx);  
+  MDR_Timer_ClearRegs(TIMERex);  
 }
 
 static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint_tim period, const uint32_t selectIRQ, const uint32_t flags)
@@ -240,12 +252,9 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128
 //=====================   DeInit ==================
 void MDR_Timer_DeInit(const MDR_TIMER_TypeEx *TIMERex)
 {
-  //  Count Clock Off
-  MDR_PerClock_GateClose(&TIMERex->CfgClock);  
-
   NVIC_DisableIRQ(TIMERex->TIMERx_IRQn);
-  MDR_Timer_ClearRegs(TIMERex->TIMERx);
-  
+  MDR_Timer_ClearRegs(TIMERex);
+    
   //  Set Timer Settings
   MDR_PerClock_Disable(&TIMERex->CfgClock);  
 }

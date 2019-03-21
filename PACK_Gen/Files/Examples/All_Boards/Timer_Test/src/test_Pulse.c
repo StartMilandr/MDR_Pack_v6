@@ -11,7 +11,10 @@
 //    Пример простейшей генерации импульсов на выходах канала таймера.
 //    Требуется минимальное количество параметров, остальные по умолчанию.
 //    Импульсы смотреть осциллографом на пинах.
+//    При нажатии на кнопку DOWN  скважность импульсов меняетс на 10%, для разных каналов в разные стороны.
+//
 //    ПРОВЕРИТЬ, что выходы каналов таймеров не замкнуты друг на друга (после тестов с захватом)!
+
 
 //  Test Interface functions
 static void  Test_Init(void);
@@ -31,37 +34,37 @@ TestInterface TI_Pulse = {
   .funcHandlerTim4 = Test_Empty,
 };
 
-//  Channel Select
-#ifdef USE_MDR1986VE91
-  #define TIM1_CH_SEL       MDR_TIMER1_CH1
-  #define TIM1_PIN_CH       _pinTim1_CH1
-  #define TIM1_PIN_nCH      _pinTim1_nCH1
+////  Channel Select
+//#if defined (USE_MDR1986VK214)
+//  #define PWM1_SEL_TIM1_CH1 
 
-  #define TIM2_CH_SEL       MDR_TIMER2_CH3
-  #define TIM2_PIN_CH       _pinTim2_CH3
-  #define TIM2_PIN_nCH      _pinTim2_nCH3
+//  #define TIM1_CH_SEL       MDR_TIMER1_CH1
+//  #define TIM1_PIN_CH       _pinTim1_CH1
+//  #define TIM1_PIN_nCH      _pinTim1_nCH1
 
-#elif defined (USE_MDR1986VK214)
-  #define TIM1_CH_SEL       MDR_TIMER1_CH1
-  #define TIM1_PIN_CH       _pinTim1_CH1
-  #define TIM1_PIN_nCH      _pinTim1_nCH1
+//  #define TIM2_CH_SEL       MDR_TIMER2_CH1
+//  #define TIM2_PIN_CH       _pinTim2_CH1
+//  #define TIM2_PIN_nCH      _pinTim2_nCH1
 
-  #define TIM2_CH_SEL       MDR_TIMER2_CH1
-  #define TIM2_PIN_CH       _pinTim2_CH1
-  #define TIM2_PIN_nCH      _pinTim2_nCH1
+//  #define LCD_CONFLICT
+//  
+//#elif defined (USE_MDR1986VK234)
+//  #define TIM1_CH_SEL       MDR_TIMER1_CH3
+//  #define TIM1_PIN_CH       _pinTim1_CH3    // PA4
+//  #define TIM1_PIN_nCH      _pinTim1_nCH3   // PA5
 
-  #define LCD_CONFLICT
-  
-#elif defined (USE_MDR1986VK234)
-  #define TIM1_CH_SEL       MDR_TIMER1_CH3
-  #define TIM1_PIN_CH       _pinTim1_CH3    // PA4
-  #define TIM1_PIN_nCH      _pinTim1_nCH3   // PA5
+//  #define TIM2_CH_SEL       MDR_TIMER2_CH1
+//  #define TIM2_PIN_CH       _pinTim2_CH1    // PC2
+//  #define TIM2_PIN_nCH      _pinTim2_nCH1   // PC3
+//  
+//#else
+//  #define PWM1_SEL_TIM1_CH1 
+//  
 
-  #define TIM2_CH_SEL       MDR_TIMER2_CH1
-  #define TIM2_PIN_CH       _pinTim2_CH1    // PC2
-  #define TIM2_PIN_nCH      _pinTim2_nCH1   // PC3
-
-#endif
+//  #define TIM2_CH_SEL       MDR_TIMER2_CH3
+//  #define TIM2_PIN_CH       _pinTim2_CH3
+//  #define TIM2_PIN_nCH      _pinTim2_nCH3
+//#endif
 
 uint32_t pulseWidthPerc = 50;
 
@@ -82,35 +85,46 @@ static void Test_Init(void)
   MDRB_LCD_Print("4");
 #endif  
   
-  //  Timer1
-  MDR_TimerPulse_InitPeriod(MDR_TIMER1ex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM);
-  MDR_TimerPulse_InitPulse(TIM1_CH_SEL, TIM_PERIOD_PWM, pulseWidthPerc);
-   
-  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_CH,  MDR_PIN_FAST);
-  MDR_TimerCh_InitPinGPIO(&TIM1_PIN_nCH, MDR_PIN_FAST);
+  //  PWM1
+  MDR_TimerPulse_InitPeriod(PWM1_TIMex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM);
+  MDR_TimerPulse_InitPulse(PWM1_TIM_CH, TIM_PERIOD_PWM, pulseWidthPerc);   
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_nCH, MDR_PIN_FAST);
   
-  //  Timer2
-  MDR_TimerPulse_InitPeriod(MDR_TIMER2ex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM);
-  MDR_TimerPulse_InitPulse(TIM2_CH_SEL, TIM_PERIOD_PWM, 100 - pulseWidthPerc);
-   
-  MDR_TimerCh_InitPinGPIO(&TIM2_PIN_CH,  MDR_PIN_FAST);
-  MDR_TimerCh_InitPinGPIO(&TIM2_PIN_nCH, MDR_PIN_FAST);
+  //  PWM2
+  MDR_TimerPulse_InitPeriod(PWM2_TIMex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM);
+  MDR_TimerPulse_InitPulse(PWM2_TIM_CH, TIM_PERIOD_PWM, 100 - pulseWidthPerc);
+  MDR_TimerCh_InitPinGPIO(&PWM2_PIN_CH,  MDR_PIN_FAST);
+  MDR_TimerCh_InitPinGPIO(&PWM2_PIN_nCH, MDR_PIN_FAST);
 
-  // Sync Start
-  MDR_Timer_StartSync(TIM1_StartMsk | TIM2_StartMsk);
+  // Start
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StartSync(PWM1_START_SEL_MSK | PWM2_START_SEL_MSK);
+#else
+  MDR_Timer_Start(PWM1_TIMex);
+  MDR_Timer_Start(PWM2_TIMex);
+#endif  
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM1_PIN_nCH);
-
-  MDR_TimerCh_DeInitPinGPIO(&TIM2_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM2_PIN_nCH);  
+  //  Stop
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StopSync(PWM1_START_SEL_MSK | PWM2_START_SEL_MSK);
+#else
+  MDR_Timer_Stop(PWM1_TIMex);
+  MDR_Timer_Stop(PWM2_TIMex);
+#endif   
   
-  MDR_Timer_StopSync(TIM1_StartMsk | TIM2_StartMsk);
-  MDR_Timer_DeInit(MDR_TIMER1ex);
-  MDR_Timer_DeInit(MDR_TIMER2ex);
+  //  Pins to third state
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_nCH);
+  MDR_TimerCh_DeInitPinGPIO(&PWM2_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&PWM2_PIN_nCH);     
+  
+  //  Finit Timers
+  MDR_Timer_DeInit(PWM1_TIMex);
+  MDR_Timer_DeInit(PWM2_TIMex);
   
 #ifdef LCD_CONFLICT
   // Restore LCD
@@ -124,8 +138,8 @@ static void Test_Exec(void)
   if (pulseWidthPerc > 100)
     pulseWidthPerc = 0;
   
-  MDR_TimerPulse_ChangeWidth(MDR_TIMER1_CH1, TIM_PERIOD_PWM, pulseWidthPerc);
-  MDR_TimerPulse_ChangeWidth(TIM2_CH_SEL, TIM_PERIOD_PWM, 100 - pulseWidthPerc);
+  MDR_TimerPulse_ChangeWidth(PWM1_TIM_CH, TIM_PERIOD_PWM, pulseWidthPerc);
+  MDR_TimerPulse_ChangeWidth(PWM2_TIM_CH, TIM_PERIOD_PWM, 100 - pulseWidthPerc);
 }
 
 static void Test_Empty(void)

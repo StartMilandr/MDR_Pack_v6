@@ -25,6 +25,8 @@ static void  Test_Finit(void);
 static void  Test_Empty(void);
 static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
+static void  Test_HandleTim3IRQ(void);
+static void  Test_HandleTim4IRQ(void);
 
 
 TestInterface TI_PWM_CountETR = {
@@ -35,31 +37,14 @@ TestInterface TI_PWM_CountETR = {
   .funcMainLoop   = Test_Empty,  
   .funcHandlerTim1 = Test_HandleTim1IRQ,
   .funcHandlerTim2 = Test_HandleTim2IRQ,
-  .funcHandlerTim3 = Test_Empty,
-  .funcHandlerTim4 = Test_Empty,
+  .funcHandlerTim3 = Test_HandleTim3IRQ,
+  .funcHandlerTim4 = Test_HandleTim4IRQ,
 };
 
-#ifdef USE_MDR1986VK234
-  #define TIM_PWM             MDR_TIMER1ex
-  #define TIM_PWM_CH          MDR_TIMER1_CH3
-  #define TIM_PWM_PIN_CH      _pinTim1_CH3
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIM_ETR             MDR_TIMER2ex
-  #define TIM_ETR_PIN         _pinTim2_ETR
-  #define TIM_ETR_START_MSK   TIM2_StartMsk
-
-#else
-  #define TIM_PWM             MDR_TIMER1ex
-  #define TIM_PWM_CH          MDR_TIMER1_CH1
-  #define TIM_PWM_PIN_CH      _pinTim1_CH1
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIM_ETR             MDR_TIMER2ex
-  #define TIM_ETR_PIN         _pinTim2_ETR
-  #define TIM_ETR_START_MSK   TIM2_StartMsk
-#endif
-
+//  Для счета ETR выбран тот же таймер, который используется в тесте захвата. Чтобы не переподключать провода.
+#define ETR_TIMex           CAP_TIMex
+#define ETR_TIM_PIN         CAP_PIN_ETR
+#define ETR_START_SEL_MSK   CAP_START_SEL_MSK
 
 #define LED2_PERIOD   4
 
@@ -81,7 +66,7 @@ static const MDR_Timer_CfgCountETR  cfgETR = {
   .cfgIRQ.activateNVIC_IRQ = true,
    
   .selFrontETR = TIM_FrontRise,  
-  .countDir    = TIM_CountUp,
+  .countDir    = TIM_Event_CountUp,  
   .clockDTS    = TIM_FDTS_TimClk_div1
 };
 
@@ -103,31 +88,45 @@ static void Test_Init(void)
   MDRB_LCD_Print("10");
 #endif
   
-  MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
-  MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);
+  MDRB_LED_Init(LED_SEL);
+  MDRB_LED_Set (LED_SEL, 0);
   
-  //  Timer1_CH1 - Pulse output for ETR, show period with LED1
-  MDR_Timer_InitPeriod(TIM_PWM, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
-  MDR_TimerPulse_InitPulse(TIM_PWM_CH, TIM_PERIOD_LED, 50);
-  MDR_TimerCh_InitPinGPIO(&TIM_PWM_PIN_CH,  MDR_PIN_FAST);
+  //  PWM1 - Outputs pulses for ETR, show period with LED1
+  MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_TimerPulse_InitPulse(PWM1_TIM_CH, TIM_PERIOD_LED, 50);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH,  MDR_PIN_FAST);
      
-  //  Timer2 Count ETR and, show period with LED2
-  MDR_Timer_InitCountETR(TIM_ETR, &cfgETR);
-  MDR_Timer_InitBRKETR(TIM_ETR, cfgBRKETR);
-  MDR_TimerCh_InitPinGPIO(&TIM_ETR_PIN, MDR_PIN_FAST);
-    
-  // Sync Start
-  MDR_Timer_StartSync(TIM_PWM_START_MSK | TIM_ETR_START_MSK);
+  //  Capture timer - Count ETR and, show period with LED2
+  MDR_Timer_InitCountETR(ETR_TIMex, &cfgETR);
+  MDR_Timer_InitBRKETR(ETR_TIMex, cfgBRKETR);
+  MDR_TimerCh_InitPinGPIO(&ETR_TIM_PIN, MDR_PIN_FAST);
+
+  // Start
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StartSync(PWM1_START_SEL_MSK | ETR_START_SEL_MSK);
+#else
+  MDR_Timer_Start(ETR_TIMex);
+  MDR_Timer_Start(PWM1_TIMex);
+#endif
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&TIM_PWM_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM_ETR_PIN);
+  //  Stop
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StopSync(PWM1_START_SEL_MSK | ETR_START_SEL_MSK);
+#else
+  MDR_Timer_Stop(ETR_TIMex);
+  MDR_Timer_Stop(PWM1_TIMex);
+#endif   
+  
+  //  Pins to third state
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&ETR_TIM_PIN);
 
-  MDR_Timer_StopSync(TIM_PWM_START_MSK | TIM_ETR_START_MSK);
-  MDR_Timer_DeInit(TIM_PWM);
-  MDR_Timer_DeInit(TIM_ETR);
+  //  Finit Timers
+  MDR_Timer_DeInit(PWM1_TIMex);
+  MDR_Timer_DeInit(ETR_TIMex);
   
   LED_Uninitialize();  
 }
@@ -135,15 +134,29 @@ static void Test_Finit(void)
 static void Test_HandleTim1IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
-  
   MDRB_LED_Switch(MDRB_LED_1);  
 }
 
 static void Test_HandleTim2IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
-  
   MDRB_LED_Switch(MDRB_LED_2);
+}
+
+static void Test_HandleTim3IRQ(void)
+{
+#ifdef  TIMER3_EXIST  
+  MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
+  MDRB_LED_Switch(MDRB_LED_3);
+#endif
+}
+
+static void Test_HandleTim4IRQ(void)
+{
+#ifdef  TIMER4_EXIST  
+  MDR_Timer_ClearEvent(MDR_TIMER4, TIM_FL_CNT_ARR);  
+  MDRB_LED_Switch(MDRB_LED_4);
+#endif
 }
 
 static void Test_Empty(void)

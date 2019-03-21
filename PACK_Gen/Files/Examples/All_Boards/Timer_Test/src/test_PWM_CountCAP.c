@@ -24,7 +24,9 @@ static void  Test_Init(void);
 static void  Test_Finit(void);
 static void  Test_Empty(void);
 static void  Test_HandleTim1IRQ(void);
-static void  Test_HandleTimIRQ_CAP(void);
+static void  Test_HandleTim2IRQ(void);
+static void  Test_HandleTim3IRQ(void);
+static void  Test_HandleTim4IRQ(void);
 
 
 TestInterface TI_PWM_CountCAP = {
@@ -34,59 +36,12 @@ TestInterface TI_PWM_CountCAP = {
   .funcExec       = Test_Empty,
   .funcMainLoop   = Test_Empty,
   .funcHandlerTim1 = Test_HandleTim1IRQ,
-  .funcHandlerTim2 = Test_HandleTimIRQ_CAP,
-  .funcHandlerTim3 = Test_HandleTimIRQ_CAP,
-  .funcHandlerTim4 = Test_HandleTimIRQ_CAP,
+  .funcHandlerTim2 = Test_HandleTim2IRQ,
+  .funcHandlerTim3 = Test_HandleTim3IRQ,
+  .funcHandlerTim4 = Test_HandleTim4IRQ,
 };
 
-
 #define LED2_PERIOD   4
-
-#ifdef USE_MDR1986VK214
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH1
-  #define TIM_PWM_PIN_CH      _pinTim1_CH1
-  #define TIM_PWM_START_MSK   TIM1_StartMsk  
-
-  #define TIMex_CAP           MDR_TIMER2ex
-  #define TIM_CAP             MDR_TIMER2
-  #define TIM_CAP_CH          MDR_TIMER2_CH1
-  #define TIM_CAP_PIN_CH      _pinTim2_CH1
-  #define TIM_CAP_START_MSK   TIM2_StartMsk
-  #define TIM_CAP_EVENT       TIM_Event_CH1
-
-  #define LCD_CONFLICT
-
-#elif defined (USE_MDR1986VK234)
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH3
-  #define TIM_PWM_PIN_CH      _pinTim1_CH3
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIMex_CAP           MDR_TIMER2ex
-  #define TIM_CAP             MDR_TIMER2
-  #define TIM_CAP_CH          MDR_TIMER2_CH3
-  #define TIM_CAP_PIN_CH      _pinTim2_CH3
-  #define TIM_CAP_START_MSK   TIM2_StartMsk
-  #define TIM_CAP_EVENT       TIM_Event_CH3
-
-#elif defined (USE_MDR1986VE91)
-  #define TIMex_PWM           MDR_TIMER1ex
-  #define TIM_PWM             MDR_TIMER1
-  #define TIM_PWM_CH          MDR_TIMER1_CH1
-  #define TIM_PWM_PIN_CH      _pinTim1_CH1
-  #define TIM_PWM_START_MSK   TIM1_StartMsk
-
-  #define TIMex_CAP           MDR_TIMER3ex
-  #define TIM_CAP             MDR_TIMER3
-  #define TIM_CAP_CH          MDR_TIMER3_CH2
-  #define TIM_CAP_PIN_CH      _pinTim3_CH2
-  #define TIM_CAP_START_MSK   TIM3_StartMsk
-  #define TIM_CAP_EVENT       TIM_Event_CH2
-
-#endif
 
 static const MDR_Timer_CfgCountCH cfgCntCH = {
   .cfgPeriod.clockBRG = TIM_BRG_LED,
@@ -98,8 +53,8 @@ static const MDR_Timer_CfgCountCH cfgCntCH = {
   .cfgIRQ.priorityIRQ = 0,
   .cfgIRQ.activateNVIC_IRQ = true,
    
-  .selEventCH  = TIM_CAP_EVENT,  
-  .countDir    = TIM_CountUp,
+  .selEventCH  = CAP_EVENT_CH,  
+  .countDir    = TIM_Event_CountUp,  
   .clockDTS    = TIM_FDTS_TimClk_div1
 };
 
@@ -129,31 +84,45 @@ static void Test_Init(void)
   MDRB_LCD_Print("11");
 #endif
   
-  MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
-  MDRB_LED_Set (MDRB_LED_1 | MDRB_LED_2, 0);  
+  MDRB_LED_Init(LED_SEL);
+  MDRB_LED_Set (LED_SEL, 0);  
       
-  //  Timer1_CH1 - Pulse output for ETR, show period with LED1
-  MDR_Timer_InitPeriod(TIMex_PWM, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
-  MDR_TimerPulse_InitPulse(TIM_PWM_CH, TIM_PERIOD_LED, 50);
-  MDR_TimerCh_InitPinGPIO(&TIM_PWM_PIN_CH,  MDR_PIN_FAST);
+  //  PWM1 - Output pulses for ETR, show period with LED1
+  MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
+  MDR_TimerPulse_InitPulse(PWM1_TIM_CH, TIM_PERIOD_LED, 50);
+  MDR_TimerCh_InitPinGPIO(&PWM1_PIN_CH,  MDR_PIN_FAST);
      
-  //  Timer2 Count CAP Events and show period with LED2
-  MDR_Timer_InitCountChannelEvent(TIMex_CAP, &cfgCntCH);
-  MDR_TimerCh_InitCAP(TIM_CAP_CH, &cfgCAP);
-  MDR_TimerCh_InitPinGPIO(&TIM_CAP_PIN_CH, MDR_PIN_FAST);
-    
-  // Sync Start
-  MDR_Timer_StartSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
+  //  CAP - Counts CAP Events and show period with LED2
+  MDR_Timer_InitCountChannelEvent(CAP_TIMex, &cfgCntCH);
+  MDR_TimerCh_InitCAP(CAP_TIM_CH, &cfgCAP);
+  MDR_TimerCh_InitPinGPIO(&CAP_PIN_CH, MDR_PIN_FAST);
+      
+  // Start
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StartSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
+#else
+  MDR_Timer_Start(CAP_TIMex);
+  MDR_Timer_Start(PWM1_TIMex);
+#endif  
 }  
 
 static void Test_Finit(void)
 {
-  MDR_TimerCh_DeInitPinGPIO(&TIM_CAP_PIN_CH);
-  MDR_TimerCh_DeInitPinGPIO(&TIM_CAP_PIN_CH);
+  //  Stop
+#ifndef SYNC_START_UNAVALABLE  
+  MDR_Timer_StopSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
+#else
+  MDR_Timer_Stop(PWM1_TIMex);
+  MDR_Timer_Stop(CAP_TIMex);  
+#endif    
+  
+  //  Pins to third state
+  MDR_TimerCh_DeInitPinGPIO(&PWM1_PIN_CH);
+  MDR_TimerCh_DeInitPinGPIO(&CAP_PIN_CH);
 
-  MDR_Timer_StopSync(TIM_PWM_START_MSK | TIM_CAP_START_MSK);
-  MDR_Timer_DeInit(TIMex_PWM);
-  MDR_Timer_DeInit(TIMex_CAP);
+  //  Finit Timers
+  MDR_Timer_DeInit(PWM1_TIMex);
+  MDR_Timer_DeInit(CAP_TIMex);
 
 #ifdef LCD_CONFLICT 
   // Restore LCD  
@@ -166,15 +135,29 @@ static void Test_Finit(void)
 static void Test_HandleTim1IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
-  
   MDRB_LED_Switch(MDRB_LED_1);  
 }
 
-static void Test_HandleTimIRQ_CAP(void)
+static void Test_HandleTim2IRQ(void)
 {
-  MDR_Timer_ClearEvent(TIM_CAP, TIM_FL_CNT_ARR);
-  
+  MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
   MDRB_LED_Switch(MDRB_LED_2);
+}
+
+static void Test_HandleTim3IRQ(void)
+{
+#ifdef  TIMER3_EXIST  
+  MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
+  MDRB_LED_Switch(MDRB_LED_3);
+#endif
+}
+
+static void Test_HandleTim4IRQ(void)
+{
+#ifdef  TIMER4_EXIST  
+  MDR_Timer_ClearEvent(MDR_TIMER4, TIM_FL_CNT_ARR);  
+  MDRB_LED_Switch(MDRB_LED_4);
+#endif
 }
 
 static void  Test_Empty(void)

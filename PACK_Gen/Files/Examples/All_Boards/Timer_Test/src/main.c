@@ -39,8 +39,8 @@ static  TestInterface *testStack[] = {
   &TI_CAP_Simplest,
   &TI_CAP_Period,
   //  Режимы внешнего счета - импульсов на входе ETR и событий на каналах захвата
-  &TI_PWM_CountETR,   
   &TI_PWM_CountCAP,
+  &TI_PWM_CountETR,
 };
 
 uint32_t activeTest = 0;

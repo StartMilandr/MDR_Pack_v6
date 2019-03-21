@@ -7,11 +7,13 @@
 //  ОПИСАНИЕ:
 //  Пример простейшей инициализации таймера для получения прерываний с заданным периодом.
 //  Одновременно мигают три светодиода от трех таймеров считающих синхронно.
+//  Кнопка Right включает-выключает синхронное мигание.
 
 //  Test Interface functions
 static void  Test_Init(void);
 static void  Test_Finit(void);
 static void  Test_Empty(void);
+static void  Test_Change(void);
 static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
 static void  Test_HandleTim3IRQ(void);
@@ -19,7 +21,7 @@ static void  Test_HandleTim3IRQ(void);
 TestInterface TI_SimplestFlash = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
-  .funcChange     = Test_Empty,
+  .funcChange     = Test_Change,
   .funcExec       = Test_Empty,
   .funcMainLoop   = Test_Empty,
   .funcHandlerTim1 = Test_HandleTim1IRQ,
@@ -28,6 +30,7 @@ TestInterface TI_SimplestFlash = {
   .funcHandlerTim4 = Test_HandleTim3IRQ,
 };
 
+static bool started = false;
 
 static void Test_Init(void)
 {
@@ -48,6 +51,7 @@ static void Test_Init(void)
 #endif
   
   MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+  started = true;
 }  
 
 static void Test_Finit(void)
@@ -67,25 +71,32 @@ static void Test_Empty(void)
 
 }
 
+static void Test_Change(void)
+{
+ if (started)
+   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+ else
+   MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+ 
+ started = !started;
+}
+
 static void Test_HandleTim1IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
-  
   MDRB_LED_Switch(MDRB_LED_1);
 }
 
 static void Test_HandleTim2IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
-  
   MDRB_LED_Switch(MDRB_LED_2);
 }
 
 static void Test_HandleTim3IRQ(void)
 {
 #ifdef  TIMER3_EXIST    
-  MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);
-  
+  MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
   MDRB_LED_Switch(MDRB_LED_3);
 #endif
 }

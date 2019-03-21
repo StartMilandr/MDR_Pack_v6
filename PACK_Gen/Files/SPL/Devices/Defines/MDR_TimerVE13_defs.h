@@ -92,6 +92,9 @@ typedef struct {
 #define MDR_TIMER_CNTRL_EVENT_SEL_Pos    (8UL)                     /*!< MDR_TIMER1 CNTRL: EVENT_SEL (Bit 8)                   */
 #define MDR_TIMER_CNTRL_EVENT_SEL_Msk    (0xf00UL)                 /*!< MDR_TIMER1 CNTRL: EVENT_SEL (Bitfield-Mask: 0x0f)     */
 
+#define MDR_TIMER_CNTRL_DIR_UP           0UL
+#define MDR_TIMER_CNTRL_DIR_DOWN         MDR_TIMER_CNTRL_DIR_Msk
+
 
 /* =========================================================================================================================== */
 /* ================                                        MDR_TIMER1                                         ================ */
@@ -249,8 +252,8 @@ typedef struct {                                /*!< (@ 0x40070000) MDR_TIMER1 S
 //  One Channel's Registers
 typedef struct {
   union {
-    __IOM uint32_t            CCRx;                        /*!< (@ 0x00000010) CNT Compare Register                                       */
-    MDR_TIM_VALUE_Bits        CCRx_b;
+    __IOM uint32_t            CCR;                        /*!< (@ 0x00000010) CNT Compare Register                                       */
+    MDR_TIM_VALUE_Bits        CCR_b;
   } ;
   __IM uint32_t               reserved1[3];
   union {
@@ -274,8 +277,8 @@ typedef struct {
   } ;
   __IM uint32_t               reserved5[3];  
   union {
-    __IOM uint32_t            CCRx1;                       /*!< (@ 0x00000070) CNT Compare Register                                       */
-    MDR_TIM_VALUE_Bits        CCRx1_b;    
+    __IOM uint32_t            CCR1;                       /*!< (@ 0x00000070) CNT Compare Register                                       */
+    MDR_TIM_VALUE_Bits        CCR1_b;    
   } ;
   __IM uint32_t               reserved6[3];  
   union {

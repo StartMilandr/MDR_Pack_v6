@@ -23,8 +23,34 @@
     #define PIN_PA3     MDR_Pin_3   //          LCD_D3
     #define PIN_PA4     MDR_Pin_4   //          LCD_D4
     #define PIN_PA5     MDR_Pin_5   //          LCD_D5
-    #define PIN_PA6     MDR_Pin_6   //          LCD_D6
-    #define PIN_PA7     MDR_Pin_7   //          LCD_D7
+    #define PIN_PA6     MDR_Pin_6   //          LCD_D6    T4_CH1
+    #define PIN_PA7     MDR_Pin_7   //          LCD_D7    T4_nCH1
+    #define PIN_PA8     MDR_Pin_8   //                    T4_CH2
+    #define PIN_PA9     MDR_Pin_9   //                    T4_nCH2
+    #define PIN_PA10    MDR_Pin_10  //                    T4_CH3
+    #define PIN_PA11    MDR_Pin_11  //                    T4_nCH3
+    #define PIN_PA12    MDR_Pin_12  //                    T4_CH4
+    #define PIN_PA13    MDR_Pin_13  //                    T4_nCH4
+    #define PIN_PA14    MDR_Pin_14  //                    T4_ETR
+    #define PIN_PA15    MDR_Pin_15  //                    T4_BRK
+
+    #define PIN_PB0     MDR_Pin_0   //                    T3_CH1
+    #define PIN_PB1     MDR_Pin_1   //                    T3_nCH1
+    #define PIN_PB2     MDR_Pin_2   //                    T3_CH2
+    #define PIN_PB3     MDR_Pin_3   //                    T3_nCH2
+    #define PIN_PB4     MDR_Pin_4   //                    T3_CH3
+    #define PIN_PB5     MDR_Pin_5   //                    T3_nCH3
+    #define PIN_PB6     MDR_Pin_6   //                    T3_CH4
+    #define PIN_PB7     MDR_Pin_7   //                    T3_nCH4
+    #define PIN_PB8     MDR_Pin_8   //                    T1_nCH1
+    #define PIN_PB9     MDR_Pin_9   //                    T2_nCH1
+    #define PIN_PB10    MDR_Pin_10  //                    T1_nCH2
+    #define PIN_PB11    MDR_Pin_11  //                    T2_nCH2
+    #define PIN_PB12    MDR_Pin_12  //                    T1_nCH3
+    #define PIN_PB13    MDR_Pin_13  //                    T2_nCH3
+    #define PIN_PB14    MDR_Pin_14  //                    T1_nCH4
+    #define PIN_PB15    MDR_Pin_15  //                    T2_nCH4
+
 
     #define PIN_PC0     MDR_Pin_0   //          LCD_RW
     #define PIN_PC1     MDR_Pin_1   //          
@@ -54,10 +80,17 @@
     #define PIN_PD13    MDR_Pin_13  //  LED_7                                 ADC_Ch6     UART2_TX
     #define PIN_PD14    MDR_Pin_14  //  LED_8                                 ADC_Ch7     UART2_RX
 
-    #define PIN_PE5     MDR_Pin_5   //  Down
-    #define PIN_PE8     MDR_Pin_8   //  Up
-    #define PIN_PE9     MDR_Pin_9   //  Select
-    #define PIN_PE10    MDR_Pin_10  //  Left
+    #define PIN_PE0     MDR_Pin_0   //                    
+    #define PIN_PE1     MDR_Pin_1   //                    
+    #define PIN_PE2     MDR_Pin_2   //                    
+    #define PIN_PE3     MDR_Pin_3   //                    T1_CH1
+    #define PIN_PE4     MDR_Pin_4   //                    T1_CH2
+    #define PIN_PE5     MDR_Pin_5   //  Down              T1_CH3
+    #define PIN_PE6     MDR_Pin_6   //                    T1_CH4
+    #define PIN_PE7     MDR_Pin_7   //                    T2_CH1
+    #define PIN_PE8     MDR_Pin_8   //  Up                T2_CH2
+    #define PIN_PE9     MDR_Pin_9   //  Select            T2_CH3
+    #define PIN_PE10    MDR_Pin_10  //  Left              T2_CH4
     #define PIN_PE11    MDR_Pin_11  //  Back
     #define PIN_PE12    MDR_Pin_12  //          LCD_A0
     #define PIN_PE13    MDR_Pin_13  //          LCD_E1

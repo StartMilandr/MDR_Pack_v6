@@ -53,7 +53,7 @@
 
 
     #define PIN_PC0     MDR_Pin_0   //          LCD_RW
-    #define PIN_PC1     MDR_Pin_1   //          
+    #define PIN_PC1     MDR_Pin_1   //                    T2_ETR
     #define PIN_PC2     MDR_Pin_2   //          LCD_E    
     #define PIN_PC3     MDR_Pin_3   //                                                    UART1_TX
     #define PIN_PC4     MDR_Pin_4   //                                                    UART1_RX

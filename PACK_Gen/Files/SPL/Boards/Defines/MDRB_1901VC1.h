@@ -27,23 +27,23 @@
     #define PIN_PA9     MDR_Pin_9   //                              SSP2_FSS
     #define PIN_PA10    MDR_Pin_10  //                              SSP2_TX
     #define PIN_PA11    MDR_Pin_11  //                              SSP2_RS
-    #define PIN_PA12    MDR_Pin_12  //                            SSP1_RX
-    #define PIN_PA13    MDR_Pin_13  //                            SSP1_TX
+    #define PIN_PA12    MDR_Pin_12  //                            SSP1_RX           T1_ETR
+    #define PIN_PA13    MDR_Pin_13  //                            SSP1_TX           T1_BRK
     #define PIN_PA14    MDR_Pin_14  //                            SSP1_CLK
     #define PIN_PA15    MDR_Pin_15  //                            SSP1_FSS
 
-    #define PIN_PB0     MDR_Pin_0   //                    JTAG_A
-    #define PIN_PB1     MDR_Pin_1   //                    JTAG_A
-    #define PIN_PB2     MDR_Pin_2   //                    JTAG_A
-    #define PIN_PB3     MDR_Pin_3   //                    JTAG_A
-    #define PIN_PB4     MDR_Pin_4   //                    JTAG_A      
+    #define PIN_PB0     MDR_Pin_0   //                    JTAG_A                    T2_nCH1
+    #define PIN_PB1     MDR_Pin_1   //                    JTAG_A                    T2_CH2
+    #define PIN_PB2     MDR_Pin_2   //                    JTAG_A                    T2_nCH2
+    #define PIN_PB3     MDR_Pin_3   //                    JTAG_A                    T2_CH3
+    #define PIN_PB4     MDR_Pin_4   //                    JTAG_A                    T1_CH1/T2_nCH3
     #define PIN_PB5     MDR_Pin_5   //                                SSP3_TX
     #define PIN_PB6     MDR_Pin_6   //                                SSP3_FSS
     #define PIN_PB7     MDR_Pin_7   //                                SSP3_RX
-    #define PIN_PB8     MDR_Pin_8   //                                SSP3_CLK
-    #define PIN_PB9     MDR_Pin_9   //                                
-    #define PIN_PB10    MDR_Pin_10  //                                
-    #define PIN_PB11    MDR_Pin_11  //  LED_5
+    #define PIN_PB8     MDR_Pin_8   //                                SSP3_CLK      
+    #define PIN_PB9     MDR_Pin_9   //                                              T1_nCH1/T2_ETR
+    #define PIN_PB10    MDR_Pin_10  //                                              T1_CH2
+    #define PIN_PB11    MDR_Pin_11  //  LED_5                                       T1_nCH2
     #define PIN_PB12    MDR_Pin_12  //  LED_4                       SSP2_CLK
     #define PIN_PB13    MDR_Pin_13  //  LED_3                       SSP2_FSS
     #define PIN_PB14    MDR_Pin_14  //  LED_2                       SSP2_TX
@@ -102,6 +102,10 @@
     #define PIN_PF3     MDR_Pin_3   //                                  SSP4_TX
     #define PIN_PF4     MDR_Pin_4   //                                  SSP4_CLK
     #define PIN_PF5     MDR_Pin_5   //                                  SSP4_FSS
+    #define PIN_PB6     MDR_Pin_6   //
+    #define PIN_PB7     MDR_Pin_7   //                                              T3_CH3
+    #define PIN_PB8     MDR_Pin_8   //                                              T3_nCH3
+    #define PIN_PB9     MDR_Pin_9   //
     #define PIN_PF12    MDR_Pin_12  //                                SSP3_TX
     #define PIN_PF13    MDR_Pin_13  //                                SSP3_FSS
     #define PIN_PF14    MDR_Pin_14  //                                SSP3_RX

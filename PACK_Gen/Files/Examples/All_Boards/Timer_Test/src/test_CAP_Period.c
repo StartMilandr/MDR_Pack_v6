@@ -81,9 +81,13 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 200;
 
-#elif defined (USE_MDR1986VE1)
+#elif defined (USE_MDR1986VE1) || defined (USE_MDR1986VE3)
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 300;
+
+#else
+  #define OUT_TO_LCD
+  uint_tim  pulsePeriod = 200;
 #endif
 
 #define CAP_IRQ_byFALL       CAP_EVENT_FALL

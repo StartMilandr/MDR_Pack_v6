@@ -6,7 +6,7 @@
 
 
 //======================  Выбор пинов ======================
-#if   defined(USE_BOARD_VE1)
+#if defined(USE_BOARD_VE1) || defined(USE_BOARD_VE3)
   //  см. MDRB_1986VE1.h
   
   extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
@@ -52,12 +52,6 @@
   extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH4; 
   extern const MDR_Timer_CfgPinGPIO _pinTim4_ETR; 
   extern const MDR_Timer_CfgPinGPIO _pinTim4_BRK; 
-
-
-#elif defined(USE_BOARD_VE3)
-  //  см. MDRB_1986VE3.h
-
-
 
 #elif defined(USE_BOARD_VE91) || defined(USE_BOARD_VE94)
 
@@ -106,7 +100,19 @@
 
   
 #elif defined(USE_BOARD_VC1)
-  //  см. MDRB_1901VС1.h
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH2; 
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_BRK;  
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH3;
 
   
 #elif defined (USE_MDR1986VE4) 

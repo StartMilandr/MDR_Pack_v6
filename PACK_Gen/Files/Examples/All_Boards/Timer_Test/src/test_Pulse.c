@@ -34,37 +34,6 @@ TestInterface TI_Pulse = {
   .funcHandlerTim4 = Test_Empty,
 };
 
-////  Channel Select
-//#if defined (USE_MDR1986VK214)
-//  #define PWM1_SEL_TIM1_CH1 
-
-//  #define TIM1_CH_SEL       MDR_TIMER1_CH1
-//  #define TIM1_PIN_CH       _pinTim1_CH1
-//  #define TIM1_PIN_nCH      _pinTim1_nCH1
-
-//  #define TIM2_CH_SEL       MDR_TIMER2_CH1
-//  #define TIM2_PIN_CH       _pinTim2_CH1
-//  #define TIM2_PIN_nCH      _pinTim2_nCH1
-
-//  #define LCD_CONFLICT
-//  
-//#elif defined (USE_MDR1986VK234)
-//  #define TIM1_CH_SEL       MDR_TIMER1_CH3
-//  #define TIM1_PIN_CH       _pinTim1_CH3    // PA4
-//  #define TIM1_PIN_nCH      _pinTim1_nCH3   // PA5
-
-//  #define TIM2_CH_SEL       MDR_TIMER2_CH1
-//  #define TIM2_PIN_CH       _pinTim2_CH1    // PC2
-//  #define TIM2_PIN_nCH      _pinTim2_nCH1   // PC3
-//  
-//#else
-//  #define PWM1_SEL_TIM1_CH1 
-//  
-
-//  #define TIM2_CH_SEL       MDR_TIMER2_CH3
-//  #define TIM2_PIN_CH       _pinTim2_CH3
-//  #define TIM2_PIN_nCH      _pinTim2_nCH3
-//#endif
 
 uint32_t pulseWidthPerc = 50;
 

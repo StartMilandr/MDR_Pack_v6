@@ -53,7 +53,7 @@
     #define PIN_PE2     MDR_Pin_2   //                                      T2_CH3 /T3_CH1
     #define PIN_PE3     MDR_Pin_3   //  Left                                T2_nCH3/T3_nCH1
     #define PIN_PE6     MDR_Pin_6   //                                      T3_CH3
-    #define PIN_PE7     MDR_Pin_7   //                                      T3_CH3
+    #define PIN_PE7     MDR_Pin_7   //                                      T3_nCH3
 
     //  Port_F[6..0]
     #define PIN_PF0     MDR_Pin_0   //                            SSP1_TX                 UART2_RX

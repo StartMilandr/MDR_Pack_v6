@@ -80,6 +80,10 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 200;
 
+#elif defined (USE_MDR1986VE93)
+  #define OUT_TO_UART
+  uint_tim  pulsePeriod = 200;
+
 #elif defined (USE_MDR1986VE1) || defined (USE_MDR1986VE3)
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 300;
@@ -92,7 +96,8 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
 #define CAP_IRQ_byFALL       CAP_EVENT_FALL
 
 
-#if !(defined(LCD_CONFLICT_TIM) || defined(LCD_IS_7SEG_DISPLAY))
+//#if !(defined(LCD_CONFLICT_TIM) || defined(LCD_IS_7SEG_DISPLAY))
+#if !defined(LCD_IS_7SEG_DISPLAY)
 static void LCD_ShowName(uint32_t period)
 {
   static char message[64];

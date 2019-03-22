@@ -110,7 +110,24 @@
   
   
 #elif defined(USE_BOARD_VE93)
-  //  см. MDRB_1986VE93.h
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH3;
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH3; 
+  
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_BRK;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH3;  
 
   
 #elif defined(USE_BOARD_VC1)

@@ -10,18 +10,22 @@
 extern TestInterface TI_SimplestFlash;
 extern TestInterface TI_CountTimClock;
 extern TestInterface TI_CascadeTimer;
-extern TestInterface TI_PWM_CountETR;
 extern TestInterface TI_PWM_CountCAP;
 
 //  Генерация ШИМ
 extern TestInterface TI_Pulse;
 extern TestInterface TI_PWM;
-extern TestInterface TI_PWM_ClearBRKETR;
 extern TestInterface TI_PWM_DTG;
 //  Захват фронтов на прямом входе канала таймера
 extern TestInterface TI_CAP_Simplest;
 extern TestInterface TI_CAP_Period;
 
+
+//  Тесты с ETR не доступны для 1986ВЕ93, на плате нет не конфликтующих выводов ETR
+#ifndef NO_ETR_PIN 
+extern TestInterface TI_PWM_ClearBRKETR;
+extern TestInterface TI_PWM_CountETR;
+#endif
 
 static  TestInterface *testStack[] = {
   //  Режим внутреннего счета - Счет импульсов TIM_CLOCK
@@ -33,14 +37,18 @@ static  TestInterface *testStack[] = {
   &TI_Pulse,      // Simplest control to get pulses (PWM mode)
   &TI_PWM,
   &TI_PWM_DTG, 
+#ifndef NO_ETR_PIN  
   &TI_PWM_ClearBRKETR,   
+#endif
   //  Режим захвата (CAP)
   //  НЕОБХОДИМО внешнее подключение пинов с ШИМ к пинам захвата!
   &TI_CAP_Simplest,
   &TI_CAP_Period,
   //  Режимы внешнего счета - импульсов на входе ETR и событий на каналах захвата
   &TI_PWM_CountCAP,
+#ifndef NO_ETR_PIN    
   &TI_PWM_CountETR,
+#endif
 };
 
 uint32_t activeTest = 0;

@@ -147,10 +147,32 @@
   const MDR_Timer_CfgPinGPIO _pinTim3_CH2  = {MDR_GPIO_B, 2,  MDR_PIN_ALT};
   const MDR_Timer_CfgPinGPIO _pinTim3_nCH2 = {MDR_GPIO_B, 3,  MDR_PIN_ALT};
   const MDR_Timer_CfgPinGPIO _pinTim3_ETR  = {MDR_GPIO_B, 4,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_CH3  = {MDR_GPIO_B, 5,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_nCH3 = {MDR_GPIO_B, 6,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_CH4  = {MDR_GPIO_B, 7,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_nCH4 = {MDR_GPIO_B, 8,  MDR_PIN_OVER};
   
   
 #elif defined(USE_BOARD_VE93)
 
+  const MDR_Timer_CfgPinGPIO _pinTim1_CH1  = {MDR_GPIO_A, 1,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim1_nCH1 = {MDR_GPIO_A, 2,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim1_CH2  = {MDR_GPIO_A, 3,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim1_nCH2 = {MDR_GPIO_A, 4,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim1_CH3  = {MDR_GPIO_A, 5,  MDR_PIN_ALT};
+
+  const MDR_Timer_CfgPinGPIO _pinTim2_CH1  = {MDR_GPIO_E, 0,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim2_CH3  = {MDR_GPIO_E, 2,  MDR_PIN_ALT}; 
+  
+  const MDR_Timer_CfgPinGPIO _pinTim3_CH1  = {MDR_GPIO_B, 0,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim3_nCH1 = {MDR_GPIO_B, 1,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim3_CH2  = {MDR_GPIO_B, 2,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim3_nCH2 = {MDR_GPIO_B, 3,  MDR_PIN_ALT};
+  const MDR_Timer_CfgPinGPIO _pinTim3_ETR  = {MDR_GPIO_B, 4,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_BRK  = {MDR_GPIO_B, 4,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_CH3  = {MDR_GPIO_B, 5,  MDR_PIN_OVER};
+  const MDR_Timer_CfgPinGPIO _pinTim3_nCH3 = {MDR_GPIO_B, 6,  MDR_PIN_OVER};  
+  
   
 #elif defined(USE_BOARD_VC1)
   const MDR_Timer_CfgPinGPIO _pinTim1_CH1  = {MDR_GPIO_B, 4,  MDR_PIN_ALT};

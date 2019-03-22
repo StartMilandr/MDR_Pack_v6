@@ -23,11 +23,8 @@
 static void  Test_Init(void);
 static void  Test_Finit(void);
 static void  Test_Empty(void);
-static void  Test_HandleTim1IRQ(void);
-static void  Test_HandleTim2IRQ(void);
-static void  Test_HandleTim3IRQ(void);
-static void  Test_HandleTim4IRQ(void);
-
+static void  Test_HandleIRQ_PWM(void);
+static void  Test_HandleIRQ_CAP(void);
 
 TestInterface TI_PWM_CountCAP = {
   .funcInit       = Test_Init,
@@ -35,12 +32,33 @@ TestInterface TI_PWM_CountCAP = {
   .funcChange     = Test_Empty,
   .funcExec       = Test_Empty,
   .funcMainLoop   = Test_Empty,
-  .funcHandlerTim1 = Test_HandleTim1IRQ,
-  .funcHandlerTim2 = Test_HandleTim2IRQ,
-  .funcHandlerTim3 = Test_HandleTim3IRQ,
-  .funcHandlerTim4 = Test_HandleTim4IRQ,
-};
+  
+  
+#ifdef PWM1_IS_TIM1 
+  .funcHandlerTim1 = Test_HandleIRQ_PWM,
+#else
+  .funcHandlerTim1 = Test_HandleIRQ_CAP,
+#endif
 
+#ifdef PWM1_IS_TIM2 
+  .funcHandlerTim2 = Test_HandleIRQ_PWM,
+#else
+  .funcHandlerTim2 = Test_HandleIRQ_CAP,
+#endif
+  
+  #ifdef PWM1_IS_TIM3 
+  .funcHandlerTim3 = Test_HandleIRQ_PWM,
+#else
+  .funcHandlerTim3 = Test_HandleIRQ_CAP,
+#endif
+
+#ifdef PWM1_IS_TIM4 
+  .funcHandlerTim4 = Test_HandleIRQ_PWM,
+#else
+  .funcHandlerTim4 = Test_HandleIRQ_CAP,
+#endif
+};  
+  
 #define LED2_PERIOD   4
 
 static const MDR_Timer_CfgCountCH cfgCntCH = {
@@ -72,7 +90,7 @@ static void Test_Init(void)
 #ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("Count CAP", 3);
   
-#elif defined (LCD_CONFLICT)
+#elif defined (LCD_CONFLICT_TIM)
   //  LCD conflicts with Timers channel
   //  Show Test index and LCD Off
   MDRB_LCD_Print("11");  
@@ -124,40 +142,31 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(PWM1_TIMex);
   MDR_Timer_DeInit(CAP_TIMex);
 
-#ifdef LCD_CONFLICT 
+  LED_Uninitialize();  
+  
+#ifdef LCD_CONFLICT_LED
+  MDRB_LCD_CapturePins();
+#endif    
+#ifdef LCD_CONFLICT_TIM 
   // Restore LCD  
   MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));    
 #endif
-  
-  LED_Uninitialize();  
+
 }
 
-static void Test_HandleTim1IRQ(void)
+
+static void Test_HandleIRQ_PWM(void)
 {
-  MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
+  MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
+  
   MDRB_LED_Switch(MDRB_LED_1);  
 }
 
-static void Test_HandleTim2IRQ(void)
+static void Test_HandleIRQ_CAP(void)
 {
-  MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
+  MDR_Timer_ClearEvent(CAP_TIM, TIM_FL_CNT_ARR);
+  
   MDRB_LED_Switch(MDRB_LED_2);
-}
-
-static void Test_HandleTim3IRQ(void)
-{
-#ifdef  TIMER3_EXIST  
-  MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
-  MDRB_LED_Switch(MDRB_LED_3);
-#endif
-}
-
-static void Test_HandleTim4IRQ(void)
-{
-#ifdef  TIMER4_EXIST  
-  MDR_Timer_ClearEvent(MDR_TIMER4, TIM_FL_CNT_ARR);  
-  MDRB_LED_Switch(MDRB_LED_4);
-#endif
 }
 
 static void  Test_Empty(void)

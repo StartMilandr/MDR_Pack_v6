@@ -1,5 +1,4 @@
 #include <MDR_Timer.h>
-#include <MDRB_LEDs.h>
 #include <MDRB_LCD.h>
 #include <MDRB_UART_Debug.h>
 
@@ -93,7 +92,7 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
 #define CAP_IRQ_byFALL       CAP_EVENT_FALL
 
 
-#if !(defined(LCD_CONFLICT) || defined(LCD_IS_7SEG_DISPLAY))
+#if !(defined(LCD_CONFLICT_TIM) || defined(LCD_IS_7SEG_DISPLAY))
 static void LCD_ShowName(uint32_t period)
 {
   static char message[64];
@@ -110,7 +109,7 @@ static void Test_Init(void)
   MDRB_LCD_ClearLine(5);
   MDRB_LCD_ClearLine(7);
   
-#elif defined (LCD_CONFLICT)
+#elif defined (LCD_CONFLICT_TIM)
   //  LCD conflicts with Timers channel
   //  Show Test index and LCD Off
   MDRB_LCD_Print("9");  
@@ -164,14 +163,12 @@ static void Test_Finit(void)
  //  Finit Timers
   MDR_Timer_DeInit(CAP_TIMex);
   MDR_Timer_DeInit(PWM1_TIMex);
-  
-  LED_Uninitialize();  
-  
+    
 #ifdef OUT_TO_UART
   MDR_UART_DBG_Finit();
 #endif  
   
-#ifdef LCD_CONFLICT   
+#ifdef LCD_CONFLICT_TIM   
   // Restore LCD  
   MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));
   

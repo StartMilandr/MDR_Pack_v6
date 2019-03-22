@@ -53,7 +53,7 @@ static void Test_Init(void)
 #ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("PWM with DTG", 3);
   
-#elif defined (LCD_CONFLICT)
+#elif defined (LCD_CONFLICT_TIM)
   //  LCD conflicts with Timers channel
   //  Show Test index and LCD Off
   MDRB_LCD_Print("6");  
@@ -102,7 +102,7 @@ static void Test_Finit(void)
   //  Finit Timer
   MDR_Timer_DeInit(PWM1_TIMex);
   
-#ifdef LCD_CONFLICT 
+#ifdef LCD_CONFLICT_TIM 
   // Restore LCD
   MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
 #endif

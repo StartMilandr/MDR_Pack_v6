@@ -39,8 +39,7 @@ static void Test_Init(void)
 #else
   MDRB_LCD_Print("2");
 #endif  
-  
-  
+    
   MDRB_LED_Init(LED_SEL);
   MDRB_LED_Set (LED_SEL, 0);
   
@@ -64,7 +63,7 @@ static void Test_Init(void)
   cfgCntClock.countDir = TIM_CountUpDown;
   MDR_Timer_InitCountTimClock(MDR_TIMER2ex, &cfgCntClock);
   
-#ifdef  TIMER3_EXIST  
+#ifdef  USE_TIMER3  
   //  Timer3 - Count Up
   cfgCntClock.cfgIRQ.SelectIRQ = TIM_FL_CNT_ARR;
   cfgCntClock.countDir = TIM_CountUp;
@@ -79,15 +78,19 @@ static void Test_Finit(void)
   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
-#ifdef  TIMER3_EXIST  
+#ifdef  USE_TIMER3  
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif
-
+ 
+  LED_Uninitialize();
+  
+#ifdef LCD_CONFLICT_LED
+  MDRB_LCD_CapturePins();
+#endif  
+  
 #ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_ClearLine(5);
-#endif
-  
-  LED_Uninitialize();
+#endif  
 }
 
 static void Test_Empty(void)
@@ -109,7 +112,7 @@ static void Test_HandleTim2IRQ(void)
 
 static void Test_HandleTim3IRQ(void)
 {
-#ifdef  TIMER3_EXIST   
+#ifdef  USE_TIMER3   
   MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR); 
   MDRB_LED_Switch(MDRB_LED_3);
 #endif

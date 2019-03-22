@@ -92,7 +92,21 @@
   extern const MDR_Timer_CfgPinGPIO _pinTim3_BRK;    //        PC11 - XP11_29  
   
 #elif defined(USE_BOARD_VE92)
-  //  см. MDRB_1986VE92.h
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
+  
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK;  
+  
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_ETR;
   
   
 #elif defined(USE_BOARD_VE93)

@@ -46,7 +46,7 @@ static void Test_Init(void)
   
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
   MDR_Timer_InitPeriod(MDR_TIMER2ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
-#ifdef  TIMER3_EXIST  
+#ifdef  USE_TIMER3  
   MDR_Timer_InitPeriod(MDR_TIMER3ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
 #endif
   
@@ -59,11 +59,15 @@ static void Test_Finit(void)
   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
-#ifdef  TIMER3_EXIST  
+#ifdef  USE_TIMER3  
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif
   
   LED_Uninitialize();
+  
+#ifdef LCD_CONFLICT_LED
+  MDRB_LCD_CapturePins();
+#endif  
 }
 
 static void Test_Empty(void)
@@ -95,7 +99,7 @@ static void Test_HandleTim2IRQ(void)
 
 static void Test_HandleTim3IRQ(void)
 {
-#ifdef  TIMER3_EXIST    
+#ifdef  USE_TIMER3    
   MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
   MDRB_LED_Switch(MDRB_LED_3);
 #endif

@@ -44,16 +44,18 @@ typedef struct {
 #endif
 
 
-
-
 //  Длительность мигания LCD перед его выключением, там где LCD конфликтует с ШИМ.
 #define LCD_HIDE_DELAY    2000
 
 //  LEDs Available
+#if defined (TIMER3_EXIST) && defined (MDRB_LED_3)
+  #define USE_TIMER3
+#endif
+
 #ifdef  TIMER4_EXIST
   #define LED_SEL               MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4
   #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk
-#elif defined(TIMER3_EXIST)
+#elif defined(USE_TIMER3)
   #define LED_SEL               MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3
   #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk
 #else
@@ -73,7 +75,7 @@ typedef struct {
   // CAP:  PC2
   #define CAP_SEL_TIM2_CH1
 
-  #define LCD_CONFLICT
+  #define LCD_CONFLICT_TIM
   
 #elif defined (USE_MDR1986VK234)
   // PWM1: PA0, PA1  ETR: PA8, BRK: PA9
@@ -83,7 +85,7 @@ typedef struct {
   // CAP:  PB12
   #define CAP_SEL_TIM2_CH3
 
-  //#define LCD_CONFLICT
+  //#define LCD_CONFLICT_TIM
 
 #elif defined (USE_MDR1986VE91)
   // PWM1: PF6, PF7  ETR: PF14, BRK: PF15
@@ -94,6 +96,16 @@ typedef struct {
   #define PWM2_SEL_TIM2_CH3
   // CAP:  PC4
   #define CAP_SEL_TIM3_CH2
+  
+#elif defined (USE_MDR1986VE92)
+  // PWM1: PE2 (Comp), PE3 (Left)  ETR: PD5 (X13:10), BRK: PD6 (X13:11)
+  #define PWM1_SEL_TIM2_CH3
+  // PWM2: PB2 (X13:15), PB3 (X13:16)
+  #define PWM2_SEL_TIM3_CH2
+  // CAP:  PB0 (X13:13)  ETR: PB4 (X13:17)
+  #define CAP_SEL_TIM3_CH1  
+  
+  #define LCD_CONFLICT_LED
 
 #elif defined (USE_MDR1986VE1)
   // PWM1: PA12, PA13  ETR: PA15, BRK: PA14
@@ -192,7 +204,7 @@ typedef struct {
   #define PWM1_TIM_CH           MDR_TIMER2_CH3
   #define PWM1_PIN_CH           _pinTim2_CH3
   #define PWM1_PIN_nCH          _pinTim2_nCH3
-  #define PWM1_START_SEL_MSK    TIM1_StartMsk
+  #define PWM1_START_SEL_MSK    TIM2_StartMsk
 
   #define PWM1_PIN_ETR          _pinTim2_ETR
   #define PWM1_PIN_BRK          _pinTim2_BRK
@@ -248,6 +260,14 @@ typedef struct {
   #define PWM2_PIN_CH           _pinTim2_CH3
   #define PWM2_PIN_nCH          _pinTim2_nCH3
   #define PWM2_START_SEL_MSK    TIM2_StartMsk
+
+#elif defined (PWM2_SEL_TIM3_CH2)
+  #define PWM2_TIMex            MDR_TIMER3ex
+  #define PWM2_TIM              MDR_TIMER3
+  #define PWM2_TIM_CH           MDR_TIMER3_CH2
+  #define PWM2_PIN_CH           _pinTim3_CH2
+  #define PWM2_PIN_nCH          _pinTim3_nCH2
+  #define PWM2_START_SEL_MSK    TIM3_StartMsk
 
 #elif defined (PWM2_SEL_TIM3_CH3)
   #define PWM2_TIMex            MDR_TIMER3ex

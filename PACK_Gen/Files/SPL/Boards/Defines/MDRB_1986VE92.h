@@ -13,22 +13,22 @@
 //  Переопределение пинов для удобства поиска конфликтов
     //  Port_A[7..0]: 8 Pins available only
     #define PIN_PA0     MDR_Pin_0   //          LCD_D0
-    #define PIN_PA1     MDR_Pin_1   //          LCD_D1
-    #define PIN_PA2     MDR_Pin_2   //          LCD_D2
-    #define PIN_PA3     MDR_Pin_3   //          LCD_D3
-    #define PIN_PA4     MDR_Pin_4   //          LCD_D4
-    #define PIN_PA5     MDR_Pin_5   //          LCD_D5
+    #define PIN_PA1     MDR_Pin_1   //          LCD_D1                      T1_CH1 /T2_CH1
+    #define PIN_PA2     MDR_Pin_2   //          LCD_D2                      T1_nCH1/T2_nCH1
+    #define PIN_PA3     MDR_Pin_3   //          LCD_D3                      T1_CH2 /T2_CH1
+    #define PIN_PA4     MDR_Pin_4   //          LCD_D4                      T1_nCH2/T2_nCH1
+    #define PIN_PA5     MDR_Pin_5   //          LCD_D5                      T1_CH3 /T2_CH1
 
     //  Port_B[10..0]
-    #define PIN_PB0     MDR_Pin_0   //                    JTAG_A
-    #define PIN_PB1     MDR_Pin_1   //                    JTAG_A
-    #define PIN_PB2     MDR_Pin_2   //                    JTAG_A
-    #define PIN_PB3     MDR_Pin_3   //                    JTAG_A
-    #define PIN_PB4     MDR_Pin_4   //                    JTAG_A    
-    #define PIN_PB5     MDR_Pin_5   //  UP
-    #define PIN_PB6     MDR_Pin_6   //  Right
-    #define PIN_PB7     MDR_Pin_7   //          LCD_E1
-    #define PIN_PB8     MDR_Pin_8   //          LCD_E2
+    #define PIN_PB0     MDR_Pin_0   //                    JTAG_A            T3_CH1
+    #define PIN_PB1     MDR_Pin_1   //                    JTAG_A            T3_nCH1
+    #define PIN_PB2     MDR_Pin_2   //                    JTAG_A            T3_CH2
+    #define PIN_PB3     MDR_Pin_3   //                    JTAG_A            T3_nCH2
+    #define PIN_PB4     MDR_Pin_4   //                    JTAG_A            T3_BRK/T3_ETR
+    #define PIN_PB5     MDR_Pin_5   //  UP                                  T3_CH3
+    #define PIN_PB6     MDR_Pin_6   //  Right                               T3_nCH3
+    #define PIN_PB7     MDR_Pin_7   //          LCD_E1                      T3_CH4
+    #define PIN_PB8     MDR_Pin_8   //          LCD_E2                      T3_nCH4
     #define PIN_PB9     MDR_Pin_9   //          LCD_RES
     #define PIN_PB10    MDR_Pin_10  //          LCD_RW
 
@@ -38,18 +38,22 @@
     #define PIN_PC2     MDR_Pin_2   //  Select                    SSP2_RX
 
     //  Port_D[7..0]
-    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                ADC_Ch0/ref+
-    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                ADC_Ch1/ref-
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP2_RX       ADC_Ch2 - TuneResistor
-    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B  SSP2_FSS      ADC_Ch3
-    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B                ADC_Ch4
-    #define PIN_PD5     MDR_Pin_5   //                            SSP2_CLK      ADC_Ch5
-    #define PIN_PD6     MDR_Pin_6   //                            SSP2_TX       ADC_Ch6
-    #define PIN_PD7     MDR_Pin_7   //                                          ADC_Ch7
+    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B            T1_CH1 /T3_CH1    ADC_Ch0/ref+
+    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B            T1_nCH1/T3_nCH1   ADC_Ch1/ref-
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP2_RX           T3_CH2    ADC_Ch2 - TuneResistor
+    #define PIN_PD3     MDR_Pin_3   //                    JTAG_B  SSP2_FSS          T3_nCH2   ADC_Ch3
+    #define PIN_PD4     MDR_Pin_4   //                    JTAG_B            T1_ETR /T3_BRK    ADC_Ch4
+    #define PIN_PD5     MDR_Pin_5   //                            SSP2_CLK  T2_ETR            ADC_Ch5
+    #define PIN_PD6     MDR_Pin_6   //                            SSP2_TX   T2_BRK            ADC_Ch6
+    #define PIN_PD7     MDR_Pin_7   //                                                        ADC_Ch7
 
     //  Port_E[7,6,3..0]
-    #define PIN_PE1     MDR_Pin_1   //  Down
-    #define PIN_PE3     MDR_Pin_3   //  Left
+    #define PIN_PE0     MDR_Pin_0   //                                      T2_CH1
+    #define PIN_PE1     MDR_Pin_1   //  Down                                T2_nCH1
+    #define PIN_PE2     MDR_Pin_2   //                                      T2_CH3 /T3_CH1
+    #define PIN_PE3     MDR_Pin_3   //  Left                                T2_nCH3/T3_nCH1
+    #define PIN_PE6     MDR_Pin_6   //                                      T3_CH3
+    #define PIN_PE7     MDR_Pin_7   //                                      T3_CH3
 
     //  Port_F[6..0]
     #define PIN_PF0     MDR_Pin_0   //                            SSP1_TX                 UART2_RX

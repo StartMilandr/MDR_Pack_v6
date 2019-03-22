@@ -57,7 +57,7 @@ static void Test_Init(void)
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
   //  Middle Counter
   MDR_Timer_AddCascadePeriod(MDR_TIMER2ex, TIM_BRG_LED, TIM_EventTIM1_CNT_ARR, TIM_CASCADE_PER, true);
-#ifdef  TIMER3_EXIST  
+#ifdef  USE_TIMER3  
   //  Slow Counter
   MDR_Timer_AddCascadePeriod(MDR_TIMER3ex, TIM_BRG_LED, TIM_EventTIM2_CNT_ARR, TIM_CASCADE_PER, true);
 #endif  
@@ -80,11 +80,15 @@ static void Test_Finit(void)
   MDR_Timer_Stop(MDR_TIMER4ex);
   MDR_Timer_DeInit(MDR_TIMER4ex);
 #endif  
-#ifdef  TIMER3_EXIST   
+#ifdef  USE_TIMER3   
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif  
   
   LED_Uninitialize();
+  
+#ifdef LCD_CONFLICT_LED
+  MDRB_LCD_CapturePins();
+#endif   
 }
 
 static void Test_Empty(void)
@@ -112,7 +116,7 @@ static void Test_HandleTim2IRQ(void)
 
 static void Test_HandleTim3IRQ(void)
 {
-#ifdef TIMER3_EXIST
+#ifdef USE_TIMER3
   if (MDR_TIMER3->STATUS & TIM_FL_CNT_ARR)
   {    
     MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  

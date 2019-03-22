@@ -66,7 +66,7 @@ static void Test_Init(void)
 #ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("CAP Simplest", 3);
   
-#elif defined (LCD_CONFLICT)
+#elif defined (LCD_CONFLICT_TIM)
   //  LCD conflicts with Timers channel
   //  Show Test index and LCD Off
   MDRB_LCD_Print("8");  
@@ -120,7 +120,10 @@ static void Test_Finit(void)
   
   LED_Uninitialize();  
   
-#ifdef LCD_CONFLICT
+#ifdef LCD_CONFLICT_LED
+  MDRB_LCD_CapturePins();
+#endif
+#ifdef LCD_CONFLICT_TIM
   // Restore LCD
   MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
 #endif  

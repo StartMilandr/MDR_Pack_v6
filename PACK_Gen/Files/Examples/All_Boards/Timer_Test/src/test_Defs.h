@@ -19,6 +19,18 @@ typedef struct {
 } TestInterface;
 
 
+#define TEST_ID__SIMPLE_FLASH     "1"
+#define TEST_ID__COUNT_TIM_CLOCK  "2"
+#define TEST_ID__COUNT_CASCADE    "3"
+#define TEST_ID__PULSE            "4"
+#define TEST_ID__PWM              "5"
+#define TEST_ID__PWM_DTG          "6"
+#define TEST_ID__PWM_ETRBRK       "7"
+#define TEST_ID__CAP_SIMPLEST     "8"
+#define TEST_ID__CAP_PERIOD       "9"
+#define TEST_ID__COUNT_CAP        "10"
+#define TEST_ID__COUNT_ETR        "11"
+
 
 //  Time defines for microcontrollers for MaxFreq
 #if defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
@@ -53,13 +65,21 @@ typedef struct {
 #endif
 
 #ifdef  TIMER4_EXIST
-  #define LED_SEL               MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4
+  #define LED_SEL_MAX           MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4
+  #define LED_SEL_CAP           MDRB_LED_1 | MDRB_LED_2
   #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk
 #elif defined(USE_TIMER3)
-  #define LED_SEL               MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3
+  #define LED_SEL_MAX           MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3
+  #define LED_SEL_CAP           MDRB_LED_1 | MDRB_LED_2
   #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk
+
+#elif defined(MDRB_LED_2)
+  #define LED_SEL_MAX           MDRB_LED_1 | MDRB_LED_2
+  #define LED_SEL_CAP           MDRB_LED_1 | MDRB_LED_2
+  #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk  
 #else
-  #define LED_SEL               MDRB_LED_1 | MDRB_LED_2
+  #define LED_SEL_MAX           MDRB_LED_1
+  #define LED_SEL_CAP           MDRB_LED_1
   #define START_SYNC_SEL_MAX    TIM1_StartMsk | TIM2_StartMsk
 #endif
 
@@ -76,6 +96,7 @@ typedef struct {
   #define CAP_SEL_TIM2_CH1
 
   #define LCD_CONFLICT_TIM
+  #define LCD_BLINKY_ENA
   
 #elif defined (USE_MDR1986VK234)
   // PWM1: PA0, PA1  ETR: PA8, BRK: PA9
@@ -86,6 +107,16 @@ typedef struct {
   #define CAP_SEL_TIM2_CH3
 
   //#define LCD_CONFLICT_TIM
+
+#elif defined (USE_MDR1986VE4)
+  // PWM1: PC2, PC3  ETR: PC6, BRK: PC7
+  #define PWM1_SEL_TIM2_CH1
+  // PWM2: PA0, PA1
+  #define PWM2_SEL_TIM1_CH1
+  // CAP:  PA2  ETR: PA8
+  #define CAP_SEL_TIM1_CH2
+  
+  #define LCD_CONFLICT_TIM
 
 #elif defined (USE_MDR1986VE91)
   // PWM1: PF6, PF7  ETR: PF14, BRK: PF15
@@ -258,7 +289,15 @@ typedef struct {
 
 //================    PWM2  Timers, channels and pins Definitions  =================
 
-#ifdef PWM2_SEL_TIM1_CH2
+#ifdef PWM2_SEL_TIM1_CH1
+  #define PWM2_TIMex            MDR_TIMER1ex
+  #define PWM2_TIM              MDR_TIMER1
+  #define PWM2_TIM_CH           MDR_TIMER1_CH1
+  #define PWM2_PIN_CH           _pinTim1_CH1
+  #define PWM2_PIN_nCH          _pinTim1_nCH1
+  #define PWM2_START_SEL_MSK    TIM1_StartMsk
+
+#elif defined (PWM2_SEL_TIM1_CH2)
   #define PWM2_TIMex            MDR_TIMER1ex
   #define PWM2_TIM              MDR_TIMER1
   #define PWM2_TIM_CH           MDR_TIMER1_CH2
@@ -310,7 +349,21 @@ typedef struct {
 
 //================    Capture Timers, channels and pins definitions  =================
 
-#ifdef CAP_SEL_TIM2_CH1
+#ifdef CAP_SEL_TIM1_CH2
+  #define CAP_TIMex            MDR_TIMER1ex
+  #define CAP_TIM              MDR_TIMER1
+  #define CAP_TIM_CH           MDR_TIMER1_CH2
+  #define CAP_START_SEL_MSK    TIM1_StartMsk
+  
+  #define CAP_PIN_CH           _pinTim1_CH2
+  #define CAP_PIN_nCH          _pinTim1_nCH2
+  #define CAP_PIN_ETR          _pinTim1_ETR
+
+  #define CAP_EVENT_CH         TIM_Event_CH2
+  #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH2
+  #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH2
+  
+#elif defined (CAP_SEL_TIM2_CH1)
   #define CAP_TIMex            MDR_TIMER2ex
   #define CAP_TIM              MDR_TIMER2
   #define CAP_TIM_CH           MDR_TIMER2_CH1
@@ -323,7 +376,6 @@ typedef struct {
   #define CAP_EVENT_CH         TIM_Event_CH1
   #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH1
   #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH1
- 
 
 #elif defined (CAP_SEL_TIM2_CH3)
   #define CAP_TIMex            MDR_TIMER2ex
@@ -338,6 +390,20 @@ typedef struct {
   #define CAP_EVENT_CH         TIM_Event_CH3
   #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH3
   #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH3
+
+#elif defined (CAP_SEL_TIM3_CH1)
+  #define CAP_TIMex            MDR_TIMER3ex
+  #define CAP_TIM              MDR_TIMER3
+  #define CAP_TIM_CH           MDR_TIMER3_CH1
+  #define CAP_START_SEL_MSK    TIM3_StartMsk
+
+  #define CAP_PIN_CH           _pinTim3_CH1
+  #define CAP_PIN_nCH          _pinTim3_nCH1
+  #define CAP_PIN_ETR          _pinTim3_ETR
+
+  #define CAP_EVENT_CH         TIM_Event_CH1
+  #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH1
+  #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH1
 
 #elif defined (CAP_SEL_TIM3_CH2)
   #define CAP_TIMex            MDR_TIMER3ex

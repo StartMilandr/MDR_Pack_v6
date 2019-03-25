@@ -348,6 +348,32 @@ typedef enum IRQn
 #define   MDR_UART_CLOCK_FROM_PER_CLOCK
 
 
+//----------------    TIMER Definitions  --------------------
+//  TIMER Block Clock enable
+#define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+
+#define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER2__TIMER1_CLK_EN_Msk
+#define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER2__TIMER2_CLK_EN_Msk
+
+
+//  TIMER_ClockGate configs
+#define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+#define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+
+#define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
+#define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk
+
+#define   MDR_TIMER1_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM1_BRG_Pos
+#define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
+
+
+//  Enable Count UpDown by external events
+#define MDR_TIMER_Can_UpDown_ByExtEvents
+#define MDR_TIM_CLOCK_FROM_PER_CLOCK
+
+
+
 /** @} */ /* End of group MDR1986VE4 */
 
 /** @} */ /* End of group Milandr */

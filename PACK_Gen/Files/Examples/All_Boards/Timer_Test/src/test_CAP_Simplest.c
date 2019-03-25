@@ -7,9 +7,9 @@
 
 
 //  ОПИСАНИЕ:
-//    Timer1 генерирует импульсы на выходе CH1 и мигает светодиодом LED1 каждый период.
+//    Timer1 генерирует импульсы на выходе CH1 и мигает светодиодом LED2 каждый период.
 //    Timer2 захватывает события переднего и заднего фронтов сигнала от Timer1_CH1.
-//      При каждом событии захвата, по переднему и заднему вронту, генерируется прерывание и переключается светодиод LED2.
+//      При каждом событии захвата, по переднему и заднему вронту, генерируется прерывание и переключается светодиод LED1.
 //    Мигания светодиода LED2 должны получиться в 2 раза чаще чем LED1.
 
 //  ERRATA
@@ -67,19 +67,20 @@ static void Test_Init(void)
   MDRB_LCD_Print("CAP Simplest", 3);
   
 #elif defined (LCD_CONFLICT_TIM)
-  //  LCD conflicts with Timers channel
-  //  Show Test index and LCD Off
-  MDRB_LCD_Print("8");  
-  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  MDRB_LCD_Print(TEST_ID__CAP_SIMPLEST);  
   
-  MDR_LCD_DeInit();
+  #ifdef LCD_BLINKY_ENA  
+    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+    MDR_LCD_DeInit();
+  #endif
+  
 #else
-  MDRB_LCD_Print("8");
+  MDRB_LCD_Print(TEST_ID__CAP_SIMPLEST);
 #endif 
   
-  MDRB_LED_Init(MDRB_LED_1 | MDRB_LED_2);
-  MDRB_LED_Set(MDRB_LED_1 | MDRB_LED_2, 0);
+  MDRB_LED_Init(LED_SEL_CAP);
+  MDRB_LED_Set(LED_SEL_CAP, 0);
   
   //  PWM - Output pulses  for Capture 
   MDR_Timer_InitPeriod    (PWM1_TIMex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true); 
@@ -133,7 +134,9 @@ static void Test_HandleIRQ_PWM(void)
 {
   MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
   
-  MDRB_LED_Switch(MDRB_LED_1);  
+#ifdef MDRB_LED_2
+  MDRB_LED_Switch(MDRB_LED_2);
+#endif
 }
 
 static void Test_HandleIRQ_CAP(void)
@@ -143,7 +146,7 @@ static void Test_HandleIRQ_CAP(void)
   else if (MDR_Timer_GetStatus(CAP_TIM) & CAP_EVENT_FALL)
     MDR_Timer_ClearEvent(CAP_TIM, CAP_EVENT_FALL);
   
-  MDRB_LED_Switch(MDRB_LED_2);
+  MDRB_LED_Switch(MDRB_LED_1);  
 }
 
 static void  Test_Empty(void)

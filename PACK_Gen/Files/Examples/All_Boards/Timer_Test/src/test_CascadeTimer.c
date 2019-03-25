@@ -47,11 +47,11 @@ static void Test_Init(void)
 #ifndef LCD_IS_7SEG_DISPLAY
   MDRB_LCD_Print("Cascade Timer", 3);
 #else
-  MDRB_LCD_Print("3");
+  MDRB_LCD_Print(TEST_ID__COUNT_CASCADE);
 #endif
   
-  MDRB_LED_Init(LED_SEL);
-  MDRB_LED_Set(LED_SEL, 0);
+  MDRB_LED_Init(LED_SEL_MAX);
+  MDRB_LED_Set(LED_SEL_MAX, 0);
   
   //  Fastest Counter
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
@@ -110,7 +110,10 @@ static void Test_HandleTim2IRQ(void)
   if (MDR_TIMER2->STATUS & TIM_FL_CNT_ARR)
   {  
     MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);    
+    
+#ifdef MDRB_LED_2
     MDRB_LED_Switch(MDRB_LED_2);
+#endif
   }
 }
 

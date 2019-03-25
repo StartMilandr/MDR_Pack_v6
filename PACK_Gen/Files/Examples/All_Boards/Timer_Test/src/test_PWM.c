@@ -34,15 +34,16 @@ static void Test_Init(void)
   MDRB_LCD_Print("and Sync Run", 5);
   
 #elif defined (LCD_CONFLICT_TIM)
-  //  LCD conflicts with Timers channel
-  //  Show Test index and LCD Off
-  MDRB_LCD_Print("5");  
-  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  MDRB_LCD_Print(TEST_ID__PWM);  
   
-  MDR_LCD_DeInit();
+  #ifdef LCD_BLINKY_ENA  
+    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+    MDR_LCD_DeInit();  
+  #endif  
+
 #else
-  MDRB_LCD_Print("5");
+  MDRB_LCD_Print(TEST_ID__PWM);
 #endif    
   
   //  PWM1

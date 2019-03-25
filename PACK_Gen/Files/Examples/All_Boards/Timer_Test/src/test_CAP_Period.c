@@ -88,6 +88,10 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 300;
 
+#elif defined (USE_MDR1986VE4)
+  #define OUT_TO_UART
+  uint_tim  pulsePeriod = 280;
+
 #else
   #define OUT_TO_LCD
   uint_tim  pulsePeriod = 200;
@@ -106,6 +110,7 @@ static void LCD_ShowName(uint32_t period)
 }
 #endif
 
+
 static void Test_Init(void)
 {   
   //  To LCD
@@ -115,15 +120,16 @@ static void Test_Init(void)
   MDRB_LCD_ClearLine(7);
   
 #elif defined (LCD_CONFLICT_TIM)
-  //  LCD conflicts with Timers channel
-  //  Show Test index and LCD Off
-  MDRB_LCD_Print("9");  
-  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  MDRB_LCD_Print(TEST_ID__CAP_PERIOD);
   
-  MDR_LCD_DeInit();
+  #ifdef LCD_BLINKY_ENA  
+    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+    MDR_LCD_DeInit();
+  #endif  
+  
 #else
-  MDRB_LCD_Print("9");
+  MDRB_LCD_Print(TEST_ID__CAP_PERIOD);
 #endif  
 
 #ifdef OUT_TO_UART

@@ -38,11 +38,11 @@ static void Test_Init(void)
   MDRB_LCD_Print("Simplest Timer", 3);
   MDRB_LCD_Print("and Sync Run", 5);
 #else
-  MDRB_LCD_Print("1");
+  MDRB_LCD_Print(TEST_ID__SIMPLE_FLASH);
 #endif
   
-  MDRB_LED_Init(LED_SEL);
-  MDRB_LED_Set (LED_SEL, 0);
+  MDRB_LED_Init(LED_SEL_MAX);
+  MDRB_LED_Set (LED_SEL_MAX, 0);
   
   MDR_Timer_InitPeriod(MDR_TIMER1ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
   MDR_Timer_InitPeriod(MDR_TIMER2ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
@@ -94,7 +94,9 @@ static void Test_HandleTim1IRQ(void)
 static void Test_HandleTim2IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
+#ifdef MDRB_LED_2
   MDRB_LED_Switch(MDRB_LED_2);
+#endif
 }
 
 static void Test_HandleTim3IRQ(void)

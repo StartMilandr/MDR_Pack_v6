@@ -148,6 +148,27 @@
   
 #elif defined (USE_MDR1986VE4) 
 
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH4;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_nCH4;    
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_BRK;
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH1;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_CH4;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK; 
+
 #elif defined (USE_MDR1986VK214) 
                                                                           
   extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;     // S0  - PA0

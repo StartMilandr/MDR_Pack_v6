@@ -37,11 +37,11 @@ static void Test_Init(void)
   MDRB_LCD_Print("Count TimClock", 3);
   MDRB_LCD_Print("All Dirs", 5);
 #else
-  MDRB_LCD_Print("2");
+  MDRB_LCD_Print(TEST_ID__COUNT_TIM_CLOCK);
 #endif  
     
-  MDRB_LED_Init(LED_SEL);
-  MDRB_LED_Set (LED_SEL, 0);
+  MDRB_LED_Init(LED_SEL_MAX);
+  MDRB_LED_Set (LED_SEL_MAX, 0);
   
   //  Timer1 - Count Down
   cfgCntClock.cfgPeriod.clockBRG = TIM_BRG_LED;
@@ -107,7 +107,9 @@ static void Test_HandleTim1IRQ(void)
 static void Test_HandleTim2IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ZERO | TIM_FL_CNT_ARR);  
+#ifdef MDRB_LED_2  
   MDRB_LED_Switch(MDRB_LED_2);
+#endif
 }
 
 static void Test_HandleTim3IRQ(void)

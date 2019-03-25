@@ -95,19 +95,20 @@ static void Test_Init(void)
   MDRB_LCD_Print("Count ETR", 3);
   
 #elif defined (LCD_CONFLICT_TIM)
-  //  LCD conflicts with Timers channel
-  //  Show Test index and LCD Off
-  MDRB_LCD_Print("10");  
-  MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-  MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+  MDRB_LCD_Print(TEST_ID__COUNT_ETR);  
   
-  MDR_LCD_DeInit();
+  #ifdef LCD_BLINKY_ENA  
+    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
+    MDR_LCD_DeInit();
+  #endif  
+
 #else
-  MDRB_LCD_Print("10");
+  MDRB_LCD_Print(TEST_ID__COUNT_ETR);
 #endif
   
-  MDRB_LED_Init(LED_SEL);
-  MDRB_LED_Set (LED_SEL, 0);
+  MDRB_LED_Init(LED_SEL_CAP);
+  MDRB_LED_Set (LED_SEL_CAP, 0);
   
   //  PWM1 - Outputs pulses for ETR, show period with LED1
   MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
@@ -156,15 +157,16 @@ static void Test_Finit(void)
 static void Test_HandleIRQ_PWM(void)
 {
   MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
-  
-  MDRB_LED_Switch(MDRB_LED_1);  
+#ifdef MDRB_LED_2
+  MDRB_LED_Switch(MDRB_LED_2);
+#endif
 }
 
 static void Test_HandleIRQ_ETR(void)
 {
   MDR_Timer_ClearEvent(ETR_TIM, TIM_FL_CNT_ARR);
-  
-  MDRB_LED_Switch(MDRB_LED_2);
+    
+  MDRB_LED_Switch(MDRB_LED_1);  
 }
 
 static void Test_Empty(void)

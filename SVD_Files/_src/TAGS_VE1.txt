@@ -8,6 +8,7 @@ f6=../SSP/SSP_VE1.txt
 f7=../WDT/WDT_VEx.txt
 f8=../UART/UART_VE19.txt
 f9=../Timer/Timer_VE13.txt
+f10=../Power/Power_Vx.txt
 
 
 [TAGS]
@@ -23,6 +24,7 @@ f9=../Timer/Timer_VE13.txt
 #WDT=f7
 #UARTs=f8
 #TIMERs=f9
+#PWR=f10
 
 [TAGS_New]
 #USB=
@@ -33,8 +35,6 @@ f9=../Timer/Timer_VE13.txt
 #SDIO_R=
 #I2C=
 #I2C_R=
-#PWR=
-#PWR_R=
 #DAC=
 #DAC_R=
 #COMP=

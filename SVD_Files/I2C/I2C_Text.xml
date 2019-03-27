@@ -1,0 +1,5 @@
+#BASE_ADDR_Vx
+<baseAddress>0x40050000</baseAddress>
+
+#BASE_ADDR_VK214
+<baseAddress>0x40030000</baseAddress>

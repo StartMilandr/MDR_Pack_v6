@@ -1,0 +1,6 @@
+[FILES]
+f1=I2C_Text.xml
+
+[TAGS]
+#BASE_ADDR=f1
+#BASE_ADDR_R=#BASE_ADDR_VK214

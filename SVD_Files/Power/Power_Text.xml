@@ -1,0 +1,18 @@
+#RESET_MASK_VE9x
+<resetMask>0x00000FFF</resetMask>
+
+#RESET_MASK_Vx
+<resetMask>0x00001FFF</resetMask>
+
+#PVD_EN_DESCR_VE9x
+<description>PVD Enable</description>
+
+#PVD_EN_DESCR_Vx
+<description>Enable Ucc detector</description>
+
+#PVDBEN_FIELD
+<field derivedFrom="PVDEN">
+  <name>PVDBEN</name>
+  <description>Enable BUcc detector</description>
+  <bitRange>[12:12]</bitRange>
+</field>

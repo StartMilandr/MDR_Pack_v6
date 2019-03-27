@@ -1,0 +1,244 @@
+<!-- I2C -->
+<peripheral>
+  <name>MDR_I2C</name>
+  <version>1.0</version>
+  <description>I2C Controler</description>
+  <groupName>I2C Controller</groupName>
+  <!-- #BASE_ADDR -->
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <size>0x24</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!--PRL-->
+    <register>
+      <name>PRL</name>
+      <description>BitRate Div[7:0] of HCLK</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>PRL</name>
+          <description>Div[7:0] of HCLK</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--PRH-->
+    <register>
+      <name>PRH</name>
+      <description>BitRate Div[15:8] of HCLK</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>PRH</name>
+          <description>Div[15:8] of HCLK</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--CTR-->
+    <register>
+      <name>CTR</name>
+      <description>Control Register</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>      
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000E0</resetMask>
+      <fields>
+        <field>
+          <name>S_I2C</name>
+          <description>Speed range of I2C</description>
+          <bitRange>[5:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>less_400KHz</name><description>BitRate is less 400KHz</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>less_1MHz</name><description>BitRate is less 1MHz</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>EN_INT</name>
+          <description>Enable IRQ</description>
+          <bitRange>[6:6]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EN_INT">
+          <name>EN_I2C</name>
+          <description>Enable</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--RXD-->
+    <register>
+      <name>RXD</name>
+      <description>Received Data</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>DATA</name>
+          <description>Received Byte</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--Status-->
+    <register>
+      <name>STA</name>
+      <description>Status register</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000E3</resetMask>
+      <fields>
+        <field>
+          <name>INT</name>
+          <description>IRQ Event Flag</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>TR_Prog</name>
+          <description>Transfering status</description>
+          <bitRange>[1:1]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Completed</name><description>Transfering is completed</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Transfering</name><description>Transfering is not completed</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Lost_ARB</name>
+          <description>Lost arbitrage</description>
+          <bitRange>[5:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Ok</name><description>Normal operation</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Collision</name><description>Collision detected</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>BUSY</name>
+          <description>Line Busy</description>
+          <bitRange>[6:6]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Bus_Free</name><description>Stop received</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Bus_Busy</name><description>Start received</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RX_ACK</name>
+          <description>ACK Status</description>
+          <bitRange>[7:7]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Ok</name><description>Acknowledge received</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>NoAck</name><description>No Acknowledge received</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!--TXD-->
+    <register>
+      <name>TXD</name>
+      <description>Data to Send</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>DATA</name>
+          <description>Send Byte</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--CMD-->
+    <register>
+      <name>CMD</name>
+      <description>Command Register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000F9</resetMask>
+      <fields>
+        <field>
+          <name>CLR_INT</name>
+          <description>Clear IRQ Event</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear IRQ flag</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Send_ACK</name>
+          <description>Send ACK command</description>
+          <bitRange>[3:3]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Send_Ack</name><description>Send Ack command</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Start_Write</name>
+          <description>Start Writing transfer</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Start_Write</name><description>Start writing</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Start_Read</name>
+          <description>Start Reading transfer</description>
+          <bitRange>[5:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Start_Read</name><description>Start reading</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>        
+        <field>
+          <name>Send_Stop</name>
+          <description>Send Stop command</description>
+          <bitRange>[6:6]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Send_Stop</name><description>Send Stop command</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Send_Start</name>
+          <description>Send Start command</description>
+          <bitRange>[7:7]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Send_Start</name><description>Send Start command</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+  </registers>
+  <!-- peripheral end-->
+</peripheral>

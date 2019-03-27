@@ -1584,7 +1584,371 @@
     </peripheral>
     <!-- #DMA -->
     <!-- #I2C -->
+    <!-- I2C -->
+    <peripheral>
+      <name>MDR_I2C</name>
+      <version>1.0</version>
+      <description>I2C Controler</description>
+      <groupName>I2C Controller</groupName>
+      <!-- #BASE_ADDR -->
+      <baseAddress>0x40050000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x24</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!--PRL-->
+        <register>
+          <name>PRL</name>
+          <description>BitRate Div[7:0] of HCLK</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>PRL</name>
+              <description>Div[7:0] of HCLK</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--PRH-->
+        <register>
+          <name>PRH</name>
+          <description>BitRate Div[15:8] of HCLK</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>PRH</name>
+              <description>Div[15:8] of HCLK</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CTR-->
+        <register>
+          <name>CTR</name>
+          <description>Control Register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>      
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000E0</resetMask>
+          <fields>
+            <field>
+              <name>S_I2C</name>
+              <description>Speed range of I2C</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>less_400KHz</name><description>BitRate is less 400KHz</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>less_1MHz</name><description>BitRate is less 1MHz</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>EN_INT</name>
+              <description>Enable IRQ</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="EN_INT">
+              <name>EN_I2C</name>
+              <description>Enable</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--RXD-->
+        <register>
+          <name>RXD</name>
+          <description>Received Data</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>Received Byte</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--Status-->
+        <register>
+          <name>STA</name>
+          <description>Status register</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000E3</resetMask>
+          <fields>
+            <field>
+              <name>INT</name>
+              <description>IRQ Event Flag</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TR_Prog</name>
+              <description>Transfering status</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Completed</name><description>Transfering is completed</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Transfering</name><description>Transfering is not completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Lost_ARB</name>
+              <description>Lost arbitrage</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Ok</name><description>Normal operation</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Collision</name><description>Collision detected</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BUSY</name>
+              <description>Line Busy</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Bus_Free</name><description>Stop received</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Bus_Busy</name><description>Start received</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RX_ACK</name>
+              <description>ACK Status</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Ok</name><description>Acknowledge received</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>NoAck</name><description>No Acknowledge received</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--TXD-->
+        <register>
+          <name>TXD</name>
+          <description>Data to Send</description>
+          <addressOffset>0x00000014</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>Send Byte</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!--CMD-->
+        <register>
+          <name>CMD</name>
+          <description>Command Register</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000F9</resetMask>
+          <fields>
+            <field>
+              <name>CLR_INT</name>
+              <description>Clear IRQ Event</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Clear</name><description>Clear IRQ flag</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Send_ACK</name>
+              <description>Send ACK command</description>
+              <bitRange>[3:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Send_Ack</name><description>Send Ack command</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Start_Write</name>
+              <description>Start Writing transfer</description>
+              <bitRange>[4:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Start_Write</name><description>Start writing</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Start_Read</name>
+              <description>Start Reading transfer</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Start_Read</name><description>Start reading</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>        
+            <field>
+              <name>Send_Stop</name>
+              <description>Send Stop command</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Send_Stop</name><description>Send Stop command</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Send_Start</name>
+              <description>Send Start command</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Send_Start</name><description>Send Start command</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #PWR -->
+    <!--Power-->
+    <peripheral>
+      <name>MDR_Power</name>
+      <version>1.0</version>
+      <description>Power Detector</description>
+      <groupName>Power</groupName>
+      <baseAddress>0x40058000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x08</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!--PVDCS-->
+        <register>
+          <name>PVDCS</name>
+          <description>Control-Status register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RESET_MASK -->
+          <resetMask>0x00000FFF</resetMask>
+          <fields>
+            <field>
+              <name>PVDEN</name>
+              <!-- #PVD_EN_DESCR -->
+              <description>PVD Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PBLS</name>
+              <description>BUcc compare level</description>
+              <bitRange>[2:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1v8</name><description>Level of 1.8 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>3</value></enumeratedValue>            
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLS</name>
+              <description>Ucc compare level</description>
+              <bitRange>[5:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>2v0</name><description>Level of 2.0 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v4</name><description>Level of 2.4 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>2v8</name><description>Level of 2.8 volts</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>3v2</name><description>Level of 3.2 volts</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>3v4</name><description>Level of 3.4 volts</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PVBD</name>
+              <description>Event on BUcc gt PBLS</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Event</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Active</name><description>Event is active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="PVBD">
+              <name>PVD</name>
+              <description>Event on Ucc gt PLS</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVBD</name>
+              <description>Enable IRQ by PVBD event</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVD</name>
+              <description>Enable IRQ by PVD event</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INVB</name>
+              <description>PVBD event on BUcc lt PBLS </description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INV</name>
+              <description>PVD event on BUcc lt PBLS </description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!-- #PVDBEN_FIELD -->        
+          </fields>
+          </register>
+          <!-- UntiWorning -->
+          <register>
+            <name>ResReg</name>
+            <description>Reserved register</description>
+            <addressOffset>0x00000004</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0x00000000</resetMask>
+            <fields>
+              <field>
+                <name>Value</name>
+                <description>blank</description>
+                <bitRange>[31:0]</bitRange>
+              </field>
+            </fields>  
+          </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #WDT -->
     <!-- WWDT -->
     <peripheral>

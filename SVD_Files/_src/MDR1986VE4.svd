@@ -1290,6 +1290,130 @@
     <!-- #DMA -->
     <!-- #COMP -->
     <!-- #PWR -->
+    <!--Power-->
+    <peripheral>
+      <name>MDR_Power</name>
+      <version>1.0</version>
+      <description>Power Detector</description>
+      <groupName>Power</groupName>
+      <baseAddress>0x40058000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x08</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!--PVDCS-->
+        <register>
+          <name>PVDCS</name>
+          <description>Control-Status register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RESET_MASK -->
+          <resetMask>0x00001FFF</resetMask>
+          <fields>
+            <field>
+              <name>PVDEN</name>
+              <!-- #PVD_EN_DESCR -->
+              <description>Enable Ucc detector</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PBLS</name>
+              <description>BUcc compare level</description>
+              <bitRange>[2:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1v8</name><description>Level of 1.8 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>3</value></enumeratedValue>            
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLS</name>
+              <description>Ucc compare level</description>
+              <bitRange>[5:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>2v0</name><description>Level of 2.0 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v4</name><description>Level of 2.4 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>2v8</name><description>Level of 2.8 volts</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>3v2</name><description>Level of 3.2 volts</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>3v4</name><description>Level of 3.4 volts</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PVBD</name>
+              <description>Event on BUcc gt PBLS</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Event</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Active</name><description>Event is active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="PVBD">
+              <name>PVD</name>
+              <description>Event on Ucc gt PLS</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVBD</name>
+              <description>Enable IRQ by PVBD event</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVD</name>
+              <description>Enable IRQ by PVD event</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INVB</name>
+              <description>PVBD event on BUcc lt PBLS </description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INV</name>
+              <description>PVD event on BUcc lt PBLS </description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!-- #PVDBEN_FIELD -->        
+            <field derivedFrom="PVDEN">
+              <name>PVDBEN</name>
+              <description>Enable BUcc detector</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+          </fields>
+          </register>
+          <!-- UntiWorning -->
+          <register>
+            <name>ResReg</name>
+            <description>Reserved register</description>
+            <addressOffset>0x00000004</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0x00000000</resetMask>
+            <fields>
+              <field>
+                <name>Value</name>
+                <description>blank</description>
+                <bitRange>[31:0]</bitRange>
+              </field>
+            </fields>  
+          </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #WDT -->
     <!-- WWDT -->
     <peripheral>

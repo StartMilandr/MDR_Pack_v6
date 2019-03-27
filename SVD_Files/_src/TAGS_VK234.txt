@@ -9,6 +9,7 @@ f7=../WDT/WDT_VE4x.txt
 f8=../Uniq/ADCUI_VK234.xml
 f9=../UART/UART_VE4x.txt
 f10=../Timer/Timer_VE4.txt
+f11=../Power/Power_Vx.txt
 
 
 [TAGS]
@@ -26,6 +27,7 @@ f10=../Timer/Timer_VE4.txt
 #ADCUI_R=#ADCUI_234
 #UARTs=f9
 #TIMERs=f10
+#PWR=f11
 
 [TAGS_New]
 #USB=
@@ -36,8 +38,6 @@ f10=../Timer/Timer_VE4.txt
 #SDIO_R=
 #I2C=
 #I2C_R=
-#PWR=
-#PWR_R=
 #DAC=
 #DAC_R=
 #COMP=

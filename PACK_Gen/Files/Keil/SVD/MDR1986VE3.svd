@@ -2053,7 +2053,415 @@
       <!-- peripheral end-->
     </peripheral>
     <!-- #DMA -->
+    <!-- DMA -->
+    <peripheral>
+      <name>MDR_DMA</name>
+      <version>1.0</version>
+      <description>DMA Controler</description>
+      <groupName>DMA</groupName>
+      <baseAddress>0x40028000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x50</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- STATUS -->
+        <register>
+          <name>STATUS</name>
+          <description>Status register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0xF01F0F01</resetMask>
+          <fields>
+            <field>
+              <name>Enable</name>
+              <description>Enable block</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Disabled</name><description>Block inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Enabled</name><description>Block active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>State</name>
+              <description>Active Operation</description>
+              <bitRange>[7:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Idle</name><description>Idle state</description>                         <value>0</value></enumeratedValue>
+                <enumeratedValue><name>RD_Ctrl</name><description>Reading channel controller data</description> <value>1</value></enumeratedValue>
+                <enumeratedValue><name>RD_pSrc</name><description>Reading source data end pointer</description> <value>2</value></enumeratedValue>
+                <enumeratedValue><name>RD_pDest</name><description>Reading destination data end pointer</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>RD_Data</name><description>Reading source data</description>             <value>4</value></enumeratedValue>
+                <enumeratedValue><name>WR_Data</name><description>writing destination data</description>        <value>5</value></enumeratedValue>
+                <enumeratedValue><name>Wait_Clr</name><description>Waiting for DMA request to clear</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>WR_Ctrl</name><description>Writing channel controller data</description> <value>7</value></enumeratedValue>
+                <enumeratedValue><name>Stalled</name><description>Stalled transfer</description>                <value>8</value></enumeratedValue>
+                <enumeratedValue><name>Done</name><description>Done transfer</description>                      <value>9</value></enumeratedValue>
+                <enumeratedValue><name>ScatGath</name><description>scatter-gather transition</description>      <value>10</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Chnls_minus1</name>
+              <description>Channels count</description>
+              <bitRange>[20:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1_channels</name><description>Channels Count</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2_channels</name><description>Channels Count</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>3_channels</name><description>Channels Count</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>4_channels</name><description>Channels Count</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>5_channels</name><description>Channels Count</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>6_channels</name><description>Channels Count</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>7_channels</name><description>Channels Count</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>8_channels</name><description>Channels Count</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>9_channels</name><description>Channels Count</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>10_channels</name><description>Channels Count</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>11_channels</name><description>Channels Count</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>12_channels</name><description>Channels Count</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>13_channels</name><description>Channels Count</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>14_channels</name><description>Channels Count</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>15_channels</name><description>Channels Count</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>16_channels</name><description>Channels Count</description><value>15</value></enumeratedValue>
+                <enumeratedValue><name>17_channels</name><description>Channels Count</description><value>16</value></enumeratedValue>
+                <enumeratedValue><name>18_channels</name><description>Channels Count</description><value>17</value></enumeratedValue>
+                <enumeratedValue><name>19_channels</name><description>Channels Count</description><value>18</value></enumeratedValue>
+                <enumeratedValue><name>20_channels</name><description>Channels Count</description><value>19</value></enumeratedValue>
+                <enumeratedValue><name>21_channels</name><description>Channels Count</description><value>20</value></enumeratedValue>
+                <enumeratedValue><name>22_channels</name><description>Channels Count</description><value>21</value></enumeratedValue>
+                <enumeratedValue><name>23_channels</name><description>Channels Count</description><value>22</value></enumeratedValue>
+                <enumeratedValue><name>24_channels</name><description>Channels Count</description><value>23</value></enumeratedValue>
+                <enumeratedValue><name>25_channels</name><description>Channels Count</description><value>24</value></enumeratedValue>
+                <enumeratedValue><name>26_channels</name><description>Channels Count</description><value>25</value></enumeratedValue>
+                <enumeratedValue><name>27_channels</name><description>Channels Count</description><value>26</value></enumeratedValue>
+                <enumeratedValue><name>28_channels</name><description>Channels Count</description><value>27</value></enumeratedValue>
+                <enumeratedValue><name>29_channels</name><description>Channels Count</description><value>28</value></enumeratedValue>
+                <enumeratedValue><name>30_channels</name><description>Channels Count</description><value>29</value></enumeratedValue>
+                <enumeratedValue><name>31_channels</name><description>Channels Count</description><value>30</value></enumeratedValue>
+                <enumeratedValue><name>32_channels</name><description>Channels Count</description><value>31</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>test_status</name>
+              <description>Test logic availability</description>
+              <bitRange>[28:28]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Unavailable</name><description>Test logic unavailable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Available</name><description>Test logic available</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>  
+        </register>
+        <!-- CFG -->
+        <register>
+          <name>CFG</name>
+          <description>Config register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0x000000E1</resetMask>
+          <fields>
+            <field>
+              <name>Enable</name>
+              <description>Enable block</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Disabled</name><description>Block inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Enabled</name><description>Block active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>Privileged</name>
+              <description>Privileged AHB bus priority</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="Privileged">
+              <name>Bufferable</name>
+              <description>Bufferable AHB bus priority</description>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="Privileged">
+              <name>Cachable</name>
+              <description>Cachable AHB bus priority</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- CTRL_BASE_PTR -->
+        <register>
+          <name>CTRL_BASE_PTR</name>
+          <description>Channel control data base pointer</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0xFFFFFC00</resetMask>
+          <fields>
+            <field>
+              <name>Addr_Hi</name>
+              <description>Pointer</description>
+              <bitRange>[31:10]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- ALT_CTRL_BASE_PTR -->
+        <register>
+          <name>ALT_CTRL_BASE_PTR</name>
+          <description>Channel alternate control data base pointer</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0xFFFFFC00</resetMask>
+          <fields>
+            <field>
+              <name>Addr</name>
+              <description>Pointer</description>
+              <bitRange>[31:0]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- WAITONREQ_STATUS -->
+        <register>
+          <name>WAITONREQ_STATUS</name>
+          <description>Channel wait on request status</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Ch_%s</name>
+              <description>Channel Select</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- CHNL_SW_REQUEST -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_SW_REQUEST</name>
+          <description>Channel Software Request</description>
+          <addressOffset>0x00000014</addressOffset>
+          <access>write-only</access>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+        </register>
+        <!-- CHNL_USEBURST_SET -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_USEBURST_SET</name>
+          <description>Disable SREQ requests</description>
+          <addressOffset>0x00000018</addressOffset>
+          <access>read-write</access>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+        </register>
+        <!-- CHNL_USEBURST_CLR -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_USEBURST_CLR</name>
+          <description>Enable SREQ requests</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <access>write-only</access>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        </register>
+        <!-- CHNL_REQ_MASK_SET -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_REQ_MASK_SET</name>
+          <description>Disable channel processing</description>
+          <addressOffset>0x00000020</addressOffset>
+          <access>read-write</access>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+        </register>
+        <!-- CHNL_REQ_MASK_CLR -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_REQ_MASK_CLR</name>
+          <description>Enable channel processing</description>
+          <addressOffset>0x00000024</addressOffset>
+          <access>write-only</access>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        </register>
+        <!-- CHNL_ENABLE_SET -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_ENABLE_SET</name>
+          <description>Start Channel</description>
+          <addressOffset>0x00000028</addressOffset>
+          <access>read-write</access>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+        </register>
+        <!-- CHNL_ENABLE_CLR -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_ENABLE_CLR</name>
+          <description>Stop Channel</description>
+          <addressOffset>0x0000002C</addressOffset>
+          <access>write-only</access>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        </register>
+        <!-- CHNL_PRI_ALT_SET -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_PRI_ALT_SET</name>
+          <description>Select Alter Structure</description>
+          <addressOffset>0x00000030</addressOffset>
+          <access>read-write</access>
+          <modifiedWriteValues>oneToSet</modifiedWriteValues>
+        </register>
+        <!-- CHNL_PRI_ALT_CLR -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>CHNL_PRI_ALT_CLR</name>
+          <description>Select Primary Structure</description>
+          <addressOffset>0x00000034</addressOffset>
+          <access>write-only</access>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        </register>
+        <!-- ERR_CLR -->
+        <register derivedFrom="WAITONREQ_STATUS">
+          <name>ERR_CLR</name>
+          <description>AHB-Lite bus  error clear</description>
+          <addressOffset>0x0000004C</addressOffset>
+          <access>read-write</access>
+          <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        </register>
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #PWR -->
+    <!--Power-->
+    <peripheral>
+      <name>MDR_Power</name>
+      <version>1.0</version>
+      <description>Power Detector</description>
+      <groupName>Power</groupName>
+      <baseAddress>0x40058000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x08</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!--PVDCS-->
+        <register>
+          <name>PVDCS</name>
+          <description>Control-Status register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #RESET_MASK -->
+          <resetMask>0x00001FFF</resetMask>
+          <fields>
+            <field>
+              <name>PVDEN</name>
+              <!-- #PVD_EN_DESCR -->
+              <description>Enable Ucc detector</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PBLS</name>
+              <description>BUcc compare level</description>
+              <bitRange>[2:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1v8</name><description>Level of 1.8 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>3</value></enumeratedValue>            
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PLS</name>
+              <description>Ucc compare level</description>
+              <bitRange>[5:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>2v0</name><description>Level of 2.0 volts</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2v2</name><description>Level of 2.2 volts</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>2v4</name><description>Level of 2.4 volts</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>2v6</name><description>Level of 2.6 volts</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>2v8</name><description>Level of 2.8 volts</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>3v0</name><description>Level of 3.0 volts</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>3v2</name><description>Level of 3.2 volts</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>3v4</name><description>Level of 3.4 volts</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PVBD</name>
+              <description>Event on BUcc gt PBLS</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Event</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Active</name><description>Event is active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="PVBD">
+              <name>PVD</name>
+              <description>Event on Ucc gt PLS</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVBD</name>
+              <description>Enable IRQ by PVBD event</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>IEPVD</name>
+              <description>Enable IRQ by PVD event</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INVB</name>
+              <description>PVBD event on BUcc lt PBLS </description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="PVDEN">
+              <name>INV</name>
+              <description>PVD event on BUcc lt PBLS </description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <!-- #PVDBEN_FIELD -->        
+            <field derivedFrom="PVDEN">
+              <name>PVDBEN</name>
+              <description>Enable BUcc detector</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+          </fields>
+          </register>
+          <!-- UntiWorning -->
+          <register>
+            <name>ResReg</name>
+            <description>Reserved register</description>
+            <addressOffset>0x00000004</addressOffset>
+            <size>32</size>
+            <access>read-only</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0x00000000</resetMask>
+            <fields>
+              <field>
+                <name>Value</name>
+                <description>blank</description>
+                <bitRange>[31:0]</bitRange>
+              </field>
+            </fields>  
+          </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #WDT -->
     <!-- WWDT -->
     <peripheral>

@@ -21,3 +21,9 @@ call "../UART/Run.bat
 
 cd C:\CODE\PACK\__SVD\Exe
 call "../Timer/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../Power/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../I2C/Run.bat

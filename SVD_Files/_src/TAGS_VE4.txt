@@ -9,6 +9,7 @@ f7=../WDT/WDT_VE4x.txt
 f8=../UART/UART_VE4x.txt
 f9=../Timer/Timer_VE4.txt
 f10=../Power/Power_Vx.txt
+f11=../Uniq/DMA.xml
 
 [TAGS]
 #BKP=f1
@@ -24,12 +25,11 @@ f10=../Power/Power_Vx.txt
 #UARTs=f8
 #TIMERs=f9
 #PWR=f10
+#DMA=f11
 
 [TAGS_New]
 #USB=
 #USB_R=
-#DMA=
-#DMA_R=
 #SDIO=
 #SDIO_R=
 #I2C=

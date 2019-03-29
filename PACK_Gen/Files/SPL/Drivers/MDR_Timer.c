@@ -538,8 +538,10 @@ static void MDR_TimerCh_CfgCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MD
                     | MDR_TIM_CHx_CNTRL_CAP_Mode;
   
   cfgRegs->CH_CNTRL2 = VAL2FLD_Pos(cfgCAP->EventCAP1,  MDR_TIM_CHx_CNTRL2_CHSel1_Pos)
-                     | VAL2FLD_Pos(cfgCAP->enableCAP1, MDR_TIM_CHx_CNTRL2_CCR1_En_Pos)
-                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk;
+#if USE_TIM_CAP_FIX
+                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk  
+#endif
+                     | VAL2FLD_Pos(cfgCAP->enableCAP1, MDR_TIM_CHx_CNTRL2_CCR1_En_Pos);  
 }
 
 static void MDR_TimerCh_DefaultCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
@@ -550,9 +552,10 @@ static void MDR_TimerCh_DefaultCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
                     | MDR_TIM_CHx_CNTRL_CAP_Mode;
   
   cfgRegs->CH_CNTRL2 = VAL2FLD_Pos(MDR_TIM_CAP1_FallOnPin,  MDR_TIM_CHx_CNTRL2_CHSel1_Pos)
-                     | VAL2FLD_Pos(true,                    MDR_TIM_CHx_CNTRL2_CCR1_En_Pos)
-                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk;  
-  
+#if USE_TIM_CAP_FIX
+                     | MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk
+#endif
+                     | VAL2FLD_Pos(true,                    MDR_TIM_CHx_CNTRL2_CCR1_En_Pos);
 }
 
 void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *cfgCAP)

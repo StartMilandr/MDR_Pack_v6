@@ -101,16 +101,22 @@ static MDR_UART_CfgEx _cfgUartEx = {
   .activateNVIC_IRQ = false
 };
 
-#if UART_DEBUG_SHOW_WELLCOME 
-  static char str[64];
-#endif
-
 void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
 {
   uint32_t UART_ClockHz;
   MDR_UART_cfgBaud cfgBaud;
   MDR_UART_CfgPinsGPIO pinsGPIO;
 
+#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
+//  #if UART_DEBUG_IND == 1  
+    MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
+//  #elif UART_DEBUG_IND == 2
+//    MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
+//  #endif
+#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+#endif  
+  
   //  Baud Rate
   UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG);  
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
@@ -141,10 +147,8 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
   float baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
   //  Wellcome
   printf("Wellcome to UART DebugOut!\n");
-  sprintf(str, "BaudRate: %d\n",  baudRate);
-  printf("%s", str);
-  sprintf(str, "BaudError: %f\n", baudError);
-  printf("%s", str);
+  printf("BaudRate: %d\n",  baudRate);
+  printf("BaudError: %f\n", baudError);
 #endif
 }
 
@@ -165,11 +169,10 @@ void MDR_UART_DBG_ChangeRate(uint32_t baudRate)
 #if UART_DEBUG_SHOW_WELLCOME
   float baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
   
-  //  Message
-  sprintf(str, "BaudRate Changed: %d\n",  baudRate);
-  printf("%s", str);
-  sprintf(str, "BaudError: %f\n", baudError);
-  printf("%s", str);
+  //  Message 
+  printf("BaudRate Changed: %d\n",  baudRate);
+  printf("BaudError: %f\n", baudError);  
+  
 #endif
   
   MDR_UART_ChangeRateEx(UART_DBG->UARTx, &cfgBaud);    

@@ -335,7 +335,8 @@ bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgE
 void MDR_UARTex_InitByBaud(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, const MDR_UART_cfgBaud *cfgBaud)
 {
   //  Включение тактирования блока
-  MDR_PerClock_Enable(&UARTex->CfgClock);  
+  MDR_PerClock_Enable(&UARTex->CfgClock);   
+  
   //  Подача частоты
   MDR_PerClock_GateOpen(&UARTex->CfgClock, cfgEx->ClockBRG);
   //  Инициализация параметров UART

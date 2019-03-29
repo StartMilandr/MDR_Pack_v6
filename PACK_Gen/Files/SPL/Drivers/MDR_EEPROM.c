@@ -1,4 +1,4 @@
-#include "MDR_EEPROM.h"
+#include <MDR_EEPROM.h>
 
 
 static void RAM_Delay(uint32_t delayLoops) __RAM_EXEC;
@@ -284,6 +284,7 @@ void MDR_EEPROM_WriteBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EE
   uint32_t writenCount = 0;
   uint32_t wrCount = 0;
   uint32_t wrAddr;
+  uint32_t nextAddr = addr;
   uint32_t * pData;
   uint32_t nextPageAddr = (addr & ~MDR_EEPROM_PAGE_ADDR_MASK) + MDR_EEPROM_PAGE_SIZE;
    
@@ -299,7 +300,7 @@ void MDR_EEPROM_WriteBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EE
     // Запись секторов по очереди
     for (i = 0; i < 4; ++i)
     {   
-      wrAddr = addr + (i << 2);
+      wrAddr = nextAddr + (i << 2);
       // Если адрес в странице
       if (wrAddr < nextPageAddr)
       {
@@ -309,7 +310,7 @@ void MDR_EEPROM_WriteBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EE
       }
     }
     
-    addr += writenCount << 2;
+    nextAddr = addr + (writenCount << 2);
     nextPageAddr += MDR_EEPROM_PAGE_SIZE; 
   }
   MDR_EEPROM->KEY = 0;
@@ -371,6 +372,7 @@ void MDR_EEPROM_ReadBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EEP
   uint32_t wrCount;
   uint32_t wrAddr;
   uint32_t * pData;
+  uint32_t nextAddr = addr;  
   uint32_t nextPageAddr = (addr & ~MDR_EEPROM_PAGE_ADDR_MASK) + MDR_EEPROM_PAGE_SIZE;
    
   //  Разблокировка контроллера EEPROM
@@ -385,7 +387,7 @@ void MDR_EEPROM_ReadBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EEP
     // Чтение секторов по очереди
     for (i = 0; i < 4; ++i)
     {   
-      wrAddr = addr + (i << 2);
+      wrAddr = nextAddr + (i << 2);
       // Если адрес в странице
       if (wrAddr < nextPageAddr)
       {
@@ -395,7 +397,7 @@ void MDR_EEPROM_ReadBuff(uint32_t addr, uint32_t count, uint32_t * data, MDR_EEP
       }
     }
     
-    addr += writenCount << 2;
+    nextAddr = addr + (writenCount << 2);
     nextPageAddr += MDR_EEPROM_PAGE_SIZE; 
   }
   MDR_EEPROM->KEY = 0;

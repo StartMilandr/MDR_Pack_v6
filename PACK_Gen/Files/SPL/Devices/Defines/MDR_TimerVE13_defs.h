@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 #include <MDR_Types.h>
-#include <MDR_Timer_Defs.h>
+#include <MDR_Timer_defs.h>
 
 #define TIMER_HAS_DMA_REx
   

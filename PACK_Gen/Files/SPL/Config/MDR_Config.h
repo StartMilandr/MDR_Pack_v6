@@ -17,6 +17,10 @@
   #include <MDR_1901VC1.h>
 #elif defined (USE_MDR1986VK214)
   #include <MDR_1986VK214.h> 
+  
+  // Регистр PVDCS не прописывается с первого раза - MDR_Power.c
+  #define USE_PWR_WR_FIX_VK214  
+  
 #elif defined (USE_MDR1986VK234)
   #include <MDR_1986VK234.h>  
 #endif
@@ -64,8 +68,13 @@
 #define PLL_TIMEOUT_MS  100
 
 
-// ===========   Timer Capture Buf-fix enable=============
-#define USE_TIM_CAP_FIX  1
+// =========================   Timer Bugfixes   ================================
+//  Прерывание возникает раньше, чем обновляются регистры CCR и CCR1
+#define USE_TIM_CAP_FIX   1
+
+// =========================   POWER Bugfixes   ================================
+// Флаги событий не стираются с первого раза
+#define USE_PWR_CLR_FIX   1
 
 
 // ===========   Assert для драйверов от версии 1,5 =============

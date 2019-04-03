@@ -629,6 +629,6 @@ void MDR_PerClock_GateOpen(const MDR_PerClock_Cfg *pCfgClock, MDR_BRG_DIV_128 cl
   regSSP_Clock |= (uint32_t)(clockBRG << pCfgClock->ClockGate_BRG_Pos) | pCfgClock->ClockGate_ClockOn_Msk;
   
   REG32(pCfgClock->ClockGate_Addr) = regSSP_Clock;
-};
+}
 
 

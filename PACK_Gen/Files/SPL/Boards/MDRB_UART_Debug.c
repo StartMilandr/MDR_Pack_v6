@@ -1,4 +1,4 @@
-#include "MDRB_UART_Debug.h"
+#include <MDRB_UART_Debug.h>
 
 #include <stdio.h>
 
@@ -144,7 +144,7 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
   MDR_UART_InitPinsGPIO(&pinsGPIO, MDR_PIN_FAST);
   
 #if UART_DEBUG_SHOW_WELLCOME    
-  float baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
+  double baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
   //  Wellcome
   printf("Wellcome to UART DebugOut!\n");
   printf("BaudRate: %d\n",  baudRate);
@@ -167,18 +167,22 @@ void MDR_UART_DBG_ChangeRate(uint32_t baudRate)
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
   
 #if UART_DEBUG_SHOW_WELLCOME
-  float baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
+  double baudError = MDR_UART_CalcBaudError(&cfgBaud, baudRate, UART_ClockHz);
   
   //  Message 
   printf("BaudRate Changed: %d\n",  baudRate);
   printf("BaudError: %f\n", baudError);  
-  
 #endif
   
   MDR_UART_ChangeRateEx(UART_DBG->UARTx, &cfgBaud);    
 }
 
+bool MDR_UART_DBG_TrySend(char data)
+{
+  return MDR_UART_TrySend(UART_DBG->UARTx, data);
+}
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6010050)
 struct __FILE
 {
   int handle;
@@ -186,19 +190,25 @@ struct __FILE
   /* standard output using printf() for debugging, no file handling */
   /* is required. */
 };
+#endif
 
 /* FILE is typedef’d in stdio.h. */
 FILE __stdout;
 
 int fputc(int ch, FILE *f)
 { 
+  UNUSED(f);
+  
   while(!MDR_UART_CanSend(UART_DBG->UARTx));
-  MDR_UART_SendData(UART_DBG->UARTx, ch);
+  MDR_UART_SendData(UART_DBG->UARTx, (uint8_t)ch);
   
   return ch;
 }
+
 int ferror(FILE *f)
 {
+  UNUSED(f);
+  
   /* Your implementation of ferror(). */
   return 0;
 }

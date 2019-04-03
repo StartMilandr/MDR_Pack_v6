@@ -953,8 +953,15 @@
         <file category="header" name="SPL/Drivers/MDR_LCD_VK214.h"/>
         <file category="source" name="SPL/Drivers/MDR_LCD_VK214.c"/>
       </files>
-    </component>  
-
+    </component>
+    <!-- POWER Driver -->
+    <component Cclass="Drivers" Cgroup="POWER" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>POWER driver</description>
+      <files>
+        <file category="header" name="SPL/Drivers/MDR_Power.h"/>
+        <file category="source" name="SPL/Drivers/MDR_Power.c"/>
+      </files>
+    </component>
     <!-- START: Previouse PACK blocks -->
     <!-- DMA Driver -->
     <component Cclass="Drivers" Cgroup="DMA" Cversion="1.9" condition="CON_HAS_DMA">
@@ -963,15 +970,7 @@
         <file category="header" name="SPL/Drivers/MDR32F9Qx_dma.h"/>
         <file category="source" name="SPL/Drivers/MDR32F9Qx_dma.c"/>
       </files>
-    </component>    
-    <!-- POWER Driver -->
-    <component Cclass="Drivers" Cgroup="POWER" Cversion="1.9" condition="CON_MDR_ALL">
-      <description>POWER driver</description>
-      <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_power.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_power.c"/>
-      </files>
-    </component>   
+    </component>     
     <!-- CRC  Driver -->
     <component Cclass="Drivers" Cgroup="CRC" Cversion="1.9" condition="CON_MDR1986VK234">
       <description>CRC driver</description>
@@ -1281,8 +1280,19 @@
         <component Cclass="Drivers"       Cgroup="Timer"         Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Drivers"       Cgroup="PER_Clock"    Cversion="2.0" condition="CON_MDR_ALL"/>
         <component Cclass="Board Support" Cgroup="Buttons"      Cversion="2.0" condition="CON_MDR_ALL"/>
-        <!--component Cclass="Board Support" Cgroup="UART_Debug"      Cversion="2.0" condition="CON_MDR_ALL"/-->
       </attributes>
+    </example>
+
+    <example name="Timer_CapFix" folder="Examples/All_Boards/Timer_CapFix" doc="ReadMe.md" version="2.0.0">
+      <description>Timer use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="Timer_CapFix.uvprojx"/></project>
+    </example>
+
+    <example name="Power_Test" folder="Examples/All_Boards/Power_Test" doc="ReadMe.md" version="2.0.0">
+      <description>Timer use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="Power_Test.uvmpw"/></project>
     </example>
 
     <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">

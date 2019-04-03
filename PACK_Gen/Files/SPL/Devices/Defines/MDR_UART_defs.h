@@ -261,7 +261,7 @@ typedef struct {
   __IOM MDR_OnOff PE      : 1;            /*!< [8..8] Parity Error IRQ Mask                                              */
   __IOM MDR_OnOff BE      : 1;            /*!< [9..9] BreakLine IRQ Mask                                                 */
   __IOM MDR_OnOff OE      : 1;            /*!< [10..10] Overrun FIFO_RX IRQ Mask                                         */
-  __IM  uint32_t          : 22;
+  __IM  uint32_t          : 21;
 } MDR_UART_Event_Bits;
 
 #define MDR_UART_EVENT_RIM_Pos         (0UL)                     /*!< MDR_UART1 IMSC: RIM_IM (Bit 0)                        */

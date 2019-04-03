@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-#include <MDR_UART_Defs.h>
+#include <MDR_UART_defs.h>
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -85,7 +85,7 @@ typedef struct {
   MDR_OnOff PE      : 1;            /*!< [8..8] Parity Error IRQ Mask                                              */
   MDR_OnOff BE      : 1;            /*!< [9..9] BreakLine IRQ Mask                                                 */
   MDR_OnOff OE      : 1;            /*!< [10..10] Overrun FIFO_RX IRQ Mask                                         */
-  uint32_t          : 22;
+  uint32_t          : 21;
 } MDR_UART_EventBits;
 
 #define MDR_UART_EFL_RIM         MDR_UART_EVENT_RIM_Msk

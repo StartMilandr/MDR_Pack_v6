@@ -66,18 +66,18 @@ void  MDR_UART_CalcBaudRate(MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32
   // div_x64 = Fuart / (Fbaud / 4)
   uint32_t div_x64 = UART_ClockHz / (baudRate >> 2); 
   
-	cfgBaud->BaudDivInt  = div_x64 >> 6;
-	cfgBaud->BaudDivFrac = (div_x64 & 0x003FUL);  
+	cfgBaud->BaudDivInt  = (uint16_t)div_x64 >> 6;
+	cfgBaud->BaudDivFrac = (uint16_t)(div_x64 & 0x003FUL);  
 }
 
 //  Возвращает ошибку в % между реальной и заданной частотой.
-float MDR_UART_CalcBaudError(const MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32_t UART_ClockHz)
+double MDR_UART_CalcBaudError(const MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32_t UART_ClockHz)
 {
   //  Fbaud = Fuart / (16 * div)
   //  Fbaud = Fuart * 4 / div_x64
   uint32_t baudReal = (UART_ClockHz << 2) / ((cfgBaud->BaudDivInt * 64) + cfgBaud->BaudDivFrac);
   
-  return ((baudReal - baudRate) * 100) / (float)baudRate;
+  return ((baudReal - baudRate) * 100) / (double)baudRate;
 }
 
 //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
@@ -91,7 +91,7 @@ void MDR_UART_Init(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRa
 
 //  Аналог MDR_UART_Init, но с проверкой ошибки выставления baudRate
 //  При превышении ошибки BaudErrMax функция вернет Fault, блок не будет инициализирован
-bool MDR_UART_InitEx(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz, float baudErrMax)
+bool MDR_UART_InitEx(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax)
 {
   bool result;
   MDR_UART_cfgBaud cfgBaud;
@@ -318,7 +318,7 @@ void MDR_UARTex_Init(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx,
 
 //  Аналог MDR_UART_Init, но с проверкой ошибки выставления BaudRate_Hz
 //  При превышении ошибки BaudErrMax функция вернет Fault, блок не будет инициализирован
-bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz, float baudErrMax)
+bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax)
 {
   bool result;
   MDR_UART_cfgBaud cfgBaud;
@@ -400,7 +400,7 @@ MDR_UART_Data MDR_UART_ReadDataEx(MDR_UART_Type *UART)
 {
   MDR_UART_Data result;
   
-  result.Value = UART->DR;
+  result.Value = (uint16_t)UART->DR;
   return result;
 }
 
@@ -464,4 +464,15 @@ void MDR_UART_ClearRxFIFO(MDR_UART_Type *UART)
   while (MDR_UART_CanRead(UART))
     MDR_UART_ReadData(UART);
 }
+
+bool MDR_UART_TrySend(MDR_UART_Type *UART, uint8_t data)
+{
+  if (!MDR_UART_CanSend(UART))
+    return false;
+
+  MDR_UART_SendData(UART, data);
+  return true;
+}
+
+
 

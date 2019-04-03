@@ -154,6 +154,9 @@ typedef enum IRQn
 /*=========  TIMER ========*/
 #include <MDR_TimerVx_Defs.h>
 
+/*=========  POWER ========*/
+#include <MDR_PowerVx_defs.h>
+
 //  ==========  Blocks from previouse PACK
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
@@ -229,10 +232,10 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define ADDR_TIMER1_BASE      0x40070000UL
 #define ADDR_TIMER2_BASE      0x40078000UL
 
+#define ADDR_POWER_BASE       0x40058000UL
 
 //  Blocks from previouse PACK
 #define MDR_DMA_BASE                   (0x40028000)
-#define MDR_POWER_BASE                 (0x40058000)
 #define MDR_CRC_BASE                   (0x40098000)
 
 
@@ -283,10 +286,11 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
 #define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
 
+//  Power
+#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
 
 //  Blocks from previouse PACK
 #define MDR_DMA                        ((MDR_DMA_TypeDef 	  *) MDR_DMA_BASE)
-#define MDR_POWER                      ((MDR_POWER_TypeDef 	*) MDR_POWER_BASE)
 #define MDR_CRC                        ((MDR_CRC_TypeDef 	  *) MDR_CRC_BASE)
 
 
@@ -392,6 +396,10 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define   MDR_TIMER_Can_UpDown_ByExtEvents
 
 #define   MDR_TIM_CLOCK_FROM_PER_CLOCK
+
+//----------------    Power Definitions  --------------------
+#define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER2__PWR_CLK_EN_Msk
 
 
 /** @} */ /* End of group MDR1986VK234 */

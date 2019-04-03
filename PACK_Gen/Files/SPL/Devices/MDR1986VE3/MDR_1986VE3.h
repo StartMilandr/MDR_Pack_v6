@@ -189,6 +189,9 @@ typedef enum IRQn
 /*=========  TIMER ========*/
 #include <MDR_TimerVE13_Defs.h>
 
+/*=========  POWER ========*/
+#include <MDR_PowerVx_defs.h>
+
 /*@}*/ /* end of group MDR1986VE3_Peripherals */
 
 
@@ -259,6 +262,8 @@ typedef enum IRQn
 #define ADDR_TIMER3_BASE      0x40080000UL
 #define ADDR_TIMER4_BASE      0x40098000UL
 
+#define ADDR_POWER_BASE       0x40058000UL
+
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
 
@@ -327,6 +332,8 @@ typedef enum IRQn
 #define MDR_TIMER4_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR3))
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
 
+//  Power
+#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -453,6 +460,11 @@ typedef enum IRQn
 #define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
 #define   MDR_TIMER3_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM3_BRG_Pos
 #define   MDR_TIMER4_CLOCK_GATE_BRG_POS    MDR_RST_UART__TIM4_BRG_Pos
+
+//----------------    Power Definitions  --------------------
+#define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER__PWR_CLK_EN_Msk
+
 
 /** @} */ /* End of group MDR1986VE3 */
 

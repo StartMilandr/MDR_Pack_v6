@@ -5,7 +5,7 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_PER_Clock.h>
 #include <MDR_GPIO.h>
-#include <MDR_UART_Defs.h>
+#include <MDR_UART_defs.h>
 #include <MDR_UART_CfgRegs.h>
 
 //  ----------------    Some Standards BaudRates   -------------------------
@@ -45,7 +45,7 @@ typedef struct {
   MDR_OnOff RX_Disable  : 1;    //  Приемник остается выключенным при вызове Init    
   MDR_OnOff use2StopBit : 1;
   MDR_OnOff useLBM      : 1;
-  uint32_t  reserved    : 1;
+  uint32_t  reserved    : 27;
 } MDR_UART_OptionFlags;
 
 #define MDR_UART_OPT_Break      MDR_UART_LCR_H_BRK_Msk
@@ -89,7 +89,7 @@ typedef struct {
   MDR_OnOff setOut2_Low : 1;
   MDR_OnOff RTSEn       : 1;
   MDR_OnOff CTSEn       : 1;
-  uint32_t  reserved    : 1;
+  uint32_t  reserved    : 26;
 } MDR_UART_ModemFlags;
 
 #define MDR_UART_MFL_RIM         0x01UL
@@ -145,14 +145,14 @@ typedef struct {
 void  MDR_UART_CalcBaudRate(MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32_t UART_ClockHz);
 
 //  Возвращает ошибку в % между реальной и заданной частотой.
-float MDR_UART_CalcBaudError(const MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32_t UART_ClockHz);
+double MDR_UART_CalcBaudError(const MDR_UART_cfgBaud *cfgBaud, uint32_t baudRate, uint32_t UART_ClockHz);
 
 //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
 void MDR_UART_Init(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz);
 
 //  Аналог MDR_UART_Init, но с проверкой ошибки выставления BaudRate_Hz
 //  При превышении ошибки BaudErrMax функция вернет Fault, блок не будет инициализирован
-bool MDR_UART_InitEx(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz, float baudErrMax);
+bool MDR_UART_InitEx(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax);
 
 //  Делители cfgBaud задаются вручную, рассчитываются пользователем заранее
 void MDR_UART_InitByBaud(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, const MDR_UART_cfgBaud *cfgBaud);
@@ -231,7 +231,7 @@ void MDR_UARTex_Init(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx,
 
 //  Аналог MDR_UART_Init, но с проверкой ошибки выставления BaudRate_Hz
 //  При превышении ошибки BaudErrMax функция вернет Fault, блок не будет инициализирован
-bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz, float baudErrMax);
+bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax);
 
 //  Делители cfgBaud задаются вручную, рассчитываются пользователем заранее
 void MDR_UARTex_InitByBaud(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, const MDR_UART_cfgBaud *cfgBaud);
@@ -269,8 +269,10 @@ __STATIC_INLINE uint32_t MDR_UART_GetStatus(MDR_UART_Type *UART) {return UART->F
 __STATIC_INLINE bool MDR_UART_CanSend  (MDR_UART_Type *UART) {return (UART->FR & MDR_UART_SFL_TxFull)  == 0;}
 __STATIC_INLINE bool MDR_UART_CanRead  (MDR_UART_Type *UART) {return (UART->FR & MDR_UART_SFL_RxEmpty) == 0;}
 
-__STATIC_INLINE void     MDR_UART_SendData(MDR_UART_Type *UART, uint16_t data) {UART->DR = data;}
-__STATIC_INLINE uint16_t MDR_UART_ReadData(MDR_UART_Type *UART) {return UART->DR;}
+__STATIC_INLINE void     MDR_UART_SendData(MDR_UART_Type *UART, uint8_t data) {UART->DR = data;}
+__STATIC_INLINE uint16_t MDR_UART_ReadData(MDR_UART_Type *UART) {return (uint16_t)UART->DR;}
+
+bool MDR_UART_TrySend(MDR_UART_Type *UART, uint8_t data);
 
 // Разрешение/запрет прерываний
 void MDR_UART_ChangeEventIRQ(MDR_UART_Type *UART, uint32_t eventsMask);

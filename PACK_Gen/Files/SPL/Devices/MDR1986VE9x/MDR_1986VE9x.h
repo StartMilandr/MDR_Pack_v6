@@ -189,6 +189,9 @@ typedef enum IRQn
 /*=========  TIMER ========*/
 #include <MDR_TimerVx_Defs.h>
 
+/*=========  POWER ========*/
+#include <MDR_PowerVE9x_defs.h>
+
 /*@}*/ /* end of group MDR1986VE9x_Peripherals */
 
 
@@ -251,6 +254,8 @@ typedef enum IRQn
 #define ADDR_TIMER2_BASE      0x40078000UL
 #define ADDR_TIMER3_BASE      0x40080000UL
 
+#define ADDR_POWER_BASE       0x40058000UL
+
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
 
@@ -306,6 +311,8 @@ typedef enum IRQn
 #define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR3))
 #define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
 
+//  Power
+#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -415,7 +422,9 @@ typedef enum IRQn
 //  Enable Count UpDown by external events
 #define MDR_TIMER_Can_UpDown_ByExtEvents
 
-
+//----------------    Power Definitions  --------------------
+#define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER__PWR_CLK_EN_Msk
 
 /** @} */ /* End of group MDR1986VE9x */
 

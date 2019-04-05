@@ -642,7 +642,7 @@
       <accept Dname="MDR1901VC1"/>
     </condition>
     <condition id="CON_HAS_DMA">
-      <description>All 32-bit Cortex devices</description>
+      <description>Devices with DMA</description>
       <accept Dname="MDR1986VE1"/>
       <accept Dname="MDR1986VE3"/>
       <accept Dname="MDR1986VE4"/>
@@ -652,7 +652,16 @@
       <accept Dname="MDR1986VE93"/>
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
-    </condition>    
+    </condition>
+    <condition id="CON_HAS_I2C">
+      <description>Devices with I2C</description>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+    </condition>
     <condition id="CON_MDR_UseFuncs">
       <description>Support types and funcs</description>
       <require Cclass="Drivers" Cgroup="UseFuncs"/>
@@ -962,32 +971,30 @@
         <file category="source" name="SPL/Drivers/MDR_Power.c"/>
       </files>
     </component>
-    <!-- START: Previouse PACK blocks -->
     <!-- DMA Driver -->
     <component Cclass="Drivers" Cgroup="DMA" Cversion="1.9" condition="CON_HAS_DMA">
       <description>DMA driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_dma.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_dma.c"/>
+        <file category="header" name="SPL/Drivers/MDR_DMA.h"/>
+        <file category="source" name="SPL/Drivers/MDR_DMA.c"/>
       </files>
     </component>     
     <!-- CRC  Driver -->
-    <component Cclass="Drivers" Cgroup="CRC" Cversion="1.9" condition="CON_MDR1986VK234">
+    <component Cclass="Drivers" Cgroup="CRC_VK214" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>CRC driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_crc.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_crc.c"/>
+        <file category="header" name="SPL/Drivers/MDR_CRC_VK234.h"/>
+        <file category="source" name="SPL/Drivers/MDR_CRC_VK234.c"/>
       </files>
     </component>
     <!-- I2C Driver -->
-    <component Cclass="Drivers" Cgroup="I2C" Cversion="1.9" condition="CON_MDR1986VK214">
+    <component Cclass="Drivers" Cgroup="I2C" Cversion="2.0" condition="CON_HAS_I2C">
       <description>I2C driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR32F9Qx_i2c.h"/>
-        <file category="source" name="SPL/Drivers/MDR32F9Qx_i2c.c"/>
+        <file category="header" name="SPL/Drivers/MDR_I2C.h"/>
+        <file category="source" name="SPL/Drivers/MDR_I2C.c"/>
       </files>
     </component>    
-    <!-- END: Previouse PACK blocks -->
 
 
     <!--Boards-->

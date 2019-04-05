@@ -4,9 +4,6 @@
 #include <MDR_Types.h>
 
 //===================    Функция ожидания с таймаутом  ===================
-typedef bool (*pBoolFunc_U32)(uint32_t);
-typedef bool (*pBoolFunc_void)(void);
-
 bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc);
 
 

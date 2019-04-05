@@ -56,8 +56,8 @@
     #define PIN_PC7       MDR_Pin_7   //      LCD_S23
     #define PIN_PC8       MDR_Pin_8   // KEY1
     #define PIN_PC9       MDR_Pin_9   // KEY2
-    #define PIN_PC14      MDR_Pin_14  //    LED1 
-    #define PIN_PC15      MDR_Pin_15  //    LED2
+    #define PIN_PC14      MDR_Pin_14  //    LED1    I2C_SCL
+    #define PIN_PC15      MDR_Pin_15  //    LED2    I2C_SDA
 
    
 ////  --------------  ADC Definition  ------------
@@ -164,6 +164,19 @@
   
   #define MDRB_UART2_TX_PC0_Func	   MDR_PIN_MAIN
 	#define MDRB_UART2_RX_PC1_Func	   MDR_PIN_MAIN
+
+//  ---------------  I2C Pin Definition ---------------- 
+  #define MDRB_I2C_SCL_PC14_Ind	     14
+  #define MDRB_I2C_SDA_PC15_Ind	     15
+
+  #define MDRB_I2C_SCL_PC14_Msk	     PIN_PC14
+	#define MDRB_I2C_SDA_PC15_Msk		   PIN_PC15
+
+  #define MDRB_I2C_SCL_PC14_Port	   MDR_GPIO_C
+	#define MDRB_I2C_SDA_PC15_Port		 MDR_GPIO_C
+  
+  #define MDRB_I2C_SCL_PC14_Func	   MDR_PIN_MAIN
+	#define MDRB_I2C_SDA_PC15_Func	   MDR_PIN_MAIN  
 
 
 #else

@@ -62,11 +62,11 @@
     #define PIN_PC11    MDR_Pin_11  //                                SSP3_CLK
     #define PIN_PC12    MDR_Pin_12  //                                  SSP4_FSS
     #define PIN_PC13    MDR_Pin_13  //                                  SSP4_CLK
-    #define PIN_PC14    MDR_Pin_14  //                                  SSP4_TX
-    #define PIN_PC15    MDR_Pin_15  //                                  SSP4_RX
+    #define PIN_PC14    MDR_Pin_14  //                                  SSP4_TX                   I2C_SCK
+    #define PIN_PC15    MDR_Pin_15  //                                  SSP4_RX                   I2C_SDA
 
-    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                  ADC_Ch0/ref+
-    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                  ADC_Ch1/ref-
+    #define PIN_PD0     MDR_Pin_0   //                    JTAG_B                  ADC_Ch0/ref+    I2C_SCK
+    #define PIN_PD1     MDR_Pin_1   //                    JTAG_B                  ADC_Ch1/ref-    I2C_SDA
     #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP1_TX         ADC_Ch2
     #define PIN_PD3     MDR_Pin_3   //                    JTAG_B  SSP1_FSS        ADC_Ch3
     #define PIN_PD4     MDR_Pin_4   //                    JTAG_B  SSP1_RX         ADC_Ch4
@@ -523,7 +523,31 @@
   #define MDRB_UART3_TX_PF1_Func	    MDR_PIN_ALT
 	#define MDRB_UART3_RX_PF0_Func	    MDR_PIN_ALT
 
+//  ---------------  I2C Pin Definition ---------------- 
+  #define MDRB_I2C_SCL_PC14_Ind	      14
+  #define MDRB_I2C_SDA_PC15_Ind	      15
 
+  #define MDRB_I2C_SCL_PC14_Msk	      PIN_PC14
+	#define MDRB_I2C_SDA_PC15_Msk		    PIN_PC15
+
+  #define MDRB_I2C_SCL_PC14_Port	    MDR_GPIO_C
+	#define MDRB_I2C_SDA_PC15_Port		  MDR_GPIO_C
+  
+  #define MDRB_I2C_SCL_PC14_Func	    MDR_PIN_MAIN
+	#define MDRB_I2C_SDA_PC15_Func	    MDR_PIN_MAIN
+
+
+  #define MDRB_I2C_SCL_PD0_Ind	      0
+  #define MDRB_I2C_SDA_PD1_Ind	      1
+
+  #define MDRB_I2C_SCL_PD0_Msk	      PIN_PC0
+	#define MDRB_I2C_SDA_PD1_Msk		    PIN_PC1
+
+  #define MDRB_I2C_SCL_PD0_Port	      MDR_GPIO_D
+	#define MDRB_I2C_SDA_PD1_Port		    MDR_GPIO_D
+  
+  #define MDRB_I2C_SCL_PD0_Func	      MDR_PIN_ALT
+	#define MDRB_I2C_SDA_PD1_Func	      MDR_PIN_ALT
 
 
 //  ----------  SDIO Definition ---------------

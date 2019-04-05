@@ -33,8 +33,8 @@
     #define PIN_PB10    MDR_Pin_10  //          LCD_RW
 
     //  Port_C[2..0]
-    #define PIN_PC0     MDR_Pin_0   //  LED_1   LCD_A0            SSP2_FSS
-    #define PIN_PC1     MDR_Pin_1   //  LED_2   LCD_E             SSP2_CLK
+    #define PIN_PC0     MDR_Pin_0   //  LED_1   LCD_A0            SSP2_FSS             I2C_SCL
+    #define PIN_PC1     MDR_Pin_1   //  LED_2   LCD_E             SSP2_CLK             I2C_SDA
     #define PIN_PC2     MDR_Pin_2   //  Select                    SSP2_RX
 
     //  Port_D[7..0]
@@ -239,6 +239,19 @@
   
   #define MDRB_UART2_TX_PF1_Func	    MDR_PIN_OVER
 	#define MDRB_UART2_RX_PF0_Func	    MDR_PIN_OVER
+
+//  ---------------  I2C Pin Definition ---------------- 
+  #define MDRB_I2C_SCL_PC0_Ind	     0
+  #define MDRB_I2C_SDA_PC1_Ind	     1
+
+  #define MDRB_I2C_SCL_PC0_Msk	     PIN_PC0
+	#define MDRB_I2C_SDA_PC1_Msk		   PIN_PC1
+
+  #define MDRB_I2C_SCL_PC0_Port	     MDR_GPIO_C
+	#define MDRB_I2C_SDA_PC1_Port		   MDR_GPIO_C
+  
+  #define MDRB_I2C_SCL_PC0_Func	     MDR_PIN_ALT
+	#define MDRB_I2C_SDA_PC1_Func	     MDR_PIN_ALT 
 
 
 #else

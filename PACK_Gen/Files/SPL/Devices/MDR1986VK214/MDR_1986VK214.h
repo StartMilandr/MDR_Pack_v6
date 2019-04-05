@@ -122,10 +122,10 @@ typedef enum IRQn
 /*===============  RST_Clock ===================*/
 #include "MDR_RST_VK214_defs.h"
 
-/*===============  Backup and RST ==============*/
+///*===============  Backup and RST ==============*/
 #include "MDR_BKP_VE4x_defs.h"
 
-/*===============  EEPROM Controller=============*/
+///*===============  EEPROM Controller=============*/
 #include "MDR_EEPROM_18MHz_defs.h"
 
 /*===============  GPIO Port ===================*/
@@ -133,45 +133,34 @@ typedef enum IRQn
 
 #define MDR_PORT_Type  MDR_PORT_Type__Base
 
-/*===============  ADC SAR ===================*/
+///*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE4VKx_def.h"
 
-/*=========  SSP - Synchronous Serial Port ========*/
+///*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
 
-/*=========  WWDT - IWDT ========*/
+///*=========  WWDT - IWDT ========*/
 #include "MDR_WWDT_defs.h"
 #include "MDR_IWDT_defs.h"
 
-/*=========  LCD Controller ========*/
+///*=========  LCD Controller ========*/
 #include "MDR_LCD_VK214_defs.h"
 
-/*=========  ADC IU ========*/
+///*=========  ADC IU ========*/
 #include "MDR_ADCUI_VK214_defs.h"
 
 /*=========  UART ========*/
-#include <MDR_UART_Defs.h>
+#include <MDR_UART_defs.h>
 
-/*=========  TIMER ========*/
+///*=========  TIMER ========*/
 #include <MDR_TimerVx_Defs.h>
 
-/*=========  POWER ========*/
+///*=========  POWER ========*/
 #include <MDR_PowerVx_defs.h>
 
-//  ==========  Blocks from previouse PACK
+/*=========  I2C ========*/
+#include <MDR_I2C_defs.h>
 
-typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus, BitStatus;
-
-#define IS_BIT_STATUS(STATUS)	(((STATUS) == RESET) || ((STATUS) == SET))
-
-typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
-#define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
-
-typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
-
-
-#include "MDRP_I2C_defs.h"
-#include "MDRP_POWER_defs.h"
 
 
 /*@}*/ /* end of group MDR1986BE4_Peripherals */
@@ -235,9 +224,8 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define ADDR_TIMER2_BASE      0x40078000UL
 
 #define ADDR_POWER_BASE       0x40058000UL
+#define ADDR_I2C_BASE         0x40030000UL
 
-//  Blocks from previouse PACK
-#define MDR_I2C_BASE                   (0x40030000)
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -280,12 +268,9 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
 #define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
 
-//  Power
-#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
+#define MDR_POWER                      ((MDR_PWR_Type 	    *) ADDR_POWER_BASE)
+#define MDR_I2C                        ((MDR_I2C_Type       *) ADDR_I2C_BASE)
 
-//  Blocks from previouse PACK
-
-#define MDR_I2C                        ((MDR_I2C_TypeDef 	  *) MDR_I2C_BASE)
 
 
 /* =========================================================================================================================== */
@@ -393,6 +378,9 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
 #define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
 #define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER2__PWR_CLK_EN_Msk
 
+//----------------    I2C Definitions  --------------------
+#define   MDR_I2C_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_I2C_CLK_EN_MSK            MDR_RST_PER2__I2C_CLK_EN_Msk
 
 
 /** @} */ /* End of group MDR1986VK214 */

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\I2C_Test_VE91\I2C_Test_VE91.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\I2C_Test_VE92\I2C_Test_VE92.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\I2C_Test_VK214\I2C_Test_VK214.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\I2C_Test_VC1\I2C_Test_VC1.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+</ProjectWorkspace>

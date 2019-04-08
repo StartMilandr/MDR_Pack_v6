@@ -29,13 +29,13 @@
 #endif
 
 
- //  Используемые типы функций
+ //  РСЃРїРѕР»СЊР·СѓРµРјС‹Рµ С‚РёРїС‹ С„СѓРЅРєС†РёР№
 typedef void (*pVoidFunc_void)(void);
 typedef bool (*pBoolFunc_U32)(uint32_t);
 typedef bool (*pBoolFunc_void)(void);
 
   
-//  Общие типы
+//  РћР±С‰РёРµ С‚РёРїС‹
 typedef enum {
   MDR_Off  = 0,
   MDR_On   = 1

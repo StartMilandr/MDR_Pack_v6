@@ -135,10 +135,25 @@ bool MDR_I2C_StartTransfer(uint8_t addr_7bit, bool modeWrite)
   //  Запуск передачи адреса с флагом чтение или запись
   I2C_StartTransfer_loc(addr_7bit, modeWrite);
   
-  // Ожидание завершения передачи
-  while (MDR_I2C_GetTransfering()) {};
+  // Ожидание завершения передачи, выход если коллизия
+  if (!MDR_I2C_WaitTransfCompleted())
+    return false;
     
   return MDR_I2C_GetAckOk();
+}
+
+bool MDR_I2C_WaitTransfCompleted(void)
+{
+  uint32_t status;
+  
+  do
+  {
+    status = MDR_I2C->STA;
+    if (status & MDR_I2C_STA_Lost_ARB_Msk)
+      return false;    
+  } while (status & MDR_I2C_STA_TR_Prog_Msk);
+  
+  return true;
 }
 
 bool MDR_I2C_SendByte(uint8_t data)
@@ -147,8 +162,9 @@ bool MDR_I2C_SendByte(uint8_t data)
   MDR_I2C->TXD = data;
   MDR_I2C->CMD = MDR_I2C_CMD_Start_Write_Msk;  
   
-  // Ожидание завершения передачи
-  while (MDR_I2C_GetTransfering()) {};
+  // Ожидание завершения передачи, выход если коллизия
+  if (!MDR_I2C_WaitTransfCompleted())
+    return false;
     
   return MDR_I2C_GetAckOk();
 }
@@ -161,12 +177,19 @@ bool MDR_I2C_ReadByte(uint8_t *data, bool lastByte)
   else
     MDR_I2C->CMD = MDR_I2C_CMD_Start_Read_Msk | MDR_I2C_Send_NACK;
   
-  // Ожидание завершения передачи
-  while (MDR_I2C_GetTransfering()) {};
+  // Ожидание завершения передачи, выход если коллизия
+  if (!MDR_I2C_WaitTransfCompleted())
+    return false;    
+    
   // Чтение полученных данных  
   *data = (uint8_t)MDR_I2C->RXD;
+  
+  return true;
     
-  return MDR_I2C_GetAckOk();
+//  if (!lastByte)
+//    return true;
+//  else
+//    return MDR_I2C_GetAckOk();
 }
 
 uint32_t MDR_I2C_TransferWrite(uint8_t addr_7bit, uint32_t count, uint8_t *pData)
@@ -240,9 +263,10 @@ bool MDR_I2C_IRQ_GetCompleted(bool *success)
 
 pVoidFunc_void  pNextFuncI2C;
 
+//  Варианты для pNextFuncI2C
 static void MDR_I2C_IRQ_WriteNext(void);
-static void MDR_I2C_IRQ_ReadNext(void);
 static void MDR_I2C_IRQ_ReadStart(void);
+static void MDR_I2C_IRQ_ReadNext(void);
 
 bool MDR_I2C_IRQ_TryStartTransfer(uint8_t addr_7bit, uint32_t count, uint8_t *pData, bool modeWrite, pVoidFunc_void stopCallBack)
 {
@@ -292,7 +316,7 @@ static void MDR_I2C_IRQ_Stop(void)
 
 static void MDR_I2C_IRQ_WriteNext(void)
 {  
-  if (_I2C_Index < _I2C_Count)
+  if ((_I2C_Index < _I2C_Count) && MDR_I2C_GetAckOk())
   {
     //  Запуск передачи байта данных
     MDR_I2C->TXD = _I2C_pData[_I2C_Index];
@@ -339,9 +363,9 @@ static void MDR_I2C_IRQ_ReadNext(void)
 void MDR_I2C_IRQ_HandlerProcess(void)
 {
   uint32_t status = MDR_I2C->STA;
-  
-  //  Check transfer completed and ACK accepted
-  if ((status & (MDR_I2C_STA_TR_Prog_Msk | MDR_I2C_STA_RX_ACK_Msk)) == MDR_I2C_STA_RX_ACK_Msk)
+   
+  //  Check transfer completed and no collision
+  if ((status & (MDR_I2C_STA_TR_Prog_Msk | MDR_I2C_STA_Lost_ARB_Msk)) == 0)
     pNextFuncI2C();
   else
   {

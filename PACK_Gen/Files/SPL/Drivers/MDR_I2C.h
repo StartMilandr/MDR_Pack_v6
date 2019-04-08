@@ -78,9 +78,11 @@ __STATIC_INLINE bool MDR_I2C_CheckStatusFlagSet(uint32_t flag) {return (MDR_I2C-
 __STATIC_INLINE bool MDR_I2C_GetBusFree(void)     {return !MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_BUSY_Msk);}
 __STATIC_INLINE bool MDR_I2C_GetAckOk(void)       {return !MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_RX_ACK_Msk);}
 __STATIC_INLINE bool MDR_I2C_GetCollision(void)   {return  MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_Lost_ARB_Msk);}
-__STATIC_INLINE bool MDR_I2C_GetTransfering(void) {return  MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_TR_Prog_Msk);}
 __STATIC_INLINE bool MDR_I2C_GetEventActive(void) {return  MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_INT_Msk);}
+__STATIC_INLINE bool MDR_I2C_GetTransfering(void) {return  MDR_I2C_CheckStatusFlagSet(MDR_I2C_STA_TR_Prog_Msk);}
 
+// Ожидание завершения передачи, выход если коллизия
+bool MDR_I2C_WaitTransfCompleted(void);
 
 //  --------------- Прерывания  ---------------
 __STATIC_INLINE void MDR_I2C_EnableIRQ(void)  {MDR_I2C->CTR |=  MDR_I2C_CTR_EN_INT_Msk;}

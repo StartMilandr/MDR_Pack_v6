@@ -15,16 +15,31 @@
   //  MDRB_1986VK214.h
   static const MDR_I2C_CfgPinGPIO _pinSCL_I2C = {MDRB_I2C_SCL_PC14_Port, MDRB_I2C_SCL_PC14_Ind, MDRB_I2C_SCL_PC14_Func};
   static const MDR_I2C_CfgPinGPIO _pinSDA_I2C = {MDRB_I2C_SDA_PC15_Port, MDRB_I2C_SDA_PC15_Ind, MDRB_I2C_SDA_PC15_Func};
+
+  //  Сигнал на линии не успевает вернуться в подтянутое состояние, после предыдущего трансфера.
+  //  Чтение после записи, обнаруживает что линия BUSY. Поэтому внесена задержка.
+  //  Выставлена подбором, но хорошо бы на 1 тактовый сигнал I2C.
+  #define I2C_STOP_WAIT_DELAY 80
   
 #elif defined (USE_MDR1986VE92) || defined (USE_MDR1986VE91)
   //  MDRB_1986VE92.h
   static const MDR_I2C_CfgPinGPIO _pinSCL_I2C = {MDRB_I2C_SCL_PC0_Port, MDRB_I2C_SCL_PC0_Ind, MDRB_I2C_SCL_PC0_Func}; //  VE91: XP11_10  VE92: XP26_24
   static const MDR_I2C_CfgPinGPIO _pinSDA_I2C = {MDRB_I2C_SDA_PC1_Port, MDRB_I2C_SDA_PC1_Ind, MDRB_I2C_SDA_PC1_Func}; //  VE91: XP11_11  VE92: XP26_25
   
+  //  Сигнал на линии не успевает вернуться в подтянутое состояние, после предыдущего трансфера.
+  //  Чтение после записи, обнаруживает что линия BUSY. Поэтому внесена задержка.
+  //  Выставлена подбором, но хорошо бы на 1 тактовый сигнал I2C.
+  #define I2C_STOP_WAIT_DELAY 400
+  
 #elif defined (USE_MDR1901VC1)
-  //  MDRB_1986VE92.h
+  //  MDRB_1901VС1.h
   static const MDR_I2C_CfgPinGPIO _pinSCL_I2C = {MDRB_I2C_SCL_PC14_Port, MDRB_I2C_SCL_PC14_Ind, MDRB_I2C_SCL_PC14_Func};  //XP 33.2:1_28
   static const MDR_I2C_CfgPinGPIO _pinSDA_I2C = {MDRB_I2C_SDA_PC15_Port, MDRB_I2C_SDA_PC15_Ind, MDRB_I2C_SDA_PC15_Func};  //XP 33.2:1_24
+  
+  //  Сигнал на линии не успевает вернуться в подтянутое состояние, после предыдущего трансфера.
+  //  Чтение после записи, обнаруживает что линия BUSY. Поэтому внесена задержка.
+  //  Выставлена подбором, но хорошо бы на 1 тактовый сигнал I2C.
+  #define I2C_STOP_WAIT_DELAY 450  
 #endif
 
 static const MDR_I2C_CfgPinsGPIO pinsGPIO_I2C = {
@@ -45,6 +60,7 @@ static const MDR_I2C_CfgPinsGPIO pinsGPIO_I2C = {
 #define RTC_REGISTER_YEAR     0x06
 #define RTC_REGISTER_CONTROL  0x07
 
+void Init_RTC_DS1307(void);
 
 void ReadSensorI2C(void);
 void ReadSensorI2C_IRQ(void);
@@ -79,16 +95,27 @@ int main(void)
   MDR_UART_DBG_Init();
   
   // Инициализация I2C
+#if DEBUG_MODE_FOR_OSCIL
   MDR_I2C_InitPinsGPIO(&pinsGPIO_I2C, MDR_PIN_FAST, true);
-  MDR_I2C_InitWithIRQ(I2C_FREQ_HZ, freqCPU_Hz, true, 0);
+#else
+  MDR_I2C_InitPinsGPIO(&pinsGPIO_I2C, MDR_PIN_FAST, false);  
+#endif
+  MDR_I2C_Init(I2C_FREQ_HZ, freqCPU_Hz);
+  NVIC_SetPriority(I2C_IRQn, 0);
+  NVIC_EnableIRQ(I2C_IRQn);
+  
+  Init_RTC_DS1307();
   
   while (1)
   {
     if (MDRB_BntClicked_Up(true))
     {
+      // Смена режима работы по I2C в потоке и по прерываниям
+      selMode_IRQ = !selMode_IRQ;
+      
       //  Обнуление секунд
       if (!selMode_IRQ)
-      {
+      {        
         if (!I2C_SetRegister(RTC_I2C_ADDRESS, RTC_REGISTER_SECONDS, 0x00))
           printf("Key1: WriteReg Fault\n");
         else
@@ -99,8 +126,6 @@ int main(void)
           printf("Key1 IRQ: WriteReg Start Fault\n");
         else
           printf("Key1 IRQ: WriteReg Start OK\n");
-      
-      //selMode_IRQ = !selMode_IRQ;
     }
     
     //  Чтение секунд 
@@ -126,9 +151,9 @@ int main(void)
     if (ready_WriteReg)
     {
       if (I2C_GetStatus())
-        printf("IRQ: WriteReg Fault\n");
-      else
         printf("IRQ: Seconds Cleared\n");
+      else
+        printf("IRQ: WriteReg Fault\n");        
       
       ready_WriteReg = false;
     }
@@ -154,15 +179,18 @@ int main(void)
 //    //  Транзакция чтения
 //    MDR_I2C_TransferRead(RTC_I2C_ADDRESS, 1, &seconds);    
     
-    //  Этапы при записи и чтения
-    MDR_I2C_StartTransfer(RTC_I2C_ADDRESS, true);    
-    MDR_Delay(300);
-    MDR_I2C_SendByte(seconds);
-    MDR_Delay(300);
-    MDR_I2C_ReadByte(&seconds, true);    
-    MDR_Delay(300);
-    MDR_I2C_StopTransfer();
-    MDR_Delay(600);
+//    I2C_SetRegister(RTC_I2C_ADDRESS, RTC_REGISTER_SECONDS, 0x00);
+//    MDR_Delay(300);
+    
+//    //  Этапы при записи и чтения
+//    MDR_I2C_StartTransfer(RTC_I2C_ADDRESS, true);    
+//    MDR_Delay(300);
+//    MDR_I2C_SendByte(seconds);
+//    MDR_Delay(300);
+//    MDR_I2C_ReadByte(&seconds, true);    
+//    MDR_Delay(300);
+//    MDR_I2C_StopTransfer();
+//    MDR_Delay(600);
 #endif
     
   }
@@ -212,17 +240,19 @@ bool I2C_GetResultAndStatus(uint8_t *dataRX)
   return _successI2C;
 }
 
-//  Запись
+//  Запись. Данные должны быть глобальные, чтобы быть доступны в прерывании. (Не в стеке)
+static uint8_t _I2C_arr[2];
+
 bool I2C_IRQ_SetRegisterStart(uint8_t addr, uint8_t regAddr, uint8_t regData)
 {
-  uint8_t arr[2];
-  arr[0] = regAddr;
-  arr[1] = regData;
+
+  _I2C_arr[0] = regAddr;
+  _I2C_arr[1] = regData;
   _startedI2C = true;
   ready_WriteReg = false;
   
   // Запись в регистр
-  return MDR_I2C_IRQ_TryStartTransfer(addr, 2, arr, true, I2C_OnWriteReg_Completed);
+  return MDR_I2C_IRQ_TryStartTransfer(addr, 2, _I2C_arr, true, I2C_OnWriteReg_Completed);
 }
 
 void I2C_OnWriteReg_Completed(void)
@@ -232,11 +262,12 @@ void I2C_OnWriteReg_Completed(void)
   ready_WriteReg = true;
 }
 
-//  Чтение
+//  Чтение регистра в два этапа - запись выбора регистра, и чтение регистра
 bool I2C_IRQ_GetRegisterStart(uint8_t addr, uint8_t regAddr)
 {  
   //  Выбор регистра
-  if (MDR_I2C_IRQ_TryStartTransfer(addr, 1, &regAddr, false, I2C_IRQ_OnSelectReg_Completed))
+  _I2C_arr[0] = regAddr;
+  if (MDR_I2C_IRQ_TryStartTransfer(addr, 1, _I2C_arr, true, I2C_IRQ_OnSelectReg_Completed))
   {
     _activeI2C_addr = addr;
     _activeI2C_data = 0;
@@ -251,19 +282,27 @@ bool I2C_IRQ_GetRegisterStart(uint8_t addr, uint8_t regAddr)
 void I2C_IRQHandler(void)
 {
   MDR_I2C_IRQ_HandlerProcess();
-  NVIC_ClearPendingIRQ(I2C_IRQn);
 }
 
 void I2C_IRQ_OnSelectReg_Completed(void)
 {
   //  Статуст от команды выбора регистра
   MDR_I2C_IRQ_GetCompleted(&_successI2C);
+  
+  //  Сигнал на линии не успевает вернуться в подтянутое состояние, после предыдущего трансфера.
+  //  Чтение после записи, обнаруживает что линия BUSY. Поэтому внесена задержка. Хорошо бы на 1 тактовый сигнал I2C.  
+  MDR_Delay(I2C_STOP_WAIT_DELAY);
+  
   //  Запуск чтения регистра
   if (_successI2C)
-    _successI2C = MDR_I2C_IRQ_TryStartTransfer(_activeI2C_addr, 1, &_activeI2C_data, true, I2C_IRQ_OnReadReg_Completed);
+    _successI2C = MDR_I2C_IRQ_TryStartTransfer(_activeI2C_addr, 1, &_activeI2C_data, false, I2C_IRQ_OnReadReg_Completed);
   //  Запуск не удался - выход
   if (!_successI2C)
-    I2C_IRQ_OnReadReg_Completed();
+  {
+    printf("ReadReg start RD transfer fault!\n");
+    _startedI2C = false; 
+    ready_ReadReg = true;    
+  }
 }
 
 void I2C_IRQ_OnReadReg_Completed(void)
@@ -273,6 +312,30 @@ void I2C_IRQ_OnReadReg_Completed(void)
   ready_ReadReg = true;
 }
 
+
+void Init_RTC_DS1307(void)
+{
+  // Установка секунд (00-59)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_SECONDS, 0x00);
+
+  // Установка минут (00-59)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_MINUTES, 0x54);
+
+  // Установка часов (00-23)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_HOURS, 0x12);
+
+  // Установка дня недели (1-7)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_DAY, 0x03);
+
+  // Установка числа (01-31 / 01-30 / 01-28/29)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_DATE, 0x24);
+
+  // Установка месяца (01-12)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_MONTH, 0x05);
+
+  // Установка года (00-99)
+  I2C_SetRegister (RTC_I2C_ADDRESS, RTC_REGISTER_YEAR, 0x17);
+}
 
 
 

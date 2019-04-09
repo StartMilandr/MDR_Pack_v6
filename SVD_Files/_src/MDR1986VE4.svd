@@ -3179,6 +3179,179 @@
     </peripheral>
     <!-- #ADCUI -->
     <!-- #CRC -->
+    <!-- CRC_VE4 -->
+    <peripheral>
+      <name>MDR_CRC_VE4</name>
+      <version>1.0</version>
+      <description>CRC Controler</description>
+      <groupName>CRC</groupName>
+      <baseAddress>0x40098000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x14</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- CTRL -->
+        <register>
+          <name>CTRL</name>
+          <description>Control register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0x0000003F</resetMask>
+          <fields>
+            <field>
+              <name>CRCEn</name>
+              <description>Enable block</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Disabled</name><description>Block inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Enabled</name><description>Block active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DataInv</name>
+              <description>Bit first selection</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>LSB</name><description>Low bit first</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>MSB</name><description>High bit first</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DMA_En</name>
+              <description>DMA Enable</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DL_Size</name>
+              <description>Loading data size</description>
+              <bitRange>[4:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Byte</name><description>Byte data stream</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>16_bit</name><description>16-bit data stream</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>32_bit</name><description>32-bit data stream</description><value>2</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DC_Size</name>
+              <description>Calculating data size</description>
+              <bitRange>[6:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Byte</name><description>Byte data word</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>16_bit</name><description>16-bit data word</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>32_bit</name><description>32-bit data word</description><value>2</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>  
+        </register>
+        <!-- STAT -->
+        <register>
+          <name>STAT</name>
+          <description>Status register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0x0000000F</resetMask>
+          <fields>
+            <field>
+              <name>ConvComp</name>
+              <description>Convertion Completed</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Processing</name><description>Calculation processing</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Completed</name><description>Calculation completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>FIFO_Full</name>
+              <description>FIFO Full</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Flag Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Flag Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="FIFO_Full">
+              <name>FIFO_Empty</name>
+              <description>FIFO Empty</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field derivedFrom="FIFO_Full">
+              <name>FIFO_Over</name>
+              <description>FIFO Over</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>  
+        </register>
+        <!-- DATAI -->
+        <register>
+          <name>DATAI</name>
+          <description>FIFO Input</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>Value</name>
+              <description>Data Value</description>
+              <bitRange>[31:0]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- CRC_VAL -->
+        <register>
+          <name>CRC_VAL</name>
+          <description>CRC result</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CRC_Out</name>
+              <description>Result and Start Value</description>
+              <bitRange>[15:0]</bitRange>
+            </field>
+          </fields>  
+        </register>
+        <!-- CRC_POL -->
+        <register>
+          <name>CRC_POL</name>
+          <description>CRC Polinom select</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x0000000</resetValue>
+          <resetMask>0x0001FFFF</resetMask>
+          <fields>
+            <field>
+              <name>CRC_POL</name>
+              <description>Select polinom bits</description>
+              <bitRange>[16:0]</bitRange>
+            </field>
+          </fields>  
+        </register>    
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
 
     <!-- #UARTs -->
     <!--UART1-->

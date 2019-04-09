@@ -177,6 +177,9 @@ typedef enum IRQn
 /*=========  POWER ========*/
 #include <MDR_PowerVx_defs.h>
 
+/*=========  CRC ========*/
+#include <MDR_CRC_VE4x_defs.h>
+
 /*@}*/ /* end of group MDR1986VE4_Peripherals */
 
 
@@ -225,16 +228,17 @@ typedef enum IRQn
 
 #define ADDR_SSP1_BASE        0x40000000UL                              /*!< SSP Base Address      */
 
-#define ADDR_WWDT_BASE         0x40048000UL
-#define ADDR_IWDT_BASE         0x40050000UL
+#define ADDR_WWDT_BASE        0x40048000UL
+#define ADDR_IWDT_BASE        0x40050000UL
 
-#define ADDR_UART1_BASE        0x40008000UL
-#define ADDR_UART2_BASE        0x40010000UL
+#define ADDR_UART1_BASE       0x40008000UL
+#define ADDR_UART2_BASE       0x40010000UL
 
 #define ADDR_TIMER1_BASE      0x40070000UL
 #define ADDR_TIMER2_BASE      0x40078000UL
 
 #define ADDR_POWER_BASE       0x40058000UL
+#define ADDR_CRC_VK234_BASE   0x40098000UL
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -281,8 +285,8 @@ typedef enum IRQn
 #define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
 #define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
 
-//  Power
-#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
+#define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
+#define MDR_CRC                        ((MDR_CRC_Type       *)  ADDR_CRC_VK234_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                       SPL_Configs                                         ================ */
@@ -382,6 +386,10 @@ typedef enum IRQn
 //----------------    Power Definitions  --------------------
 #define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
 #define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER2__PWR_CLK_EN_Msk
+
+//----------------    CRC Definitions  --------------------
+#define   MDR_CRC_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_CRC_CLK_EN_MSK            MDR_RST_PER2__CRC_CLK_EN_Msk
 
 
 /** @} */ /* End of group MDR1986VE4 */

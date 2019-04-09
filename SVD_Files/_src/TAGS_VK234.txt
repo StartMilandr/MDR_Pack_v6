@@ -10,7 +10,7 @@ f8=../Uniq/ADCUI_VK234.xml
 f9=../UART/UART_VE4x.txt
 f10=../Timer/Timer_VE4.txt
 f11=../Power/Power_Vx.txt
-f12=../Uniq/CRC_VK234.xml
+f12=../Uniq/CRC_VE4_VK234.xml
 f13=../Uniq/DMA.xml
 
 

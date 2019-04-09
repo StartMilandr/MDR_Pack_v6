@@ -1,11 +1,11 @@
 #CRC
-<!-- CRC_VK214 -->
+<!-- CRC_VE4 -->
 <peripheral>
-  <name>MDR_CRC_VK234</name>
+  <name>MDR_CRC_VE4</name>
   <version>1.0</version>
   <description>CRC Controler</description>
   <groupName>CRC</groupName>
-  <baseAddress>0x40038000</baseAddress>
+  <baseAddress>0x40098000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>
@@ -87,6 +87,7 @@
           <name>ConvComp</name>
           <description>Convertion Completed</description>
           <bitRange>[0:0]</bitRange>
+          <access>read-only</access>
           <enumeratedValues>
             <enumeratedValue><name>Processing</name><description>Calculation processing</description><value>0</value></enumeratedValue>
             <enumeratedValue><name>Completed</name><description>Calculation completed</description><value>1</value></enumeratedValue>
@@ -106,11 +107,13 @@
           <name>FIFO_Empty</name>
           <description>FIFO Empty</description>
           <bitRange>[2:2]</bitRange>
+          <access>read-only</access>
         </field>
         <field derivedFrom="FIFO_Full">
           <name>FIFO_Over</name>
           <description>FIFO Over</description>
           <bitRange>[3:3]</bitRange>
+          <access>read-write</access>
         </field>
       </fields>  
     </register>
@@ -120,7 +123,7 @@
       <description>FIFO Input</description>
       <addressOffset>0x00000008</addressOffset>
       <size>32</size>
-      <access>read-only</access>
+      <access>write-only</access>
       <resetValue>0x0000000</resetValue>
       <resetMask>0xFFFFFFFF</resetMask>
       <fields>

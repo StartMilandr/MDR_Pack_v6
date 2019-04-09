@@ -10,6 +10,8 @@ f8=../UART/UART_VE4x.txt
 f9=../Timer/Timer_VE4.txt
 f10=../Power/Power_Vx.txt
 f11=../Uniq/DMA.xml
+f12=../Uniq/CRC_VE4_VK234.xml
+
 
 [TAGS]
 #BKP=f1
@@ -26,6 +28,7 @@ f11=../Uniq/DMA.xml
 #TIMERs=f9
 #PWR=f10
 #DMA=f11
+#CRC=f12
 
 [TAGS_New]
 #USB=
@@ -42,5 +45,4 @@ f11=../Uniq/DMA.xml
 #EBC_R=
 #ADCUI=
 #ADCUI_R=
-#CRC=
-#CRC_R=
+

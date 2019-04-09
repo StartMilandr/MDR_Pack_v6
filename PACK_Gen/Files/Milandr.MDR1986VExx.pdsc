@@ -662,6 +662,11 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
     </condition>
+    <condition id="CON_HAS_CRC_VE4x">
+      <description>Devices with CRC</description>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK234"/>
+    </condition>
     <condition id="CON_MDR_UseFuncs">
       <description>Support types and funcs</description>
       <require Cclass="Drivers" Cgroup="UseFuncs"/>
@@ -980,11 +985,11 @@
       </files>
     </component>     
     <!-- CRC  Driver -->
-    <component Cclass="Drivers" Cgroup="CRC_VK214" Cversion="2.0" condition="CON_MDR1986VK234">
-      <description>CRC driver</description>
+    <component Cclass="Drivers" Cgroup="CRC" Cversion="2.0" condition="CON_HAS_CRC_VE4x">
+      <description>CRC driver for 1986VE4 and 1986VK234</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_CRC_VK234.h"/>
-        <file category="source" name="SPL/Drivers/MDR_CRC_VK234.c"/>
+        <file category="header" name="SPL/Drivers/MDR_CRC.h"/>
+        <file category="source" name="SPL/Drivers/MDR_CRC_VE4x.c"/>
       </files>
     </component>
     <!-- I2C Driver -->
@@ -1300,6 +1305,12 @@
       <description>Timer use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="Power_Test.uvmpw"/></project>
+    </example>
+
+    <example name="CRC_Test" folder="Examples/All_Boards/CRC_Test" doc="ReadMe.md" version="2.0.0">
+      <description>Timer use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="CRC_Test.uvmpw"/></project>
     </example>
 
     <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">

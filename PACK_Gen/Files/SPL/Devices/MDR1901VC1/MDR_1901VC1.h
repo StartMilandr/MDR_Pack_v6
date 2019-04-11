@@ -195,6 +195,9 @@ typedef enum IRQn
 /*=========  I2C ========*/
 #include <MDR_I2C_defs.h>
 
+/*=========  DMA ========*/
+#include <MDR_DMA_defs.h>
+
 /*@}*/ /* end of group MDR1901VC1_Peripherals */
 
 
@@ -262,6 +265,7 @@ typedef enum IRQn
 
 #define ADDR_POWER_BASE       0x40058000UL
 #define ADDR_I2C_BASE         0x40050000UL
+#define ADDR_DMA_BASE          0x40028000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -322,8 +326,9 @@ typedef enum IRQn
 #define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR3))
 #define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
 
-#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
-#define MDR_I2C                        ((MDR_I2C_Type       *) ADDR_I2C_BASE)
+#define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
+#define MDR_I2C                        ((MDR_I2C_Type       *)  ADDR_I2C_BASE)
+#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -454,6 +459,9 @@ typedef enum IRQn
 #define   MDR_I2C_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
 #define   MDR_I2C_CLK_EN_MSK            MDR_RST_PER__I2C_CLK_EN_Msk
 
+//----------------    DMA Definitions  --------------------
+#define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER__DMA_CLK_EN_Msk
 
 
 /** @} */ /* End of group MDR1901VC1 */

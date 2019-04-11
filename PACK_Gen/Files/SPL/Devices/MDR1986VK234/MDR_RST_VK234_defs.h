@@ -86,6 +86,8 @@ typedef struct {
 #define MDR_RST_PER2__EEPROM_CLK_EN_Msk (0x8UL)          /*!< MDR_RST_CLOCK PER2_CLOCK: EEPROM_CLK_EN (Bitfield-Mask: 0x01)       */
 #define MDR_RST_PER2__RST_CLK_EN_Pos    (4UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bit 4)                        */
 #define MDR_RST_PER2__RST_CLK_EN_Msk    (0x10UL)         /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bitfield-Mask: 0x01)          */
+#define MDR_RST_PER2__DMA_CLK_EN_Pos    (5UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bit 4)                        */
+#define MDR_RST_PER2__DMA_CLK_EN_Msk    (0x20UL)         /*!< MDR_RST_CLOCK PER2_CLOCK: RST_CLK_EN (Bitfield-Mask: 0x01)          */
 #define MDR_RST_PER2__ADC_CLK_EN_Pos    (8UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: ADC_CLK_EN (Bit 8)                        */
 #define MDR_RST_PER2__ADC_CLK_EN_Msk    (0x100UL)        /*!< MDR_RST_CLOCK PER2_CLOCK: ADC_CLK_EN (Bitfield-Mask: 0x01)          */
 #define MDR_RST_PER2__WWDT_CLK_EN_Pos   (9UL)            /*!< MDR_RST_CLOCK PER2_CLOCK: WWDT_CLK_EN (Bit 9)                       */

@@ -185,6 +185,10 @@ typedef enum IRQn
 /*=========  POWER ========*/
 #include <MDR_PowerVx_defs.h>
 
+/*=========  DMA ========*/
+#include <MDR_DMA_defs.h>
+
+
 /*@}*/ /* end of group MDR1986VE1_Peripherals */
 
 
@@ -251,6 +255,8 @@ typedef enum IRQn
 #define ADDR_TIMER4_BASE      0x40098000UL
 
 #define ADDR_POWER_BASE       0x40058000UL
+#define ADDR_DMA_BASE         0x40028000UL
+
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -313,8 +319,8 @@ typedef enum IRQn
 #define MDR_TIMER4_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR3))
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
 
-//  Power
-#define MDR_POWER                      ((MDR_PWR_Type 	  *) ADDR_POWER_BASE)
+#define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
+#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
 
 /* =========================================================================================================================== */
@@ -426,6 +432,13 @@ typedef enum IRQn
 #define   MDR_PWR_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
 #define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER__PWR_CLK_EN_Msk
 
+
+//----------------    DMA Definitions  --------------------
+//----------------    DMA Definitions  --------------------
+#define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER__DMA_CLK_EN_Msk
+
+#define DMA_NEED_EXECUTABLE_MEM_RANGE
 
 /** @} */ /* End of group MDR1986VE1 */
 

@@ -271,6 +271,22 @@
       <access>write-only</access>
       <modifiedWriteValues>oneToClear</modifiedWriteValues>
     </register>
+    <!-- CHNL_PRIORITY_SET -->
+    <register derivedFrom="WAITONREQ_STATUS">
+      <name>CHNL_PRIORITY_SET</name>
+      <description>Rise up priority to High</description>
+      <addressOffset>0x00000038</addressOffset>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToSet</modifiedWriteValues>
+    </register>
+    <!-- CHNL_PRIORITY_CLR -->
+    <register derivedFrom="WAITONREQ_STATUS">
+      <name>CHNL_PRIORITY_CLR</name>
+      <description>Clear Priority to Normal</description>
+      <addressOffset>0x0000003C</addressOffset>
+      <access>write-only</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+    </register>    
     <!-- ERR_CLR -->
     <register derivedFrom="WAITONREQ_STATUS">
       <name>ERR_CLR</name>

@@ -11,7 +11,8 @@
 
 #define MDR_EEPROM_CLEAR_VALUE   0xFFFFFFFFUL
 
-#define __RAM_EXEC    __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
+// moved to MDR_Config
+//#define __RAM_EXEC    __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
 
 //====================  Инициализация блока ======================
 //  Включение тактирования блока и задание задержек в зависимости от частоты CPU

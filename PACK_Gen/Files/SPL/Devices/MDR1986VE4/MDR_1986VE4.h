@@ -180,6 +180,9 @@ typedef enum IRQn
 /*=========  CRC ========*/
 #include <MDR_CRC_VE4x_defs.h>
 
+/*=========  DMA ========*/
+#include <MDR_DMA_defs.h>
+
 /*@}*/ /* end of group MDR1986VE4_Peripherals */
 
 
@@ -239,6 +242,7 @@ typedef enum IRQn
 
 #define ADDR_POWER_BASE       0x40058000UL
 #define ADDR_CRC_VK234_BASE   0x40098000UL
+#define ADDR_DMA_BASE          0x40028000UL
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -287,6 +291,8 @@ typedef enum IRQn
 
 #define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
 #define MDR_CRC                        ((MDR_CRC_Type       *)  ADDR_CRC_VK234_BASE)
+#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+
 
 /* =========================================================================================================================== */
 /* ================                                       SPL_Configs                                         ================ */
@@ -390,6 +396,11 @@ typedef enum IRQn
 //----------------    CRC Definitions  --------------------
 #define   MDR_CRC_CLK_EN_ADDR         (&MDR_CLOCK->PER2_CLOCK)
 #define   MDR_CRC_CLK_EN_MSK            MDR_RST_PER2__CRC_CLK_EN_Msk
+
+//----------------    DMA Definitions  --------------------
+#define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER2_CLOCK)
+#define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER2__DMA_CLK_EN_Msk
+
 
 
 /** @} */ /* End of group MDR1986VE4 */

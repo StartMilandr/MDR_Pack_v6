@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 #include <MDR_Types.h>
-#include <MDR_Timer_Defs.h>
+#include <MDR_Timer_defs.h>
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
 #if defined (__CC_ARM)

@@ -40,12 +40,12 @@
     //  Port_D[7..0]
     #define PIN_PD0     MDR_Pin_0   //                    JTAG_B            T1_CH1 /T3_CH1    ADC_Ch0/ref+
     #define PIN_PD1     MDR_Pin_1   //                    JTAG_B            T1_nCH1/T3_nCH1   ADC_Ch1/ref-
-    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP2_RX           T3_CH2    ADC_Ch2 - TuneResistor
+    #define PIN_PD2     MDR_Pin_2   //                    JTAG_B  SSP2_RX           T3_CH2    ADC_Ch2
     #define PIN_PD3     MDR_Pin_3   //                    JTAG_B  SSP2_FSS          T3_nCH2   ADC_Ch3
     #define PIN_PD4     MDR_Pin_4   //                    JTAG_B            T1_ETR /T3_BRK    ADC_Ch4
     #define PIN_PD5     MDR_Pin_5   //                            SSP2_CLK  T2_ETR            ADC_Ch5
     #define PIN_PD6     MDR_Pin_6   //                            SSP2_TX   T2_BRK            ADC_Ch6
-    #define PIN_PD7     MDR_Pin_7   //                                                        ADC_Ch7
+    #define PIN_PD7     MDR_Pin_7   //                                                        ADC_Ch7 - TuneResistor
 
     //  Port_E[7,6,3..0]
     #define PIN_PE0     MDR_Pin_0   //                                      T2_CH1
@@ -64,14 +64,16 @@
 
 
 //  --------------  ADC Definition  ------------
-    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch2
+    #define MDRB_ADC_CH_IN1             ADC_Signal_Ch2
     
-    #define MDRB_ADC_CH_TUNE           MDRB_ADC_CH_IN1
+    #define MDRB_ADC_CH_TUNE            ADC_Signal_Ch7
     
     #define MDRB_ADC_PIN_ALL          0x00FFUL
     #define MDRB_ADC_PIN_ALL_JTAG_B   0x00E0UL        
     //#define MDRB_ADC_PIN_ALL_LCD      0x00FFUL
-    
+
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_D
+    #define MDRB_ADC_TUNE_PIN           PIN_PD7
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1          MDR_GPIO_B

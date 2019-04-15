@@ -120,6 +120,11 @@
     #define MDRB_ADC_PIN_ALL_JTAG_B   0xFFE0UL
     #define MDRB_ADC_PIN_ALL_LCD      0xFCFFUL    
 
+//  На плате нет подстроечного резистора, для определенности будем считать таковым 6-й канал
+    #define MDRB_ADC_CH_TUNE            MDRB_ADC_CH_IN1
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_D
+    #define MDRB_ADC_TUNE_PIN           PIN_PD7
+
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_C    // UP

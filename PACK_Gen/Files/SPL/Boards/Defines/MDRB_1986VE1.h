@@ -114,6 +114,8 @@
     #define MDRB_ADC_PIN_ALL          0x7F80UL
     #define MDRB_ADC_PIN_ALL_LED      0x7F80UL 
     
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_D
+    #define MDRB_ADC_TUNE_PIN           PIN_PD9    
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1     MDR_GPIO_E

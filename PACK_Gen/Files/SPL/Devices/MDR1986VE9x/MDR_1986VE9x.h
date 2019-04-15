@@ -445,6 +445,32 @@ typedef enum IRQn
 #define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER_CLOCK)
 #define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER__DMA_CLK_EN_Msk
 
+//  Block request
+#define  MDR_DMA_CH_REQ_UART1_TX       0
+#define  MDR_DMA_CH_REQ_UART1_RX       1
+#define  MDR_DMA_CH_REQ_UART2_TX       2
+#define  MDR_DMA_CH_REQ_UART2_RX       3
+#define  MDR_DMA_CH_REQ_SSP1_TX        4
+#define  MDR_DMA_CH_REQ_SSP1_RX        5
+#define  MDR_DMA_CH_REQ_SSP2_TX        6
+#define  MDR_DMA_CH_REQ_SSP2_RX        7
+#define  MDR_DMA_CH_REQ_ADC1           8
+#define  MDR_DMA_CH_REQ_ADC2           9
+#define  MDR_DMA_CH_REQ_TIM1           10
+#define  MDR_DMA_CH_REQ_TIM2           11
+#define  MDR_DMA_CH_REQ_TIM3           11
+
+
+//  Single request
+#define  MDR_DMA_CH_SREQ_UART1_TX       0
+#define  MDR_DMA_CH_SREQ_UART1_RX       1
+#define  MDR_DMA_CH_SREQ_UART2_TX       2
+#define  MDR_DMA_CH_SREQ_UART2_RX       3
+#define  MDR_DMA_CH_SREQ_SSP1_TX        4
+#define  MDR_DMA_CH_SREQ_SSP1_RX        5
+#define  MDR_DMA_CH_SREQ_SSP2_TX        6
+#define  MDR_DMA_CH_SREQ_SSP2_RX        7
+
 
 /** @} */ /* End of group MDR1986VE9x */
 

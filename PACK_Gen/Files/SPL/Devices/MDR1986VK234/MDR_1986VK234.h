@@ -432,7 +432,7 @@ typedef enum IRQn
 #define  MDR_DMA_CH_SREQ_ADCUI6         17
 #define  MDR_DMA_CH_SREQ_ADCUI7         18
 
-#define  MDR_DMA_CH_SREQ_ADC            30
+#define  MDR_DMA_CH_SREQ_ADC1           30
 
 
 

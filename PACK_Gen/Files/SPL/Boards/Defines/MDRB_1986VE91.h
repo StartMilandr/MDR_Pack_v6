@@ -108,6 +108,9 @@
     #define MDRB_ADC_PIN_ALL_JTAG_B   0xFFE0UL        
     #define MDRB_ADC_PIN_ALL_LED      0x83FFUL
 
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_D
+    #define MDRB_ADC_TUNE_PIN           PIN_PD7
+
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_C
     #define MDRB_BTN_PIN_KEY1       PIN_PC11   //  Up

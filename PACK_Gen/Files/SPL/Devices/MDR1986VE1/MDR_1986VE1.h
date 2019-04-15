@@ -440,6 +440,55 @@ typedef enum IRQn
 
 #define DMA_NEED_EXECUTABLE_MEM_RANGE
 
+//  Block request
+#define  MDR_DMA_CH_REQ_UART1_TX       0
+#define  MDR_DMA_CH_REQ_UART1_RX       1
+#define  MDR_DMA_CH_REQ_UART2_TX       2
+#define  MDR_DMA_CH_REQ_UART2_RX       3
+#define  MDR_DMA_CH_REQ_SSP1_TX        4
+#define  MDR_DMA_CH_REQ_SSP1_RX        5
+#define  MDR_DMA_CH_REQ_SSP2_TX        6
+#define  MDR_DMA_CH_REQ_SSP2_RX        7
+#define  MDR_DMA_CH_REQ_SSP3_TX        8
+#define  MDR_DMA_CH_REQ_SSP3_RX        9
+#define  MDR_DMA_CH_REQ_TIM1           10
+#define  MDR_DMA_CH_REQ_TIM2           11
+#define  MDR_DMA_CH_REQ_TIM3           12
+#define  MDR_DMA_CH_REQ_TIM4           13
+
+//  Single request
+#define  MDR_DMA_CH_SREQ_UART1_TX       0
+#define  MDR_DMA_CH_SREQ_UART1_RX       1
+#define  MDR_DMA_CH_SREQ_UART2_TX       2
+#define  MDR_DMA_CH_SREQ_UART2_RX       3
+#define  MDR_DMA_CH_SREQ_SSP1_TX        4
+#define  MDR_DMA_CH_SREQ_SSP1_RX        5
+#define  MDR_DMA_CH_SREQ_SSP2_TX        6
+#define  MDR_DMA_CH_SREQ_SSP2_RX        7
+#define  MDR_DMA_CH_SREQ_SSP3_TX        8
+#define  MDR_DMA_CH_SREQ_SSP3_RX        9
+#define  MDR_DMA_CH_SREQ_TIM1           10
+#define  MDR_DMA_CH_SREQ_TIM2           11
+#define  MDR_DMA_CH_SREQ_TIM3           12
+#define  MDR_DMA_CH_SREQ_TIM4           13
+#define  MDR_DMA_CH_SREQ_TIM1_CH1       14
+#define  MDR_DMA_CH_SREQ_TIM1_CH2       15
+#define  MDR_DMA_CH_SREQ_TIM1_CH3       16
+#define  MDR_DMA_CH_SREQ_TIM1_CH4       17
+#define  MDR_DMA_CH_SREQ_TIM2_CH1       18
+#define  MDR_DMA_CH_SREQ_TIM2_CH2       19
+#define  MDR_DMA_CH_SREQ_TIM2_CH3       20
+#define  MDR_DMA_CH_SREQ_TIM2_CH4       21
+#define  MDR_DMA_CH_SREQ_TIM3_CH1       22
+#define  MDR_DMA_CH_SREQ_TIM3_CH2       23
+#define  MDR_DMA_CH_SREQ_TIM3_CH3       24
+#define  MDR_DMA_CH_SREQ_TIM3_CH4       25
+#define  MDR_DMA_CH_SREQ_TIM4_CH1       26
+#define  MDR_DMA_CH_SREQ_TIM4_CH2       27
+#define  MDR_DMA_CH_SREQ_TIM4_CH3       28
+#define  MDR_DMA_CH_SREQ_TIM4_CH4       29
+#define  MDR_DMA_CH_SREQ_ADC1           30
+
 /** @} */ /* End of group MDR1986VE1 */
 
 /** @} */ /* End of group Milandr */

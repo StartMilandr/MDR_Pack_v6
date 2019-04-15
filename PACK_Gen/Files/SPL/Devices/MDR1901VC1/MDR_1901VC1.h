@@ -463,6 +463,68 @@ typedef enum IRQn
 #define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER_CLOCK)
 #define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER__DMA_CLK_EN_Msk
 
+//  Block request
+#define  MDR_DMA_CH_REQ_UART1_TX       0
+#define  MDR_DMA_CH_REQ_UART1_RX       1
+#define  MDR_DMA_CH_REQ_UART2_TX       2
+#define  MDR_DMA_CH_REQ_UART2_RX       3
+#define  MDR_DMA_CH_REQ_SSP1_TX        4
+#define  MDR_DMA_CH_REQ_SSP1_RX        5
+#define  MDR_DMA_CH_REQ_SSP2_TX        6
+#define  MDR_DMA_CH_REQ_SSP2_RX        7
+#define  MDR_DMA_CH_REQ_DSP0           9
+#define  MDR_DMA_CH_REQ_DSP1           10
+#define  MDR_DMA_CH_REQ_DSP2           14
+#define  MDR_DMA_CH_REQ_DSP3           15
+#define  MDR_DMA_CH_REQ_SSP3_TX        16
+#define  MDR_DMA_CH_REQ_SSP3_RX        17
+#define  MDR_DMA_CH_REQ_SSP4_TX        18
+#define  MDR_DMA_CH_REQ_SSP4_RX        19
+#define  MDR_DMA_CH_REQ_UART3_TX       20
+#define  MDR_DMA_CH_REQ_UART3_RX       21
+#define  MDR_DMA_CH_REQ_DSP_ADC        22
+#define  MDR_DMA_CH_REQ_DSP_DAC        23
+#define  MDR_DMA_CH_REQ_DSP_CRYPT      24
+#define  MDR_DMA_CH_REQ_DSP_TIM        25
+#define  MDR_DMA_CH_REQ_DSP_BSP1_TX    26
+#define  MDR_DMA_CH_REQ_DSP_BSP1_RX    27
+#define  MDR_DMA_CH_REQ_DSP_BSP2_TX    28
+#define  MDR_DMA_CH_REQ_DSP_BSP2_RX    29
+#define  MDR_DMA_CH_REQ_DSP_BSP3_TX    30
+#define  MDR_DMA_CH_REQ_DSP_BSP3_RX    31
+
+//  Single request
+#define  MDR_DMA_CH_SREQ_UART1_TX       0
+#define  MDR_DMA_CH_SREQ_UART1_RX       1
+#define  MDR_DMA_CH_SREQ_UART2_TX       2
+#define  MDR_DMA_CH_SREQ_UART2_RX       3
+#define  MDR_DMA_CH_SREQ_SSP1_TX        4
+#define  MDR_DMA_CH_SREQ_SSP1_RX        5
+#define  MDR_DMA_CH_SREQ_SSP2_TX        6
+#define  MDR_DMA_CH_SREQ_SSP2_RX        7
+#define  MDR_DMA_CH_SREQ_ADC1           8
+#define  MDR_DMA_CH_SREQ_ADC2           9
+#define  MDR_DMA_CH_SREQ_TIM1           10
+#define  MDR_DMA_CH_SREQ_TIM2           11
+#define  MDR_DMA_CH_SREQ_TIM3           12
+#define  MDR_DMA_CH_SREQ_SDIO           13
+#define  MDR_DMA_CH_SREQ_DSP0           14
+#define  MDR_DMA_CH_SREQ_DSP1           15
+#define  MDR_DMA_CH_SREQ_SSP3_TX        16
+#define  MDR_DMA_CH_SREQ_SSP3_RX        17
+#define  MDR_DMA_CH_SREQ_SSP4_TX        18
+#define  MDR_DMA_CH_SREQ_SSP4_RX        19
+#define  MDR_DMA_CH_SREQ_UART3_TX       20
+#define  MDR_DMA_CH_SREQ_UART3_RX       21
+#define  MDR_DMA_CH_SREQ_DSP_TIM        25
+#define  MDR_DMA_CH_SREQ_DSP_BSP1_TX    26
+#define  MDR_DMA_CH_SREQ_DSP_BSP1_RX    27
+#define  MDR_DMA_CH_SREQ_DSP_BSP2_TX    28
+#define  MDR_DMA_CH_SREQ_DSP_BSP2_RX    29
+#define  MDR_DMA_CH_SREQ_DSP_BSP3_TX    30
+#define  MDR_DMA_CH_SREQ_DSP_BSP3_RX    31
+
+
 
 /** @} */ /* End of group MDR1901VC1 */
 

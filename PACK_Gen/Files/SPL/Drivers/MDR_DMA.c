@@ -112,33 +112,6 @@ uint32_t MDR_DMA_Calc_DestEndAddr(uint32_t startAddr, MDR_DMA_AddrInc AddrInc, u
     return MDR_DMA_Calc_SrcEndAddr(startAddr, AddrInc, dataCount);
 }
 
-static void DMA_Fill_InitChCfg(const MDR_DMA_Init_ChStruct *initChStruct, MDR_DMA_Init_ChCfg *initChCfg)
-{
-  //  Src and Dest EndAddr
-  initChCfg->Src_EndAddr  = MDR_DMA_Calc_SrcEndAddr (initChStruct->SrcAddr, initChStruct->Src_AddrInc, initChStruct->Count);
-  initChCfg->Dest_EndAddr = MDR_DMA_Calc_DestEndAddr(initChStruct->DestAddr, initChStruct->Dest_AddrInc, initChStruct->Count, initChStruct->Mode);
-    
-  //  Control
-  initChCfg->Control.Value =  VAL2FLD_Pos(initChStruct->Count - 1,    MDR_DMA_ChCtrl_N_minus1_Pos) 
-                            | VAL2FLD_Pos(initChStruct->DataSize,     MDR_DMA_ChCtrl_SrcDataSize_Pos)
-                            | VAL2FLD_Pos(initChStruct->DataSize,     MDR_DMA_ChCtrl_DestDataSize_Pos)
-                            | VAL2FLD_Pos(initChStruct->Src_AddrInc,  MDR_DMA_ChCtrl_SrcAddrInc_Pos)
-                            | VAL2FLD_Pos(initChStruct->Dest_AddrInc, MDR_DMA_ChCtrl_DestAddrInc_Pos)  
-                            | VAL2FLD_Pos(initChStruct->Mode,         MDR_DMA_ChCtrl_Mode_Pos)  
-                            | VAL2FLD_Pos(initChStruct->UseBurst,     MDR_DMA_ChCtrl_UseBurst_Pos)  
-                            | VAL2FLD_Pos(initChStruct->ArbitrCount,  MDR_DMA_ChCtrl_ArbitrCount_Pos);
-  
-  if (initChStruct->Src_ProtAHB == NULL)
-    initChCfg->Control.Value |= VAL2FLD_Pos(_DMA_ProtAHB_Def.Value,            MDR_DMA_ChCtrl_SrcPrivileged_Pos);
-  else
-    initChCfg->Control.Value |= VAL2FLD_Pos(initChStruct->Src_ProtAHB->Value,  MDR_DMA_ChCtrl_SrcPrivileged_Pos);
-  
-  if (initChStruct->Dest_ProtAHB == NULL)
-    initChCfg->Control.Value |= VAL2FLD_Pos(_DMA_ProtAHB_Def.Value,            MDR_DMA_ChCtrl_DestPrivileged_Pos);
-  else
-    initChCfg->Control.Value |= VAL2FLD_Pos(initChStruct->Dest_ProtAHB->Value, MDR_DMA_ChCtrl_DestPrivileged_Pos);    
-}
-
 
 static void DMA_Apply_ChCfg(MDR_DMA_ChCfg *DMA_chCfgRegs, const MDR_DMA_Init_ChCfg *initChCfg)
 {
@@ -146,31 +119,59 @@ static void DMA_Apply_ChCfg(MDR_DMA_ChCfg *DMA_chCfgRegs, const MDR_DMA_Init_ChC
   DMA_chCfgRegs->Src_EndAddr  = initChCfg->Src_EndAddr;
   DMA_chCfgRegs->Dest_EndAddr = initChCfg->Dest_EndAddr;  
   DMA_chCfgRegs->Control      = initChCfg->Control;
-   
-  if (initChCfg->activateNVIC)
-  {
-    NVIC_ClearPendingIRQ(DMA_IRQn);
-    NVIC_EnableIRQ(DMA_IRQn);
-    NVIC_SetPriority(DMA_IRQn, initChCfg->priority);
-  }
 }
+
+void MDR_DMA_EnableIRQ(uint32_t priority)
+{
+  NVIC_ClearPendingIRQ(DMA_IRQn);
+  NVIC_EnableIRQ(DMA_IRQn);
+  NVIC_SetPriority(DMA_IRQn, priority);
+}
+
 
 //==================   Настройка каналов DMA ===================
-MDR_DMA_ChCtrl  MDR_DMA_InitChannelPri(uint32_t chIndex, const MDR_DMA_Init_ChStruct *initCh)
+uint32_t MDR_DMA_GetCfgControl(const MDR_DMA_CfgTransf *cfgTransf, uint16_t count)
 {
-  MDR_DMA_Init_ChCfg initChCfg;
+  uint32_t control = cfgTransf->CfgValue;
+  control |= (control & MDR_DMA_ChCtrl_SrcDataSize_Msk) << (MDR_DMA_ChCtrl_DestDataSize_Pos - MDR_DMA_ChCtrl_SrcDataSize_Pos);
+  control |= VAL2FLD(count - 1, MDR_DMA_ChCtrl_N_minus1);
+
+  if (cfgTransf->Src_ProtAHB == NULL)
+    control |= VAL2FLD_Pos(_DMA_ProtAHB_Def.Value,         MDR_DMA_ChCtrl_SrcPrivileged_Pos);
+  else
+    control |= VAL2FLD_Pos(cfgTransf->Src_ProtAHB->Value,  MDR_DMA_ChCtrl_SrcPrivileged_Pos);
   
-  DMA_Fill_InitChCfg(initCh, &initChCfg);
-  return MDR_DMA_InitChannelCfgPri(chIndex, &initChCfg);
+  if (cfgTransf->Dest_ProtAHB == NULL)
+    control |= VAL2FLD_Pos(_DMA_ProtAHB_Def.Value,         MDR_DMA_ChCtrl_DestPrivileged_Pos);
+  else
+    control |= VAL2FLD_Pos(cfgTransf->Dest_ProtAHB->Value, MDR_DMA_ChCtrl_DestPrivileged_Pos);
+  
+  return control;
 }
 
-MDR_DMA_ChCtrl  MDR_DMA_InitChannelAlt(uint32_t chIndex, const MDR_DMA_Init_ChStruct *initCh)
+void MDR_DMA_FillChStruct(uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf, MDR_DMA_Init_ChCfg *iniChCfg)
 {
-  MDR_DMA_Init_ChCfg initChCfg;
-  
-  DMA_Fill_InitChCfg(initCh, &initChCfg);
-  return MDR_DMA_InitChannelCfgAlt(chIndex, &initChCfg);  
+  iniChCfg->Src_EndAddr  = MDR_DMA_Calc_SrcEndAddr (srcAddr,  cfgTransf->CfgFileds.Src_AddrInc,  count);
+  iniChCfg->Dest_EndAddr = MDR_DMA_Calc_DestEndAddr(destAddr, cfgTransf->CfgFileds.Dest_AddrInc, count, cfgTransf->CfgFileds.Mode);
+  iniChCfg->Control.Value = MDR_DMA_GetCfgControl(cfgTransf, count);
 }
+
+MDR_DMA_ChCtrl MDR_DMA_InitTransfPri(uint32_t chIndex, uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf)
+{
+  MDR_DMA_Init_ChCfg iniChCfg;
+  
+  MDR_DMA_FillChStruct(srcAddr, destAddr, count, cfgTransf, &iniChCfg); 
+  return MDR_DMA_InitChannelCfgPri(chIndex, &iniChCfg);
+}
+
+MDR_DMA_ChCtrl MDR_DMA_InitTransfAlt(uint32_t chIndex, uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf)
+{
+  MDR_DMA_Init_ChCfg iniChCfg;
+  
+  MDR_DMA_FillChStruct(srcAddr, destAddr, count, cfgTransf, &iniChCfg); 
+  return MDR_DMA_InitChannelCfgAlt(chIndex, &iniChCfg);
+}
+
 
 MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgPri(uint32_t chIndex, const MDR_DMA_Init_ChCfg *initChCfg)
 {
@@ -190,10 +191,9 @@ MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgAlt(uint32_t chIndex, const MDR_DMA_Init_C
 
 
 //  Запуск работы канала и остановка
-void  MDR_DMA_StartChannel(uint32_t chIndex, MDR_OnOff IgnoreSReq, MDR_OnOff HighPriority, bool startWithPrimary)
+void  MDR_DMA_StartChannel(uint32_t chIndex, bool IgnoreSReq, bool HighPriority, bool startWithPrimary)
 {
-  uint32_t chSel;
-  chSel = VAL2FLD_Pos(1, chIndex);
+  uint32_t chSel = VAL2FLD_Pos(1, chIndex);
 
   if (IgnoreSReq)
     MDR_DMA->CHNL_USEBURST_SET = chSel;
@@ -211,6 +211,14 @@ void  MDR_DMA_StartChannel(uint32_t chIndex, MDR_OnOff IgnoreSReq, MDR_OnOff Hig
     MDR_DMA->CHNL_PRI_ALT_SET = chSel;  
   
   //  Start process Reqs
+  MDR_DMA->CHNL_REQ_MASK_CLR = chSel;
+  MDR_DMA->CHNL_ENABLE_SET   = chSel;
+}
+
+void  MDR_DMA_ReStartChannel(uint32_t chIndex)
+{
+  uint32_t chSel = VAL2FLD_Pos(1, chIndex);  
+  
   MDR_DMA->CHNL_REQ_MASK_CLR = chSel;
   MDR_DMA->CHNL_ENABLE_SET   = chSel;
 }
@@ -239,8 +247,10 @@ void  MDR_DMA_StopChannel (uint32_t chIndex)
 {
   uint32_t chSel = VAL2FLD_Pos(1, chIndex);
   
+  //  Игнорирование запросов On
   MDR_DMA->CHNL_REQ_MASK_SET = chSel;
-  MDR_DMA->CHNL_ENABLE_CLR = chSel;
+  //  Игнорирование работает только при включенном канале
+  MDR_DMA->CHNL_ENABLE_SET = chSel;
 }
 
 //  Перезапуск следующего цикла DMA
@@ -338,6 +348,7 @@ void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t co
   MDR_DMA_CopyStart32(chIndex, src, dest, count);
   while (!MDR_DMA_CopyGetCompleted(chIndex)){};   
 }
+
 
 
 

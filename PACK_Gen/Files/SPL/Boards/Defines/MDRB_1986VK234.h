@@ -56,8 +56,8 @@
     #define PIN_PC7       MDR_Pin_7   //    LED4                                    T2_BRK
     
 //  --------------  ADC Definition  ------------
-    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch4   //  PIN_PB8    
-    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch5   //  PIN_PB6
+    #define MDRB_ADC_CH_IN1            ADC_Signal_Ch4   //  PIN_PB9    
+    #define MDRB_ADC_CH_IN2            ADC_Signal_Ch5   //  PIN_PB8
     
     #define MDRB_ADC_CH_TUNE           ADC_Signal_Ch4
 
@@ -65,6 +65,9 @@
     #define MDRB_ADC_PINS_ALL1          0x001EUL    
     #define MDRB_ADC_PORT_ALL2          MDR_GPIO_B
     #define MDRB_ADC_PINS_ALL2          0x03C0UL
+    
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_B
+    #define MDRB_ADC_TUNE_PIN           PIN_PB9
     
     //#define MDRB_ADC_PIN_KEY_PROTECT2   0x01C0UL
 

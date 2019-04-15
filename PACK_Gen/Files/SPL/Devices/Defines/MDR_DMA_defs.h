@@ -411,6 +411,37 @@ typedef union {
 } MDR_DMA_ProtAHB;
 
 
+typedef struct {
+  MDR_DMA_Mode      Mode               : 3;
+  MDR_OnOff         UseBurst           : 1;
+  uint32_t                             : 10;
+  MDR_DMA_Arbitr    ArbitrCount        : 4;
+  uint32_t                             : 6;
+  MDR_DMA_DataSize  DataSize           : 2;
+  MDR_DMA_AddrInc   Src_AddrInc        : 2;
+  uint32_t                             : 2;
+  MDR_DMA_AddrInc   Dest_AddrInc       : 2;
+} MDR_DMA_CfgTransfBase;
+
+//typedef union {
+//  uint32_t                   Value;
+//  MDR_DMA_CfgTransfBase_Bits Fields;
+//} MDR_DMA_CfgTransfBase;
+
+typedef struct {
+  union {
+  uint32_t              CfgValue;
+  MDR_DMA_CfgTransfBase CfgFileds;
+  } ;  
+  
+  //  NULL for default
+  MDR_DMA_ProtAHB       *Src_ProtAHB;
+  MDR_DMA_ProtAHB       *Dest_ProtAHB;  
+} MDR_DMA_CfgTransf;
+
+
+
+
 /* =========================================  End of section using anonymous unions  ========================================= */
 #if defined (__CC_ARM)
   #pragma pop

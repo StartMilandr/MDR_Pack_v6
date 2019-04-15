@@ -65,6 +65,9 @@
     #define MDRB_ADC_PIN_ALL          0x000FUL
     //#define MDRB_ADC_PIN_ALL_JTAG_B   0x0000UL        
     #define MDRB_ADC_PIN_ALL_LCD      0x0007UL
+    
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_D
+    #define MDRB_ADC_TUNE_PIN           PIN_PD2    
 
 
 //  --------------  Buttons Definition  ------------

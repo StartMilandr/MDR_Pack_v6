@@ -25,55 +25,40 @@ void MDR_DMA_DeInit(void);
 
 
 //  ============   Инициализация каналов DMA   ======================
-typedef struct { 
-  // Data copy params
-  uint32_t          SrcAddr;
-  uint32_t          DestAddr;
-  uint32_t          Count;
-  MDR_DMA_DataSize  DataSize;
-  MDR_DMA_AddrInc   Src_AddrInc;
-  MDR_DMA_AddrInc   Dest_AddrInc;
-  //  DMA
-  MDR_DMA_Mode      Mode;
-  MDR_OnOff         UseBurst;
-  MDR_DMA_Arbitr    ArbitrCount;  
-  //  NULL for default
-  MDR_DMA_ProtAHB   *Src_ProtAHB;
-  MDR_DMA_ProtAHB   *Dest_ProtAHB;
-  //  IRQ
-  bool              activateNVIC;
-  uint32_t          priority;
-} MDR_DMA_Init_ChStruct;
-
+//  Инициализация через упрощенную структуру MDR_DMA_CfgTransf
 //  Функции возвращают контрольное слово, которое потребуется для перезапуска следующего цикла DMA.
-MDR_DMA_ChCtrl  MDR_DMA_InitChannelPri(uint32_t chIndex, const MDR_DMA_Init_ChStruct *initCh);
-MDR_DMA_ChCtrl  MDR_DMA_InitChannelAlt(uint32_t chIndex, const MDR_DMA_Init_ChStruct *initCh);
+MDR_DMA_ChCtrl MDR_DMA_InitTransfPri(uint32_t chIndex, uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf);
+MDR_DMA_ChCtrl MDR_DMA_InitTransfAlt(uint32_t chIndex, uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf);
 
-
-//  Инициализация через более лаконичную структуру, идентичную структуре в железе за исключением IRQ
+//  Инициализация через управляющую структуру напрямую
+//  Но необходимо все настройки записать в битовые поля слова Control, либо использовать конвертор MDR_DMA_InitStructToCfg
 typedef struct {
-  //  DMA
   uint32_t          Src_EndAddr;
   uint32_t          Dest_EndAddr;
-  MDR_DMA_ChCtrl    Control;
-  //  IRQ
-  bool              activateNVIC;
-  uint32_t          priority;  
+  MDR_DMA_ChCtrl    Control; 
 } MDR_DMA_Init_ChCfg;
 
 //  Рассчет конечного адреса из стартового
 uint32_t MDR_DMA_Calc_SrcEndAddr (uint32_t startAddr, MDR_DMA_AddrInc AddrInc, uint32_t dataCount);
 uint32_t MDR_DMA_Calc_DestEndAddr(uint32_t startAddr, MDR_DMA_AddrInc AddrInc, uint32_t dataCount, MDR_DMA_Mode mode);
 
+
 //  Функции возвращают контрольное слово, которое потребуется для перезапуска следующего цикла DMA.
 MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgPri(uint32_t chIndex, const MDR_DMA_Init_ChCfg *initChCfg);
 MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgAlt(uint32_t chIndex, const MDR_DMA_Init_ChCfg *initChCfg);
 
+//  Разрешение прерываний от DMA
+                void MDR_DMA_EnableIRQ(uint32_t priority);
+__STATIC_INLINE void MDR_DMA_DisableIRQ(void) {NVIC_DisableIRQ(DMA_IRQn);}
 
-//  Запуск работы канала и остановка
-void  MDR_DMA_StartChannel(uint32_t chIndex, MDR_OnOff IgnoreSReq, MDR_OnOff HighPriority, bool startWithPrimary);
+
+//  -----------  Запуск работы канала и остановка ------------
+void  MDR_DMA_StartChannel(uint32_t chIndex, bool IgnoreSReq, bool HighPriority, bool startWithPrimary);
 void  MDR_DMA_StartChannelSoft(uint32_t chIndex, MDR_OnOff HighPriority, bool startWithPrimary);
+
+// ReStartChannel отменяет действие Stop, но структуры должны быть проинициализированы!
 void  MDR_DMA_StopChannel (uint32_t chIndex);
+void  MDR_DMA_ReStartChannel(uint32_t chIndex);
 
 //  Проверка закончил ли канал работу
 __STATIC_INLINE bool  MDR_DMA_GetChannelCompleted(uint32_t chIndex)           {return (MDR_DMA->CHNL_ENABLE_SET & (1 << chIndex)) == 0;}
@@ -110,9 +95,11 @@ __STATIC_INLINE void MDR_DMA_InitNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl c
 __STATIC_INLINE void MDR_DMA_InitNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl) {MDR_DMA_SetChCtrlAlt(chIndex, chCtrl.Value);}
 
 //  Выбор активной структуры
-__STATIC_INLINE void MDR_DMA_SetActivePri(uint32_t chIndex, bool setActive) 
+__STATIC_INLINE bool MDR_DMA_GetActivePri(uint32_t chIndex, bool setActive) {return (MDR_DMA->CHNL_PRI_ALT_SET & (1 << chIndex)) == 0;}
+__STATIC_INLINE void MDR_DMA_SetActivePri(uint32_t chIndex, bool setActive)
   { if (setActive) MDR_DMA->CHNL_PRI_ALT_CLR = 1 << chIndex; else MDR_DMA->CHNL_PRI_ALT_SET = 1 << chIndex;}
 
+  
 //   
 __STATIC_INLINE bool MDR_DMA_GetCycleCompletedPri(uint32_t chIndex) {return (MDR_DMA_GetChCtrlPri(chIndex).Value & MDR_DMA_ChCtrl_Mode_Msk) == DMA_MODE_Stop;}
 __STATIC_INLINE bool MDR_DMA_GetCycleCompletedAlt(uint32_t chIndex) {return (MDR_DMA_GetChCtrlAlt(chIndex).Value & MDR_DMA_ChCtrl_Mode_Msk) == DMA_MODE_Stop;}

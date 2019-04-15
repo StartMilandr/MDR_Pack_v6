@@ -70,6 +70,9 @@
     
     #define MDRB_ADC_PIN_KEY_PROTECT2   0x01C0UL
 
+    #define MDRB_ADC_TUNE_PORT          MDR_GPIO_C
+    #define MDRB_ADC_TUNE_PIN           PIN_PC2
+
 
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_B

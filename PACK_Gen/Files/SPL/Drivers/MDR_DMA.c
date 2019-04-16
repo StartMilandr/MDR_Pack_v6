@@ -255,17 +255,17 @@ void  MDR_DMA_StopChannel (uint32_t chIndex)
 
 //  Перезапуск следующего цикла DMA
 //  Обновляет контрольное слово в упр. структуре и выставляет Enable!
-void  MDR_DMA_RunNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl)
-{
-  MDR_DMA_InitNextCyclePri(chIndex, chCtrl);
-  MDR_DMA->CHNL_ENABLE_SET = VAL2FLD_Pos(1, chIndex);
-}
+//void  MDR_DMA_RunNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl)
+//{
+//  MDR_DMA_InitNextCyclePri(chIndex, chCtrl);
+//  MDR_DMA->CHNL_ENABLE_SET = VAL2FLD_Pos(1, chIndex);
+//}
 
-void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl)
-{
-  MDR_DMA_InitNextCycleAlt(chIndex, chCtrl);
-  MDR_DMA->CHNL_ENABLE_SET = VAL2FLD_Pos(1, chIndex);
-}
+//void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl)
+//{
+//  MDR_DMA_InitNextCycleAlt(chIndex, chCtrl);
+//  MDR_DMA->CHNL_ENABLE_SET = VAL2FLD_Pos(1, chIndex);
+//}
 
 //  Готовые функции копирования массивов с использованием DMA
 //  Необходима предварительная инициализация блока - MDR_DMA_Init()

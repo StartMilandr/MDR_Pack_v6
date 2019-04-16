@@ -86,9 +86,9 @@ __STATIC_INLINE MDR_DMA_ChCtrl   MDR_DMA_GetChCtrlAlt(uint32_t chIndex)
 
 
 //  Перезапуск следующего цикла DMA
-//  Обновляет контрольное слово в упр. структуре и выставляет Enable!
-void  MDR_DMA_RunNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
-void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
+////  Обновляет контрольное слово в упр. структуре и выставляет Enable!
+//void  MDR_DMA_RunNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
+//void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
 
 //  Обновляет контрольное слово в упр. структуре и НЕ выставляет Enable! (для Ping-Pong)
 __STATIC_INLINE void MDR_DMA_InitNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl) {MDR_DMA_SetChCtrlPri(chIndex, chCtrl.Value);}

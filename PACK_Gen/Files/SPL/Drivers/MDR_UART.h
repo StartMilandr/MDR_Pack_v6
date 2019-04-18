@@ -308,5 +308,15 @@ typedef union {
 MDR_UART_Data MDR_UART_ReadDataEx(MDR_UART_Type *UART);
 
 
+#ifndef MDR_HAS_NO_DMA
+//  Включение - выключение запросов к DMA. 
+//  Функции изменяет настройки заданные при Init.
+__STATIC_INLINE void MDR_UART_RX_DMA_Enable (MDR_UART_Type *UARTx) {UARTx->DMACR |=  MDR_UART_DMA_RX_EN;}
+__STATIC_INLINE void MDR_UART_RX_DMA_Disable(MDR_UART_Type *UARTx) {UARTx->DMACR &= ~MDR_UART_DMA_RX_EN;}
+
+__STATIC_INLINE void MDR_UART_TX_DMA_Enable (MDR_UART_Type *UARTx) {UARTx->DMACR |=  MDR_UART_DMA_TX_EN;}
+__STATIC_INLINE void MDR_UART_TX_DMA_Disable(MDR_UART_Type *UARTx) {UARTx->DMACR &= ~MDR_UART_DMA_TX_EN;}
+#endif
+
 #endif // MDR_UART_H
 

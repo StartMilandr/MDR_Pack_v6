@@ -157,8 +157,8 @@ typedef struct {
   uint32_t  reserved      : 29;
 } MDR_UART_DMAFlags;
 
+#define MDR_UART_DMA_TX_EN          MDR_UART_DMACR_TXDMAE_Msk
 #define MDR_UART_DMA_RX_EN          MDR_UART_DMACR_RXDMAE_Msk
-#define MDR_UART_DMA_TX_EN          MDR_UART_DMACR_RXDMAE_Msk
 #define MDR_UART_DMA_StopOnErr_EN   MDR_UART_DMACR_DMAonErr_Msk
 
 typedef struct {

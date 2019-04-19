@@ -242,3 +242,21 @@ void MDR_ADCUI_Init(const MDR_ADCUI_Cfg *pCfg)
 }
 
 
+// ==============    Чтение данных с АЦП ===========
+
+uint32_t MDR_ADCUI_WaitAndRead_V0(void)
+{
+  MDR_WaitFlagClear((uint32_t)&MDR_ADCUI->F0STAT, MDR_ADCUI_FxSTAT_VF_EMP_Msk);
+  return MDR_ADCUI->F0VDAT;
+}
+
+uint32_t MDR_ADCUI_WaitAndRead_I0(void) 
+{
+  MDR_WaitFlagClear((uint32_t)&MDR_ADCUI->F0STAT, MDR_ADCUI_FxSTAT_IF_EMP_Msk);
+  return MDR_ADCUI->F0I0DAT;  
+}
+uint32_t MDR_ADCUI_WaitAndRead_I3(void) 
+{
+  MDR_WaitFlagClear((uint32_t)&MDR_ADCUI->F0STAT, MDR_ADCUI_F0STAT_I3F_EMP_Msk);
+  return MDR_ADCUI->F0I3DAT;  
+}

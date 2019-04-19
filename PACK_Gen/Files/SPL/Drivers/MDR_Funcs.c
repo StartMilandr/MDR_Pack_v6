@@ -12,6 +12,16 @@ bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)
   return false;
 }
 
+void MDR_WaitFlagSet(uint32_t addr, uint32_t flag)
+{
+  while ((REG32(addr) & flag) != flag);
+}
+
+void MDR_WaitFlagClear(uint32_t addr, uint32_t flag)
+{
+  while ((REG32(addr) & flag) == flag);
+}
+
 
 //=========================    Задержка =======================
 void MDR_Delay(uint32_t Ticks)

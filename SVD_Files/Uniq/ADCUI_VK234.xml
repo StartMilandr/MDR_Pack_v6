@@ -244,8 +244,8 @@
           <description>Integrator enable</description>
           <bitRange>[0:0]</bitRange>
           <enumeratedValues>
-            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
-            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>1</value></enumeratedValue>
           </enumeratedValues>
         </field>
         <field derivedFrom="I0NTEN">
@@ -515,7 +515,7 @@
           <bitRange>[5:5]</bitRange>         
         </field>
         <field>
-          <name>IOGAIN</name>
+          <name>V0GAIN</name>
           <description>ADC Decimation gain</description>
           <bitRange>[6:6]</bitRange>
           <access>read-write</access>
@@ -524,11 +524,11 @@
             <enumeratedValue><name>x2</name><description>Gain by +6dB</description><value>1</value></enumeratedValue>
           </enumeratedValues>          
         </field>
-        <field derivedFrom="IOGAIN">
-          <name>V0GAIN</name>
+        <field derivedFrom="V0GAIN">
+          <name>IOGAIN</name>
           <bitRange>[7:7]</bitRange>
         </field>
-        <field derivedFrom="IOGAIN">
+        <field derivedFrom="V0GAIN">
           <name>I3GAIN</name>
           <bitRange>[8:8]</bitRange>
         </field>

@@ -95,5 +95,18 @@ void MDR_ADCUI_CfgRegs_Apply(const MDR_ADCUI_CfgRegs *pCfgRegs);
 void MDR_ADCUI_CfgRegs_Clear(MDR_ADCUI_CfgRegs *pCfgRegs);
 
 
+
+// ==============    Чтение данных с АЦП ===========
+__STATIC_INLINE bool MDR_ADCUI_F0_CheckFlagSet(uint32_t flagSel) {return (MDR_ADCUI->F0STAT & flagSel) == flagSel;}
+
+__STATIC_INLINE bool MDR_ADCUI_CanRead_V0(void) {return !MDR_ADCUI_F0_CheckFlagSet(MDR_ADCUI_FxSTAT_VF_EMP_Msk);}
+__STATIC_INLINE bool MDR_ADCUI_CanRead_I0(void) {return !MDR_ADCUI_F0_CheckFlagSet(MDR_ADCUI_FxSTAT_IF_EMP_Msk);}
+__STATIC_INLINE bool MDR_ADCUI_CanRead_I3(void) {return !MDR_ADCUI_F0_CheckFlagSet(MDR_ADCUI_F0STAT_I3F_EMP_Msk);}
+
+uint32_t MDR_ADCUI_WaitAndRead_V0(void);
+uint32_t MDR_ADCUI_WaitAndRead_I0(void); 
+uint32_t MDR_ADCUI_WaitAndRead_I3(void); 
+
+
 #endif  // _MDR_ADCUI_VK214_H
 

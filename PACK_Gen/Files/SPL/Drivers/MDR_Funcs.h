@@ -7,6 +7,10 @@
 bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc);
 
 
+void MDR_WaitFlagSet  (uint32_t addr, uint32_t flag);
+void MDR_WaitFlagClear(uint32_t addr, uint32_t flag);
+
+
 //=========================    Задержки и времена =======================
 //  Задержка в количестве пустых циклов
 void MDR_Delay(uint32_t Ticks);

@@ -7,8 +7,8 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.0" date="2018-06-06">
-      - 2.0: Version for LLVM Compiler v6
+    <release version="2.0" date="2019-04-19">
+      - 2.0: Start Version
     </release>
   </releases>
 
@@ -1300,17 +1300,40 @@
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="Timer_CapFix.uvprojx"/></project>
     </example>
-
     <example name="Power_Test" folder="Examples/All_Boards/Power_Test" doc="ReadMe.md" version="2.0.0">
       <description>Timer use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="Power_Test.uvmpw"/></project>
     </example>
-
     <example name="CRC_Test" folder="Examples/All_Boards/CRC_Test" doc="ReadMe.md" version="2.0.0">
       <description>Timer use cases</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="CRC_Test.uvmpw"/></project>
+    </example>
+    <example name="I2C_Test" folder="Examples/All_Boards/I2C_Test" doc="ReadMe.md" version="2.0.0">
+      <description>I2C use cases</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="I2C_Test.uvmpw"/></project>
+    </example>
+    <example name="DMA_ADC_PingPong" folder="Examples/All_Boards/DMA_Test/DMA_ADC_PingPong" doc="ReadMe.md" version="2.0.0">
+      <description>DMA ping-pong ADC</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="DMA_ADC_PingPong.uvprojx"/></project>
+    </example>
+    <example name="DMA_Soft" folder="Examples/All_Boards/DMA_Test/DMA_Soft" doc="ReadMe.md" version="2.0.0">
+      <description>DMA copy by Soft request</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="DMA_Soft.uvprojx"/></project>
+    </example>
+    <example name="DMA_SPI" folder="Examples/All_Boards/DMA_Test/DMA_SPI" doc="ReadMe.md" version="2.0.0">
+      <description>SPI send and receive throught DMA</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="DMA_SPI.uvprojx"/></project>
+    </example>
+    <example name="DMA_UART" folder="Examples/All_Boards/DMA_Test/DMA_UART" doc="ReadMe.md" version="2.0.0">
+      <description>UART send and receive throught DMA</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="DMA_UART.uvprojx"/></project>
     </example>
 
     <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">

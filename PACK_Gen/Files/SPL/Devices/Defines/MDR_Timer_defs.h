@@ -32,6 +32,14 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
+typedef enum {
+  TIM_Channel1 = 0,
+  TIM_Channel2 = 1,
+  TIM_Channel3 = 2,
+  TIM_Channel4 = 3,
+} MDR_Timer_Channel;
+
+
 /* ========================================  PSG ======================================================= */
 typedef struct {
   __IOM uint32_t Value      : 16;       /*!< [15..0] Counter Value                                                     */

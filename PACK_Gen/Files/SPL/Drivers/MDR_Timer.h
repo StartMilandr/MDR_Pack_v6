@@ -15,6 +15,9 @@
   #define TIMER4_EXIST
 #endif
 
+//  Вспомогательная функция для рассчета параметров периода таймера - period, PSG
+bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint_tim *period, uint16_t *PSG);
+
 //=====================   TimerEx Definitions ============
 typedef struct {
   // TIMER Block
@@ -60,7 +63,7 @@ extern const MDR_TIMER_TypeEx    _MDR_TIMER2ex;
 #define TIM_FL_CCR1_CAP_CH4   MDR_TIM_EVENT_CCR1_CAP_CH4_Msk
 
 
-//=====================   Управление прерываниями и DMA ==================
+//=====================   Управление прерываниями   ==================
 __STATIC_INLINE void     MDR_Timer_ClearEvent(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->STATUS &= ~eventFlags;}
 __STATIC_INLINE uint32_t MDR_Timer_GetStatus(MDR_TIMER_Type *TIMERx) {return TIMERx->STATUS;}
 
@@ -356,7 +359,7 @@ void MDR_TimerCh_InitByCfgRegs(MDR_TIMER_CH_Type *TIMER_CH, MDR_TIMER_CH_CfgRegs
 
 
 //=========================================================================================================
-//=================================      Channel Capture Rise/Fall events (CAP)    =========================================
+//=================================      Channel Capture Rise/Fall events (CAP)    ========================
 //=========================================================================================================
 //  Pin nCH does not used in Capture mode!
 
@@ -374,6 +377,46 @@ void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *
 
 __STATIC_INLINE uint_tim MDR_TimerCh_GetCCR (MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR;}
 __STATIC_INLINE uint_tim MDR_TimerCh_GetCCR1(MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR1;}
+
+
+//=========================================================================================================
+//======================================      Timer DMA    ================================================
+//=========================================================================================================
+#ifndef MDR_HAS_NO_DMA
+//  Включение - выключение запросов к DMA. 
+//  Функции изменяет настройки заданные при Init.
+__STATIC_INLINE void MDR_Timer_DMA_Enable (MDR_TIMER_Type *TIMERx, uint32_t flag) {TIMERx->DMA_RE |=  flag;}
+__STATIC_INLINE void MDR_Timer_DMA_Disable(MDR_TIMER_Type *TIMERx, uint32_t flag) {TIMERx->DMA_RE &= ~flag;}
+
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_CntZero (MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Enable (TIMERx, MDR_TIM_EVENT_CNT_ZERO_Msk);}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_CntZero(MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_CNT_ZERO_Msk);}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_CntArr (MDR_TIMER_Type *TIMERx)  {MDR_Timer_DMA_Enable (TIMERx, MDR_TIM_EVENT_CNT_ARR_Msk);}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_CntArr(MDR_TIMER_Type *TIMERx)  {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_CNT_ARR_Msk);}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeETR (MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Enable (TIMERx, MDR_TIM_EVENT_ETR_RE_Msk);}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeETR(MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_ETR_RE_Msk);}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_FallETR (MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Enable (TIMERx, MDR_TIM_EVENT_ETR_FE_Msk);}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_FallETR(MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_ETR_FE_Msk);}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeBRK (MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Enable (TIMERx, MDR_TIM_EVENT_BRK_Msk);}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeBRK(MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_BRK_Msk);}
+
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeCAP (MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel));}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeCAP(MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel));}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeCAP1 (MDR_TIMER_Type *TIMERx, MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR1_CAP_CH1_Pos + timChannel));}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeCAP1(MDR_TIMER_Type *TIMERx, MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR1_CAP_CH1_Pos + timChannel));}
+
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizePWM (MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_REF_CH1_Pos + timChannel));}
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizePWM(MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_REF_CH1_Pos + timChannel));}
+
+
+
+#endif
 
 
 #endif //_MDR_TIMER_H

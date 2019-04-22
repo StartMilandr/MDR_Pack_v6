@@ -578,3 +578,26 @@ void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *
   MDR_TimerCh_InitByCfgRegs(TIMER_CH, &cfgRegs);
 }
 
+bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint_tim *period, uint16_t *PSG)
+{
+  uint32_t clockPeriod = timClockHz / timDesiredHz;
+  uint32_t clkDiv;
+  
+  if (clockPeriod < TIM_MAX_VALUE)
+  {
+    *PSG = 0;
+    *period = clockPeriod;
+  }
+  else
+  {
+    clkDiv = clockPeriod / TIM_MAX_VALUE + 1;
+    if ((clkDiv > 0xFFFFUL) || (clkDiv == 0x0UL))
+      return false;
+    
+    *period = clockPeriod / clkDiv;
+    *PSG = clkDiv - 1;    
+  }
+  
+  return true;
+}
+

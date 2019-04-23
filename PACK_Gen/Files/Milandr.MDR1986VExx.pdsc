@@ -21,6 +21,26 @@
 
   <devices>
     <family Dfamily="StartMilandr" Dvendor="Milandr:99">
+    
+      <book name="Books/RST.pdf" title="Clock Quick Reference"/>
+      <book name="Books/GPIO.pdf" title="GPIO Quick Reference"/>
+      <book name="Books/EEPROM.pdf" title="EEPROM Quick Reference"/>
+      <book name="Books/EEPROM.pdf" title="EEPROM Quick Reference"/>
+      <book name="Books/BKP.pdf" title="BKP and RTC Quick Reference"/>
+      <book name="Books/ADC.pdf" title="ADC Quick Reference"/>
+      <book name="Books/SSP.pdf" title="SSP Quick Reference"/>
+      <book name="Books/UART.pdf" title="UART Quick Reference"/>
+      <book name="Books/Timer.pdf" title="Timer Quick Reference"/>
+      <book name="Books/ADCUI_VK214.pdf" title="ADCUI VK214 Quick Reference"/>
+      <book name="Books/ADCUI_VK234.pdf" title="ADCUI VK234 Quick Reference"/>
+      <book name="Books/WDT.pdf" title="WWDT and IWDT Quick Reference"/>
+      <book name="Books/WDT.pdf" title="WWDT and IWDT Quick Reference"/>
+      <book name="Books/LCD_VK214.pdf" title="LCD VK214 Clock Quick Reference"/>
+      <book name="Books/Power.pdf" title="Power Quick Reference"/>
+      <book name="Books/DMA.pdf" title="DMA Quick Reference"/>
+      <book name="Books/CRC_VK234.pdf" title="CRC VK234 Quick Reference"/>
+      <book name="Books/I2C.pdf" title="I2C Quick Reference"/>
+
       <subFamily DsubFamily="Cortex-M0">
         <processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/>
         <!-- MDR1986VE4 -->
@@ -818,7 +838,7 @@
 
     <!-- RST_CLOCK Driver -->
     <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_UseFuncs">
-      <description>PORT driver for MDR1986VExx Series</description>
+      <description>CPU Clock driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
@@ -836,7 +856,7 @@
     </component>
     <!-- SysTimer -->
     <component Cclass="Drivers" Cgroup="SysTimer" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Core System Timer</description>
+      <description>Core System Timer</description>      
       <files>
         <file category="header"  name="SPL/Drivers/MDR_SysTimer.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_SysTimer.c" version="2.0.0"/>

@@ -114,9 +114,11 @@ MDR_ADC_Config _cfgAdc =
   static MDR_ADC_Signal _UsedSignals[] = {ADC_Signal_Ch2, ADC_Signal_Ch5, ADC_Signal_Ch7, ADC_Signal_TS_Temper, ADC_Signal_TS_Vref, ADC_Signal_TS_VrefBuf};
   
 #elif defined (USE_MDR1986VK214)
-  #define USE_BOARD_VK214
+  
 #elif defined (USE_MDR1986VK234)
-  #define USE_BOARD_VK234 
+  //  см. MDRB_1986VE4.h
+  //  Не использовать Ch0 - совмещен с LED1
+  static MDR_ADC_Signal _UsedSignals[] = {ADC_Signal_Ch4, ADC_Signal_Ch5, ADC_Signal_TS_Temper, ADC_Signal_TS_Vref, ADC_Signal_TS_VrefBuf};
 #endif
 
 static uint32_t CFG_SignalCount = sizeof(_UsedSignals)/sizeof(_UsedSignals[0]);

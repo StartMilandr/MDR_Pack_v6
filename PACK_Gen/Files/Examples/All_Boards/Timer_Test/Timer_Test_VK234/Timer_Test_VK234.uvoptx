@@ -117,10 +117,6 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>DLGUARM</Key>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -158,7 +154,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;5&gt;..\src\test_CAP_Period.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_CAP_Period.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Timer_Test_VK234\../src/test_CAP_Period.c\160</Expression>
         </Bp>
@@ -174,7 +170,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;5&gt;..\src\test_CAP_Period.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_CAP_Period.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>

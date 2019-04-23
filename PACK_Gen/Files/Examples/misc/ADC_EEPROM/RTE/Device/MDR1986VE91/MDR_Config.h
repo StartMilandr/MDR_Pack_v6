@@ -17,6 +17,10 @@
   #include <MDR_1901VC1.h>
 #elif defined (USE_MDR1986VK214)
   #include <MDR_1986VK214.h> 
+  
+  // Регистр PVDCS не прописывается с первого раза - MDR_Power.c
+  #define USE_PWR_WR_FIX_VK214  
+  
 #elif defined (USE_MDR1986VK234)
   #include <MDR_1986VK234.h>  
 #endif
@@ -63,9 +67,27 @@
 //  PLL Ready Timeout
 #define PLL_TIMEOUT_MS  100
 
+// ===========   Аттрибут для расположения кода в исполняемой памяти - для DMA и контроллера EEPROM   ============
+#if defined ( __ICCARM__ )
+  #define __RAM_EXEC    IAR_SECTION ("EXECUTABLE_MEMORY_SECTION")
+#elif defined ( __CC_ARM )
+  #define __RAM_EXEC    __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
+#endif
 
-// ===========   Timer Capture Buf-fix enable=============
-#define USE_TIM_CAP_FIX  1
+// =========================   DMA   ================================
+//  Для экономии памяти можно прописать 0, если альтернативные структуры DMA не используются
+#define USE_DMA_ALTER_STRUCT   1
+//  Можно завести собственную управляющую структуру каналов вместо глобальной (по умолчанию). 
+#define USE_DMA_USER_CNTLS_CTRL_TABLE   0
+
+
+// =========================   Timer Bugfixes   ================================
+//  Прерывание возникает раньше, чем обновляются регистры CCR и CCR1
+#define USE_TIM_CAP_FIX   1
+
+// =========================   POWER Bugfixes   ================================
+// Флаги событий не стираются с первого раза
+#define USE_PWR_CLR_FIX   1
 
 
 // ===========   Assert для драйверов от версии 1,5 =============

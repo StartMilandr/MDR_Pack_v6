@@ -89,7 +89,7 @@ int main(void)
   //  Инициализация конфигруации в глобальных переменных
   Cfg_InitSelectedConfigs();
   // Настройка частоты ADC_Clock=HSE=8MHz. Используется в некоторых тестах вместо CPU_Clk.
-  MDR_ADC_SetClock_InputCPU(MDR_CLK_div1);
+  MDR_ADC_SetClock_CPU_C1(MDR_CLK_div1);
   //  Выводы GPIO в аналоговую функцию для выбраных сигналов в ADC_Cfg.с  
   if (Cfg_GPIO_PinSelected)
     MDR_ADC_PinsInitByMask(CFG_ADC_GPIO_Port, Cfg_GPIO_PinSelected);
@@ -112,7 +112,7 @@ int main(void)
       MDR_SysTimerStop();
       timerStarted = false;
       
-      //  Возврат к базовой кончигурации АЦП
+      //  Возврат к базовой конфигурации АЦП
       testStack[activeTest]->funcFinit();
       
       //  Инициализация нового теста

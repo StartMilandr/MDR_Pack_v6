@@ -21,7 +21,6 @@
 
   <project>
     <PathAndName>.\VE4\ButtonsChecker_VE4.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
@@ -42,6 +41,7 @@
 
   <project>
     <PathAndName>.\VE93\ButtonsChecker_VE93.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

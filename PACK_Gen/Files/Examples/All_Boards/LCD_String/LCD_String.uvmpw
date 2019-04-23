@@ -29,7 +29,6 @@
 
   <project>
     <PathAndName>.\VK214\LCD_String_VK214.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
@@ -42,6 +41,7 @@
 
   <project>
     <PathAndName>.\VE93\LCD_String_VE93.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

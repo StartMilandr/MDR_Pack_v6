@@ -184,10 +184,10 @@ typedef enum IRQn
 #include "MDR_IWDT_defs.h"
 
 /*=========  UART ========*/
-#include <MDR_UART_Defs.h>
+#include <MDR_UART_defs.h>
 
 /*=========  TIMER ========*/
-#include <MDR_TimerVx_Defs.h>
+#include <MDR_TimerVx_defs.h>
 
 /*=========  POWER ========*/
 #include <MDR_PowerVE9x_defs.h>

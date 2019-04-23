@@ -16,7 +16,7 @@ MDR_SSP_Config cfgSSP = {
 };
 
 MDR_SSP_ConfigEx cfgSSPex = {
-  .divSSP_Clock     = MDR_BRG_div1,
+  .ClockBRG         = MDR_BRG_div1,
   .cfgSSP           = &cfgSSP,
   .activateNVIC_IRQ = true,
   .priorityIRQ      = 1

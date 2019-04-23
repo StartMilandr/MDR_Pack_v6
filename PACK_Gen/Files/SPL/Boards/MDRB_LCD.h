@@ -119,7 +119,7 @@ void MDRB_LCD_ShiftString (const char* string, uint8_t shift, uint8_t screenWidt
   void MDRB_XT_DataPring(LCD_XT_DATA *lcdData, const char* string, MDR_OnOff toAlterMem);
 
   extern LCD_XT_DATA _MDR_LCD_Data;
-  
+  #define MDRB_LCD_ChangeFreqCPU(x)   UNUSED(x)
   
 
 //============    Пиксельный экран MT-12864J на всех остальных демо-платах =================

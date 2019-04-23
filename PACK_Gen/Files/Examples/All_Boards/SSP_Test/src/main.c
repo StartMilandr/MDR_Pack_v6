@@ -81,7 +81,7 @@ int main(void)
   //  Для 1986VE4,VE214,VE234 частота SSP_Clock формируется мультиплексорами
   //  В остальных МК SSP_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
 #ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK  
-  MDR_SelectSrcFor_UartTimSSP_Clock(MDR_PER_PLLCPUo);
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
 #endif
   
   //  Активный тест

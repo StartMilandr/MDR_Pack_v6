@@ -58,7 +58,7 @@ void ShowDisplay_VK234(void)
   my_LCD_Reg128.LCD_REG2_b.s35_F3_C = 1;
   my_LCD_Reg128.LCD_REG2_b.s60_TIME = 1;
   my_LCD_Reg128.LCD_REG2_b.s61_DATE = 1;
-  my_LCD_Reg128.LCD_REG2_b.s62_SYM = 1;  
+  my_LCD_Reg128.LCD_REG2_b.s62_SUM = 1;  
   
   MDRB_HTD_RegApply(&my_LCD_Reg128);
   MDR_Delay_ms(PERIOD_MS, HSI_FREQ_HZ); 

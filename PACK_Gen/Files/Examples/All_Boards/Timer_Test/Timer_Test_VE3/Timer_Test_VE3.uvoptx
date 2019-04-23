@@ -303,7 +303,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;2&gt;..\src\test_Pulse.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_Pulse.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -319,7 +319,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;2&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -335,7 +335,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;2&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -351,7 +351,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;2&gt;..\src\test_CountTimClock.c</Filename>
+          <Filename>&lt;1&gt;..\src\test_CountTimClock.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>

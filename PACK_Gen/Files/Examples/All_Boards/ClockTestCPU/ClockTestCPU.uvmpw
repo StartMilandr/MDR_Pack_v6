@@ -21,7 +21,6 @@
 
   <project>
     <PathAndName>.\VE4\ClockTestCPU_VE4.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
@@ -30,6 +29,7 @@
 
   <project>
     <PathAndName>.\VK214\ClockTestCPU_VK214.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>

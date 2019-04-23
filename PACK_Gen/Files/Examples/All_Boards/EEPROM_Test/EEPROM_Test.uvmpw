@@ -39,11 +39,11 @@
 
   <project>
     <PathAndName>.\VE4\EEPROM_Test_VE4.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
     <PathAndName>.\VK234\EEPROM_Test_VK234.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

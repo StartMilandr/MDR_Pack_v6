@@ -61,8 +61,8 @@ typedef enum IRQn
   SysTick_IRQn              =  -1,              /*!< -1 System Tick Timer                                                      */
 
 /* ===========================================  MDR1986VE1 Specific Interrupt Numbers  ========================================= */
-  MIL_1553B2_IRQn             = 0,      /*!< MIL_STD_1553B2 Interrupt                             */
-  MIL_1553B1_IRQn             = 1,      /*!< MIL_STD_1553B1 Interrupt                             */
+  MIL2_IRQn                   = 0,      /*!< MIL_STD_1553B2 Interrupt                             */
+  MIL1_IRQn                   = 1,      /*!< MIL_STD_1553B1 Interrupt                             */
   USB_IRQn                    = 2,      /*!< USB Host Interrupt                                   */
   CAN1_IRQn	                  = 3,      /*!< CAN1 Interrupt		                  								  */
   CAN2_IRQn					          = 4,	    /*!< CAN2 Interrupt										                    */
@@ -71,7 +71,7 @@ typedef enum IRQn
   UART2_IRQn                  = 7,      /*!< UART2 Interrupt                                      */
   SSP1_IRQn                   = 8,      /*!< SSP1 Interrupt                                       */
   NAND_IRQn                   = 9,		  /*!< NAND Busy Interrupt									                */
-  ARINC429R_IRQn              = 10,     /*!< ARINC429 Receivers  R1-R4 Interrupt                  */
+  ARINC_RX_IRQn               = 10,     /*!< ARINC429 Receivers  R1-R4 Interrupt                  */
   POWER_IRQn                  = 11,     /*!< POWER Detector Interrupt                              */
   WWDG_IRQn                   = 12,     /*!< Window Watchdog Interrupt                            */
   TIMER4_IRQn                 = 13,		  /*!< Timer4 Interrupt									                    */
@@ -79,13 +79,13 @@ typedef enum IRQn
   TIMER2_IRQn                 = 15,     /*!< Timer2 Interrupt                                     */
   TIMER3_IRQn                 = 16,     /*!< Timer3 Interrupt                                     */
   ADC_IRQn                    = 17,     /*!< ADC Interrupt                                        */
-  ETHERNET1_IRQn       	      = 18,     /*!< Ethernet Interrupt                                   */
+  ETH1_IRQn       	          = 18,     /*!< Ethernet Interrupt                                   */
   SSP3_IRQn                   = 19,     /*!< SSP3 Interrupt                                   	  */
   SSP2_IRQn                   = 20,     /*!< SSP2 Interrupt                                       */
-  ARINC429T1_IRQn             = 21,     /*!< ARINC429 Transmitter 1 Interrupt			          		  */
-  ARINC429T2_IRQn             = 22,     /*!< ARINC429 Transmitter 2 Interrupt					            */
-  ARINC429T3_IRQn             = 23,	    /*!< ARINC429 Transmitter 3 Interrupt					            */
-  ARINC429T4_IRQn             = 24,	    /*!< ARINC429 Transmitter 4 Interrupt 					          */
+  ARINC_TX1_IRQn              = 21,     /*!< ARINC429 Transmitter 1 Interrupt			          		  */
+  ARINC_TX2_IRQn              = 22,     /*!< ARINC429 Transmitter 2 Interrupt					            */
+  ARINC_TX3_IRQn              = 23,	    /*!< ARINC429 Transmitter 3 Interrupt					            */
+  ARINC_TX4_IRQn              = 24,	    /*!< ARINC429 Transmitter 4 Interrupt 					          */
   _Reserved_25_IRQn           = 25,     /*!< Reserved Interrupt   					                      */
   _Reserved_26_IRQn           = 26,     /*!< Reserved Interrupt  	  				                      */
   BKP_IRQn                    = 27,     /*!< Backup and RTC Interrupt                             */

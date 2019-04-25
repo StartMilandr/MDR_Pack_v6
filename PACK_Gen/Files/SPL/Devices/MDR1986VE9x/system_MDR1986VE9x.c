@@ -46,47 +46,24 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Clock Frequency (Core Clock)
   Clock functions
  *----------------------------------------------------------------------------*/
 
-void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
+static uint32_t _clockFreqHz[] = {HSI_FREQ_HZ, 0, LSE_FREQ_HZ, LSI_FREQ_HZ,                     //  HCLK_SEL
+                                  HSI_FREQ_HZ, HSI_FREQ_HZ / 2, HSE_FREQ_HZ, HSE_FREQ_HZ / 2};  //  CPU_C1_SEL
+
+void SystemCoreClockUpdate (void)
 {
   uint32_t freq = SystemCoreClock;
   MDR_RST_CPU_Bits regCPU_CLOCK = MDR_CLOCK->CPU_CLOCK_b;
   
-  switch (regCPU_CLOCK.HCLK_SEL)
-  {    
-    case MDR_HCLK_HSI:
-      freq = HSI_FREQ_HZ;
-      break;
-    case MDR_HCLK_LSE:
-      freq = LSE_FREQ_HZ;
-      break;
-    case MDR_HCLK_LSI:
-      freq = LSI_FREQ_HZ;
-      break;
-    case MDR_HCLK_CPU_C3: 
-    {
-      switch (regCPU_CLOCK.CPU_C1_SEL)
-      {
-        case MDR_HSIE2_HSI:
-          freq = HSI_FREQ_HZ;
-          break;
-        case MDR_HSIE2_HSI_div2:
-          freq = HSI_FREQ_HZ / 2;
-          break;
-        case MDR_HSIE2_HSE:
-          freq = HSE_FREQ_HZ;
-          break;
-        case MDR_HSIE2_HSE_div2:
-          freq = HSE_FREQ_HZ / 2;
-          break;
-      }
-      
-      if (regCPU_CLOCK.CPU_C2_SEL == MDR_CPU_PLL)
-        freq *= (MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);
-      
-      break;
-    }    
+  if (regCPU_CLOCK.HCLK_SEL != MDR_HCLK_CPU_C3)
+    freq = _clockFreqHz[regCPU_CLOCK.HCLK_SEL];
+  else
+  {
+    freq = _clockFreqHz[regCPU_CLOCK.CPU_C1_SEL + 4];
+
+    if (regCPU_CLOCK.CPU_C2_SEL == MDR_CPU_PLL)
+      freq *= (MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);
   }
- 
+  
   if (regCPU_CLOCK.CPU_C3_SEL >= MDR_CLK_div2)
    freq = freq >> (regCPU_CLOCK.CPU_C3_SEL - MDR_CLK_div2 + 1);
   

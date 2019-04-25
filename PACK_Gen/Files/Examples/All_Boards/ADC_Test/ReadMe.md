@@ -1,4 +1,4 @@
-# Примеры работы с АЦП последовательного приближения
+﻿# Примеры работы с АЦП последовательного приближения
 
 В файле ADC_cfg.c выбираются сигналы в массиве _UsedSignals[], которые будут измеряться в тесте. Можно выбрать любые, но если выводы АЦП совмещены с LCD экраном или кнопками, то пример может перестать работать. Поэтому при выборе других сигналов необходимо ориентироватья на описание ресурсов платы в файлах типа MBRD_1986VExx.h.
 
@@ -62,7 +62,7 @@
   - MDR_ADC_Result MDR_ADC_MeasNextValue(ADCx) - повтор предыдущего запуска. Работает быстрее, т.к. запуск происходит битом GO.
 
 Синхронные измерения реализуют функции:
-  - void MDR_ADC_StartSelectedSyncro(channelsADC1, channelsADC2, cyclic, *cfgLimsADC1, *cfgLimsADC2) - запуск измерения по одному каналу для каждого АЦП
+  - void MDR_ADC_StartSignalSyncro(signalADC1, signalADC2, cyclic, *cfgLimsADC1, *cfgLimsADC2) - запуск измерения по одному каналу для каждого АЦП
   - void MDR_ADC_StartSelectedSyncro(channelsADC1, channelsADC2, cyclic, *cfgLimsADC1, *cfgLimsADC2) - запуск измерений маской
 MDR_ADC_StartNextGoSyncro() - повтор, если запуск был с cyclic = false.
 

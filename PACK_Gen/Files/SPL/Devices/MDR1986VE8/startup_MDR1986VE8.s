@@ -39,7 +39,9 @@ __heap_limit
 ; Vector Table Mapped to Address 0 at Reset
 
                 AREA    RESET, DATA, READONLY
-	        EXPORT  __Vectors
+	              EXPORT  __Vectors
+                EXPORT  __Vectors_End
+                EXPORT  __Vectors_Size
 
 __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     Reset_Handler             ; Reset Handler
@@ -490,13 +492,13 @@ DMA_DONE29_IRQHandler     PROC
                 B       .
                 ENDP
 
-DMA_DONE30_Handler     PROC
-                EXPORT  DMA_DONE30_Handler				[WEAK]
+DMA_DONE30_IRQHandler     PROC
+                EXPORT  DMA_DONE30_IRQHandler				[WEAK]
                 B       .
                 ENDP
 
-DMA_DONE31_Handler     PROC
-                EXPORT  DMA_DONE31_Handler				[WEAK]
+DMA_DONE31_IRQHandler     PROC
+                EXPORT  DMA_DONE31_IRQHandler				[WEAK]
                 B       .
                 ENDP
 					

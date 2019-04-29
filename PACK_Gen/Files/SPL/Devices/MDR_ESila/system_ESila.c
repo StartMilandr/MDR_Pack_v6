@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_MDR1986VE8.c
+ * @file     system_ESila.c
  * @brief    CMSIS Cortex-M4 Device Peripheral Access Layer Source File for
- *           Device MDR1986VE8
+ *           Device ESila
  * @version  V5.00
  * @date     10. January 2018
  ******************************************************************************/
@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-#include "MDR_1986VE8.h"
+#include "MDR_ESila.h"
 #include "MDR_Config.h"
 
 
@@ -47,42 +47,42 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Clock Frequency (Core Clock)
  *----------------------------------------------------------------------------*/
 
 
-static const uint32_t _GenFreqsHz[8] = {HSI_Value, HSI_Value/2, HSE0_Value, HSE0_Value/2, HSE1_Value, HSE1_Value/2, LSI_Value, LSE_Value};
+//static const uint32_t _GenFreqsHz[8] = {HSI_Value, HSI_Value/2, HSE0_Value, HSE0_Value/2, HSE1_Value, HSE1_Value/2, LSI_Value, LSE_Value};
 
 void SystemCoreClockUpdate (void)
 {
-   uint32_t cpu_freq;
-   uint32_t regCLK;
-   uint32_t pll_source, pll_N, pll_Q, pll_DIV;
-   uint32_t sel_max_clk, sel_pll;
+  //  uint32_t cpu_freq;
+  //  uint32_t regCLK;
+  //  uint32_t pll_source, pll_N, pll_Q, pll_DIV;
+  //  uint32_t sel_max_clk, sel_pll;
 	
-	sel_max_clk = CLK_CNTR->MAX_CLK & 0xF;
+	// sel_max_clk = CLK_CNTR->MAX_CLK & 0xF;
 
-  if (sel_max_clk < MAXCLK_PLL0)
-    SystemCoreClock = _GenFreqsHz[sel_max_clk];
-  else if (sel_max_clk <= MAXCLK_PLL2)
-  {  
-    switch (sel_max_clk)
-    {
-      case MAXCLK_PLL0: regCLK = CLK_CNTR->PLL0_CLK; break;
-      case MAXCLK_PLL1: regCLK = CLK_CNTR->PLL1_CLK; break;        
-      case MAXCLK_PLL2: regCLK = CLK_CNTR->PLL2_CLK; break;
-    }
-    sel_pll = ((regCLK >> 29) & 0x7);
-    if (sel_pll < 6)
-      pll_source = _GenFreqsHz[sel_pll];
-    else
-      pll_source = FERQ_FAULT_HZ;
-    if (((regCLK >> 8) & 0x7F) == 0)
-      pll_N = 2;
-    else 
-      pll_N =((regCLK >> 8) & 0x7F);	
-    pll_Q = (regCLK & 0xF);
-    pll_DIV = ((regCLK >> 4) & 0x1);
-    SystemCoreClock = ((pll_source * pll_N / (pll_Q + 1)) / (pll_DIV + 1));	    
-  } 
-  else
-	  SystemCoreClock = FERQ_FAULT_HZ;
+  // if (sel_max_clk < MAXCLK_PLL0)
+  //   SystemCoreClock = _GenFreqsHz[sel_max_clk];
+  // else if (sel_max_clk <= MAXCLK_PLL2)
+  // {  
+  //   switch (sel_max_clk)
+  //   {
+  //     case MAXCLK_PLL0: regCLK = CLK_CNTR->PLL0_CLK; break;
+  //     case MAXCLK_PLL1: regCLK = CLK_CNTR->PLL1_CLK; break;        
+  //     case MAXCLK_PLL2: regCLK = CLK_CNTR->PLL2_CLK; break;
+  //   }
+  //   sel_pll = ((regCLK >> 29) & 0x7);
+  //   if (sel_pll < 6)
+  //     pll_source = _GenFreqsHz[sel_pll];
+  //   else
+  //     pll_source = FERQ_FAULT_HZ;
+  //   if (((regCLK >> 8) & 0x7F) == 0)
+  //     pll_N = 2;
+  //   else 
+  //     pll_N =((regCLK >> 8) & 0x7F);	
+  //   pll_Q = (regCLK & 0xF);
+  //   pll_DIV = ((regCLK >> 4) & 0x1);
+  //   SystemCoreClock = ((pll_source * pll_N / (pll_Q + 1)) / (pll_DIV + 1));	    
+  // } 
+  // else
+	//   SystemCoreClock = FERQ_FAULT_HZ;
 }
 
 void SystemInit (void)

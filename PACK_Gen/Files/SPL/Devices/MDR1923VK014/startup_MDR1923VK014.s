@@ -141,42 +141,42 @@ SysTick_Handler     PROC
 ;================   1923VK014 ===========
 
 FT_ERR_IRQHandler     PROC
-                EXPORT  FT_ERR_IRQHandler					[WEAK]
+                EXPORT  FT_ERR_IRQHandler			[WEAK]
                 B       .
                 ENDP
 
 CLK_IRQHandler     PROC
-                EXPORT  CLK_IRQHandler					[WEAK]
+                EXPORT  CLK_IRQHandler				[WEAK]
                 B       .
                 ENDP
 
 POWER_IRQHandler     PROC
-                EXPORT  POWER_IRQHandler					[WEAK]
+                EXPORT  POWER_IRQHandler			[WEAK]
                 B       .
                 ENDP
 
 RTC_IRQHandler     PROC
-                EXPORT  RTC_IRQHandler					[WEAK]
+                EXPORT  RTC_IRQHandler				[WEAK]
                 B       .
                 ENDP
 
 BKP_IRQHandler     PROC
-                EXPORT  BKP_IRQHandler					[WEAK]
+                EXPORT  BKP_IRQHandler				[WEAK]
                 B       .
                 ENDP
 
 EBC_ERROR_IRQn     PROC
-                EXPORT  EBC_ERROR_IRQn					[WEAK]
+                EXPORT  EBC_ERROR_IRQn				[WEAK]
                 B       .
                 ENDP
 
 DMA_IRQHandler     PROC
-                EXPORT  DMA_IRQHandler					[WEAK]
+                EXPORT  DMA_IRQHandler				[WEAK]
                 B       .
                 ENDP
 
 CCSDS_TX_IRQHandler     PROC
-                EXPORT  CCSDS_TX_IRQHandler					[WEAK]
+                EXPORT  CCSDS_TX_IRQHandler			[WEAK]
                 B       .
                 ENDP
 
@@ -186,17 +186,17 @@ CCSDS_RX_IRQHandler     PROC
                 ENDP
 
 GPIO_IRQHandler     PROC
-                EXPORT  GPIO_IRQHandler			[WEAK]
+                EXPORT  GPIO_IRQHandler			    [WEAK]
                 B       .
                 ENDP
 
 SPW1_IRQHandler     PROC
-                EXPORT  SPW1_IRQHandler			[WEAK]
+                EXPORT  SPW1_IRQHandler			    [WEAK]
                 B       .
                 ENDP
 
 SPW2_IRQHandler     PROC
-                EXPORT  SPW2_IRQHandler			[WEAK]
+                EXPORT  SPW2_IRQHandler			    [WEAK]
                 B       .
                 ENDP
 
@@ -221,7 +221,7 @@ TIMER4_IRQHandler     PROC
                 ENDP
 
 CAN1_IRQHandler     PROC
-                EXPORT  CAN1_IRQHandler					[WEAK]
+                EXPORT  CAN1_IRQHandler				[WEAK]
                 B       .
                 ENDP
                 
@@ -231,12 +231,12 @@ CAN2_IRQHandler     PROC
                 ENDP
 					
 UART1_IRQHandler     PROC
-                EXPORT  UART1_IRQHandler				[WEAK]
+                EXPORT  UART1_IRQHandler			[WEAK]
                 B       .
                 ENDP					
 
 UART2_IRQHandler     PROC
-                EXPORT  UART2_IRQHandler				[WEAK]
+                EXPORT  UART2_IRQHandler			[WEAK]
                 B       .
                 ENDP
 					
@@ -254,6 +254,11 @@ MIL3_IRQHandler     PROC
                 EXPORT  MIL3_IRQHandler				[WEAK]
                 B       .
                 ENDP
+                    
+MIL4_IRQHandler     PROC
+                EXPORT  MIL4_IRQHandler				[WEAK]
+                B       .
+                ENDP                    
 					
 SSP1_IRQHandler     PROC
                 EXPORT  SSP1_IRQHandler				[WEAK]

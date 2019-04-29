@@ -35,7 +35,7 @@ extern "C" {
   */
 
 
-/** @addtogroup MDR1986VE8
+/** @addtogroup ESila
   * @{
   */
 
@@ -52,8 +52,6 @@ extern "C" {
 
 typedef enum IRQn
 {
-typedef enum IRQn
-{
 /******  Cortex-M4 Processor Exceptions Numbers ***************************************/
   NonMaskableInt_IRQn     = -14,    /*!< 2 Non Maskable Interrupt                     */
   HardFault_IRQn          = -13,    /*!< 3 Cortex-M4 Hard Fault Interrupt             */
@@ -64,13 +62,13 @@ typedef enum IRQn
   PendSV_IRQn             = -2,     /*!< 14 Cortex-M4 Pend SV Interrupt               */
   SysTick_IRQn            = -1,     /*!< 15 Cortex-M4 System Tick Interrupt           */
 
-/******  1986VE8 specific Interrupt Numbers *******************************************/                                       
+/******  ESila specific Interrupt Numbers *******************************************/                                       
   FT_RESET0_4_IRQn        = 32,
   FT_EVENT0_4_IRQn        = 33,
   FT_EVENT5_8_IRQn        = 34,
   FT_EVENT9_12_IRQn       = 35,
   CLK_IRQn                = 36,
-  POWER_IRQn              = 37,
+  //POWER_IRQn              = 37,
   RTC_IRQn                = 38,
   BKP_IRQn                = 39,
   EBC_ERROR0_IRQn         = 40,
@@ -81,7 +79,8 @@ typedef enum IRQn
   EBC_ERROR5_IRQn         = 45,
   EBC_ERROR6_IRQn         = 46,
   EBC_ERROR7_IRQn         = 47,
-
+  SCRB_ERR_IRQn           = 48,
+  SCRB_DONE_IRQn          = 49,
   DMA_ERR_IRQn            = 50,
   DMA_DONE0_IRQn          = 51,
   DMA_DONE1_IRQn          = 52,
@@ -119,33 +118,137 @@ typedef enum IRQn
   PORTB_IRQn         	    = 84,
   PORTC_IRQn         	    = 85,
   PORTD_IRQn         	    = 86,
-  PORTE_IRQn         	    = 87,
 
   ETH1_IRQn     	        = 89,
-	
-  SPW1_IRQn        		    = 91,
+  CAN1_IRQn         	    = 90,
+  CAN2_IRQn         	    = 91,
+
+  SSP1_IRQn         	    = 92,
+  SSP1_RX_IRQn       	    = 93,
+  SSP1_TX_IRQn       	    = 94,
+  SSP1_ROR_IRQn      	    = 95,
+  SSP1_RT_IRQn      	    = 96,
+  SSP1_RX_FIFO_IRQn       = 97,
+  SSP1_TX_FIFO_IRQn       = 98,
+  SSP1_BUSY_IRQn     	    = 99,
+  SSP2_IRQn         	    = 100,
+  SSP2_RX_IRQn       	    = 101,
+  SSP2_TX_IRQn       	    = 102,
+  SSP2_ROR_IRQn      	    = 103,
+  SSP2_RT_IRQn      	    = 104,
+  SSP2_RX_FIFO_IRQn       = 105,
+  SSP2_TX_FIFO_IRQn       = 106,
+  SSP2_BUSY_IRQn     	    = 107,
+
+  UART1_IRQn         	    = 108,
+  UART1_BUSY_IRQn    	    = 109,
+  UART1_TX_FIFO_IRQn 	    = 110,
+  UART1_RX_FIFO_IRQn 	    = 111,
+  UART1_ERR_IRQn 	        = 112,
+  UART1_RT_IRQn 	        = 113,
+  UART1_TX_IRQn 	        = 114,
+  UART1_RX_IRQn 	        = 115,
+  UART1_MS_IRQn 	        = 116,
+  UART2_IRQn         	    = 117,
+  UART2_BUSY_IRQn    	    = 118,
+  UART2_TX_FIFO_IRQn 	    = 119,
+  UART2_RX_FIFO_IRQn 	    = 120,
+  UART2_ERR_IRQn 	        = 121,
+  UART2_RT_IRQn 	        = 122,
+  UART2_TX_IRQn 	        = 123,
+  UART2_RX_IRQn 	        = 124,
+  UART2_MS_IRQn 	        = 125,
+  UART3_IRQn         	    = 126,
+  UART3_BUSY_IRQn    	    = 127,
+  UART3_TX_FIFO_IRQn 	    = 128,
+  UART3_RX_FIFO_IRQn 	    = 129,
+  UART3_ERR_IRQn 	        = 130,
+  UART3_RT_IRQn 	        = 131,
+  UART3_TX_IRQn 	        = 132,
+  UART3_RX_IRQn 	        = 133,
+  UART3_MS_IRQn 	        = 134,
+  UART4_IRQn         	    = 135,
+  UART4_BUSY_IRQn    	    = 136,
+  UART4_TX_FIFO_IRQn 	    = 137,
+  UART4_RX_FIFO_IRQn 	    = 138,
+  UART4_ERR_IRQn 	        = 139,
+  UART4_RT_IRQn 	        = 140,
+  UART4_TX_IRQn 	        = 141,
+  UART4_RX_IRQn 	        = 142,
+  UART4_MS_IRQn 	        = 143,  
+
+  USB_IRQn        		    = 144,
+  MIL1_IRQn               = 145,
+  DAC1_IRQn         	    = 146,
+  DAC2_IRQn         	    = 147,
+  DAC3_IRQn         	    = 148,
+  DAC4_IRQn         	    = 149,
+  DAC1_FIFO_IRQn         	= 150,
+  DAC2_FIFO_IRQn         	= 151,
+  DAC3_FIFO_IRQn         	= 152,
+  DAC4_FIFO_IRQn         	= 153,  
+
+  TIMER1_IRQn        	    = 154,
+  TIMER2_IRQn             = 155,
+  TIMER3_IRQn        	    = 156,
+  TIMER4_IRQn        	    = 157,
+  QENC1_IRQn       	      = 158,
+  QENC2_IRQn       	      = 159,
   
-  TIMER1_IRQn        	    = 93,
-  TIMER2_IRQn             = 94,
-  TIMER3_IRQn        	    = 95,
-  TIMER4_IRQn        	    = 96,
-  
-  CAN1_IRQn         	    = 99,
-  
-  SSP1_IRQn         	    = 104,
-  
-  UART1_IRQn         	    = 108,	
-  UART2_IRQn         	    = 109,	
-  
-  ARINC_RX_IRQn           = 113,
-  ARINC_TX_IRQn      	    = 114,	  
-  
-  MIL1_IRQn               = 117,
-  MIL2__IRQn              = 118, 
-  ADC1_IRQn         	    = 119,
-  ADC2_IRQn         	    = 120,
-  DAC1_IRQn         	    = 121,
-  DAC2_IRQn         	    = 122,
+  CAP1_IRQn        	      = 162,
+  CAP2_IRQn               = 163,
+  CAP3_IRQn        	      = 164,
+  CAP4_IRQn        	      = 165,
+
+  PWM1_IRQn        	      = 166,
+  PWM2_IRQn        	      = 167,
+  PWM3_IRQn        	      = 168,
+  PWM4_IRQn        	      = 169,
+  PWM5_IRQn        	      = 170,
+  PWM6_IRQn        	      = 171,
+  PWM7_IRQn        	      = 172,
+  PWM8_IRQn        	      = 173,
+  PWM9_IRQn        	      = 174,
+  PWM1_TZ_IRQn        	  = 175,
+  PWM2_TZ_IRQn        	  = 176,
+  PWM3_TZ_IRQn        	  = 177,
+  PWM4_TZ_IRQn        	  = 178,
+  PWM5_TZ_IRQn        	  = 179,
+  PWM6_TZ_IRQn        	  = 180,
+  PWM7_TZ_IRQn        	  = 181,
+  PWM8_TZ_IRQn        	  = 182,
+  PWM9_TZ_IRQn        	  = 183,
+  PWM1_FIFO_IRQn        	= 184,
+  PWM2_FIFO_IRQn        	= 185,
+  PWM3_FIFO_IRQn        	= 186,
+  PWM4_FIFO_IRQn        	= 187,
+  PWM5_FIFO_IRQn        	= 188,
+  PWM6_FIFO_IRQn        	= 189,
+  PWM7_FIFO_IRQn        	= 190,
+  PWM8_FIFO_IRQn        	= 191,
+  PWM9_FIFO_IRQn        	= 192,
+
+  CMP1_IRQn        	      = 193,
+  CMP2_IRQn        	      = 194,
+  CMP3_IRQn        	      = 195,
+  CMP4_IRQn        	      = 196,
+
+  ADC_A1_IRQn         	  = 197,
+  ADC_A1_FIFO_IRQn     	  = 198,
+  ADC_B1_IRQn         	  = 199,
+  ADC_B1_FIFO_IRQn     	  = 200,
+  ADC_C1_IRQn         	  = 201,
+  ADC_C1_FIFO_IRQn     	  = 202,
+  ADC_A2_IRQn         	  = 203,
+  ADC_A2_FIFO_IRQn     	  = 204,
+  ADC_B2_IRQn         	  = 205,
+  ADC_B2_FIFO_IRQn     	  = 206,
+  ADC_C2_IRQn         	  = 207,
+  ADC_C2_FIFO_IRQn     	  = 208,  
+
+  CORDIC_IRQn     	      = 209,
+
+  MIL2_IRQn               = 211,
 } IRQn_Type;
 
 
@@ -169,7 +272,7 @@ typedef enum IRQn
 
 
 #include <core_cm4.h>                          /*!< Arm Cortex-M4 processor and core peripherals */
-#include "system_MDR1986VE8.h"                 /*!< MDR1986VE8 System */
+#include "system_ESila.h"                 /*!< ESila System */
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -217,7 +320,7 @@ typedef enum IRQn
 
 
 
-/*@}*/ /* end of group MDR1986VE8_Peripherals */
+/*@}*/ /* end of group ESila_Peripherals */
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */
@@ -249,20 +352,24 @@ typedef enum IRQn
   */
 
 /* Peripheral and SRAM base address */
-// #define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-// #define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-// #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+ #define ADDR_FLASH_BASE       (0x01000000UL)                              /*!< (FLASH     ) Base Address */
+ #define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
+ #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_SSP1_BASE        0x40095000UL                                   /*!< SSP Base Address      */
+#define ADDR_SSP1_BASE        0x40089000UL
+#define ADDR_SSP2_BASE        0x4008A000UL
 
-#define ADDR_UART1_BASE       0x40099000UL
-#define ADDR_UART2_BASE       0x4009A000UL
+#define ADDR_UART1_BASE       0x4008D000UL
+#define ADDR_UART2_BASE       0x4008E000UL
+#define ADDR_UART3_BASE       0x4008F000UL
+#define ADDR_UART4_BASE       0x40090000UL
 
-#define ADDR_TIMER1_BASE      0x4008A000UL
-#define ADDR_TIMER2_BASE      0x4008B000UL
-#define ADDR_TIMER3_BASE      0x4008C000UL
-#define ADDR_TIMER4_BASE      0x4008D000UL
+#define ADDR_TIMER1_BASE      0x40094000UL
+#define ADDR_TIMER2_BASE      0x40095000UL
+#define ADDR_TIMER3_BASE      0x40096000UL
+#define ADDR_TIMER4_BASE      0x40097000UL
+
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -277,9 +384,12 @@ typedef enum IRQn
   */
 
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
+#define MDR_SSP2                       ((MDR_SSP_Type       *) ADDR_SSP2_BASE)
 
 #define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
+#define MDR_UART3                      ((MDR_UART_Type 	    *) ADDR_UART3_BASE)
+#define MDR_UART4                      ((MDR_UART_Type 	    *) ADDR_UART4_BASE)
 
 #define MDR_TIMER1                     ((MDR_TIMER_Type 	  *) ADDR_TIMER1_BASE)
 #define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
@@ -380,7 +490,7 @@ typedef enum IRQn
 
 
 
-/** @} */ /* End of group MDR1986VE8 */
+/** @} */ /* End of group ESila */
 
 /** @} */ /* End of group Milandr */
 

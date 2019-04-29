@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_MDR1986VE8.h
+ * @file     system_ESila.h
  * @brief    CMSIS Cortex-M4 Device Peripheral Access Layer Header File for
- *           Device MDR1986VE8
+ *           Device ESila
  * @version  V5.00
  * @date     10. January 2018
  ******************************************************************************/
@@ -23,8 +23,8 @@
  * limitations under the License.
  */
 
-#ifndef SYSTEM_MDR1986VE8_H
-#define SYSTEM_MDR1986VE8_H
+#ifndef SYSTEM_ESila_H
+#define SYSTEM_ESila_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,4 +55,4 @@ extern void SystemCoreClockUpdate (void);
 }
 #endif
 
-#endif /* SYSTEM_MDR1986VE8_H */
+#endif /* SYSTEM_ESila_H */

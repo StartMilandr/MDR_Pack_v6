@@ -7,8 +7,9 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.0" date="2019-04-19">
+    <release version="2.01" date="2019-04-29">
       - 2.0: Start Version
+      - 2.01: Personal Config and VE8, VK014, ElSila headers added
     </release>
   </releases>
 
@@ -226,6 +227,128 @@
           <feature type="ADC"   n="1"   m="12"/>
           <feature type="SPI"   n="1"   name="SPI Interface"/>
           <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/>
+        </device>
+
+        <!-- MDR1932VK014 -->
+        <device Dname="MDR1923VK014" >
+          <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
+          <compile    header="SPL/Devices/MDR1923VK014/MDR_1923VK014.h" define="USE_MDR1923VK014"/>
+          <!--debug      svd="Keil/SVD/MDR1923VK014.svd"/-->
+          <!--memory     id="IROM1"                          start="0x00000000"  size="0x2000"    startup="1"   default="1"/-->
+          <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
+          <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
+          <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
+
+          <!--description>
+                (1986VK234 RUS)
+                Core:
+                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 36 MHz
+                 - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+                 - memory Protection Unit (MPU)
+                 - 24-bit SysTick Timer
+
+                Memory:
+                 - 64 KBytes of Flash memory (ISP and IAP)
+                 - 16 KBytes of SRAM
+
+                Supply and Clock rate:
+                 - internal regulator for core voltage supply
+                 - built-in power control system
+                 - internal battery domain
+                 - internal 8 MHz RC clock generator with calibration
+                 - internal 40 kHz RC clockgenerator with calibration
+                 - external oscillator 2 .. 16 MHz
+                 - external oscillator 32 KHz
+                 - on-board PLL for clock frequency
+                 - dedicated PLL for USB clock frequency
+
+                Low power consumption modes:
+                 - Sleep, Stop and Standby
+                 - battery domain with RTC and backup registers
+
+                Analog features:
+                 - 12-bit ADC (8 channels)
+                 - 24-bit Sigma-Delta ADC (3 channels) conversion range: 0 to 3.6 V
+                 - temperature sensor
+
+                Peripheral features:
+                 - DMA controller (32 channel)
+                 - 2 Synch. 16-bit Timers (Input Capture, Output Compare, PWM)
+                 - 2 * UART
+                 - 1 * SPI
+                 - 1 * I2C
+                 - LCD Controller
+                 - 47 GPIO pins
+
+                Debug mode:
+                 - 1 SWD
+          </description>
+          <feature type="UART"  n="2"   name="UART Interface up to 2.25 Mbit/s"/>
+          <feature type="VCC"   n="3.0" m="3.6"/>
+          <feature type="ADC"   n="1"   m="12"/>
+          <feature type="SPI"   n="1"   name="SPI Interface"/>
+          <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
+        </device>
+
+        <!-- MDR_ESila -->
+        <device Dname="MDR_ESila" >
+          <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
+          <compile    header="SPL/Devices/MDR_ESila/MDR_ESila.h" define="USE_ESila"/>
+          <!--debug      svd="Keil/SVD/MDR_ESila.svd"/-->
+          <memory     id="IROM1"                          start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
+          <memory     id="IRAM1"                          start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
+          <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
+          <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
+
+          <!--description>
+                (1986VK234 RUS)
+                Core:
+                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 36 MHz
+                 - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+                 - memory Protection Unit (MPU)
+                 - 24-bit SysTick Timer
+
+                Memory:
+                 - 64 KBytes of Flash memory (ISP and IAP)
+                 - 16 KBytes of SRAM
+
+                Supply and Clock rate:
+                 - internal regulator for core voltage supply
+                 - built-in power control system
+                 - internal battery domain
+                 - internal 8 MHz RC clock generator with calibration
+                 - internal 40 kHz RC clockgenerator with calibration
+                 - external oscillator 2 .. 16 MHz
+                 - external oscillator 32 KHz
+                 - on-board PLL for clock frequency
+                 - dedicated PLL for USB clock frequency
+
+                Low power consumption modes:
+                 - Sleep, Stop and Standby
+                 - battery domain with RTC and backup registers
+
+                Analog features:
+                 - 12-bit ADC (8 channels)
+                 - 24-bit Sigma-Delta ADC (3 channels) conversion range: 0 to 3.6 V
+                 - temperature sensor
+
+                Peripheral features:
+                 - DMA controller (32 channel)
+                 - 2 Synch. 16-bit Timers (Input Capture, Output Compare, PWM)
+                 - 2 * UART
+                 - 1 * SPI
+                 - 1 * I2C
+                 - LCD Controller
+                 - 47 GPIO pins
+
+                Debug mode:
+                 - 1 SWD
+          </description>
+          <feature type="UART"  n="2"   name="UART Interface up to 2.25 Mbit/s"/>
+          <feature type="VCC"   n="3.0" m="3.6"/>
+          <feature type="ADC"   n="1"   m="12"/>
+          <feature type="SPI"   n="1"   name="SPI Interface"/>
+          <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
         </device>
 
       </subFamily>
@@ -572,22 +695,15 @@
 
       <subFamily DsubFamily="Cortex-M3 with DSP">
         <!--Core description-->
-        <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="100000000"/>
-        <!--debug      svd="Keil/SVD/MDR1901VC1.svd"/>
-        <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
-        <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
-        <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/-->
-        <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
-
-        <!-- MDR1901VC1 -->
         <device Dname="MDR1901VC1">
+          <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="100000000"/>
+          <compile    header="SPL/Devices/MDR1901VC1/MDR_1901VC1.h" define="USE_MDR1901VC1"/>          
           <debug      svd="Keil/SVD/MDR1901VC1.svd"/>
           <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
           <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
 
-          <compile    header="SPL/Devices/MDR1901VC1/MDR_1901VC1.h" define="USE_MDR1901VC1"/>
           <description>
             (11901VC1 RUS)
             Core:
@@ -643,6 +759,64 @@
         </device> 
 
       </subFamily>
+
+      <subFamily DsubFamily="Cortex-M4F">
+        <!--Core description-->
+        <device Dname="MDR1986VE8">
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p0" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="60000000"/>
+          <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE8.h" define="USE_MDR1986VE8"/>
+          <!--debug      svd="IDE\Keil\SVD\ARMCM4.svd"/-->
+          <memory     id="IROM1"                          start="0x20006000"  size="0x2000"    startup="1"   default="1"/>
+          <memory     id="IRAM1"                          start="0x20000000"  size="0x6000"    init   ="1"   default="1"/>
+          <!--algorithm  name="Flash\"           start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/-->
+          <description>
+            (1986BE8 RUS)
+            Core:
+             - 32-bit ARM Cortex-M4 processor, running at frequencies of up to 60 MHz
+             - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+             - memory Protection Unit (MPU)
+             - 24-bit SysTick Timer
+
+            Memory:
+             - 128 KBytes of OTP w\ECC(SEC-DEC)
+             - 32 KBytes of SRAM w\ECC(SEC-DEC)
+             - external system bus controller w\ECC(SEC-DEC)
+
+            Supply and Clock rate:
+             - internal regulator for core voltage supply
+             - built-in power control system
+             - internal battery domain
+             - internal 8 MHz RC clock generator with calibration
+             - internal 40 kHz RC clockgenerator with calibration
+             - 2x external oscillator 1 .. 30 MHz
+             - 3x on-board PLL for clock frequency
+
+            Low power consumption modes:
+             - Sleep, Stop and Standby
+             - battery domain with RTC and backup registers
+
+            Analog features:
+             - 2x 12-bit ADC (16 channels)
+             - 2x 12-bit DAC
+
+            Peripheral features:
+             - EthernetMAC 10/100
+             - EthernetPHY 10
+             - SpaceWire
+             - ARINC 429 
+             - MILSTD
+             - 1xCAN, 1xSSP, 1xUART, 1xDMA, 4xTimer
+             - RTC
+             - WDG
+             - 160x GPIO
+
+            Debug mode:
+             - 2x JTAG
+          </description>
+        </device>
+
+      </subFamily>
+
 
     </family>
   </devices>
@@ -722,6 +896,18 @@
       <description>Cortex-M3 device with DSP Core</description>
       <accept Dname="MDR1901VC1"/>
     </condition>
+    <condition id="CON_MDR1986VE8">
+      <description>Cortex-M4F device</description>
+      <accept Dname="MDR1986VE8"/>
+    </condition>
+    <condition id="CON_MDR1923VK014">
+      <description>Cortex-M0 device</description>
+      <accept Dname="MDR1923VK014"/>
+    </condition>
+    <condition id="CON_ESila">
+      <description>Cortex-M4F device</description>
+      <accept Dname="MDR_ESila"/>
+    </condition>
     <condition id="Startup ARM">
       <description>Startup assembler file for ARMCC</description>
       <require Tcompiler="ARMCC"/>
@@ -755,84 +941,131 @@
       <description>System Startup for Cortex-M0 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE4/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE4/startup_MDR1986VE4.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VE4/system_MDR1986VE4.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VE4/system_MDR1986VE4.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE4.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>System Startup for Cortex-M0 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VK214/"/>
         <file category="source"  name="SPL/Devices/MDR1986VK214/startup_MDR1986VK214.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VK214/system_MDR1986VK214.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VK214/system_MDR1986VK214.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVK214.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>System Startup for Cortex-M0 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VK234/"/>
         <file category="source"  name="SPL/Devices/MDR1986VK234/startup_MDR1986VK234.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VK234/system_MDR1986VK234.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VK234/system_MDR1986VK234.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVK234.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE1">
       <description>System Startup for Cortex-M1 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE1/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE1/startup_MDR1986VE1.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VE1/system_MDR1986VE1.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VE1/system_MDR1986VE1.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE1.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE3">
       <description>System Startup for Cortex-M1 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE3/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE3/startup_MDR1986VE3.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VE3/system_MDR1986VE3.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VE3/system_MDR1986VE3.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE3.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE9x">
       <description>System Startup for Cortex-M3 device series</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1986VE9x/"/>
         <file category="source"  name="SPL/Devices/MDR1986VE9x/startup_MDR1986VE9x.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1986VE9x/system_MDR1986VE9x.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1986VE9x/system_MDR1986VE9x.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE9x.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1901VC1">
       <description>System Startup for Cortex-M3 device with DSP Core</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
         <file category="include" name="SPL/Devices/Defines/"/>
         <file category="include" name="SPL/Devices/MDR1901VC1/"/>
         <file category="source"  name="SPL/Devices/MDR1901VC1/startup_MDR1901VC1.s" attr="config" condition="Startup ARM" version="2.0.0"/>
         <file category="source"  name="SPL/Devices/MDR1901VC1/system_MDR1901VC1.c"  attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Devices/MDR1901VC1/system_MDR1901VC1.h"  attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/Config/MDR_Config.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVC1.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
+
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE8">
+      <description>System Startup for Cortex-M4F</description>
+      <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
+        <file category="include" name="SPL/Devices/Defines/"/>
+        <file category="include" name="SPL/Devices/MDR1986VE8/"/>
+        <file category="source"  name="SPL/Devices/MDR1986VE8/startup_MDR1986VE8.s" attr="config" condition="Startup ARM" version="2.0.0"/>
+        <file category="source"  name="SPL/Devices/MDR1986VE8/system_MDR1986VE8.c"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Devices/MDR1986VE8/system_MDR1986VE8.h"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE8.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1923VK014">
+      <description>System Startup for Cortex-M4F</description>
+      <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
+        <file category="include" name="SPL/Devices/Defines/"/>
+        <file category="include" name="SPL/Devices/MDR1923VK014/"/>
+        <file category="source"  name="SPL/Devices/MDR1923VK014/startup_MDR1923VK014.s" attr="config" condition="Startup ARM" version="2.0.0"/>
+        <file category="source"  name="SPL/Devices/MDR1923VK014/system_MDR1923VK014.c"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Devices/MDR1923VK014/system_MDR1923VK014.h"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVK014.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_ESila">
+      <description>System Startup for Cortex-M4F</description>
+      <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
+        <file category="include" name="SPL/Devices/Defines/"/>
+        <file category="include" name="SPL/Devices/MDR_ESila/"/>
+        <file category="source"  name="SPL/Devices/MDR_ESila/startup_ESila.s" attr="config" condition="Startup ARM" version="2.0.0"/>
+        <file category="source"  name="SPL/Devices/MDR_ESila/system_ESila.c"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Devices/MDR_ESila/system_ESila.h"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigESila.h" attr="config" version="2.0.0"/>
       </files>
     </component>
 

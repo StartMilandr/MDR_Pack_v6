@@ -51,10 +51,10 @@ static void TestSSP_Init(void)
   cfgSSPex.cfgSSP->DivPSR_2_254 = 254;
   
   //  Init  Master  
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   //  Init  Slave
-  MDR_SSPex_Init(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);  
   
   LCD_ShowInit(SSP_MASTER, "IRQ Bits");

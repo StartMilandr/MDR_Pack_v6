@@ -42,11 +42,11 @@ static void TestSSP_Init(void)
   cfgSSPex.cfgSSP->FrameFormat = SSP_Frame_Microwire;
   
   //  Init  Master
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   
   //  Init  Slave
-  MDR_SSPex_Init(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);
 
   LCD_ShowInit(SSP_MASTER, "MCR Bits");

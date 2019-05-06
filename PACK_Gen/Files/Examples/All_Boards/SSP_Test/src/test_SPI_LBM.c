@@ -41,7 +41,7 @@ static void TestSSP_Init(void)
   cfgSSPex.cfgSSP->DivPSR_2_254 = 2;
   
   //  Init
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
   MDR_SSPex_EnableMaster(SSP_MASTER, true);
   
   LCD_ShowInit(SSP_MASTER, "LBM");

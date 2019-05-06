@@ -10,9 +10,6 @@ MDR_SSP_Config cfgSSP = {
   .DivSCR_0_255 = 0,                // 0 - 255, Serial Clock Rate
   .DivPSR_2_254 = 14,               // 2 - 254, EVEN ONLY! Clock prescaller
                                     // 14 - делитель, при котором у меня на плате обмены мастера со слейвом проходит успешно
-  //  DMA
-  .DMA_TX_Enable = MDR_Off,
-  .DMA_RX_Enable = MDR_Off
 };
 
 MDR_SSP_ConfigEx cfgSSPex = {

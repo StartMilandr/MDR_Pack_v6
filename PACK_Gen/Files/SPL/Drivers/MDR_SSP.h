@@ -26,9 +26,6 @@ typedef struct {
   // BitRate                                    // BitRate = SSP_Clock / (PSR * (1 + SCR))
   uint8_t               DivSCR_0_255;           // 0 - 255, Serial Clock Rate
   uint8_t               DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
-  //  DMA
-  MDR_OnOff             DMA_TX_Enable;
-  MDR_OnOff             DMA_RX_Enable;
 } MDR_SSP_Config;
 
 
@@ -157,6 +154,15 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
 //   - тактирование блока от частоты SSP_Clock.
 //   - активацию прерываний.
 //  Т.е. обеспечавают полную инициализацию блока "под ключ".
+
+void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_BRG_DIV_128 ClockBRG);
+void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx);
+
+void MDR_SSP_EnableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ);
+void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx);
+
+//  ---------     Будет удалено Begin --------------
+//  Оставлено для работоспособности примеров к паку
 typedef struct {
   //  Делитель частоты SSP_Clock
   MDR_BRG_DIV_128 ClockBRG;
@@ -167,8 +173,9 @@ typedef struct {
   bool activateNVIC_IRQ;
 } MDR_SSP_ConfigEx;
 
-void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx);
-void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx);
+
+void MDR_SSPex_InitEx  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx);
+//  ---------     Будет удалено End --------------
 
 // Следующие функции повтояют варинт без "ex" для единообразия вызова. Вместо структуры блока SSPx, просто подается расширенная exSSPx.
 // Т.к. в коде проще использовать одну структуру для вызова всех функций. Но выборка адреса exSSPx->SSPx занимает дополнительное время.

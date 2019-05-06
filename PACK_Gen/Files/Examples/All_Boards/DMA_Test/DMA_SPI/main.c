@@ -92,18 +92,8 @@ MDR_SSP_Config cfgSSP = {
   // BitRate                        // BitRate = SSP_Clock / (PSR * (1 + SCR))
   .DivSCR_0_255 = 0,                // 0 - 255, Serial Clock Rate
   .DivPSR_2_254 = 14,               // 2 - 254, EVEN ONLY! Clock prescaller                                    
-  //  DMA
-  .DMA_TX_Enable = MDR_Off,
-  .DMA_RX_Enable = MDR_Off
 };
 
-//  SPI
-MDR_SSP_ConfigEx cfgSSPex = {
-  .ClockBRG         = MDR_BRG_div1,
-  .cfgSSP           = &cfgSSP,
-  .activateNVIC_IRQ = false,
-  .priorityIRQ      = 0
-};
 
 //  ----------- Application  ----------
 MDR_DMA_ChCtrl RestartCtrl_TX;
@@ -138,13 +128,13 @@ int main(void)
 #endif  
 
   //  Init  Master SPI
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_BRG_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);  
   MDR_SSP_InitPinsGPIO(&SSP_MASTER_PINS, MDR_PIN_MAXFAST);
   
 #ifndef  SINGLE_SPI_MODE
   //  Init  Slave SPI
-  MDR_SSPex_Init(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_BRG_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);   
   MDR_SSP_InitPinsGPIO(&SSP_SLAVE_PINS, MDR_PIN_MAXFAST);  
 #endif

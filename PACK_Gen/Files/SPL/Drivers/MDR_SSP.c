@@ -107,7 +107,6 @@ void MDR_SSP_DeInit(MDR_SSP_Type *SSPx)
 void MDR_SSP_Init(MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg)
 {  
   uint32_t regCR0;
-  uint32_t regDMA;
   
   //  Forced Disable SSP
   SSPx->CR1 = 0;
@@ -120,25 +119,11 @@ void MDR_SSP_Init(MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg)
   if (cfg->FrameFormat == SSP_Frame_SPI)
     regCR0 |= VAL2FLD_Pos(cfg->SPI_Mode, MDR_SSP_CR0_SPO_Pos);
 
-  regDMA = VAL2FLD_Pos(cfg->DMA_TX_Enable, MDR_SSP_DMACR_TXDMAE_Pos)
-         | VAL2FLD_Pos(cfg->DMA_RX_Enable, MDR_SSP_DMACR_RXDMAE_Pos);
-
-//  Возможно стоит вернуть?  
-//  if (cfg->pCfgIRQ == NULL)
-//    regIrqMask = 0;
-//  else
-//  {
-//    regIrqMask =  VAL2FLD_Pos(cfg->pCfgIRQ->OnRxOver_IRQEna,      MDR_SSP_IRQ_RxOver_Pos)
-//                | VAL2FLD_Pos(cfg->pCfgIRQ->OnRxTimeout_IRQEna,   MDR_SSP_IRQ_RxTimeout_Pos)
-//                | VAL2FLD_Pos(cfg->pCfgIRQ->OnRxHalfFull_IRQEna,  MDR_SSP_IRQ_RxHalfFull_Pos)
-//                | VAL2FLD_Pos(cfg->pCfgIRQ->OnTxHalfEmpty_IRQEna, MDR_SSP_IRQ_TxHalfEmpty_Pos);
-//  }  
-  
   //  Apply
   SSPx->CR0   = regCR0;
   SSPx->CPSR  = (uint32_t)cfg->DivPSR_2_254;
   SSPx->IMSC  = 0;
-  SSPx->DMACR = regDMA;
+  SSPx->DMACR = 0;
   
   SSPx->ICR   = MDR_SSP_ICR_RORIC_Msk | MDR_SSP_ICR_RTIC_Msk;  
   
@@ -286,7 +271,7 @@ MDR_SSP_Events MDR_SSP_GetEventIRQ(MDR_SSP_Type *SSPx)
 
 //  ===============   Функции управления через расширенную структуру блока MDR_SSP_TypeEx ==================
 
-void MDR_SSPex_Init (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx)
+void MDR_SSPex_InitEx (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx)
 {
   //  Подача тактирования блока
   MDR_PerClock_Enable(&exSSPx->CfgClock);  
@@ -300,6 +285,28 @@ void MDR_SSPex_Init (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx)
     NVIC_EnableIRQ(exSSPx->SSPx_IRQn);
     NVIC_SetPriority(exSSPx->SSPx_IRQn, cfgEx->priorityIRQ);
   }     
+}
+
+void MDR_SSP_EnableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ)
+{
+  NVIC_EnableIRQ(exSSPx->SSPx_IRQn);
+  NVIC_SetPriority(exSSPx->SSPx_IRQn, priorityIRQ);
+}
+
+void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx)
+{
+  NVIC_DisableIRQ(exSSPx->SSPx_IRQn);
+}
+  
+
+void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_BRG_DIV_128 ClockBRG)
+{
+  //  Подача тактирования блока
+  MDR_PerClock_Enable(&exSSPx->CfgClock);  
+  //  Включение частоты SSP_Clock
+  MDR_PerClock_GateOpen(&exSSPx->CfgClock, ClockBRG);      
+  //  Инициализация параметров SSP
+  MDR_SSP_Init(exSSPx->SSPx, cfgSSP);
 }
 
 void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx)

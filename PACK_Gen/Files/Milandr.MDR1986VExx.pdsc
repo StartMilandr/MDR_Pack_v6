@@ -7,9 +7,10 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.01" date="2019-04-29">
+    <release version="2.02" date="2019-05-07">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
+      - 2.02: 1636RR52 flash memory driver added
     </release>
   </releases>
 
@@ -26,7 +27,6 @@
       <book name="Books/RST.pdf" title="Clock Quick Reference"/>
       <book name="Books/GPIO.pdf" title="GPIO Quick Reference"/>
       <book name="Books/EEPROM.pdf" title="EEPROM Quick Reference"/>
-      <book name="Books/EEPROM.pdf" title="EEPROM Quick Reference"/>
       <book name="Books/BKP.pdf" title="BKP and RTC Quick Reference"/>
       <book name="Books/ADC.pdf" title="ADC Quick Reference"/>
       <book name="Books/SSP.pdf" title="SSP Quick Reference"/>
@@ -35,8 +35,7 @@
       <book name="Books/ADCUI_VK214.pdf" title="ADCUI VK214 Quick Reference"/>
       <book name="Books/ADCUI_VK234.pdf" title="ADCUI VK234 Quick Reference"/>
       <book name="Books/WDT.pdf" title="WWDT and IWDT Quick Reference"/>
-      <book name="Books/WDT.pdf" title="WWDT and IWDT Quick Reference"/>
-      <book name="Books/LCD_VK214.pdf" title="LCD VK214 Clock Quick Reference"/>
+      <book name="Books/LCD_VK214.pdf" title="LCD VK214 Quick Reference"/>
       <book name="Books/Power.pdf" title="Power Quick Reference"/>
       <book name="Books/DMA.pdf" title="DMA Quick Reference"/>
       <book name="Books/CRC_VK234.pdf" title="CRC VK234 Quick Reference"/>
@@ -1099,6 +1098,7 @@
     <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM1CM3">
       <description>EEPROM Control</description>
       <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM.c" version="2.0.0"/>
       </files>
@@ -1107,6 +1107,7 @@
     <component Cclass="Drivers" Cgroup="EEPROM" Cversion="2.0" condition="CON_MDR_CM0">
       <description>EEPROM Control</description>
       <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM_18MHz.c" version="2.0.0"/>
       </files>
@@ -1115,6 +1116,7 @@
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Backup and RTC</description>
       <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_BKP_RTC.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_BKP_RTC.c" version="2.0.0"/>
       </files>
@@ -1185,75 +1187,91 @@
     <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>ADCUI driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_ADCUI_VK214.h"/>
-        <file category="source" name="SPL/Drivers/MDR_ADCUI_VK214.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_ADCUI_VK214.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_ADCUI_VK214.c"/>
       </files>
     </component>
     <!-- ADCUI Driver -->
     <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VK234">
       <description>ADCUI driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_ADCUI_VK234.h"/>
-        <file category="source" name="SPL/Drivers/MDR_ADCUI_VK234.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_ADCUI_VK234.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_ADCUI_VK234.c"/>
       </files>
     </component>    
 	  <!-- WWDG Driver -->
     <component Cclass="Drivers" Cgroup="WWDG" Cversion="2.0" condition="CON_MDR_ALL">
       <description>WWDG driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_WWDT.h"/>
-        <file category="source" name="SPL/Drivers/MDR_WWDT.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_WWDT.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_WWDT.c"/>
       </files>
     </component>    
     <!-- IWDG Driver -->
     <component Cclass="Drivers" Cgroup="IWDG" Cversion="2.0" condition="CON_MDR_ALL">
       <description>IWDG driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_IWDT.h"/>
-        <file category="source" name="SPL/Drivers/MDR_IWDT.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_IWDT.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_IWDT.c"/>
       </files>
     </component>
     <!-- LCD Driver -->
     <component Cclass="Drivers" Cgroup="LCD" Cversion="2.0" condition="CON_MDR1986VK214">
       <description>LCD driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_LCD_VK214.h"/>
-        <file category="source" name="SPL/Drivers/MDR_LCD_VK214.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_LCD_VK214.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_LCD_VK214.c"/>
       </files>
     </component>
     <!-- POWER Driver -->
     <component Cclass="Drivers" Cgroup="POWER" Cversion="2.0" condition="CON_MDR_ALL">
       <description>POWER driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_Power.h"/>
-        <file category="source" name="SPL/Drivers/MDR_Power.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_Power.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_Power.c"/>
       </files>
     </component>
     <!-- DMA Driver -->
     <component Cclass="Drivers" Cgroup="DMA" Cversion="1.9" condition="CON_HAS_DMA">
       <description>DMA driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_DMA.h"/>
-        <file category="source" name="SPL/Drivers/MDR_DMA.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_DMA.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_DMA.c"/>
       </files>
     </component>     
     <!-- CRC  Driver -->
     <component Cclass="Drivers" Cgroup="CRC" Cversion="2.0" condition="CON_HAS_CRC_VE4x">
       <description>CRC driver for 1986VE4 and 1986VK234</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_CRC.h"/>
-        <file category="source" name="SPL/Drivers/MDR_CRC_VE4x.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_CRC.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_CRC_VE4x.c"/>
       </files>
     </component>
     <!-- I2C Driver -->
     <component Cclass="Drivers" Cgroup="I2C" Cversion="2.0" condition="CON_HAS_I2C">
       <description>I2C driver</description>
       <files>
-        <file category="header" name="SPL/Drivers/MDR_I2C.h"/>
-        <file category="source" name="SPL/Drivers/MDR_I2C.c"/>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_I2C.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_I2C.c"/>
       </files>
     </component>    
-
+    <!-- 1636RR52 Driver -->
+    <component Cclass="Drivers" Cgroup="1636RR52" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>1636RR52 flash memory SPI driver</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_1636RR52.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_1636RR52.c"/>
+      </files>
+    </component> 
 
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
@@ -1347,9 +1365,23 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Board Support" Cgroup="SSP_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART pins definitions</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/MDRB_SSP_PinSelect.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_SSP_PinSelect.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>    
     <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
       <description>UART pins definitions</description>
       <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>      
         <file category="header"  name="SPL/Boards/MDRB_Timer_PinSelect.h" version="2.0.0"/>
         <file category="source"  name="SPL/Boards/MDRB_Timer_PinSelect.c" version="2.0.0"/>
       </files>
@@ -1587,6 +1619,11 @@
       <description>UART send and receive throught DMA</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="DMA_UART.uvprojx"/></project>
+    </example>
+    <example name="1636RR52_Test" folder="Examples/All_Boards/1636RR52_Test" doc="ReadMe.md" version="2.0.0">
+      <description>1636RR52 flash memory IC operations test</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="1636RR52_Test.uvprojx"/></project>
     </example>
 
     <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">

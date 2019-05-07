@@ -8,10 +8,10 @@ Phase2: Static Data & Dependencies check
 
 Phase3: RTE Model based Data & Dependencies check
 
-*** WARNING M380: C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Milandr.MDR1986VExx.pdsc (Line 233) 
+*** WARNING M380: C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Milandr.MDR1986VExx.pdsc (Line 232) 
   No description found for [Milandr:99] 'MDR1923VK014'
 
-*** WARNING M380: C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Milandr.MDR1986VExx.pdsc (Line 294) 
+*** WARNING M380: C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Milandr.MDR1986VExx.pdsc (Line 293) 
   No description found for [Milandr:99] 'MDR_ESila'
 
 

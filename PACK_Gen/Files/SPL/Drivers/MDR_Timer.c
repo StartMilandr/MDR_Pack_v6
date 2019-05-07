@@ -507,7 +507,7 @@ void MDR_TimerCh_DeInit(MDR_TIMER_CH_Type *TIMER_CH)
 // ------------  Простейшая инициализация вывода импульсов - PulsePWM  -----------------------
 void MDR_TimerPulse_InitPulse  (MDR_TIMER_CH_Type *TIMER_CH, uint_tim period, uint8_t widthPerc)
 {
-  uint_tim width = period / 100 * widthPerc;
+  uint_tim width = period * widthPerc / 100;
   MDR_TimerCh_InitPWM(TIMER_CH, NULL, MDR_TIM_PWM_Ref1_ltCCR, width);
 }
 

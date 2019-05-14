@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
+  <vendor>Milandr</vendor>                                       <!-- device vendor name -->
+  <vendorID>Milandr</vendorID>                                    <!-- device vendor short name -->
+  <name>MDR_ESila</name>
+  <series>ARMCM4</series>
+  <version>2.0</version>                                          <!-- version of this description, adding CMSIS-SVD 1.1 tags -->
+  <description>ARM 32-bit Cortex-M4 Microcontroller based device, CPU clock up to 160MHz, etc. </description>
+
+  <cpu>                      
+    <name>CM4</name>
+    <revision>r0p0</revision>
+    <endian>little</endian>
+    <mpuPresent>true</mpuPresent>
+    <fpuPresent>true</fpuPresent>
+    <nvicPrioBits>3</nvicPrioBits>
+    <vendorSystickConfig>false</vendorSystickConfig>
+  </cpu>
+  <addressUnitBits>8</addressUnitBits>                            <!-- byte addressable memory -->
+  <width>32</width>                                               <!-- bus width is 32 bits -->
+  <!-- default settings implicitly inherited by subsequent sections -->
+  <size>32</size>                                                 <!-- this is the default size (number of bits) of all peripherals
+                                                                       and register that do not define "size" themselves -->
+  <access>read-write</access>                                     <!-- default access permission for all subsequent registers -->
+  <resetValue>0x00000000</resetValue>                             <!-- by default all bits of the registers are initialized to 0 on reset -->
+  <resetMask>0xFFFFFFFF</resetMask>                               <!-- by default all 32Bits of the registers are used -->
+
+  <!-- Peripherals -->
+  <peripherals>
+    <!-- #RST -->
+    <!-- #BKP -->
+    <!-- #FTMODE -->
+    <!-- #WDT -->
+    <!-- #ROM -->
+    <!-- #EEPROM -->
+    <!-- #RAMC0 -->
+    <!-- #RAMC1 -->
+    <!-- #RAMD0 -->
+    <!-- #RAMD1 -->
+    <!-- #EBC -->
+    <!-- #GPIOs -->
+    <!-- #CAN_FD -->
+    <!-- #MILs -->
+    <!-- #SSPs  -->
+    <!-- #CANs -->
+    <!-- #UARTs -->
+    <!-- #USB -->
+    <!-- #TIMERs -->
+    <!-- #CAPs -->
+    <!-- #QEPs -->
+    <!-- #PWMs -->
+    <!-- #ADC -->
+    <!-- #DAC -->
+    <!-- #COMP -->
+    <!-- #I2C -->
+    <!-- #CORDIC -->
+    <!-- #DMA -->
+    <!-- #ICACHE -->
+    <!-- #DCACHE -->
+    
+    <!-- peripherals end-->
+  </peripherals>
+
+</device>  

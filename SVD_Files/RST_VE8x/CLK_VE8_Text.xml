@@ -1,0 +1,1532 @@
+#RST_SIZE_VE8VK014
+<size>0x1D0</size>
+
+#RST_SIZE_ESila
+<size>0x1DC</size>
+
+
+#SEL_PLL_ESila
+<enumeratedValue><name>PLL3</name><description>MAX_CLOCK is PLL3</description><value>11</value></enumeratedValue>
+
+#SEL_PLL_VK014
+<enumeratedValue><name>PLL3</name><description>MAX_CLOCK is PLL3</description><value>11</value></enumeratedValue>
+<enumeratedValue><name>PLL4</name><description>MAX_CLOCK is PLL4</description><value>12</value></enumeratedValue>
+<enumeratedValue><name>PLL5</name><description>MAX_CLOCK is PLL5</description><value>13</value></enumeratedValue>
+<enumeratedValue><name>PLL6</name><description>MAX_CLOCK is PLL6</description><value>14</value></enumeratedValue>
+<enumeratedValue><name>PLL7</name><description>MAX_CLOCK is PLL7</description><value>15</value></enumeratedValue>
+
+#PER0_MASK_VE8
+<resetMask>0x27C3E000</resetMask>
+
+#PER0_MASK_VK14
+<resetMask>0x67E3E81F</resetMask>
+
+#PER0_MASK_ESila
+<resetMask>0xFFE1E000</resetMask>
+
+#PER0_VK14_B
+<field>
+  <name>RST_CLK_EN</name>
+  <description>RST Clock Enable</description>
+  <bitRange>[0:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>          
+</field>
+<field derivedFrom="RST_CLK_EN">
+  <name>BKP_CLK_EN</name>
+  <description>BKP Clock Enable</description>
+  <bitRange>[1:1]</bitRange>
+</field>
+<field derivedFrom="RST_CLK_EN">
+  <name>PWR_CLK_EN</name>
+  <description>Power Clock Enable</description>
+  <bitRange>[2:2]</bitRange>
+</field>
+<field derivedFrom="RST_CLK_EN">
+  <name>FTMODE_CLK_EN</name>
+  <description>FTMODE Clock Enable</description>
+  <bitRange>[3:3]</bitRange>
+</field>
+<field derivedFrom="RST_CLK_EN">
+  <name>WDT_CLK_EN</name>
+  <description>WDT Clock Enable</description>
+  <bitRange>[4:4]</bitRange>
+</field>
+<field derivedFrom="RST_CLK_EN">
+  <name>DMA_CLK_EN</name>
+  <description>DMA Clock Enable</description>
+  <bitRange>[11:11]</bitRange>
+</field>
+
+#PER0_ESila
+<field derivedFrom="PortA_CLK_EN">
+  <name>SDIO_CLK_EN</name>
+  <description>SDIO Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>SSP1_CLK_EN</name>
+  <description>SSP1 Clock Enable</description>
+  <bitRange>[22:22]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>SSP2_CLK_EN</name>
+  <description>SSP2 Clock Enable</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>CAN1_CLK_EN</name>
+  <description>CAN1 Clock Enable</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>CAN2_CLK_EN</name>
+  <description>CAN2 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>UART1_CLK_EN</name>
+  <description>UART1 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>UART2_CLK_EN</name>
+  <description>UART2 Clock Enable</description>
+  <bitRange>[27:27]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>UART3_CLK_EN</name>
+  <description>UART3 Clock Enable</description>
+  <bitRange>[28:28]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>UART4_CLK_EN</name>
+  <description>UART4 Clock Enable</description>
+  <bitRange>[29:29]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>MIL_CLK_EN</name>
+  <description>MIL Clock Enable</description>
+  <bitRange>[30:30]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>USB_CLK_EN</name>
+  <description>USB Clock Enable</description>
+  <bitRange>[31:31]</bitRange>
+</field>
+
+#PER0_VE8
+<field derivedFrom="PortA_CLK_EN">
+  <name>PortE_CLK_EN</name>
+  <bitRange>[17:17]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>SPW1_CLK_EN</name>
+  <description>SPW1 Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM1_CLK_EN</name>
+  <description>TIM1 Clock Enable</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM2_CLK_EN</name>
+  <description>TIM2 Clock Enable</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM3_CLK_EN</name>
+  <description>TIM3 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM4_CLK_EN</name>
+  <description>TIM4 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>CAN1_CLK_EN</name>
+  <description>CAN1 Clock Enable</description>
+  <bitRange>[29:29]</bitRange>
+</field>
+
+#PER0_VK14_E
+<field derivedFrom="PortA_CLK_EN">
+  <name>PortE_CLK_EN</name>
+  <bitRange>[17:17]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>SPW1_CLK_EN</name>
+  <description>SPW1 Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>SPW2_CLK_EN</name>
+  <description>SPW2 Clock Enable</description>
+  <bitRange>[22:22]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM1_CLK_EN</name>
+  <description>TIM1 Clock Enable</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM2_CLK_EN</name>
+  <description>TIM2 Clock Enable</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM3_CLK_EN</name>
+  <description>TIM3 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>TIM4_CLK_EN</name>
+  <description>TIM4 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>CAN1_CLK_EN</name>
+  <description>CAN1 Clock Enable</description>
+  <bitRange>[29:29]</bitRange>
+</field>
+<field derivedFrom="PortA_CLK_EN">
+  <name>CAN2_CLK_EN</name>
+  <description>CAN2 Clock Enable</description>
+  <bitRange>[30:30]</bitRange>
+</field>
+
+
+#PER1_MASK_VE8
+<resetMask>0x07A828C4</resetMask>
+
+#PER1_MASK_VK14
+<resetMask>0xF42800FC</resetMask>
+
+#PER1_MASK_ESila
+<resetMask>0xFFFFFFFF</resetMask>
+
+#PER1_ESila
+<field>
+  <name>TIM1_CLK_EN</name>
+  <description>Timer1 Clock Enable</description>
+  <bitRange>[0:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>          
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>TIM2_CLK_EN</name>
+  <description>Timer1 Clock Enable</description>
+  <bitRange>[1:1]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>TIM3_CLK_EN</name>
+  <description>Timer3 Clock Enable</description>
+  <bitRange>[2:2]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>TIM4_CLK_EN</name>
+  <description>Timer4 Clock Enable</description>
+  <bitRange>[3:3]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CAP1_CLK_EN</name>
+  <description>Capture1 Clock Enable</description>
+  <bitRange>[4:4]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CAP2_CLK_EN</name>
+  <description>Capture2 Clock Enable</description>
+  <bitRange>[5:5]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CAP3_CLK_EN</name>
+  <description>Capture3 Clock Enable</description>
+  <bitRange>[6:6]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CAP4_CLK_EN</name>
+  <description>Capture4 Clock Enable</description>
+  <bitRange>[7:7]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>QEP1_CLK_EN</name>
+  <description>Encoder1 Clock Enable</description>
+  <bitRange>[8:8]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>QEP2_CLK_EN</name>
+  <description>Encoder2 Clock Enable</description>
+  <bitRange>[9:9]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM1_CLK_EN</name>
+  <description>PWM1 Clock Enable</description>
+  <bitRange>[10:10]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM2_CLK_EN</name>
+  <description>PWM2 Clock Enable</description>
+  <bitRange>[11:11]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM3_CLK_EN</name>
+  <description>PWM3 Clock Enable</description>
+  <bitRange>[12:12]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM4_CLK_EN</name>
+  <description>PWM4 Clock Enable</description>
+  <bitRange>[13:13]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM5_CLK_EN</name>
+  <description>PWM5 Clock Enable</description>
+  <bitRange>[14:14]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM6_CLK_EN</name>
+  <description>PWM6 Clock Enable</description>
+  <bitRange>[15:15]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM7_CLK_EN</name>
+  <description>PWM7 Clock Enable</description>
+  <bitRange>[16:16]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM8_CLK_EN</name>
+  <description>PWM8 Clock Enable</description>
+  <bitRange>[17:17]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>PWM9_CLK_EN</name>
+  <description>PWM9 Clock Enable</description>
+  <bitRange>[18:18]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>ADC1_CLK_EN</name>
+  <description>ADC1 Clock Enable</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>ADC2_CLK_EN</name>
+  <description>ADC2 Clock Enable</description>
+  <bitRange>[20:20]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>ADC3_CLK_EN</name>
+  <description>ADC3 Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>DAC1_CLK_EN</name>
+  <description>DAC1 Clock Enable</description>
+  <bitRange>[22:22]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>DAC2_CLK_EN</name>
+  <description>DAC2 Clock Enable</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>DAC3_CLK_EN</name>
+  <description>DAC3 Clock Enable</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>DAC4_CLK_EN</name>
+  <description>DAC4 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CMP1_CLK_EN</name>
+  <description>Comparator1 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CMP2_CLK_EN</name>
+  <description>Comparator2 Clock Enable</description>
+  <bitRange>[27:27]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CMP3_CLK_EN</name>
+  <description>Comparator3 Clock Enable</description>
+  <bitRange>[28:28]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CMP4_CLK_EN</name>
+  <description>Comparator4 Clock Enable</description>
+  <bitRange>[29:29]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>I2C_CLK_EN</name>
+  <description>I2C Clock Enable</description>
+  <bitRange>[30:30]</bitRange>
+</field>
+<field derivedFrom="TIM1_CLK_EN">
+  <name>CORDIC_CLK_EN</name>
+  <description>CORDIC Clock Enable</description>
+  <bitRange>[31:31]</bitRange>
+</field>
+
+
+#PER1_VE8
+<field>
+  <name>SSP1_CLK_EN</name>
+  <description>SSP1 Clock Enable</description>
+  <bitRange>[2:2]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>          
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>UART1_CLK_EN</name>
+  <description>UART1 Clock Enable</description>
+  <bitRange>[6:6]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>UART2_CLK_EN</name>
+  <description>UART2 Clock Enable</description>
+  <bitRange>[7:7]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>ARINK_RX_CLK_EN</name>
+  <description>ARINK_RX Clock Enable</description>
+  <bitRange>[11:11]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>ARINK_TX_CLK_EN</name>
+  <description>ARINK_TX Clock Enable</description>
+  <bitRange>[13:13]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>MIL1_CLK_EN</name>
+  <description>MIL1 Clock Enable</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>MIL2_CLK_EN</name>
+  <description>MIL2 Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>ADC1_CLK_EN</name>
+  <description>ADC1 Clock Enable</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>ADC2_CLK_EN</name>
+  <description>ADC2 Clock Enable</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>DAC1_CLK_EN</name>
+  <description>DAC1 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>DAC2_CLK_EN</name>
+  <description>DAC2 Clock Enable</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+
+#PER1_VK14
+<field>
+  <name>SSP1_CLK_EN</name>
+  <description>SSP1 Clock Enable</description>
+  <bitRange>[2:2]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>SSP2_CLK_EN</name>
+  <description>SSP2 Clock Enable</description>
+  <bitRange>[3:3]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>SSP3_CLK_EN</name>
+  <description>SSP3 Clock Enable</description>
+  <bitRange>[4:4]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>SSP4_CLK_EN</name>
+  <description>SSP4 Clock Enable</description>
+  <bitRange>[5:5]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>UART1_CLK_EN</name>
+  <description>UART1 Clock Enable</description>
+  <bitRange>[6:6]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>UART2_CLK_EN</name>
+  <description>UART2 Clock Enable</description>
+  <bitRange>[7:7]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>MIL1_CLK_EN</name>
+  <description>MIL1 Clock Enable</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>MIL2_CLK_EN</name>
+  <description>MIL2 Clock Enable</description>
+  <bitRange>[21:21]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>MIL3_CLK_EN</name>
+  <description>MIL3 Clock Enable</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>CRC_CLK_EN</name>
+  <description>CRC Clock Enable</description>
+  <bitRange>[28:28]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>ECC_CLK_EN</name>
+  <description>ECC Clock Enable</description>
+  <bitRange>[29:29]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>SSP5_CLK_EN</name>
+  <description>SSP5 Clock Enable</description>
+  <bitRange>[30:30]</bitRange>
+</field>
+<field derivedFrom="SSP1_CLK_EN">
+  <name>SSP6_CLK_EN</name>
+  <description>SSP6 Clock Enable</description>
+  <bitRange>[31:31]</bitRange>
+</field>
+
+#CLK_CTRL_EVENTS
+<field>
+  <name>EN_CHK_EVENT0</name>
+  <description>Go to HSI on lose active clock</description>
+  <bitRange>[16:16]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="EN_CHK_EVENT0">
+  <name>EN_CHK_EVENT1</name>
+  <description>Go to HSI if active clock is low</description>
+  <bitRange>[17:17]</bitRange>
+</field>
+<field derivedFrom="EN_CHK_EVENT0">
+  <name>EN_CHK_EVENT2</name>
+  <description>Go to HSI if active clock is High</description>
+  <bitRange>[18:18]</bitRange>
+</field>
+<field derivedFrom="EN_CHK_EVENT0">
+  <name>EN_CHK_EVENT3</name>
+  <description>Go to HSI if active clock is Highest</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+<field derivedFrom="EN_CHK_EVENT0">
+  <name>EN_CHK</name>
+  <description>Clock Checker enable</description>
+  <bitRange>[20:20]</bitRange>
+</field>
+<field>
+  <name>CLR_CHK_SHIFT_REG0</name>
+  <description>Clear Min Freq level</description>
+  <bitRange>[21:21]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="CLR_CHK_SHIFT_REG0">
+  <name>CLR_CHK_SHIFT_REG1</name>
+  <description>Clear Max Freq level</description>
+  <bitRange>[22:22]</bitRange>
+</field>
+<field derivedFrom="CLR_CHK_SHIFT_REG0">
+  <name>CLR_CHK_EVENT0</name>
+  <description>Clear no freq event</description>
+  <bitRange>[23:23]</bitRange>
+</field>
+<field derivedFrom="CLR_CHK_SHIFT_REG0">
+  <name>CLR_CHK_EVENT1</name>
+  <description>Clear low freq event</description>
+  <bitRange>[24:24]</bitRange>
+</field>
+<field derivedFrom="CLR_CHK_SHIFT_REG0">
+  <name>CLR_CHK_EVENT2</name>
+  <description>Clear high freq event</description>
+  <bitRange>[25:25]</bitRange>
+</field>
+<field derivedFrom="CLR_CHK_SHIFT_REG0">
+  <name>CLR_CHK_EVENT3</name>
+  <description>Clear highest freq event</description>
+  <bitRange>[26:26]</bitRange>
+</field>
+
+#CLK_STATUS_EVENTS
+<field>
+  <name>MAX_CLK_SHIFT_REG0</name>
+  <description>Max factor detected for SLOW</description>
+  <bitRange>[7:0]</bitRange>
+</field>
+<field>
+  <name>MAX_CLK_SHIFT_REG1</name>
+  <description>Max factor detected for FAST</description>
+  <bitRange>[15:8]</bitRange>
+</field>
+<field>
+  <name>EVENT0</name>
+  <description>Event SLOWEST</description>
+  <bitRange>[16:16]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="EVENT0">
+  <name>EVENT1</name>
+  <description>Event SLOW</description>
+  <bitRange>[17:17]</bitRange>
+</field>
+<field derivedFrom="EVENT0">
+  <name>EVENT2</name>
+  <description>Event FAST</description>
+  <bitRange>[18:18]</bitRange>
+</field>
+<field derivedFrom="EVENT0">
+  <name>EVENT3</name>
+  <description>Event FASTEST</description>
+  <bitRange>[19:19]</bitRange>
+</field>
+
+
+#SLI_RDY_ERR_VK14
+<field>
+  <name>Error</name>
+  <description>Clock Ready Error</description>
+  <bitRange>[21:21]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Inactive state</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Ready Fault</description><value>1</value></enumeratedValue>
+  </enumeratedValues>          
+</field> 
+
+
+#HSI_STAT_VE8
+<register>
+  <name>HSE_STAT</name>
+  <description>Clock Status Register</description>
+  <addressOffset>0x00000038</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x00100000</resetMask>
+  <fields> 
+    <field>
+      <name>READY</name>
+      <description>Clock Ready</description>
+      <bitRange>[20:20]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock not Ready</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock Ready</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+  </fields>
+</register>
+
+#HSI_STAT_VK14
+<register>
+  <name>HSE_STAT</name>
+  <description>Clock Status Register</description>
+  <addressOffset>0x00000038</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x00100000</resetMask>
+  <fields> 
+    <field>
+      <name>READY</name>
+      <description>Clock Ready</description>
+      <bitRange>[20:20]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock not Ready</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock Ready</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+    <field>
+      <name>Error</name>
+      <description>Clock Ready Error</description>
+      <bitRange>[21:21]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Inactive state</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Ready Fault</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>     
+  </fields>
+</register>
+
+#PLL0_CLK_VE8VK14
+<resetMask>0xFFFFFF1F</resetMask>
+<fields>
+  <field>
+    <name>PLL_Q</name>
+    <description>PLL Freq divider</description>
+    <bitRange>[3:0]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+      <enumeratedValue><name>div3</name><description>Divider</description><value>2</value></enumeratedValue>
+      <enumeratedValue><name>div4</name><description>Divider</description><value>3</value></enumeratedValue>
+      <enumeratedValue><name>div5</name><description>Divider</description><value>4</value></enumeratedValue>
+      <enumeratedValue><name>div6</name><description>Divider</description><value>5</value></enumeratedValue>
+      <enumeratedValue><name>div7</name><description>Divider</description><value>6</value></enumeratedValue>
+      <enumeratedValue><name>div8</name><description>Divider</description><value>7</value></enumeratedValue>
+      <enumeratedValue><name>div9</name><description>Divider</description><value>8</value></enumeratedValue>
+      <enumeratedValue><name>div10</name><description>Divider</description><value>9</value></enumeratedValue>
+      <enumeratedValue><name>div11</name><description>Divider</description><value>10</value></enumeratedValue>
+      <enumeratedValue><name>div12</name><description>Divider</description><value>11</value></enumeratedValue>
+      <enumeratedValue><name>div13</name><description>Divider</description><value>12</value></enumeratedValue>
+      <enumeratedValue><name>div14</name><description>Divider</description><value>13</value></enumeratedValue>
+      <enumeratedValue><name>div15</name><description>Divider</description><value>14</value></enumeratedValue>        
+      <enumeratedValue><name>div16</name><description>Divider</description><value>15</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field>
+    <name>DV</name>
+    <description>PLL Output Divider</description>
+    <bitRange>[4:4]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+    </enumeratedValues>          
+  </field>
+  <field>
+    <name>PLL_N</name>
+    <description>PLL Freq multiplier</description>
+    <bitRange>[14:8]</bitRange>    
+  </field>
+  <field>
+    <name>EN_CHK_EVENT0</name>
+    <description>Go to HSI on lose active clock</description>
+    <bitRange>[16:16]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT1</name>
+    <description>Go to HSI if active clock is low</description>
+    <bitRange>[17:17]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT2</name>
+    <description>Go to HSI if active clock is High</description>
+    <bitRange>[18:18]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT3</name>
+    <description>Go to HSI if active clock is Highest</description>
+    <bitRange>[19:19]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK</name>
+    <description>Clock Checker enable</description>
+    <bitRange>[20:20]</bitRange>
+  </field>
+  <field>
+    <name>CLR_CHK_SHIFT_REG0</name>
+    <description>Clear Min Freq level</description>
+    <bitRange>[21:21]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_SHIFT_REG1</name>
+    <description>Clear Max Freq level</description>
+    <bitRange>[22:22]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT0</name>
+    <description>Clear no freq event</description>
+    <bitRange>[23:23]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT1</name>
+    <description>Clear low freq event</description>
+    <bitRange>[24:24]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT2</name>
+    <description>Clear high freq event</description>
+    <bitRange>[25:25]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT3</name>
+    <description>Clear highest freq event</description>
+    <bitRange>[26:26]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0"> 
+    <name>PLL_ON</name>
+    <description>PLL Enable</description>
+    <bitRange>[27:27]</bitRange>
+  </field>
+  <field>
+    <name>PLL_RLD</name>
+    <description>PLL Reload</description>
+    <bitRange>[28:28]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>Reload</name><description>Reload PLL</description><value>1</value></enumeratedValue>
+    </enumeratedValues>      
+  </field>
+  <field>
+    <name>SELECT</name>
+    <description>Select PLL Input</description>
+    <bitRange>[31:29]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>HSI</name><description>HSI signal</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>HSI_div2</name><description>HSI/2 signal</description><value>1</value></enumeratedValue>
+      <enumeratedValue><name>HSE0</name><description>HSE0 signal</description><value>2</value></enumeratedValue>
+      <enumeratedValue><name>HSE0_div2</name><description>HSE0/2 signal</description><value>3</value></enumeratedValue>
+      <enumeratedValue><name>HSE1</name><description>HSE1 signal</description><value>4</value></enumeratedValue>
+      <enumeratedValue><name>HSE1_div2</name><description>HSE1/2 signal</description><value>5</value></enumeratedValue>
+    </enumeratedValues>      
+  </field>
+</fields>
+
+
+
+#PLL0_CLK_ESila
+<resetMask>0xFFFFFFFF</resetMask>
+<fields>
+  <field>
+    <name>PLL_Q</name>
+    <description>PLL Freq divider</description>
+    <bitRange>[4:0]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+      <enumeratedValue><name>div3</name><description>Divider</description><value>2</value></enumeratedValue>
+      <enumeratedValue><name>div4</name><description>Divider</description><value>3</value></enumeratedValue>
+      <enumeratedValue><name>div5</name><description>Divider</description><value>4</value></enumeratedValue>
+      <enumeratedValue><name>div6</name><description>Divider</description><value>5</value></enumeratedValue>
+      <enumeratedValue><name>div7</name><description>Divider</description><value>6</value></enumeratedValue>
+      <enumeratedValue><name>div8</name><description>Divider</description><value>7</value></enumeratedValue>
+      <enumeratedValue><name>div9</name><description>Divider</description><value>8</value></enumeratedValue>
+      <enumeratedValue><name>div10</name><description>Divider</description><value>9</value></enumeratedValue>
+      <enumeratedValue><name>div11</name><description>Divider</description><value>10</value></enumeratedValue>
+      <enumeratedValue><name>div12</name><description>Divider</description><value>11</value></enumeratedValue>
+      <enumeratedValue><name>div13</name><description>Divider</description><value>12</value></enumeratedValue>
+      <enumeratedValue><name>div14</name><description>Divider</description><value>13</value></enumeratedValue>
+      <enumeratedValue><name>div15</name><description>Divider</description><value>14</value></enumeratedValue>        
+      <enumeratedValue><name>div16</name><description>Divider</description><value>15</value></enumeratedValue>
+      <enumeratedValue><name>div17</name><description>Divider</description><value>16</value></enumeratedValue>
+      <enumeratedValue><name>div18</name><description>Divider</description><value>17</value></enumeratedValue>
+      <enumeratedValue><name>div19</name><description>Divider</description><value>18</value></enumeratedValue>
+      <enumeratedValue><name>div20</name><description>Divider</description><value>19</value></enumeratedValue>
+      <enumeratedValue><name>div21</name><description>Divider</description><value>20</value></enumeratedValue>
+      <enumeratedValue><name>div22</name><description>Divider</description><value>21</value></enumeratedValue>
+      <enumeratedValue><name>div23</name><description>Divider</description><value>22</value></enumeratedValue>
+      <enumeratedValue><name>div24</name><description>Divider</description><value>23</value></enumeratedValue>
+      <enumeratedValue><name>div25</name><description>Divider</description><value>24</value></enumeratedValue>
+      <enumeratedValue><name>div26</name><description>Divider</description><value>25</value></enumeratedValue>
+      <enumeratedValue><name>div27</name><description>Divider</description><value>26</value></enumeratedValue>
+      <enumeratedValue><name>div28</name><description>Divider</description><value>27</value></enumeratedValue>
+      <enumeratedValue><name>div29</name><description>Divider</description><value>28</value></enumeratedValue>
+      <enumeratedValue><name>div30</name><description>Divider</description><value>29</value></enumeratedValue>
+      <enumeratedValue><name>div31</name><description>Divider</description><value>30</value></enumeratedValue>        
+      <enumeratedValue><name>div32</name><description>Divider</description><value>31</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field>
+    <name>PLL_N</name>
+    <description>PLL Freq multiplier</description>
+    <bitRange>[13:5]</bitRange>    
+  </field>
+  <field>
+    <name>DV</name>
+    <description>PLL Output Divider</description>
+    <bitRange>[15:14]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+      <enumeratedValue><name>div4</name><description>Divider</description><value>2</value></enumeratedValue>
+      <enumeratedValue><name>div8</name><description>Divider</description><value>3</value></enumeratedValue>
+    </enumeratedValues>          
+  </field> 
+  <field>
+    <name>PLL_ReadyMode</name>
+    <description>Enable output after ready only</description>
+    <bitRange>[16:16]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field derivedFrom="PLL_ReadyMode">
+    <name>PLL_ON</name>
+    <description>PLL Enable</description>
+    <bitRange>[17:17]</bitRange>
+  </field>
+  <field>
+    <name>SELECT</name>
+    <description>Select PLL Input</description>
+    <bitRange>[20:18]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>HSI</name><description>HSI signal</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>HSI_div2</name><description>HSI/2 signal</description><value>1</value></enumeratedValue>
+      <enumeratedValue><name>HSE0</name><description>HSE0 signal</description><value>2</value></enumeratedValue>
+      <enumeratedValue><name>HSE0_div2</name><description>HSE0/2 signal</description><value>3</value></enumeratedValue>
+      <enumeratedValue><name>HSE1</name><description>HSE1 signal</description><value>4</value></enumeratedValue>
+      <enumeratedValue><name>HSE1_div2</name><description>HSE1/2 signal</description><value>5</value></enumeratedValue>
+    </enumeratedValues>      
+  </field>
+  <field>
+    <name>EN_CHK_EVENT0</name>
+    <description>Go to HSI on lose active clock</description>
+    <bitRange>[21:21]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT1</name>
+    <description>Go to HSI if active clock is low</description>
+    <bitRange>[22:22]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT2</name>
+    <description>Go to HSI if active clock is High</description>
+    <bitRange>[23:23]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK_EVENT3</name>
+    <description>Go to HSI if active clock is Highest</description>
+    <bitRange>[24:24]</bitRange>
+  </field>
+  <field derivedFrom="EN_CHK_EVENT0">
+    <name>EN_CHK</name>
+    <description>Clock Checker enable</description>
+    <bitRange>[25:25]</bitRange>
+  </field>
+  <field>
+    <name>CLR_CHK_SHIFT_REG0</name>
+    <description>Clear Min Freq level</description>
+    <bitRange>[26:26]</bitRange>
+    <enumeratedValues>
+      <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+      <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+    </enumeratedValues>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_SHIFT_REG1</name>
+    <description>Clear Max Freq level</description>
+    <bitRange>[27:27]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT0</name>
+    <description>Clear no freq event</description>
+    <bitRange>[28:28]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT1</name>
+    <description>Clear low freq event</description>
+    <bitRange>[29:29]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT2</name>
+    <description>Clear high freq event</description>
+    <bitRange>[30:30]</bitRange>
+  </field>
+  <field derivedFrom="CLR_CHK_SHIFT_REG0">
+    <name>CLR_CHK_EVENT3</name>
+    <description>Clear highest freq event</description>
+    <bitRange>[31:31]</bitRange>
+  </field>
+</fields>
+
+
+#PLL3_ESila
+<!-- PLL3_CLK -->
+<register derivedFrom="PLL0_CLK">
+  <name>PLL3_CLK</name>
+  <addressOffset>0x000000B4</addressOffset>
+</register> 
+<!-- PLL3_CHK0 -->
+<register derivedFrom="CPU_CHK1">
+  <name>PLL3_CHK0</name>
+  <addressOffset>0x000000B8</addressOffset>
+</register>    
+<!-- PLL3_CHK1 -->
+<register derivedFrom="CPU_CHK1">
+  <name>PLL3_CHK1</name>
+  <addressOffset>0x000000BC</addressOffset>
+</register>
+<!-- PLL3_CHK2 -->
+<register derivedFrom="CPU_CHK2">
+  <name>PLL3_CHK2</name>
+  <addressOffset>0x000000C0</addressOffset>
+</register>
+<!-- PLL3_STAT -->
+<register derivedFrom="LSE_STAT">
+  <name>PLL3_STAT</name>
+  <addressOffset>0x000000C4</addressOffset>
+</register>
+
+#ASYNC_CLK
+<enumeratedValue><name>PLL3</name><description>Clock Source</description><value>8</value></enumeratedValue>
+<enumeratedValue><name>PLL4</name><description>Clock Source</description><value>9</value></enumeratedValue>
+<enumeratedValue><name>PLL5</name><description>Clock Source</description><value>10</value></enumeratedValue>
+<enumeratedValue><name>PLL6</name><description>Clock Source</description><value>11</value></enumeratedValue>
+<enumeratedValue><name>PLL7</name><description>Clock Source</description><value>12</value></enumeratedValue>
+
+#PERIPH_CLK_ESila
+<!-- ETH_CLK -->
+<register>
+  <name>ETH_CLK</name>
+  <description>Async Clock Control</description>
+  <addressOffset>0x000000C8</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xF001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+    <field>
+      <name>SELECT</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[31:28]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>HSI</name><description>Clock Source</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>HSE0</name><description>Clock Source</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>HSE1</name><description>Clock Source</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>LSI</name><description>Clock Source</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>LSE</name><description>Clock Source</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>PLL0</name><description>Clock Source</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>PLL1</name><description>Clock Source</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>PLL2</name><description>Clock Source</description><value>7</value></enumeratedValue>
+        <enumeratedValue><name>MAX_CLK</name><description>Clock Source</description><value>13</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+  </fields>
+</register>
+<!-- USB_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>USB_CLK</name>
+  <addressOffset>0x000000CC</addressOffset>
+</register>
+<!-- RTC_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>RTC_CLK</name>
+  <addressOffset>0x000000D4</addressOffset>
+</register>
+<!-- SSP1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>SSP1_CLK</name>
+  <addressOffset>0x000000D8</addressOffset>
+</register>
+<!-- SSP2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>SSP2_CLK</name>
+  <addressOffset>0x000000DC</addressOffset>
+</register>
+<!-- CAN1_CLK -->
+<register>
+  <name>CAN1_CLK</name>
+  <description>Sync Clock Control</description>
+  <addressOffset>0x000000E0</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x0001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+  </fields>
+</register>
+<!-- CAN2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAN2_CLK</name>
+  <addressOffset>0x000000E4</addressOffset>
+</register>
+<!-- UART1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART1_CLK</name>
+  <addressOffset>0x000000E8</addressOffset>
+</register>
+<!-- UART2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART2_CLK</name>
+  <addressOffset>0x000000EC</addressOffset>
+</register>
+<!-- UART3_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART3_CLK</name>
+  <addressOffset>0x000000F0</addressOffset>
+</register>
+<!-- UART4_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART4_CLK</name>
+  <addressOffset>0x000000F4</addressOffset>
+</register>
+<!-- MIL_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>MIL_CLK</name>
+  <addressOffset>0x000000F8</addressOffset>
+</register>
+<!-- TIM1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM1_CLK</name>
+  <addressOffset>0x000000FC</addressOffset>
+</register>
+<!-- TIM2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM2_CLK</name>
+  <addressOffset>0x00000100</addressOffset>
+</register>
+<!-- TIM3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM3_CLK</name>
+  <addressOffset>0x00000104</addressOffset>
+</register>
+<!-- TIM4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM4_CLK</name>
+  <addressOffset>0x0000010C</addressOffset>
+</register>
+<!-- CAP1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAP1_CLK</name>
+  <addressOffset>0x00000110</addressOffset>
+</register>
+<!-- CAP2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAP2_CLK</name>
+  <addressOffset>0x00000114</addressOffset>
+</register>
+<!-- CAP3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAP3_CLK</name>
+  <addressOffset>0x00000118</addressOffset>
+</register>
+<!-- CAP4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAP4_CLK</name>
+  <addressOffset>0x0000011C</addressOffset>
+</register>
+<!-- QEP1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>QEP1_CLK</name>
+  <addressOffset>0x00000120</addressOffset>
+</register>
+<!-- QEP2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>QEP2_CLK</name>
+  <addressOffset>0x00000124</addressOffset>
+</register>
+<!-- PWM1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM1_CLK</name>
+  <addressOffset>0x00000128</addressOffset>
+</register>
+<!-- PWM2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM2_CLK</name>
+  <addressOffset>0x0000012C</addressOffset>
+</register>
+<!-- PWM3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM3_CLK</name>
+  <addressOffset>0x00000130</addressOffset>
+</register>
+<!-- PWM4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM4_CLK</name>
+  <addressOffset>0x00000134</addressOffset>
+</register>
+<!-- PWM5_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM5_CLK</name>
+  <addressOffset>0x00000138</addressOffset>
+</register>
+<!-- PWM6_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM6_CLK</name>
+  <addressOffset>0x0000013C</addressOffset>
+</register>
+<!-- PWM7_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM7_CLK</name>
+  <addressOffset>0x00000140</addressOffset>
+</register>
+<!-- PWM8_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM8_CLK</name>
+  <addressOffset>0x00000144</addressOffset>
+</register>
+<!-- PWM9_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>PWM9_CLK</name>
+  <addressOffset>0x00000148</addressOffset>
+</register>
+<!-- ADC1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>ADC1_CLK</name>
+  <addressOffset>0x0000014C</addressOffset>
+</register>
+<!-- ADC2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>ADC2_CLK</name>
+  <addressOffset>0x000001D0</addressOffset>
+</register>
+<!-- ADC3_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>ADC3_CLK</name>
+  <addressOffset>0x000001D4</addressOffset>
+</register>
+<!-- CORDIC_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>CORDIC_CLK</name>
+  <addressOffset>0x000001D8</addressOffset>
+</register>
+
+
+
+#PERIPH_CLK_VK14
+<!-- CAN1_CLK -->
+<register>
+  <name>CAN1_CLK</name>
+  <description>Sync Clock Control</description>
+  <addressOffset>0x00000118</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x1001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>MAX_Clock Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>     
+  </fields>
+</register>
+<!-- CAN2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>CAN2_CLK</name>
+  <addressOffset>0x0000011C</addressOffset>
+</register>
+<!-- TIM1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM1_CLK</name>
+  <addressOffset>0x00000130</addressOffset>
+</register>
+<!-- TIM2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM2_CLK</name>
+  <addressOffset>0x00000134</addressOffset>
+</register>
+<!-- TIM3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM3_CLK</name>
+  <addressOffset>0x00000138</addressOffset>
+</register>
+<!-- TIM4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM4_CLK</name>
+  <addressOffset>0x0000013C</addressOffset>
+</register>
+<!-- MIL1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>MIL1_CLK</name>
+  <addressOffset>0x00000148</addressOffset>
+</register>
+<!-- MIL2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>MIL2_CLK</name>
+  <addressOffset>0x0000014C</addressOffset>
+</register>
+<!-- MIL3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>MIL3_CLK</name>
+  <addressOffset>0x00000150</addressOffset>
+</register>
+<!-- MIL4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>MIL4_CLK</name>
+  <addressOffset>0x00000154</addressOffset>
+</register>
+<!-- SPW1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>SPW1_CLK</name>
+  <addressOffset>0x00000178</addressOffset>
+</register>
+<!-- SPW2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>SPW2_CLK</name>
+  <addressOffset>0x0000017C</addressOffset>
+</register>
+<!-- UART1_CLK -->
+<register>
+  <name>UART1_CLK</name>
+  <description>Async Clock Control</description>
+  <addressOffset>0x00000188</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xF001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+    <field>
+      <name>SELECT</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[31:28]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>HSI</name><description>Clock Source</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>HSE0</name><description>Clock Source</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>HSE1</name><description>Clock Source</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>LSI</name><description>Clock Source</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>LSE</name><description>Clock Source</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>PLL0</name><description>Clock Source</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>PLL1</name><description>Clock Source</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>PLL2</name><description>Clock Source</description><value>7</value></enumeratedValue>
+        <enumeratedValue><name>MAX_CLK</name><description>Clock Source</description><value>13</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+  </fields>
+</register>
+<!-- UART2_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>UART2_CLK</name>
+  <addressOffset>0x0000018C</addressOffset>
+</register>
+<!-- SSP1_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP1_CLK</name>
+  <addressOffset>0x000001A0</addressOffset>
+</register>
+<!-- SSP2_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP2_CLK</name>
+  <addressOffset>0x000001A4</addressOffset>
+</register>
+<!-- SSP3_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP3_CLK</name>
+  <addressOffset>0x000001A8</addressOffset>
+</register>
+<!-- SSP4_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP4_CLK</name>
+  <addressOffset>0x000001AC</addressOffset>
+</register>
+<!-- SSP5_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP5_CLK</name>
+  <addressOffset>0x000001B0</addressOffset>
+</register>
+<!-- SSP6_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>SSP6_CLK</name>
+  <addressOffset>0x000001B4</addressOffset>
+</register>
+<!-- RTC_CLK -->
+<register derivedFrom="UART1_CLK">
+  <name>RTC_CLK</name>
+  <addressOffset>0x000001CC</addressOffset>
+</register>
+
+#PERIPH_CLK_VE8
+<!-- CAN1_CLK -->
+<register>
+  <name>CAN1_CLK</name>
+  <description>Sync Clock Control</description>
+  <addressOffset>0x00000118</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0x1001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>MAX_Clock Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>     
+  </fields>
+</register>
+<!-- TIM1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM1_CLK</name>
+  <addressOffset>0x00000130</addressOffset>
+</register>
+<!-- TIM2_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM2_CLK</name>
+  <addressOffset>0x00000134</addressOffset>
+</register>
+<!-- TIM3_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM3_CLK</name>
+  <addressOffset>0x00000138</addressOffset>
+</register>
+<!-- TIM4_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>TIM4_CLK</name>
+  <addressOffset>0x0000013C</addressOffset>
+</register>
+<!-- ETH_CLK -->
+<register>
+  <name>ETH_CLK</name>
+  <description>Async Clock Control</description>
+  <addressOffset>0x00000170</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xF001FFF</resetMask>
+  <fields> 
+    <field>
+      <name>DIV</name>
+      <description>Div to PeriphClock</description>
+      <bitRange>[15:0]</bitRange>
+    </field>
+    <field>
+      <name>CLK_EN</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[16:16]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+    <field>
+      <name>SELECT</name>
+      <description>PeriphClock Enable</description>
+      <bitRange>[31:28]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>HSI</name><description>Clock Source</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>HSE0</name><description>Clock Source</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>HSE1</name><description>Clock Source</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>LSI</name><description>Clock Source</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>LSE</name><description>Clock Source</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>PLL0</name><description>Clock Source</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>PLL1</name><description>Clock Source</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>PLL2</name><description>Clock Source</description><value>7</value></enumeratedValue>
+        <enumeratedValue><name>MAX_CLK</name><description>Clock Source</description><value>13</value></enumeratedValue>
+      </enumeratedValues>          
+    </field>
+  </fields>
+</register>
+<!-- SPW1_CLK -->
+<register derivedFrom="CAN1_CLK">
+  <name>SPW1_CLK</name>
+  <addressOffset>0x00000178</addressOffset>
+</register>
+<!-- UART1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART1_CLK</name>
+  <addressOffset>0x00000188</addressOffset>
+</register>
+<!-- UART2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>UART2_CLK</name>
+  <addressOffset>0x0000018C</addressOffset>
+</register>
+<!-- SSP1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>SSP1_CLK</name>
+  <addressOffset>0x000001A0</addressOffset>
+</register>
+<!-- ADC1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>ADC1_CLK</name>
+  <addressOffset>0x000001BC</addressOffset>
+</register>
+<!-- ADC2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>ADC2_CLK</name>
+  <addressOffset>0x000001C0</addressOffset>
+</register>
+<!-- DAC1_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>DAC1_CLK</name>
+  <addressOffset>0x000001C4</addressOffset>
+</register>
+<!-- DAC2_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>DAC2_CLK</name>
+  <addressOffset>0x000001C8</addressOffset>
+</register>
+<!-- RTC_CLK -->
+<register derivedFrom="ETH_CLK">
+  <name>RTC_CLK</name>
+  <addressOffset>0x000001CC</addressOffset>
+</register>

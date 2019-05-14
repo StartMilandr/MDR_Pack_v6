@@ -1,0 +1,1253 @@
+#RST_VK014
+<!-- RST_CLOCK -->
+<peripheral>
+  <name>MDR_RST_CLOCK</name>
+  <version>1.0</version>
+  <description>CLock Control</description>
+  <groupName>RST_CLK</groupName>
+  <baseAddress>0x40000000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <!-- #RST_SIZE -->
+    <size>0x1D0</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- KEY -->
+    <register>
+      <name>KEY</name>
+      <description>Clock Unlock Register</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>      
+        <field>
+          <name>Value</name>
+          <description>Reg value</description>
+          <bitRange>[31:0]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- MAX_CLK -->
+    <register>
+      <name>MAX_CLK</name>
+      <description>MAX_CLK Select Register</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>      
+        <field>
+          <name>Select</name>
+          <description>Select MAX_CLOCK source</description>
+          <bitRange>[3:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>HSI</name>      <description>MAX_CLOCK is HSI</description>   <value>0</value></enumeratedValue>
+            <enumeratedValue><name>HSI_div2</name> <description>MAX_CLOCK is HSI/2</description> <value>1</value></enumeratedValue>
+            <enumeratedValue><name>HSE0</name>     <description>MAX_CLOCK is HSE0</description>  <value>2</value></enumeratedValue>
+            <enumeratedValue><name>HSE0_div2</name><description>MAX_CLOCK is HSE0/2</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>HSE1</name>     <description>MAX_CLOCK is HSE1</description>  <value>4</value></enumeratedValue>
+            <enumeratedValue><name>HSE1_div2</name><description>MAX_CLOCK is HSE1/2</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>LSI</name> <description>MAX_CLOCK is LSI</description> <value>6</value></enumeratedValue>
+            <enumeratedValue><name>LSE</name> <description>MAX_CLOCK is LSE</description> <value>7</value></enumeratedValue>
+            <enumeratedValue><name>PLL0</name><description>MAX_CLOCK is PLL0</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>PLL1</name><description>MAX_CLOCK is PLL1</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>PLL2</name><description>MAX_CLOCK is PLL2</description><value>10</value></enumeratedValue>
+            <!-- #SEL_PLL -->
+            <enumeratedValue><name>PLL3</name><description>MAX_CLOCK is PLL3</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>PLL4</name><description>MAX_CLOCK is PLL4</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>PLL5</name><description>MAX_CLOCK is PLL5</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>PLL6</name><description>MAX_CLOCK is PLL6</description><value>14</value></enumeratedValue>
+            <enumeratedValue><name>PLL7</name><description>MAX_CLOCK is PLL7</description><value>15</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- CPU_CLK -->
+    <register>
+      <name>CPU_CLK</name>
+      <description>CPU_CLK Register</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FFFFFF</resetMask>
+      <fields>      
+        <field>
+          <name>DIV</name>
+          <description>CPU_CLock div from MAX_CLOCK</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <!-- #CLK_CTRL_EVENTS -->
+        <field>
+          <name>EN_CHK_EVENT0</name>
+          <description>Go to HSI on lose active clock</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT1</name>
+          <description>Go to HSI if active clock is low</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT2</name>
+          <description>Go to HSI if active clock is High</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT3</name>
+          <description>Go to HSI if active clock is Highest</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK</name>
+          <description>Clock Checker enable</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field>
+          <name>CLR_CHK_SHIFT_REG0</name>
+          <description>Clear Min Freq level</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_SHIFT_REG1</name>
+          <description>Clear Max Freq level</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT0</name>
+          <description>Clear no freq event</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT1</name>
+          <description>Clear low freq event</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT2</name>
+          <description>Clear high freq event</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT3</name>
+          <description>Clear highest freq event</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- PER0_CLK -->
+    <register>
+      <name>PER0_CLK</name>
+      <description>Periph0 Clock Enable Register</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #PER0_MASK -->
+      <resetMask>0x67E3E81F</resetMask>
+      <fields> 
+        <!-- #PER0_VK14_B -->
+        <field>
+          <name>RST_CLK_EN</name>
+          <description>RST Clock Enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="RST_CLK_EN">
+          <name>BKP_CLK_EN</name>
+          <description>BKP Clock Enable</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RST_CLK_EN">
+          <name>PWR_CLK_EN</name>
+          <description>Power Clock Enable</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RST_CLK_EN">
+          <name>FTMODE_CLK_EN</name>
+          <description>FTMODE Clock Enable</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RST_CLK_EN">
+          <name>WDT_CLK_EN</name>
+          <description>WDT Clock Enable</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RST_CLK_EN">
+          <name>DMA_CLK_EN</name>
+          <description>DMA Clock Enable</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field>
+          <name>PortA_CLK_EN</name>
+          <description>GPIO Port Clock Enable</description>
+          <bitRange>[13:13]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>PortB_CLK_EN</name>
+          <bitRange>[14:14]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>PortC_CLK_EN</name>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>PortD_CLK_EN</name>
+          <bitRange>[16:16]</bitRange>
+        </field>
+        <!-- #PER0_ESila -->
+        <!-- #PER0_VE8 -->
+        <!-- #PER0_VK14_E -->
+        <field derivedFrom="PortA_CLK_EN">
+          <name>PortE_CLK_EN</name>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>SPW1_CLK_EN</name>
+          <description>SPW1 Clock Enable</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>SPW2_CLK_EN</name>
+          <description>SPW2 Clock Enable</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>TIM1_CLK_EN</name>
+          <description>TIM1 Clock Enable</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>TIM2_CLK_EN</name>
+          <description>TIM2 Clock Enable</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>TIM3_CLK_EN</name>
+          <description>TIM3 Clock Enable</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>TIM4_CLK_EN</name>
+          <description>TIM4 Clock Enable</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>CAN1_CLK_EN</name>
+          <description>CAN1 Clock Enable</description>
+          <bitRange>[29:29]</bitRange>
+        </field>
+        <field derivedFrom="PortA_CLK_EN">
+          <name>CAN2_CLK_EN</name>
+          <description>CAN2 Clock Enable</description>
+          <bitRange>[30:30]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- PER1_CLK -->
+    <register>
+      <name>PER1_CLK</name>
+      <description>Periph1 Clock Enable Register</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #PER1_MASK -->
+      <resetMask>0xF42800FC</resetMask>
+      <fields> 
+        <!-- #PER1_ESila -->
+        <!-- #PER1_VE8 -->
+        <!-- #PER1_VK14 -->
+        <field>
+          <name>SSP1_CLK_EN</name>
+          <description>SSP1 Clock Enable</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>SSP2_CLK_EN</name>
+          <description>SSP2 Clock Enable</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>SSP3_CLK_EN</name>
+          <description>SSP3 Clock Enable</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>SSP4_CLK_EN</name>
+          <description>SSP4 Clock Enable</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>UART1_CLK_EN</name>
+          <description>UART1 Clock Enable</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>UART2_CLK_EN</name>
+          <description>UART2 Clock Enable</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>MIL1_CLK_EN</name>
+          <description>MIL1 Clock Enable</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>MIL2_CLK_EN</name>
+          <description>MIL2 Clock Enable</description>
+          <bitRange>[21:21]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>MIL3_CLK_EN</name>
+          <description>MIL3 Clock Enable</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>CRC_CLK_EN</name>
+          <description>CRC Clock Enable</description>
+          <bitRange>[28:28]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>ECC_CLK_EN</name>
+          <description>ECC Clock Enable</description>
+          <bitRange>[29:29]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>SSP5_CLK_EN</name>
+          <description>SSP5 Clock Enable</description>
+          <bitRange>[30:30]</bitRange>
+        </field>
+        <field derivedFrom="SSP1_CLK_EN">
+          <name>SSP6_CLK_EN</name>
+          <description>SSP6 Clock Enable</description>
+          <bitRange>[31:31]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CPU_CHK0 -->
+    <register>
+      <name>CPU_CHK0</name>
+      <description>Clock Checker Register</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields> 
+        <field>
+          <name>PRES_REG2</name>
+          <description>FreqRef Prescaller for Slow</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>PRES_REG0</name>
+          <description>FreqRef Prescaller for Fast</description>
+          <bitRange>[31:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CPU_CHK1 -->
+    <register>
+      <name>CPU_CHK1</name>
+      <description>Clock Checker Register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields> 
+        <field>
+          <name>PRES_REG3</name>
+          <description>Clock Prescaller for Fast</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>PRES_REG1</name>
+          <description>Clock Prescaller for Slow</description>
+          <bitRange>[31:16]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CPU_CHK2 -->
+    <register>
+      <name>CPU_CHK2</name>
+      <description>Clock Checker Register</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields> 
+        <field>
+          <name>BASE_REG0</name>
+          <description>Min factor for SLOWEST</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+        <field>
+          <name>BASE_REG1</name>
+          <description>Min factor for SLOW</description>
+          <bitRange>[15:8]</bitRange>
+        </field>
+        <field>
+          <name>BASE_REG2</name>
+          <description>Max factor for FAST</description>
+          <bitRange>[23:16]</bitRange>
+        </field>
+        <field>
+          <name>BASE_REG3</name>
+          <description>Max factor for FASTEST</description>
+          <bitRange>[31:24]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- CPU_STAT -->
+    <register>
+      <name>CPU_STAT</name>
+      <description>Clock Status Register</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000FFFFF</resetMask>
+      <fields> 
+        <!-- #CLK_STATUS_EVENTS -->
+        <field>
+          <name>MAX_CLK_SHIFT_REG0</name>
+          <description>Max factor detected for SLOW</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+        <field>
+          <name>MAX_CLK_SHIFT_REG1</name>
+          <description>Max factor detected for FAST</description>
+          <bitRange>[15:8]</bitRange>
+        </field>
+        <field>
+          <name>EVENT0</name>
+          <description>Event SLOWEST</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT1</name>
+          <description>Event SLOW</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT2</name>
+          <description>Event FAST</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT3</name>
+          <description>Event FASTEST</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- LSI_CLK -->
+    <register>
+      <name>LSI_CLK</name>
+      <description>Clock Contorl Register</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FF0000</resetMask>
+      <fields>
+        <!-- #CLK_CTRL_EVENTS -->
+        <field>
+          <name>EN_CHK_EVENT0</name>
+          <description>Go to HSI on lose active clock</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT1</name>
+          <description>Go to HSI if active clock is low</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT2</name>
+          <description>Go to HSI if active clock is High</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT3</name>
+          <description>Go to HSI if active clock is Highest</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK</name>
+          <description>Clock Checker enable</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field>
+          <name>CLR_CHK_SHIFT_REG0</name>
+          <description>Clear Min Freq level</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_SHIFT_REG1</name>
+          <description>Clear Max Freq level</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT0</name>
+          <description>Clear no freq event</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT1</name>
+          <description>Clear low freq event</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT2</name>
+          <description>Clear high freq event</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT3</name>
+          <description>Clear highest freq event</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- LSI_CHK0 -->
+    <register derivedFrom="CPU_CHK0">
+      <name>LSI_CHK0</name>
+      <addressOffset>0x00000028</addressOffset>
+    </register>
+    <!-- LSI_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>LSI_CHK1</name>
+      <addressOffset>0x0000002C</addressOffset>
+    </register>
+    <!-- LSI_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>LSI_CHK2</name>
+      <addressOffset>0x00000030</addressOffset>
+    </register>        
+    <!-- LSI_STAT -->
+    <register>
+      <name>LSI_STAT</name>
+      <description>Clock Status Register</description>
+      <addressOffset>0x00000034</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000FFFFF</resetMask>
+      <fields> 
+        <!-- #CLK_STATUS_EVENTS -->
+        <field>
+          <name>MAX_CLK_SHIFT_REG0</name>
+          <description>Max factor detected for SLOW</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+        <field>
+          <name>MAX_CLK_SHIFT_REG1</name>
+          <description>Max factor detected for FAST</description>
+          <bitRange>[15:8]</bitRange>
+        </field>
+        <field>
+          <name>EVENT0</name>
+          <description>Event SLOWEST</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT1</name>
+          <description>Event SLOW</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT2</name>
+          <description>Event FAST</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT3</name>
+          <description>Event FASTEST</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field>
+          <name>READY</name>
+          <description>Clock Ready</description>
+          <bitRange>[20:20]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Clock not Ready</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Clock Ready</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <!-- #SLI_RDY_ERR_VK14 -->
+        <field>
+          <name>Error</name>
+          <description>Clock Ready Error</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Ready Fault</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field> 
+      </fields>
+    </register>
+    <!-- #HSI_STAT -->
+    <register>
+      <name>HSE_STAT</name>
+      <description>Clock Status Register</description>
+      <addressOffset>0x00000038</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00100000</resetMask>
+      <fields> 
+        <field>
+          <name>READY</name>
+          <description>Clock Ready</description>
+          <bitRange>[20:20]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Clock not Ready</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Clock Ready</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>Error</name>
+          <description>Clock Ready Error</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Ready Fault</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>     
+      </fields>
+    </register>
+    <!-- LSE_CLK -->
+    <register derivedFrom="LSI_CLK">
+      <name>LSE_CLK</name>
+      <addressOffset>0x0000003C</addressOffset>
+    </register>
+    <!-- LSE_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>LSE_CHK0</name>
+      <addressOffset>0x00000040</addressOffset>
+    </register>    
+    <!-- LSE_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>LSE_CHK1</name>
+      <addressOffset>0x00000044</addressOffset>
+    </register>
+    <!-- LSE_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>LSE_CHK2</name>
+      <addressOffset>0x00000048</addressOffset>
+    </register>
+    <!-- LSE_STAT -->
+    <register>
+      <name>LSE_STAT</name>
+      <description>Clock Status Register</description>
+      <addressOffset>0x0000004C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000FFFFF</resetMask>
+      <fields> 
+        <!-- #CLK_STATUS_EVENTS -->        
+        <field>
+          <name>MAX_CLK_SHIFT_REG0</name>
+          <description>Max factor detected for SLOW</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+        <field>
+          <name>MAX_CLK_SHIFT_REG1</name>
+          <description>Max factor detected for FAST</description>
+          <bitRange>[15:8]</bitRange>
+        </field>
+        <field>
+          <name>EVENT0</name>
+          <description>Event SLOWEST</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT1</name>
+          <description>Event SLOW</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT2</name>
+          <description>Event FAST</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EVENT0">
+          <name>EVENT3</name>
+          <description>Event FASTEST</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field>
+          <name>READY</name>
+          <description>Clock Ready</description>
+          <bitRange>[20:20]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Clock not Ready</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Clock Ready</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!-- HSE0_CLK -->
+    <register>
+      <name>HSE0_CLK</name>
+      <description>Clock Contorl Register</description>
+      <addressOffset>0x00000050</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x07FF0000</resetMask>
+      <fields>
+        <!-- #CLK_CTRL_EVENTS -->
+        <field>
+          <name>EN_CHK_EVENT0</name>
+          <description>Go to HSI on lose active clock</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT1</name>
+          <description>Go to HSI if active clock is low</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT2</name>
+          <description>Go to HSI if active clock is High</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT3</name>
+          <description>Go to HSI if active clock is Highest</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK</name>
+          <description>Clock Checker enable</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field>
+          <name>CLR_CHK_SHIFT_REG0</name>
+          <description>Clear Min Freq level</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_SHIFT_REG1</name>
+          <description>Clear Max Freq level</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT0</name>
+          <description>Clear no freq event</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT1</name>
+          <description>Clear low freq event</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT2</name>
+          <description>Clear high freq event</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT3</name>
+          <description>Clear highest freq event</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>HSE_ON</name>
+          <description>Generator Enable</description>
+          <bitRange>[27:27]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>HSE_BYP</name>
+          <description>ByPass Mode</description>
+          <bitRange>[28:28]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>FILTER_EN</name>
+          <description>Filter Enable</description>
+          <bitRange>[29:29]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- HSE0_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>HSE0_CHK0</name>
+      <addressOffset>0x00000054</addressOffset>
+    </register>    
+    <!-- HSE0_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>HSE0_CHK1</name>
+      <addressOffset>0x00000058</addressOffset>
+    </register>
+    <!-- HSE0_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>HSE0_CHK2</name>
+      <addressOffset>0x0000005C</addressOffset>
+    </register>
+    <!-- HSE0_STAT -->
+    <register derivedFrom="LSE_STAT">
+      <name>HSE0_STAT</name>
+      <addressOffset>0x00000060</addressOffset>
+    </register>
+    <!-- HSE1_CLK -->
+    <register derivedFrom="HSE0_CLK">
+      <name>HSE1_CLK</name>
+      <addressOffset>0x00000064</addressOffset>
+    </register>    
+    <!-- HSE1_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>HSE1_CHK0</name>
+      <addressOffset>0x00000068</addressOffset>
+    </register>    
+    <!-- HSE1_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>HSE1_CHK1</name>
+      <addressOffset>0x0000006C</addressOffset>
+    </register>
+    <!-- HSE1_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>HSE1_CHK2</name>
+      <addressOffset>0x00000070</addressOffset>
+    </register>
+    <!-- HSE1_STAT -->
+    <register derivedFrom="LSE_STAT">
+      <name>HSE1_STAT</name>
+      <addressOffset>0x00000074</addressOffset>
+    </register>
+    <!-- PLL0_CLK -->
+    <register>
+      <name>PLL0_CLK</name>
+      <description>PLL0 Control</description>
+      <addressOffset>0x00000078</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <!-- #PLL0_CLK -->
+      <resetMask>0xFFFFFF1F</resetMask>
+      <fields>
+        <field>
+          <name>PLL_Q</name>
+          <description>PLL Freq divider</description>
+          <bitRange>[3:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>div3</name><description>Divider</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>div4</name><description>Divider</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>div5</name><description>Divider</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>div6</name><description>Divider</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>div7</name><description>Divider</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>div8</name><description>Divider</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>div9</name><description>Divider</description><value>8</value></enumeratedValue>
+            <enumeratedValue><name>div10</name><description>Divider</description><value>9</value></enumeratedValue>
+            <enumeratedValue><name>div11</name><description>Divider</description><value>10</value></enumeratedValue>
+            <enumeratedValue><name>div12</name><description>Divider</description><value>11</value></enumeratedValue>
+            <enumeratedValue><name>div13</name><description>Divider</description><value>12</value></enumeratedValue>
+            <enumeratedValue><name>div14</name><description>Divider</description><value>13</value></enumeratedValue>
+            <enumeratedValue><name>div15</name><description>Divider</description><value>14</value></enumeratedValue>        
+            <enumeratedValue><name>div16</name><description>Divider</description><value>15</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>DV</name>
+          <description>PLL Output Divider</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>div1</name><description>Divider</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>div2</name><description>Divider</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>PLL_N</name>
+          <description>PLL Freq multiplier</description>
+          <bitRange>[14:8]</bitRange>    
+        </field>
+        <field>
+          <name>EN_CHK_EVENT0</name>
+          <description>Go to HSI on lose active clock</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT1</name>
+          <description>Go to HSI if active clock is low</description>
+          <bitRange>[17:17]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT2</name>
+          <description>Go to HSI if active clock is High</description>
+          <bitRange>[18:18]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK_EVENT3</name>
+          <description>Go to HSI if active clock is Highest</description>
+          <bitRange>[19:19]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0">
+          <name>EN_CHK</name>
+          <description>Clock Checker enable</description>
+          <bitRange>[20:20]</bitRange>
+        </field>
+        <field>
+          <name>CLR_CHK_SHIFT_REG0</name>
+          <description>Clear Min Freq level</description>
+          <bitRange>[21:21]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_SHIFT_REG1</name>
+          <description>Clear Max Freq level</description>
+          <bitRange>[22:22]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT0</name>
+          <description>Clear no freq event</description>
+          <bitRange>[23:23]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT1</name>
+          <description>Clear low freq event</description>
+          <bitRange>[24:24]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT2</name>
+          <description>Clear high freq event</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="CLR_CHK_SHIFT_REG0">
+          <name>CLR_CHK_EVENT3</name>
+          <description>Clear highest freq event</description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+        <field derivedFrom="EN_CHK_EVENT0"> 
+          <name>PLL_ON</name>
+          <description>PLL Enable</description>
+          <bitRange>[27:27]</bitRange>
+        </field>
+        <field>
+          <name>PLL_RLD</name>
+          <description>PLL Reload</description>
+          <bitRange>[28:28]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Reload</name><description>Reload PLL</description><value>1</value></enumeratedValue>
+          </enumeratedValues>      
+        </field>
+        <field>
+          <name>SELECT</name>
+          <description>Select PLL Input</description>
+          <bitRange>[31:29]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>HSI</name><description>HSI signal</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>HSI_div2</name><description>HSI/2 signal</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>HSE0</name><description>HSE0 signal</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>HSE0_div2</name><description>HSE0/2 signal</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>HSE1</name><description>HSE1 signal</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>HSE1_div2</name><description>HSE1/2 signal</description><value>5</value></enumeratedValue>
+          </enumeratedValues>      
+        </field>
+      </fields>
+    </register>
+    <!-- PLL0_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL0_CHK0</name>
+      <addressOffset>0x0000007C</addressOffset>
+    </register>    
+    <!-- PLL0_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL0_CHK1</name>
+      <addressOffset>0x00000080</addressOffset>
+    </register>
+    <!-- PLL0_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>PLL0_CHK2</name>
+      <addressOffset>0x00000084</addressOffset>
+    </register>
+    <!-- PLL0_STAT -->
+    <register derivedFrom="LSE_STAT">
+      <name>PLL0_STAT</name>
+      <addressOffset>0x00000088</addressOffset>
+    </register>
+    <!-- PLL1_CLK -->
+    <register derivedFrom="PLL0_CLK">
+      <name>PLL1_CLK</name>
+      <addressOffset>0x0000008C</addressOffset>
+    </register> 
+    <!-- PLL1_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL1_CHK0</name>
+      <addressOffset>0x00000090</addressOffset>
+    </register>    
+    <!-- PLL1_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL1_CHK1</name>
+      <addressOffset>0x00000094</addressOffset>
+    </register>
+    <!-- PLL1_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>PLL1_CHK2</name>
+      <addressOffset>0x00000098</addressOffset>
+    </register>
+    <!-- PLL1_STAT -->
+    <register derivedFrom="LSE_STAT">
+      <name>PLL1_STAT</name>
+      <addressOffset>0x0000009C</addressOffset>
+    </register>
+    <!-- PLL2_CLK -->
+    <register derivedFrom="PLL0_CLK">
+      <name>PLL2_CLK</name>
+      <addressOffset>0x000000A0</addressOffset>
+    </register> 
+    <!-- PLL2_CHK0 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL2_CHK0</name>
+      <addressOffset>0x000000A4</addressOffset>
+    </register>    
+    <!-- PLL2_CHK1 -->
+    <register derivedFrom="CPU_CHK1">
+      <name>PLL2_CHK1</name>
+      <addressOffset>0x000000A8</addressOffset>
+    </register>
+    <!-- PLL2_CHK2 -->
+    <register derivedFrom="CPU_CHK2">
+      <name>PLL2_CHK2</name>
+      <addressOffset>0x000000AC</addressOffset>
+    </register>
+    <!-- PLL2_STAT -->
+    <register derivedFrom="LSE_STAT">
+      <name>PLL2_STAT</name>
+      <addressOffset>0x000000B0</addressOffset>
+    </register>
+    <!-- #PLL3_ESila -->
+    <!-- #PERIPH_CLK -->    
+    <!-- CAN1_CLK -->
+    <register>
+      <name>CAN1_CLK</name>
+      <description>Sync Clock Control</description>
+      <addressOffset>0x00000118</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x1001FFF</resetMask>
+      <fields> 
+        <field>
+          <name>DIV</name>
+          <description>MAX_Clock Div to PeriphClock</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>CLK_EN</name>
+          <description>PeriphClock Enable</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>     
+      </fields>
+    </register>
+    <!-- CAN2_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>CAN2_CLK</name>
+      <addressOffset>0x0000011C</addressOffset>
+    </register>
+    <!-- TIM1_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>TIM1_CLK</name>
+      <addressOffset>0x00000130</addressOffset>
+    </register>
+    <!-- TIM2_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>TIM2_CLK</name>
+      <addressOffset>0x00000134</addressOffset>
+    </register>
+    <!-- TIM3_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>TIM3_CLK</name>
+      <addressOffset>0x00000138</addressOffset>
+    </register>
+    <!-- TIM4_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>TIM4_CLK</name>
+      <addressOffset>0x0000013C</addressOffset>
+    </register>
+    <!-- MIL1_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>MIL1_CLK</name>
+      <addressOffset>0x00000148</addressOffset>
+    </register>
+    <!-- MIL2_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>MIL2_CLK</name>
+      <addressOffset>0x0000014C</addressOffset>
+    </register>
+    <!-- MIL3_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>MIL3_CLK</name>
+      <addressOffset>0x00000150</addressOffset>
+    </register>
+    <!-- MIL4_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>MIL4_CLK</name>
+      <addressOffset>0x00000154</addressOffset>
+    </register>
+    <!-- SPW1_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>SPW1_CLK</name>
+      <addressOffset>0x00000178</addressOffset>
+    </register>
+    <!-- SPW2_CLK -->
+    <register derivedFrom="CAN1_CLK">
+      <name>SPW2_CLK</name>
+      <addressOffset>0x0000017C</addressOffset>
+    </register>
+    <!-- UART1_CLK -->
+    <register>
+      <name>UART1_CLK</name>
+      <description>Async Clock Control</description>
+      <addressOffset>0x00000188</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xF001FFF</resetMask>
+      <fields> 
+        <field>
+          <name>DIV</name>
+          <description>Div to PeriphClock</description>
+          <bitRange>[15:0]</bitRange>
+        </field>
+        <field>
+          <name>CLK_EN</name>
+          <description>PeriphClock Enable</description>
+          <bitRange>[16:16]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Clock Off</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Clock On</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>SELECT</name>
+          <description>PeriphClock Enable</description>
+          <bitRange>[31:28]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>HSI</name><description>Clock Source</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>HSE0</name><description>Clock Source</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>HSE1</name><description>Clock Source</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>LSI</name><description>Clock Source</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>LSE</name><description>Clock Source</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>PLL0</name><description>Clock Source</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>PLL1</name><description>Clock Source</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>PLL2</name><description>Clock Source</description><value>7</value></enumeratedValue>
+            <enumeratedValue><name>MAX_CLK</name><description>Clock Source</description><value>13</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!-- UART2_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>UART2_CLK</name>
+      <addressOffset>0x0000018C</addressOffset>
+    </register>
+    <!-- SSP1_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP1_CLK</name>
+      <addressOffset>0x000001A0</addressOffset>
+    </register>
+    <!-- SSP2_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP2_CLK</name>
+      <addressOffset>0x000001A4</addressOffset>
+    </register>
+    <!-- SSP3_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP3_CLK</name>
+      <addressOffset>0x000001A8</addressOffset>
+    </register>
+    <!-- SSP4_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP4_CLK</name>
+      <addressOffset>0x000001AC</addressOffset>
+    </register>
+    <!-- SSP5_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP5_CLK</name>
+      <addressOffset>0x000001B0</addressOffset>
+    </register>
+    <!-- SSP6_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>SSP6_CLK</name>
+      <addressOffset>0x000001B4</addressOffset>
+    </register>
+    <!-- RTC_CLK -->
+    <register derivedFrom="UART1_CLK">
+      <name>RTC_CLK</name>
+      <addressOffset>0x000001CC</addressOffset>
+    </register>
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>

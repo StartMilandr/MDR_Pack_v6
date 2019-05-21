@@ -27,3 +27,9 @@ call "../Power/Run.bat
 
 cd C:\CODE\PACK\__SVD\Exe
 call "../I2C/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../RST_VE8x/Run.bat
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../BKP/Run_ESila.bat"

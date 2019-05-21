@@ -1,13 +1,13 @@
 [FILES]
 f1=../RST_VE8x/RST_VK014.txt
+f2=../BKP/BKP_VK14.txt
 
 [TAGS]
 #RST=f1
 #RST_R=#RST_VK014
+#BKP=f2
 
 [TAGS_New]
-#BKP=
-#BKP_R=
 #PWR=
 #PWR_R=
 #FTMODE=

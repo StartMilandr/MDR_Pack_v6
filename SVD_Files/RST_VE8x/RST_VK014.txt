@@ -181,8 +181,8 @@
           <bitRange>[2:2]</bitRange>
         </field>
         <field derivedFrom="RST_CLK_EN">
-          <name>FTMODE_CLK_EN</name>
-          <description>FTMODE Clock Enable</description>
+          <name>FTCNTR_CLK_EN</name>
+          <description>FT_CNTR Clock Enable</description>
           <bitRange>[3:3]</bitRange>
         </field>
         <field derivedFrom="RST_CLK_EN">

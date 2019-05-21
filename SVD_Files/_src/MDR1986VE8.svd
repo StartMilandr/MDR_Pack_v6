@@ -1175,6 +1175,786 @@
       <!-- peripheral end-->
     </peripheral>
     <!-- #BKP -->
+    <!-- BKP and RTC -->
+    <peripheral>
+      <name>MDR_BKP</name>
+      <version>1.0</version>
+      <description>Backup and RTC Control</description>
+      <groupName>BKP and RTC</groupName>
+      <baseAddress>0x40001000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <!-- #BKP_Size  -->
+        <size>0x184</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- REG_x -->
+        <register>
+          <dim>60</dim>
+          <dimIncrement>4</dimIncrement>
+          <name>REG[%s]</name>
+          <description>User backup registers</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- KEY -->
+        <register>
+          <name>KEY</name>
+          <description>Unlock BKP and RTC Registers</description>
+          <addressOffset>0x000000F0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- #REGs_64_ESila -->
+        <!-- REG_60_TMR0 -->
+        <register>
+          <name>REG_60_TMR0</name>
+          <description>REG60 Control register</description>
+          <addressOffset>0x00000100</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #REG60_FLDS -->
+          <resetMask>0xFF3FFFFF</resetMask>      
+          <fields>
+            <field>
+              <name>MODE</name>
+              <description>Boot Mode</description>
+              <bitRange>[6:0]</bitRange>
+            </field>
+            <field>
+              <name>FPOR</name>
+              <description>Bootloader completed</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Bootloader</name><description>Bootloader active</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Completed</name><description>Bootloader completed</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>S_UccReset</name>
+              <description>Reset by Ucc</description>
+              <bitRange>[8:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Event Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Event Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_RSTn0</name>
+              <description>Reset by RSTn0 signal</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_FT_Reset</name>
+              <description>Reset from FT_CNTR</description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_WDT_Reset</name>
+              <description>Reset from WDT</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_RSTn1</name>
+              <description>Reset by RSTn1 signal</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_OVRSTn</name>
+              <description>Reset by Ucc > U_over (5.75V)</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>S_SYSRSTn</name>
+              <description>Reset by software</description>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field>
+              <name>JTAG_Enable</name>
+              <description>Disable JTAG</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field>
+              <name>LimEn_LDO_DUcc0</name>
+              <description>Enable limit for DUcc0 (~300mA)</description>
+              <bitRange>[16:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="LimEn_LDO_DUcc0">
+              <name>LimEn_LDO_DUcc1</name>
+              <description>Enable limit for DUcc1 (~300mA)</description>
+              <bitRange>[17:17]</bitRange>
+            </field>
+            <field derivedFrom="LimEn_LDO_DUcc0">
+              <name>LimEn_LDO_DUcc2</name>
+              <description>Enable limit for DUcc2 (~300mA)</description>
+              <bitRange>[18:18]</bitRange>
+            </field>
+            <field derivedFrom="LimEn_LDO_DUcc0">
+              <name>LimEn_LDO_DUcc3</name>
+              <description>Enable limit for DUcc3 (~300mA)</description>
+              <bitRange>[19:19]</bitRange>
+            </field>
+            <field derivedFrom="LimEn_LDO_DUcc0">
+              <name>LimEn_LDO_BUcc</name>
+              <description>Enable limit for DUcc_Bat (~50mA)</description>
+              <bitRange>[20:20]</bitRange>
+            </field>
+            <field derivedFrom="LimEn_LDO_DUcc0">
+              <name>LimEn_LDO_PLL</name>
+              <description>Enable limit for DUcc_PLL (~50mA)</description>
+              <bitRange>[21:21]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>ERR_REG60x</name>
+              <description>Fault in REG_60x</description>
+              <bitRange>[25:25]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>ERR_REG61x_62x</name>
+              <description>Fault in REG_61x or REG_62x </description>
+              <bitRange>[26:26]</bitRange>
+            </field>
+            <field derivedFrom="S_UccReset">
+              <name>ERR_REG63x</name>
+              <description>Fault in REG_63x</description>
+              <bitRange>[27:27]</bitRange>
+            </field>
+            <field derivedFrom="JTAG_Enable">
+              <name>PORSTn_En</name>
+              <description>Enable reset by Ucc > U_POR (2.5V)</description>
+              <bitRange>[28:28]</bitRange>
+            </field>
+            <field derivedFrom="JTAG_Enable">
+              <name>OVRSTn_En</name>
+              <description>Enable reset by Ucc > U_over (5.75V)</description>
+              <bitRange>[29:29]</bitRange>
+            </field>
+            <field>
+              <name>CLR_ERR</name>
+              <description>Clear Errors of REG_60x - 63x</description>
+              <bitRange>[30:30]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Clear</name><description>Clear Errors</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ERR_IRQ_EN</name>
+              <description>Enable BKP_IRQn on Errors</description>
+              <bitRange>[31:31]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- REG_61_TMR0 -->
+        <register>
+          <name>REG_61_TMR0</name>
+          <description>REG61 Control register</description>
+          <addressOffset>0x00000104</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #REG61_FLDS -->
+          <resetMask>0xFFFFFFFF</resetMask>      
+          <fields>
+            <field>
+              <name>LDO0_SRILow</name>
+              <description>LDO Power adjustment</description>
+              <bitRange>[2:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>ge10MHz</name><description>Extra_I about ~400uA</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ge30MHz</name><description>Extra_I about ~450uA</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ge50MHz</name><description>Extra_I about ~550uA</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ge100MHz</name><description>Extra_I about ~650uA</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>ge1MHz</name><description>Extra_I about ~300uA</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>ge500KHz</name><description>Extra_I about ~200uA</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>ge100KHz</name><description>Extra_I about ~100uA</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>ge10KHz</name><description>Extra_I about ~50uA</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>LDO0_Trim</name>
+              <description>LDO voltage tuning</description>
+              <bitRange>[5:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>add_0v01</name><description>LD0 extra voltage +0.01V</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>add_0v05</name><description>LD0 extra voltage +0.05V</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>add_0v1</name><description>LD0 extra voltage +0.1V</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>add_0v15</name><description>LD0 extra voltage +0.15V</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>sub_0v01</name><description>LD0 extra voltage -0.01V</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>sub_0v05</name><description>LD0 extra voltage -0.05V</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>sub_0v015</name><description>LD0 extra voltage -0.10V</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>sub_0v15</name><description>LD0 extra voltage -0.15V</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>LDO0_En</name>
+              <description>LDO Enable</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>LDO0_RDY</name>
+              <description>LDO Ready</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>NotReady</name><description>DUcc not ready</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Ready</name><description>DUcc ready</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>  
+            <field derivedFrom="LDO0_SRILow">
+              <name>LDO1_SRILow</name>
+              <bitRange>[10:8]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_Trim">
+              <name>LDO1_Trim</name>
+              <bitRange>[13:11]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_En">
+              <name>LDO1_En</name>
+              <bitRange>[14:14]</bitRange>
+            </field>    
+            <field derivedFrom="LDO0_RDY">
+              <name>LDO1_RDY</name>
+              <bitRange>[15:15]</bitRange>
+            </field> 
+            <field derivedFrom="LDO0_SRILow">
+              <name>LDO2_SRILow</name>
+              <bitRange>[18:16]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_Trim">
+              <name>LDO2_Trim</name>
+              <bitRange>[21:19]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_En">
+              <name>LDO2_En</name>
+              <bitRange>[22:22]</bitRange>
+            </field>    
+            <field derivedFrom="LDO0_RDY">
+              <name>LDO2_RDY</name>
+              <bitRange>[23:23]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_SRILow">
+              <name>LDO3_SRILow</name>
+              <bitRange>[26:24]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_Trim">
+              <name>LDO3_Trim</name>
+              <bitRange>[29:27]</bitRange>
+            </field>
+            <field derivedFrom="LDO0_En">
+              <name>LDO3_En</name>
+              <bitRange>[30:30]</bitRange>
+            </field>    
+            <field derivedFrom="LDO0_RDY">
+              <name>LDO3_RDY</name>
+              <bitRange>[31:31]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- REG_62_TMR0 -->
+        <register>
+          <name>REG_62_TMR0</name>
+          <description>REG62 Control register</description>
+          <addressOffset>0x00000108</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #REG62_FLDS -->
+          <resetMask>0xF1FFFFFF</resetMask>      
+          <fields>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_SRILow">
+              <name>LDO_BUcc_SRILow</name>
+              <bitRange>[2:0]</bitRange>
+            </field>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_Trim">
+              <name>LDO_BUcc_Trim</name>
+              <bitRange>[5:3]</bitRange>
+            </field>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_En">
+              <name>LDO_BUcc_En</name>
+              <bitRange>[6:6]</bitRange>
+            </field>    
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_RDY">
+              <name>LDO_BUcc_RDY</name>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_SRILow">
+              <name>LDO_PLL_SRILow</name>
+              <bitRange>[10:8]</bitRange>
+            </field>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_Trim">
+              <name>LDO_PLL_Trim</name>
+              <bitRange>[13:11]</bitRange>
+            </field>
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_En">
+              <name>LDO_PLL_En</name>
+              <bitRange>[14:14]</bitRange>
+            </field>    
+            <field derivedFrom="MDR_BKP.REG_61_TMR0.LDO0_RDY">
+              <name>LDO_PLL_RDY</name>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <field>
+              <name>TrimR</name>
+              <description>Do not change</description>
+              <bitRange>[24:16]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>Trim_Ref</name>
+              <description>Do not change</description>
+              <bitRange>[30:28]</bitRange>
+              <access>read-only</access>    
+              <enumeratedValues>      
+                <enumeratedValue><name>Tr0</name><description>Trim</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Tr1</name><description>Trim</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Tr2</name><description>Trim</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Tr3</name><description>Trim</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Tr4</name><description>Trim</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Tr5</name><description>Trim</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Tr6</name><description>Trim</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Tr7</name><description>Trim</description><value>7</value></enumeratedValue>
+              </enumeratedValues>    
+            </field>  
+          </fields>
+        </register>
+        <!-- REG_63_TMR0 -->
+        <register>
+          <name>REG_63_TMR0</name>
+          <description>REG63 Control register</description>
+          <addressOffset>0x0000010C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #REG63_FLDS -->
+          <resetMask>0xFFFFFFFF</resetMask>      
+          <fields>
+            <field>
+              <name>LSE_On</name>
+              <description>LSE Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>LSE_BYP</name>
+              <description>LSE Bypass</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field>
+              <name>RTC_Sel</name>
+              <description>Select Clock for RTC</description>
+              <bitRange>[3:2]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>LSI</name><description>LSI Clock</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>LSE</name><description>LSE Clock</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>RTCCLK</name><description>RTCCLK Clock</description><value>2</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>RTC_En</name>
+              <description>RTC Enable</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field>
+              <name>RTC_Cal</name>
+              <description>RTC pass counts</description>
+              <bitRange>[12:5]</bitRange>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>LSE_RDY</name>
+              <description>LSE Ready</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>LSE_FilterEn</name>
+              <description>LSE Filter Enable</description>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>LSI_On</name>
+              <description>LSI Enable</description>
+              <bitRange>[15:15]</bitRange>
+            </field>
+            <field>
+              <name>LSI_Trim</name>
+              <description>LSI Trim freq</description>
+              <bitRange>[20:16]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>Max8</name><description>LSI Trim</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Max7</name><description>LSI Trim</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Max6</name><description>LSI Trim</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Max5</name><description>LSI Trim</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Max4</name><description>LSI Trim</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Max3</name><description>LSI Trim</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Max2</name><description>LSI Trim</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Max1</name><description>LSI Trim</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Typical</name><description>LSI Default</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Min1</name><description>LSI Trim</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Min2</name><description>LSI Trim</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Min3</name><description>LSI Trim</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Min4</name><description>LSI Trim</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Min5</name><description>LSI Trim</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Min6</name><description>LSI Trim</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Min7</name><description>LSI Trim</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>LSI_RDY</name>
+              <description>LSI Ready</description>
+              <bitRange>[21:21]</bitRange>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>HSI_On</name>
+              <description>HSI Enable</description>
+              <bitRange>[22:22]</bitRange>
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>HSI_RDY</name>
+              <description>HSI Ready</description>
+              <bitRange>[23:23]</bitRange>
+            </field>
+            <field>
+              <name>HSI_Trim</name>
+              <description>HSI trim freq</description>
+              <bitRange>[29:24]</bitRange>
+            </field>
+            <field>
+              <name>STANDBY</name>
+              <description>Go Standby mode</description>
+              <bitRange>[30:30]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>GoStandby</name><description>Standby power off</description><value>1</value></enumeratedValue>
+              </enumeratedValues> 
+            </field>
+            <field derivedFrom="LSE_On">
+              <name>RTC_RST</name>
+              <description>RTC Reset</description>
+              <bitRange>[31:31]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- Lockstep 1-->
+        <register derivedFrom="REG_60_TMR0">
+          <name>REG_60_TMR1</name>
+          <description>REG60 Control register</description>
+          <addressOffset>0x00000110</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_61_TMR1</name>
+          <description>REG61 Control register</description>
+          <addressOffset>0x00000114</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_62_TMR1</name>
+          <description>REG62 Control register</description>
+          <addressOffset>0x00000118</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_63_TMR1</name>
+          <description>REG63 Control register</description>
+          <addressOffset>0x0000011C</addressOffset>
+        </register>
+        <!-- Lockstep 2-->
+        <register derivedFrom="REG_60_TMR0">
+          <name>REG_60_TMR2</name>
+          <description>REG60 Control register</description>
+          <addressOffset>0x00000120</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_61_TMR2</name>
+          <description>REG61 Control register</description>
+          <addressOffset>0x00000124</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_62_TMR2</name>
+          <description>REG62 Control register</description>
+          <addressOffset>0x00000128</addressOffset>
+        </register>
+        <register derivedFrom="REG_61_TMR0">
+          <name>REG_63_TMR2</name>
+          <description>REG63 Control register</description>
+          <addressOffset>0x0000012C</addressOffset>
+        </register>
+        <!-- RTC_CNT -->
+        <register>
+          <name>RTC_CNT_TMR0</name>
+          <description>Count periods of PRL</description>
+          <addressOffset>0x00000130</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- RTC_DIV -->
+        <register>
+          <name>RTC_DIV_TMR0</name>
+          <description>Counts RTC Clock to get PRL value</description>
+          <addressOffset>0x00000134</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC DIV value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_PRL -->
+        <register>
+          <name>RTC_PRL_TMR0</name>
+          <description>Period value for DIV counter</description>
+          <addressOffset>0x00000138</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000FFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>RTC PRL value </description>
+              <bitRange>[19:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_ALRM -->
+        <register>
+          <name>RTC_ALRM_TMR0</name>
+          <description>Event value for CNT counter</description>
+          <addressOffset>0x0000013C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <!--Value-->
+            <field>
+              <name>Value</name>
+              <description>Alarm value of CNT</description>
+              <bitRange>[31:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <!-- RTC_CS -->
+        <register>
+          <name>RTC_CS_TMR0</name>
+          <description>RTC Control and Status</description>
+          <addressOffset>0x00000140</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000FFFF</resetMask>
+          <fields>
+            <!--OWF-->
+            <field>
+              <name>OWF</name>
+              <description>CNT Overflow flag, clear by set 1</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Off</name>
+                  <description>No Event</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>On</name>
+                  <description>Event</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--SECF-->
+            <field derivedFrom="OWF">
+              <name>SECF</name>
+              <description>DIV == PRL Event, clear by set 1</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <!--ALRF-->
+            <field derivedFrom="OWF">
+              <name>ALRF</name>
+              <description>CNT == ALRM Event, clear by set 1</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <!--OWF_IE-->
+            <field derivedFrom="OWF">
+              <name>OWF_IE</name>
+              <description>Enable IRQ by OWF</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <!--SECF_IE-->
+            <field derivedFrom="OWF">
+              <name>SECF_IE</name>
+              <description>Enable IRQ by SECF</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <!--ALRF_IE-->
+            <field derivedFrom="OWF">
+              <name>ALRF_IE</name>
+              <description>Enable IRQ by ALRF</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <!--WEC-->
+            <field>
+              <name>WEC</name>
+              <description>RTC Busy flag</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>Ready</name>
+                  <description>Registers available</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>Busy</name>
+                  <description>Registers unavailable</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!-- New Bits -->
+            <field>
+              <name>CLR_ERRx</name>
+              <description>Clear Errors</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Clear</name><description>Clear ERR_x Errors</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ERR_CNT</name>
+              <description>CNTx mistmatches</description>
+              <bitRange>[8:8]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>Off</name><description>No event</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Event Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_DIV</name>
+              <description>DIVx mistmatches</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_CM</name>
+              <description>Clock RTC too high</description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_CC</name>
+              <description>Clock RTC too low</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_CNTx</name>
+              <description>Self channel CNT fault</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_DIVx</name>
+              <description>Self channel DIV fault</description>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field derivedFrom="ERR_CNT">
+              <name>ERR_CMx</name>
+              <description>Self channel clock fault</description>
+              <bitRange>[14:14]</bitRange>
+            </field>
+            <field>
+              <name>ERR_IE</name>
+              <description>Enable IRQ on RTC faults</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>      
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- LockStep 1 -->
+        <register derivedFrom="RTC_CNT_TMR0">
+          <name>RTC_CNT_TMR1</name>
+          <addressOffset>0x00000150</addressOffset>
+        </register>
+        <register derivedFrom="RTC_DIV_TMR0">
+          <name>RTC_DIV_TMR1</name>
+          <addressOffset>0x00000154</addressOffset>
+        </register>
+        <register derivedFrom="RTC_PRL_TMR0">
+          <name>RTC_PRL_TMR1</name>
+          <addressOffset>0x00000158</addressOffset>
+        </register>
+        <register derivedFrom="RTC_ALRM_TMR0">
+          <name>RTC_ALRM_TMR1</name>
+          <addressOffset>0x0000015C</addressOffset>
+        </register>
+        <register derivedFrom="RTC_CS_TMR0">
+          <name>RTC_CS_TMR1</name>
+          <addressOffset>0x00000160</addressOffset>
+        </register>
+        <!-- LockStep 2 -->
+        <register derivedFrom="RTC_CNT_TMR0">
+          <name>RTC_CNT_TMR2</name>
+          <addressOffset>0x00000170</addressOffset>
+        </register>
+        <register derivedFrom="RTC_DIV_TMR0">
+          <name>RTC_DIV_TMR2</name>
+          <addressOffset>0x00000174</addressOffset>
+        </register>
+        <register derivedFrom="RTC_PRL_TMR0">
+          <name>RTC_PRL_TMR2</name>
+          <addressOffset>0x00000178</addressOffset>
+        </register>
+        <register derivedFrom="RTC_ALRM_TMR0">
+          <name>RTC_ALRM_TMR2</name>
+          <addressOffset>0x0000017C</addressOffset>
+        </register>
+        <register derivedFrom="RTC_CS_TMR0">
+          <name>RTC_CS_TMR2</name>
+          <addressOffset>0x00000180</addressOffset>
+        </register>
+        <!-- #BLDO_CTRL_ESila  -->
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #PWR -->
     <!-- #FTMODE -->
     <!-- #WDT -->

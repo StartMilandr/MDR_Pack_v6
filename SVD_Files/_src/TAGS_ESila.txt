@@ -1,13 +1,13 @@
 [FILES]
 f1=../RST_VE8x/RST_ESila.txt
+f2=../BKP/BKP_ESila.txt
 
 [TAGS]
 #RST=f1
 #RST_R=#RST_ESila
+#BKP=f2
 
 [TAGS_New]
-#BKP=
-#BKP_R=
 #FTMODE=
 #FTMODE_R=
 #WDT=

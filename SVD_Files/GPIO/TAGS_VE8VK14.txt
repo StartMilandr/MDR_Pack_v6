@@ -1,0 +1,7 @@
+[FILES]
+f1=GPIO_Text_VE8.xml
+
+[TAGS]
+#MDR_PORTE=f1
+
+[TAGS_New]

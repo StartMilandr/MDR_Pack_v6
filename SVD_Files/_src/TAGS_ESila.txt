@@ -1,11 +1,14 @@
 [FILES]
 f1=../RST_VE8x/RST_ESila.txt
 f2=../BKP/BKP_ESila.txt
+f3=../GPIO/GPIO_ESila.txt
 
 [TAGS]
 #RST=f1
 #RST_R=#RST_ESila
 #BKP=f2
+#GPIOs=f3
+#GPIOs_R=#GPIO
 
 [TAGS_New]
 #FTMODE=
@@ -26,8 +29,6 @@ f2=../BKP/BKP_ESila.txt
 #RAMD1_R=
 #EBC=
 #EBC_R=
-#GPIOs=
-#GPIOs_R=
 #CAN_FD=
 #CAN_FD_R=
 #MILs=

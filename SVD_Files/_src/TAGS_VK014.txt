@@ -1,11 +1,14 @@
 [FILES]
 f1=../RST_VE8x/RST_VK014.txt
 f2=../BKP/BKP_VK14.txt
+f3=../GPIO/GPIO_VE8VK14.txt
 
 [TAGS]
 #RST=f1
 #RST_R=#RST_VK014
 #BKP=f2
+#GPIOs=f3
+#GPIOs_R=#GPIO
 
 [TAGS_New]
 #PWR=
@@ -30,8 +33,6 @@ f2=../BKP/BKP_VK14.txt
 #CCSDSTX_R=
 #CACHE=
 #CACHE_R=
-#GPIOs=
-#GPIOs_R=
 #SPWs=
 #SPWs_R=
 #TIMERs=

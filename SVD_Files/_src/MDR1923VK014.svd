@@ -2074,6 +2074,953 @@
     <!-- #CCSDSTX -->
     <!-- #CACHE -->
     <!-- #GPIOs -->
+    <!--MDR_PORTA-->
+    <peripheral>
+      <name>MDR_PORTA</name>
+      <version>1.0</version>
+      <description>PORTA</description>
+      <groupName>MDR_PORT</groupName>
+      <baseAddress>0x40080000</baseAddress>
+      <size>32</size>
+      <addressBlock>
+          <offset>0</offset>
+          <size>0x8C</size>
+          <usage>registers</usage>
+      </addressBlock>
+      <!--IRQ_PORTA-->
+      <!--interrupt>
+        <name>IRQ_PORTA</name>
+        <value>83</value>
+      </interrupt-->
+      <registers>
+        <!--KEY-->
+        <register>
+            <name>KEY</name>
+            <description>Key lock Register</description>
+            <addressOffset>0x00000000</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!--RXTX-->
+        <register>
+          <name>RXTX</name>
+          <description>GPIO Pin Data Register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pin data value</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Low</name><description>LOW Level Voltage</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>High</name><description>HIGH Level Voltage</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SRXTX-->
+        <register>
+          <name>RXTX_Set</name>
+          <description>Set RXTX Bits</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Set 1 to pin</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Do nothing</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>SET</name><description>Set pin</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CRXTX-->
+        <register>
+          <name>RXTX_Clear</name>
+          <description>Clear RXTX Bits</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Set 0 to pin</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Do nothing</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>CLEAR</name><description>Clear pin</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--OE-->
+        <register>
+          <name>OE</name>
+          <description>Pins Output Enable (Port function)</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pin Output Enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>IN</name><description>Input pin</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>OUT</name><description>Output pin</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SOE-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>OE_Set</name>
+          <description>Set OE Pins</description>
+          <addressOffset>0x00000010</addressOffset>
+        </register>
+        <!--COE-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>OE_Clear</name>
+          <description>Clear OE Pins</description>
+          <addressOffset>0x00000014</addressOffset>
+        </register>
+        <!--FUNC0-->
+        <register>
+          <name>FUNC0</name>
+          <description>Pin0 - Pin7 Functions</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>0,1,2,3,4,5,6,7</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Read SFUNC0 Register</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>PORT</name><description>User Pin control</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Func_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Func_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Func_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Func_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Func_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Func_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Func_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Func_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Func_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Func_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Func_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Func_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Func_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Func_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Func_15</name><description>Function periph pin control</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--FUNC1-->
+        <register>
+          <name>FUNC1</name>
+          <description>Pin8 - Pin15 Functions</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>8,9,10,11,12,13,14,15</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Read SFUNC1 Register</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>PORT</name><description>User Pin control</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Func_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Func_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Func_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Func_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Func_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Func_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Func_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Func_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Func_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Func_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Func_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Func_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Func_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Func_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Func_15</name><description>Function periph pin control</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--FUNC2-->
+        <register>
+          <name>FUNC2</name>
+          <description>Pin16 - Pin23 Functions</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>16,17,18,19,20,21,22,23</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Read SFUNC2 Register</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>PORT</name><description>User Pin control</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Func_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Func_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Func_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Func_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Func_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Func_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Func_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Func_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Func_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Func_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Func_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Func_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Func_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Func_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Func_15</name><description>Function periph pin control</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--FUNC3-->
+        <register>
+          <name>FUNC3</name>
+          <description>Pin24 - Pin31 Functions</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>24,25,26,27,28,29,30,31</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Read SFUNC3 Register</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>PORT</name><description>User Pin control</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Func_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Func_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Func_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Func_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Func_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Func_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Func_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Func_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Func_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Func_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Func_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Func_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Func_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Func_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Func_15</name><description>Function periph pin control</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SFUNC0-->
+        <register derivedFrom="MDR_PORTA.FUNC0">
+          <name>FUNC0_Set</name>
+          <description>Set FUNC0 bits</description>
+          <addressOffset>0x00000018</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--SFUNC1-->
+        <register derivedFrom="MDR_PORTA.FUNC1">
+          <name>FUNC1_Set</name>
+          <description>Set FUNC1 bits</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--SFUNC2-->
+        <register derivedFrom="MDR_PORTA.FUNC2">
+          <name>FUNC2_Set</name>
+          <description>Set FUNC2 bits</description>
+          <addressOffset>0x00000020</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--SFUNC3-->
+        <register derivedFrom="MDR_PORTA.FUNC3">
+          <name>FUNC3_Set</name>
+          <description>Set FUNC3 bits</description>
+          <addressOffset>0x00000024</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--CFUNC0-->
+        <register>
+          <name>FUNC0_Clear</name>
+          <description>Clear FUNC0 bits</description>
+          <addressOffset>0x00000028</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>0-7</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Clear FUNC0 bits</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>ClearToPort</name><description>Set Pin to Port function</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CFUNC1-->
+        <register>
+          <name>FUNC1_Clear</name>
+          <description>Clear FUNC1 bits</description>
+          <addressOffset>0x0000002C</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>8-15</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Clear FUNC1 bits</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>ClearToPort</name><description>Set Pin to Port function</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CFUNC2-->
+        <register>
+          <name>FUNC2_Clear</name>
+          <description>Clear FUNC2 bits</description>
+          <addressOffset>0x00000030</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>16-23</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Clear FUNC2 bits</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>ClearToPort</name><description>Set Pin to Port function</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CFUNC3-->
+        <register>
+          <name>FUNC3_Clear</name>
+          <description>Clear FUNC3 bits</description>
+          <addressOffset>0x00000034</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>8</dim>
+              <dimIncrement>4</dimIncrement>
+              <dimIndex>24-31</dimIndex>
+              <name>Func_Pin_%s</name>
+              <description>Clear FUNC3 bits</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_1</name><description>Function periph pin control</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_2</name><description>Function periph pin control</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_3</name><description>Function periph pin control</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_4</name><description>Function periph pin control</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_5</name><description>Function periph pin control</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_6</name><description>Function periph pin control</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_7</name><description>Function periph pin control</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_8</name><description>Function periph pin control</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_9</name><description>Function periph pin control</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_10</name><description>Function periph pin control</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_11</name><description>Function periph pin control</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_12</name><description>Function periph pin control</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_13</name><description>Function periph pin control</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>ClrFunc_14</name><description>Function periph pin control</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>ClearToPort</name><description>Set Pin to Port function</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--ANALOG-->
+        <register>
+          <name>ANALOG</name>
+          <description>Pins Digital Mode</description>
+          <addressOffset>0x00000038</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pins Digital Mode</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Analog</name><description>Pin Analog signal</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Digital</name><description>Pin Digital signal</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SANALOG-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>ANALOG_Set</name>
+          <description>Set ANALOG bits</description>
+          <addressOffset>0x00000038</addressOffset>
+        </register>
+        <!--CANALOG-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>ANALOG_Clear</name>
+          <description>Clear ANALOG bits</description>
+          <addressOffset>0x0000003C</addressOffset>
+        </register>
+        <!--PULLUP-->
+        <register>
+          <name>PULLUP</name>
+          <description>Pins PullUP State</description>
+          <addressOffset>0x00000040</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pins PullUp State</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>No pull selected</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>UP</name><description>Pin pulled up to VDD</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SPULLUP-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>PULLUP_Set</name>
+          <description>Set PULLUP bits</description>
+          <addressOffset>0x00000040</addressOffset>
+        </register>
+        <!--CPULLUP-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>PULLUP_Clear</name>
+          <description>Clear PULLUP bits</description>
+          <addressOffset>0x00000044</addressOffset>
+        </register>
+        <!--PULLDOWN-->
+        <register>
+          <name>PULLDOWN</name>
+          <description>Pins PullDOWN State</description>
+          <addressOffset>0x00000048</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pins PullUp State</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>No pull selected</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>DOWN</name><description>Pin pulled up to GND</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SPULLDOWN-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>PULLDOWN_Set</name>
+          <description>Set PULLDOWN bits</description>
+          <addressOffset>0x00000048</addressOffset>
+        </register>
+        <!--CPULLDOWN-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>PULLDOWN_Clear</name>
+          <description>Clear PULLDOWN bits</description>
+          <addressOffset>0x0000004C</addressOffset>
+        </register>
+        <!--PD-->
+        <register>
+          <name>PD</name>
+          <description>Pins Driver Mode</description>
+          <addressOffset>0x00000050</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Pins Driver Mode</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Driver</name><description>Pull-Push driver</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>OpenDrain</name><description>Drain Pulled Up Line</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SPD-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>PD_Set</name>
+          <description>Set PD bits</description>
+          <addressOffset>0x00000050</addressOffset>
+        </register>
+        <!--CPD-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>PD_Clear</name>
+          <description>Clear PD bits</description>
+          <addressOffset>0x00000054</addressOffset>
+        </register>
+        <!--PWR0-->
+        <register>
+          <name>PWR0</name>
+          <description>Power of Pins 0 - 15</description>
+          <addressOffset>0x00000058</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+            <dim>16</dim>
+            <dimIncrement>2</dimIncrement>
+            <dimIndex>0-15</dimIndex>
+            <name>Pin_%s</name>
+            <description>Read SPWR Register</description>
+            <bitRange>[1:0]</bitRange>
+            <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Level switch disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Slow</name><description>Front ~300ns</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Fast</name><description>Front ~100ns</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>MaxFast</name><description>Front ~10ns</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--PWR1-->
+        <register>
+          <name>PWR1</name>
+          <description>Power of Pins 0 - 15</description>
+          <addressOffset>0x0000005C</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>2</dimIncrement>
+              <dimIndex>16-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Read SPWR1 Register</description>
+              <bitRange>[1:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Level switch disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Slow</name><description>Front ~300ns</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Fast</name><description>Front ~100ns</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>MaxFast</name><description>Front ~10ns</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SPWR0-->
+        <register derivedFrom="MDR_PORTA.PWR0">
+          <name>PWR0_Set</name>
+          <description>Set PWR0 bits</description>
+          <addressOffset>0x00000058</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--SPWR1-->
+        <register derivedFrom="MDR_PORTA.PWR1">
+          <name>PWR1_Set</name>
+          <description>Set PWR1 bits</description>
+          <addressOffset>0x0000005C</addressOffset>
+          <access>write-only</access>
+        </register>
+        <!--CPWR0-->
+        <register>
+          <name>PWR0_Clear</name>
+          <description>Clear PWR0 bits</description>
+          <addressOffset>0x00000060</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>2</dimIncrement>
+              <dimIndex>0-15</dimIndex>
+              <name>Pin_%s</name>
+              <description>Clear PWR0 bits</description>
+              <bitRange>[1:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrSlow</name><description>Front ~300ns</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFast</name><description>Front ~100ns</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrToOff</name><description>Pin Power Off</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CPWR1-->
+        <register>
+          <name>PWR1_Clear</name>
+          <description>Clear PWR1 bits</description>
+          <addressOffset>0x00000064</addressOffset>
+          <size>32</size>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>16</dim>
+              <dimIncrement>2</dimIncrement>
+              <dimIndex>16-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Clear PWR1 bits</description>
+              <bitRange>[1:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>ClrSlow</name><description>Front ~300ns</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>ClrFast</name><description>Front ~100ns</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>ClrToOff</name><description>Pin Power Off</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--CL-->
+        <register>
+          <name>CL</name>
+          <description>Pins Current Control enabled</description>
+          <addressOffset>0x00000068</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Read register SCL</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SCL-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>CL_Set</name>
+          <description>Set CL bits</description>
+          <addressOffset>0x00000068</addressOffset>
+        </register>
+        <!--CCL-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>CL_Clear</name>
+          <description>Clear CL bits</description>
+          <addressOffset>0x0000006C</addressOffset>
+        </register>
+        <!--IE-->
+        <register>
+          <name>IE</name>
+          <description>Pin Level IRQ Enable</description>
+          <addressOffset>0x00000070</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Read register SIE</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>IRQ disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>IRQ enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SIE-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>IE_Set</name>
+          <description>Set IE bits</description>
+          <addressOffset>0x00000070</addressOffset>
+        </register>
+        <!--CIE-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>IE_Clear</name>
+          <description>Clear IE bits</description>
+          <addressOffset>0x00000074</addressOffset>
+        </register>
+        <!--IT-->
+        <register>
+          <name>IT</name>
+          <description>IRQ Level Select</description>
+          <addressOffset>0x00000078</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Read register SIT</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Low</name><description>IRQ by low level</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>HIGH</name><description>IRQ by High level</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SIT-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>IT_Set</name>
+          <description>Set IT bits</description>
+          <addressOffset>0x00000078</addressOffset>
+        </register>
+        <!--CIT-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>IT_Clear</name>
+          <description>Clear IT bits</description>
+          <addressOffset>0x0000007C</addressOffset>
+        </register>
+        <!--IR-->
+        <register>
+          <name>IR</name>
+          <description>Read SIR Register</description>
+          <addressOffset>0x00000080</addressOffset>
+          <size>32</size>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Read register SIR</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                  <enumeratedValue><name>Off</name><description>Inactive IRQ request</description><value>0</value></enumeratedValue>
+                  <enumeratedValue><name>On</name><description>Active IRQ request</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!--SIR-->
+        <register derivedFrom="MDR_PORTA.RXTX_Set">
+          <name>IR_Set</name>
+          <description>Set IR bits</description>
+          <addressOffset>0x00000080</addressOffset>
+        </register>
+        <!--CIR-->
+        <register derivedFrom="MDR_PORTA.RXTX_Clear">
+          <name>IR_Clear</name>
+          <description>Clear IR bits</description>
+          <addressOffset>0x00000084</addressOffset>
+        </register>
+        <!--HCUR-->
+        <register>
+          <name>HCUR</name>
+          <description>Pins' Overcurrent Status</description>
+          <addressOffset>0x00000088</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>Pin_%s</name>
+              <description>Register HCUR</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                  <enumeratedValue><name>Off</name><description>Overcurrent is inactive</description><value>0</value></enumeratedValue>
+                  <enumeratedValue><name>On</name><description>Overcurrent is active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <!--MDR_PORTB-->
+    <peripheral derivedFrom="MDR_PORTA">
+        <name>MDR_PORTB</name>
+        <description>PORTB</description>
+        <baseAddress>0x40081000</baseAddress>
+        <!--interrupt>
+          <name>IRQ_PORTB</name>
+          <value>84</value>
+        </interrupt-->
+    </peripheral>
+    <!--MDR_PORTC-->
+    <peripheral derivedFrom="MDR_PORTA">
+        <name>MDR_PORTC</name>
+        <description>PORTC</description>
+        <baseAddress>0x40082000</baseAddress>
+        <!--interrupt>
+          <name>IRQ_PORTC</name>
+          <value>85</value>
+        </interrupt-->
+    </peripheral>
+    <!--MDR_PORTD-->
+    <peripheral derivedFrom="MDR_PORTA">
+        <name>MDR_PORTD</name>
+        <description>PORTD</description>
+        <baseAddress>0x40083000</baseAddress>
+        <!--interrupt>
+          <name>IRQ_PORTD</name>
+          <value>86</value>
+        </interrupt-->
+    </peripheral>
+    <!-- #MDR_PORTE -->
+    <peripheral derivedFrom="MDR_PORTA">
+        <name>MDR_PORTE</name>
+        <description>PORTE</description>
+        <baseAddress>0x40084000</baseAddress>
+        <!--interrupt>
+          <name>IRQ_PORTE</name>
+          <value>87</value>
+        </interrupt-->
+    </peripheral>
     <!-- #SPWs -->
     <!-- #TIMERs -->
     <!-- #CANs -->

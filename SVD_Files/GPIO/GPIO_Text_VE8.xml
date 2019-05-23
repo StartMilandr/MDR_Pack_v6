@@ -1,0 +1,10 @@
+#MDR_PORTE
+<peripheral derivedFrom="MDR_PORTA">
+    <name>MDR_PORTE</name>
+    <description>PORTE</description>
+    <baseAddress>0x40084000</baseAddress>
+    <!--interrupt>
+      <name>IRQ_PORTE</name>
+      <value>87</value>
+    </interrupt-->
+</peripheral>

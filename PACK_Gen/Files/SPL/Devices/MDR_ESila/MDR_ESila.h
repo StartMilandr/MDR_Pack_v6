@@ -316,6 +316,9 @@ typedef enum IRQn
 #include <MDR_BKP_ESila_defs.h>
 #include <MDR_RST_VE8x_defs.h>
 
+/*===============  GPIO Port ===================*/
+#include <MDR_GPIO_VE8x_defs.h>
+
 
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
@@ -371,6 +374,11 @@ typedef enum IRQn
 #define ADDR_RST_CLOCK_BASE   0x40000000UL                              /*!< RST_CLOCK Base Address      */
 #define ADDR_BKP_BASE         0x40001000UL                              /*!< Backup and RTC Base Address */
 
+#define ADDR_PORTA_BASE       0x40080000UL                              /*!< GPIO PORT_A Base Address */
+#define ADDR_PORTB_BASE       0x40081000UL                              /*!< GPIO PORT_B Base Address */
+#define ADDR_PORTC_BASE       0x40082000UL                              /*!< GPIO PORT_C Base Address */
+#define ADDR_PORTD_BASE       0x40083000UL                              /*!< GPIO PORT_D Base Address */
+
 
 
 #define ADDR_SSP1_BASE        0x40089000UL
@@ -401,6 +409,11 @@ typedef enum IRQn
 
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
+#define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
+#define MDR_PORTB                      ((MDR_PORT_Type 	    *) ADDR_PORTB_BASE)
+#define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
+#define MDR_PORTD                      ((MDR_PORT_Type 	    *) ADDR_PORTD_BASE)
 
 
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)

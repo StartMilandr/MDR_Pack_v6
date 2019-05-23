@@ -87,12 +87,12 @@
       <description>REG61 Control register</description>
       <addressOffset>0x00000114</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_62_TMR0">
       <name>REG_62_TMR1</name>
       <description>REG62 Control register</description>
       <addressOffset>0x00000118</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_63_TMR0">
       <name>REG_63_TMR1</name>
       <description>REG63 Control register</description>
       <addressOffset>0x0000011C</addressOffset>
@@ -108,12 +108,12 @@
       <description>REG61 Control register</description>
       <addressOffset>0x00000124</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_62_TMR0">
       <name>REG_62_TMR2</name>
       <description>REG62 Control register</description>
       <addressOffset>0x00000128</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_63_TMR0">
       <name>REG_63_TMR2</name>
       <description>REG63 Control register</description>
       <addressOffset>0x0000012C</addressOffset>

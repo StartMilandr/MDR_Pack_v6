@@ -144,9 +144,14 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 
-/** @addtogroup Device_Peripheral_peripherals
-  * @{
-  */
+#define MDR_KEY_UNLOCK    0x8FFFAAA1UL
+
+/*===============  RST_Clock ===================*/
+#include <MDR_RST_VK014_defs.h>
+
+/*===============  BKP ===================*/
+#include <MDR_BKP_VK014_defs.h>
+#include <MDR_RST_VE8x_defs.h>
 
 
 /*=========  SSP - Synchronous Serial Port ========*/
@@ -195,9 +200,14 @@ typedef enum IRQn
 /* Peripheral and SRAM base address */
 // #define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
 // #define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-// #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+ #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
+#define ADDR_RST_CLOCK_BASE   0x40000000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_BKP_BASE         0x40001000UL                              /*!< Backup and RTC Base Address */
+
+
+
 #define ADDR_SSP1_BASE        0x40095000UL                                   /*!< SSP Base Address      */
 #define ADDR_SSP2_BASE        0x40096000UL                                   /*!< SSP Base Address      */
 
@@ -222,6 +232,10 @@ typedef enum IRQn
 /** @addtogroup Device_Peripheral_declaration
   * @{
   */
+
+#define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
+#define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
 
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
 #define MDR_SSP2                       ((MDR_SSP_Type       *) ADDR_SSP2_BASE)
@@ -268,9 +282,9 @@ typedef enum IRQn
 #define MDR_TIMER6_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER6->CCR4))
 
 
-/* =========================================================================================================================== */
+/* ================================================================================================================ */
 /* ================                                  SPL_Configs                                   ================ */
-/* =========================================================================================================================== */
+/* ================================================================================================================ */
 
 //  Clock Enable bits
 

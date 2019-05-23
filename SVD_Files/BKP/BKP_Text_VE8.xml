@@ -212,6 +212,21 @@
     <description>Reset from WDT</description>
     <bitRange>[14:14]</bitRange>
   </field>
+  <field derivedFrom="S_SYSRSTn">
+    <name>ERR_REG60x</name>
+    <description>Fault in REG_60x</description>
+    <bitRange>[25:25]</bitRange>
+  </field>
+  <field derivedFrom="S_SYSRSTn">
+    <name>ERR_REG61x_62x</name>
+    <description>Fault in REG_61x or REG_62x </description>
+    <bitRange>[26:26]</bitRange>
+  </field>
+  <field derivedFrom="S_SYSRSTn">
+    <name>ERR_REG63x</name>
+    <description>Fault in REG_63x</description>
+    <bitRange>[27:27]</bitRange>
+  </field>
   <field>
     <name>CLR_ERR</name>
     <description>Clear Errors of REG_60x - 63x</description>
@@ -740,12 +755,12 @@
     <bitRange>[23:19]</bitRange>
   </field>
   <field derivedFrom="PWRM_Vdd_En">
-    <name>PWRM_VddB_Enl</name>
+    <name>PWRM_VddB_EN</name>
     <description>Vdd_BKP monitor enable</description>
     <bitRange>[24:24]</bitRange>
   </field>
   <field derivedFrom="PWRM_Vdd_En">
-    <name>PWRM_VddIO_Enl</name>
+    <name>PWRM_VddIO_EN</name>
     <description>Vdd_IO monitor enable</description>
     <bitRange>[25:25]</bitRange>
   </field>
@@ -909,7 +924,7 @@
     </enumeratedValues>
   </field>
   <field derivedFrom="LSE_RDY">
-    <name>LSE_FilterOm</name>
+    <name>LSE_FilterON</name>
     <description>LSE Input filter</description>
     <bitRange>[1:1]</bitRange>
   </field>

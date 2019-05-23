@@ -624,8 +624,8 @@
 
 #HSI_STAT_VE8
 <register>
-  <name>HSE_STAT</name>
-  <description>Clock Status Register</description>
+  <name>HSI_STAT</name>
+  <description>HSI Status Register</description>
   <addressOffset>0x00000038</addressOffset>
   <size>32</size>
   <access>read-write</access>
@@ -646,8 +646,8 @@
 
 #HSI_STAT_VK14
 <register>
-  <name>HSE_STAT</name>
-  <description>Clock Status Register</description>
+  <name>HSI_STAT</name>
+  <description>HSI Status Register</description>
   <addressOffset>0x00000038</addressOffset>
   <size>32</size>
   <access>read-write</access>

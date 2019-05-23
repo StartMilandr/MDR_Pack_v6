@@ -233,7 +233,7 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1923VK014/MDR_1923VK014.h" define="USE_MDR1923VK014"/>
           <!--debug      svd="Keil/SVD/MDR1923VK014.svd"/-->
-          <!--memory     id="IROM1"                          start="0x00000000"  size="0x2000"    startup="1"   default="1"/-->
+          <memory     id="IROM1"                          start="0x00000000"  size="0x8000"    startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
           <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
@@ -287,68 +287,7 @@
           <feature type="ADC"   n="1"   m="12"/>
           <feature type="SPI"   n="1"   name="SPI Interface"/>
           <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
-        </device>
-
-        <!-- MDR_ESila -->
-        <device Dname="MDR_ESila" >
-          <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
-          <compile    header="SPL/Devices/MDR_ESila/MDR_ESila.h" define="USE_ESila"/>
-          <!--debug      svd="Keil/SVD/MDR_ESila.svd"/-->
-          <memory     id="IROM1"                          start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
-          <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
-          <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
-
-          <!--description>
-                (1986VK234 RUS)
-                Core:
-                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 36 MHz
-                 - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
-                 - memory Protection Unit (MPU)
-                 - 24-bit SysTick Timer
-
-                Memory:
-                 - 64 KBytes of Flash memory (ISP and IAP)
-                 - 16 KBytes of SRAM
-
-                Supply and Clock rate:
-                 - internal regulator for core voltage supply
-                 - built-in power control system
-                 - internal battery domain
-                 - internal 8 MHz RC clock generator with calibration
-                 - internal 40 kHz RC clockgenerator with calibration
-                 - external oscillator 2 .. 16 MHz
-                 - external oscillator 32 KHz
-                 - on-board PLL for clock frequency
-                 - dedicated PLL for USB clock frequency
-
-                Low power consumption modes:
-                 - Sleep, Stop and Standby
-                 - battery domain with RTC and backup registers
-
-                Analog features:
-                 - 12-bit ADC (8 channels)
-                 - 24-bit Sigma-Delta ADC (3 channels) conversion range: 0 to 3.6 V
-                 - temperature sensor
-
-                Peripheral features:
-                 - DMA controller (32 channel)
-                 - 2 Synch. 16-bit Timers (Input Capture, Output Compare, PWM)
-                 - 2 * UART
-                 - 1 * SPI
-                 - 1 * I2C
-                 - LCD Controller
-                 - 47 GPIO pins
-
-                Debug mode:
-                 - 1 SWD
-          </description>
-          <feature type="UART"  n="2"   name="UART Interface up to 2.25 Mbit/s"/>
-          <feature type="VCC"   n="3.0" m="3.6"/>
-          <feature type="ADC"   n="1"   m="12"/>
-          <feature type="SPI"   n="1"   name="SPI Interface"/>
-          <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
-        </device>
+        </device>      
 
       </subFamily>
 
@@ -812,6 +751,66 @@
             Debug mode:
              - 2x JTAG
           </description>
+        </device>
+        <!-- MDR_ESila -->
+        <device Dname="MDR_ESila" >
+          <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
+          <compile    header="SPL/Devices/MDR_ESila/MDR_ESila.h" define="USE_ESila"/>
+          <!--debug      svd="Keil/SVD/MDR_ESila.svd"/-->
+          <memory     id="IROM1"                          start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
+          <memory     id="IRAM1"                          start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
+          <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
+          <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
+
+          <!--description>
+                (1986VK234 RUS)
+                Core:
+                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 36 MHz
+                 - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+                 - memory Protection Unit (MPU)
+                 - 24-bit SysTick Timer
+
+                Memory:
+                 - 64 KBytes of Flash memory (ISP and IAP)
+                 - 16 KBytes of SRAM
+
+                Supply and Clock rate:
+                 - internal regulator for core voltage supply
+                 - built-in power control system
+                 - internal battery domain
+                 - internal 8 MHz RC clock generator with calibration
+                 - internal 40 kHz RC clockgenerator with calibration
+                 - external oscillator 2 .. 16 MHz
+                 - external oscillator 32 KHz
+                 - on-board PLL for clock frequency
+                 - dedicated PLL for USB clock frequency
+
+                Low power consumption modes:
+                 - Sleep, Stop and Standby
+                 - battery domain with RTC and backup registers
+
+                Analog features:
+                 - 12-bit ADC (8 channels)
+                 - 24-bit Sigma-Delta ADC (3 channels) conversion range: 0 to 3.6 V
+                 - temperature sensor
+
+                Peripheral features:
+                 - DMA controller (32 channel)
+                 - 2 Synch. 16-bit Timers (Input Capture, Output Compare, PWM)
+                 - 2 * UART
+                 - 1 * SPI
+                 - 1 * I2C
+                 - LCD Controller
+                 - 47 GPIO pins
+
+                Debug mode:
+                 - 1 SWD
+          </description>
+          <feature type="UART"  n="2"   name="UART Interface up to 2.25 Mbit/s"/>
+          <feature type="VCC"   n="3.0" m="3.6"/>
+          <feature type="ADC"   n="1"   m="12"/>
+          <feature type="SPI"   n="1"   name="SPI Interface"/>
+          <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
         </device>
 
       </subFamily>

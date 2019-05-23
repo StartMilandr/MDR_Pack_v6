@@ -1,5 +1,5 @@
-#ifndef _MDR_RST_VE8_DEFS_H
-#define _MDR_RST_VE8_DEFS_H
+#ifndef _MDR_RST_VK014_DEFS_H
+#define _MDR_RST_VK014_DEFS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,95 +38,59 @@ extern "C" {
 
 //---------------   PER Clock  ---------------
 typedef struct {
-      __IM  uint32_t                  : 13;
-      __IOM MDR_OnOff   PortA_CLK_EN  : 1;          /*!< [13..13] GPIO Port Clock Enable                                           */
-      __IOM MDR_OnOff   PortB_CLK_EN  : 1;          /*!< [14..14] GPIO Port Clock Enable                                           */
-      __IOM MDR_OnOff   PortC_CLK_EN  : 1;          /*!< [15..15] GPIO Port Clock Enable                                           */
-      __IOM MDR_OnOff   PortD_CLK_EN  : 1;          /*!< [16..16] GPIO Port Clock Enable                                           */
-      __IOM MDR_OnOff   PortE_CLK_EN  : 1;          /*!< [17..17] GPIO Port Clock Enable                                           */
+      __IOM MDR_OnOff   RST_CLK_EN    : 1;           /*!< [0..0] RST Clock Enable                                                   */
+      __IOM MDR_OnOff   BKP_CLK_EN    : 1;           /*!< [1..1] BKP Clock Enable                                                   */
+      __IOM MDR_OnOff   PWR_CLK_EN    : 1;           /*!< [2..2] Power Clock Enable                                                 */
+      __IOM MDR_OnOff   FTCNTR_CLK_EN : 1;           /*!< [3..3] FT_CNTR Clock Enable                                               */
+      __IOM MDR_OnOff   WDT_CLK_EN    : 1;           /*!< [4..4] WDT Clock Enable                                                   */
+      __IM  uint32_t                  : 6;
+      __IOM MDR_OnOff   DMA_CLK_EN    : 1;           /*!< [11..11] DMA Clock Enable                                                 */
+      __IM  uint32_t                  : 1;
+      __IOM MDR_OnOff   PortA_CLK_EN  : 1;           /*!< [13..13] GPIO Port Clock Enable                                           */
+      __IOM MDR_OnOff   PortB_CLK_EN  : 1;           /*!< [14..14] GPIO Port Clock Enable                                           */
+      __IOM MDR_OnOff   PortC_CLK_EN  : 1;           /*!< [15..15] GPIO Port Clock Enable                                           */
+      __IOM MDR_OnOff   PortD_CLK_EN  : 1;           /*!< [16..16] GPIO Port Clock Enable                                           */
+      __IOM MDR_OnOff   PortE_CLK_EN  : 1;           /*!< [17..17] GPIO Port Clock Enable                                           */
       __IM  uint32_t                  : 3;
       __IOM MDR_OnOff   SPW1_CLK_EN   : 1;           /*!< [21..21] SPW1 Clock Enable                                                */
-      __IM  uint32_t                  : 1;
+      __IOM MDR_OnOff   SPW2_CLK_EN   : 1;           /*!< [22..22] SPW2 Clock Enable                                                */
       __IOM MDR_OnOff   TIM1_CLK_EN   : 1;           /*!< [23..23] TIM1 Clock Enable                                                */
       __IOM MDR_OnOff   TIM2_CLK_EN   : 1;           /*!< [24..24] TIM2 Clock Enable                                                */
       __IOM MDR_OnOff   TIM3_CLK_EN   : 1;           /*!< [25..25] TIM3 Clock Enable                                                */
       __IOM MDR_OnOff   TIM4_CLK_EN   : 1;           /*!< [26..26] TIM4 Clock Enable                                                */
       __IM  uint32_t                  : 2;
       __IOM MDR_OnOff   CAN1_CLK_EN   : 1;           /*!< [29..29] CAN1 Clock Enable                                                */
-      __IM  uint32_t                  : 2;
+      __IOM MDR_OnOff   CAN2_CLK_EN   : 1;           /*!< [30..30] CAN2 Clock Enable                                                */
+      __IM  uint32_t                  : 1;
 } MDR_RST_PER0_Bits;
 
-#define MDR_RST_PER0_PortA_CLK_EN_Pos (13UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bit 13)         */
-#define MDR_RST_PER0_PortA_CLK_EN_Msk (0x2000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortB_CLK_EN_Pos (14UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bit 14)         */
-#define MDR_RST_PER0_PortB_CLK_EN_Msk (0x4000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortC_CLK_EN_Pos (15UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bit 15)         */
-#define MDR_RST_PER0_PortC_CLK_EN_Msk (0x8000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortD_CLK_EN_Pos (16UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bit 16)         */
-#define MDR_RST_PER0_PortD_CLK_EN_Msk (0x10000UL)         /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortE_CLK_EN_Pos (17UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortE_CLK_EN (Bit 17)         */
-#define MDR_RST_PER0_PortE_CLK_EN_Msk (0x20000UL)         /*!< MDR_RST_CLOCK PER0_CLK: PortE_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_SPW1_CLK_EN_Pos (21UL)               /*!< MDR_RST_CLOCK PER0_CLK: SPW1_CLK_EN (Bit 21)          */
-#define MDR_RST_PER0_SPW1_CLK_EN_Msk (0x200000UL)         /*!< MDR_RST_CLOCK PER0_CLK: SPW1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_TIM1_CLK_EN_Pos (23UL)               /*!< MDR_RST_CLOCK PER0_CLK: TIM1_CLK_EN (Bit 23)          */
-#define MDR_RST_PER0_TIM1_CLK_EN_Msk (0x800000UL)         /*!< MDR_RST_CLOCK PER0_CLK: TIM1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_TIM2_CLK_EN_Pos (24UL)               /*!< MDR_RST_CLOCK PER0_CLK: TIM2_CLK_EN (Bit 24)          */
-#define MDR_RST_PER0_TIM2_CLK_EN_Msk (0x1000000UL)        /*!< MDR_RST_CLOCK PER0_CLK: TIM2_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_TIM3_CLK_EN_Pos (25UL)               /*!< MDR_RST_CLOCK PER0_CLK: TIM3_CLK_EN (Bit 25)          */
-#define MDR_RST_PER0_TIM3_CLK_EN_Msk (0x2000000UL)        /*!< MDR_RST_CLOCK PER0_CLK: TIM3_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_TIM4_CLK_EN_Pos (26UL)               /*!< MDR_RST_CLOCK PER0_CLK: TIM4_CLK_EN (Bit 26)          */
-#define MDR_RST_PER0_TIM4_CLK_EN_Msk (0x4000000UL)        /*!< MDR_RST_CLOCK PER0_CLK: TIM4_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_CAN1_CLK_EN_Pos (29UL)               /*!< MDR_RST_CLOCK PER0_CLK: CAN1_CLK_EN (Bit 29)          */
-#define MDR_RST_PER0_CAN1_CLK_EN_Msk (0x20000000UL)       /*!< MDR_RST_CLOCK PER0_CLK: CAN1_CLK_EN (Bitfield-Mask: 0x01) */
+
 
 
 typedef struct {
-      __IM  uint32_t                    : 2;
-      __IOM MDR_OnOff   SSP1_CLK_EN     : 1;         /*!< [2..2] SSP1 Clock Enable                                                  */
-      __IM  uint32_t                    : 3;
-      __IOM MDR_OnOff   UART1_CLK_EN    : 1;         /*!< [6..6] UART1 Clock Enable                                                 */
-      __IOM MDR_OnOff   UART2_CLK_EN    : 1;         /*!< [7..7] UART2 Clock Enable                                                 */
-      __IM  uint32_t                    : 3;
-      __IOM MDR_OnOff   ARINK_RX_CLK_EN : 1;         /*!< [11..11] ARINK_RX Clock Enable                                            */
-      __IM  uint32_t                    : 1;
-      __IOM MDR_OnOff   ARINK_TX_CLK_EN : 1;         /*!< [13..13] ARINK_TX Clock Enable                                            */
-      __IM  uint32_t                    : 5;
-      __IOM MDR_OnOff   MIL1_CLK_EN     : 1;         /*!< [19..19] MIL1 Clock Enable                                                */
-      __IM  uint32_t                    : 1;
-      __IOM MDR_OnOff   MIL2_CLK_EN     : 1;         /*!< [21..21] MIL2 Clock Enable                                                */
-      __IM  uint32_t                    : 1;
-      __IOM MDR_OnOff   ADC1_CLK_EN     : 1;         /*!< [23..23] ADC1 Clock Enable                                                */
-      __IOM MDR_OnOff   ADC2_CLK_EN     : 1;         /*!< [24..24] ADC2 Clock Enable                                                */
-      __IOM MDR_OnOff   DAC1_CLK_EN     : 1;         /*!< [25..25] DAC1 Clock Enable                                                */
-      __IOM MDR_OnOff   DAC2_CLK_EN     : 1;         /*!< [26..26] DAC2 Clock Enable                                                */
-      __IM  uint32_t                    : 5;
+      __IM  uint32_t                  : 2;
+      __IOM MDR_OnOff   SSP1_CLK_EN   : 1;           /*!< [2..2] SSP1 Clock Enable                                                  */
+      __IOM MDR_OnOff   SSP2_CLK_EN   : 1;           /*!< [3..3] SSP2 Clock Enable                                                  */
+      __IOM MDR_OnOff   SSP3_CLK_EN   : 1;           /*!< [4..4] SSP3 Clock Enable                                                  */
+      __IOM MDR_OnOff   SSP4_CLK_EN   : 1;           /*!< [5..5] SSP4 Clock Enable                                                  */
+      __IOM MDR_OnOff   UART1_CLK_EN  : 1;          /*!< [6..6] UART1 Clock Enable                                                 */
+      __IOM MDR_OnOff   UART2_CLK_EN  : 1;          /*!< [7..7] UART2 Clock Enable                                                 */
+      __IM  uint32_t                  : 11;
+      __IOM MDR_OnOff   MIL1_CLK_EN   : 1;           /*!< [19..19] MIL1 Clock Enable                                                */
+      __IM  uint32_t                  : 1;
+      __IOM MDR_OnOff   MIL2_CLK_EN   : 1;           /*!< [21..21] MIL2 Clock Enable                                                */
+      __IM  uint32_t                  : 3;
+      __IOM MDR_OnOff   MIL3_CLK_EN   : 1;           /*!< [25..25] MIL3 Clock Enable                                                */
+      __IM  uint32_t                  : 2;
+      __IOM MDR_OnOff   CRC_CLK_EN    : 1;            /*!< [28..28] CRC Clock Enable                                                 */
+      __IOM MDR_OnOff   ECC_CLK_EN    : 1;            /*!< [29..29] ECC Clock Enable                                                 */
+      __IOM MDR_OnOff   SSP5_CLK_EN   : 1;           /*!< [30..30] SSP5 Clock Enable                                                */
+      __IOM MDR_OnOff   SSP6_CLK_EN   : 1;           /*!< [31..31] SSP6 Clock Enable                                                */
 } MDR_RST_PER1_Bits;
 
-#define MDR_RST_PER1_SSP1_CLK_EN_Pos (2UL)                /*!< MDR_RST_CLOCK PER1_CLK: SSP1_CLK_EN (Bit 2)           */
-#define MDR_RST_PER1_SSP1_CLK_EN_Msk (0x4UL)              /*!< MDR_RST_CLOCK PER1_CLK: SSP1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_UART1_CLK_EN_Pos (6UL)               /*!< MDR_RST_CLOCK PER1_CLK: UART1_CLK_EN (Bit 6)          */
-#define MDR_RST_PER1_UART1_CLK_EN_Msk (0x40UL)            /*!< MDR_RST_CLOCK PER1_CLK: UART1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_UART2_CLK_EN_Pos (7UL)               /*!< MDR_RST_CLOCK PER1_CLK: UART2_CLK_EN (Bit 7)          */
-#define MDR_RST_PER1_UART2_CLK_EN_Msk (0x80UL)            /*!< MDR_RST_CLOCK PER1_CLK: UART2_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_ARINK_RX_CLK_EN_Pos (11UL)           /*!< MDR_RST_CLOCK PER1_CLK: ARINK_RX_CLK_EN (Bit 11)      */
-#define MDR_RST_PER1_ARINK_RX_CLK_EN_Msk (0x800UL)        /*!< MDR_RST_CLOCK PER1_CLK: ARINK_RX_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_ARINK_TX_CLK_EN_Pos (13UL)           /*!< MDR_RST_CLOCK PER1_CLK: ARINK_TX_CLK_EN (Bit 13)      */
-#define MDR_RST_PER1_ARINK_TX_CLK_EN_Msk (0x2000UL)       /*!< MDR_RST_CLOCK PER1_CLK: ARINK_TX_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_MIL1_CLK_EN_Pos (19UL)               /*!< MDR_RST_CLOCK PER1_CLK: MIL1_CLK_EN (Bit 19)          */
-#define MDR_RST_PER1_MIL1_CLK_EN_Msk (0x80000UL)          /*!< MDR_RST_CLOCK PER1_CLK: MIL1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_MIL2_CLK_EN_Pos (21UL)               /*!< MDR_RST_CLOCK PER1_CLK: MIL2_CLK_EN (Bit 21)          */
-#define MDR_RST_PER1_MIL2_CLK_EN_Msk (0x200000UL)         /*!< MDR_RST_CLOCK PER1_CLK: MIL2_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_ADC1_CLK_EN_Pos (23UL)               /*!< MDR_RST_CLOCK PER1_CLK: ADC1_CLK_EN (Bit 23)          */
-#define MDR_RST_PER1_ADC1_CLK_EN_Msk (0x800000UL)         /*!< MDR_RST_CLOCK PER1_CLK: ADC1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_ADC2_CLK_EN_Pos (24UL)               /*!< MDR_RST_CLOCK PER1_CLK: ADC2_CLK_EN (Bit 24)          */
-#define MDR_RST_PER1_ADC2_CLK_EN_Msk (0x1000000UL)        /*!< MDR_RST_CLOCK PER1_CLK: ADC2_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_DAC1_CLK_EN_Pos (25UL)               /*!< MDR_RST_CLOCK PER1_CLK: DAC1_CLK_EN (Bit 25)          */
-#define MDR_RST_PER1_DAC1_CLK_EN_Msk (0x2000000UL)        /*!< MDR_RST_CLOCK PER1_CLK: DAC1_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER1_DAC2_CLK_EN_Pos (26UL)               /*!< MDR_RST_CLOCK PER1_CLK: DAC2_CLK_EN (Bit 26)          */
-#define MDR_RST_PER1_DAC2_CLK_EN_Msk (0x4000000UL)        /*!< MDR_RST_CLOCK PER1_CLK: DAC2_CLK_EN (Bitfield-Mask: 0x01) */
 
 
-//--------------- LSI/LSE/HSE0/HSE1/PLLx status Bits  ------------------
+//--------------- LSE/HSE0/HSE1/PLLx status Bits  ------------------
 typedef struct {
       __IOM uint8_t   MAX_CLK_SHIFT_REG0 : 8;    /*!< [7..0] Max factor detected for SLOW                                              */
       __IOM uint8_t   MAX_CLK_SHIFT_REG1 : 8;    /*!< [15..8] Max factor detected for FAST                                             */
@@ -137,6 +101,18 @@ typedef struct {
       __IOM MDR_OnOff READY             : 1;            /*!< [20..20] Clock Ready                                                     */
       __IM  uint32_t                    : 11;
 } MDR_RST_CLK_STAT_Bits;
+
+typedef struct {
+      __IOM uint8_t   MAX_CLK_SHIFT_REG0 : 8;    /*!< [7..0] Max factor detected for SLOW                                              */
+      __IOM uint8_t   MAX_CLK_SHIFT_REG1 : 8;    /*!< [15..8] Max factor detected for FAST                                             */
+      __IOM MDR_OnOff EVENT0            : 1;            /*!< [16..16] Event SLOWEST                                                   */
+      __IOM MDR_OnOff EVENT1            : 1;            /*!< [17..17] Event SLOW                                                      */
+      __IOM MDR_OnOff EVENT2            : 1;            /*!< [18..18] Event FAST                                                      */
+      __IOM MDR_OnOff EVENT3            : 1;            /*!< [19..19] Event FASTEST                                                   */
+      __IOM MDR_OnOff READY             : 1;            /*!< [20..20] Clock Ready                                                     */
+      __IOM MDR_OnOff ERROR             : 1;            /*!< [21..21] Clock Ready Error                                                */
+      __IM  uint32_t                    : 10;
+} MDR_RST_CLK_STAT_LSI_Bits;
 
 #define MDR_RST_CLK_STAT_MAX_CLK_SHIFT_REG0_Pos (0UL)         /*!< MDR_RST_CLOCK CPU_STAT: MAX_CLK_SHIFT_REG0 (Bit 0)    */
 #define MDR_RST_CLK_STAT_MAX_CLK_SHIFT_REG0_Msk (0xffUL)      /*!< MDR_RST_CLOCK CPU_STAT: MAX_CLK_SHIFT_REG0 (Bitfield-Mask: 0xff) */
@@ -152,17 +128,22 @@ typedef struct {
 #define MDR_RST_CLK_STAT_EVENT3_Msk (0x80000UL)               /*!< MDR_RST_CLOCK CPU_STAT: EVENT3 (Bitfield-Mask: 0x01)  */
 #define MDR_RST_CLK_STAT_READY_Pos  (20UL)                    /*!< MDR_RST_CLOCK CPU_STAT: EVENT3 (Bit 19)               */
 #define MDR_RST_CLK_STAT_READY_Msk  (0x100000UL)              /*!< MDR_RST_CLOCK CPU_STAT: EVENT3 (Bitfield-Mask: 0x01)  */
-
+#define MDR_RST_CLK_STAT_LSI_Error_Pos  (21UL)                    /*!< MDR_RST_CLOCK LSI_STAT: Error (Bit 21)                */
+#define MDR_RST_CLK_STAT_LSI_Error_Msk  (0x200000UL)              /*!< MDR_RST_CLOCK LSI_STAT: Error (Bitfield-Mask: 0x01)   */
 
 //--------------- HSI Bits  ------------------  
 typedef struct {
       __IM  uint32_t                : 20;
-      __IOM MDR_OnOff   READY       : 1;            /*!< [20..20] Clock Ready                                                         */
-      __IM  uint32_t                : 11;
+      __IOM MDR_OnOff   READY       : 1;            /*!< [20..20] Clock Ready                                            */
+      __IOM MDR_OnOff   ERROR       : 1;            /*!< [21..21] Clock Ready Error                                      */
+      __IM  uint32_t                : 10;
 } MDR_RST_HSI_STAT_Bits;
 
 #define MDR_RST_HSI_STAT_READY_Pos  (20UL)                    /*!< MDR_RST_CLOCK HSE_STAT: READY (Bit 20)                */
 #define MDR_RST_HSI_STAT_READY_Msk  (0x100000UL)              /*!< MDR_RST_CLOCK HSE_STAT: READY (Bitfield-Mask: 0x01)   */
+#define MDR_RST_HSI_STAT_Error_Pos  (21UL)                    /*!< MDR_RST_CLOCK HSE_STAT: Error (Bit 21)                */
+#define MDR_RST_HSI_STAT_Error_Msk  (0x200000UL)              /*!< MDR_RST_CLOCK HSE_STAT: Error (Bitfield-Mask: 0x01)   */
+
 
 //--------------- PLL Bits  ------------------  
 
@@ -287,144 +268,171 @@ typedef struct {                                /*!< (@ 0x40000000) MDR_RST_CLOC
   } ;
   MDR_RST_CLK_CHECKER     LSI_CHKR; 
   union {
-    __IOM uint32_t        LSI_STAT;             /*!< (@ 0x00000034) Clock Status Register                                      */
-    MDR_RST_CLK_STAT_Bits LSI_STAT_b;
+    __IOM uint32_t            LSI_STAT;             /*!< (@ 0x00000034) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_LSI_Bits LSI_STAT_b;
   } ;
   //  HSI Control
   union {
-    __IOM uint32_t        HSI_STAT;                    /*!< (@ 0x00000038) Clock Status Register                                      */
+    __IOM uint32_t        HSI_STAT;                    /*!< (@ 0x00000038) Clock Status Register                           */
     MDR_RST_HSI_STAT_Bits HSI_STAT_b;
   } ;
   //  LSE Control
   union {
-    __IOM uint32_t        LSE_CLK;                     /*!< (@ 0x0000003C) Clock Contorl Register                                     */
+    __IOM uint32_t        LSE_CLK;                     /*!< (@ 0x0000003C) Clock Contorl Register                          */
     MDR_RST_CLK_LSIE_Bits LSE_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     LSE_CHKR; 
   union {
-    __IOM uint32_t        LSE_STAT;                    /*!< (@ 0x0000004C) Clock Status Register                                      */
+    __IOM uint32_t        LSE_STAT;                    /*!< (@ 0x0000004C) Clock Status Register                           */
     MDR_RST_CLK_STAT_Bits LSE_STAT_b;
   } ;
   //  HSE0 Control
   union {
-    __IOM uint32_t        HSE0_CLK;                    /*!< (@ 0x00000050) Clock Contorl Register                                     */    
+    __IOM uint32_t        HSE0_CLK;                    /*!< (@ 0x00000050) Clock Contorl Register                          */    
     MDR_RST_HSE_CLK_Bits  HSE0_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     HSE0_CHKR; 
   union {
-    __IOM uint32_t        HSE0_STAT;                   /*!< (@ 0x00000060) Clock Status Register                                      */
+    __IOM uint32_t        HSE0_STAT;                   /*!< (@ 0x00000060) Clock Status Register                           */
     MDR_RST_CLK_STAT_Bits HSE0_STAT_b;
   } ;
   //  HSE1 Control
   union {
-    __IOM uint32_t        HSE1_CLK;                    /*!< (@ 0x00000064) Clock Contorl Register                                     */
+    __IOM uint32_t        HSE1_CLK;                    /*!< (@ 0x00000064) Clock Contorl Register                          */
     MDR_RST_HSE_CLK_Bits  HSE1_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     HSE1_CHKR;
   union {
-    __IOM uint32_t        HSE1_STAT;                   /*!< (@ 0x00000060) Clock Status Register                                      */
+    __IOM uint32_t        HSE1_STAT;                   /*!< (@ 0x00000060) Clock Status Register                            */
     MDR_RST_CLK_STAT_Bits HSE1_STAT_b;
   } ;
   //  PLL0  
   union {
-    __IOM uint32_t        PLL0_CLK;                    /*!< (@ 0x00000078) PLL0 Control                                               */
+    __IOM uint32_t        PLL0_CLK;                    /*!< (@ 0x00000078) PLL0 Control                                     */
     MDR_RST_PLL_CLK_Bits  PLL0_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     PLL0_CHKR;
   union {
-    __IOM uint32_t        PLL0_STAT;                   /*!< (@ 0x00000088) Clock Status Register                                      */
+    __IOM uint32_t        PLL0_STAT;                   /*!< (@ 0x00000088) Clock Status Register                            */
     MDR_RST_CLK_STAT_Bits PLL0_STAT_b;
   } ;
   //  PLL1
   union {
-    __IOM uint32_t        PLL1_CLK;                    /*!< (@ 0x0000008C) PLL0 Control                                               */
+    __IOM uint32_t        PLL1_CLK;                    /*!< (@ 0x0000008C) PLL0 Control                                     */
     MDR_RST_PLL_CLK_Bits  PLL1_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     PLL1_CHKR;  
   union {
-    __IOM uint32_t        PLL1_STAT;                   /*!< (@ 0x0000009C) Clock Status Register                                      */
+    __IOM uint32_t        PLL1_STAT;                   /*!< (@ 0x0000009C) Clock Status Register                            */
     MDR_RST_CLK_STAT_Bits PLL1_STAT_b;
   } ;
   //  PLL2
   union {
-    __IOM uint32_t        PLL2_CLK;                    /*!< (@ 0x0000008C) PLL0 Control                                               */
+    __IOM uint32_t        PLL2_CLK;                    /*!< (@ 0x0000008C) PLL0 Control                                     */
     MDR_RST_PLL_CLK_Bits  PLL2_CLK_b;
   } ;
   MDR_RST_CLK_CHECKER     PLL2_CHKR;  
   union {
-    __IOM uint32_t        PLL2_STAT;                   /*!< (@ 0x0000009C) Clock Status Register                                      */
+    __IOM uint32_t        PLL2_STAT;                   /*!< (@ 0x0000009C) Clock Status Register                            */
     MDR_RST_CLK_STAT_Bits PLL2_STAT_b;
   } ;
-  //  Reserved
   __IM  uint32_t          RESERVED[25];
   //  PERIPHERIAL Clock Control
   union {
-    __IOM uint32_t        CAN1_CLK;                    /*!< (@ 0x00000118) Sync Clock Control                                         */
+    __IOM uint32_t        CAN1_CLK;                    /*!< (@ 0x00000118) Sync Clock Control                                */
     MDR_RST_SYNC_CLK_Bits CAN1_CLK_b;
-  } ;
-  __IM  uint32_t          RESERVED1[5];  
+  } ;  
   union {
-    __IOM uint32_t        TIM1_CLK;                    /*!< (@ 0x00000130) Sync Clock Control                                         */
+    __IOM uint32_t        CAN2_CLK;                    /*!< (@ 0x0000011C) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits CAN2_CLK_b;
+  } ;
+  __IM  uint32_t  RESERVED1[4];
+  
+  union {
+    __IOM uint32_t        TIM1_CLK;                    /*!< (@ 0x00000130) Sync Clock Control                                */
     MDR_RST_SYNC_CLK_Bits TIM1_CLK_b;
-  } ;  
+  } ;
+  
   union {
-    __IOM uint32_t        TIM2_CLK;                    /*!< (@ 0x00000134) Sync Clock Control                                         */
+    __IOM uint32_t        TIM2_CLK;                    /*!< (@ 0x00000134) Sync Clock Control                                */
     MDR_RST_SYNC_CLK_Bits TIM2_CLK_b;
-  } ;  
+  } ;
   union {
-    __IOM uint32_t        TIM3_CLK;                    /*!< (@ 0x00000138) Sync Clock Control                                         */
+    __IOM uint32_t        TIM3_CLK;                    /*!< (@ 0x00000134) Sync Clock Control                                */
     MDR_RST_SYNC_CLK_Bits TIM3_CLK_b;
+  } ;
+  union {
+    __IOM uint32_t        TIM4_CLK;                    /*!< (@ 0x00000134) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits TIM4_CLK_b;
+  } ; 
+  __IM  uint32_t          RESERVED2[2];  
+  union {
+    __IOM uint32_t        MIL1_CLK;                    /*!< (@ 0x00000148) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits MIL1_CLK_b;
   } ;  
   union {
-    __IOM uint32_t        TIM4_CLK;                    /*!< (@ 0x0000013C) Sync Clock Control                                         */
-    MDR_RST_SYNC_CLK_Bits TIM4_CLK_b;
-  } ;
-  __IM  uint32_t          RESERVED2[12];
+    __IOM uint32_t        MIL2_CLK;                    /*!< (@ 0x0000014C) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits MIL2_CLK_b;
+  } ;  
   union {
-    __IOM uint32_t         ETH_CLK;                     /*!< (@ 0x00000170) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits ETH_CLK_b;
-  } ;
-  __IM  uint32_t          RESERVED3;  
+    __IOM uint32_t        MIL3_CLK;                    /*!< (@ 0x00000150) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits MIL3_CLK_b;
+  } ;  
   union {
-    __IOM uint32_t        SPW1_CLK;                    /*!< (@ 0x00000178) Sync Clock Control                                         */
+    __IOM uint32_t        MIL4_CLK;                    /*!< (@ 0x00000154) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits MIL4_CLK_b;
+  } ;
+  __IM  uint32_t          RESERVED3[8];  
+  union {
+    __IOM uint32_t        SPW1_CLK;                    /*!< (@ 0x00000178) Sync Clock Control                                */
     MDR_RST_SYNC_CLK_Bits SPW1_CLK_b;
-  } ;
-  __IM  uint32_t          RESERVED4[3];  
+  } ;  
   union {
-    __IOM uint32_t         UART1_CLK;                   /*!< (@ 0x00000188) Async Clock Control                                        */
+    __IOM uint32_t        SPW2_CLK;                    /*!< (@ 0x0000017C) Sync Clock Control                                */
+    MDR_RST_SYNC_CLK_Bits SPW2_CLK_b;
+  } ;
+  __IM  uint32_t  RESERVED4[2];
+  union {
+    __IOM uint32_t         UART1_CLK;                   /*!< (@ 0x00000188) Async Clock Control                               */
     MDR_RST_ASYNC_CLK_Bits UART1_CLK_b;
   } ;  
   union {
-    __IOM uint32_t         UART2_CLK;                   /*!< (@ 0x0000018C) Async Clock Control                                        */
+    __IOM uint32_t         UART2_CLK;                   /*!< (@ 0x0000018C) Async Clock Control                               */    
     MDR_RST_ASYNC_CLK_Bits UART2_CLK_b;
   } ;
-  __IM  uint32_t          RESERVED5[4];  
+  __IM  uint32_t  RESERVED5[4];  
   union {
-    __IOM uint32_t         SSP1_CLK;                    /*!< (@ 0x000001A0) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits SSP1_CLK_b;
+    __IOM uint32_t          SSP1_CLK;                    /*!< (@ 0x000001A0) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP1_CLK_b;
+  } ;  
+  union {
+    __IOM uint32_t          SSP2_CLK;                    /*!< (@ 0x000001A4) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP2_CLK_b;
   } ;
-  __IM  uint32_t          RESERVED6[6];  
   union {
-    __IOM uint32_t         ADC1_CLK;                    /*!< (@ 0x000001BC) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits ADC1_CLK_b;
+    __IOM uint32_t          SSP3_CLK;                    /*!< (@ 0x000001A8) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP3_CLK_b;
+  } ;  
+  union {
+    __IOM uint32_t          SSP4_CLK;                    /*!< (@ 0x000001AC) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP4_CLK_b;
+  } ;  
+  union {
+    __IOM uint32_t          SSP5_CLK;                    /*!< (@ 0x000001B0) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP5_CLK_b;
+  } ;  
+  union {
+    __IOM uint32_t          SSP6_CLK;                    /*!< (@ 0x000001B4) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  SSP6_CLK_b;
   } ;
+  __IM  uint32_t            RESERVED6[5];  
   union {
-    __IOM uint32_t         ADC2_CLK;                    /*!< (@ 0x000001C0) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits ADC2_CLK_b;
-  } ;  
-  union {
-    __IOM uint32_t         DAC1_CLK;                    /*!< (@ 0x000001C4) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits DAC1_CLK_b;
-  } ;  
-  union {
-    __IOM uint32_t         DAC2_CLK;                    /*!< (@ 0x000001C8) Async Clock Control                                       */
-    MDR_RST_ASYNC_CLK_Bits DAC2_CLK_b;
-  } ;  
-  union {
-    __IOM uint32_t         RTC_CLK;                     /*!< (@ 0x000001CC) Async Clock Control                                        */
-    MDR_RST_ASYNC_CLK_Bits RTC_CLK_b;
+    __IOM uint32_t          RTC_CLK;                     /*!< (@ 0x000001CC) Async Clock Control                               */
+    MDR_RST_ASYNC_CLK_Bits  RTC_CLK_b;
   } ;
 } MDR_RST_CLOCK_Type;                           /*!< Size = 464 (0x1d0)                                                        */
+
+
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */
@@ -449,4 +457,4 @@ typedef struct {                                /*!< (@ 0x40000000) MDR_RST_CLOC
 }
 #endif
 
-#endif  //_MDR_RST_VE8_DEFS_H
+#endif  //_MDR_RST_VK014_DEFS_H

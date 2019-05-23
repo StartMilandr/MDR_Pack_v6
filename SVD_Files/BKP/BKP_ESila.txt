@@ -174,6 +174,21 @@
           <description>Reset from WDT</description>
           <bitRange>[14:14]</bitRange>
         </field>
+        <field derivedFrom="S_SYSRSTn">
+          <name>ERR_REG60x</name>
+          <description>Fault in REG_60x</description>
+          <bitRange>[25:25]</bitRange>
+        </field>
+        <field derivedFrom="S_SYSRSTn">
+          <name>ERR_REG61x_62x</name>
+          <description>Fault in REG_61x or REG_62x </description>
+          <bitRange>[26:26]</bitRange>
+        </field>
+        <field derivedFrom="S_SYSRSTn">
+          <name>ERR_REG63x</name>
+          <description>Fault in REG_63x</description>
+          <bitRange>[27:27]</bitRange>
+        </field>
         <field>
           <name>CLR_ERR</name>
           <description>Clear Errors of REG_60x - 63x</description>
@@ -455,12 +470,12 @@
           <bitRange>[23:19]</bitRange>
         </field>
         <field derivedFrom="PWRM_Vdd_En">
-          <name>PWRM_VddB_Enl</name>
+          <name>PWRM_VddB_EN</name>
           <description>Vdd_BKP monitor enable</description>
           <bitRange>[24:24]</bitRange>
         </field>
         <field derivedFrom="PWRM_Vdd_En">
-          <name>PWRM_VddIO_Enl</name>
+          <name>PWRM_VddIO_EN</name>
           <description>Vdd_IO monitor enable</description>
           <bitRange>[25:25]</bitRange>
         </field>
@@ -521,7 +536,7 @@
           </enumeratedValues>
         </field>
         <field derivedFrom="LSE_RDY">
-          <name>LSE_FilterOm</name>
+          <name>LSE_FilterON</name>
           <description>LSE Input filter</description>
           <bitRange>[1:1]</bitRange>
         </field>
@@ -627,12 +642,12 @@
       <description>REG61 Control register</description>
       <addressOffset>0x00000114</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_62_TMR0">
       <name>REG_62_TMR1</name>
       <description>REG62 Control register</description>
       <addressOffset>0x00000118</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_63_TMR0">
       <name>REG_63_TMR1</name>
       <description>REG63 Control register</description>
       <addressOffset>0x0000011C</addressOffset>
@@ -648,12 +663,12 @@
       <description>REG61 Control register</description>
       <addressOffset>0x00000124</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_62_TMR0">
       <name>REG_62_TMR2</name>
       <description>REG62 Control register</description>
       <addressOffset>0x00000128</addressOffset>
     </register>
-    <register derivedFrom="REG_61_TMR0">
+    <register derivedFrom="REG_63_TMR0">
       <name>REG_63_TMR2</name>
       <description>REG63 Control register</description>
       <addressOffset>0x0000012C</addressOffset>

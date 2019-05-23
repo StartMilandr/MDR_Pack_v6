@@ -307,6 +307,15 @@ typedef enum IRQn
   * @{
   */
 
+#define MDR_KEY_UNLOCK    0x8FFFAAA1UL
+
+/*===============  RST_Clock ===================*/
+#include <MDR_RST_ESila_defs.h>
+
+/*===============  BKP ===================*/
+#include <MDR_BKP_ESila_defs.h>
+#include <MDR_RST_VE8x_defs.h>
+
 
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def.h"
@@ -351,12 +360,19 @@ typedef enum IRQn
   * @{
   */
 
+
 /* Peripheral and SRAM base address */
- #define ADDR_FLASH_BASE       (0x01000000UL)                              /*!< (FLASH     ) Base Address */
- #define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
- #define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+//#define ADDR_FLASH_BASE       (0x01000000UL)                              /*!< (FLASH     ) Base Address */
+#define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
+#define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
+
+#define ADDR_RST_CLOCK_BASE   0x40000000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_BKP_BASE         0x40001000UL                              /*!< Backup and RTC Base Address */
+
+
+
 #define ADDR_SSP1_BASE        0x40089000UL
 #define ADDR_SSP2_BASE        0x4008A000UL
 
@@ -383,6 +399,10 @@ typedef enum IRQn
   * @{
   */
 
+#define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
+#define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+
+
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
 #define MDR_SSP2                       ((MDR_SSP_Type       *) ADDR_SSP2_BASE)
 
@@ -394,7 +414,7 @@ typedef enum IRQn
 #define MDR_TIMER1                     ((MDR_TIMER_Type 	  *) ADDR_TIMER1_BASE)
 #define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
 #define MDR_TIMER3                     ((MDR_TIMER_Type 	  *) ADDR_TIMER3_BASE)
-#define MDR_TIMER3                     ((MDR_TIMER_Type 	  *) ADDR_TIMER4_BASE)
+#define MDR_TIMER4                     ((MDR_TIMER_Type 	  *) ADDR_TIMER4_BASE)
 
 //  Timer Channels
 #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))

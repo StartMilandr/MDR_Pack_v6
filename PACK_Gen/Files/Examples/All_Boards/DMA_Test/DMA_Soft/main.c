@@ -37,19 +37,19 @@ bool CompareData(void);
 
 #define LED_FLASH_PERIOD  50000
 
-#ifndef MDRB_LED_3
-  #define LED_CYCLE         MDRB_LED_1
-  #define LED_ERROR         MDRB_LED_2
-  #define LED_IRQ           MDRB_LED_2
-
-#elif !defined(MDRB_LED_2)
-  #define LED_CYCLE         MDRB_LED_1
-  #define LED_ERROR         MDRB_LED_1
-  #define LED_IRQ           MDRB_LED_1
-#else
+#ifdef MDRB_LED_3
   #define LED_CYCLE         MDRB_LED_1
   #define LED_ERROR         MDRB_LED_2
   #define LED_IRQ           MDRB_LED_3
+
+#elif defined(MDRB_LED_2)
+  #define LED_CYCLE         MDRB_LED_1
+  #define LED_ERROR         MDRB_LED_2
+  #define LED_IRQ           MDRB_LED_2
+#else
+  #define LED_CYCLE         MDRB_LED_1
+  #define LED_ERROR         MDRB_LED_1
+  #define LED_IRQ           MDRB_LED_1
 #endif
 
 int main(void)

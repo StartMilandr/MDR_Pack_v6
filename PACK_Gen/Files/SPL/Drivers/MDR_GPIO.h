@@ -100,18 +100,27 @@ void MDR_Port_InitAnalog(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect);
 // в параметрах - InOut и Func.
 
 typedef enum {
-  MDR_Pin_Out,
-  MDR_Pin_In,
-  MDR_Pin_In_PU,  //  PullUp
-  MDR_Pin_In_PD   //  PullDown
+  MDR_Pin_Out   = 0,
+  MDR_Pin_In    = 1,
+  MDR_Pin_In_PU = 2,  //  PullUp
+  MDR_Pin_In_PD = 3,  //  PullDown
 } MDR_Pin_IO;
+
+typedef enum {
+  MDR_Pin_PullOff   = MDR_Pin_In,      //  Pull Off
+  MDR_Pin_PullUp    = MDR_Pin_In_PU,   //  PullUp
+  MDR_Pin_PullDown  = MDR_Pin_In_PD,   //  PullDown
+} MDR_Pin_FuncPull;
 
 typedef struct {
   uint32_t ANALOG;
   uint32_t PD;
   uint32_t PWR;
   uint32_t GFEN;
-} MDR_PinDig_PermRegs;
+} MDR_PinDig_GroupCfgRegs;
+
+//  Для совместимости со старыми названиями
+#define MDR_PinDig_PermRegs         MDR_PinDig_GroupCfgRegs
 
 //  Выделение настроек, одинаковых для группы пинов, в отдельную структуру
 void MDR_Port_InitDigPermRegs(MDR_PIN_PD OutDriver, MDR_PIN_PWR Power, MDR_OnOff InpSchmEn, MDR_OnOff InpFilterEn, MDR_PinDig_PermRegs *PinPermRegs);
@@ -119,6 +128,32 @@ void MDR_Port_InitDigPermRegs(MDR_PIN_PD OutDriver, MDR_PIN_PWR Power, MDR_OnOff
 //  Инициализация пинов с дополнительными настройками и групповыми.
 void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs);
 void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs);
+
+__STATIC_INLINE 
+void MDR_Port_InitDigPort(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_IO InOut, const MDR_PinDig_GroupCfgRegs *PinGroupRegs) 
+{
+  MDR_Port_InitDig(GPIO_Port, PinSelect, InOut, MDR_PIN_PORT, PinGroupRegs);
+}
+
+__STATIC_INLINE 
+void MDR_Port_InitDigFunc(MDR_PORT_Type *GPIO_Port, uint32_t PinSelect, MDR_Pin_FuncPull PinPull, MDR_PIN_FUNC Func, const MDR_PinDig_GroupCfgRegs *PinGroupRegs)
+{
+  MDR_Port_InitDig(GPIO_Port, PinSelect, (MDR_Pin_IO)PinPull, Func, PinGroupRegs);
+}
+
+__STATIC_INLINE 
+void MDR_Port_InitDigPinPort(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO InOut, const MDR_PinDig_GroupCfgRegs *PinGroupRegs)
+{
+  MDR_Port_InitDigPin(GPIO_Port, PinInd, InOut, MDR_PIN_PORT, PinGroupRegs);
+}
+
+__STATIC_INLINE 
+void MDR_Port_InitDigPinFunc(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_FuncPull PinPull, MDR_PIN_FUNC Func, const MDR_PinDig_GroupCfgRegs *PinGroupRegs)
+{
+  MDR_Port_InitDigPin(GPIO_Port, PinInd, (MDR_Pin_IO)PinPull, MDR_PIN_PORT, PinGroupRegs);
+}
+
+
 
 //  Конвертация в MDR_GPIO_CfgRegs для вызова первого варианта
 void MDR_Port_ToCfgRegs(MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_GPIO_CfgRegs *cfgRegs);
@@ -144,6 +179,7 @@ void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, c
 void MDR_Port_MaskAddPin(uint32_t PinInd, MDR_Pin_IO InOut, MDR_PIN_FUNC Func, const MDR_PinDig_PermRegs *PinPermRegs, MDR_Port_ApplyMask *ApplyMask);
 //  Применение маски в порт
 void MDR_Port_MaskApply(  MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask);
+//  Применение масок к ранее считанному состоянию регистров порта
 void MDR_Port_MaskApplyEx(MDR_PORT_Type *GPIO_Port, MDR_Port_ApplyMask *ApplyMask, MDR_GPIO_CfgRegs *readRegs);
 
 

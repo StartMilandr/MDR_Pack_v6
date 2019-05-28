@@ -5,13 +5,13 @@
 #define CLR_PD      (MDR_GPIO_PD_Driver__Pin_Msk | MDR_GPIO_PD_Schmitt__Pin_Msk)
 
 //  Параметры для настройки пинов по умолчанию
-const MDR_PinDig_PermRegs PinDig_PermRegsDef = 
-{
-  .ANALOG  = 1,
-  .PD      = VAL2FLD(MDR_PIN_PullPush, MDR_GPIO_PD_Driver__Pin) | VAL2FLD(MDR_Off, MDR_GPIO_PD_Schmitt__Pin),
-  .PWR     = MDR_PIN_SLOW,
-  .GFEN    = MDR_Off
-};
+// const MDR_PinDig_PermRegs PinDig_PermRegsDef = 
+// {
+//   .ANALOG  = 1,
+//   .PD      = VAL2FLD(MDR_PIN_PullPush, MDR_GPIO_PD_Driver__Pin) | VAL2FLD(MDR_Off, MDR_GPIO_PD_Schmitt__Pin),
+//   .PWR     = MDR_PIN_SLOW,
+//   .GFEN    = MDR_Off
+// };
 
 //  Привязка портов к включению тактирования
 const MDR_GPIO_Port   GPIO_A_Port = {

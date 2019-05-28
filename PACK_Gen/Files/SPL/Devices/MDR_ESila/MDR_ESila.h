@@ -307,7 +307,7 @@ typedef enum IRQn
   * @{
   */
 
-#define MDR_KEY_UNLOCK    0x8FFFAAA1UL
+#define MDR_KEY_UNLOCK    0x8555AAA1UL
 
 /*===============  RST_Clock ===================*/
 #include <MDR_RST_ESila_defs.h>
@@ -455,6 +455,18 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
+
+//----------------    PORT Definitions  --------------------
+#define   MDR_CLK_EN_ADDR_PORT_A    &MDR_CLOCK->PER0_CLK
+#define   MDR_CLK_EN_ADDR_PORT_B    &MDR_CLOCK->PER0_CLK
+#define   MDR_CLK_EN_ADDR_PORT_C    &MDR_CLOCK->PER0_CLK
+#define   MDR_CLK_EN_ADDR_PORT_D    &MDR_CLOCK->PER0_CLK
+
+#define   MDR_CLK_EN_BIT_PORT_A     MDR_RST_PER0_PORTA_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_B     MDR_RST_PER0_PORTB_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_C     MDR_RST_PER0_PORTC_CLK_EN_Pos
+#define   MDR_CLK_EN_BIT_PORT_D     MDR_RST_PER0_PORTD_CLK_EN_Pos
+
 
 // //----------------    SSP Definitions  --------------------
 // //  SSP Block Clock enable

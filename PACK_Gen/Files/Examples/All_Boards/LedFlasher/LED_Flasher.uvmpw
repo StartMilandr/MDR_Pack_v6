@@ -48,4 +48,8 @@
     <PathAndName>.\VE8\LED_Flasher_VE8.uvprojx</PathAndName>
   </project>
 
+  <project>
+    <PathAndName>.\ESila\LED_Flasher_ESila.uvprojx</PathAndName>
+  </project>
+
 </ProjectWorkspace>

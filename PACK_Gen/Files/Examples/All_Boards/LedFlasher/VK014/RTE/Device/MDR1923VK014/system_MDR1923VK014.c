@@ -1,7 +1,7 @@
 /**************************************************************************//**
- * @file     system_MDR1986VE8.c
- * @brief    CMSIS Cortex-M4 Device Peripheral Access Layer Source File for
- *           Device MDR1986VE8
+ * @file     system_MDR1923VK014.c
+ * @brief    CMSIS Cortex-M0 Device Peripheral Access Layer Source File for
+ *           Device MDR1923VK014
  * @version  V5.00
  * @date     10. January 2018
  ******************************************************************************/
@@ -44,7 +44,6 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Clock Frequency (Core Clock)
 /*----------------------------------------------------------------------------
   Clock functions
  *----------------------------------------------------------------------------*/
-
 #define FERQ_FAULT_HZ       HSI_FREQ_HZ
 
 #define CLK_SEL_COUNT_PLL   MDR_PLL_IN_HSE1div2 + 1
@@ -109,14 +108,13 @@ void SystemInit (void)
          do not use global variables because this function is called before
          reaching pre-main. RW section maybe overwritten afterwards. */
   
-  //  Disable Reset by Upor
+//  //  Disable Reset by Upor
   MDR_BKP->KEY = MDR_KEY_UNLOCK;
   MDR_BKP->TMR0.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
   MDR_BKP->TMR1.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
   MDR_BKP->TMR2.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
   MDR_BKP->KEY = 0;
   
-  MDR_CLOCK->KEY = MDR_KEY_UNLOCK;
-  
   SystemCoreClock = SYSTEM_CLOCK;
 }
+

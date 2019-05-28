@@ -56,14 +56,14 @@ typedef struct {
       __IOM MDR_OnOff USB_CLK_EN : 1;            /*!< [31..31] USB Clock Enable                                                 */
 } MDR_RST_PER0_Bits;
 
-#define MDR_RST_PER0_PortA_CLK_EN_Pos (13UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bit 13)         */
-#define MDR_RST_PER0_PortA_CLK_EN_Msk (0x2000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortB_CLK_EN_Pos (14UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bit 14)         */
-#define MDR_RST_PER0_PortB_CLK_EN_Msk (0x4000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortC_CLK_EN_Pos (15UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bit 15)         */
-#define MDR_RST_PER0_PortC_CLK_EN_Msk (0x8000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bitfield-Mask: 0x01) */
-#define MDR_RST_PER0_PortD_CLK_EN_Pos (16UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bit 16)         */
-#define MDR_RST_PER0_PortD_CLK_EN_Msk (0x10000UL)         /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bitfield-Mask: 0x01) */
+#define MDR_RST_PER0_PORTA_CLK_EN_Pos (13UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bit 13)         */
+#define MDR_RST_PER0_PORTA_CLK_EN_Msk (0x2000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortA_CLK_EN (Bitfield-Mask: 0x01) */
+#define MDR_RST_PER0_PORTB_CLK_EN_Pos (14UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bit 14)         */
+#define MDR_RST_PER0_PORTB_CLK_EN_Msk (0x4000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortB_CLK_EN (Bitfield-Mask: 0x01) */
+#define MDR_RST_PER0_PORTC_CLK_EN_Pos (15UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bit 15)         */
+#define MDR_RST_PER0_PORTC_CLK_EN_Msk (0x8000UL)          /*!< MDR_RST_CLOCK PER0_CLK: PortC_CLK_EN (Bitfield-Mask: 0x01) */
+#define MDR_RST_PER0_PORTD_CLK_EN_Pos (16UL)              /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bit 16)         */
+#define MDR_RST_PER0_PORTD_CLK_EN_Msk (0x10000UL)         /*!< MDR_RST_CLOCK PER0_CLK: PortD_CLK_EN (Bitfield-Mask: 0x01) */
 #define MDR_RST_PER0_SDIO_CLK_EN_Pos (21UL)               /*!< MDR_RST_CLOCK PER0_CLK: SDIO_CLK_EN (Bit 21)          */
 #define MDR_RST_PER0_SDIO_CLK_EN_Msk (0x200000UL)         /*!< MDR_RST_CLOCK PER0_CLK: SDIO_CLK_EN (Bitfield-Mask: 0x01) */
 #define MDR_RST_PER0_SSP1_CLK_EN_Pos (22UL)               /*!< MDR_RST_CLOCK PER0_CLK: SSP1_CLK_EN (Bit 22)          */

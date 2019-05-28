@@ -286,6 +286,20 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler			[WEAK]
                 IMPORT  SystemInit
                 IMPORT  __main
+
+;				LDR		R0, =BKP_BASE_KEY
+;				LDR		R1, =BKP_KEY
+;				STR		R1, [R0]	
+;				
+;				LDR		R0, =BKP_RG60_0
+;				LDR		R1,[R0]
+;				ORR		R1,R1,#0x10000000
+;				STR		R1,[R0]
+;				LDR		R0, =BKP_RG60_1
+;				STR		R1,[R0]
+;				LDR		R0, =BKP_RG60_2
+;				STR		R1,[R0]
+;				B		.
 				
                 LDR     R0, =SystemInit
                 BLX     R0

@@ -760,9 +760,7 @@
           <debug      svd="Keil/SVD/MDR_ESila.svd"/>
           <memory     id="IROM1"                          start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
           <memory     id="IRAM1"                          start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
-          <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
-          <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
-
+          <algorithm  name="Keil/FLM/MLDR124_LOCK.FLM" start="0x01000000"  size="0x100000" RAMstart="0x20000000" RAMsize="0xF000" default="1"/>
           <description>
                 (ESila RUS)
                 Core:
@@ -1081,7 +1079,7 @@
       <description>PORT driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
-        <file category="header"  name="SPL/Drivers/MDR_GPIO_VE8x.h" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_GPIO.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_GPIO_VE8x.c" version="2.0.0"/>
       </files>
     </component>    

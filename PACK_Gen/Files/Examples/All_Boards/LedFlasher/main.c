@@ -1,8 +1,7 @@
-#include <MDR_GPIO.h>
-#include <MDR_Funcs.h>
 #include <MDR_Config.h>
 #include <MDR_SysTimer.h>
 #include <MDRB_LEDs.h>
+#include <MDR_Funcs.h>
 
 //  Мигание только одним светодиодом, если второго нет
 //  В этом случае мигание будет не равномерное, поскольку светодиод будет переключаться и в цикле, и от системного таймера

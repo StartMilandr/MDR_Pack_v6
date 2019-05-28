@@ -13,6 +13,7 @@
 
   <project>
     <PathAndName>.\VE1\LED_Flasher_VE1.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
@@ -41,7 +42,10 @@
 
   <project>
     <PathAndName>.\VE93\LED_Flasher_VE93.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
+  </project>
+
+  <project>
+    <PathAndName>.\VE8\LED_Flasher_VE8.uvprojx</PathAndName>
   </project>
 
 </ProjectWorkspace>

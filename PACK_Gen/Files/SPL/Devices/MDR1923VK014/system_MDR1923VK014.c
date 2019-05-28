@@ -23,8 +23,7 @@
  * limitations under the License.
  */
 
-#include "MDR_1923VK014.h"
-//#include "MDR_Config.h"
+#include "MDR_Config.h"
 
 
 /*----------------------------------------------------------------------------
@@ -45,44 +44,62 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Clock Frequency (Core Clock)
 /*----------------------------------------------------------------------------
   Clock functions
  *----------------------------------------------------------------------------*/
+#define FERQ_FAULT_HZ       HSI_FREQ_HZ
 
+#define CLK_SEL_COUNT_PLL   MDR_PLL_IN_HSE1div2 + 1
+#define CLK_SEL_COUNT       MAXCLK_PLL0
 
-//static const uint32_t _GenFreqsHz[8] = {HSI_Value, HSI_Value/2, HSE0_Value, HSE0_Value/2, HSE1_Value, HSE1_Value/2, LSI_Value, LSE_Value};
+static const uint32_t _GenFreqsHz[CLK_SEL_COUNT] = {
+                      //typedef enum {             typedef enum {          
+  HSI_FREQ_HZ,        //  MAXCLK_HSI      = 0,       MDR_PLL_IN_HSI       = 0,
+  HSI_FREQ_HZ/2,      //  MAXCLK_HSIdiv2  = 1,       MDR_PLL_IN_HSIdiv2   = 1,
+  HSE0_FREQ_HZ,       //  MAXCLK_HSE0     = 2,       MDR_PLL_IN_HSE0      = 2,
+  HSE0_FREQ_HZ/2,     //  MAXCLK_HSE0div2 = 3,       MDR_PLL_IN_HSE0div2  = 3,
+  HSE1_FREQ_HZ,       //  MAXCLK_HSE1     = 4,       MDR_PLL_IN_HSE1      = 4,
+  HSE1_FREQ_HZ/2,     //  MAXCLK_HSE1div2 = 5,       MDR_PLL_IN_HSE1div2  = 5,
+  LSI_FREQ_HZ,        //  MAXCLK_LSI      = 6,     } MDR_PLL_IN_SEL;
+  LSE_FREQ_HZ         //  MAXCLK_LSE      = 7,
+};                    //  MAXCLK_PLL0     = 8,  
+                      //  MAXCLK_PLL1     = 9,
+                      //  MAXCLK_PLL2     = 10,
+                      //} MDR_MAXCLK_SEL;
 
 void SystemCoreClockUpdate (void)
 {
-  //  uint32_t cpu_freq;
-  //  uint32_t regCLK;
-  //  uint32_t pll_source, pll_N, pll_Q, pll_DIV;
-  //  uint32_t sel_max_clk, sel_pll;
-	
-	// sel_max_clk = CLK_CNTR->MAX_CLK & 0xF;
+  uint32_t regCLK;
+  uint32_t pll_source, pll_N, pll_Q, pll_DIV;
+  uint32_t sel_max_clk, sel_pll;
 
-  // if (sel_max_clk < MAXCLK_PLL0)
-  //   SystemCoreClock = _GenFreqsHz[sel_max_clk];
-  // else if (sel_max_clk <= MAXCLK_PLL2)
-  // {  
-  //   switch (sel_max_clk)
-  //   {
-  //     case MAXCLK_PLL0: regCLK = CLK_CNTR->PLL0_CLK; break;
-  //     case MAXCLK_PLL1: regCLK = CLK_CNTR->PLL1_CLK; break;        
-  //     case MAXCLK_PLL2: regCLK = CLK_CNTR->PLL2_CLK; break;
-  //   }
-  //   sel_pll = ((regCLK >> 29) & 0x7);
-  //   if (sel_pll < 6)
-  //     pll_source = _GenFreqsHz[sel_pll];
-  //   else
-  //     pll_source = FERQ_FAULT_HZ;
-  //   if (((regCLK >> 8) & 0x7F) == 0)
-  //     pll_N = 2;
-  //   else 
-  //     pll_N =((regCLK >> 8) & 0x7F);	
-  //   pll_Q = (regCLK & 0xF);
-  //   pll_DIV = ((regCLK >> 4) & 0x1);
-  //   SystemCoreClock = ((pll_source * pll_N / (pll_Q + 1)) / (pll_DIV + 1));	    
-  // } 
-  // else
-	//   SystemCoreClock = FERQ_FAULT_HZ;
+  sel_max_clk = MDR_CLOCK->MAX_CLK & MDR_RST_CLOCK_MAX_CLK_Select_Msk;
+
+  if (sel_max_clk < MAXCLK_PLL0)
+    SystemCoreClock = _GenFreqsHz[sel_max_clk];
+  else if (sel_max_clk <= MAXCLK_PLL2)
+  {  
+    switch (sel_max_clk)
+    {
+      case MAXCLK_PLL1: regCLK = MDR_CLOCK->PLL1_CLK; break;        
+      case MAXCLK_PLL2: regCLK = MDR_CLOCK->PLL2_CLK; break;
+      default:          regCLK = MDR_CLOCK->PLL0_CLK; break;
+    }  
+    sel_pll = _FLD2VAL(MDR_RST_PLL_SELECT, regCLK);
+    if (sel_pll < CLK_SEL_COUNT_PLL)
+    {
+      pll_source = _GenFreqsHz[sel_pll];
+      
+      pll_Q   = _FLD2VAL(MDR_RST_PLL_PLL_Q, regCLK);
+      pll_DIV = _FLD2VAL(MDR_RST_PLL_DV,    regCLK);
+      pll_N   = _FLD2VAL(MDR_RST_PLL_PLL_N, regCLK);     
+      if (pll_N == 0)
+        pll_N = 2;          
+     
+      SystemCoreClock = ((pll_source * pll_N / (pll_Q + 1)) / (pll_DIV + 1));	    
+    }
+    else
+      SystemCoreClock = FERQ_FAULT_HZ;   
+  } 
+  else
+    SystemCoreClock = FERQ_FAULT_HZ;
 }
 
 void SystemInit (void)
@@ -90,5 +107,14 @@ void SystemInit (void)
 /* ToDo: add code to initialize the system
          do not use global variables because this function is called before
          reaching pre-main. RW section maybe overwritten afterwards. */
+  
+//  //  Disable Reset by Upor
+  MDR_BKP->KEY = MDR_KEY_UNLOCK;
+  MDR_BKP->TMR0.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
+  MDR_BKP->TMR1.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
+  MDR_BKP->TMR2.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
+  MDR_BKP->KEY = 0;
+  
   SystemCoreClock = SYSTEM_CLOCK;
 }
+

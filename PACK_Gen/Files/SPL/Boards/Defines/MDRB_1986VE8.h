@@ -3,54 +3,60 @@
 
 #ifdef USE_BOARD_VE8 
 
-//  UNLOCK KEY
-    #define _KEY_ 				         0x8555AAA1
 
-//  --------------  Buttons Definition  ------------
-    #define MDRB_BTN_PORT_KEY1     PORTE
-    #define MDRB_BTN_PIN_KEY1      PORT_Pin_18
 
-    #define MDRB_BTN_PORT_KEY2     PORTE
-    #define MDRB_BTN_PIN_KEY2      PORT_Pin_21
-	
-    #define MDRB_BTN_PORT_KEY3     PORTE
-    #define MDRB_BTN_PIN_KEY3      PORT_Pin_22
-	
-    // for Initialization
-    #define MDRB_BTNs_PORT_CLK      CLKCTRL_PER0_CLK_MDR_PORTE_EN
-    #define MDRB_BTNs_PORT          PORTE
-    #define MDRB_BTNs_PIN_MASK      (MDRB_BTN_PIN_KEY1 | MDRB_BTN_PIN_KEY2 | MDRB_BTN_PIN_KEY3)
-    
-    //  for Is_BtnAct_...
-    #define MDRB_BTNs_PUSH_TO_GND  // use if connected to power!
+//  Переопределение пинов для удобства поиска конфликтов
 
-    #define MDRB_BTN_PORT_SEL    MDRB_BTN_PORT_KEY1
-    #define MDRB_BTN_PORT_UP     MDRB_BTN_PORT_KEY2
-    #define MDRB_BTN_PORT_DOWN   MDRB_BTN_PORT_KEY3
+    //  Port_C
+    #define PIN_PC16     MDR_Pin_16   //  LED1,
+    #define PIN_PC17     MDR_Pin_17   //  LED2,
+    #define PIN_PC18     MDR_Pin_18   //  LED3,
+    #define PIN_PC19     MDR_Pin_19   //  LED4,
+    #define PIN_PC20     MDR_Pin_20   //  LED5,
+    #define PIN_PC21     MDR_Pin_21   //  LED6,
+    #define PIN_PC22     MDR_Pin_22   //  LED7,
+    #define PIN_PC23     MDR_Pin_23   //  LED8,
 
-    #define MDRB_BTN_PIN_SEL     MDRB_BTN_PIN_KEY1
-    #define MDRB_BTN_PIN_UP      MDRB_BTN_PIN_KEY2
-    #define MDRB_BTN_PIN_DOWN    MDRB_BTN_PIN_KEY3
+    //  Port_E
+    #define PIN_PE18     MDR_Pin_18   //    KEY1,
+    #define PIN_PE19     MDR_Pin_19   //  
+    #define PIN_PE20     MDR_Pin_20   //  
+    #define PIN_PE21     MDR_Pin_21   //    KEY2,
+    #define PIN_PE22     MDR_Pin_22   //    KEY3,
 
 
 //  ----------    LEDs Definition -------------
-    #define MDRB_LED_PORT_CLK       CLKCTRL_PER0_CLK_MDR_PORTC_EN
-    #define MDRB_LED_PORT           PORTC
-  
-    #define MDRB_LED_1              PORT_Pin_16
-    #define MDRB_LED_2              PORT_Pin_17
-    #define MDRB_LED_3              PORT_Pin_18
-    #define MDRB_LED_4              PORT_Pin_19	
-    #define MDRB_LED_5              PORT_Pin_20	
-    #define MDRB_LED_6              PORT_Pin_21	
-    #define MDRB_LED_7              PORT_Pin_22	
-    #define MDRB_LED_8              PORT_Pin_23	
-  
-    #define MDRB_LED_Pins        (MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4  \
-                               | MDRB_LED_5 | MDRB_LED_6 | MDRB_LED_7 | MDRB_LED_8)
+    #define MDRB_LED_1 	              PIN_PC16
+    #define MDRB_LED_2 	              PIN_PC17
+    #define MDRB_LED_3 	              PIN_PC18
+    #define MDRB_LED_4 	              PIN_PC19
+    #define MDRB_LED_5 	              PIN_PC20
+    #define MDRB_LED_6 	              PIN_PC21
+    #define MDRB_LED_7 	              PIN_PC22
+    #define MDRB_LED_8 	              PIN_PC23
 
-//  ----------    DMA Definition -------------
-    #define MDRB_DMA_CLOCK_SELECT  (CLKCTRL_PER0_CLK_MDR_DMA0_EN)
+    #define MDRB_LED_GPIO             MDR_GPIO_C    
+    #define MDRB_LED_PinAll          (MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4 | MDRB_LED_5 | MDRB_LED_6 | MDRB_LED_7 | MDRB_LED_8)
+
+
+//  --------------  Buttons Definition  ------------
+    #define MDRB_BTN_PORT_KEY1        MDR_GPIO_E
+    #define MDRB_BTN_PIN_KEY1         PIN_PE18  // Up
+	
+    #define MDRB_BTN_PORT_KEY2        MDR_GPIO_E
+    #define MDRB_BTN_PIN_KEY2         PIN_PE21  // Right
+	
+    #define MDRB_BTN_PORT_KEY3        MDR_GPIO_E
+    #define MDRB_BTN_PIN_KEY3         PIN_PE22  // Down
+	
+    // for Initialization
+    #define MDRB_BTN_GPIO             MDR_GPIO_E
+    #define MDRB_BTN_PinSel           (PIN_PE18 | PIN_PE21 | PIN_PE22)
+    
+    // Active buttons Level
+    #define MDRB_BTNs_PUSH_TO_GND
+
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

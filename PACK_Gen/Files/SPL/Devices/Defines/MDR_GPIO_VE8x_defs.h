@@ -35,6 +35,10 @@ extern "C" {
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
 #define MDR_GPIO_Pin_Count      32
+#define MDR_GPIO_HAS_KEY
+#define MDR_GPIO_HAS_SET_CLEAR
+#define MDR_GPIO_HAS_CfgIRQ
+#define MDR_GPIO_CFG_SET_CLEAR
 
 /* ===================================================== reg  RXTX  ========================================================== */
 typedef struct {
@@ -75,46 +79,50 @@ typedef struct {
 #define MDR_GPIO_RXTX__Pin_Pos           (0UL)
 #define MDR_GPIO_RXTX__Pin_Msk           (0x1UL)
 
+typedef enum {
+      MDR_PIN_Low                  = 0,
+      MDR_RIN_High                 = 1
+} MDR_PIN_RXTX;
 
 /* ====================================================== reg  OE  =========================================================== */
 typedef enum {
       MDR_PIN_IN                  = 0,
-      MDR_RIN_OUT                 = 1
-} MDR_PIN_IO;
+      MDR_PIN_OUT                 = 1
+} MDR_PIN_OE;
 
 typedef struct {
-      __IOM MDR_PIN_IO  Pin_0      : 1;            /*!< [0..0] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_1      : 1;            /*!< [1..1] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_2      : 1;            /*!< [2..2] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_3      : 1;            /*!< [3..3] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_4      : 1;            /*!< [4..4] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_5      : 1;            /*!< [5..5] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_6      : 1;            /*!< [6..6] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_7      : 1;            /*!< [7..7] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_8      : 1;            /*!< [8..8] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_9      : 1;            /*!< [9..9] Pin data direction                                                 */
-      __IOM MDR_PIN_IO  Pin_10     : 1;            /*!< [10..10] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_11     : 1;            /*!< [11..11] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_12     : 1;            /*!< [12..12] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_13     : 1;            /*!< [13..13] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_14     : 1;            /*!< [14..14] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_15     : 1;            /*!< [15..15] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_16     : 1;            /*!< [16..16] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_17     : 1;            /*!< [17..17] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_18     : 1;            /*!< [18..18] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_19     : 1;            /*!< [19..19] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_20     : 1;            /*!< [20..20] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_21     : 1;            /*!< [21..21] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_22     : 1;            /*!< [22..22] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_23     : 1;            /*!< [23..23] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_24     : 1;            /*!< [24..24] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_25     : 1;            /*!< [25..25] Pin data direction                                               */  
-      __IOM MDR_PIN_IO  Pin_26     : 1;            /*!< [26..26] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_27     : 1;            /*!< [27..27] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_28     : 1;            /*!< [28..28] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_29     : 1;            /*!< [29..29] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_30     : 1;            /*!< [30..30] Pin data direction                                               */
-      __IOM MDR_PIN_IO  Pin_31     : 1;            /*!< [31..31] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_0      : 1;            /*!< [0..0] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_1      : 1;            /*!< [1..1] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_2      : 1;            /*!< [2..2] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_3      : 1;            /*!< [3..3] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_4      : 1;            /*!< [4..4] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_5      : 1;            /*!< [5..5] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_6      : 1;            /*!< [6..6] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_7      : 1;            /*!< [7..7] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_8      : 1;            /*!< [8..8] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_9      : 1;            /*!< [9..9] Pin data direction                                                 */
+      __IOM MDR_PIN_OE  Pin_10     : 1;            /*!< [10..10] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_11     : 1;            /*!< [11..11] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_12     : 1;            /*!< [12..12] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_13     : 1;            /*!< [13..13] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_14     : 1;            /*!< [14..14] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_15     : 1;            /*!< [15..15] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_16     : 1;            /*!< [16..16] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_17     : 1;            /*!< [17..17] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_18     : 1;            /*!< [18..18] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_19     : 1;            /*!< [19..19] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_20     : 1;            /*!< [20..20] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_21     : 1;            /*!< [21..21] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_22     : 1;            /*!< [22..22] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_23     : 1;            /*!< [23..23] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_24     : 1;            /*!< [24..24] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_25     : 1;            /*!< [25..25] Pin data direction                                               */  
+      __IOM MDR_PIN_OE  Pin_26     : 1;            /*!< [26..26] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_27     : 1;            /*!< [27..27] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_28     : 1;            /*!< [28..28] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_29     : 1;            /*!< [29..29] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_30     : 1;            /*!< [30..30] Pin data direction                                               */
+      __IOM MDR_PIN_OE  Pin_31     : 1;            /*!< [31..31] Pin data direction                                               */
 } MDR_GPIO_IO_Bits;
 
 #define MDR_GPIO_OE__Pin_Pos             (0UL)
@@ -188,7 +196,7 @@ typedef struct {
 } MDR_GPIO_FUNC3_Bits;
 
 #define MDR_GPIO_FUNC__Pin_Pos           (0UL)
-#define MDR_GPIO_FUNC__Pin_Msk           (0x3UL)
+#define MDR_GPIO_FUNC__Pin_Msk           (0xFUL)
 
 
 /* ====================================================  reg  ANALOG  ========================================================= */
@@ -237,10 +245,8 @@ typedef struct {
 
 
 /* =====================================================   reg PULL  ========================================================== */
-//#define MDR_GPIO_PULL_Down__Pin_Pos      (0UL)
-//#define MDR_GPIO_PULL_Down__Pin_Msk      (0x1UL)
-//#define MDR_GPIO_PULL_UP__Pin_Pos        (16UL)
-//#define MDR_GPIO_PULL_UP__Pin_Msk        (0x10000UL)
+#define MDR_GPIO_PULL__Pin_Pos      (0UL)
+#define MDR_GPIO_PULL__Pin_Msk      (0x1UL)
 
 typedef struct {
       __IOM MDR_OnOff  Pin_0      : 1;            /*!< [0..0] Enable Digital mode                                                */
@@ -319,6 +325,8 @@ typedef struct {
       __IOM MDR_PIN_PD  DrvPin_31 : 1;
 } MDR_GPIO_PD_Bits;
 
+#define MDR_GPIO_PD__Pin_Pos         (0UL)
+#define MDR_GPIO_PD__Pin_Msk         (0x1UL)
 
 
 /* ====================================================== reg  PWR  ========================================================== */
@@ -418,36 +426,36 @@ typedef struct {                                       /*!<     MDR_PORT Structu
     MDR_GPIO_IO_Bits      OE_Clr_b;
   } ;   
   union {
-    __IM  uint32_t        FUNC0_Set;                   /*!< (@ 0x00000018) Set FUNC0 bits  0..7                                       */
+    __IOM  uint32_t       FUNC0_Set;                   /*!< (@ 0x00000018) Set FUNC0 bits  0..7                                       */
     MDR_GPIO_FUNC0_Bits   FUNC0_Set_b;
   } ;  
   union {
-    __IM  uint32_t        FUNC1_Set;                   /*!< (@ 0x0000001C) Set FUNC1 bits  8..15                                      */
+    __IOM  uint32_t       FUNC1_Set;                   /*!< (@ 0x0000001C) Set FUNC1 bits  8..15                                      */
     MDR_GPIO_FUNC1_Bits   FUNC1_Set_b;
   } ;    
   union {
-    __IM  uint32_t        FUNC2_Set;                   /*!< (@ 0x00000020) Set FUNC2 bits  16..23                                     */
+    __IOM  uint32_t       FUNC2_Set;                   /*!< (@ 0x00000020) Set FUNC2 bits  16..23                                     */
     MDR_GPIO_FUNC2_Bits   FUNC2_Set_b;
   } ;  
   union {
-    __IM  uint32_t        FUNC3_Set;                   /*!< (@ 0x00000024) Set FUNC3 bits  24..31                                     */
+    __IOM  uint32_t       FUNC3_Set;                   /*!< (@ 0x00000024) Set FUNC3 bits  24..31                                     */
     MDR_GPIO_FUNC3_Bits   FUNC3_Set_b;
   } ;      
   
   union {
-    __IM  uint32_t        FUNC0_Clr;                   /*!< (@ 0x00000028) Clr FUNC0 bits  0..7                                       */
+    __IOM  uint32_t       FUNC0_Clr;                   /*!< (@ 0x00000028) Clr FUNC0 bits  0..7                                       */
     MDR_GPIO_FUNC0_Bits   FUNC0_Clr_b;
   } ;  
   union {
-    __IM  uint32_t        FUNC1_Clr;                   /*!< (@ 0x0000002C) Clr FUNC1 bits  8..15                                      */
+    __IOM  uint32_t       FUNC1_Clr;                   /*!< (@ 0x0000002C) Clr FUNC1 bits  8..15                                      */
     MDR_GPIO_FUNC1_Bits   FUNC1_Clr_b;
   } ;    
   union {
-    __IM  uint32_t        FUNC2_Clr;                   /*!< (@ 0x00000030) Clr FUNC2 bits  16..23                                     */
+    __IOM  uint32_t       FUNC2_Clr;                   /*!< (@ 0x00000030) Clr FUNC2 bits  16..23                                     */
     MDR_GPIO_FUNC2_Bits   FUNC2_Clr_b;
   } ;  
   union {
-    __IM  uint32_t        FUNC3_Clr;                   /*!< (@ 0x00000034) Clr FUNC3 bits  24..31                                     */
+    __IOM  uint32_t       FUNC3_Clr;                   /*!< (@ 0x00000034) Clr FUNC3 bits  24..31                                     */
     MDR_GPIO_FUNC3_Bits   FUNC3_Clr_b;
   } ;        
   union {
@@ -468,7 +476,7 @@ typedef struct {                                       /*!<     MDR_PORT Structu
   } ;    
   union {
     __IOM uint32_t        PULLDOWN_Set;                /*!< (@ 0x00000048) Set PullDOWN bits                                        */
-    MDR_GPIO_SEL_Bits     PULLDOWN_b;
+    MDR_GPIO_SEL_Bits     PULLDOWN_Set_b;
   } ;    
   union {
     __IOM uint32_t        PULLDOWN_Clr;                /*!< (@ 0x0000004C) Clear PULLDOWN bits                                        */
@@ -536,6 +544,31 @@ typedef struct {                                       /*!<     MDR_PORT Structu
   } ; 
 } MDR_PORT_Type;
 
+
+typedef struct {
+    uint32_t        clrPins;
+    uint32_t        clrFUNC_0_7;
+    uint32_t        clrFUNC_8_15;
+    uint32_t        clrFUNC_16_23;
+    uint32_t        clrFUNC_24_31;
+    uint32_t        clrPWR_0_15;
+    uint32_t        clrPWR_16_31;
+} MDR_GPIO_ClearCfg;
+
+typedef struct {               
+    uint32_t        RXTX;        
+    uint32_t        OE;          
+    uint32_t        FUNC_0_7;  
+    uint32_t        FUNC_8_15; 
+    uint32_t        FUNC_16_23;
+    uint32_t        FUNC_24_31;
+    uint32_t        ANALOG;    
+    uint32_t        PULL_Up;   
+    uint32_t        PULL_Down; 
+    uint32_t        PD;        
+    uint32_t        PWR_0_15;  
+    uint32_t        PWR_16_31; 
+} MDR_GPIO_SetCfg;
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

@@ -83,16 +83,16 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     0           			        ; Reserved19
                 DCD     0           			        ; Reserved20
                 DCD     0           			        ; Reserved21
-				        DCD 	  0	           			        ; Reserved22
-				        DCD 	  0	           			        ; Reserved23
-				        DCD 	  0	           			        ; Reserved24
-				        DCD 	  0	           			        ; Reserved25
-				        DCD 	  0	           			        ; Reserved26
-				        DCD 	  0	           			        ; Reserved27
-				        DCD 	  0           			        ; Reserved28
-				        DCD 	  0	           			        ; Reserved29
-				        DCD 	  0	           			        ; Reserved30
-				        DCD 	  0	           			        ; Reserved31
+				DCD 	0	           			        ; Reserved22
+				DCD 	0	           			        ; Reserved23
+				DCD 	0	           			        ; Reserved24
+				DCD 	0	           			        ; Reserved25
+				DCD 	0	           			        ; Reserved26
+				DCD 	0	           			        ; Reserved27
+				DCD 	0           			        ; Reserved28
+				DCD 	0	           			        ; Reserved29
+				DCD 	0	           			        ; Reserved30
+				DCD 	0	           			        ; Reserved31
                 DCD     FT_RESET0_4_IRQHandler    ; 32: FT_IF0_Handler
                 DCD     FT_EVENT0_4_IRQHandler    ; 33: FT_IF1_Handler
                 DCD     FT_EVENT5_8_IRQHandler    ; 34: FT_IF2_Handler
@@ -195,23 +195,26 @@ __Vectors_Size  EQU  __Vectors_End - __Vectors
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler			[WEAK]
+                IMPORT  SystemInit
                 IMPORT  __main
 
-				        ; --- FPU Enable ---
-				        ; CPACR is located at address 0xE000ED88
-				        LDR.W R0, =0xE000ED88
-				        ; Read CPACR
-				        LDR R1, [R0]
-				        ; Set bits 20-23 to enable CP10 and CP11 coprocessors
-				        ORR R1, R1, #(0xF << 20)
-				        ; Write back the modified value to the CPACR
-				        STR R1, [R0]; wait for store to complete
-				        DSB
-				        ;reset pipeline now the FPU is enabled
-				        ISB 
-				
-				        LDR     R0,=__main
-				        BX      R0
+				; --- FPU Enable ---
+				; CPACR is located at address 0xE000ED88
+				LDR.W R0, =0xE000ED88
+				; Read CPACR
+				LDR R1, [R0]
+				; Set bits 20-23 to enable CP10 and CP11 coprocessors
+				ORR R1, R1, #(0xF << 20)
+				; Write back the modified value to the CPACR
+				STR R1, [R0]; wait for store to complete
+				DSB
+				;reset pipeline now the FPU is enabled
+				ISB 
+                
+                LDR     R0, =SystemInit
+                BLX     R0
+				LDR     R0,=__main
+				BX      R0
                 ENDP
 
 

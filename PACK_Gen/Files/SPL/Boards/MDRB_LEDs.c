@@ -3,10 +3,10 @@
 void MDRB_LED_Init(uint32_t LEDs_Sel)
 {	
   // Clock Enable	
-  MDR_GPIO_ClockOn(MDRB_LED_GPIO);
+  MDR_GPIO_Enable(MDRB_LED_GPIO);
   
   // Pins Init
-  MDR_GPIO_InitOutDef(MDRB_LED_GPIO, LEDs_Sel & MDRB_LED_PinAll);
+  MDR_GPIO_Init_PortOUT(MDRB_LED_GPIO, LEDs_Sel & MDRB_LED_PinAll, MDR_PIN_SLOW);
 }
 
 #ifdef LED_ON_TO_GND

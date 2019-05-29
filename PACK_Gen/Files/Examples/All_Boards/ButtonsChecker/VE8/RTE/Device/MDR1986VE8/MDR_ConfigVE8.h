@@ -1,7 +1,7 @@
-#ifndef MDR_CONFIG_ESila_H
-#define MDR_CONFIG_ESila_H
+#ifndef MDR_CONFIG_VE8_H
+#define MDR_CONFIG_VE8_H
 
-#include <MDR_ESila.h>
+#include <MDR_1986VE8.h>
   
 
 //================  Параметры источников частоты ================
@@ -27,13 +27,6 @@
 //  PLL Ready Timeout
 #define PLL_TIMEOUT_MS    100
 
-//=============  Защита пинов совмещенных с Jtag  ==================
-// Писать в пины порта совмещенные с Jtag можно только 0.
-// Иначе отладчик потеряет соединение. Активным может быть только один.
 
-//#define USE_JTAG_A
-//#define USE_JTAG_B
-//#define USE_SWD_A
-//#define USE_SWD_B
 
-#endif  //  MDR_CONFIG_ESila_H
+#endif  //  MDR_CONFIG_VE8_H

@@ -41,6 +41,14 @@
 
   <project>
     <PathAndName>.\VE93\ButtonsChecker_VE93.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE8\ButtonsChecker_VE8.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\ESila\ButtonsChecker_ESila.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
   </project>
 

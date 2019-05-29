@@ -24,25 +24,31 @@
   // ========== 5 кнопок на плате=============
   #define KEY_COUNT  5
   #define KEY_MASK   0x001FUL
-  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT + 1] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2, MDRB_BTN_PORT_KEY3, 
-                                                           MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY5, MDRB_BTN_PORT_KEY_P1};
-  static const uint32_t       _KEY_Pins[KEY_COUNT + 1]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,  MDRB_BTN_PIN_KEY3, 
-                                                           MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY5,  MDRB_BTN_PIN_KEY_P1};
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2, MDRB_BTN_PORT_KEY3, 
+                                                           MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY5}; //, MDRB_BTN_PORT_KEY_P1};
+  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,  MDRB_BTN_PIN_KEY3, 
+                                                           MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY5}; //,  MDRB_BTN_PIN_KEY_P1};
 #elif defined (MDRB_BTN_PIN_KEY4)
   // ========== 4 кнопки на плате=============
   #define KEY_COUNT  4
   #define KEY_MASK   0x000FUL
-  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT + 2] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY3, 
-                                                           MDRB_BTN_PORT_KEY4, MDRB_BTN_PORT_KEY_P1, MDRB_BTN_PORT_KEY_P2};
-  static const uint32_t       _KEY_Pins[KEY_COUNT + 2]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY3, 
-                                                           MDRB_BTN_PIN_KEY4,  MDRB_BTN_PIN_KEY_P1,  MDRB_BTN_PIN_KEY_P2};
-  
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY3, 
+                                                           MDRB_BTN_PORT_KEY4); //, MDRB_BTN_PORT_KEY_P1, MDRB_BTN_PORT_KEY_P2};
+  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY3, 
+                                                           MDRB_BTN_PIN_KEY4); //,  MDRB_BTN_PIN_KEY_P1,  MDRB_BTN_PIN_KEY_P2};
+#elif defined (MDRB_BTN_PIN_KEY3)
+  // ========== 4 кнопки на плате=============
+  #define KEY_COUNT  3
+  #define KEY_MASK   0x0007UL
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY3};
+  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY3};
+                                                           
 #elif defined (MDRB_BTN_PIN_KEY2)
   // ========== 2 кнопки на плате=============
   #define KEY_COUNT  2
-  #define KEY_MASK   0x000FUL
-  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT + 1] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY_P1};
-  static const uint32_t       _KEY_Pins[KEY_COUNT + 1]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY_P1};
+  #define KEY_MASK   0x0003UL
+  static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2}; //,   MDRB_BTN_PORT_KEY_P1};
+  static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2}; //,    MDRB_BTN_PIN_KEY_P1};
                                                            
 #else
   Buttons configuration need to be added!
@@ -62,17 +68,17 @@ void MDRB_Buttons_InitTick(uint32_t debounce_tick)
 {
   _debounceTicks = debounce_tick;
   
-  MDR_GPIO_ClockOn(MDRB_BTN_GPIO);
-  MDR_GPIO_InitInDef(MDRB_BTN_GPIO, MDRB_BTN_PinSel);
+  MDR_GPIO_Enable(MDRB_BTN_GPIO);
+  MDR_GPIO_Init_PortIN(MDRB_BTN_GPIO, MDRB_BTN_PinSel);
 
 #ifdef MDRB_BTN_GPIO_Ex1
-  MDR_GPIO_ClockOn(MDRB_BTN_GPIO_Ex1);
-  MDR_GPIO_InitInDef(MDRB_BTN_GPIO_Ex1, MDRB_BTN_PinSel_Ex1);
+  MDR_GPIO_Enable(MDRB_BTN_GPIO_Ex1);
+  MDR_GPIO_Init_PortIN(MDRB_BTN_GPIO_Ex1, MDRB_BTN_PinSel_Ex1);
 #endif
   
 #ifdef MDRB_BTN_GPIO_Ex2
-  MDR_GPIO_ClockOn(MDRB_BTN_GPIO_Ex2);
-  MDR_GPIO_InitInDef(MDRB_BTN_GPIO_Ex2, MDRB_BTN_PinSel_Ex2);
+  MDR_GPIO_Enable(MDRB_BTN_GPIO_Ex2);
+  MDR_GPIO_Init_PortIN(MDRB_BTN_GPIO_Ex2, MDRB_BTN_PinSel_Ex2);
 #endif  
 }
 

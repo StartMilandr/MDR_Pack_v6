@@ -221,7 +221,7 @@ void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_GPIO_PinCfg
   MDR_Port_MaskApply(GPIO_Port, &applyMask);   
 }
 
-static void MDR_Port_AddAnalogPinCfg(uint32_t pinSelect, MDR_GPIO_ClearCfg *clrRegs)
+void MDR_Port_FillClearMask(uint32_t pinSelect, MDR_GPIO_ClearCfg *clrRegs)
 {
   uint32_t i, j;
   uint32_t offsPin, pinInd;
@@ -255,7 +255,7 @@ void MDR_Port_InitAnalog(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
   MDR_GPIO_ClearCfg clrRegs;   
 
   MDR_Port_Clear_ClearCfg(&clrRegs);    
-  MDR_Port_AddAnalogPinCfg(pinSelect, &clrRegs);
+  MDR_Port_FillClearMask(pinSelect, &clrRegs);
   
   GPIO_Port->ANALOG_Clr = clrRegs.clrPins;    
   GPIO_Port->OE_Clr     = clrRegs.clrPins;    
@@ -393,7 +393,7 @@ void MDR_Port_MaskClear(MDR_Port_ApplyMask *applyMask)
 //    Пины в аналоговую функцию
 void MDR_Port_MaskAddAnalog(uint32_t PinSelect, MDR_Port_ApplyMask *ApplyMask)
 {
-  MDR_Port_AddAnalogPinCfg(PinSelect, &ApplyMask->MaskCLR);
+  MDR_Port_FillClearMask(PinSelect, &ApplyMask->MaskCLR);
 }
 
 void MDR_Port_MaskAdd(uint32_t PinSelect, MDR_Pin_IO InOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_Port_ApplyMask *applyMask)

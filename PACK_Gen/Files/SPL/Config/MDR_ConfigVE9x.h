@@ -16,6 +16,8 @@
 
 //#define USE_JTAG_A
 #define USE_JTAG_B
+//#define USE_SWD_A
+//#define USE_SWD_B
 
 
 //================  Параметры источников частоты ================

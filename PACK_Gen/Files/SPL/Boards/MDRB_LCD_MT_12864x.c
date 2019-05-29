@@ -96,14 +96,14 @@ static MDR_Port_ApplyMask  applyGPIO_PinsIN[MDR_LCD_PortCountIN];
 static MDR_Port_ApplyMask  applyGPIO_PinsOUT[MDR_LCD_PortCountOUT];
 
   //  Настройки пинов, до перенастройки на использование под LCD - Captured Temp
-static MDR_GPIO_CfgRegs  _TempPinsIN[MDR_LCD_PortCountIN];
-static MDR_GPIO_CfgRegs  _TempPinsOUT[MDR_LCD_PortCountOUT];
+static MDR_GPIO_SetCfg  _TempPinsIN[MDR_LCD_PortCountIN];
+static MDR_GPIO_SetCfg  _TempPinsOUT[MDR_LCD_PortCountOUT];
 
 
 static void LCD_InitPins(void)
 {
   uint32_t i;
-  MDR_PinDig_PermRegs pinsPermRegs;
+  MDR_PinDig_GroupPinCfg groupPinCfg;
   
   //  Обнуление настроечный масок
   for (i = 0; i < MDR_LCD_PortCountIN; ++i)
@@ -112,19 +112,23 @@ static void LCD_InitPins(void)
     MDR_Port_MaskClear(&applyGPIO_PinsOUT[i]);
   
   //  Базовые настройки пинов
-  MDR_GPIO_InitDigPermRegs(MDR_PIN_PullPush, MDR_PIN_MAXFAST, MDR_Off, MDR_Off, &pinsPermRegs);
-  
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, MDR_PIN_MAXFAST, MDR_Off, MDR_Off, &groupPinCfg);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, MDR_PIN_MAXFAST, &groupPinCfg);
+#endif  
+
   //  Сбор настроек пинов в маски
   for (i = 0; i < MDR_LCD_PortCountIN; ++i)
   {
-    MDR_GPIO_MaskAdd(_LCD_PinsIN[i], MDR_Pin_In, MDR_PIN_PORT, &pinsPermRegs, &applyGPIO_PinsIN[i]);
+    MDR_GPIO_MaskAdd(_LCD_PinsIN[i], MDR_Pin_In, MDR_PIN_PORT, &groupPinCfg, &applyGPIO_PinsIN[i]);
     
-    MDR_GPIO_ClockOn(_LCD_PortIN[i]);
+    MDR_GPIO_Enable(_LCD_PortIN[i]);
     MDR_GPIO_MaskApply(_LCD_PortIN[i], &applyGPIO_PinsIN[i]);
   }
   for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
   {
-    MDR_GPIO_MaskAdd(_LCD_PinsOUT[i], MDR_Pin_Out, MDR_PIN_PORT, &pinsPermRegs, &applyGPIO_PinsOUT[i]);
+    MDR_GPIO_MaskAdd(_LCD_PinsOUT[i], MDR_Pin_Out, MDR_PIN_PORT, &groupPinCfg, &applyGPIO_PinsOUT[i]);
     
 #ifdef MDRB_LCD_RES_PORT
     //  Не сбрасывать пин Reset, экран отрубается в 1986ВЕ3У
@@ -138,7 +142,7 @@ static void LCD_InitPins(void)
       applyGPIO_PinsOUT[i].MaskSET.RXTX |= MDRB_LCD_CONFLICT_PIN;
 #endif
     
-    MDR_GPIO_ClockOn(_LCD_PortOUT[i]);
+    MDR_GPIO_Enable(_LCD_PortOUT[i]);
     MDR_GPIO_MaskApply(_LCD_PortOUT[i], &applyGPIO_PinsOUT[i]);
   }
 }	
@@ -149,7 +153,9 @@ void MDRB_LCD_CapturePins(void)
   
   for (i = 0; i < MDR_LCD_PortCountIN; ++i)
   {
+    //  Сохраняем текущие настройки порта, для восстановления в MDRB_LCD_ReleasePins
     MDR_GPIO_ReadRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
+    //  Применяем маски Clear и Set, для переключения в новые настройки
     MDR_GPIO_MaskApplyEx(_LCD_PortIN[i], &applyGPIO_PinsIN[i], &_TempPinsIN[i]);
   }
   for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
@@ -159,19 +165,34 @@ void MDRB_LCD_CapturePins(void)
   } 
 }
 
-void MDRB_LCD_ReleasePins(void)
-{
-  uint32_t i;
-  
-  for (i = 0; i < MDR_LCD_PortCountIN; ++i)
+#ifdef MDR_GPIO_CFG_SET_CLEAR    
+  void MDRB_LCD_ReleasePins(void)
   {
-    MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
+    uint32_t i;
+    
+    //  Возвращаем сохраненные настройки в качестве Set маски, 
+    //  Маска стирания таже что и при MDRB_LCD_CapturePins
+    for (i = 0; i < MDR_LCD_PortCountIN; ++i)
+      MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i], &applyGPIO_PinsIN[i].MaskCLR);
+    
+    for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
+      MDR_GPIO_WriteRegs(_LCD_PortOUT[i], &_TempPinsOUT[i], &applyGPIO_PinsIN[i].MaskCLR);
   }
-  for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
+
+#else
+  void MDRB_LCD_ReleasePins(void)
   {
-    MDR_GPIO_WriteRegs(_LCD_PortOUT[i], &_TempPinsOUT[i]);
-  } 
-}
+    uint32_t i;
+    
+    //  Возвращаем сохраненные настройки
+    for (i = 0; i < MDR_LCD_PortCountIN; ++i)
+      MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
+    
+    for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
+      MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
+  }
+#endif
+
 
 void MDRB_LCD_ChangeFreqCPU(uint32_t CPU_FreqHz)
 { 

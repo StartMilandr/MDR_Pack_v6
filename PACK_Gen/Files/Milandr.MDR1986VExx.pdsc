@@ -896,6 +896,17 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
     </condition>
+    <condition id="CON_BRD_LCD">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+      <accept Dname="MDR_ESila"/>
+    </condition>
     <condition id="CON_MDR_CM0">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE4"/>
@@ -1301,7 +1312,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM1CM3">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_BRD_LCD">
       <description>Display MT 12864x control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>

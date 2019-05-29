@@ -467,6 +467,29 @@ typedef enum IRQn
 #define   MDR_CLK_EN_BIT_PORT_C     MDR_RST_PER0_PORTC_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_D     MDR_RST_PER0_PORTD_CLK_EN_Pos
 
+//  Jtag_A: PA[0..4] nTRST, TCK, TMS, TDI, TDO
+#define   MDR_JTAG_A_PORT           MDR_PORTA
+#define   MDR_JTAG_A_PINS           0x0000001FUL
+#define   MDR_JTAG_A_PINS_FUNC      0x000FFFFFUL
+#define   MDR_JTAG_A_PINS_PD        0x001F001FUL
+
+//  Jtag_A: PA[1,2] TCK, TMS
+#define   MDR_SWD_A_PORT            MDR_PORTA
+#define   MDR_SWD_A_PINS            0x00000006UL
+#define   MDR_SWD_A_PINS_FUNC       0x00000FF0UL
+#define   MDR_SWD_A_PINS_PD         0x00000006UL
+
+//  Jtag_B: PB[4..8] nTRST, TCK, TMS, TDI, TDO
+#define   MDR_JTAG_B_PORT           MDR_PORTD
+#define   MDR_JTAG_B_PINS           0x00001F00UL
+#define   MDR_JTAG_B_PINS_FUNC      0x0FFFFF00UL
+#define   MDR_JTAG_B_PINS_PD        0x00001F00UL
+
+#define   MDR_SWD_B_PORT            MDR_PORTD
+#define   MDR_SWD_B_PINS            0x00000060UL
+#define   MDR_SWD_B_PINS_FUNC       0x0FF00000UL
+#define   MDR_SWD_B_PINS_PD         0x00000060UL
+
 
 // //----------------    SSP Definitions  --------------------
 // //  SSP Block Clock enable

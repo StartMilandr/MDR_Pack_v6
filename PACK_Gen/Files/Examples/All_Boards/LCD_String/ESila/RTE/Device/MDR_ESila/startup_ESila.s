@@ -39,7 +39,7 @@ __heap_limit
 ; Vector Table Mapped to Address 0 at Reset
 
                 AREA    RESET, DATA, READONLY
-	              EXPORT  __Vectors
+	            EXPORT  __Vectors
                 EXPORT  __Vectors_End
                 EXPORT  __Vectors_Size
 
@@ -286,8 +286,8 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler			[WEAK]
                 IMPORT  SystemInit
                 IMPORT  __main
-				
-                ; --- FPU Enable ---
+
+				; --- FPU Enable ---
 				; CPACR is located at address 0xE000ED88
 				LDR.W R0, =0xE000ED88
 				; Read CPACR
@@ -299,7 +299,7 @@ Reset_Handler   PROC
 				DSB
 				;reset pipeline now the FPU is enabled
 				ISB
-                
+
                 LDR     R0, =SystemInit
                 BLX     R0
 				LDR     R0,=__main

@@ -37,8 +37,11 @@ int main(void)
       LED_Flash(2);
     if (MDRB_BntClicked_Down(false))
       LED_Flash(3);
+    
+  #if defined (MDRB_BTN_PIN_KEY5)   
     if (MDRB_BntClicked_Left(false))
       LED_Flash(4);
+  #endif  
 
   #if defined (MDRB_BTN_PIN_KEY5) 
     if (MDRB_BntClicked_Select(false))

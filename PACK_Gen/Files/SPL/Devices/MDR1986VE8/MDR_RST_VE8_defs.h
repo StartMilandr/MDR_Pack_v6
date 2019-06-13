@@ -427,6 +427,32 @@ typedef struct {                                /*!< (@ 0x40000000) MDR_RST_CLOC
 } MDR_RST_CLOCK_Type;                           /*!< Size = 464 (0x1d0)                                                        */
 
 
+typedef struct {
+  union {
+    __IOM uint32_t        HSE_CLK;                    /*!< (@ 0x00000050) Clock Contorl Register                                     */    
+    MDR_RST_HSE_CLK_Bits  HSE_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     HSE_CHKR; 
+  union {
+    __IOM uint32_t        HSE_STAT;                   /*!< (@ 0x00000060) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits HSE_STAT_b;
+  } ;  
+} MDR_RST_HSE_Type;
+
+
+typedef struct {
+  union {
+    __IOM uint32_t        PLL_CLK;                    /*!< (@ 0x00000078) PLL0 Control                                               */
+    MDR_RST_PLL_CLK_Bits  PLL_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     PLL_CHKR;
+  union {
+    __IOM uint32_t        PLL_STAT;                   /*!< (@ 0x00000088) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits PLL_STAT_b;
+  } ; 
+} MDR_RST_PLL_Type;
+
+
 /* =========================================  End of section using anonymous unions  ========================================= */
 #if defined (__CC_ARM)
   #pragma pop

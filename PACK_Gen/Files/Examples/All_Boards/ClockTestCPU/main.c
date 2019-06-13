@@ -48,13 +48,14 @@ typedef enum {
 
 #define CLK_SRC_COUNT  11
 #ifndef LCD_IS_7SEG_DISPLAY 
-  static char* srcNames[CLK_SRC_COUNT] = {"LSE", "LSI", "HSIc3", "HSI", "HSI/2", "HSE", "HSE/2", "PLL_HSI", "P_HSI/2", "PLL_HSE", "P_HSE/2"};
+  static char* srcNames[CLK_SRC_COUNT] = {"LSE", "LSI", "HSIdir", "HSI", "HSI/2", "HSE", "HSE/2", "PLL_HSI", "P_HSI/2", "PLL_HSE", "P_HSE/2"};
             // Indexes for 7SEG_DISPLAY:    0      1       2       3      4        5       6         7           8         9          10
 #endif
 
  
 #define CLK_DIV_COUNT  9
-static MDR_CLK_DIV_256 clkDivs[CLK_DIV_COUNT] = {MDR_CLK_div1, MDR_CLK_div2, MDR_CLK_div4, MDR_CLK_div8, MDR_CLK_div16, MDR_CLK_div32, MDR_CLK_div64, MDR_CLK_div128, MDR_CLK_div256};
+static MDR_Div256P   clkDivs[CLK_DIV_COUNT] = {MDR_Div256P_div1, MDR_Div256P_div2, MDR_Div256P_div4, MDR_Div256P_div8, MDR_Div256P_div16, 
+                                               MDR_Div256P_div32, MDR_Div256P_div64, MDR_Div256P_div128, MDR_Div256P_div256};
 
 #ifndef LCD_IS_7SEG_DISPLAY 
   static char* divNames[CLK_DIV_COUNT] = {"1", "2", "4", "8", "16", "32", "64", "128", "256"};
@@ -72,19 +73,22 @@ static MDR_MUL_x16      activeMulPLL    = MDR_x1;
 //  Прототипы функций
 void SysTick_Handler(void);
 
+MDR_CPU_SetClockResult TempTo_HSI_Dir(void);
 void ChangeClockCPU(CPU_ClockSource clockSrc, uint32_t divInd, MDR_MUL_x16 mulPLL);
 
 void LCD_ShowResult(uint32_t cpuFreqHz);
-void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x16 mulPLL);
+void LCD_ShowError(CPU_ClockSource clockSrc, MDR_Div256P divMuxC3, MDR_MUL_x16 mulPLL);
 
 
 //  Программа
 int main(void)
 { 
-  //MDR_DebugerProtectDelay();
+#if 1  
+  MDR_DebugerProtectDelay();
+#endif
    
   //  Сброс блока, тактирование от HSI
-  MDR_RST_ResetBlock_def();
+  MDR_CLK_ResetBlock_def(true);
 
   // Инициализация экрана для вывода статуса
   MDRB_LCD_Init(HSI_FREQ_HZ);
@@ -99,6 +103,7 @@ int main(void)
   MDRB_LED_Set(LED_TIMER, false);
   
   //  Стартовая настройка
+  MDR_CLK_Enable_RST_BPK();
   ChangeClockCPU(activeClockSrc, activeDivInd, activeMulPLL);  
      
   while (1)
@@ -146,13 +151,22 @@ void SysTick_Handler(void)
   }
 }
 
+MDR_CPU_SetClockResult TempTo_HSI_Dir(void)
+{
+  MDR_CPU_CfgHSI_Dir cfgHSI = MDR_CPU_CFG_HSI_DEF_DIR;
+  bool fromLowerFreq = HSI_FREQ_HZ > MDR_CPU_GetFreqHz(false);
+      
+  return MDR_CPU_SetClock_HSI_Dir(&cfgHSI, HSI_TIMEOUT, fromLowerFreq);
+}
+
 void ChangeClockCPU(CPU_ClockSource clockSrc, uint32_t divInd, MDR_MUL_x16 mulPLL)
 {
-  bool result = false;
+  MDR_CPU_SetClockResult result = MDR_SET_CLOCK_ERR__Undef;
   uint32_t cpuFreqHz;
-  MDR_RST_EEPROM_Delay delayEEPROM;
-  MDR_RST_BKP_LowRI    lowRI;
-  MDR_CLK_DIV_256 divMuxC3 = clkDivs[divInd];
+  MDR_CLK_Delay_EEPROM delayEEPROM;
+  MDR_CLK_LDO_LowSRI   lowRI;
+  MDR_Div256P divMuxC3 = clkDivs[divInd];
+    
   
   //  Stop LED and SysTimer
   MDR_SysTimerStop();
@@ -163,70 +177,122 @@ void ChangeClockCPU(CPU_ClockSource clockSrc, uint32_t divInd, MDR_MUL_x16 mulPL
   {
     // LSE
     case clkLSE:
-      result = MDR_CPU_SetClock_LSE_def(BY_PASS_OFF);
+      result = MDR_CPU_SetClock_LSE_Res_def();
       break;
     // LSI
     case clkLSI:
       result = MDR_CPU_SetClock_LSI_def();
       break;    
     // HSI
-    case clkHSI_dir:
-      result = MDR_CPU_SetClock_HSI_def();
-      break;
-    case clkHSI:
-      result = MDR_CPU_SetClock_HSI_C1(divMuxC3, HSI_TIMEOUT, HSI_FREQ_TRIM);
-      break;
-    case clkHSIdiv2:
-      result = MDR_CPU_SetClock_HSI_div2(divMuxC3, HSI_TIMEOUT, HSI_FREQ_TRIM);
-      break;
+    case clkHSI_dir: {
+      result = TempTo_HSI_Dir();
+      break; }
+    case clkHSI: {     
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
+      //  Переход на готовую частоту
+      MDR_CPU_CfgHSI cfgHSI = MDR_CPU_CFG_HSI_DEF;
+      cfgHSI.divC3 = divMuxC3;      
+      result = MDR_CPU_SetClock_HSI(&cfgHSI, HSI_TIMEOUT, true);
+      break; }
+    case clkHSIdiv2: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
+      //  Переход на готовую частоту      
+      MDR_CPU_CfgHSI cfgHSI = MDR_CPU_CFG_HSI_DEF;
+      cfgHSI.divC3 = divMuxC3;      
+      result = MDR_CPU_SetClock_HSI_div2(&cfgHSI, HSI_TIMEOUT, false);
+      break; }
     // HSE
-    case clkHSE:
-      result = MDR_CPU_SetClock_HSE(BY_PASS_OFF, MDR_LOWRI_le10MHz, divMuxC3, HSE_TIMEOUT);
-      break;
-    case clkHSEdiv2:
-      result = MDR_CPU_SetClock_HSE_div2(BY_PASS_OFF, divMuxC3, HSE_TIMEOUT);
-      break;
+    case clkHSE: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
+      //  Переход на готовую частоту      
+      MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_RES_DEF;
+      cfgHSE.divC3 = divMuxC3;
+      bool fromLowerFreq = HSE_FREQ_HZ > MDR_CPU_GetFreqHz(false);
+      
+      result = MDR_CPU_SetClock_HSE(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+      break; }
+    case clkHSEdiv2: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
+      //  Переход на готовую частоту      
+      MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_RES_DEF;
+      cfgHSE.divC3 = divMuxC3;
+      bool fromLowerFreq = (HSE_FREQ_HZ >> 1) > MDR_CPU_GetFreqHz(false);
+      
+      result = MDR_CPU_SetClock_HSE_div2(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+      break; }
     // PLL - HSI
-    case clkPLL_HSI:
+    case clkPLL_HSI: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+           
       //  Рассчет новой частоты и параметров под нее
       cpuFreqHz   = (HSI_FREQ_HZ * (mulPLL + 1)) >> divInd;
       delayEEPROM = MDR_FreqCPU_ToDelayEEPROM(cpuFreqHz);
-      lowRI       = MDR_FreqCPU_ToLowRI(cpuFreqHz);
-    
+      lowRI       = MDR_FreqCPU_ToLowSRI(cpuFreqHz);
+      bool fromLowerFreq = cpuFreqHz > MDR_CPU_GetFreqHz(false);
+      
       // Переключение на новую частоту
-      result = MDR_CPU_SetClock_HSI_PLL(mulPLL, lowRI, delayEEPROM, divMuxC3, HSI_TIMEOUT, HSI_FREQ_TRIM);
-      break;
-    case clkPLL_HSIdiv2:
+      MDR_CPU_PLL_CfgHSI cfgPLL_HSI = MDR_CPU_CFG_PLL_HSI_DEF(mulPLL, delayEEPROM, lowRI);    
+      cfgPLL_HSI.divC3 = divMuxC3;
+      result = MDR_CPU_SetClock_HSI_PLL(&cfgPLL_HSI, fromLowerFreq);
+      break; }
+    case clkPLL_HSIdiv2: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+            
       //  Рассчет новой частоты и параметров под нее
       cpuFreqHz   = (HSI_FREQ_HZ * (mulPLL + 1)) >> divInd;
       delayEEPROM = MDR_FreqCPU_ToDelayEEPROM(cpuFreqHz);
-      lowRI       = MDR_FreqCPU_ToLowRI(cpuFreqHz);
+      lowRI       = MDR_FreqCPU_ToLowSRI(cpuFreqHz);
+      bool fromLowerFreq = cpuFreqHz > MDR_CPU_GetFreqHz(false);
     
       // Переключение на новую частоту
-      result = MDR_CPU_SetClock_HSI_div2_PLL(mulPLL, lowRI, delayEEPROM, divMuxC3, HSI_TIMEOUT, HSI_FREQ_TRIM);
-      break;
+      MDR_CPU_PLL_CfgHSI cfgPLL_HSI = MDR_CPU_CFG_PLL_HSI_DEF(mulPLL, delayEEPROM, lowRI);    
+      cfgPLL_HSI.divC3 = divMuxC3;
+      result = MDR_CPU_SetClock_HSI_div2_PLL(&cfgPLL_HSI, fromLowerFreq);
+      break; }
     // PLL - HSE
-    case clkPLL_HSE:
+    case clkPLL_HSE: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
       //  Рассчет новой частоты и параметров под нее
       cpuFreqHz   = (HSI_FREQ_HZ * (mulPLL + 1)) >> divInd;
       delayEEPROM = MDR_FreqCPU_ToDelayEEPROM(cpuFreqHz);
-      lowRI       = MDR_FreqCPU_ToLowRI(cpuFreqHz);
+      lowRI       = MDR_FreqCPU_ToLowSRI(cpuFreqHz);
+      bool fromLowerFreq = cpuFreqHz > MDR_CPU_GetFreqHz(false);
     
       // Переключение на новую частоту    
-      result = MDR_CPU_SetClock_HSE_PLL(BY_PASS_OFF, mulPLL, lowRI, delayEEPROM, divMuxC3, HSE_TIMEOUT);
-      break;
-    case clkPLL_HSEdiv2:
+      MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDR_CPU_CFG_PLL_HSE_RES_DEF(mulPLL, delayEEPROM, lowRI);
+      cfgPLL_HSE.divC3 = divMuxC3;
+      result = MDR_CPU_SetClock_HSE_PLL(&cfgPLL_HSE, fromLowerFreq);
+      break; }
+    case clkPLL_HSEdiv2: {
+      //  Временный переход на HSI_Dir, чтобы переключать тракт CPU_C3
+      TempTo_HSI_Dir();
+      
       //  Рассчет новой частоты и параметров под нее
       cpuFreqHz   = (HSI_FREQ_HZ * (mulPLL + 1)) >> divInd;
       delayEEPROM = MDR_FreqCPU_ToDelayEEPROM(cpuFreqHz);
-      lowRI       = MDR_FreqCPU_ToLowRI(cpuFreqHz);
+      lowRI       = MDR_FreqCPU_ToLowSRI(cpuFreqHz);
+      bool fromLowerFreq = cpuFreqHz > MDR_CPU_GetFreqHz(false);
     
       // Переключение на новую частоту    
-      result = MDR_CPU_SetClock_HSE_div2_PLL(BY_PASS_OFF, mulPLL, lowRI, delayEEPROM, divMuxC3, HSE_TIMEOUT);
-      break;
+      MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDR_CPU_CFG_PLL_HSE_RES_DEF(mulPLL, delayEEPROM, lowRI);
+      cfgPLL_HSE.divC3 = divMuxC3;
+      result = MDR_CPU_SetClock_HSE_div2_PLL(&cfgPLL_HSE, fromLowerFreq);
+      break; }
   }
   
-  if (result)
+  if (result == MDR_SET_CLOCK_OK)
   {
     activeClockSrc = clockSrc;  
     activeMulPLL   = mulPLL;
@@ -310,7 +376,7 @@ void LCD_ShowResult(uint32_t cpuFreqHz)
 #endif
 }
 
-void LCD_ShowError(CPU_ClockSource clockSrc, MDR_CLK_DIV_256 divMuxC3, MDR_MUL_x16 mulPLL)
+void LCD_ShowError(CPU_ClockSource clockSrc, MDR_Div256P divMuxC3, MDR_MUL_x16 mulPLL)
 {
   static char mess[64];
    

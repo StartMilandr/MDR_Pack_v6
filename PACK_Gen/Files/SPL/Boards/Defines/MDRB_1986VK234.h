@@ -72,7 +72,7 @@
     //#define MDRB_ADC_PIN_KEY_PROTECT2   0x01C0UL
 
 //  --------------  Jtag protection  ------------
-    #define MDRB_Jtag_ClrPinsPA    (~MDR_JTAG_A_PINS)
+    #define MDRB_Jtag_ClrPinsPA    (~MDR_SWD_A_PINS)
     
 //  --------------  Buttons Definition  ------------
     #define MDRB_BTN_PORT_KEY1      MDR_GPIO_A

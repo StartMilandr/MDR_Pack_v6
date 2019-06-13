@@ -329,16 +329,18 @@ typedef enum IRQn
 
 #define   MDR_EXIST_HSE2
 
-#define   MDR_CLK_EN_REG_PER        PER_CLOCK
-#define   MDR_CLK_EN_REG_PER_b      PER_CLOCK_b
+//----------------    RST Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_RST        PER_CLOCK
+#define   MDR_CLK_EN_BIT_RST        MDR_RST_PER__RST_CLK_EN_Msk
+
+//----------------    BKP Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_BKP        PER_CLOCK
+#define   MDR_CLK_EN_BIT_BKP        MDR_RST_PER__BKP_CLK_EN_Msk
 
 //----------------    EEPROM Definitions  --------------------
 #define   MDR_CLK_EN_REG_EEPROM     PER_CLOCK
-#define   MDR_CLK_EN_REG_EEPROM_b   PER_CLOCK_b
+#define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER__EEPROM_CLK_EN_Pos
 
-//----------------    BKP Definitions  --------------------
-#define   MDR_CLK_EN_REG_BKP        PER_CLOCK
-#define   MDR_CLK_EN_REG_BKP_b      PER_CLOCK_b
 
 //----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A  (&MDR_CLOCK->PER_CLOCK)

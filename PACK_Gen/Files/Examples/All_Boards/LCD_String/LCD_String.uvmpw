@@ -13,8 +13,6 @@
 
   <project>
     <PathAndName>.\VE1\LCD_String_VE1.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -47,6 +45,7 @@
 
   <project>
     <PathAndName>.\ESila\LCD_String_ESila.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

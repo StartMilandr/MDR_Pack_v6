@@ -201,15 +201,26 @@ typedef enum IRQn
 
 #define MDR_KEY_UNLOCK    0x8555AAA1UL
 
-/*===============  RST_Clock ===================*/
+/*===============  RST_Clock ===============*/
+#include <MDR_RST_VE8x_defs.h>
 #include <MDR_RST_VE8_defs.h>
 
-/*===============  BKP ===================*/
+/*===============  BKP =====================*/
 #include <MDR_BKP_VE8_defs.h>
-#include <MDR_RST_VE8x_defs.h>
 
-/*===============  GPIO Port ===================*/
+
+/*===============  GPIO Port ===============*/
 #include <MDR_GPIO_VE8x_defs.h>
+
+/*===============  OneTimeProgramm (OTP) memory ===============*/
+typedef enum {
+  MDR_OTP_Delay_Forbiden    = 0,
+  MDR_OTP_Delay_le_20MHz84  = 1,
+  MDR_OTP_Delay_le_41MHz66  = 2,
+  MDR_OTP_Delay_le_62MHz5   = 3,
+  MDR_OTP_Delay_le_83MHz33  = 4,
+  MDR_OTP_Delay_le_100MHz   = 5,
+} MDR_OTP_Delay;
 
 
 /*=========  SSP - Synchronous Serial Port ========*/
@@ -299,6 +310,22 @@ typedef enum IRQn
   */
 
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL2_CLK))
+#else
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL2_CLK))
+#endif
+
+
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
@@ -346,7 +373,18 @@ typedef enum IRQn
 
 //  Clock Enable bits
 
-//----------------    PORT Definitions  --------------------
+//----------------    RST Clock Definitions  --------------------
+//  Всегда тактируется!
+//#define   MDR_CLK_EN_ADDR_RST       &MDR_CLOCK->PER0_CLK
+//#define   MDR_CLK_EN_BIT_RST        ---
+
+//----------------    BKP Clock Definitions  --------------------
+//  Всегда тактируется!
+//#define   MDR_CLK_EN_ADDR_BKP       &MDR_CLOCK->PER0_CLK
+//#define   MDR_CLK_EN_BIT_BKP        --- MDR_RST_PER0_PORTA_CLK_EN_Pos
+
+
+//----------------    PORT Clock Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A    &MDR_CLOCK->PER0_CLK
 #define   MDR_CLK_EN_ADDR_PORT_B    &MDR_CLOCK->PER0_CLK
 #define   MDR_CLK_EN_ADDR_PORT_C    &MDR_CLOCK->PER0_CLK

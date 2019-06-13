@@ -36,14 +36,14 @@ extern "C" {
 
 //-------   Reg_61  ----------
 typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_LDO1_SRILow                                           */
-  MDR_BKP_LDO_SRILow_ge10MHz  = 0,  /*!< ge10MHz : Extra_I about ~400uA                                            */
-  MDR_BKP_LDO_SRILow_ge30MHz  = 1,  /*!< ge30MHz : Extra_I about ~450uA                                            */
-  MDR_BKP_LDO_SRILow_ge50MHz  = 2,  /*!< ge50MHz : Extra_I about ~550uA                                            */
+  MDR_BKP_LDO_SRILow_lt30MHz  = 0,  /*!< ge10MHz : Extra_I about ~400uA                                            */
+  MDR_BKP_LDO_SRILow_lt50MHz  = 1,  /*!< ge30MHz : Extra_I about ~450uA                                            */
+  MDR_BKP_LDO_SRILow_lt100MHz = 2,  /*!< ge50MHz : Extra_I about ~550uA                                            */
   MDR_BKP_LDO_SRILow_ge100MHz = 3,  /*!< ge100MHz : Extra_I about ~650uA                                           */
-  MDR_BKP_LDO_SRILow_ge1MHz   = 4,  /*!< ge1MHz : Extra_I about ~300uA                                             */
-  MDR_BKP_LDO_SRILow_ge500KHz = 5,  /*!< ge500KHz : Extra_I about ~200uA                                           */
-  MDR_BKP_LDO_SRILow_ge100KHz = 6,  /*!< ge100KHz : Extra_I about ~100uA                                           */
-  MDR_BKP_LDO_SRILow_ge10KHz  = 7,  /*!< ge10KHz : Extra_I about ~50uA                                             */
+  MDR_BKP_LDO_SRILow_lt10MHz  = 4,  /*!< ge1MHz : Extra_I about ~300uA                                             */
+  MDR_BKP_LDO_SRILow_lt1MHz   = 5,  /*!< ge500KHz : Extra_I about ~200uA                                           */
+  MDR_BKP_LDO_SRILow_lt500KHz = 6,  /*!< ge100KHz : Extra_I about ~100uA                                           */
+  MDR_BKP_LDO_SRILow_lt100KHz = 7,  /*!< ge10KHz : Extra_I about ~50uA                                             */
 } MDR_BKP_LDO_SRILow;
 
 typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_LDO1_Trim                                             */
@@ -111,7 +111,7 @@ typedef struct {
 #define MDR_BKP_REG61_LDO3_RDY_Msk  (0x80000000UL)            /*!< MDR_BKP REG_61_TMR0: LDO3_RDY (Bitfield-Mask: 0x01)   */
 
 
-//-------   Reg_61  ----------
+//-------   Reg_62  ----------
 typedef struct {
       __IOM MDR_BKP_LDO_SRILow    LDO_BUcc_SRILow : 3;       /*!< [2..0] LDO Power adjustment                      */
       __IOM MDR_BKP_LDO_Trim      LDO_BUcc_Trim   : 3;       /*!< [5..3] LDO voltage tuning                        */

@@ -330,15 +330,18 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
-#define   MDR_CLK_EN_REG_PER_b      PER_CLOCK_b
+
+//----------------    RST Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_RST        PER_CLOCK
+#define   MDR_CLK_EN_BIT_RST        MDR_RST_PER__RST_CLK_EN_Msk
+
+//----------------    BKP Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_BKP        PER_CLOCK
+#define   MDR_CLK_EN_BIT_BKP        MDR_RST_PER__BKP_CLK_EN_Msk
 
 //----------------    EEPROM Definitions  --------------------
 #define   MDR_CLK_EN_REG_EEPROM     PER_CLOCK
-#define   MDR_CLK_EN_REG_EEPROM_b   PER_CLOCK_b
-
-//----------------    BKP Definitions  --------------------
-#define   MDR_CLK_EN_REG_BKP        PER_CLOCK
-#define   MDR_CLK_EN_REG_BKP_b      PER_CLOCK_b
+#define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER__EEPROM_CLK_EN_Pos
 
 //----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A    &MDR_CLOCK->PER_CLOCK
@@ -355,15 +358,30 @@ typedef enum IRQn
 #define   MDR_CLK_EN_BIT_PORT_E     MDR_RST_PER__PORTE_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_F     MDR_RST_PER__PORTF_CLK_EN_Pos
 
+//  PB[0..4] - TDO, TMS, TCK, TDI, TRST
 #define   MDR_JTAG_A_PORT           MDR_PORTB
 #define   MDR_JTAG_A_PINS           0x0000001FUL
 #define   MDR_JTAG_A_PINS_FUNC      0x000003FFUL
 #define   MDR_JTAG_A_PINS_PD        0x001F001FUL
 
+//  PB[1,2] - TMS, TCK
+#define   MDR_SWD_A_PORT            MDR_PORTB
+#define   MDR_SWD_A_PINS            0x00000006UL
+#define   MDR_SWD_A_PINS_FUNC       0x0000003CUL
+#define   MDR_SWD_A_PINS_PD         0x00060006UL
+
+//  PD[0..4] - TMS, TCK, TRST, TDI, TDO
 #define   MDR_JTAG_B_PORT           MDR_PORTD
 #define   MDR_JTAG_B_PINS           0x0000001FUL
 #define   MDR_JTAG_B_PINS_FUNC      0x000003FFUL
 #define   MDR_JTAG_B_PINS_PD        0x001F001FUL
+
+//  PD[0,1] - TMS, TCK
+#define   MDR_SWD_B_PORT            MDR_PORTD
+#define   MDR_SWD_B_PINS            0x0000003FUL
+#define   MDR_SWD_B_PINS_FUNC       0x0000000FUL
+#define   MDR_SWD_B_PINS_PD         0x00030003UL
+
 
 //----------------    ADC Definitions  --------------------
 #define   MDR_ADC_IN_PORTD

@@ -49,8 +49,8 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1986VE4/MDR_1986VE4.h" define="USE_MDR1986VE4"/>
           <debug      svd="Keil/SVD/MDR1986VE4.svd"/>
-          <memory     id="IROM1"                          start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
+          <memory     name="IROM1"  access="rx"  start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
+          <memory     name="IRAM1"  access="rwx" start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VE4_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/1986VE4Y.pdf" title="1986VE4 Reference Manual"/-->
 
@@ -112,8 +112,8 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1986VK214/MDR_1986VK214.h" define="USE_MDR1986VK214"/>
           <debug      svd="Keil/SVD/MDR1986VK214.svd"/>
-          <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
+          <memory     name="IROM1"  access="rx"  start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
+          <memory     name="IRAM1"  access="rwx" start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK214.pdf" title="1986VE4 Reference Manual"/-->
 
@@ -173,8 +173,8 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1986VK234/MDR_1986VK234.h" define="USE_MDR1986VK234"/>
           <debug      svd="Keil/SVD/MDR1986VK234.svd"/>
-          <memory     id="IROM1"                          start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
+          <memory     name="IROM1"  access="rx"  start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
+          <memory     name="IRAM1"  access="rwx" start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
 
@@ -234,8 +234,8 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1923VK014/MDR_1923VK014.h" define="USE_MDR1923VK014"/>
           <!--debug      svd="Keil/SVD/MDR1923VK014.svd"/-->
-          <memory     id="IROM1"                          start="0x00000000"  size="0x8000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
+          <memory     name="IROM1" access="rwx" start="0x00000000"  size="0x8000"    startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
           <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
 
@@ -295,9 +295,9 @@
       <subFamily DsubFamily="Cortex-M1">
         <!--Core description-->
         <processor Dcore="Cortex-M1" DcoreVersion="r0p0" Dfpu="0" Dmpu="0" Dendian="Little-endian" Dclock="144000000"/>
-        <memory     id="IROM1"                          start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
-        <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
-        <memory     id="IRAM2"                          start="0x20100000"  size="0x4000"     init   ="0"   default="1"/>
+        <memory     name="IROM1" access="rx"  start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
+        <memory     name="IRAM1" access="rw"  start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
+        <memory     name="IRAM2" access="rwx" start="0x20100000"  size="0x4000"     init   ="0"   default="1"/>
         <algorithm  name="Keil/FLM/MDR1986VE1_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20100000" RAMsize="0x4000" default="1"/>
 
         <!-- MDR1986VE1 -->
@@ -417,11 +417,9 @@
         <!--Core description-->
         <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="80000000"/>
         <debug      svd="Keil/SVD/MDR1986VE9x.svd"/>
-        <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
-        <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
+        <memory     name="IROM1" access="rx"  start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
+        <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
         <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
-        <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
-
         <!-- MDR1986VE91 -->
         <device Dname="MDR1986VE91">
           <compile    header="SPL/Devices/MDR1986VE9x/MDR_1986VE9x.h" define="USE_MDR1986VE91"/>
@@ -638,11 +636,9 @@
           <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="100000000"/>
           <compile    header="SPL/Devices/MDR1901VC1/MDR_1901VC1.h" define="USE_MDR1901VC1"/>          
           <debug      svd="Keil/SVD/MDR1901VC1.svd"/>
-          <memory     id="IROM1"                          start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
+          <memory     name="IROM1" access="rx"  start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VE9x_EEPROM.FLM" start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
-          <!--book       name="doc/1986VE9x.pdf" title="1986VE9x Reference Manual"/-->
-
           <description>
             (11901VC1 RUS)
             Core:
@@ -705,8 +701,8 @@
           <processor  Dcore="Cortex-M4" DcoreVersion="r0p0" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
           <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE8.h" define="USE_MDR1986VE8"/>
           <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
-          <memory     id="IROM1"                          start="0x20006000"  size="0x2000"    startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x6000"    init   ="1"   default="1"/>
+          <memory     name="IROM1" access="rx"  start="0x20006000"  size="0x2000"    startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x6000"    init   ="1"   default="1"/>
           <!--algorithm  name="Flash\"           start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/-->
           <description>
             (1986BE8 RUS)
@@ -758,8 +754,8 @@
           <processor  Dcore="Cortex-M4" DcoreVersion="r0p0" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="160000000"/>
           <compile    header="SPL/Devices/MDR_ESila/MDR_ESila.h" define="USE_ESila"/>
           <debug      svd="Keil/SVD/MDR_ESila.svd"/>
-          <memory     id="IROM1"                          start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
-          <memory     id="IRAM1"                          start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
+          <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MLDR124_LOCK.FLM" start="0x01000000"  size="0x100000" RAMstart="0x20000000" RAMsize="0xF000" default="1"/>
           <description>
                 (ESila RUS)
@@ -895,17 +891,6 @@
       <accept Dname="MDR1986VE93"/>
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
-    </condition>
-    <condition id="CON_BRD_LCD">
-      <description>All 32-bit Cortex devices</description>
-      <accept Dname="MDR1986VE1"/>
-      <accept Dname="MDR1986VE3"/>
-      <accept Dname="MDR1986VE91"/>
-      <accept Dname="MDR1986VE92"/>
-      <accept Dname="MDR1986VE93"/>
-      <accept Dname="MDR1986VE94"/>
-      <accept Dname="MDR1901VC1"/>
-      <accept Dname="MDR_ESila"/>
     </condition>
     <condition id="CON_MDR_CM0">
       <description>All 32-bit Cortex devices</description>
@@ -1312,7 +1297,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_BRD_LCD">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM1CM3">
       <description>Display MT 12864x control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>

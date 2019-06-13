@@ -302,18 +302,18 @@ typedef enum IRQn
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
-#define   MDR_CLK_EN_REG_PER              PER2_CLOCK
-#define   MDR_CLK_EN_REG_PER_b            PER2_CLOCK_b
+
+//----------------    RST Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_RST        PER2_CLOCK
+#define   MDR_CLK_EN_BIT_RST        MDR_RST_PER2__RST_CLK_EN_Msk
+
+//----------------    BKP Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_BKP        PER2_CLOCK
+#define   MDR_CLK_EN_BIT_BKP        MDR_RST_PER2__BKP_CLK_EN_Pos
 
 //----------------    EEPROM Definitions  --------------------
-#define   MDR_CLK_EN_REG_EEPROM           PER2_CLOCK
-#define   MDR_CLK_EN_REG_EEPROM_b         PER2_CLOCK_b
-#define   MDR_RST_PER__EEPROM_CLK_EN_Pos  MDR_RST_PER2__EEPROM_CLK_EN_Pos
-
-//----------------    BKP Definitions  --------------------
-#define   MDR_CLK_EN_REG_BKP              PER2_CLOCK
-#define   MDR_CLK_EN_REG_BKP_b            PER2_CLOCK_b
-#define   MDR_RST_PER__BKP_CLK_EN_Pos     MDR_RST_PER2__BKP_CLK_EN_Pos
+#define   MDR_CLK_EN_REG_EEPROM     PER2_CLOCK
+#define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER2__EEPROM_CLK_EN_Pos
 
 //----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A          &MDR_CLOCK->PER2_CLOCK
@@ -324,10 +324,11 @@ typedef enum IRQn
 #define   MDR_CLK_EN_BIT_PORT_B           MDR_RST_PER2__PORTB_CLK_EN_Pos
 #define   MDR_CLK_EN_BIT_PORT_C           MDR_RST_PER2__PORTC_CLK_EN_Pos
 
-#define   MDR_JTAG_A_PORT                 MDR_PORTA
-#define   MDR_JTAG_A_PINS                 0x000000C0UL
-#define   MDR_JTAG_A_PINS_FUNC            0x0000F000UL
-#define   MDR_JTAG_A_PINS_PD              0x00C000C0UL
+#define   MDR_SWD_A_PORT                 MDR_PORTA
+#define   MDR_SWD_A_PINS                 0x000000C0UL
+#define   MDR_SWD_A_PINS_FUNC            0x0000F000UL
+#define   MDR_SWD_A_PINS_PD              0x00C000C0UL
+
 
 //----------------    ADC Definitions  --------------------
 #define   MDR_ADC_CLK_LIKE_VE4

@@ -46,49 +46,33 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Clock Frequency (Core Clock)
   Clock functions
  *----------------------------------------------------------------------------*/
 
-void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
+static uint32_t _clockFreqHz[] = {HSI_FREQ_HZ, 0, LSE_FREQ_HZ, LSI_FREQ_HZ,                     //  HCLK_SEL
+                                  HSI_FREQ_HZ, HSI_FREQ_HZ / 2, HSE_FREQ_HZ, HSE_FREQ_HZ / 2};  //  CPU_C1_SEL
+
+void SystemCoreClockUpdate (void)
 {
   uint32_t freq = SystemCoreClock;
-  MDR_RST_CPU_Bits regCPU_CLOCK = MDR_CLOCK->CPU_CLOCK_b;
+  uint32_t regCPU_CLOCK = MDR_CLOCK->CPU_CLOCK;
   
-  switch (regCPU_CLOCK.HCLK_SEL)
-  {    
-    case MDR_HCLK_HSI:
-      freq = HSI_FREQ_HZ;
-      break;
-    case MDR_HCLK_LSE:
-      freq = LSE_FREQ_HZ;
-      break;
-    case MDR_HCLK_LSI:
-      freq = LSI_FREQ_HZ;
-      break;
-    case MDR_HCLK_CPU_C3: 
+  uint32_t value = _FLD2VAL(MDR_RST_CPU__HCLK_SEL, regCPU_CLOCK);  
+  if (value != MDR_HCLK_CPU_C3)  
+    freq = _clockFreqHz[value];
+  else
+  {
+    value = _FLD2VAL(MDR_RST_CPU__C1_SEL, regCPU_CLOCK);      
+    freq = _clockFreqHz[value + 4];
+
+    value = _FLD2VAL(MDR_RST_CPU__C2_SEL, regCPU_CLOCK);      
+    if (value == MDR_CPU_PLL)
     {
-      switch (regCPU_CLOCK.CPU_C1_SEL)
-      {
-        case MDR_HSIE2_HSI:
-          freq = HSI_FREQ_HZ;
-          break;
-        case MDR_HSIE2_HSI_div2:
-          freq = HSI_FREQ_HZ / 2;
-          break;
-        case MDR_HSIE2_HSE:
-          freq = HSE_FREQ_HZ;
-          break;
-        case MDR_HSIE2_HSE_div2:
-          freq = HSE_FREQ_HZ / 2;
-          break;
-      }
-      
-      if (regCPU_CLOCK.CPU_C2_SEL == MDR_CPU_PLL)
-        freq *= (MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);
-      
-      break;
-    }    
+      value = _FLD2VAL(MDR_RST_PLL__CPU_MUL, MDR_CLOCK->PLL_CONTROL);      
+      freq *= (value + 1);
+    }
   }
- 
-  if (regCPU_CLOCK.CPU_C3_SEL >= MDR_CLK_div2)
-   freq = freq >> (regCPU_CLOCK.CPU_C3_SEL - MDR_CLK_div2 + 1);
+  
+  value = _FLD2VAL(MDR_RST_CPU__C3_SEL, regCPU_CLOCK); 
+  if (value >= MDR_Div256P_div2)
+   freq = freq >> (value - MDR_Div256P_div2 + 1);
   
   SystemCoreClock = freq;
 }

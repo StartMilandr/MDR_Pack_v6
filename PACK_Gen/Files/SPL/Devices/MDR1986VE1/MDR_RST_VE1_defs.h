@@ -40,7 +40,7 @@ typedef struct {
       __IM  uint32_t                     : 2;
       __IOM MDR_CLK_ADC_C2    ADC_C2_SEL : 2;            /*!< [5..4] ADC_C2 mux freq select                                    */
       __IM  uint32_t                     : 2;
-      __IOM MDR_CLK_DIV_256   ADC_C3_SEL : 4;            /*!< [11..8] ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]     */
+      __IOM MDR_Div256P   ADC_C3_SEL : 4;            /*!< [11..8] ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]     */
       __IM  uint32_t                     : 1;
       __IOM MDR_OnOff         ADC_CLK_EN : 1;            /*!< [13..13] ADC Clock Enable                                        */
       __IM  uint32_t                     : 18;
@@ -59,9 +59,9 @@ typedef struct {
 /* =======================================================  ETH_CLOCK  ======================================================= */
 typedef struct {
       __IOM uint32_t          ETH_BRG     : 8;            /*!< [7..0] Always set to 0!                                          */
-      __IOM MDR_BRG_DIV_128   MIL_BRG     : 3;            /*!< [10..8] HCLK freq divider to get MAN_CLOCK, [/1, /2, /4 .. /128] */
+      __IOM MDR_Div128P       MIL_BRG     : 3;            /*!< [10..8] HCLK freq divider to get MAN_CLOCK, [/1, /2, /4 .. /128] */
       __IM  uint32_t                      : 5;
-      __IOM MDR_BRG_DIV_128   PHY_BRG     : 3;            /*!< [18..16] HCLK freq divider to get PHY_CLOCK, [/1, /2, /4 .. /128]*/
+      __IOM MDR_Div128P       PHY_BRG     : 3;            /*!< [18..16] HCLK freq divider to get PHY_CLOCK, [/1, /2, /4 .. /128]*/
       __IM  uint32_t                      : 5;
       __IOM MDR_OnOff         ETH_CLK_EN  : 1;            /*!< [24..24] Ethernet MAC Clock Enable                               */
       __IOM MDR_OnOff         MIL_CLK_EN  : 1;            /*!< [25..25] MIL-STD CLOCK Enable                                    */

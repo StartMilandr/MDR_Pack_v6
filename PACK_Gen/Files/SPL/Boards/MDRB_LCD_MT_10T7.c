@@ -67,27 +67,27 @@ __STATIC_INLINE void LCD_SetBit_A0(void)
 static MDR_Port_ApplyMask  applyGPIO_Pins[MDR_LCD_PortCount];
 
   //  Настройки пинов, до перенастройки на использование под LCD - Captured Temp
-static MDR_GPIO_CfgRegs  _TempPins[MDR_LCD_PortCount];
+static MDR_GPIO_SetCfg  _TempPins[MDR_LCD_PortCount];
 
   
 static void LCD_InitPins(void)
 {
   uint32_t i;
-  MDR_PinDig_PermRegs pinsPermRegs;
+  MDR_PinDig_GroupPinCfg groupPinCfg;
   
   //  Обнуление настроечный масок
   for (i = 0; i < MDR_LCD_PortCount; ++i)
     MDR_Port_MaskClear(&applyGPIO_Pins[i]);
   
   //  Базовые настройки пинов
-  MDR_GPIO_InitDigPermRegs(MDR_PIN_PullPush, MDR_PIN_MAXFAST, MDR_Off, MDR_Off, &pinsPermRegs);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, MDR_PIN_MAXFAST, MDR_Off, MDR_Off, &groupPinCfg);
   
   //  Сбор настроек пинов в маски
   for (i = 0; i < MDR_LCD_PortCount; ++i)
   {
-    MDR_GPIO_MaskAdd(_LCD_Pins[i], MDR_Pin_Out, MDR_PIN_PORT, &pinsPermRegs, &applyGPIO_Pins[i]);
+    MDR_GPIO_MaskAdd(_LCD_Pins[i], MDR_Pin_Out, MDR_PIN_PORT, &groupPinCfg, &applyGPIO_Pins[i]);
     
-    MDR_GPIO_ClockOn(_LCD_Port[i]);
+    MDR_GPIO_Enable(_LCD_Port[i]);
     MDR_GPIO_MaskApply(_LCD_Port[i], &applyGPIO_Pins[i]);
   }  
 }

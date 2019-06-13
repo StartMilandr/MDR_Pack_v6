@@ -8,7 +8,7 @@ extern "C" {
 #endif
  
 /* =========================================================  CTRL1  ======================================================== */  
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff                I0En : 1;            /*!< [0..0] Channel enable                                                     */
   __IOM MDR_OnOff                V0En : 1;            /*!< [1..1] Channel enable                                                     */
   __IM  uint32_t                      : 4;

@@ -60,6 +60,7 @@ void LED_Flash(uint32_t LedSel)
 #ifndef ONLY_OneLED
   LED_SetOut(LedSel);
 #else
+  UNUSED(LedSel);
   LED_SetOut(1);
 #endif
   MDR_Delay_ms(PERIOD_MS, HSI_FREQ_HZ);

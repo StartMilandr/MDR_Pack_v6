@@ -15,7 +15,7 @@ typedef enum {
   ADCUI_ChopF_div16
 } MDR_ADCUI_ChopDiv;
   
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff                I0En : 1;            /*!< [0..0] Channel enable                                                     */
   __IOM MDR_OnOff                V0En : 1;            /*!< [1..1] Channel enable                                                     */
   __IOM MDR_OnOff                I1En : 1;            /*!< [0..0] Channel enable                                                     */

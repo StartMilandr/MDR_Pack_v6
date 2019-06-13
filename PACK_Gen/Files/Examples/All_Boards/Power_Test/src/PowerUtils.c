@@ -128,7 +128,7 @@ bool FindRange_BUcc(uint32_t delay, PWR_Range_BUcc *rangeUcc)
 //==================    Определение времени выставления уровня eventLevel ==================
 static uint32_t LoopCounter;
 static uint32_t LoopCounterResult;
-static bool     WaitForIRQ;
+static volatile bool WaitForIRQ;
 
 
 void FindLevelSetCycles_Ucc(const PWR_Range_Ucc *rangeUcc, uint32_t delay, PWR_LevelWaitCycles *levelWaitCycles)

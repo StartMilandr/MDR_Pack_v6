@@ -120,7 +120,7 @@ typedef enum {                                  /*!< MDR_BKP_REG_63_TMR1_LSI_Tri
   MDR_BKP_REG63_LSI_Trim_Max3    = 5,     /*!< Max3 : LSI Trim                                                           */
   MDR_BKP_REG63_LSI_Trim_Max2    = 6,     /*!< Max2 : LSI Trim                                                           */
   MDR_BKP_REG63_LSI_Trim_Max1    = 7,     /*!< Max1 : LSI Trim                                                           */
-  MDR_BKP_REG63_LSI_Trim_Typical = 8,     /*!< Typical : LSI Default                                                     */
+  MDR_BKP_REG63_LSI_Trim_Def     = 8,     /*!< Typical : LSI Default                                                     */
   MDR_BKP_REG63_LSI_Trim_Min1    = 9,     /*!< Min1 : LSI Trim                                                           */
   MDR_BKP_REG63_LSI_Trim_Min2    = 10,    /*!< Min2 : LSI Trim                                                           */
   MDR_BKP_REG63_LSI_Trim_Min3    = 11,    /*!< Min3 : LSI Trim                                                           */
@@ -129,6 +129,11 @@ typedef enum {                                  /*!< MDR_BKP_REG_63_TMR1_LSI_Tri
   MDR_BKP_REG63_LSI_Trim_Min6    = 14,    /*!< Min6 : LSI Trim                                                           */
   MDR_BKP_REG63_LSI_Trim_Min7    = 15,    /*!< Min7 : LSI Trim                                                           */
 } MDR_BKP_REG63_LSI_Trim;
+
+#define MDR_BKP_REG63_HSI_Trim_Min    0
+#define MDR_BKP_REG63_HSI_Trim_Def    32
+#define MDR_BKP_REG63_HSI_Trim_63     63
+
 
 typedef enum {                  /*!< MDR_BKP_REG_64_TMR0_RTC_Sel                                               */
   MDR_BKP_RTC_LSI      = 0,     /*!< LSI : LSI Clock                                                           */
@@ -149,7 +154,7 @@ typedef struct {
       __IOM MDR_OnOff               LSI_RDY    : 1;            /*!< [21..21] LSI Ready                                   */
       __IOM MDR_OnOff               HSI_On     : 1;            /*!< [22..22] HSI Enable                                  */
       __IOM MDR_OnOff               HSI_RDY    : 1;            /*!< [23..23] HSI Ready                                   */
-      __IOM uint32_t                HSI_Trim   : 6;            /*!< [29..24] HSI trim freq                               */
+      __IOM uint8_t                 HSI_Trim   : 6;            /*!< [29..24] HSI trim freq                               */
       __IOM MDR_OnOff               STANDBY    : 1;            /*!< [30..30] Go Standby mode                             */
       __IOM MDR_OnOff               RTC_RST    : 1;            /*!< [31..31] RTC Reset                                   */
 } MDR_BKP_REG63_Bits;

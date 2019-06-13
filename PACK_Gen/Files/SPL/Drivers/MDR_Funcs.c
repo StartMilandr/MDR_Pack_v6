@@ -9,7 +9,7 @@ bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)
       return true;
     timeoutCycles--;
   }
-  return false;
+  return checkFunc();
 }
 
 void MDR_WaitFlagSet(uint32_t addr, uint32_t flag)

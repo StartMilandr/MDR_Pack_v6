@@ -33,9 +33,9 @@
   #define KEY_COUNT  4
   #define KEY_MASK   0x000FUL
   static const MDR_GPIO_Port* _KEY_Ports[KEY_COUNT] = {MDRB_BTN_PORT_KEY1, MDRB_BTN_PORT_KEY2,   MDRB_BTN_PORT_KEY3, 
-                                                           MDRB_BTN_PORT_KEY4); //, MDRB_BTN_PORT_KEY_P1, MDRB_BTN_PORT_KEY_P2};
+                                                           MDRB_BTN_PORT_KEY4}; //, MDRB_BTN_PORT_KEY_P1, MDRB_BTN_PORT_KEY_P2};
   static const uint32_t       _KEY_Pins[KEY_COUNT]  = {MDRB_BTN_PIN_KEY1,  MDRB_BTN_PIN_KEY2,    MDRB_BTN_PIN_KEY3, 
-                                                           MDRB_BTN_PIN_KEY4); //,  MDRB_BTN_PIN_KEY_P1,  MDRB_BTN_PIN_KEY_P2};
+                                                           MDRB_BTN_PIN_KEY4}; //,  MDRB_BTN_PIN_KEY_P1,  MDRB_BTN_PIN_KEY_P2};
 #elif defined (MDRB_BTN_PIN_KEY3)
   // ========== 4 кнопки на плате=============
   #define KEY_COUNT  3

@@ -50,7 +50,7 @@ typedef enum {
 
 
 //  ===================== Инициализация экрана ======================
-typedef struct {
+typedef __PACKED_STRUCT {
   //  Основные настройки
   MDR_OnOff       useExternalPower;
   MDR_LCD_SelCLK  clockSource;

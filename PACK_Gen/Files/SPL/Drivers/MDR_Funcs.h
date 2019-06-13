@@ -64,17 +64,17 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 
 #define FLD_CLEAR(value, mask)     ((uint32_t)(value) & (~(mask)))
 
-static __inline uint32_t MaskClrSet(uint32_t value, uint32_t maskClr, uint32_t maskSet)
+static __inline uint32_t MDR_MaskClrSet(uint32_t value, uint32_t maskClr, uint32_t maskSet)
 {
   return (value & (~maskClr)) | maskSet;
 }
 
-static __inline uint32_t MaskClr(uint32_t value, uint32_t maskClr)
+static __inline uint32_t MDR_MaskClr(uint32_t value, uint32_t maskClr)
 {
   return (value & (~maskClr));
 }
 
-static __inline uint32_t MaskSet(uint32_t value, uint32_t maskSet)
+static __inline uint32_t MDR_MaskSet(uint32_t value, uint32_t maskSet)
 {
   return (value | maskSet);
 }

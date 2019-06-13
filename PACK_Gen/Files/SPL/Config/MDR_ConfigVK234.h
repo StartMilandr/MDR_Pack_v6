@@ -1,4 +1,4 @@
-#ifndef MDR_CONFIG_VK214_H
+﻿#ifndef MDR_CONFIG_VK214_H
 #define MDR_CONFIG_VK214_H
 
  #include <MDR_1986VK234.h>
@@ -19,23 +19,32 @@
 
 //================  Параметры источников частоты ================
 //  Internal Generators
-#define HSI_FREQ_HZ       8000000UL
-#define HSI_FREQ_TRIM     MDR_BKP_HSI_TRIM_8M0Hz
-#define HSI_TIMEOUT       0x0600UL
+#define HSI_FREQ_HZ         8000000UL
+#define HSI_FREQ_TRIM       MDR_BKP_HSI_TRIM_8M0Hz
+#define HSI_TIMEOUT         0x0600UL
+#define HSI_LOW_SRI         MDR_LOWRI_le10MHz
+#define HSI_DELAY_EEPROM    EEPROM_Delay_le18MHz
 
-#define LSI_FREQ_HZ       40000UL
-#define LSI_FREQ_TRIM     MDR_BKP_LSI_TRIM_40KHz
-#define LSI_TIMEOUT       0x0600UL
+
+#define LSI_FREQ_HZ         40000UL
+#define LSI_FREQ_TRIM       MDR_BKP_LSI_TRIM_40KHz
+#define LSI_TIMEOUT         0x0600UL
+#define LSI_LOW_SRI         MDR_LOWRI_le200KHz
+#define LSI_DELAY_EEPROM    EEPROM_Delay_le18MHz
 
 //  External Generators
-#define HSE_FREQ_HZ       8000000UL
-#define HSE_TIMEOUT       0x8000UL
+#define HSE_FREQ_HZ         8000000UL
+#define HSE_TIMEOUT         0x0600UL
+#define HSE_LOW_SRI         MDR_LOWRI_le40MHz
+#define HSE_DELAY_EEPROM    EEPROM_Delay_le36MHz
 
-#define LSE_FREQ_HZ       32768UL
-#define LSE_TIMEOUT       0x8000UL
+#define LSE_FREQ_HZ         32768UL
+#define LSE_TIMEOUT         0x0600UL
+#define LSE_LOW_SRI         MDR_LOWRI_le200KHz
+#define LSE_DELAY_EEPROM    EEPROM_Delay_le18MHz
 
 //  PLL Ready Timeout
-#define PLL_TIMEOUT_MS    100
+#define PLL_TIMEOUT         0x0600UL
 
 
 // =========================   DMA   ================================

@@ -34,6 +34,9 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
+#define MDR_CLK_READY_BY_BKP
+#define MDR_CLK_LIKE_VE8
+
 /* ==========================================================  KEY  ========================================================== */
 #define MDR_RST_CLOCK_KEY_Value_Pos       (0UL)                     /*!< MDR_RST_CLOCK KEY: Value (Bit 0)                      */
 #define MDR_RST_CLOCK_KEY_Value_Msk       (0xffffffffUL)            /*!< MDR_RST_CLOCK KEY: Value (Bitfield-Mask: 0xffffffff)  */
@@ -52,6 +55,7 @@ typedef enum {
   MAXCLK_PLL0     = 8,
   MAXCLK_PLL1     = 9,
   MAXCLK_PLL2     = 10,
+  MAXCLK_ERR      = 11,   //  Error Value - reserved
 } MDR_MAXCLK_SEL;
 
 typedef struct {
@@ -294,7 +298,6 @@ typedef struct {
 #define MDR_RST_ASYNC_CLK_CLK_EN_Msk  (0x10000UL)               /*!< MDR_RST_CLOCK ETH_CLK: CLK_EN (Bitfield-Mask: 0x01)   */
 #define MDR_RST_ASYNC_CLK_SELECT_Pos  (28UL)                    /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bit 28)                */
 #define MDR_RST_ASYNC_CLK_SELECT_Msk  (0xf0000000UL)            /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bitfield-Mask: 0x0f)   */
-
 
 
 

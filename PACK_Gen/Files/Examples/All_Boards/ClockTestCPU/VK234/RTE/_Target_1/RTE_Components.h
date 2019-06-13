@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'LED_Flasher_VK234' 
+ * Project: 'ClockTestCPU_VK234' 
  * Target:  'Target 1' 
  */
 

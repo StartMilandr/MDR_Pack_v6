@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'LED_Flasher_BE4' 
+ * Project: 'LED_Flasher_VE4' 
  * Target:  'Target 1' 
  */
 

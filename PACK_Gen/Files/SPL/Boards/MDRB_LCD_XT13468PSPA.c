@@ -9,7 +9,7 @@ static const uint32_t       _LCD_Pins[MDR_LCD_PortCount] = {MDRB_LCD_PINs, MDRB_
 //  Маски для применения настроек пинов экрана LCD
 static MDR_Port_ApplyMask  applyGPIO_Pins[MDR_LCD_PortCount];
   //  Настройки пинов, до перенастройки на использование под LCD - Captured Temp
-static MDR_GPIO_CfgRegs  _TempPins[MDR_LCD_PortCount];
+static MDR_GPIO_SetCfg  _TempPins[MDR_LCD_PortCount];
 
 static void LCD_InitPins(void)
 {
@@ -24,7 +24,7 @@ static void LCD_InitPins(void)
   {
     MDR_GPIO_MaskAddAnalog(_LCD_Pins[i], &applyGPIO_Pins[i]);
 
-    MDR_GPIO_ClockOn(_LCD_Port[i]);
+    MDR_GPIO_Enable(_LCD_Port[i]);
     MDR_GPIO_MaskApply(_LCD_Port[i], &applyGPIO_Pins[i]);
   }
 }

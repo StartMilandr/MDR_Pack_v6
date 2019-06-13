@@ -7,6 +7,7 @@ extern "C" {
 
 
 #include "MDR_Types.h"
+#include "MDR_TypesVEx.h"
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -62,7 +63,7 @@ typedef struct {
       __IOM MDR_MUL_x16 PLL_CPU_MUL : 4;           /*!< [11..8] PLL Mul, [x2 .. x16]                                              */
       __IM  uint32_t                : 4;
       __IOM MDR_OnOff   PLL_DSP_ON  : 1;           /*!< [16..16] PLL DSP Enable                                                   */
-      __IOM MDR_OnOff   PLL_DSP_PLD : 1;           /*!< [17..17] PLL DSP Restart                                                  */
+      __IOM MDR_OnOff   PLL_DSP_RLD : 1;           /*!< [17..17] PLL DSP Restart                                                  */
       __IM  uint32_t                : 2;
       __IOM MDR_MUL_x16 PLL_DSP_MUL : 4;           /*!< [23..20] PLL DSP Mul, [x2 .. x16]                                         */
       __IM  uint32_t                : 8;
@@ -74,8 +75,8 @@ typedef struct {
 #define MDR_RST_PLL__USB_PLD_Msk (0x2UL)           /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_USB_PLD (Bitfield-Mask: 0x01) */
 #define MDR_RST_PLL__CPU_ON_Pos  (2UL)             /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_ON (Bit 2)         */
 #define MDR_RST_PLL__CPU_ON_Msk  (0x4UL)           /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_ON (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL__CPU_PLD_Pos (3UL)             /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_PLD (Bit 3)        */
-#define MDR_RST_PLL__CPU_PLD_Msk (0x8UL)           /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_PLD (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL__CPU_RLD_Pos (3UL)             /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_PLD (Bit 3)        */
+#define MDR_RST_PLL__CPU_RLD_Msk (0x8UL)           /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_PLD (Bitfield-Mask: 0x01) */
 #define MDR_RST_PLL__USB_MUL_Pos (4UL)             /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_USB_MUL (Bit 4)        */
 #define MDR_RST_PLL__USB_MUL_Msk (0xf0UL)          /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_USB_MUL (Bitfield-Mask: 0x0f) */
 #define MDR_RST_PLL__CPU_MUL_Pos (8UL)             /*!< MDR_RST_CLOCK PLL_CONTROL: PLL_CPU_MUL (Bit 8)        */
@@ -106,7 +107,7 @@ typedef struct {
       __IOM MDR_CLK_SEL_HSIE2 CPU_C1_SEL : 2;            /*!< [1..0] CPU_C1 mux freq select                                    */
       __IOM MDR_CLK_SEL_CPU   CPU_C2_SEL : 1;            /*!< [2..2] CPU_C2 mux freq select                                    */
       __IM  uint32_t                     : 1;
-      __IOM MDR_CLK_DIV_256   CPU_C3_SEL : 4;            /*!< [7..4] CPU_C2 mux output freq devider, [/1, /2, /4 .. /256]      */
+      __IOM MDR_Div256P   CPU_C3_SEL : 4;            /*!< [7..4] CPU_C2 mux output freq devider, [/1, /2, /4 .. /256]      */
       __IOM MDR_CLK_SEL_HCLK  HCLK_SEL   : 2;            /*!< [9..8] Select Clock for CPU                                      */
       __IM  uint32_t                     : 22;
 } MDR_RST_CPU_Bits;
@@ -146,7 +147,7 @@ typedef struct {
       __IM  uint32_t                     : 2;
       __IOM MDR_CLK_ADC_C2    ADC_C2_SEL : 2;            /*!< [5..4] ADC_C2 mux freq select                                    */
       __IM  uint32_t                     : 2;
-      __IOM MDR_CLK_DIV_256   ADC_C3_SEL : 4;            /*!< [11..8] ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]     */
+      __IOM MDR_Div256P   ADC_C3_SEL : 4;            /*!< [11..8] ADC_C2 mux output freq devider, [/1, /2, /4 .. /256]     */
       __IM  uint32_t                     : 1;
       __IOM MDR_OnOff         ADC_CLK_EN : 1;            /*!< [13..13] ADC Clock Enable                                        */
       __IM  uint32_t                     : 2;
@@ -154,7 +155,7 @@ typedef struct {
       __IM  uint32_t                     : 2;
       __IOM MDR_CLK_AUC_C2    AUC_C2_SEL : 2;            /*!< [21..20] AUC_C2 mux input select                                 */
       __IM  uint32_t                     : 2;
-      __IOM MDR_CLK_DIV_256   AUC_C3_SEL : 4;            /*!< [27..24] AUC_C3 mux input select                                 */
+      __IOM MDR_Div256P   AUC_C3_SEL : 4;            /*!< [27..24] AUC_C3 mux input select                                 */
       __IM  uint32_t                     : 3;
       __IOM MDR_OnOff         AUC_CLK_EN : 1;            /*!< [31..31] AudioCodec Clock Enable                                 */
 } MDR_RST_ADC_Bits;
@@ -178,8 +179,8 @@ typedef struct {
 
 /* =======================================================  RTC_CLOCK  ======================================================= */
 typedef struct {
-      __IOM MDR_CLK_DIV_256  HSE_SEL    : 4;            /*!< [3..0] RTC HSE freq devider, [/1, /2, /4 .. /256]                 */
-      __IOM MDR_CLK_DIV_256  HSI_SEL    : 4;            /*!< [7..4] RTC HSI freq devider, [/1, /2, /4 .. /256]                 */
+      __IOM MDR_Div256P  HSE_SEL    : 4;            /*!< [3..0] RTC HSE freq devider, [/1, /2, /4 .. /256]                 */
+      __IOM MDR_Div256P  HSI_SEL    : 4;            /*!< [7..4] RTC HSI freq devider, [/1, /2, /4 .. /256]                 */
       __IOM MDR_OnOff        HSE_RTC_EN : 1;            /*!< [8..8] RTC HSE Clock enable                                       */
       __IOM MDR_OnOff        HSI_RTC_EN : 1;            /*!< [9..9] RTC HSI Clock enable                                       */
       __IM  uint32_t                    : 22;
@@ -298,11 +299,11 @@ typedef struct {
 
 /* =======================================================  TIM_CLOCK  ======================================================= */
 typedef struct {
-      __IOM MDR_BRG_DIV_128  TIM1_BRG   : 3;            /*!< [2..0] freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]      */
+      __IOM MDR_Div128P  TIM1_BRG   : 3;            /*!< [2..0] freq divider to get TIM1_CLOCK, [/1, /2, /4 .. /128]      */
       __IM  uint32_t                    : 5;
-      __IOM MDR_BRG_DIV_128  TIM2_BRG   : 3;            /*!< [10..8] freq divider to get TIM2_CLOCK, [/1, /2, /4 ../128]      */
+      __IOM MDR_Div128P  TIM2_BRG   : 3;            /*!< [10..8] freq divider to get TIM2_CLOCK, [/1, /2, /4 ../128]      */
       __IM  uint32_t                    : 5;
-      __IOM MDR_BRG_DIV_128  TIM3_BRG   : 3;            /*!< [18..16] freq divider to get TIM3_CLOCK, [/1, /2, /4 ../128]     */
+      __IOM MDR_Div128P  TIM3_BRG   : 3;            /*!< [18..16] freq divider to get TIM3_CLOCK, [/1, /2, /4 ../128]     */
       __IM  uint32_t                    : 5;
       __IOM MDR_OnOff       TIM1_CLK_EN : 1;            /*!< [24..24] TIM1_CLOCK enable                                       */
       __IOM MDR_OnOff       TIM2_CLK_EN : 1;            /*!< [25..25] TIM2_CLOCK enable                                       */
@@ -326,11 +327,11 @@ typedef struct {
 
 /* ======================================================  UART_CLOCK  ======================================================= */
 typedef struct {
-      __IOM MDR_BRG_DIV_128     UART1_BRG  : 3;            /*!< [2..0] HCLK freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]  */
+      __IOM MDR_Div128P     UART1_BRG  : 3;            /*!< [2..0] HCLK freq divider to get UART1_CLOCK, [/1, /2, /4 .. /128]  */
       __IM  uint32_t                       : 5;
-      __IOM MDR_BRG_DIV_128     UART2_BRG  : 3;            /*!< [10..8] HCLK freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128] */
+      __IOM MDR_Div128P     UART2_BRG  : 3;            /*!< [10..8] HCLK freq divider to get UART2_CLOCK, [/1, /2, /4 .. /128] */
       __IM  uint32_t                       : 5;
-      __IOM MDR_BRG_DIV_128     UART3_BRG  : 3;            /*!< [18..16] HCLK freq divider to get UART3_CLOCK, [/1, /2, /4 .. /128]*/
+      __IOM MDR_Div128P     UART3_BRG  : 3;            /*!< [18..16] HCLK freq divider to get UART3_CLOCK, [/1, /2, /4 .. /128]*/
       __IM  uint32_t                       : 5;
       __IOM MDR_OnOff         UART1_CLK_EN : 1;            /*!< [24..24] UART1_CLOCK enable                                     */
       __IOM MDR_OnOff         UART2_CLK_EN : 1;            /*!< [25..25] UART2_CLOCK enable                                     */
@@ -354,11 +355,11 @@ typedef struct {
 
 /* =======================================================  SSP_CLOCK  ======================================================= */
 typedef struct {
-      __IOM MDR_BRG_DIV_128  SSP1_BRG     : 3;          /*!< [2..0] HCLK freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]   */
+      __IOM MDR_Div128P  SSP1_BRG     : 3;          /*!< [2..0] HCLK freq divider to get SSP1_CLOCK, [/1, /2, /4 .. /128]   */
       __IM  uint32_t                      : 5;
-      __IOM MDR_BRG_DIV_128  SSP2_BRG     : 3;          /*!< [10..8] HCLK freq divider to get SSP2_CLOCK, [/1, /2, /4 .. /128]  */
+      __IOM MDR_Div128P  SSP2_BRG     : 3;          /*!< [10..8] HCLK freq divider to get SSP2_CLOCK, [/1, /2, /4 .. /128]  */
       __IM  uint32_t                      : 5;
-      __IOM MDR_BRG_DIV_128  SSP3_BRG     : 3;          /*!< [18..16] HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128] */
+      __IOM MDR_Div128P  SSP3_BRG     : 3;          /*!< [18..16] HCLK freq divider to get SSP3_CLOCK, [/1, /2, /4 .. /128] */
       __IM  uint32_t                      : 5;
       __IOM MDR_OnOff     SSP1_CLK_EN     : 1;         /*!< [24..24] SSP1_CLOCK Enable                                          */
       __IOM MDR_OnOff     SSP2_CLK_EN     : 1;         /*!< [25..25] SSP2_CLOCK Enable                                          */
@@ -402,7 +403,7 @@ typedef struct {
 
 /* ======================================================  SSP_CLOCK2  ======================================================= */
 typedef struct {
-      __IOM MDR_BRG_DIV_128    SSP4_BRG    : 3;           /*!< [2..0] HCLK freq divider to get SSP4_CLOCK, [/1, /2, /4 .. /128] */
+      __IOM MDR_Div128P    SSP4_BRG    : 3;           /*!< [2..0] HCLK freq divider to get SSP4_CLOCK, [/1, /2, /4 .. /128] */
       __IM  uint32_t                       : 21;
       __IOM MDR_OnOff          SSP4_CLK_EN : 1;           /*!< [24..24] SSP4 Clock Enable                                       */
       __IM uint32_t                        : 7;

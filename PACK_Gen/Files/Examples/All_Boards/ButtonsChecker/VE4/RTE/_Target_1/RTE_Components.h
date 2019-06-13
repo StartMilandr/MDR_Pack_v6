@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'ButtonsChecker_BE4' 
+ * Project: 'ButtonsChecker_VE4' 
  * Target:  'Target 1' 
  */
 

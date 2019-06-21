@@ -34,7 +34,32 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-/* =====================================================  CLOCK_STATUS  ====================================================== */
+//---------------   MAX_Clock  ---------------
+typedef enum {
+  MAXCLK_HSI      = 0,
+  MAXCLK_HSIdiv2  = 1,
+  MAXCLK_HSE0     = 2,
+  MAXCLK_HSE0div2 = 3,
+  MAXCLK_HSE1     = 4,
+  MAXCLK_HSE1div2 = 5,
+  MAXCLK_LSI      = 6,
+  MAXCLK_LSE      = 7,
+  MAXCLK_PLL0     = 8,
+  MAXCLK_PLL1     = 9,
+  MAXCLK_PLL2     = 10,
+  MAXCLK_PLL3     = 11,
+  MAXCLK_ERR      = 12,   //  Error Value - reserved
+} MDR_MAXCLK_SEL;
+
+typedef struct {
+      __IOM MDR_MAXCLK_SEL  Select : 4;            /*!< [3..0] Select MAX_CLOCK source                                            */
+      __IM  uint32_t               : 28;
+} MDR_RST_MAX_CLK_Bits;
+
+#define MDR_RST_CLOCK_MAX_CLK_Select_Pos  (0UL)                     /*!< MDR_RST_CLOCK MAX_CLK: Select (Bit 0)                 */
+#define MDR_RST_CLOCK_MAX_CLK_Select_Msk  (0xfUL)                   /*!< MDR_RST_CLOCK MAX_CLK: Select (Bitfield-Mask: 0x0f)   */
+
+
 //---------------   PER Clock  ---------------
 typedef struct {
       __IM  uint32_t            : 13;
@@ -299,40 +324,40 @@ typedef struct {
       __IOM MDR_OnOff       CLR_CHK_EVENT3 : 1;        /*!< [31..31] Clear highest freq event                                         */
 } MDR_RST_PLL_CLK_Bits;
 
-#define MDR_RST_PLL_PLL_Q_Pos         (0UL)              /*!< MDR_RST_CLOCK PLL0_CLK: PLL_Q (Bit 0)                 */
-#define MDR_RST_PLL_PLL_Q_Msk         (0xfUL)            /*!< MDR_RST_CLOCK PLL0_CLK: PLL_Q (Bitfield-Mask: 0x0f)   */
-#define MDR_RST_PLL_DV_Pos            (4UL)              /*!< MDR_RST_CLOCK PLL0_CLK: DV (Bit 4)                    */
-#define MDR_RST_PLL_DV_Msk            (0x10UL)           /*!< MDR_RST_CLOCK PLL0_CLK: DV (Bitfield-Mask: 0x01)      */
-#define MDR_RST_PLL_PLL_N_Pos         (8UL)              /*!< MDR_RST_CLOCK PLL0_CLK: PLL_N (Bit 8)                 */
-#define MDR_RST_PLL_PLL_N_Msk         (0x7f00UL)         /*!< MDR_RST_CLOCK PLL0_CLK: PLL_N (Bitfield-Mask: 0x7f)   */
-#define MDR_RST_PLL_EN_CHK_EVENT0_Pos (16UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT0 (Bit 16)        */
-#define MDR_RST_PLL_EN_CHK_EVENT0_Msk (0x10000UL)        /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT0 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_EN_CHK_EVENT1_Pos (17UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT1 (Bit 17)        */
-#define MDR_RST_PLL_EN_CHK_EVENT1_Msk (0x20000UL)        /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT1 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_EN_CHK_EVENT2_Pos (18UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT2 (Bit 18)        */
-#define MDR_RST_PLL_EN_CHK_EVENT2_Msk (0x40000UL)        /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT2 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_EN_CHK_EVENT3_Pos (19UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT3 (Bit 19)        */
-#define MDR_RST_PLL_EN_CHK_EVENT3_Msk (0x80000UL)        /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT3 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_EN_CHK_Pos        (20UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK (Bit 20)               */
-#define MDR_RST_PLL_EN_CHK_Msk        (0x100000UL)       /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK (Bitfield-Mask: 0x01)  */
-#define MDR_RST_PLL_CLR_CHK_SHIFT_REG0_Pos (21UL)        /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG0 (Bit 21)   */
-#define MDR_RST_PLL_CLR_CHK_SHIFT_REG0_Msk (0x200000UL)  /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG0 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_CLR_CHK_SHIFT_REG1_Pos (22UL)        /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG1 (Bit 22)   */
-#define MDR_RST_PLL_CLR_CHK_SHIFT_REG1_Msk (0x400000UL)  /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG1 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_CLR_CHK_EVENT0_Pos (23UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT0 (Bit 23)       */
-#define MDR_RST_PLL_CLR_CHK_EVENT0_Msk (0x800000UL)      /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT0 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_CLR_CHK_EVENT1_Pos (24UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT1 (Bit 24)       */
-#define MDR_RST_PLL_CLR_CHK_EVENT1_Msk (0x1000000UL)     /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT1 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_CLR_CHK_EVENT2_Pos (25UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT2 (Bit 25)       */
-#define MDR_RST_PLL_CLR_CHK_EVENT2_Msk (0x2000000UL)     /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT2 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_CLR_CHK_EVENT3_Pos (26UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bit 26)       */
-#define MDR_RST_PLL_CLR_CHK_EVENT3_Msk (0x4000000UL)     /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_PLL_ON_Pos        (27UL)             /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ON (Bit 27)               */
-#define MDR_RST_PLL_PLL_ON_Msk        (0x8000000UL)      /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ON (Bitfield-Mask: 0x01)  */
-#define MDR_RST_PLL_PLL_RLD_Pos       (28UL)             /*!< MDR_RST_CLOCK PLL0_CLK: PLL_RLD (Bit 28)              */
-#define MDR_RST_PLL_PLL_RLD_Msk       (0x10000000UL)     /*!< MDR_RST_CLOCK PLL0_CLK: PLL_RLD (Bitfield-Mask: 0x01) */
-#define MDR_RST_PLL_SELECT_Pos        (29UL)             /*!< MDR_RST_CLOCK PLL0_CLK: SELECT (Bit 29)               */
-#define MDR_RST_PLL_SELECT_Msk        (0xe0000000UL)     /*!< MDR_RST_CLOCK PLL0_CLK: SELECT (Bitfield-Mask: 0x07)  */
+#define MDR_RST_PLL_PLL_Q_Pos  (0UL)                     /*!< MDR_RST_CLOCK PLL0_CLK: PLL_Q (Bit 0)                 */
+#define MDR_RST_PLL_PLL_Q_Msk  (0x1fUL)                  /*!< MDR_RST_CLOCK PLL0_CLK: PLL_Q (Bitfield-Mask: 0x1f)   */
+#define MDR_RST_PLL_PLL_N_Pos  (5UL)                     /*!< MDR_RST_CLOCK PLL0_CLK: PLL_N (Bit 5)                 */
+#define MDR_RST_PLL_PLL_N_Msk  (0x3fe0UL)                /*!< MDR_RST_CLOCK PLL0_CLK: PLL_N (Bitfield-Mask: 0x1ff)  */
+#define MDR_RST_PLL_DV_Pos     (14UL)                    /*!< MDR_RST_CLOCK PLL0_CLK: DV (Bit 14)                   */
+#define MDR_RST_PLL_DV_Msk     (0xc000UL)                /*!< MDR_RST_CLOCK PLL0_CLK: DV (Bitfield-Mask: 0x03)      */
+#define MDR_RST_PLL_PLL_ReadyMode_Pos (16UL)             /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ReadyMode (Bit 16)        */
+#define MDR_RST_PLL_PLL_ReadyMode_Msk (0x10000UL)        /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ReadyMode (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_PLL_ON_Pos (17UL)                    /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ON (Bit 17)               */
+#define MDR_RST_PLL_PLL_ON_Msk (0x20000UL)               /*!< MDR_RST_CLOCK PLL0_CLK: PLL_ON (Bitfield-Mask: 0x01)  */
+#define MDR_RST_PLL_SELECT_Pos (18UL)                    /*!< MDR_RST_CLOCK PLL0_CLK: SELECT (Bit 18)               */
+#define MDR_RST_PLL_SELECT_Msk (0x1c0000UL)              /*!< MDR_RST_CLOCK PLL0_CLK: SELECT (Bitfield-Mask: 0x07)  */
+#define MDR_RST_PLL_EN_CHK_EVENT0_Pos (21UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT0 (Bit 21)        */
+#define MDR_RST_PLL_EN_CHK_EVENT0_Msk (0x200000UL)       /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT0 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_EN_CHK_EVENT1_Pos (22UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT1 (Bit 22)        */
+#define MDR_RST_PLL_EN_CHK_EVENT1_Msk (0x400000UL)       /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT1 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_EN_CHK_EVENT2_Pos (23UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT2 (Bit 23)        */
+#define MDR_RST_PLL_EN_CHK_EVENT2_Msk (0x800000UL)       /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT2 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_EN_CHK_EVENT3_Pos (24UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT3 (Bit 24)        */
+#define MDR_RST_PLL_EN_CHK_EVENT3_Msk (0x1000000UL)      /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK_EVENT3 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_EN_CHK_Pos (25UL)                    /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK (Bit 25)               */
+#define MDR_RST_PLL_EN_CHK_Msk (0x2000000UL)             /*!< MDR_RST_CLOCK PLL0_CLK: EN_CHK (Bitfield-Mask: 0x01)  */
+#define MDR_RST_PLL_CLR_CHK_SHIFT_REG0_Pos (26UL)        /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG0 (Bit 26)   */
+#define MDR_RST_PLL_CLR_CHK_SHIFT_REG0_Msk (0x4000000UL) /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG0 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_CLR_CHK_SHIFT_REG1_Pos (27UL)        /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG1 (Bit 27)   */
+#define MDR_RST_PLL_CLR_CHK_SHIFT_REG1_Msk (0x8000000UL) /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_SHIFT_REG1 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_CLR_CHK_EVENT0_Pos (28UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT0 (Bit 28)       */
+#define MDR_RST_PLL_CLR_CHK_EVENT0_Msk (0x10000000UL)    /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT0 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_CLR_CHK_EVENT1_Pos (29UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT1 (Bit 29)       */
+#define MDR_RST_PLL_CLR_CHK_EVENT1_Msk (0x20000000UL)    /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT1 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_CLR_CHK_EVENT2_Pos (30UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT2 (Bit 30)       */
+#define MDR_RST_PLL_CLR_CHK_EVENT2_Msk (0x40000000UL)    /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT2 (Bitfield-Mask: 0x01) */
+#define MDR_RST_PLL_CLR_CHK_EVENT3_Pos (31UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bit 31)       */
+#define MDR_RST_PLL_CLR_CHK_EVENT3_Msk (0x80000000UL)    /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bitfield-Mask: 0x01) */
 
 
 /* =========================================================================================================================== */
@@ -594,7 +619,30 @@ typedef struct {                                /*!< (@ 0x40000000) MDR_RST_CLOC
 } MDR_RST_CLOCK_Type;                           /*!< Size = 464 (0x1d0)                                                        */
 
 
+typedef struct {
+  union {
+    __IOM uint32_t        HSE_CLK;                    /*!< (@ 0x00000050) Clock Contorl Register                                     */    
+    MDR_RST_HSE_CLK_Bits  HSE_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     HSE_CHKR; 
+  union {
+    __IOM uint32_t        HSE_STAT;                   /*!< (@ 0x00000060) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits HSE_STAT_b;
+  } ;  
+} MDR_RST_HSE_Type;
 
+
+typedef struct {
+  union {
+    __IOM uint32_t        PLL_CLK;                    /*!< (@ 0x00000078) PLL0 Control                                               */
+    MDR_RST_PLL_CLK_Bits  PLL_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     PLL_CHKR;
+  union {
+    __IOM uint32_t        PLL_STAT;                   /*!< (@ 0x00000088) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits PLL_STAT_b;
+  } ; 
+} MDR_RST_PLL_Type;
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

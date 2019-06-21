@@ -14,7 +14,7 @@ uint32_t MDR_CPU_GetFreqHz(bool doUpdate)
 //  Сброс блока тактирования RST_CLOCK в начальное состояние
 bool MDR_CLK_ResetBlock(const MDR_CPU_CfgHSI_Dir *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq)
 {
-  if (!(MDR_CPU_SetClock_HSI_Dir(cfgHSI, timeoutCycles, fromLowerFreq)))
+  if ((MDR_CPU_SetClock_HSI_Dir(cfgHSI, timeoutCycles, fromLowerFreq)) != MDR_SET_CLOCK_OK)
     return false;
 
   // PER_CLOCK
@@ -188,19 +188,19 @@ MDR_CPU_SetClockResult MDR_CPU_SetClock_LSI(const MDR_CPU_CfgLSI *cfgLSI, uint32
 
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(MDR_CLOCK->CPU_CLOCK, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_LSI, MDR_RST_CPU__HCLK_SEL_Pos));
 
-  MDR_CLK_SetFreqSupport(&cfgLSI->freqSupp);
+  MDR_CPU_ApplyFreqSupport(&cfgLSI->freqSupp);
   return MDR_SET_CLOCK_OK;  
 }
 
 //-------------------  Тактирование от LSE  ---------------------
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE(MDR_CLK_Source freqSource, const MDR_CPU_CfgLSE *cfgLSE, uint32_t timeoutCycles)
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE(const MDR_CPU_CfgLSE *cfgLSE, uint32_t timeoutCycles)
 {
-  if (!MDR_LSE_EnableAndWaitReady(freqSource, timeoutCycles))
+  if (!MDR_LSE_EnableAndWaitReady(cfgLSE->freqSource, timeoutCycles))
     return MDR_SET_CLOCK_ERR__GEN_NotReady;
   
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(MDR_CLOCK->CPU_CLOCK, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_LSE, MDR_RST_CPU__HCLK_SEL_Pos));
   
-  MDR_CLK_SetFreqSupport(cfgLSE);
+  MDR_CPU_ApplyFreqSupport(&cfgLSE->freqSupp);
   return MDR_SET_CLOCK_OK;
 }
 
@@ -212,16 +212,16 @@ MDR_CPU_SetClockResult MDR_CPU_SetClock_HSI_Dir(const MDR_CPU_CfgHSI_Dir *cfgHSI
     return MDR_SET_CLOCK_ERR__GEN_NotReady;
   
   if (fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSI_d->freqSupp);
+    MDR_CPU_ApplyFreqSupport(&cfgHSI_d->freqSupp);
   
   MDR_CLOCK->CPU_CLOCK &= ~MDR_RST_CPU__HCLK_SEL_Msk;   // because MDR_HCLK_HSI = 0,
   
   if (!fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSI_d->freqSupp);
+    MDR_CPU_ApplyFreqSupport(&cfgHSI_d->freqSupp);
   return MDR_SET_CLOCK_OK;
 }
 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSI_MuxC1(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq, MDR_OnOff C1_HSIdiv2)
+MDR_CPU_SetClockResult MDR_CPU_SetClock_HSI(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq)
 {
   //  Check if current clock is from CPU_C3
   uint32_t regValue = MDR_CLOCK->CPU_CLOCK;  
@@ -233,11 +233,11 @@ MDR_CPU_SetClockResult MDR_CPU_SetClock_HSI_MuxC1(const MDR_CPU_CfgHSI *cfgHSI, 
     return MDR_SET_CLOCK_ERR__GEN_NotReady;  
   
   if (fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSI->freqSupp);
+    MDR_CPU_ApplyFreqSupport(&cfgHSI->freqSupp);
   
   //  Prepare CPU_C1 Muxes
   regValue &= MDR_RST_CPU__HCLK_SEL_Msk;
-  regValue |=  VAL2FLD_Pos(C1_HSIdiv2  , MDR_RST_CPU__C1_SEL_Pos)
+  regValue |=  VAL2FLD_Pos(cfgHSI->selDiv2 + MDR_HSIE2_HSI, MDR_RST_CPU__C1_SEL_Pos)
              | VAL2FLD_Pos(MDR_CPU_C1  , MDR_RST_CPU__C2_SEL_Pos)
              | VAL2FLD_Pos(cfgHSI->divC3       , MDR_RST_CPU__C3_SEL_Pos);
   
@@ -245,14 +245,14 @@ MDR_CPU_SetClockResult MDR_CPU_SetClock_HSI_MuxC1(const MDR_CPU_CfgHSI *cfgHSI, 
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(regValue, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_CPU_C3, MDR_RST_CPU__HCLK_SEL_Pos));
   
   if (!fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSI->freqSupp);  
+    MDR_CPU_ApplyFreqSupport(&cfgHSI->freqSupp);  
   return MDR_SET_CLOCK_OK;
 }
 
 
 //-------------------  Тактирование от HSE  ---------------------
 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE_MuxC1(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq, MDR_OnOff C1_HSEdiv2)  
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq)  
 {
   //  Check if current clock is from CPU_C3
   uint32_t regValue = MDR_CLOCK->CPU_CLOCK;  
@@ -264,11 +264,11 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE_MuxC1(const MDR_CPU_CfgHSE *cfgHSE,
     return MDR_SET_CLOCK_ERR__GEN_NotReady;
 
   if (fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSE->freqSupp); 
+    MDR_CPU_ApplyFreqSupport(&cfgHSE->freqSupp); 
   
   //  Prepare CPU_C1 Muxes
   regValue &= MDR_RST_CPU__HCLK_SEL_Msk;
-  regValue |=  VAL2FLD_Pos(C1_HSEdiv2 + MDR_HSIE2_HSE, MDR_RST_CPU__C1_SEL_Pos)
+  regValue |=  VAL2FLD_Pos(cfgHSE->selDiv2 + MDR_HSIE2_HSE, MDR_RST_CPU__C1_SEL_Pos)
              | VAL2FLD_Pos(MDR_CPU_C1     , MDR_RST_CPU__C2_SEL_Pos)
              | VAL2FLD_Pos(cfgHSE->divC3  , MDR_RST_CPU__C3_SEL_Pos);
   
@@ -276,13 +276,13 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE_MuxC1(const MDR_CPU_CfgHSE *cfgHSE,
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(regValue, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_CPU_C3, MDR_RST_CPU__HCLK_SEL_Pos));
   
   if (!fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgHSE->freqSupp);   
+    MDR_CPU_ApplyFreqSupport(&cfgHSE->freqSupp);   
   return MDR_SET_CLOCK_OK;  
 }
 
   
 //-------------------  Тактирование от HSI через PLL  ---------------------
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSI(const MDR_CPU_PLL_CfgHSI *cfgPLL_HSI, bool fromLowerFreq, MDR_OnOff C1_HSIdiv2)
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_HSI(const MDR_CPU_PLL_CfgHSI *cfgPLL_HSI, bool fromLowerFreq)
 {
   //  Check if current clock is from CPU_C3
   uint32_t regValue = MDR_CLOCK->CPU_CLOCK;  
@@ -297,11 +297,11 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSI(const MDR_CPU_PLL_CfgHSI *cf
     return MDR_SET_CLOCK_ERR__PLL_NotReady;
     
   if (fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgPLL_HSI->freqSupp);
+    MDR_CPU_ApplyFreqSupport(&cfgPLL_HSI->freqSupp);
   
   //  Prepare CPU_C1 Muxes
   regValue &= MDR_RST_CPU__HCLK_SEL_Msk;
-  regValue |= VAL2FLD_Pos(C1_HSIdiv2  , MDR_RST_CPU__C1_SEL_Pos)
+  regValue |= VAL2FLD_Pos(cfgPLL_HSI->selDiv2 + MDR_HSIE2_HSI, MDR_RST_CPU__C1_SEL_Pos)
             | VAL2FLD_Pos(MDR_CPU_PLL , MDR_RST_CPU__C2_SEL_Pos)
             | VAL2FLD_Pos(cfgPLL_HSI->divC3, MDR_RST_CPU__C3_SEL_Pos);
   
@@ -309,13 +309,13 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSI(const MDR_CPU_PLL_CfgHSI *cf
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(regValue, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_CPU_C3, MDR_RST_CPU__HCLK_SEL_Pos));
   
   if (!fromLowerFreq)
-    MDR_CLK_SetFreqSupport(&cfgPLL_HSI->freqSupp);
+    MDR_CPU_ApplyFreqSupport(&cfgPLL_HSI->freqSupp);
   return MDR_SET_CLOCK_OK;
 }
  
 
 //-------------------  Тактирование от HSE через PLL  ---------------------
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSE(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq, MDR_OnOff C1_HSEdiv2)  
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_HSE(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)  
 {
   //  Check if current clock is from CPU_C3
   uint32_t regValue = MDR_CLOCK->CPU_CLOCK;  
@@ -330,11 +330,11 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSE(const MDR_CPU_PLL_CfgHSE  *c
     return MDR_SET_CLOCK_ERR__PLL_NotReady;
 
   if (fromLowerFreq)
-    MDR_CLK_SetFreqSupportF(cfgPLL_HSE->freqSupp.lowSRI, cfgPLL_HSE->freqSupp.delayAccessEEPROM);  
+    MDR_CPU_ApplyFreqSupportF(cfgPLL_HSE->freqSupp.lowSRI, cfgPLL_HSE->freqSupp.delayAccessEEPROM);  
   
   //  Prepare CPU_C1 Muxes
   regValue &= MDR_RST_CPU__HCLK_SEL_Msk;
-  regValue |= VAL2FLD_Pos(C1_HSEdiv2 + MDR_HSIE2_HSE, MDR_RST_CPU__C1_SEL_Pos)
+  regValue |= VAL2FLD_Pos(cfgPLL_HSE->selDiv2 + MDR_HSIE2_HSE, MDR_RST_CPU__C1_SEL_Pos)
             | VAL2FLD_Pos(MDR_CPU_PLL, MDR_RST_CPU__C2_SEL_Pos)
             | VAL2FLD_Pos(cfgPLL_HSE->divC3, MDR_RST_CPU__C3_SEL_Pos);
   
@@ -342,7 +342,7 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSE(const MDR_CPU_PLL_CfgHSE  *c
   MDR_CLOCK->CPU_CLOCK = MDR_MaskClrSet(regValue, MDR_RST_CPU__HCLK_SEL_Msk, VAL2FLD_Pos(MDR_HCLK_CPU_C3, MDR_RST_CPU__HCLK_SEL_Pos));
   
   if (!fromLowerFreq)
-    MDR_CLK_SetFreqSupportF(cfgPLL_HSE->freqSupp.lowSRI, cfgPLL_HSE->freqSupp.delayAccessEEPROM);  
+    MDR_CPU_ApplyFreqSupportF(cfgPLL_HSE->freqSupp.lowSRI, cfgPLL_HSE->freqSupp.delayAccessEEPROM);  
   return MDR_SET_CLOCK_OK; 
 }
  

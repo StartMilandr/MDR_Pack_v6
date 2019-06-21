@@ -34,7 +34,29 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-/* =====================================================  CLOCK_STATUS  ====================================================== */
+//---------------   MAX_Clock  ---------------
+typedef enum {
+  MAXCLK_HSI      = 0,
+  MAXCLK_HSIdiv2  = 1,
+  MAXCLK_HSE0     = 2,
+  MAXCLK_HSE0div2 = 3,
+  MAXCLK_HSE1     = 4,
+  MAXCLK_HSE1div2 = 5,
+  MAXCLK_LSI      = 6,
+  MAXCLK_LSE      = 7,
+  MAXCLK_PLL0     = 8,
+  MAXCLK_PLL1     = 9,
+  MAXCLK_PLL2     = 10,
+  MAXCLK_ERR      = 11,   //  Error Value - reserved
+} MDR_MAXCLK_SEL;
+
+typedef struct {
+      __IOM MDR_MAXCLK_SEL  Select : 4;            /*!< [3..0] Select MAX_CLOCK source                                            */
+      __IM  uint32_t               : 28;
+} MDR_RST_MAX_CLK_Bits;
+
+#define MDR_RST_CLOCK_MAX_CLK_Select_Pos  (0UL)                     /*!< MDR_RST_CLOCK MAX_CLK: Select (Bit 0)                 */
+#define MDR_RST_CLOCK_MAX_CLK_Select_Msk  (0xfUL)                   /*!< MDR_RST_CLOCK MAX_CLK: Select (Bitfield-Mask: 0x0f)   */
 
 //---------------   PER Clock  ---------------
 typedef struct {
@@ -497,6 +519,30 @@ typedef struct {                                  /*!< (@ 0x40000000) MDR_RST_CL
 } MDR_RST_CLOCK_Type;                             /*!< Size = 464 (0x1d0)                                               */
 
 
+typedef struct {
+  union {
+    __IOM uint32_t        HSE_CLK;                    /*!< (@ 0x00000050) Clock Contorl Register                                     */    
+    MDR_RST_HSE_CLK_Bits  HSE_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     HSE_CHKR; 
+  union {
+    __IOM uint32_t        HSE_STAT;                   /*!< (@ 0x00000060) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits HSE_STAT_b;
+  } ;  
+} MDR_RST_HSE_Type;
+
+
+typedef struct {
+  union {
+    __IOM uint32_t        PLL_CLK;                    /*!< (@ 0x00000078) PLL0 Control                                               */
+    MDR_RST_PLL_CLK_Bits  PLL_CLK_b;
+  } ;
+  MDR_RST_CLK_CHECKER     PLL_CHKR;
+  union {
+    __IOM uint32_t        PLL_STAT;                   /*!< (@ 0x00000088) Clock Status Register                                      */
+    MDR_RST_CLK_STAT_Bits PLL_STAT_b;
+  } ; 
+} MDR_RST_PLL_Type;
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

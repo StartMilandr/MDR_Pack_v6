@@ -310,11 +310,74 @@ typedef enum IRQn
 #define MDR_KEY_UNLOCK    0x8555AAA1UL
 
 /*===============  RST_Clock ===================*/
+#include <MDR_RST_VE8x_defs.h>
 #include <MDR_RST_ESila_defs.h>
 
 /*===============  BKP ===================*/
 #include <MDR_BKP_ESila_defs.h>
-#include <MDR_RST_VE8x_defs.h>
+
+
+/*===============  EEPROM Controller=============*/
+typedef struct
+{
+  __IO  uint32_t KEY;
+  __IO  uint32_t CNTR;
+  __IO  uint32_t ADR;
+  __IO  uint32_t WDATA3;
+  __IO  uint32_t WDATA2;
+  __IO  uint32_t WDATA1;
+  __IO  uint32_t WDATA0;
+  __IO  uint32_t WECC0;
+  __IO  uint32_t WECC1;
+  __IO  uint32_t RDATA3;
+  __IO  uint32_t RDATA2;
+  __IO  uint32_t RDATA1;
+  __IO  uint32_t RDATA0;
+  __IO  uint32_t RECC0;
+  __IO  uint32_t RECC1;
+  __IO  uint32_t ECCCS;
+  __IO  uint32_t ECCADR;
+  __IO  uint32_t ECCDATA;
+  __IO  uint32_t ECCECC;
+  __IO  uint32_t BLOCK;
+} MDR_EEPROM_Type;
+
+#define MDR_EEPROM_CMD_DELAY_Msk  0xFUL 
+#define MDR_EEPROM_CMD_DELAY_Pos  0x0
+
+typedef enum {
+  EEPROM_Delay_Forbiden = 0,     //  
+  EEPROM_Delay_le32MHz  = 1,     //  31,25 MHz
+  EEPROM_Delay_le63MHz  = 2,     //  62,50 MHz
+  EEPROM_Delay_le94MHz  = 3,     //  93,75 MHz
+  EEPROM_Delay_le125MHz = 4,     // 125,00 MHz
+  EEPROM_Delay_le157MHz = 5,     // 156,25 MHz
+  EEPROM_Delay_le188MHz = 6,     // 187,50 MHz
+  EEPROM_Delay_le219MHz = 7,     // 218,75 MHz
+  EEPROM_Delay_le250MHz = 8,     // 250,00 MHz
+  EEPROM_Delay_le282MHz = 9,     // 281,25 MHz
+  EEPROM_Delay_le313MHz = 10,    // 312,50 MHz
+  EEPROM_Delay_le344MHz = 11,    // 343,75 MHz
+  EEPROM_Delay_le374MHz = 12,    // 374,00 MHz
+  EEPROM_Delay_le407MHz = 13,    // 406,25 MHz
+  EEPROM_Delay_le438MHz = 14,    // 437,50 MHz
+  EEPROM_Delay_le469MHz = 15,    // 468,75 MHz
+} MDR_EEPROM_DELAY;
+
+
+/* ==============  Coparators =================== */
+typedef struct
+{
+  __IO  uint32_t COMP_CNTR;
+  __IO  uint32_t COMP_EVNT;
+  __IO  uint32_t ANABG_CTRL;
+} MDR_COMP_Type;
+
+#define MDR_COMP_ANABG_IREFEN_Pos     0x0UL   
+#define MDR_COMP_ANABG_IREFEN_Msk     0x1UL   
+#define MDR_COMP_ANABG_BGEN_Pos       0x7UL   
+#define MDR_COMP_ANABG_BGEN_Msk       0x80UL   
+
 
 /*===============  GPIO Port ===================*/
 #include <MDR_GPIO_VE8x_defs.h>
@@ -373,6 +436,13 @@ typedef enum IRQn
 
 #define ADDR_RST_CLOCK_BASE   0x40000000UL                              /*!< RST_CLOCK Base Address      */
 #define ADDR_BKP_BASE         0x40001000UL                              /*!< Backup and RTC Base Address */
+#define ADDR_EEPROM_BASE      0x40006000UL                              /*!< FLASH Controller           */
+
+#define ADDR_COMP1_BASE       0x400AE000UL
+#define ADDR_COMP2_BASE       0x400AF000UL
+#define ADDR_COMP3_BASE       0x400B0000UL
+#define ADDR_COMP4_BASE       0x400B1000UL
+
 
 #define ADDR_PORTA_BASE       0x40080000UL                              /*!< GPIO PORT_A Base Address */
 #define ADDR_PORTB_BASE       0x40081000UL                              /*!< GPIO PORT_B Base Address */
@@ -408,13 +478,29 @@ typedef enum IRQn
   */
 
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL2_CLK))
+  #define MDR_CLOCK_PLL3                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL3_CLK))
+#else
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL2_CLK))
+  #define MDR_CLOCK_PLL3                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL3_CLK))
+#endif
+
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
+#define MDR_EEPROM                     ((MDR_EEPROM_Type    *) ADDR_EEPROM_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
 #define MDR_PORTB                      ((MDR_PORT_Type 	    *) ADDR_PORTB_BASE)
 #define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
 #define MDR_PORTD                      ((MDR_PORT_Type 	    *) ADDR_PORTD_BASE)
-
 
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
 #define MDR_SSP2                       ((MDR_SSP_Type       *) ADDR_SSP2_BASE)
@@ -450,11 +536,22 @@ typedef enum IRQn
 #define MDR_TIMER4_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR3))
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
 
+#define MDR_COMP1                      ((MDR_COMP_Type *) ADDR_COMP1_BASE)
+#define MDR_COMP2                      ((MDR_COMP_Type *) ADDR_COMP2_BASE)
+#define MDR_COMP3                      ((MDR_COMP_Type *) ADDR_COMP3_BASE)
+#define MDR_COMP4                      ((MDR_COMP_Type *) ADDR_COMP4_BASE)
+
+
+
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
 /* =========================================================================================================================== */
 
 //  Clock Enable bits
+//----------------    EEPROM Definitions  --------------------
+//#define   MDR_CLK_EN_REG_EEPROM     PER_CLOCK
+//#define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER__EEPROM_CLK_EN_Pos
+
 
 //----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A    &MDR_CLOCK->PER0_CLK

@@ -7,8 +7,10 @@
 
 //  ============    Управление сетодиодами на отладочной плате ===============
 void MDRB_LED_Init  (uint32_t LEDs_Sel);
-void MDRB_LED_Switch(uint32_t LEDs_Sel);
+void MDRB_LED_Toggle(uint32_t LEDs_Sel);
 void MDRB_LED_Set   (uint32_t LEDs_Sel, bool isOn);
+
+uint32_t MDRB_LED_NumToSel(uint32_t num);
 
 __STATIC_INLINE void MDRB_LED_InitALL(void) {MDRB_LED_Init(MDRB_LED_PinAll);}
 

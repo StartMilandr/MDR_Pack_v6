@@ -147,11 +147,13 @@ typedef enum IRQn
 #define MDR_KEY_UNLOCK    0x8555AAA1UL
 
 /*===============  RST_Clock ===================*/
+#include <MDR_RST_VE8x_defs.h>
 #include <MDR_RST_VK014_defs.h>
+
 
 /*===============  BKP ===================*/
 #include <MDR_BKP_VK014_defs.h>
-#include <MDR_RST_VE8x_defs.h>
+
 
 /*===============  GPIO Port ===================*/
 #include <MDR_GPIO_VE8x_defs.h>
@@ -243,6 +245,22 @@ typedef enum IRQn
   */
 
 #define MDR_CLOCK                      ((MDR_RST_CLOCK_Type *) ADDR_RST_CLOCK_BASE)
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (__IOM uint32_t)(&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (__IOM uint32_t)(&MDR_CLOCK->PLL2_CLK))
+#else
+  #define MDR_CLOCK_HSE0                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE0_CLK))
+  #define MDR_CLOCK_HSE1                 ((MDR_RST_HSE_Type   *) (&MDR_CLOCK->HSE1_CLK))
+  #define MDR_CLOCK_PLL0                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL0_CLK))
+  #define MDR_CLOCK_PLL1                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL1_CLK))
+  #define MDR_CLOCK_PLL2                 ((MDR_RST_PLL_Type   *) (&MDR_CLOCK->PLL2_CLK))
+#endif
+
+
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)

@@ -899,11 +899,47 @@
       <accept Dname="MDR1986VK234"/>
     </condition>
     <condition id="CON_MDR_VE8x">
+      <description>32-bit Cortex devices 1986VE8 and 1923VK014</description>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1923VK014"/>
+    </condition>
+    <condition id="CON_MDR_VE8xES">
       <description>32-bit Cortex devices like VE8</description>
       <accept Dname="MDR_ESila"/>
       <accept Dname="MDR1986VE8"/>
       <accept Dname="MDR1923VK014"/>
+    </condition>    
+    <condition id="CON_MDR_ESila">
+      <description>32-bit Cortex devices ESila</description>
+      <accept Dname="MDR_ESila"/>
+    </condition>    
+    <condition id="CON_BRD_BUTTONS">
+      <description>Boards with buttons</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR_ESila"/>
     </condition>
+    <condition id="CON_BRD_LCD">
+      <description>Boards with LCD Display</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+      <accept Dname="MDR_ESila"/>
+    </condition>
+
     <!--condition id="CON_MDR_CM0VK">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VK214"/>
@@ -1046,7 +1082,7 @@
     </component>
 
     <!-- RST_CLOCK Driver -->
-    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_UseFuncs">
+    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_ALL">
       <description>CPU Clock driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1055,13 +1091,21 @@
       </files>
     </component>
     <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_VE8x">
-      <description>CPU Clock driver for MDR1986VExx Series</description>
+      <description>CPU Clock driver for MDR1986VE8 and 1923VK014</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
-        <file category="header"  name="SPL/Drivers/MDR_RST_Clock_VE8x.h" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_RST_Clock_VE8x.c" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_ESila">
+      <description>CPU Clock driver for ESila</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_RST_Clock_ESila.c" version="2.0.0"/>
+      </files>
+    </component>    
     <!-- GPIO PORT Driver -->
     <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_UseFuncs">
       <description>PORT driver for MDR1986VExx Series</description>
@@ -1071,7 +1115,7 @@
         <file category="source"  name="SPL/Drivers/MDR_GPIO.c" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_VE8x">
+    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_VE8xES">
       <description>PORT driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1286,7 +1330,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component> 
-    <component Cclass="Board Support" Cgroup="Buttons" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="Board Support" Cgroup="Buttons" Cversion="2.0" condition="CON_BRD_BUTTONS">
       <description>Buttons control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
@@ -1297,7 +1341,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_MDR_CM1CM3">
+    <component Cclass="Board Support" Cgroup="DisplayLCD" Cversion="2.0" condition="CON_BRD_LCD">
       <description>Display MT 12864x control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>

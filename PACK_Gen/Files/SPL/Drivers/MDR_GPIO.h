@@ -100,24 +100,24 @@ __STATIC_INLINE     bool MDR_Port_GetMaskClr(MDR_PORT_Type *GPIO_Port, uint32_t 
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX     = portData  & (~JTAG_PINS(GPIO_Port));}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Set = pinSelect & (~JTAG_PINS(GPIO_Port));}
     __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Clr = pinSelect;}
-    __STATIC_INLINE     void MDR_Port_SwitchPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX ^ pinSelect) & (~JTAG_PINS(GPIO_Port));}
+    __STATIC_INLINE     void MDR_Port_TogglePins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX ^ pinSelect) & (~JTAG_PINS(GPIO_Port));}
   #else
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX = portData & (~JTAG_PINS(GPIO_Port));}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX |  pinSelect) & (~JTAG_PINS(GPIO_Port));}
     __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX & ~pinSelect) & (~JTAG_PINS(GPIO_Port));}
-    __STATIC_INLINE     void MDR_Port_SwitchPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX ^  pinSelect) & (~JTAG_PINS(GPIO_Port));}
+    __STATIC_INLINE     void MDR_Port_TogglePins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX ^  pinSelect) & (~JTAG_PINS(GPIO_Port));}
   #endif  
 #else 
   #if defined(MDR_GPIO_HAS_SET_CLEAR)
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX     = portData;}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Set = pinSelect;}
     __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Clr = pinSelect;}
-    __STATIC_INLINE     void MDR_Port_SwitchPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX    ^= pinSelect;}    
+    __STATIC_INLINE     void MDR_Port_TogglePins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX    ^= pinSelect;}    
   #else  
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX  = portData;}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX |= pinSelect;}
     __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX &= ~pinSelect;}
-    __STATIC_INLINE     void MDR_Port_SwitchPins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX ^= pinSelect;}
+    __STATIC_INLINE     void MDR_Port_TogglePins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX ^= pinSelect;}
   #endif
 #endif
 
@@ -330,7 +330,7 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
 
   #define MDR_GPIO_SetPins(GP, Sel)             MDR_Port_SetPins((GP)->PORTx, Sel)
   #define MDR_GPIO_ClearPins(GP, Sel)           MDR_Port_ClearPins((GP)->PORTx, Sel)
-  #define MDR_GPIO_SwitchPins(GP, Sel)          MDR_Port_SwitchPins((GP)->PORTx, Sel)
+  #define MDR_GPIO_TogglePins(GP, Sel)          MDR_Port_TogglePins((GP)->PORTx, Sel)
   #define MDR_GPIO_Get(GP)                      MDR_Port_Get((GP)->PORTx)
   #define MDR_GPIO_GetMaskSet(GP, Sel)          MDR_Port_GetMaskSet((GP)->PORTx, Sel)
   #define MDR_GPIO_GetMaskClr(GP, Sel)          MDR_Port_GetMaskClr((GP)->PORTx, Sel)

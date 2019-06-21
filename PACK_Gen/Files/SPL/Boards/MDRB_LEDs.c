@@ -25,9 +25,9 @@ void MDRB_LED_Set(uint32_t LEDs_Sel, bool isOn)
 		Func_LED_Off(MDRB_LED_GPIO, LEDs_Sel);
 }
 
-void MDRB_LED_Switch(uint32_t LEDs_Sel)
+void MDRB_LED_Toggle(uint32_t LEDs_Sel)
 {
-  MDR_GPIO_SwitchPins(MDRB_LED_GPIO, LEDs_Sel);
+  MDR_GPIO_TogglePins(MDRB_LED_GPIO, LEDs_Sel);
 }	
 
 
@@ -108,3 +108,15 @@ uint32_t 	LED_GetCount (void)
   return MDRB_LED_COUNT;
 }
 
+
+uint32_t MDRB_LED_NumToSel(uint32_t num)
+{
+  uint32_t i;
+  uint32_t LEDs_Sel = 0;
+  
+  for (i = 0; i < MDRB_LED_COUNT; ++i)
+    if ((num & (1 << i)) != 0)
+      LEDs_Sel |= _LED_Pins[i];
+    
+  return LEDs_Sel;
+}

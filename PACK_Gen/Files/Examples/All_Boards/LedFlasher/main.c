@@ -28,13 +28,13 @@ int main(void)
   
   while (1)
   {    
-    MDRB_LED_Switch(LED_CYCLE);
+    MDRB_LED_Toggle(LED_CYCLE);
     MDR_Delay_ms(PERIOD_MS, HSI_FREQ_HZ);
   }
 }
 
 void SysTick_Handler(void)
 {
-  MDRB_LED_Switch(LED_TIMER);
+  MDRB_LED_Toggle(LED_TIMER);
 }
 

@@ -41,32 +41,6 @@ extern "C" {
 #define MDR_RST_CLOCK_KEY_Value_Pos       (0UL)                     /*!< MDR_RST_CLOCK KEY: Value (Bit 0)                      */
 #define MDR_RST_CLOCK_KEY_Value_Msk       (0xffffffffUL)            /*!< MDR_RST_CLOCK KEY: Value (Bitfield-Mask: 0xffffffff)  */
 
-
-//---------------   MAX_Clock  ---------------
-typedef enum {
-  MAXCLK_HSI      = 0,
-  MAXCLK_HSIdiv2  = 1,
-  MAXCLK_HSE0     = 2,
-  MAXCLK_HSE0div2 = 3,
-  MAXCLK_HSE1     = 4,
-  MAXCLK_HSE1div2 = 5,
-  MAXCLK_LSI      = 6,
-  MAXCLK_LSE      = 7,
-  MAXCLK_PLL0     = 8,
-  MAXCLK_PLL1     = 9,
-  MAXCLK_PLL2     = 10,
-  MAXCLK_ERR      = 11,   //  Error Value - reserved
-} MDR_MAXCLK_SEL;
-
-typedef struct {
-      __IOM MDR_MAXCLK_SEL  Select : 4;            /*!< [3..0] Select MAX_CLOCK source                                            */
-      __IM  uint32_t               : 28;
-} MDR_RST_MAX_CLK_Bits;
-
-#define MDR_RST_CLOCK_MAX_CLK_Select_Pos  (0UL)                     /*!< MDR_RST_CLOCK MAX_CLK: Select (Bit 0)                 */
-#define MDR_RST_CLOCK_MAX_CLK_Select_Msk  (0xfUL)                   /*!< MDR_RST_CLOCK MAX_CLK: Select (Bitfield-Mask: 0x0f)   */
-
-
 //---------------   CPU_CLK Bits and LSI/LSE_CLK Bits  ---------------
 
 typedef struct {

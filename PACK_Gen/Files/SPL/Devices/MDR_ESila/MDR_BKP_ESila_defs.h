@@ -34,7 +34,7 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-#define MDR_BKP_REG_XX_COUNT  14
+#define MDR_BKP_REG_XX_COUNT  60
 
 //-------   Reg_60  ----------
 typedef struct {
@@ -121,15 +121,15 @@ typedef enum {                     /*!< MDR_BKP_REG_61_TMR0_bg_trimVdd1p6       
 } MDR_BKP_DCDC_Trim;
 
 //  Поля будут уточняться!
-typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_HLDO_SRILow                                           */
-  MDR_BKP_HLDO_SRILow_ge10MHz = 0,  /*!< ge10MHz : Extra_I about ~300uA                                            */
-  MDR_BKP_HLDO_SRILow_ge200KHz = 1, /*!< ge200KHz : Extra_I about ~7uA                                             */
-  MDR_BKP_HLDO_SRILow_ge500KHz = 2, /*!< ge500KHz : Extra_I about ~20uA                                            */
-  MDR_BKP_HLDO_SRILow_ge1MHz = 3,   /*!< ge1MHz : Extra_I about ~80uA                                              */
-  MDR_BKP_HLDO_SRILow_GensOff = 4,  /*!< GensOff : Extra_I about ~2uA                                              */
-  MDR_BKP_HLDO_SRILow_ge40MHz = 5,  /*!< ge40MHz : Extra_I about ~900uA                                            */
-  MDR_BKP_HLDO_SRILow_ge80MHz = 6,  /*!< ge80MHz : Extra_I about ~5mA                                              */
-  MDR_BKP_HLDO_SRILow_gt80MHz = 7,  /*!< gt80MHz : Extra_I about ~20mA                                             */
+typedef enum {                     /*!< MDR_BKP_REG_61_TMR0_HLDO_SRILow                                           */
+  MDR_BKP_LDO_SRILow_lt30MHz  = 0,  /*!< ge10MHz : Extra_I about ~400uA                                            */
+  MDR_BKP_LDO_SRILow_lt50MHz  = 1,  /*!< ge30MHz : Extra_I about ~450uA                                            */
+  MDR_BKP_LDO_SRILow_lt100MHz = 2,  /*!< ge50MHz : Extra_I about ~550uA                                            */
+  MDR_BKP_LDO_SRILow_ge100MHz = 3,  /*!< ge100MHz : Extra_I about ~650uA                                           */
+  MDR_BKP_LDO_SRILow_lt10MHz  = 4,  /*!< ge1MHz : Extra_I about ~300uA                                             */
+  MDR_BKP_LDO_SRILow_lt1MHz   = 5,  /*!< ge500KHz : Extra_I about ~200uA                                           */
+  MDR_BKP_LDO_SRILow_lt500KHz = 6,  /*!< ge100KHz : Extra_I about ~100uA                                           */
+  MDR_BKP_LDO_SRILow_lt100KHz = 7,  /*!< ge10KHz : Extra_I about ~50uA                                             */
 } MDR_BKP_LDO_SRILow;
 
 typedef struct {
@@ -237,27 +237,36 @@ typedef enum {                        /*!< MDR_BKP_REG_62_TMR0_PWRM_Vdd_lvl     
   MDR_BKP_REG62_PWRM_lvl_lvl28 = 28,  /*!< lvl28 : unknown level yet                                                 */
   MDR_BKP_REG62_PWRM_lvl_lvl29 = 29,  /*!< lvl29 : unknown level yet                                                 */
   MDR_BKP_REG62_PWRM_lvl_lvl30 = 30,  /*!< lvl30 : unknown level yet                                                 */
-  MDR_BKP_REG62_PWRM_lvl_lvl31 = 31,  /*!< lvl31 : unknown level yet                                                 */
+  MDR_BKP_REG62_PWRM_lvl_lvl31 = 31  /*!< lvl31 : unknown level yet                                                 */
 } MDR_BKP_REG62_PWRM_Level;
 
 
-typedef struct {
-      __IOM MDR_OnOff                 BLDO_Dis   : 1;            /*!< [0..0] Disable LDO_Bat                         */
-      __IOM MDR_BKP_LDO_Trim          BLDO_Trim  : 3;            /*!< [3..1] LDO_Bat Trim                            */
-      __IOM MDR_BKP_LDO_SRILow        BLDO_SRILow : 3;           /*!< [6..4] LDO_Bat Power adjustment                */
-      __IOM MDR_OnOff                 BLDO_RDY   : 1;            /*!< [7..7] BLDO Ready                              */
-      __IOM MDR_BKP_REG62_PWRM_Level  PWRM_Vdd_lvl : 5;          /*!< [12..8] DCDC_3.3V level                        */
-      __IOM MDR_OnOff                 PWRM_Vdd_En : 1;           /*!< [13..13] DCDC_3.3V monitor enable              */
-      __IOM MDR_BKP_REG62_PWRM_Level  PWRM_VddB_lvl : 5;         /*!< [18..14] Vdd_BKP 3.3V level                    */
-      __IOM MDR_BKP_REG62_PWRM_Level  PWRM_VddIO_lvl : 5;        /*!< [23..19] Vdd_BKP 3.3V level                    */
-      __IOM MDR_OnOff                 PWRM_VddB_En : 1;          /*!< [24..24] Vdd_BKP monitor enable                */
-      __IOM MDR_OnOff                 PWRM_VddIO_En : 1;         /*!< [25..25] Vdd_IO monitor enable                 */
-      __IOM MDR_OnOff                 PWRM_Vdd_Event : 1;        /*!< [26..26] Vdd Event                             */
-      __IOM MDR_OnOff                 PWRM_VddB_Event : 1;       /*!< [27..27] Vdd BKP Event                         */
-      __IOM MDR_OnOff                 PWRM_VddIO_Event : 1;      /*!< [28..28] Vdd IO Event                          */
-      __IOM MDR_OnOff                 SEL_NSW    : 1;            /*!< [29..29] Select NSW                            */
-      __IOM MDR_OnOff                 SEL_SW     : 1;            /*!< [30..30] Select SW                             */
-      __IOM MDR_OnOff                 PMU_BG_Dis : 1;            /*!< [31..31] Disable PMU                           */
+//  ToDo: С MDR_BKP_REG62_PWRM_Level адрес регистра смещается!?
+
+typedef __PACKED_STRUCT {
+      __IOM MDR_OnOff                 BLDO_Dis        : 1;      /*!< [0..0] Disable LDO_Bat                         */
+      __IOM MDR_BKP_LDO_Trim          BLDO_Trim       : 3;      /*!< [3..1] LDO_Bat Trim                            */
+      __IOM MDR_BKP_LDO_SRILow        BLDO_SRILow     : 3;      /*!< [6..4] LDO_Bat Power adjustment                */
+      __IOM MDR_OnOff                 BLDO_RDY        : 1;      /*!< [7..7] BLDO Ready                              */
+  
+      //__IOM MDR_BKP_REG62_PWRM_Level  PWRM_Vdd_lvl    : 5;      /*!< [12..8] DCDC_3.3V level                        */
+      __IOM uint32_t                  PWRM_Vdd_lvl    : 5;      /*!< [12..8] DCDC_3.3V level                        */  
+  
+      __IOM MDR_OnOff                 PWRM_Vdd_En     : 1;      /*!< [13..13] DCDC_3.3V monitor enable              */
+  
+      //__IOM MDR_BKP_REG62_PWRM_Level  PWRM_VddB_lvl   : 5;      /*!< [18..14] Vdd_BKP 3.3V level                    */
+      //__IOM MDR_BKP_REG62_PWRM_Level  PWRM_VddIO_lvl  : 5;      /*!< [23..19] Vdd_BKP 3.3V level                    */
+      __IOM uint32_t                  PWRM_VddB_lvl   : 5;      /*!< [18..14] Vdd_BKP 3.3V level                    */
+      __IOM uint32_t                  PWRM_VddIO_lvl  : 5;      /*!< [23..19] Vdd_BKP 3.3V level                    */
+  
+      __IOM MDR_OnOff                 PWRM_VddB_En    : 1;      /*!< [24..24] Vdd_BKP monitor enable                */
+      __IOM MDR_OnOff                 PWRM_VddIO_En   : 1;      /*!< [25..25] Vdd_IO monitor enable                 */
+      __IOM MDR_OnOff                 PWRM_Vdd_Event  : 1;      /*!< [26..26] Vdd Event                             */
+      __IOM MDR_OnOff                 PWRM_VddB_Event : 1;      /*!< [27..27] Vdd BKP Event                         */
+      __IOM MDR_OnOff                 PWRM_VddIO_Event: 1;      /*!< [28..28] Vdd IO Event                          */
+      __IOM MDR_OnOff                 SEL_NSW    : 1;           /*!< [29..29] Select NSW                            */
+      __IOM MDR_OnOff                 SEL_SW     : 1;           /*!< [30..30] Select SW                             */
+      __IOM MDR_OnOff                 PMU_BG_Dis : 1;           /*!< [31..31] Disable PMU                           */
 } MDR_BKP_REG62_Bits;
 
 #define MDR_BKP_REG62_BLDO_Dis_Pos          (0UL)              /*!< MDR_BKP REG_62_TMR0: BLDO_Dis (Bit 0)                 */
@@ -295,7 +304,7 @@ typedef struct {
 
 
 //-------   Reg_63  ----------
-typedef struct {
+typedef __PACKED_STRUCT {
       __IOM MDR_OnOff   LSE_RDY       : 1;            /*!< [0..0] LSE REady                            */
       __IOM MDR_OnOff   LSE_FilterO   : 1;            /*!< [1..1] LSE Input filter                     */
       __IOM MDR_OnOff   LSE_BYP       : 1;            /*!< [2..2] LSE Bypass                           */
@@ -310,13 +319,21 @@ typedef struct {
       __IOM MDR_OnOff   HSE1_On       : 1;            /*!< [11..11] HSE1 Enable                        */
       __IOM MDR_OnOff   LSI_Ready     : 1;            /*!< [12..12] LSI ready                          */
       __IOM MDR_OnOff   LSI_Dis       : 1;            /*!< [13..13] LSI Disable                        */
-      __IOM uint8_t     LSI_Trim      : 7;            /*!< [20..14] LSI freq trim                      */
+      __IOM uint32_t    LSI_Trim      : 7;            /*!< [20..14] LSI freq trim                      */
       __IOM MDR_OnOff   HSI_Ready     : 1;            /*!< [21..21] HSI ready                          */
-      __IOM uint8_t     HSI_Trim      : 7;            /*!< [28..22] HSI freq trim                      */
+      __IOM uint32_t    HSI_Trim      : 7;            /*!< [28..22] HSI freq trim                      */
       __IOM MDR_OnOff   HSI_Dis       : 1;            /*!< [29..29] HSI Disable                        */
       __IM  uint32_t                  : 1;
-      __IOM MDR_OnOff   LSI_POR_Ready : 1;              /*!< [31..31] LSI POR ready                      */
+      __IOM MDR_OnOff   LSI_POR_Ready : 1;            /*!< [31..31] LSI POR ready                      */
 } MDR_BKP_REG63_Bits;
+
+#define MDR_BKP_REG63_LSI_Trim  uint8_t
+#define MDR_BKP_REG63_HSI_Trim  uint8_t
+
+#define MDR_BKP_REG63_LSI_Trim_Def      0x2F
+#define MDR_BKP_REG63_HSI_Trim_Def      0x2F
+
+#define MDR_BKP_REG63_LSE_FilterEn_Msk  0
 
 #define MDR_BKP_REG63_LSE_RDY_Pos       (0UL)                 /*!< MDR_BKP REG_63_TMR0: LSE_RDY (Bit 0)                  */
 #define MDR_BKP_REG63_LSE_RDY_Msk       (0x1UL)               /*!< MDR_BKP REG_63_TMR0: LSE_RDY (Bitfield-Mask: 0x01)    */
@@ -342,14 +359,14 @@ typedef struct {
 #define MDR_BKP_REG63_HSE1_BYP_Msk      (0x400UL)             /*!< MDR_BKP REG_63_TMR0: HSE1_BYP (Bitfield-Mask: 0x01)   */
 #define MDR_BKP_REG63_HSE1_On_Pos       (11UL)                /*!< MDR_BKP REG_63_TMR0: HSE1_On (Bit 11)                 */
 #define MDR_BKP_REG63_HSE1_On_Msk       (0x800UL)             /*!< MDR_BKP REG_63_TMR0: HSE1_On (Bitfield-Mask: 0x01)    */
-#define MDR_BKP_REG63_LSI_Ready_Pos     (12UL)                /*!< MDR_BKP REG_63_TMR0: LSI_Ready (Bit 12)               */
-#define MDR_BKP_REG63_LSI_Ready_Msk     (0x1000UL)            /*!< MDR_BKP REG_63_TMR0: LSI_Ready (Bitfield-Mask: 0x01)  */
+#define MDR_BKP_REG63_LSI_RDY_Pos       (12UL)                /*!< MDR_BKP REG_63_TMR0: LSI_Ready (Bit 12)               */
+#define MDR_BKP_REG63_LSI_RDY_Msk       (0x1000UL)            /*!< MDR_BKP REG_63_TMR0: LSI_Ready (Bitfield-Mask: 0x01)  */
 #define MDR_BKP_REG63_LSI_Dis_Pos       (13UL)                /*!< MDR_BKP REG_63_TMR0: LSI_Dis (Bit 13)                 */
 #define MDR_BKP_REG63_LSI_Dis_Msk       (0x2000UL)            /*!< MDR_BKP REG_63_TMR0: LSI_Dis (Bitfield-Mask: 0x01)    */
 #define MDR_BKP_REG63_LSI_Trim_Pos      (14UL)                /*!< MDR_BKP REG_63_TMR0: LSI_Trim (Bit 14)                */
 #define MDR_BKP_REG63_LSI_Trim_Msk      (0x1fc000UL)          /*!< MDR_BKP REG_63_TMR0: LSI_Trim (Bitfield-Mask: 0x7f)   */
-#define MDR_BKP_REG63_HSI_Ready_Pos     (21UL)                /*!< MDR_BKP REG_63_TMR0: HSI_Ready (Bit 21)               */
-#define MDR_BKP_REG63_HSI_Ready_Msk     (0x200000UL)          /*!< MDR_BKP REG_63_TMR0: HSI_Ready (Bitfield-Mask: 0x01)  */
+#define MDR_BKP_REG63_HSI_RDY_Pos       (21UL)                /*!< MDR_BKP REG_63_TMR0: HSI_Ready (Bit 21)               */
+#define MDR_BKP_REG63_HSI_RDY_Msk       (0x200000UL)          /*!< MDR_BKP REG_63_TMR0: HSI_Ready (Bitfield-Mask: 0x01)  */
 #define MDR_BKP_REG63_HSI_Trim_Pos      (22UL)                /*!< MDR_BKP REG_63_TMR0: HSI_Trim (Bit 22)                */
 #define MDR_BKP_REG63_HSI_Trim_Msk      (0x1fc00000UL)        /*!< MDR_BKP REG_63_TMR0: HSI_Trim (Bitfield-Mask: 0x7f)   */
 #define MDR_BKP_REG63_HSI_Dis_Pos       (29UL)                /*!< MDR_BKP REG_63_TMR0: HSI_Dis (Bit 29)                 */
@@ -455,19 +472,19 @@ typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Stru
 
 
 typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Structure                                          */
-  __IOM uint32_t        REG[60];                      /*!< (@ 0x00000000) User backup registers                                      */
-  __IOM uint32_t        KEY;                          /*!< (@ 0x000000F0) Unlock BKP and RTC Registers                               */  
+  __IOM uint32_t        REG[MDR_BKP_REG_XX_COUNT];                /*!< (@ 0x00000000) User backup registers                                      */
+  __IOM uint32_t        KEY;                    /*!< (@ 0x000000F0) Unlock BKP and RTC Registers                               */  
   
   union {
-    __IOM uint32_t      REG_64_TMR0;                 /*!< (@ 0x000000F4) REG64 Control register                                     */
+    __IOM uint32_t      REG_64_TMR0;            /*!< (@ 0x000000F4) REG64 Control register                                     */
     MDR_BKP_REG64_Bits  REG_64_TMR0_b;
   } ;  
   union {
-    __IOM uint32_t      REG_64_TMR1;                 /*!< (@ 0x000000F8) REG64 Control register                                     */
+    __IOM uint32_t      REG_64_TMR1;            /*!< (@ 0x000000F8) REG64 Control register                                     */
     MDR_BKP_REG64_Bits  REG_64_TMR1_b;
   } ;  
   union {
-    __IOM uint32_t      REG_64_TMR2;                 /*!< (@ 0x000000FC) REG64 Control register                                     */
+    __IOM uint32_t      REG_64_TMR2;            /*!< (@ 0x000000FC) REG64 Control register                                     */
     MDR_BKP_REG64_Bits  REG_64_TMR2_b;
   } ;  
   
@@ -483,22 +500,21 @@ typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Stru
   __IM  uint32_t        _RESERVED2[3];
   
   union {
-    __IOM uint32_t      BLDO_CTRL0;                  /*!< (@ 0x00000190) Battery LDO Control                                        */
+    __IOM uint32_t      BLDO_CTRL0;             /*!< (@ 0x00000190) Battery LDO Control                                        */
     MDR_BKP_BLDO_Bits   BLDO_CTRL0_b;
   } ;
   union {
-    __IOM uint32_t      BLDO_CTRL1;                  /*!< (@ 0x00000194) Battery LDO Control                                        */
+    __IOM uint32_t      BLDO_CTRL1;             /*!< (@ 0x00000194) Battery LDO Control                                        */
     MDR_BKP_BLDO_Bits   BLDO_CTRL1_b;
   } ;  
   union {
-    __IOM uint32_t      BLDO_CTRL2;                  /*!< (@ 0x00000198) Battery LDO Control                                        */
+    __IOM uint32_t      BLDO_CTRL2;             /*!< (@ 0x00000198) Battery LDO Control                                        */
     MDR_BKP_BLDO_Bits   BLDO_CTRL2_b;    
   } ;
 } MDR_BKP_Type;                                 /*!< Size = 412 (0x19c)                                                        */
 
 
-
-                                 /*!< Size = 388 (0x184)                                                        */
+/*!< Size = 388 (0x184)                                                        */
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

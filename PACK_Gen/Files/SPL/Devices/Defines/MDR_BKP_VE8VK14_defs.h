@@ -33,7 +33,7 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-#define MDR_BKP_REG_XX_COUNT  14
+#define MDR_BKP_REG_XX_COUNT  60
 
 //-------   Reg_60  ----------
 typedef struct {
@@ -189,8 +189,6 @@ typedef struct {
 #define MDR_BKP_REG63_STANDBY_Msk   (0x40000000UL)            /*!< MDR_BKP REG_63_TMR0: STANDBY (Bitfield-Mask: 0x01)    */
 #define MDR_BKP_REG63_RTC_RST_Pos   (31UL)                    /*!< MDR_BKP REG_63_TMR0: RTC_RST (Bit 31)                 */
 #define MDR_BKP_REG63_RTC_RST_Msk   (0x80000000UL)            /*!< MDR_BKP REG_63_TMR0: RTC_RST (Bitfield-Mask: 0x01)    */
-
-
 
 /* =========================================  End of section using anonymous unions  ========================================= */
 #if defined (__CC_ARM)

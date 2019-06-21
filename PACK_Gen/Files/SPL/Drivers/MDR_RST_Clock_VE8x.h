@@ -5,160 +5,11 @@
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
 
-
-//  Приведение имен к названию блока MDR_CLK_ххх
-//        Подстройка частоты генераторов HSI и LSI
-#define  MDR_CLK_HSI_TRIM       uint8_t
-#define  MDR_CLK_LSI_TRIM       MDR_BKP_REG63_LSI_Trim
-//        Стабилизация потребления в зависимости от частоты
-#define   MDR_CLK_LDO_LowSRI    MDR_BKP_LDO_SRILow
-//        Такты паузы ядра для доступа к памяти OTP.
-#define   MDR_CLK_Delay_OTP     MDR_OTP_Delay  
-
-
-//  Типы истоников частоты для внешний генераторов HSE и LSE
-typedef enum {
-  MDR_CLK_Resonator,          //  ByPass Off
-  MDR_CLK_Generator,          //  ByPass On
-  MDR_CLK_GeneratorFilterEn,  //  ByPass On + InpFilter
-} MDR_CLK_Source;
-
-
-typedef enum {
-    MDR_PLL_DV_div1 = 0,
-    MDR_PLL_DV_div2 = 1,
-#ifdef MDR_PLL_DV_4
-    MDR_PLL_DV_div3 = 3,
-    MDR_PLL_DV_div4 = 4,
+#if defined (USE_MDR1986VE8)
+  #include <MDR_RST_Clock_DefsVE8.h>
+#elif defined (USE_MDR1923VK014)
+  #include <MDR_RST_Clock_DefsVK14.h>
 #endif
-} MDR_PLL_DV_Div;
-
-//  ============  Структуры задания конфигурации для переключения CPU на частоты  =========
-//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
-#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wpadded"
-#endif
-
-  //  Подстройки питания и доступа к OTP под частоту тактирования
-  typedef struct {
-    MDR_CLK_Delay_OTP   delayAccessOTP;
-    MDR_CLK_LDO_LowSRI  lowSRI;
-  } MDR_CLK_FreqSupport;
-
-  //  Парамеры, необходимые для переключения CPU на тактирование от LSI
-  typedef struct {
-    MDR_CLK_LSI_TRIM    freqTrim;
-    uint16_t            divMaxToCpu_0;
-    MDR_CLK_FreqSupport freqSupp;
-  } MDR_CPU_CfgLSI;
-  
-  #define  MDR_CPU_CFG_LSI_DEF     {.freqTrim                = LSI_FREQ_TRIM,   \
-                                    .divMaxToCpu_0           = 0,               \
-                                    .freqSupp.delayAccessOTP = LSI_OTP_DELAY,   \
-                                    .freqSupp.lowSRI         = LSI_LOW_SRI}     
-
-  //  Парамеры, необходимые для переключения CPU на тактирование от LSE
-  typedef struct {
-    uint16_t            divMaxToCpu_0;
-    MDR_CLK_FreqSupport freqSupp;
-  } MDR_CPU_CfgLSE;
-  
-  #define  MDR_CPU_CFG_LSE_DEF     {.divMaxToCpu_0           = 0,               \
-                                    .freqSupp.delayAccessOTP = LSE_OTP_DELAY,   \
-                                    .freqSupp.lowSRI         = LSE_LOW_SRI}     
-  
-  //  Парамеры, необходимые для переключения CPU на тактирование от HSE
-  typedef struct {
-    MDR_CLK_HSI_TRIM      freqTrim;
-    uint16_t              divMaxToCpu_0;
-    MDR_CLK_FreqSupport   freqSupp;
-  } MDR_CPU_CfgHSI;
-  
-  #define  MDR_CPU_CFG_HSI_DEF     {.freqTrim                = HSI_FREQ_TRIM,   \
-                                    .divMaxToCpu_0           = 0,               \
-                                    .freqSupp.delayAccessOTP = LSE_OTP_DELAY,   \
-                                    .freqSupp.lowSRI         = LSE_LOW_SRI}       
-                                    
-  //  Парамеры, необходимые для переключения CPU на тактирование от HSE
-  typedef struct {
-    //  HSE Params
-    MDR_CLK_Source        freqSource;
-    uint16_t              divMaxToCpu_0;
-    //  FreqSupport Params
-    MDR_CLK_FreqSupport   freqSupp;
-  } MDR_CPU_CfgHSE;
-  
-  #define  MDR_CPU_CFG_HSE_SRC_DEF(FrSrc) {.freqSource              = (FrSrc),         \
-                                           .divMaxToCpu_0           = 0,               \
-                                           .freqSupp.delayAccessOTP = HSE_OTP_DELAY,   \
-                                           .freqSupp.lowSRI         = HSE_LOW_SRI}       
-  
-  #define  MDR_CPU_CFG_HSE_RES_DEF        MDR_CPU_CFG_HSE_SRC_DEF(MDR_CLK_Resonator)  
-  #define  MDR_CPU_CFG_HSE_GEN_DEF        MDR_CPU_CFG_HSE_SRC_DEF(MDR_CLK_Generator)  
-   
-
-  //  Парамеры PLL
-  typedef struct {
-    uint8_t         mulN_3_75; 
-    uint8_t         divQ_0_15; 
-    MDR_PLL_DV_Div  divOut;
-  } MDR_CLK_CfgPLL;  
-
-  #define  MDR_CPU_CFG_PLL(N, Q, DV)   {.mulN_3_75        = (N),            \
-                                        .divQ_0_15        = (Q),            \
-                                        .divOut           = (DV)}
-  
-  
-  //  Парамеры, необходимые для переключения CPU на тактирование от HSI через PLL
-  typedef struct {
-    MDR_CLK_HSI_TRIM    freqTrim; 
-    uint32_t            timeoutCycles_HSI;
-    MDR_CLK_CfgPLL      cfgPLL;
-    uint32_t            timeoutCycles_PLL;
-    uint16_t            divMaxToCpu_0;
-    MDR_CLK_FreqSupport freqSupp;
-  } MDR_CPU_PLL_CfgHSI;
-
-  #define  MDR_CPU_CFG_PLL_HSI_DEF(N, Q, DV, delOTP, lowRI) {.freqTrim  = HSI_FREQ_TRIM,  \
-                                               .timeoutCycles_HSI       = HSI_TIMEOUT,    \
-                                               .cfgPLL.mulN_3_75        = (N),            \
-                                               .cfgPLL.divQ_0_15        = (Q),            \
-                                               .cfgPLL.divOut           = (DV),           \
-                                               .timeoutCycles_PLL       = PLL_TIMEOUT,    \
-                                               .divMaxToCpu_0           = 0,              \
-                                               .freqSupp.delayAccessOTP = (delOTP),       \
-                                               .freqSupp.lowSRI         = (lowRI)}       
-  
-  
-  //  Парамеры, необходимые для переключения CPU на тактирование от HSE через PLL
-  typedef struct {
-    MDR_CLK_Source      freqSource; 
-    uint32_t            timeoutCycles_HSE;    
-    MDR_CLK_CfgPLL      cfgPLL;
-    uint32_t            timeoutCycles_PLL;
-    uint16_t            divMaxToCpu_0;
-    MDR_CLK_FreqSupport freqSupp;
-  } MDR_CPU_PLL_CfgHSE;
-
-  #define  MDR_CPU_CFG_PLL_HSE_SRC_DEF(src, N, Q, DV, delOTP, lowRI) {.freqSource  = (src),  \
-                                               .timeoutCycles_HSE       = HSE_TIMEOUT,    \
-                                               .cfgPLL.mulN_3_75        = (N),            \
-                                               .cfgPLL.divQ_0_15        = (Q),            \
-                                               .cfgPLL.divOut           = (DV),           \
-                                               .timeoutCycles_PLL       = PLL_TIMEOUT,    \
-                                               .divMaxToCpu_0           = 0,              \
-                                               .freqSupp.delayAccessOTP = (delOTP),       \
-                                               .freqSupp.lowSRI         = (lowRI)}  
-
-  #define  MDR_CPU_CFG_PLL_HSE_RES_DEF(src, N, Q, DV, delOTP, lowRI)    MDR_CPU_CFG_PLL_HSE_SRC_DEF(MDR_CLK_Resonator, N, Q, DV, delOTP, lowRI)
-  #define  MDR_CPU_CFG_PLL_HSE_GEN_DEF(src, N, Q, DV, delOTP, lowRI)    MDR_CPU_CFG_PLL_HSE_SRC_DEF(MDR_CLK_Generator, N, Q, DV, delOTP, lowRI)
-  
-#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-  #pragma clang diagnostic pop  
-#endif  
-
-  
 
   
 //=================   Доступ к регистрам блока ===============
@@ -264,31 +115,48 @@ __STATIC_INLINE bool MDR_LSE_EnableAndWaitReady(MDR_CLK_Source freqSource, uint3
 
 
 // --- LSI ---
-__STATIC_INLINE void MDR_LSI_EnableAndTrim(MDR_CLK_LSI_TRIM freqTrim)  
-  { BKP_REG63x_ClrSet(MDR_BKP_REG63_LSI_Trim_Msk, MDR_BKP_REG63_LSI_On_Msk | VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_LSI_Trim_Pos)); }
+#ifdef MDR_BKP_REG63_LSI_On_Msk
+  __STATIC_INLINE void MDR_LSI_EnableAndTrim(MDR_CLK_LSI_TRIM freqTrim)  
+    { BKP_REG63x_ClrSet(MDR_BKP_REG63_LSI_Trim_Msk, MDR_BKP_REG63_LSI_On_Msk | VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_LSI_Trim_Pos)); }
+    
+  __STATIC_INLINE void MDR_LSI_Enable  (void) {BKP_REG63x_Set(MDR_BKP_REG63_LSI_On_Msk);}                
+  __STATIC_INLINE void MDR_LSI_Disable (void) {BKP_REG63x_Clr(MDR_BKP_REG63_LSI_On_Msk);}
+#else
+  __STATIC_INLINE void MDR_LSI_EnableAndTrim(MDR_CLK_LSI_TRIM freqTrim)  
+    { BKP_REG63x_ClrSet(MDR_BKP_REG63_LSI_Trim_Msk | MDR_BKP_REG63_LSI_Dis_Msk, VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_LSI_Trim_Pos)); }
+    
+  __STATIC_INLINE void MDR_LSI_Enable  (void) {BKP_REG63x_Clr(MDR_BKP_REG63_LSI_Dis_Msk);}                
+  __STATIC_INLINE void MDR_LSI_Disable (void) {BKP_REG63x_Set(MDR_BKP_REG63_LSI_Dis_Msk);}
+#endif
+
+bool MDR_LSI_GetReady(void);  
+  //  Включает генератор LSE с ожиданием готовности LSE_Ready. Возвращает LSE_Ready.
+__STATIC_INLINE 
+bool MDR_LSI_EnableAndWaitReady(MDR_CLK_LSI_TRIM freqTrim, uint32_t timeoutCycles)
+                               { MDR_LSI_EnableAndTrim(freqTrim);  
+                                 return WaitCondition(timeoutCycles, MDR_LSI_GetReady);}
   
-__STATIC_INLINE void MDR_LSI_Enable  (void) {BKP_REG63x_Set(MDR_BKP_REG63_LSI_On_Msk);}                
-__STATIC_INLINE void MDR_LSI_Disable (void) {BKP_REG63x_Clr(MDR_BKP_REG63_LSI_On_Msk);}
-                bool MDR_LSI_GetReady(void);
-
-//  Включает генератор LSE с ожиданием готовности LSE_Ready. Возвращает LSE_Ready.
-__STATIC_INLINE bool MDR_LSI_EnableAndWaitReady(MDR_CLK_LSI_TRIM freqTrim, uint32_t timeoutCycles)
-                                              { MDR_LSI_EnableAndTrim(freqTrim);  
-                                                return WaitCondition(timeoutCycles, MDR_LSI_GetReady);}
-
-
 // --- HSI ---
-__STATIC_INLINE void MDR_HSI_EnableAndTrim(MDR_CLK_HSI_TRIM freqTrim) 
-  { BKP_REG63x_ClrSet(MDR_BKP_REG63_HSI_Trim_Msk, MDR_BKP_REG63_HSI_On_Msk | VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_HSI_Trim_Pos)); }
-  
-__STATIC_INLINE void MDR_HSI_Enable  (void) {BKP_REG63x_Set(MDR_BKP_REG63_HSI_On_Msk);}
-                bool MDR_HSI_GetReady(void);
-__STATIC_INLINE void MDR_HSI_Disable (void) { BKP_REG63x_Clr(MDR_BKP_REG63_HSI_On_Msk); }
+#ifdef MDR_BKP_REG63_HSI_On_Msk
+  __STATIC_INLINE void MDR_HSI_EnableAndTrim(MDR_CLK_HSI_TRIM freqTrim) 
+    { BKP_REG63x_ClrSet(MDR_BKP_REG63_HSI_Trim_Msk, MDR_BKP_REG63_HSI_On_Msk | VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_HSI_Trim_Pos)); }
+    
+  __STATIC_INLINE void MDR_HSI_Enable  (void) {BKP_REG63x_Set(MDR_BKP_REG63_HSI_On_Msk);}
+  __STATIC_INLINE void MDR_HSI_Disable (void) { BKP_REG63x_Clr(MDR_BKP_REG63_HSI_On_Msk); }
+#else
+  __STATIC_INLINE void MDR_HSI_EnableAndTrim(MDR_CLK_HSI_TRIM freqTrim) 
+    { BKP_REG63x_ClrSet(MDR_BKP_REG63_HSI_Trim_Msk | MDR_BKP_REG63_HSI_Dis_Msk, VAL2FLD_Pos(freqTrim, MDR_BKP_REG63_HSI_Trim_Pos)); }
+    
+  __STATIC_INLINE void MDR_HSI_Enable  (void) {BKP_REG63x_Clr(MDR_BKP_REG63_HSI_Dis_Msk);}
+  __STATIC_INLINE void MDR_HSI_Disable (void) { BKP_REG63x_Set(MDR_BKP_REG63_HSI_Dis_Msk); }  
+#endif
 
+bool MDR_HSI_GetReady(void);  
 //  Включает генератор HSI с ожиданием готовности HSI_Ready. Возвращает HSI_Ready.
-__STATIC_INLINE bool MDR_HSI_EnableAndWaitReady(MDR_CLK_HSI_TRIM freqTrim, uint32_t timeoutCycles)
-                                              { MDR_HSI_EnableAndTrim(freqTrim);  
-                                                return WaitCondition(timeoutCycles, MDR_HSI_GetReady); }
+__STATIC_INLINE 
+bool MDR_HSI_EnableAndWaitReady(MDR_CLK_HSI_TRIM freqTrim, uint32_t timeoutCycles)
+                               { MDR_HSI_EnableAndTrim(freqTrim);  
+                                 return WaitCondition(timeoutCycles, MDR_HSI_GetReady); }
 
 // --- HSE ---
 __STATIC_INLINE void MDR_HSEx_Enable(MDR_RST_HSE_Type *HSEx, MDR_CLK_Source freqSource)
@@ -357,28 +225,45 @@ __STATIC_INLINE bool MDR_PLLx_EnableAndWaitReady(MDR_RST_PLL_Type *PLLx, MDR_PLL
 //=======     Подстройка питания и временных параметров под частоту   ==========
 //==============================================================================
 //  Выставлять ДО перехода на более высокие частоты, и ПОСЛЕ перехода на более низкие.
-  
+
 //  Рассчет подстройка LDO от частоты
+MDR_CLK_LDO_LowSRI    MDR_FreqCPU_ToLowSRI(uint32_t CPU_FregHz);
+                                                  
+//  Применение параметров в микроконтроллер
 void MDR_CLK_ApplyFreqSupport_LDO(MDR_CLK_LDO_LowSRI  lowSRI);
 
-//  Задержка доступа к ОТР памяти от частоты CPU -  Warning TODO: Add implementation, Run from RAM!!!
-bool MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP);// __RAM_EXEC; 
+#ifdef MDR_HAS_OTP
+  //  Задержка доступа к ОТР памяти от частоты CPU -  Warning TODO: Add implementation, Run from RAM!!!
+  bool MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP);// __RAM_EXEC; 
 
 
-// Все сместе - Функция регулирует LDO под частоту тактирования и выставляет задержку для доступа к OTP
-__STATIC_INLINE
-void MDR_CPU_ApplyFreqSupportF(MDR_CLK_Delay_OTP delayAccessOTP, MDR_CLK_LDO_LowSRI  lowSRI)
-{
-  MDR_CLK_ApplyFreqSupport_LDO(lowSRI); 
-  MDR_CLK_ApplyFreqSupport_OTP(delayAccessOTP);
-}
-                              
-__STATIC_INLINE
-void MDR_CPU_ApplyFreqSupport(const MDR_CLK_FreqSupport *freqSupp) 
-{
-  MDR_CLK_ApplyFreqSupport_LDO(freqSupp->lowSRI); 
-  MDR_CLK_ApplyFreqSupport_OTP(freqSupp->delayAccessOTP);
-}
+  // Все сместе - Функция регулирует LDO под частоту тактирования и выставляет задержку для доступа к OTP
+  __STATIC_INLINE
+  void MDR_CPU_ApplyFreqSupportF(MDR_CLK_Delay_OTP delayAccessOTP, MDR_CLK_LDO_LowSRI  lowSRI)
+  {
+    MDR_CLK_ApplyFreqSupport_LDO(lowSRI); 
+    MDR_CLK_ApplyFreqSupport_OTP(delayAccessOTP);
+  }
+                                
+  __STATIC_INLINE
+  void MDR_CPU_ApplyFreqSupport(const MDR_CLK_FreqSupport *freqSupp) 
+  {
+    MDR_CLK_ApplyFreqSupport_LDO(freqSupp->lowSRI); 
+    MDR_CLK_ApplyFreqSupport_OTP(freqSupp->delayAccessOTP);
+  }
+#else
+  __STATIC_INLINE
+  void MDR_CPU_ApplyFreqSupportF(MDR_CLK_LDO_LowSRI  lowSRI)
+  {
+    MDR_CLK_ApplyFreqSupport_LDO(lowSRI); 
+  }
+                                
+  __STATIC_INLINE
+  void MDR_CPU_ApplyFreqSupport(const MDR_CLK_FreqSupport *freqSupp) 
+  {
+    MDR_CLK_ApplyFreqSupport_LDO(freqSupp->lowSRI); 
+  }
+#endif
 
 //============================================================================
 //=============     Тактирование ядра от MAXCLK               ================
@@ -423,7 +308,8 @@ typedef enum {
   MDR_SET_CLOCK_OK,
   MDR_SET_CLOCK_ERR__GEN_NotReady,
   MDR_SET_CLOCK_ERR__SRC_USING,
-  MDR_SET_CLOCK_ERR__PLL_NotReady,    
+  MDR_SET_CLOCK_ERR__PLL_NotReady,
+  MDR_SET_CLOCK_ERR__Undef,
 } MDR_CPU_SetClockResult;
 
 
@@ -435,19 +321,12 @@ void MDR_CPU_SetClock_srcMAXCLK(MDR_MAXCLK_SEL selMaxClk, uint16_t divMaxToCpu_0
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSI(const MDR_CPU_CfgLSI *cfgLSI, uint32_t timeoutCycles);
 
 //  Тактирование ядра от внешнего генератора LSE, частоту необходимо указать в MDR_Config
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE(MDR_CLK_Source freqSource, const MDR_CPU_CfgLSE *cfgLSE, uint32_t timeoutCycles);
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE(const MDR_CPU_CfgLSE *cfgLSE, uint32_t timeoutCycles);
   
                               
 //-----------------------------------------------------------------------                         
 //  Тактирование ядра от внутреннего генератора HSI, ~8МГц (6МГц .. 10МГц)
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_srcHSI(MDR_MAXCLK_SEL selMaxClk, const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq);
-
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq) 
-                         {return MDR_CPU_SetClock_srcHSI(MAXCLK_HSI, cfgHSI, timeoutCycles, fromLowerFreq);}
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_div2(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq) 
-                         {return MDR_CPU_SetClock_srcHSI(MAXCLK_HSIdiv2, cfgHSI, timeoutCycles, fromLowerFreq);}
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bool fromLowerFreq);
 
 
 //-----------------------------------------------------------------------                         
@@ -458,15 +337,10 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_srcHSEx(MDR_RST_HSE_Type *HSEx, MDR_MAX
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq) 
                          {return MDR_CPU_SetClock_srcHSEx(MDR_CLOCK_HSE0, MAXCLK_HSE0, cfgHSE, timeoutCycles, fromLowerFreq);}
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0_div2(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq) 
-                         {return MDR_CPU_SetClock_srcHSEx(MDR_CLOCK_HSE0, MAXCLK_HSE0div2, cfgHSE, timeoutCycles, fromLowerFreq);}                         
+
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq) 
                          {return MDR_CPU_SetClock_srcHSEx(MDR_CLOCK_HSE1, MAXCLK_HSE1, cfgHSE, timeoutCycles, fromLowerFreq);}  
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1_div2(const MDR_CPU_CfgHSE *cfgHSE, uint32_t timeoutCycles, bool fromLowerFreq) 
-                         {return MDR_CPU_SetClock_srcHSEx(MDR_CLOCK_HSE1, MAXCLK_HSE1div2, cfgHSE, timeoutCycles, fromLowerFreq);}
 
 //  defaults from MDR_Conig
 #if MDR_HSE_IND_Def == 0
@@ -496,28 +370,11 @@ __STATIC_INLINE
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_PLL2(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
                          {return MDR_CPU_SetClock_PLL_srcHSI(MDR_CLOCK_PLL2, MAXCLK_PLL2, cfgPLL_HSI, MDR_PLL_IN_HSI, fromLowerFreq);}
                           
-//  HSI/2 to PLLx
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_div2_PLL0(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
-                         {return MDR_CPU_SetClock_PLL_srcHSI(MDR_CLOCK_PLL0, MAXCLK_PLL0, cfgPLL_HSI, MDR_PLL_IN_HSIdiv2, fromLowerFreq);}
-
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_div2_PLL1(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
-                         {return MDR_CPU_SetClock_PLL_srcHSI(MDR_CLOCK_PLL1, MAXCLK_PLL1, cfgPLL_HSI, MDR_PLL_IN_HSIdiv2, fromLowerFreq);}
-                          
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_div2_PLL2(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
-                         {return MDR_CPU_SetClock_PLL_srcHSI(MDR_CLOCK_PLL2, MAXCLK_PLL2, cfgPLL_HSI, MDR_PLL_IN_HSIdiv2, fromLowerFreq);}                          
-
 
 //  defaults from MDR_Conig
 __STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_PLL(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_HSI(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
                          {return MDR_CPU_SetClock_PLL_srcHSI(MDR_PLL_Def, MDR_MAXCLK_SEL_Def, cfgPLL_HSI, MDR_PLL_IN_HSI, fromLowerFreq);}
-
-__STATIC_INLINE 
-MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_div2_PLL(const MDR_CPU_PLL_CfgHSI  *cfgPLL_HSI, bool fromLowerFreq)
-                         {return MDR_CPU_SetClock_PLL_srcHSI(MDR_PLL_Def, MDR_MAXCLK_SEL_Def, cfgPLL_HSI, MDR_PLL_IN_HSIdiv2, fromLowerFreq);}
 
                          
 //-----------------------------------------------------------------------                         
@@ -542,66 +399,32 @@ MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE0_PLL1(const MDR_CPU_PLL_CfgHSE  *cfg
 __STATIC_INLINE 
 MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE0_PLL2(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
   {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL2, MDR_CLOCK_HSE0, MAXCLK_PLL2, cfgPLL_HSE, MDR_PLL_IN_HSE0, fromLowerFreq);}
-                              
-
-//  HSE0/2 to PLL0
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE0_div2_PLL0(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL0, MDR_CLOCK_HSE0, MAXCLK_PLL0, cfgPLL_HSE, MDR_PLL_IN_HSE0div2, fromLowerFreq);}
-//  HSE0/2 to PLL1
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE0_div2_PLL1(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL1, MDR_CLOCK_HSE0, MAXCLK_PLL1, cfgPLL_HSE, MDR_PLL_IN_HSE0div2, fromLowerFreq);}
-
-//  HSE0/2 to PLL2
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE0_div2_PLL2(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL2, MDR_CLOCK_HSE0, MAXCLK_PLL2, cfgPLL_HSE, MDR_PLL_IN_HSE0div2, fromLowerFreq);}                              
-                              
+                                                            
 
 //---  HSE1 to PLL1, PLL2, PLL3  ---
 //  HSE1 to PLL0
 __STATIC_INLINE 
 MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_PLL0(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL0, MDR_CLOCK_HSE0, MAXCLK_PLL0, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
+  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL0, MDR_CLOCK_HSE1, MAXCLK_PLL0, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
 //  HSE1 to PLL1
 __STATIC_INLINE 
 MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_PLL1(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL1, MDR_CLOCK_HSE0, MAXCLK_PLL1, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
+  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL1, MDR_CLOCK_HSE1, MAXCLK_PLL1, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
 
 //  HSE1 to PLL2
 __STATIC_INLINE 
 MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_PLL2(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL2, MDR_CLOCK_HSE0, MAXCLK_PLL2, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
-                              
-
-//  HSE1/2 to PLL0
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_div2_PLL0(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL0, MDR_CLOCK_HSE0, MAXCLK_PLL0, cfgPLL_HSE, MDR_PLL_IN_HSE1div2, fromLowerFreq);}
-//  HSE1/2 to PLL1
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_div2_PLL1(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL1, MDR_CLOCK_HSE0, MAXCLK_PLL1, cfgPLL_HSE, MDR_PLL_IN_HSE1div2, fromLowerFreq);}
-
-//  HSE1/2 to PLL2
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE1_div2_PLL2(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL2, MDR_CLOCK_HSE0, MAXCLK_PLL2, cfgPLL_HSE, MDR_PLL_IN_HSE1div2, fromLowerFreq);}                              
-                              
+  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_CLOCK_PLL2, MDR_CLOCK_HSE1, MAXCLK_PLL2, cfgPLL_HSE, MDR_PLL_IN_HSE1, fromLowerFreq);}
+                                      
   
 // --- defaults from MDR_Conig ---
 __STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE_PLL(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
+MDR_CPU_SetClockResult MDR_CPU_SetClock_PLL_HSE(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
   {return MDR_CPU_SetClock_PLL_srcHSE(MDR_PLL_Def, MDR_HSE_Def, MDR_MAXCLK_SEL_Def, cfgPLL_HSE, MDR_PLL_IN_HSE_Def, fromLowerFreq);}
-
-__STATIC_INLINE 
-MDR_CPU_SetClockResult MDR_CPU_SetClock_HSE_div2_PLL(const MDR_CPU_PLL_CfgHSE  *cfgPLL_HSE, bool fromLowerFreq)
-  {return MDR_CPU_SetClock_PLL_srcHSE(MDR_PLL_Def, MDR_HSE_Def, MDR_MAXCLK_SEL_Def, cfgPLL_HSE, MDR_PLL_IN_HSEdiv2_Def, fromLowerFreq);}
 
   
 //------------------------------------------------------------------------------------------------------------------------  
-//-------------------------   Эти же функции SetClock_... с параметрами по умолчанию из MDR_Config  ----------------------  
+//-------------------------   Эти же функции SetClock_... с параметрами по умолчанию из MDR_Config.h  ----------------------  
 //------------------------------------------------------------------------------------------------------------------------
 //  Reset Block
 __STATIC_INLINE 
@@ -616,12 +439,7 @@ bool MDR_CLK_ResetBlock_def(bool fromLowerFreq)
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSI_def(void)
 { 
-  MDR_CPU_CfgLSI cfgLSI = {
-    .freqTrim       = LSI_FREQ_TRIM, 
-    .divMaxToCpu_0  = 0,
-    .freqSupp.delayAccessOTP = LSI_OTP_DELAY,
-    .freqSupp.lowSRI = LSI_LOW_SRI,
-  };
+  MDR_CPU_CfgLSI cfgLSI = MDR_CPU_CFG_LSI_DEF;
   return MDR_CPU_SetClock_LSI(&cfgLSI, LSI_TIMEOUT);
 }
 
@@ -630,21 +448,15 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSI_def(void)
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE_Res_def(void)
 { 
-  MDR_CPU_CfgLSE cfgLSE = {
-    .divMaxToCpu_0 = 0, 
-    .freqSupp.delayAccessOTP = LSE_OTP_DELAY, 
-    .freqSupp.lowSRI = LSE_LOW_SRI};
-  return MDR_CPU_SetClock_LSE(MDR_CLK_Resonator, &cfgLSE, LSE_TIMEOUT);
+  MDR_CPU_CfgLSE cfgLSE = MDR_CPU_CFG_LSE_RES_DEF;
+  return MDR_CPU_SetClock_LSE(&cfgLSE, LSE_TIMEOUT);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_LSE_Gen_def(void)
 { 
-  MDR_CPU_CfgLSE cfgLSE = {
-    .divMaxToCpu_0 = 0, 
-    .freqSupp.delayAccessOTP = LSE_OTP_DELAY, 
-    .freqSupp.lowSRI = LSE_LOW_SRI};
-  return MDR_CPU_SetClock_LSE(MDR_CLK_Generator, &cfgLSE, LSE_TIMEOUT);  
+  MDR_CPU_CfgLSE cfgLSE = MDR_CPU_CFG_LSE_GEN_DEF;
+  return MDR_CPU_SetClock_LSE(&cfgLSE, LSE_TIMEOUT);  
 }
 
 
@@ -659,8 +471,8 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_def(bool fromLowerFreq)
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_def(bool fromLowerFreq) 
 {
-  MDR_CPU_CfgHSI cfgHSI = MDR_CPU_CFG_HSI_DEF;
-  return MDR_CPU_SetClock_HSI_div2(&cfgHSI, HSI_TIMEOUT, fromLowerFreq);
+  MDR_CPU_CfgHSI cfgHSI = MDR_CPU_CFG_HSI_DIV2_DEF;
+  return MDR_CPU_SetClock_HSI(&cfgHSI, HSI_TIMEOUT, fromLowerFreq);
 }
 
 
@@ -680,12 +492,12 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE_def(MDR_CLK_Source freqSource, bool
 __STATIC_INLINE
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSEdiv2_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
 {
-  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_SRC_DEF(freqSource);
+  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_SRC_DIV_DEF(freqSource, true);
     
 #if MDR_HSE_IND_Def == 0  
-  return MDR_CPU_SetClock_HSE0_div2(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);  
+  return MDR_CPU_SetClock_HSE0(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);  
 #else
-  return MDR_CPU_SetClock_HSE1_div2(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);  
+  return MDR_CPU_SetClock_HSE1(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);  
 #endif
 }
 
@@ -697,8 +509,9 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSEdiv2_def(MDR_CLK_Source freqSource, 
 
 
 //  HSI_PLL
-#define MDR_CPU_SetClock_HSI_PLLx_def(pCfgPLL, pFreqSupp, fromLower, setFunc)    MDR_CPU_PLL_CfgHSI cfgPLL_HSI = {          \
+#define MDR_CPU_SetClock_HSI_PLLx_def(pCfgPLL, pFreqSupp, fromLower, div2, setFunc)    MDR_CPU_PLL_CfgHSI cfgPLL_HSI = {          \
                                                                                    .freqTrim          = HSI_FREQ_TRIM,      \
+                                                                                   .selDiv2           = div2,            \
                                                                                    .timeoutCycles_HSI = HSI_TIMEOUT,        \
                                                                                    .cfgPLL            = *pCfgPLL,           \
                                                                                    .timeoutCycles_PLL = PLL_TIMEOUT,        \
@@ -708,35 +521,35 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSEdiv2_def(MDR_CLK_Source freqSource, 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_PLL0_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_PLL0);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSI_PLL0);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_PLL1_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_PLL1);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSI_PLL1);
 }
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSI_PLL2_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_PLL2);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSI_PLL2);
 }
 
 //  HSI/2 PLL
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_PLL0_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_div2_PLL0);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSI_PLL0);
 }
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_PLL1_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_div2_PLL1);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSI_PLL1);
 }
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_PLL2_def(MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSI_div2_PLL2);
+  MDR_CPU_SetClock_HSI_PLLx_def(cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSI_PLL2);
 }
                                                                                  
 #if MDR_PLL_IND_Def == 0
@@ -752,7 +565,8 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_PLL2_def(MDR_CLK_CfgPLL *cfgPLL
 
 
 //  HSE0 to PLLx
-#define MDR_CPU_SetClock_HSEx_PLLx_Def(freqSrc, timeHSEx, pCfgPLL, pFreqSupp, fromLower, setFunc)    MDR_CPU_PLL_CfgHSE cfgPLL_HSE = {         \
+#define MDR_CPU_SetClock_HSEx_PLLx_Def(freqSrc, timeHSEx, pCfgPLL, pFreqSupp, fromLower, div2, setFunc)    MDR_CPU_PLL_CfgHSE cfgPLL_HSE = {         \
+                                                                                                       .selDiv2           = div2,              \
                                                                                                        .freqSource        = freqSrc,           \
                                                                                                        .timeoutCycles_HSE = timeHSEx,          \
                                                                                                        .cfgPLL            = *pCfgPLL,          \
@@ -765,76 +579,76 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_PLL2_def(MDR_CLK_CfgPLL *cfgPLL
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0_PLL0_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_PLL0);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE0_PLL0);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0_PLL1_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_PLL1);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE0_PLL1);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0_PLL2_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_PLL2);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE0_PLL2);
 }
 
 //  HSE1 to PLLx
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1_PLL0_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_PLL1);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE1_PLL1);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1_PLL1_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_PLL1);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE1_PLL1);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1_PLL2_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_PLL2);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, false, MDR_CPU_SetClock_HSE1_PLL2);
 }
 
 //  HSE0/2 to PLL
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0div2_PLL0_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_div2_PLL0);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE0_PLL0);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0div2_PLL1_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_div2_PLL1);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE0_PLL1);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0div2_PLL2_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE0_div2_PLL2);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE0_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE0_PLL2);
 }
 
 //  HSE1/2 to PLL
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1div2_PLL0_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_div2_PLL0);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE1_PLL0);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1div2_PLL1_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_div2_PLL1);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE1_PLL1);
 }
 
 __STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1div2_PLL2_Def(MDR_CLK_Source freqSource, MDR_CLK_CfgPLL *cfgPLL, MDR_CLK_FreqSupport *freqSupp, bool fromLowerFreq) 
 {
-  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, MDR_CPU_SetClock_HSE1_div2_PLL2);
+  MDR_CPU_SetClock_HSEx_PLLx_Def(freqSource, HSE1_TIMEOUT, cfgPLL, freqSupp, fromLowerFreq, true, MDR_CPU_SetClock_HSE1_PLL2);
 }
 
                                                                                               

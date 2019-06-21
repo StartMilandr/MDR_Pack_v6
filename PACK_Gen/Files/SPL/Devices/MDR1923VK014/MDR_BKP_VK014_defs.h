@@ -35,16 +35,15 @@ extern "C" {
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
 //-------   Reg_61  ----------
-typedef enum {                     /*!< MDR_BKP_REG_61_TMR0_LDO1_SRILow                                           */ 
-  MDR_BKP_LDO_SRILow_ge10MHz = 0,  /*!< ge10MHz : Extra_I about ~300uA                                            */
-  MDR_BKP_LDO_SRILow_ge200KHz = 1, /*!< ge200KHz : Extra_I about ~7uA                                             */
-  MDR_BKP_LDO_SRILow_ge500KHz = 2, /*!< ge500KHz : Extra_I about ~20uA                                            */
-  MDR_BKP_LDO_SRILow_ge1MHz = 3,   /*!< ge1MHz : Extra_I about ~80uA                                              */
-  MDR_BKP_LDO_SRILow_GensOff = 4,  /*!< GensOff : Extra_I about ~2uA                                              */
-  MDR_BKP_LDO_SRILow_ge40MHz = 5,  /*!< ge40MHz : Extra_I about ~900uA                                            */
-  MDR_BKP_LDO_SRILow_ge80MHz = 6,  /*!< ge80MHz : Extra_I about ~5mA                                              */
-  MDR_BKP_LDO_SRILow_gt80MHz = 7,  /*!< gt80MHz : Extra_I about ~20mA                                             */
-  
+typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_LDO1_SRILow                                           */ 
+  MDR_BKP_LDO_SRILow_lt10MHz  = 0,  /*!< LessThen 10MHz : Extra_I about ~300uA                                            */
+  MDR_BKP_LDO_SRILow_lt200KHz = 1,  /*!< lt200KHz : Extra_I about ~7uA                                             */
+  MDR_BKP_LDO_SRILow_lt500KHz = 2,  /*!< lt500KHz : Extra_I about ~20uA                                            */
+  MDR_BKP_LDO_SRILow_lt1MHz   = 3,  /*!< lt1MHz : Extra_I about ~80uA                                              */
+  MDR_BKP_LDO_SRILow_GensOff  = 4,  /*!< GensOff : Extra_I about ~2uA                                              */
+  MDR_BKP_LDO_SRILow_lt40MHz  = 5,  /*!< lt40MHz : Extra_I about ~900uA                                            */
+  MDR_BKP_LDO_SRILow_lt80MHz  = 6,  /*!< lt80MHz : Extra_I about ~5mA                                              */
+  MDR_BKP_LDO_SRILow_gt80MHz  = 7,  /*!< lt80MHz : Extra_I about ~20mA                                             */  
 } MDR_BKP_LDO_SRILow;
 
 typedef enum {                     /*!< MDR_BKP_REG_61_TMR0_LDO1_Trim                                             */ 

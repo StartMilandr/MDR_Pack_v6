@@ -11,6 +11,10 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifdef MDRB_LCD_IN_PORT
+  #define MDRB_HAS_LCD
+#endif
+
 
 //============    Функции, общие для всех экранов =================
 //  Функции инициализации

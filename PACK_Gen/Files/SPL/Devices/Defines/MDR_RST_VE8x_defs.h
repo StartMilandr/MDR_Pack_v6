@@ -169,16 +169,16 @@ typedef struct {
 
 typedef struct {
     union {
-    __IOM uint32_t        CPU_CHK0;             /*!< (@ 0x00000014) Clock Checker Register                                     */
-    MDR_RST_CLK_CHK0_Bits CPU_CHK0_b;
+    __IOM uint32_t        CLK_CHK0;             /*!< (@ 0x00000014) Clock Checker Register                                     */
+    MDR_RST_CLK_CHK0_Bits CLK_CHK0_b;
   } ;  
   union {
-    __IOM uint32_t        CPU_CHK1;             /*!< (@ 0x00000018) Clock Checker Register                                     */
-    MDR_RST_CLK_CHK1_Bits CPU_CHK1_b;
+    __IOM uint32_t        CLK_CHK1;             /*!< (@ 0x00000018) Clock Checker Register                                     */
+    MDR_RST_CLK_CHK1_Bits CLK_CHK1_b;
   } ;  
   union {
-    __IOM uint32_t        CPU_CHK2;                    /*!< (@ 0x0000001C) Clock Checker Register                                     */
-    MDR_RST_CLK_CHK1_Bits CPU_CHK2_b;
+    __IOM uint32_t        CLK_CHK2;             /*!< (@ 0x0000001C) Clock Checker Register                                     */
+    MDR_RST_CLK_CHK2_Bits CLK_CHK2_b;
   } ;
 } MDR_RST_CLK_CHECKER;
 

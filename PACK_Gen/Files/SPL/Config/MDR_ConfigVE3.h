@@ -31,7 +31,7 @@
 #define HSE_DELAY_EEPROM    EEPROM_Delay_le25MHz
 
 #define LSE_FREQ_HZ         32768UL
-#define LSE_TIMEOUT         0x0600UL
+#define LSE_TIMEOUT         0xF0000UL
 #define LSE_LOW_SRI         MDR_LOWRI_le40MHz
 #define LSE_DELAY_EEPROM    EEPROM_Delay_le25MHz
 

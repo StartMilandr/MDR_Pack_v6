@@ -270,10 +270,10 @@ void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgRegs);
 
 typedef struct {
   // GPIO Port
-  MDR_PORT_Type *PORTx;
+  MDR_PORT_Type        *PORTx;
   // Clock Enable
-  volatile uint32_t*      RST_ClockEn_Addr;
-  uint32_t       ClockEnaMask;
+  volatile uint32_t*    RST_ClockEn_Addr;
+  uint32_t              ClockEnaMask;
 } MDR_GPIO_Port;
 
 extern const MDR_GPIO_Port    GPIO_A_Port;

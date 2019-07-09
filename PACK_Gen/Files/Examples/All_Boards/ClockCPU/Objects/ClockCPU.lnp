@@ -1,0 +1,15 @@
+--cpu=Cortex-M4.fp
+".\objects\main.o"
+".\objects\clockitems.o"
+".\objects\mdrb_buttons.o"
+".\objects\mdrb_leds.o"
+".\objects\startup_mdr1986ve8.o"
+".\objects\system_mdr1986ve8.o"
+".\objects\mdr_funcs.o"
+".\objects\mdr_gpio_ve8x.o"
+".\objects\mdr_systimer.o"
+".\objects\mdr_rst_clock_ve8x.o"
+--strict --scatter ".\Objects\ClockCPU.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\ClockCPU.map" -o .\Objects\ClockCPU.axf

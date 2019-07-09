@@ -1,0 +1,1939 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;/******************************************************
+                       ***********************/
+    2 00000000         ;/* 1986VE8T.s: Startup file for ARM Cortex-M4F Device F
+                       amily                   */
+    3 00000000         ;/******************************************************
+                       ***********************/
+    4 00000000         ;/* <<< Use Configuration Wizard in Context Menu >>>    
+                                             */
+    5 00000000         ;/******************************************************
+                       ***********************/
+    6 00000000         ;/* This file is part of the uVision/ARM development too
+                       ls.                   */
+    7 00000000         ;/* Copyright (c) 2005-2008 Keil Software. All rights re
+                       served.               */
+    8 00000000         ;/* This software may only be used under the terms of a 
+                       valid, current,       */
+    9 00000000         ;/* end user licence from KEIL for a compatible version 
+                       of KEIL software      */
+   10 00000000         ;/* development tools. Nothing else gives you the right 
+                       to use this software. */
+   11 00000000         ;/******************************************************
+                       ***********************/
+   12 00000000         
+   13 00000000         
+   14 00000000         ; <h> Stack Configuration
+   15 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   16 00000000         ; </h>
+   17 00000000         
+   18 00000000 00001000 
+                       Stack_Size
+                               EQU              0x00001000
+   19 00000000         
+   20 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
+=3
+   21 00000000         Stack_Mem
+                               SPACE            Stack_Size
+   22 00001000         __initial_sp
+   23 00001000         
+   24 00001000         
+   25 00001000         ; <h> Heap Configuration
+   26 00001000         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   27 00001000         ; </h>
+   28 00001000         
+   29 00001000 00001000 
+                       Heap_Size
+                               EQU              0x00001000
+   30 00001000         
+   31 00001000                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+3
+   32 00000000         __heap_base
+   33 00000000         Heap_Mem
+                               SPACE            Heap_Size
+   34 00001000         __heap_limit
+   35 00001000         
+   36 00001000                 PRESERVE8
+   37 00001000                 THUMB
+   38 00001000         
+   39 00001000         ; Vector Table Mapped to Address 0 at Reset
+   40 00001000         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   41 00001000                 AREA             RESET, DATA, READONLY
+   42 00000000                 EXPORT           __Vectors
+   43 00000000                 EXPORT           __Vectors_End
+   44 00000000                 EXPORT           __Vectors_Size
+   45 00000000         
+   46 00000000 00000000 
+                       __Vectors
+                               DCD              __initial_sp ; Top of Stack
+   47 00000004 00000000        DCD              Reset_Handler ; Reset Handler
+   48 00000008 00000000        DCD              NMI_Handler ; NMI Handler
+   49 0000000C 00000000        DCD              HardFault_Handler ; Hard Fault 
+                                                            Handler
+   50 00000010 00000000        DCD              MemoryMngFault_Handler ; Memory
+                                                            MngFault_Handler
+   51 00000014 00000000        DCD              BusFault_Handler 
+                                                            ; BusFault_Handler
+   52 00000018 00000000        DCD              UsageFault_Handler ; UsageFault
+                                                            _Handler
+   53 0000001C 00000000        DCD              0           ; Reserved
+   54 00000020 00000000        DCD              0           ; Reserved
+   55 00000024 00000000        DCD              0           ; Reserved
+   56 00000028 00000000        DCD              0           ; Reserved
+   57 0000002C 00000000        DCD              SVC_Handler ; SVCall Handler
+   58 00000030 00000000        DCD              0           ; Reserved
+   59 00000034 00000000        DCD              0           ; Reserved
+   60 00000038 00000000        DCD              PendSV_Handler ; PendSV Handler
+                                                            
+   61 0000003C 00000000        DCD              SysTick_Handler 
+                                                            ; SysTick Handler
+   62 00000040         
+   63 00000040         ; External Interrupts - MDR1986BE8 Specific 
+   64 00000040 00000000        DCD              0           ; Reserved0
+   65 00000044 00000000        DCD              0           ; Reserved1
+   66 00000048 00000000        DCD              0           ; Reserved2
+   67 0000004C 00000000        DCD              0           ; Reserved3
+   68 00000050 00000000        DCD              0           ; Reserved4
+   69 00000054 00000000        DCD              0           ; Reserved5
+   70 00000058 00000000        DCD              0           ; Reserved6
+   71 0000005C 00000000        DCD              0           ; Reserved7
+   72 00000060 00000000        DCD              0           ; Reserved8
+   73 00000064 00000000        DCD              0           ; Reserved9
+   74 00000068 00000000        DCD              0           ; Reserved10
+   75 0000006C 00000000        DCD              0           ; Reserved11
+   76 00000070 00000000        DCD              0           ; Reserved12
+   77 00000074 00000000        DCD              0           ; Reserved13
+   78 00000078 00000000        DCD              0           ; Reserved14
+   79 0000007C 00000000        DCD              0           ; Reserved15
+   80 00000080 00000000        DCD              0           ; Reserved16
+   81 00000084 00000000        DCD              0           ; Reserved17
+   82 00000088 00000000        DCD              0           ; Reserved18
+   83 0000008C 00000000        DCD              0           ; Reserved19
+   84 00000090 00000000        DCD              0           ; Reserved20
+   85 00000094 00000000        DCD              0           ; Reserved21
+   86 00000098 00000000        DCD              0           ; Reserved22
+   87 0000009C 00000000        DCD              0           ; Reserved23
+   88 000000A0 00000000        DCD              0           ; Reserved24
+   89 000000A4 00000000        DCD              0           ; Reserved25
+   90 000000A8 00000000        DCD              0           ; Reserved26
+   91 000000AC 00000000        DCD              0           ; Reserved27
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   92 000000B0 00000000        DCD              0           ; Reserved28
+   93 000000B4 00000000        DCD              0           ; Reserved29
+   94 000000B8 00000000        DCD              0           ; Reserved30
+   95 000000BC 00000000        DCD              0           ; Reserved31
+   96 000000C0 00000000        DCD              FT_RESET0_4_IRQHandler ; 32: FT
+                                                            _IF0_Handler
+   97 000000C4 00000000        DCD              FT_EVENT0_4_IRQHandler ; 33: FT
+                                                            _IF1_Handler
+   98 000000C8 00000000        DCD              FT_EVENT5_8_IRQHandler ; 34: FT
+                                                            _IF2_Handler
+   99 000000CC 00000000        DCD              FT_EVENT9_12_IRQHandler ; 35: F
+                                                            T_IF3_Handler
+  100 000000D0 00000000        DCD              CLK_IRQHandler ; 36: CLK_IF_Han
+                                                            dler
+  101 000000D4 00000000        DCD              POWER_IRQHandler ; 37: PVD_IF_H
+                                                            andler
+  102 000000D8 00000000        DCD              RTC_IRQHandler ; 38: RTC_IF_Han
+                                                            dler
+  103 000000DC 00000000        DCD              BKP_IRQHandler ; 39: BKP_IF_Han
+                                                            dler
+  104 000000E0 00000000        DCD              EBC_ERROR0_IRQHandler ; 40: EXT
+                                                            _INTERROR0_Handler
+  105 000000E4 00000000        DCD              EBC_ERROR1_IRQHandler ; 41: EXT
+                                                            _INTERROR1_Handler
+  106 000000E8 00000000        DCD              EBC_ERROR2_IRQHandler ; 42: EXT
+                                                            _INTERROR2_Handler
+  107 000000EC 00000000        DCD              EBC_ERROR3_IRQHandler ; 43: EXT
+                                                            _INTERROR3_Handler
+  108 000000F0 00000000        DCD              EBC_ERROR4_IRQHandler ; 44: EXT
+                                                            _INTERROR4_Handler
+  109 000000F4 00000000        DCD              EBC_ERROR5_IRQHandler ; 45: EXT
+                                                            _INTERROR5_Handler
+  110 000000F8 00000000        DCD              EBC_ERROR6_IRQHandler ; 46: EXT
+                                                            _INTERROR6_Handler
+  111 000000FC 00000000        DCD              EBC_ERROR7_IRQHandler ; 47: EXT
+                                                            _INTERROR7_Handler
+  112 00000100 00000000        DCD              0           ; Reserved48
+  113 00000104 00000000        DCD              0           ; Reserved49
+  114 00000108 00000000        DCD              DMA_ERR_IRQHandler ; 50: DMA_ER
+                                                            R_Handler 
+  115 0000010C 00000000        DCD              DMA_DONE0_IRQHandler ; 51: DMA_
+                                                            DONE0_Handler 
+  116 00000110 00000000        DCD              DMA_DONE1_IRQHandler ; 52: DMA_
+                                                            DONE1_Handler
+  117 00000114 00000000        DCD              DMA_DONE2_IRQHandler ; 53: DMA_
+                                                            DONE2_Handler 
+  118 00000118 00000000        DCD              DMA_DONE3_IRQHandler ; 54: DMA_
+                                                            DONE3_Handler 
+  119 0000011C 00000000        DCD              DMA_DONE4_IRQHandler ; 55: DMA_
+                                                            DONE4_Handler 
+  120 00000120 00000000        DCD              DMA_DONE5_IRQHandler ; 56: DMA_
+                                                            DONE5_Handler 
+  121 00000124 00000000        DCD              DMA_DONE6_IRQHandler ; 57: DMA_
+                                                            DONE6_Handler 
+  122 00000128 00000000        DCD              DMA_DONE7_IRQHandler ; 58: DMA_
+                                                            DONE7_Handler 
+  123 0000012C 00000000        DCD              DMA_DONE8_IRQHandler ; 59: DMA_
+                                                            DONE8_Handler 
+  124 00000130 00000000        DCD              DMA_DONE9_IRQHandler ; 60: DMA_
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+                                                            DONE9_Handler 
+  125 00000134 00000000        DCD              DMA_DONE10_IRQHandler ; 61: DMA
+                                                            _DONE10_Handler 
+  126 00000138 00000000        DCD              DMA_DONE11_IRQHandler ; 62: DMA
+                                                            _DONE11_Handler
+  127 0000013C 00000000        DCD              DMA_DONE12_IRQHandler ; 63: DMA
+                                                            _DONE12_Handler 
+  128 00000140 00000000        DCD              DMA_DONE13_IRQHandler ; 64: DMA
+                                                            _DONE13_Handler
+  129 00000144 00000000        DCD              DMA_DONE14_IRQHandler ; 65: DMA
+                                                            _DONE14_Handler 
+  130 00000148 00000000        DCD              DMA_DONE15_IRQHandler ; 66: DMA
+                                                            _DONE15_Handler 
+  131 0000014C 00000000        DCD              DMA_DONE16_IRQHandler ; 67: DMA
+                                                            _DONE16_Handler 
+  132 00000150 00000000        DCD              DMA_DONE17_IRQHandler ; 68: DMA
+                                                            _DONE17_Handler 
+  133 00000154 00000000        DCD              DMA_DONE18_IRQHandler ; 69: DMA
+                                                            _DONE18_Handler 
+  134 00000158 00000000        DCD              DMA_DONE19_IRQHandler ; 70: DMA
+                                                            _DONE19_Handler 
+  135 0000015C 00000000        DCD              DMA_DONE20_IRQHandler ; 71: DMA
+                                                            _DONE20_Handler 
+  136 00000160 00000000        DCD              DMA_DONE21_IRQHandler ; 72: DMA
+                                                            _DONE21_Handler 
+  137 00000164 00000000        DCD              DMA_DONE22_IRQHandler ; 73: DMA
+                                                            _DONE22_Handler 
+  138 00000168 00000000        DCD              DMA_DONE23_IRQHandler ; 74: DMA
+                                                            _DONE23_Handler
+  139 0000016C 00000000        DCD              DMA_DONE24_IRQHandler ; 75: DMA
+                                                            _DONE24_Handler 
+  140 00000170 00000000        DCD              DMA_DONE25_IRQHandler ; 76: DMA
+                                                            _DONE25_Handler
+  141 00000174 00000000        DCD              DMA_DONE26_IRQHandler ; 77: DMA
+                                                            _DONE26_Handler 
+  142 00000178 00000000        DCD              DMA_DONE27_IRQHandler ; 78: DMA
+                                                            _DONE27_Handler 
+  143 0000017C 00000000        DCD              DMA_DONE28_IRQHandler ; 79: DMA
+                                                            _DONE28_Handler 
+  144 00000180 00000000        DCD              DMA_DONE29_IRQHandler ; 80: DMA
+                                                            _DONE29_Handler 
+  145 00000184 00000000        DCD              DMA_DONE30_IRQHandler ; 81: DMA
+                                                            _DONE30_Handler 
+  146 00000188 00000000        DCD              DMA_DONE31_IRQHandler ; 82: DMA
+                                                            _DONE31_Handler    
+                                                            
+  147 0000018C 00000000        DCD              PORTA_IRQHandler ; 83: IRQ_PORT
+                                                            A_Handler     
+  148 00000190 00000000        DCD              PORTB_IRQHandler ; 84: IRQ_PORT
+                                                            B_Handler
+  149 00000194 00000000        DCD              PORTC_IRQHandler ; 85: IRQ_PORT
+                                                            C_Handler
+  150 00000198 00000000        DCD              PORTD_IRQHandler ; 86: IRQ_PORT
+                                                            D_Handler
+  151 0000019C 00000000        DCD              PORTE_IRQHandler ; 87: IRQ_PORT
+                                                            E_Handler
+  152 000001A0 00000000        DCD              0           ; Reserved88
+  153 000001A4 00000000        DCD              ETH1_IRQHandler ; 89: INT_ETH0_
+                                                            Handler
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  154 000001A8 00000000        DCD              0           ; Reserved90 
+  155 000001AC 00000000        DCD              SPW1_IRQHandler ; 91: INT_SPW0_
+                                                            Handler
+  156 000001B0 00000000        DCD              0           ; Reserved92 
+  157 000001B4 00000000        DCD              TIMER1_IRQHandler ; 93: INT_TMR
+                                                            0_Handler
+  158 000001B8 00000000        DCD              TIMER2_IRQHandler ; 94: INT_TMR
+                                                            1_Handler
+  159 000001BC 00000000        DCD              TIMER3_IRQHandler ; 95: INT_TMR
+                                                            2_Handler
+  160 000001C0 00000000        DCD              TIMER4_IRQHandler ; 96: INT_TMR
+                                                            3_Handler
+  161 000001C4 00000000        DCD              0           ; Reserved97
+  162 000001C8 00000000        DCD              0           ; Reserved98
+  163 000001CC 00000000        DCD              CAN1_IRQHandler ; 99: INT_CAN0_
+                                                            Handler
+  164 000001D0 00000000        DCD              0           ; Reserved100
+  165 000001D4 00000000        DCD              0           ; Reserved101 
+  166 000001D8 00000000        DCD              0           ; Reserved102 
+  167 000001DC 00000000        DCD              0           ; Reserved103     
+  168 000001E0 00000000        DCD              SSP1_IRQHandler ; 104: INT_SSP0
+                                                            _Handler 
+  169 000001E4 00000000        DCD              0           ; Reserved105
+  170 000001E8 00000000        DCD              0           ; Reserved106 
+  171 000001EC 00000000        DCD              0           ; Reserved107 
+  172 000001F0 00000000        DCD              UART1_IRQHandler ; 108: INT_UAR
+                                                            T0_Handler
+  173 000001F4 00000000        DCD              UART2_IRQHandler ; 109: INT_UAR
+                                                            T1_Handler
+  174 000001F8 00000000        DCD              0           ; Reserved110 
+  175 000001FC 00000000        DCD              0           ; Reserved111 
+  176 00000200 00000000        DCD              0           ; Reserved112 
+  177 00000204 00000000        DCD              ARC1_RX_IRQHandler ; 113: INT_R
+                                                            X_ARC0_Handler
+  178 00000208 00000000        DCD              ARC1_TX_IRQHandler ; 114: INT_T
+                                                            X_ARC0_Handler
+  179 0000020C 00000000        DCD              0           ; Reserved115
+  180 00000210 00000000        DCD              0           ; Reserved116
+  181 00000214 00000000        DCD              MIL1_IRQHandler ; 117: INT_MIL0
+                                                            _Handler
+  182 00000218 00000000        DCD              MIL2_IRQHandler ; 118: INT_MIL1
+                                                            _Handler
+  183 0000021C 00000000        DCD              ADC1_IRQHandler ; 119: INT_ADC0
+                                                            _Handler
+  184 00000220 00000000        DCD              ADC2_IRQHandler ; 120: INT_ADC1
+                                                            _Handler
+  185 00000224 00000000        DCD              DAC1_IRQHandler ; 121: INT_DAC0
+                                                            _Handler
+  186 00000228 00000000        DCD              DAC2_IRQHandler ; 122: INT_DAC1
+                                                            _Handler           
+                                                            
+  187 0000022C         __Vectors_End
+  188 0000022C         
+  189 0000022C 0000022C 
+                       __Vectors_Size
+                               EQU              __Vectors_End - __Vectors
+  190 0000022C         
+  191 0000022C                 AREA             |.text|, CODE, READONLY
+  192 00000000         
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  193 00000000         
+  194 00000000         ; Reset Handler
+  195 00000000         
+  196 00000000         Reset_Handler
+                               PROC
+  197 00000000                 EXPORT           Reset_Handler   [WEAK]
+  198 00000000                 IMPORT           SystemInit
+  199 00000000                 IMPORT           __main
+  200 00000000         
+  201 00000000         ; --- FPU Enable ---
+  202 00000000         ; CPACR is located at address 0xE000ED88
+  203 00000000 F8DF 00C4       LDR.W            R0, =0xE000ED88
+  204 00000004         ; Read CPACR
+  205 00000004 6801            LDR              R1, [R0]
+  206 00000006         ; Set bits 20-23 to enable CP10 and CP11 coprocessors
+  207 00000006 F441 0170       ORR              R1, R1, #(0xF << 20)
+  208 0000000A         ; Write back the modified value to the CPACR
+  209 0000000A 6001            STR              R1, [R0]    ; wait for store to
+                                                             complete
+  210 0000000C F3BF 8F4F       DSB
+  211 00000010         ;reset pipeline now the FPU is enabled
+  212 00000010 F3BF 8F6F       ISB
+  213 00000014         
+  214 00000014 482D            LDR              R0, =SystemInit
+  215 00000016 4780            BLX              R0
+  216 00000018 482D            LDR              R0,=__main
+  217 0000001A 4700            BX               R0
+  218 0000001C                 ENDP
+  219 0000001C         
+  220 0000001C         
+  221 0000001C         ; Dummy Exception Handlers (infinite loops which can be 
+                       modified)                
+  222 0000001C         
+  223 0000001C         NMI_Handler
+                               PROC
+  224 0000001C                 EXPORT           NMI_Handler      [WEAK]
+  225 0000001C E7FE            B                .
+  226 0000001E                 ENDP
+  227 0000001E         
+  228 0000001E         HardFault_Handler
+                               PROC
+  229 0000001E                 EXPORT           HardFault_Handler    [WEAK]
+  230 0000001E E7FE            B                .
+  231 00000020                 ENDP
+  232 00000020         
+  233 00000020         MemoryMngFault_Handler
+                               PROC
+  234 00000020                 EXPORT           MemoryMngFault_Handler   [WEAK]
+  235 00000020 E7FE            B                .
+  236 00000022                 ENDP
+  237 00000022         
+  238 00000022         BusFault_Handler
+                               PROC
+  239 00000022                 EXPORT           BusFault_Handler    [WEAK]
+  240 00000022 E7FE            B                .
+  241 00000024                 ENDP
+  242 00000024         
+  243 00000024         UsageFault_Handler
+                               PROC
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  244 00000024                 EXPORT           UsageFault_Handler    [WEAK]
+  245 00000024 E7FE            B                .
+  246 00000026                 ENDP
+  247 00000026         
+  248 00000026         SVC_Handler
+                               PROC
+  249 00000026                 EXPORT           SVC_Handler     [WEAK]
+  250 00000026 E7FE            B                .
+  251 00000028                 ENDP
+  252 00000028         
+  253 00000028         PendSV_Handler
+                               PROC
+  254 00000028                 EXPORT           PendSV_Handler     [WEAK]
+  255 00000028 E7FE            B                .
+  256 0000002A                 ENDP
+  257 0000002A         
+  258 0000002A         SysTick_Handler
+                               PROC
+  259 0000002A                 EXPORT           SysTick_Handler     [WEAK]
+  260 0000002A E7FE            B                .
+  261 0000002C                 ENDP
+  262 0000002C         
+  263 0000002C         FT_RESET0_4_IRQHandler
+                               PROC
+  264 0000002C                 EXPORT           FT_RESET0_4_IRQHandler     [WEA
+K]
+  265 0000002C E7FE            B                .
+  266 0000002E                 ENDP
+  267 0000002E         
+  268 0000002E         FT_EVENT0_4_IRQHandler
+                               PROC
+  269 0000002E                 EXPORT           FT_EVENT0_4_IRQHandler     [WEA
+K]
+  270 0000002E E7FE            B                .
+  271 00000030                 ENDP
+  272 00000030         
+  273 00000030         FT_EVENT5_8_IRQHandler
+                               PROC
+  274 00000030                 EXPORT           FT_EVENT5_8_IRQHandler     [WEA
+K]
+  275 00000030 E7FE            B                .
+  276 00000032                 ENDP
+  277 00000032         
+  278 00000032         FT_EVENT9_12_IRQHandler
+                               PROC
+  279 00000032                 EXPORT           FT_EVENT9_12_IRQHandler     [WE
+AK]
+  280 00000032 E7FE            B                .
+  281 00000034                 ENDP
+  282 00000034         
+  283 00000034         CLK_IRQHandler
+                               PROC
+  284 00000034                 EXPORT           CLK_IRQHandler     [WEAK]
+  285 00000034 E7FE            B                .
+  286 00000036                 ENDP
+  287 00000036         
+  288 00000036         POWER_IRQHandler
+                               PROC
+  289 00000036                 EXPORT           POWER_IRQHandler     [WEAK]
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  290 00000036 E7FE            B                .
+  291 00000038                 ENDP
+  292 00000038         
+  293 00000038         RTC_IRQHandler
+                               PROC
+  294 00000038                 EXPORT           RTC_IRQHandler     [WEAK]
+  295 00000038 E7FE            B                .
+  296 0000003A                 ENDP
+  297 0000003A         
+  298 0000003A         BKP_IRQHandler
+                               PROC
+  299 0000003A                 EXPORT           BKP_IRQHandler     [WEAK]
+  300 0000003A E7FE            B                .
+  301 0000003C                 ENDP
+  302 0000003C         
+  303 0000003C         EBC_ERROR0_IRQHandler
+                               PROC
+  304 0000003C                 EXPORT           EBC_ERROR0_IRQHandler   [WEAK]
+  305 0000003C E7FE            B                .
+  306 0000003E                 ENDP
+  307 0000003E         
+  308 0000003E         EBC_ERROR1_IRQHandler
+                               PROC
+  309 0000003E                 EXPORT           EBC_ERROR1_IRQHandler   [WEAK]
+  310 0000003E E7FE            B                .
+  311 00000040                 ENDP
+  312 00000040         
+  313 00000040         EBC_ERROR2_IRQHandler
+                               PROC
+  314 00000040                 EXPORT           EBC_ERROR2_IRQHandler   [WEAK]
+  315 00000040 E7FE            B                .
+  316 00000042                 ENDP
+  317 00000042         
+  318 00000042         EBC_ERROR3_IRQHandler
+                               PROC
+  319 00000042                 EXPORT           EBC_ERROR3_IRQHandler   [WEAK]
+  320 00000042 E7FE            B                .
+  321 00000044                 ENDP
+  322 00000044         
+  323 00000044         EBC_ERROR4_IRQHandler
+                               PROC
+  324 00000044                 EXPORT           EBC_ERROR4_IRQHandler   [WEAK]
+  325 00000044 E7FE            B                .
+  326 00000046                 ENDP
+  327 00000046         
+  328 00000046         EBC_ERROR5_IRQHandler
+                               PROC
+  329 00000046                 EXPORT           EBC_ERROR5_IRQHandler   [WEAK]
+  330 00000046 E7FE            B                .
+  331 00000048                 ENDP
+  332 00000048         
+  333 00000048         EBC_ERROR6_IRQHandler
+                               PROC
+  334 00000048                 EXPORT           EBC_ERROR6_IRQHandler   [WEAK]
+  335 00000048 E7FE            B                .
+  336 0000004A                 ENDP
+  337 0000004A         
+  338 0000004A         EBC_ERROR7_IRQHandler
+                               PROC
+
+
+
+ARM Macro Assembler    Page 9 
+
+
+  339 0000004A                 EXPORT           EBC_ERROR7_IRQHandler   [WEAK]
+  340 0000004A E7FE            B                .
+  341 0000004C                 ENDP
+  342 0000004C         
+  343 0000004C         DMA_ERR_IRQHandler
+                               PROC
+  344 0000004C                 EXPORT           DMA_ERR_IRQHandler     [WEAK]
+  345 0000004C E7FE            B                .
+  346 0000004E                 ENDP
+  347 0000004E         
+  348 0000004E         DMA_DONE0_IRQHandler
+                               PROC
+  349 0000004E                 EXPORT           DMA_DONE0_IRQHandler    [WEAK]
+  350 0000004E E7FE            B                .
+  351 00000050                 ENDP
+  352 00000050         
+  353 00000050         DMA_DONE1_IRQHandler
+                               PROC
+  354 00000050                 EXPORT           DMA_DONE1_IRQHandler    [WEAK]
+  355 00000050 E7FE            B                .
+  356 00000052                 ENDP
+  357 00000052         
+  358 00000052         DMA_DONE2_IRQHandler
+                               PROC
+  359 00000052                 EXPORT           DMA_DONE2_IRQHandler    [WEAK]
+  360 00000052 E7FE            B                .
+  361 00000054                 ENDP
+  362 00000054         
+  363 00000054         DMA_DONE3_IRQHandler
+                               PROC
+  364 00000054                 EXPORT           DMA_DONE3_IRQHandler    [WEAK]
+  365 00000054 E7FE            B                .
+  366 00000056                 ENDP
+  367 00000056         
+  368 00000056         DMA_DONE4_IRQHandler
+                               PROC
+  369 00000056                 EXPORT           DMA_DONE4_IRQHandler    [WEAK]
+  370 00000056 E7FE            B                .
+  371 00000058                 ENDP
+  372 00000058         
+  373 00000058         DMA_DONE5_IRQHandler
+                               PROC
+  374 00000058                 EXPORT           DMA_DONE5_IRQHandler    [WEAK]
+  375 00000058 E7FE            B                .
+  376 0000005A                 ENDP
+  377 0000005A         
+  378 0000005A         DMA_DONE6_IRQHandler
+                               PROC
+  379 0000005A                 EXPORT           DMA_DONE6_IRQHandler    [WEAK]
+  380 0000005A E7FE            B                .
+  381 0000005C                 ENDP
+  382 0000005C         
+  383 0000005C         DMA_DONE7_IRQHandler
+                               PROC
+  384 0000005C                 EXPORT           DMA_DONE7_IRQHandler    [WEAK]
+  385 0000005C E7FE            B                .
+  386 0000005E                 ENDP
+  387 0000005E         
+  388 0000005E         DMA_DONE8_IRQHandler
+
+
+
+ARM Macro Assembler    Page 10 
+
+
+                               PROC
+  389 0000005E                 EXPORT           DMA_DONE8_IRQHandler    [WEAK]
+  390 0000005E E7FE            B                .
+  391 00000060                 ENDP
+  392 00000060         
+  393 00000060         DMA_DONE9_IRQHandler
+                               PROC
+  394 00000060                 EXPORT           DMA_DONE9_IRQHandler    [WEAK]
+  395 00000060 E7FE            B                .
+  396 00000062                 ENDP
+  397 00000062         
+  398 00000062         DMA_DONE10_IRQHandler
+                               PROC
+  399 00000062                 EXPORT           DMA_DONE10_IRQHandler    [WEAK]
+  400 00000062 E7FE            B                .
+  401 00000064                 ENDP
+  402 00000064         
+  403 00000064         DMA_DONE11_IRQHandler
+                               PROC
+  404 00000064                 EXPORT           DMA_DONE11_IRQHandler    [WEAK]
+  405 00000064 E7FE            B                .
+  406 00000066                 ENDP
+  407 00000066         
+  408 00000066         DMA_DONE12_IRQHandler
+                               PROC
+  409 00000066                 EXPORT           DMA_DONE12_IRQHandler    [WEAK]
+  410 00000066 E7FE            B                .
+  411 00000068                 ENDP
+  412 00000068         
+  413 00000068         DMA_DONE13_IRQHandler
+                               PROC
+  414 00000068                 EXPORT           DMA_DONE13_IRQHandler    [WEAK]
+  415 00000068 E7FE            B                .
+  416 0000006A                 ENDP
+  417 0000006A         
+  418 0000006A         DMA_DONE14_IRQHandler
+                               PROC
+  419 0000006A                 EXPORT           DMA_DONE14_IRQHandler    [WEAK]
+  420 0000006A E7FE            B                .
+  421 0000006C                 ENDP
+  422 0000006C         
+  423 0000006C         DMA_DONE15_IRQHandler
+                               PROC
+  424 0000006C                 EXPORT           DMA_DONE15_IRQHandler    [WEAK]
+  425 0000006C E7FE            B                .
+  426 0000006E                 ENDP
+  427 0000006E         
+  428 0000006E         DMA_DONE16_IRQHandler
+                               PROC
+  429 0000006E                 EXPORT           DMA_DONE16_IRQHandler    [WEAK]
+  430 0000006E E7FE            B                .
+  431 00000070                 ENDP
+  432 00000070         
+  433 00000070         DMA_DONE17_IRQHandler
+                               PROC
+  434 00000070                 EXPORT           DMA_DONE17_IRQHandler    [WEAK]
+  435 00000070 E7FE            B                .
+  436 00000072                 ENDP
+  437 00000072         
+
+
+
+ARM Macro Assembler    Page 11 
+
+
+  438 00000072         DMA_DONE18_IRQHandler
+                               PROC
+  439 00000072                 EXPORT           DMA_DONE18_IRQHandler    [WEAK]
+  440 00000072 E7FE            B                .
+  441 00000074                 ENDP
+  442 00000074         
+  443 00000074         DMA_DONE19_IRQHandler
+                               PROC
+  444 00000074                 EXPORT           DMA_DONE19_IRQHandler    [WEAK]
+  445 00000074 E7FE            B                .
+  446 00000076                 ENDP
+  447 00000076         
+  448 00000076         DMA_DONE20_IRQHandler
+                               PROC
+  449 00000076                 EXPORT           DMA_DONE20_IRQHandler    [WEAK]
+  450 00000076 E7FE            B                .
+  451 00000078                 ENDP
+  452 00000078         
+  453 00000078         DMA_DONE21_IRQHandler
+                               PROC
+  454 00000078                 EXPORT           DMA_DONE21_IRQHandler    [WEAK]
+  455 00000078 E7FE            B                .
+  456 0000007A                 ENDP
+  457 0000007A         
+  458 0000007A         DMA_DONE22_IRQHandler
+                               PROC
+  459 0000007A                 EXPORT           DMA_DONE22_IRQHandler    [WEAK]
+  460 0000007A E7FE            B                .
+  461 0000007C                 ENDP
+  462 0000007C         
+  463 0000007C         DMA_DONE23_IRQHandler
+                               PROC
+  464 0000007C                 EXPORT           DMA_DONE23_IRQHandler    [WEAK]
+  465 0000007C E7FE            B                .
+  466 0000007E                 ENDP
+  467 0000007E         
+  468 0000007E         DMA_DONE24_IRQHandler
+                               PROC
+  469 0000007E                 EXPORT           DMA_DONE24_IRQHandler    [WEAK]
+  470 0000007E E7FE            B                .
+  471 00000080                 ENDP
+  472 00000080         
+  473 00000080         DMA_DONE25_IRQHandler
+                               PROC
+  474 00000080                 EXPORT           DMA_DONE25_IRQHandler    [WEAK]
+  475 00000080 E7FE            B                .
+  476 00000082                 ENDP
+  477 00000082         
+  478 00000082         DMA_DONE26_IRQHandler
+                               PROC
+  479 00000082                 EXPORT           DMA_DONE26_IRQHandler    [WEAK]
+  480 00000082 E7FE            B                .
+  481 00000084                 ENDP
+  482 00000084         
+  483 00000084         DMA_DONE27_IRQHandler
+                               PROC
+  484 00000084                 EXPORT           DMA_DONE27_IRQHandler    [WEAK]
+  485 00000084 E7FE            B                .
+  486 00000086                 ENDP
+
+
+
+ARM Macro Assembler    Page 12 
+
+
+  487 00000086         
+  488 00000086         DMA_DONE28_IRQHandler
+                               PROC
+  489 00000086                 EXPORT           DMA_DONE28_IRQHandler    [WEAK]
+  490 00000086 E7FE            B                .
+  491 00000088                 ENDP
+  492 00000088         
+  493 00000088         DMA_DONE29_IRQHandler
+                               PROC
+  494 00000088                 EXPORT           DMA_DONE29_IRQHandler    [WEAK]
+  495 00000088 E7FE            B                .
+  496 0000008A                 ENDP
+  497 0000008A         
+  498 0000008A         DMA_DONE30_IRQHandler
+                               PROC
+  499 0000008A                 EXPORT           DMA_DONE30_IRQHandler    [WEAK]
+  500 0000008A E7FE            B                .
+  501 0000008C                 ENDP
+  502 0000008C         
+  503 0000008C         DMA_DONE31_IRQHandler
+                               PROC
+  504 0000008C                 EXPORT           DMA_DONE31_IRQHandler    [WEAK]
+  505 0000008C E7FE            B                .
+  506 0000008E                 ENDP
+  507 0000008E         
+  508 0000008E         PORTA_IRQHandler
+                               PROC
+  509 0000008E                 EXPORT           PORTA_IRQHandler    [WEAK]
+  510 0000008E E7FE            B                .
+  511 00000090                 ENDP
+  512 00000090         
+  513 00000090         PORTB_IRQHandler
+                               PROC
+  514 00000090                 EXPORT           PORTB_IRQHandler    [WEAK]
+  515 00000090 E7FE            B                .
+  516 00000092                 ENDP
+  517 00000092         
+  518 00000092         PORTC_IRQHandler
+                               PROC
+  519 00000092                 EXPORT           PORTC_IRQHandler    [WEAK]
+  520 00000092 E7FE            B                .
+  521 00000094                 ENDP
+  522 00000094         
+  523 00000094         PORTD_IRQHandler
+                               PROC
+  524 00000094                 EXPORT           PORTD_IRQHandler    [WEAK]
+  525 00000094 E7FE            B                .
+  526 00000096                 ENDP
+  527 00000096         
+  528 00000096         PORTE_IRQHandler
+                               PROC
+  529 00000096                 EXPORT           PORTE_IRQHandler    [WEAK]
+  530 00000096 E7FE            B                .
+  531 00000098                 ENDP
+  532 00000098         
+  533 00000098         ETH1_IRQHandler
+                               PROC
+  534 00000098                 EXPORT           ETH1_IRQHandler    [WEAK]
+  535 00000098 E7FE            B                .
+
+
+
+ARM Macro Assembler    Page 13 
+
+
+  536 0000009A                 ENDP
+  537 0000009A         
+  538 0000009A         SPW1_IRQHandler
+                               PROC
+  539 0000009A                 EXPORT           SPW1_IRQHandler    [WEAK]
+  540 0000009A E7FE            B                .
+  541 0000009C                 ENDP
+  542 0000009C         
+  543 0000009C         TIMER1_IRQHandler
+                               PROC
+  544 0000009C                 EXPORT           TIMER1_IRQHandler    [WEAK]
+  545 0000009C E7FE            B                .
+  546 0000009E                 ENDP
+  547 0000009E         
+  548 0000009E         TIMER2_IRQHandler
+                               PROC
+  549 0000009E                 EXPORT           TIMER2_IRQHandler    [WEAK]
+  550 0000009E E7FE            B                .
+  551 000000A0                 ENDP
+  552 000000A0         
+  553 000000A0         TIMER3_IRQHandler
+                               PROC
+  554 000000A0                 EXPORT           TIMER3_IRQHandler    [WEAK]
+  555 000000A0 E7FE            B                .
+  556 000000A2                 ENDP
+  557 000000A2         
+  558 000000A2         TIMER4_IRQHandler
+                               PROC
+  559 000000A2                 EXPORT           TIMER4_IRQHandler    [WEAK]
+  560 000000A2 E7FE            B                .
+  561 000000A4                 ENDP
+  562 000000A4         
+  563 000000A4         CAN1_IRQHandler
+                               PROC
+  564 000000A4                 EXPORT           CAN1_IRQHandler    [WEAK]
+  565 000000A4 E7FE            B                .
+  566 000000A6                 ENDP
+  567 000000A6         
+  568 000000A6         SSP1_IRQHandler
+                               PROC
+  569 000000A6                 EXPORT           SSP1_IRQHandler    [WEAK]
+  570 000000A6 E7FE            B                .
+  571 000000A8                 ENDP
+  572 000000A8         
+  573 000000A8         UART1_IRQHandler
+                               PROC
+  574 000000A8                 EXPORT           UART1_IRQHandler    [WEAK]
+  575 000000A8 E7FE            B                .
+  576 000000AA                 ENDP
+  577 000000AA         
+  578 000000AA         UART2_IRQHandler
+                               PROC
+  579 000000AA                 EXPORT           UART2_IRQHandler    [WEAK]
+  580 000000AA E7FE            B                .
+  581 000000AC                 ENDP
+  582 000000AC         
+  583 000000AC         ARC1_RX_IRQHandler
+                               PROC
+  584 000000AC                 EXPORT           ARC1_RX_IRQHandler    [WEAK]
+
+
+
+ARM Macro Assembler    Page 14 
+
+
+  585 000000AC E7FE            B                .
+  586 000000AE                 ENDP
+  587 000000AE         
+  588 000000AE         ARC1_TX_IRQHandler
+                               PROC
+  589 000000AE                 EXPORT           ARC1_TX_IRQHandler    [WEAK]
+  590 000000AE E7FE            B                .
+  591 000000B0                 ENDP
+  592 000000B0         
+  593 000000B0         MIL1_IRQHandler
+                               PROC
+  594 000000B0                 EXPORT           MIL1_IRQHandler    [WEAK]
+  595 000000B0 E7FE            B                .
+  596 000000B2                 ENDP
+  597 000000B2         
+  598 000000B2         MIL2_IRQHandler
+                               PROC
+  599 000000B2                 EXPORT           MIL2_IRQHandler    [WEAK]
+  600 000000B2 E7FE            B                .
+  601 000000B4                 ENDP
+  602 000000B4         
+  603 000000B4         ADC1_IRQHandler
+                               PROC
+  604 000000B4                 EXPORT           ADC1_IRQHandler    [WEAK]
+  605 000000B4 E7FE            B                .
+  606 000000B6                 ENDP
+  607 000000B6         
+  608 000000B6         ADC2_IRQHandler
+                               PROC
+  609 000000B6                 EXPORT           ADC2_IRQHandler    [WEAK]
+  610 000000B6 E7FE            B                .
+  611 000000B8                 ENDP
+  612 000000B8         
+  613 000000B8         DAC1_IRQHandler
+                               PROC
+  614 000000B8                 EXPORT           DAC1_IRQHandler    [WEAK]
+  615 000000B8 E7FE            B                .
+  616 000000BA                 ENDP
+  617 000000BA         
+  618 000000BA         DAC2_IRQHandler
+                               PROC
+  619 000000BA                 EXPORT           DAC2_IRQHandler    [WEAK]
+  620 000000BA E7FE            B                .
+  621 000000BC                 ENDP
+  622 000000BC         
+  623 000000BC                 ALIGN
+  624 000000BC         
+  625 000000BC         
+  626 000000BC         
+  627 000000BC         ; User Initial Stack & Heap
+  628 000000BC         
+  629 000000BC                 IF               :DEF:__MICROLIB
+  636 000000BC         
+  637 000000BC                 IMPORT           __use_two_region_memory
+  638 000000BC                 EXPORT           __user_initial_stackheap
+  639 000000BC         __user_initial_stackheap
+  640 000000BC         
+  641 000000BC 4805            LDR              R0, =  Heap_Mem
+  642 000000BE 4906            LDR              R1, =(Stack_Mem + Stack_Size)
+
+
+
+ARM Macro Assembler    Page 15 
+
+
+  643 000000C0 4A06            LDR              R2, = (Heap_Mem +  Heap_Size)
+  644 000000C2 4B07            LDR              R3, = Stack_Mem
+  645 000000C4 4770            BX               LR
+  646 000000C6         
+  647 000000C6 00 00           ALIGN
+  648 000000C8         
+  649 000000C8                 ENDIF
+  650 000000C8         
+  651 000000C8         
+  652 000000C8                 END
+              E000ED88 
+              00000000 
+              00000000 
+              00000000 
+              00001000 
+              00001000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\startup_mdr1986ve8.d -o.\objects\startup_mdr1986ve8.o
+ -I.\RTE\Board_Support\MDR1986VE8 -I.\RTE\Device\MDR1986VE8 -I.\RTE\_VE8 -IC:\K
+eil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board -IC:\Keil_v5\ARM\PACK\Milandr\M
+DR1986VExx\2.0x\Keil\CMSIS_Core -IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\
+SPL\Boards -IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines -I
+C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config -IC:\Keil_v5\ARM\PACK\M
+ilandr\MDR1986VExx\2.0x\SPL\Devices\Defines -IC:\Keil_v5\ARM\PACK\Milandr\MDR19
+86VExx\2.0x\SPL\Devices\MDR1986VE8 -IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.
+0x\SPL\Drivers -IC:\Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SE
+TA 523" --predefine="_RTE_ SETA 1" --predefine="USE_MDR1986VE8 SETA 1" --list=.
+\listings\startup_mdr1986ve8.lst RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STACK 00000000
+
+Symbol: STACK
+   Definitions
+      At line 20 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: STACK unused
+Stack_Mem 00000000
+
+Symbol: Stack_Mem
+   Definitions
+      At line 21 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 642 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 644 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+__initial_sp 00001000
+
+Symbol: __initial_sp
+   Definitions
+      At line 22 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 46 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+Comment: __initial_sp used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+HEAP 00000000
+
+Symbol: HEAP
+   Definitions
+      At line 31 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: HEAP unused
+Heap_Mem 00000000
+
+Symbol: Heap_Mem
+   Definitions
+      At line 33 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 641 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 643 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+__heap_base 00000000
+
+Symbol: __heap_base
+   Definitions
+      At line 32 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: __heap_base unused
+__heap_limit 00001000
+
+Symbol: __heap_limit
+   Definitions
+      At line 34 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: __heap_limit unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 41 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: RESET unused
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 46 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 42 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 189 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+__Vectors_End 0000022C
+
+Symbol: __Vectors_End
+   Definitions
+      At line 187 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 43 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 189 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 191 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: .text unused
+ADC1_IRQHandler 000000B4
+
+Symbol: ADC1_IRQHandler
+   Definitions
+      At line 603 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 183 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 604 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+ADC2_IRQHandler 000000B6
+
+Symbol: ADC2_IRQHandler
+   Definitions
+      At line 608 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 184 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 609 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+ARC1_RX_IRQHandler 000000AC
+
+Symbol: ARC1_RX_IRQHandler
+   Definitions
+      At line 583 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 177 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 584 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+ARC1_TX_IRQHandler 000000AE
+
+Symbol: ARC1_TX_IRQHandler
+   Definitions
+      At line 588 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 178 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 589 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+BKP_IRQHandler 0000003A
+
+Symbol: BKP_IRQHandler
+   Definitions
+      At line 298 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 103 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 299 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+BusFault_Handler 00000022
+
+Symbol: BusFault_Handler
+   Definitions
+      At line 238 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 51 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 239 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+CAN1_IRQHandler 000000A4
+
+Symbol: CAN1_IRQHandler
+   Definitions
+      At line 563 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 163 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 564 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+CLK_IRQHandler 00000034
+
+Symbol: CLK_IRQHandler
+   Definitions
+      At line 283 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 100 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 284 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DAC1_IRQHandler 000000B8
+
+Symbol: DAC1_IRQHandler
+   Definitions
+      At line 613 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 185 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 614 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DAC2_IRQHandler 000000BA
+
+Symbol: DAC2_IRQHandler
+   Definitions
+      At line 618 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 186 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 619 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE0_IRQHandler 0000004E
+
+Symbol: DMA_DONE0_IRQHandler
+   Definitions
+      At line 348 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 115 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 349 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE10_IRQHandler 00000062
+
+Symbol: DMA_DONE10_IRQHandler
+   Definitions
+      At line 398 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 125 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 399 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE11_IRQHandler 00000064
+
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: DMA_DONE11_IRQHandler
+   Definitions
+      At line 403 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 126 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 404 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE12_IRQHandler 00000066
+
+Symbol: DMA_DONE12_IRQHandler
+   Definitions
+      At line 408 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 127 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 409 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE13_IRQHandler 00000068
+
+Symbol: DMA_DONE13_IRQHandler
+   Definitions
+      At line 413 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 128 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 414 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE14_IRQHandler 0000006A
+
+Symbol: DMA_DONE14_IRQHandler
+   Definitions
+      At line 418 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 129 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 419 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE15_IRQHandler 0000006C
+
+Symbol: DMA_DONE15_IRQHandler
+   Definitions
+      At line 423 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 130 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 424 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE16_IRQHandler 0000006E
+
+Symbol: DMA_DONE16_IRQHandler
+   Definitions
+      At line 428 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 131 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 429 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE17_IRQHandler 00000070
+
+Symbol: DMA_DONE17_IRQHandler
+   Definitions
+      At line 433 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 132 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+ARM Macro Assembler    Page 4 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 434 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE18_IRQHandler 00000072
+
+Symbol: DMA_DONE18_IRQHandler
+   Definitions
+      At line 438 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 133 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 439 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE19_IRQHandler 00000074
+
+Symbol: DMA_DONE19_IRQHandler
+   Definitions
+      At line 443 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 134 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 444 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE1_IRQHandler 00000050
+
+Symbol: DMA_DONE1_IRQHandler
+   Definitions
+      At line 353 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 116 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 354 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE20_IRQHandler 00000076
+
+Symbol: DMA_DONE20_IRQHandler
+   Definitions
+      At line 448 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 135 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 449 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE21_IRQHandler 00000078
+
+Symbol: DMA_DONE21_IRQHandler
+   Definitions
+      At line 453 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 136 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 454 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE22_IRQHandler 0000007A
+
+Symbol: DMA_DONE22_IRQHandler
+   Definitions
+      At line 458 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 137 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 459 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE23_IRQHandler 0000007C
+
+Symbol: DMA_DONE23_IRQHandler
+
+
+
+ARM Macro Assembler    Page 5 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 463 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 138 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 464 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE24_IRQHandler 0000007E
+
+Symbol: DMA_DONE24_IRQHandler
+   Definitions
+      At line 468 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 139 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 469 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE25_IRQHandler 00000080
+
+Symbol: DMA_DONE25_IRQHandler
+   Definitions
+      At line 473 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 140 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 474 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE26_IRQHandler 00000082
+
+Symbol: DMA_DONE26_IRQHandler
+   Definitions
+      At line 478 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 141 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 479 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE27_IRQHandler 00000084
+
+Symbol: DMA_DONE27_IRQHandler
+   Definitions
+      At line 483 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 142 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 484 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE28_IRQHandler 00000086
+
+Symbol: DMA_DONE28_IRQHandler
+   Definitions
+      At line 488 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 143 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 489 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE29_IRQHandler 00000088
+
+Symbol: DMA_DONE29_IRQHandler
+   Definitions
+      At line 493 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 144 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 494 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+ARM Macro Assembler    Page 6 Alphabetic symbol ordering
+Relocatable symbols
+
+
+DMA_DONE2_IRQHandler 00000052
+
+Symbol: DMA_DONE2_IRQHandler
+   Definitions
+      At line 358 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 117 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 359 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE30_IRQHandler 0000008A
+
+Symbol: DMA_DONE30_IRQHandler
+   Definitions
+      At line 498 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 145 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 499 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE31_IRQHandler 0000008C
+
+Symbol: DMA_DONE31_IRQHandler
+   Definitions
+      At line 503 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 146 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 504 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE3_IRQHandler 00000054
+
+Symbol: DMA_DONE3_IRQHandler
+   Definitions
+      At line 363 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 118 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 364 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE4_IRQHandler 00000056
+
+Symbol: DMA_DONE4_IRQHandler
+   Definitions
+      At line 368 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 119 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 369 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE5_IRQHandler 00000058
+
+Symbol: DMA_DONE5_IRQHandler
+   Definitions
+      At line 373 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 120 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 374 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE6_IRQHandler 0000005A
+
+Symbol: DMA_DONE6_IRQHandler
+   Definitions
+
+
+
+ARM Macro Assembler    Page 7 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 378 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 121 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 379 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE7_IRQHandler 0000005C
+
+Symbol: DMA_DONE7_IRQHandler
+   Definitions
+      At line 383 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 122 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 384 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE8_IRQHandler 0000005E
+
+Symbol: DMA_DONE8_IRQHandler
+   Definitions
+      At line 388 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 123 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 389 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_DONE9_IRQHandler 00000060
+
+Symbol: DMA_DONE9_IRQHandler
+   Definitions
+      At line 393 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 124 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 394 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+DMA_ERR_IRQHandler 0000004C
+
+Symbol: DMA_ERR_IRQHandler
+   Definitions
+      At line 343 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 114 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 344 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR0_IRQHandler 0000003C
+
+Symbol: EBC_ERROR0_IRQHandler
+   Definitions
+      At line 303 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 104 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 304 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR1_IRQHandler 0000003E
+
+Symbol: EBC_ERROR1_IRQHandler
+   Definitions
+      At line 308 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 105 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 309 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+
+ARM Macro Assembler    Page 8 Alphabetic symbol ordering
+Relocatable symbols
+
+EBC_ERROR2_IRQHandler 00000040
+
+Symbol: EBC_ERROR2_IRQHandler
+   Definitions
+      At line 313 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 106 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 314 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR3_IRQHandler 00000042
+
+Symbol: EBC_ERROR3_IRQHandler
+   Definitions
+      At line 318 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 107 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 319 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR4_IRQHandler 00000044
+
+Symbol: EBC_ERROR4_IRQHandler
+   Definitions
+      At line 323 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 108 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 324 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR5_IRQHandler 00000046
+
+Symbol: EBC_ERROR5_IRQHandler
+   Definitions
+      At line 328 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 109 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 329 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR6_IRQHandler 00000048
+
+Symbol: EBC_ERROR6_IRQHandler
+   Definitions
+      At line 333 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 110 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 334 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+EBC_ERROR7_IRQHandler 0000004A
+
+Symbol: EBC_ERROR7_IRQHandler
+   Definitions
+      At line 338 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 111 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 339 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+ETH1_IRQHandler 00000098
+
+Symbol: ETH1_IRQHandler
+   Definitions
+      At line 533 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+ARM Macro Assembler    Page 9 Alphabetic symbol ordering
+Relocatable symbols
+
+   Uses
+      At line 153 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 534 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+FT_EVENT0_4_IRQHandler 0000002E
+
+Symbol: FT_EVENT0_4_IRQHandler
+   Definitions
+      At line 268 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 97 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 269 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+FT_EVENT5_8_IRQHandler 00000030
+
+Symbol: FT_EVENT5_8_IRQHandler
+   Definitions
+      At line 273 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 98 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 274 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+FT_EVENT9_12_IRQHandler 00000032
+
+Symbol: FT_EVENT9_12_IRQHandler
+   Definitions
+      At line 278 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 99 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 279 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+FT_RESET0_4_IRQHandler 0000002C
+
+Symbol: FT_RESET0_4_IRQHandler
+   Definitions
+      At line 263 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 96 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 264 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+HardFault_Handler 0000001E
+
+Symbol: HardFault_Handler
+   Definitions
+      At line 228 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 49 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 229 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+MIL1_IRQHandler 000000B0
+
+Symbol: MIL1_IRQHandler
+   Definitions
+      At line 593 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 181 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 594 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+MIL2_IRQHandler 000000B2
+
+
+
+ARM Macro Assembler    Page 10 Alphabetic symbol ordering
+Relocatable symbols
+
+
+Symbol: MIL2_IRQHandler
+   Definitions
+      At line 598 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 182 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 599 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+MemoryMngFault_Handler 00000020
+
+Symbol: MemoryMngFault_Handler
+   Definitions
+      At line 233 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 50 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 234 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+NMI_Handler 0000001C
+
+Symbol: NMI_Handler
+   Definitions
+      At line 223 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 48 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 224 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PORTA_IRQHandler 0000008E
+
+Symbol: PORTA_IRQHandler
+   Definitions
+      At line 508 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 147 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 509 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PORTB_IRQHandler 00000090
+
+Symbol: PORTB_IRQHandler
+   Definitions
+      At line 513 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 148 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 514 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PORTC_IRQHandler 00000092
+
+Symbol: PORTC_IRQHandler
+   Definitions
+      At line 518 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 149 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 519 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PORTD_IRQHandler 00000094
+
+Symbol: PORTD_IRQHandler
+   Definitions
+      At line 523 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+
+
+
+ARM Macro Assembler    Page 11 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 150 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 524 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PORTE_IRQHandler 00000096
+
+Symbol: PORTE_IRQHandler
+   Definitions
+      At line 528 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 151 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 529 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+POWER_IRQHandler 00000036
+
+Symbol: POWER_IRQHandler
+   Definitions
+      At line 288 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 101 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 289 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+PendSV_Handler 00000028
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 253 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 60 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 254 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+RTC_IRQHandler 00000038
+
+Symbol: RTC_IRQHandler
+   Definitions
+      At line 293 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 102 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 294 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 196 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 47 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 197 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+SPW1_IRQHandler 0000009A
+
+Symbol: SPW1_IRQHandler
+   Definitions
+      At line 538 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 155 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 539 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+SSP1_IRQHandler 000000A6
+
+
+
+
+ARM Macro Assembler    Page 12 Alphabetic symbol ordering
+Relocatable symbols
+
+Symbol: SSP1_IRQHandler
+   Definitions
+      At line 568 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 168 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 569 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+SVC_Handler 00000026
+
+Symbol: SVC_Handler
+   Definitions
+      At line 248 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 57 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 249 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+SysTick_Handler 0000002A
+
+Symbol: SysTick_Handler
+   Definitions
+      At line 258 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 61 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 259 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+TIMER1_IRQHandler 0000009C
+
+Symbol: TIMER1_IRQHandler
+   Definitions
+      At line 543 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 157 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 544 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+TIMER2_IRQHandler 0000009E
+
+Symbol: TIMER2_IRQHandler
+   Definitions
+      At line 548 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 158 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 549 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+TIMER3_IRQHandler 000000A0
+
+Symbol: TIMER3_IRQHandler
+   Definitions
+      At line 553 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 159 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 554 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+TIMER4_IRQHandler 000000A2
+
+Symbol: TIMER4_IRQHandler
+   Definitions
+      At line 558 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 160 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+
+
+ARM Macro Assembler    Page 13 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 559 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+UART1_IRQHandler 000000A8
+
+Symbol: UART1_IRQHandler
+   Definitions
+      At line 573 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 172 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 574 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+UART2_IRQHandler 000000AA
+
+Symbol: UART2_IRQHandler
+   Definitions
+      At line 578 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 173 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 579 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+UsageFault_Handler 00000024
+
+Symbol: UsageFault_Handler
+   Definitions
+      At line 243 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 52 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 244 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+__user_initial_stackheap 000000BC
+
+Symbol: __user_initial_stackheap
+   Definitions
+      At line 639 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 638 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+Comment: __user_initial_stackheap used once
+83 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+Heap_Size 00001000
+
+Symbol: Heap_Size
+   Definitions
+      At line 29 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 33 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 643 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+Stack_Size 00001000
+
+Symbol: Stack_Size
+   Definitions
+      At line 18 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 21 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+      At line 642 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+
+__Vectors_Size 0000022C
+
+Symbol: __Vectors_Size
+   Definitions
+      At line 189 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 44 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+Comment: __Vectors_Size used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+SystemInit 00000000
+
+Symbol: SystemInit
+   Definitions
+      At line 198 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 214 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+Comment: SystemInit used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 199 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      At line 216 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+Comment: __main used once
+__use_two_region_memory 00000000
+
+Symbol: __use_two_region_memory
+   Definitions
+      At line 637 in file RTE\Device\MDR1986VE8\startup_MDR1986VE8.s
+   Uses
+      None
+Comment: __use_two_region_memory unused
+3 symbols
+437 symbols in table

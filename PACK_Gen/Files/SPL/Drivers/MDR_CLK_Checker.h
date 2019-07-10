@@ -65,7 +65,7 @@ __STATIC_INLINE void MDR_CLKCHK_Restart(MDR_CLKCHK_Target target)
 {
   uint32_t regCTRL = (*MDR_CLKCHK_CTRL[target]).CTRL | MDR_CLK_CHK_EN_Msk | MDR_CLK_CHK_CLR_ALL_EVENTS;
   //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
-  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_CLR_EN_EVENTS);
+  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_SEL_EN_EVENTS);
   (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;
 }
 

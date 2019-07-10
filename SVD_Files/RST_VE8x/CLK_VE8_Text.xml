@@ -967,7 +967,7 @@
   <addressOffset>0x000000B4</addressOffset>
 </register> 
 <!-- PLL3_CHK0 -->
-<register derivedFrom="CPU_CHK1">
+<register derivedFrom="CPU_CHK0">
   <name>PLL3_CHK0</name>
   <addressOffset>0x000000B8</addressOffset>
 </register>    

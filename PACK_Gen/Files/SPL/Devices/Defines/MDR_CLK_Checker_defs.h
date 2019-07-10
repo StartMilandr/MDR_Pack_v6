@@ -81,8 +81,8 @@ typedef struct {
                                       | MDR_CLK_CHK_CLR_SLOW_EVENT0_Msk | MDR_CLK_CHK_CLR_SLOW_EVENT1_Msk   \
                                       | MDR_CLK_CHK_CLR_FAST_EVENT2_Msk | MDR_CLK_CHK_CLR_FAST_EVENT3_Msk)
 
-#define MDR_CLK_CHK_CLR_ALL             (0x07FF0000UL)
-#define MDR_CLK_CHK_CLR_EN_EVENTS     (MDR_CLK_CHK_EN_SLOW_EVENT0_Msk | MDR_CLK_CHK_EN_SLOW_EVENT1_Msk |    \
+#define MDR_CLK_CHK_SEL_ALL             (0x07FF0000UL)
+#define MDR_CLK_CHK_SEL_EN_EVENTS     (MDR_CLK_CHK_EN_SLOW_EVENT0_Msk | MDR_CLK_CHK_EN_SLOW_EVENT1_Msk |    \
                                        MDR_CLK_CHK_EN_FAST_EVENT2_Msk | MDR_CLK_CHK_EN_FAST_EVENT3_Msk)
 
 typedef union {

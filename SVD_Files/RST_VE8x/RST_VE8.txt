@@ -564,8 +564,8 @@
     </register>
     <!-- #HSI_STAT -->
     <register>
-      <name>HSE_STAT</name>
-      <description>Clock Status Register</description>
+      <name>HSI_STAT</name>
+      <description>HSI Status Register</description>
       <addressOffset>0x00000038</addressOffset>
       <size>32</size>
       <access>read-write</access>
@@ -589,7 +589,7 @@
       <addressOffset>0x0000003C</addressOffset>
     </register>
     <!-- LSE_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>LSE_CHK0</name>
       <addressOffset>0x00000040</addressOffset>
     </register>    
@@ -751,7 +751,7 @@
       </fields>
     </register>
     <!-- HSE0_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>HSE0_CHK0</name>
       <addressOffset>0x00000054</addressOffset>
     </register>    
@@ -776,7 +776,7 @@
       <addressOffset>0x00000064</addressOffset>
     </register>    
     <!-- HSE1_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>HSE1_CHK0</name>
       <addressOffset>0x00000068</addressOffset>
     </register>    
@@ -936,7 +936,7 @@
       </fields>
     </register>
     <!-- PLL0_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>PLL0_CHK0</name>
       <addressOffset>0x0000007C</addressOffset>
     </register>    
@@ -961,7 +961,7 @@
       <addressOffset>0x0000008C</addressOffset>
     </register> 
     <!-- PLL1_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>PLL1_CHK0</name>
       <addressOffset>0x00000090</addressOffset>
     </register>    
@@ -986,7 +986,7 @@
       <addressOffset>0x000000A0</addressOffset>
     </register> 
     <!-- PLL2_CHK0 -->
-    <register derivedFrom="CPU_CHK1">
+    <register derivedFrom="CPU_CHK0">
       <name>PLL2_CHK0</name>
       <addressOffset>0x000000A4</addressOffset>
     </register>    

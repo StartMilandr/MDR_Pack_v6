@@ -15,7 +15,20 @@
   #define  MDRB_PLL_8MHz_TO_37MHz6    MDR_CPU_CFG_PLL(47, 4, MDR_PLL_DV_div2)
   #define  MDRB_PLL_8MHz_TO_38MHz4    MDR_CPU_CFG_PLL(48, 4, MDR_PLL_DV_div2)
   #define  MDRB_PLL_8MHz_TO_39MHz2    MDR_CPU_CFG_PLL(49, 4, MDR_PLL_DV_div2)
+
+  //  PLL from 10MHz 
+  //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
+  #define  MDRB_PLL_10MHz_TO_37MHz     MDR_CPU_CFG_PLL(37, 4, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_10MHz_TO_38MHz     MDR_CPU_CFG_PLL(38, 4, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_10MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 4, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_10MHz_TO_40MHz     MDR_CPU_CFG_PLL(8,  0, MDR_PLL_DV_div2)
   
+  #define  MDRB_PLL_10MHz_TO_80MHz     MDR_CPU_CFG_PLL(16,  1, MDR_PLL_DV_div1)
+  
+  //  Дробные
+  #define  MDRB_PLL_10MHz_TO_37MHz5    MDR_CPU_CFG_PLL(15, 1, MDR_PLL_DV_div2)
+  
+
   //  Настройки зависящие от частоты
   #define  MDRB_CPU_FREQ_SUPP_40MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_62MHz5,  MDR_BKP_LDO_SRILow_lt50MHz)
   #define  MDRB_CPU_FREQ_SUPP_20MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_41MHz66, MDR_BKP_LDO_SRILow_lt30MHz)

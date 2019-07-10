@@ -52,9 +52,9 @@ void MDR_CLKCHK_Init_byRegs(MDR_CLKCHK_Target target, const MDR_CLKCHK_Regs *cfg
   chkrHrd->CLK_CHK1 = cfgRegs->CLK_CHK1;
   chkrHrd->CLK_CHK2 = cfgRegs->CLK_CHK2;
   
-  uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLK_CHK_CLR_ALL, cfgRegs->CTRL);
+  uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLK_CHK_SEL_ALL, cfgRegs->CTRL);
   //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
-  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_CLR_EN_EVENTS);  
+  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_SEL_EN_EVENTS);  
   (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;
 }
 

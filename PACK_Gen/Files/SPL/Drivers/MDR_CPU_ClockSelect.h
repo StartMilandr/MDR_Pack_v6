@@ -273,4 +273,13 @@
                                                    .divMaxToCpu_0       = 0,                        \
                                                    .freqSupp            = suppFreq};
 
+#define MDR_CLK_PLL_HSE_GEN_DEF(pllCfg, suppFreq) {.freqSource          = MDR_CLK_Generator,        \
+                                                   .selDiv2             = false,                    \
+                                                   .timeoutCycles_HSE   = HSI_TIMEOUT,              \
+                                                   .cfgPLL              = pllCfg,                   \
+                                                   .timeoutCycles_PLL   = PLL_TIMEOUT,              \
+                                                   .divMaxToCpu_0       = 0,                        \
+                                                   .freqSupp            = suppFreq};
+
+                                                   
 #endif //_MDR_CPU_CLOCK_SELECT_H

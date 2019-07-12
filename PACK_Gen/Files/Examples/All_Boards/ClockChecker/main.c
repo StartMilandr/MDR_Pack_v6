@@ -10,7 +10,18 @@
   #include <MDRB_Buttons.h>
 #endif
 
-//  ОПИСАНИЕ:
+//  Выбрать только один источник частоты для теста!
+#define USE_PLL_CLOCK    1
+#define USE_HSI0_CLOCK   0
+
+
+#if USE_PLL_CLOCK
+  #define ACTIVE_CHECKER    MDR_CLKCHK_PLL0  
+#elif USE_HSI0_CLOCK
+  #define ACTIVE_CHECKER    MDR_CLKCHK_HSE0
+#endif
+
+//  ОПИСАНИЕ (USE_PLL_CLOCK=1):
 //    Системный таймер, кнопки и светодиоды настраиваются при старте от HSI. Поэтому при работе от HSI светодиод LED1 от системного таймера должен мигать с периодом примерно 1сек.
 //    Дальше настраивается тактирование от HSE0 через PLL0 с более высокой частотой. Поэтому на самом деле светодиод начинает мигать гораздо чаще.
 //    Далее настраивается CLK_Checker в PLL0 который мониторит текущую частоту.
@@ -22,6 +33,12 @@
 //  ВАЖНО:
 //    Если после аварийного перехода на HSI выключить CLK_Checker битом MDR_CLK_CHK_EN_Msk, то пропадает тактовая частота, отладчик отваливается!
 //    Если же CLK_Checker не выключить, то он продолжает мониторить частоту и сбрасывает ее аварийно на HSI.
+
+//  ДОПОЛНИТЕЛЬНО (USE_HSI0_CLOCK=1):
+//    Этот вариант сравнивает HSE и HSI при ручном изменении в отладчике HSI_Trim, блоке BKP. 
+//    Менять надо хотя бы два значения HSI_Trim в троированных регистрах BKP чтобы значение применилось.
+//    Наблюдать можно выработку флагов и изменение MAX_SHIFT_REG0 и MAX_SHIFT_REG1.
+ 
 
 
 #define PERIOD_MS     1000
@@ -36,6 +53,8 @@ void RestoreClock(void);
 
 int main(void)
 { 
+  MDR_CPU_SetClock_HSI_def(false);
+  
   //  LED and Buttons
   MDRB_LED_Init(MDRB_LED_PinAll);
 #ifndef USE_MDR1923VK014  
@@ -60,6 +79,9 @@ int main(void)
     
     if (MDRB_BntClicked_Right(true))
       RestoreClock();
+    
+    if (MDRB_BntClicked_Down(true))
+      MDR_CLKCHK_ClearAllEvents(ACTIVE_CHECKER);
   }    
 }
 
@@ -68,38 +90,9 @@ void SysTick_Handler(void)
   MDRB_LED_Toggle(LED_TIMER);
 }
 
-void InitClockChecker(void)
-{
-  // K0 = (HSI / PrescSlow_HSI) * (PrescSlow_CLK / CLK) = 8MHz  / 1 * 50 / 40MHz = 10
-  // K1 = (CLK / PrescFast_CLK) * (PrescFast_HSI / HSI) = 40MHz / 1 *  1 / 8MHz  = 5
-  
-  // K0_SlowEvent0 = (HSI / PrescSlow_HSI) * (PrescSlow_CLK / (CLK - dF0)) = 8MHz  / 1 * 50 / (40MHz - 8MHz)  = 12.5
-  // K0_SlowEvent1 = (HSI / PrescSlow_HSI) * (PrescSlow_CLK / (CLK - dF1)) = 8MHz  / 1 * 50 / (40MHz - 12MHz) = 14.3
-  // K1_FastEvent2 = ((CLK + dF2) / PrescFast_CLK) * (PrescFast_HSI / HSI) = (40MHz +  8MHz) / 1 *  1 / 8MHz  = 6
-  // K1_FastEvent3 = ((CLK + dF3) / PrescFast_CLK) * (PrescFast_HSI / HSI) = (40MHz + 16MHz) / 1 *  1 / 8MHz  = 7
-  
-  MDR_CLKCHK_Cfg cfgChk = {
-    //  Prescallers
-    .PrescSlow_HSI = 1,
-    .PrescSlow_CLK = 50,
-    .PrescFast_HSI = 1,  
-    .PrescFast_CLK = 1,
-    //  Event Levels
-    .level_SlowEvent0 = 12,
-    .level_SlowEvent1 = 14,
-    .level_FastEvent2 = 6,
-    .level_FastEvent3 = 7,
-    //  go to HSI by any Event
-    .enaGoHSI_byEvents.eventSel = MDR_CLKCHK_SEL_ALL_EVENTS
-  };
-  
-  MDR_CLKCHK_Init(MDR_CLKCHK_PLL0, &cfgChk);
-}
-
 void BreakClock(void)
 {
-  //  PLL OFF
-  MDR_CLOCK->PLL0_CLK &= ~MDR_RST_PLL_PLL_ON_Msk;
+  MDR_CLOCK->PLL0_CLK &= ~MDR_RST_PLL_PLL_ON_Msk;   //  PLL OFF
 }
 
 void RestoreClock(void)
@@ -108,17 +101,94 @@ void RestoreClock(void)
   MDR_CPU_SetClock_HSI_def(false);
 
   //  Stop ClockChecker
-  MDR_CLKCHK_Stop(MDR_CLKCHK_PLL0);    
+  MDR_CLKCHK_Stop(ACTIVE_CHECKER);    
   //  Switch to work frequency
   SetWorkClock(); 
   //  Restart ClockChecker
-  MDR_CLKCHK_ClearAllEvents(MDR_CLKCHK_PLL0);
-  MDR_CLKCHK_Restart(MDR_CLKCHK_PLL0);
+  MDR_CLKCHK_ClearAllEvents(ACTIVE_CHECKER);
+  MDR_CLKCHK_Restart(ACTIVE_CHECKER);
 }
 
-void SetWorkClock(void)
-{  
-  MDR_CPU_PLL_CfgHSE cfgPLL_HSE_40M = MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
-  MDR_CPU_SetClock_HSE0_PLL0(&cfgPLL_HSE_40M, true);  
-}
+
+#if USE_PLL_CLOCK
+// ============  Для тактирования от HSE1_PLL0  ==============
+
+  void SetWorkClock(void)
+  {     
+    MDR_CPU_PLL_CfgHSE cfgPLL_HSE_40M = MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
+    MDR_CPU_SetClock_HSE0_PLL0(&cfgPLL_HSE_40M, true);  
+  }
+  
+  void InitClockChecker(void)
+  {
+    // CASE HSI < CLK(HSE0):
+    //   K0 = HSI / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / CLK =  8MHz / 1 * 40 / 40MHz = 8
+    //   K1 = CLK / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      / HSI = 40MHz / 5 *  8 /  8MHz = 8
+    
+    // K0_SlowEvent0 =  HSI        / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / (CLK - dF1) =  8MHz  / 1 * 40 / 35MHz  = 9.14
+    // K0_SlowEvent1 =  HSI        / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / (CLK - dF2) =  8MHz  / 1 * 40 / 30MHz  = 10.6
+    // K1_FastEvent2 = (CLK + dF1) / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      /  HSI        = 50MHz  / 5 * 8  / 8MHz  = 10
+    // K1_FastEvent3 = (CLK + dF2) / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      /  HSI        = 60MHz  / 5 * 8  / 8MHz  = 12
+       
+    MDR_CLKCHK_Cfg cfgChk = {
+      //  Prescallers with
+      .slowHSI_PrescREG2 = 0,       // HSI_PrescREG2
+      .slowCLK_PrescREG1 = 39,      // CLK_PrescREG1
+      .fastCLK_PrescREG3 = 4,       // CLK_PrescREG3
+      .fastHSI_PrescREG0 = 8,       // HSI_PrescREG0
+    
+      //  Event Levels
+      .level_SlowEvent0 = 10,
+      .level_SlowEvent1 = 11,
+      .level_FastEvent2 = 10,
+      .level_FastEvent3 = 12,
+      //  go to HSI by any Event
+      .enaGoHSI_byEvents.eventSel = MDR_CLKCHK_SEL_ALL_EVENTS
+    };
+    
+    MDR_CLKCHK_Init(ACTIVE_CHECKER, &cfgChk);
+  }
+
+  
+#elif USE_HSI0_CLOCK
+// ============  Для тактирования от HSE1  ==============
+
+  void SetWorkClock(void)  
+  {  
+    MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_RES_DEF;    
+    MDR_CPU_SetClock_HSE0(&cfgHSE, HSE_TIMEOUT, true);  
+  }
+
+  
+  void InitClockChecker(void)
+  {
+    // CASE HSI < CLK(HSE0):
+    //   K0 = HSI / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / CLK =  8MHz / 2 * 10 / 10MHz = 4
+    //   K1 = CLK / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      / HSI = 10MHz / 2 *  8 /  8MHz = 5
+    
+    // K0_SlowEvent0 =  HSI        / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / (CLK - dF1) =  8MHz  / 2 * 10 / 8MHz  = 5
+    // K0_SlowEvent1 =  HSI        / (HSI_PrescREG2 + 1) * (CLK_PrescREG1 + 1) / (CLK - dF2) =  8MHz  / 2 * 10 / 6MHz  = 6.6
+    // K1_FastEvent2 = (CLK + dF1) / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      /  HSI        = 12MHz  / 2 * 8  / 8MHz  = 6
+    // K1_FastEvent3 = (CLK + dF2) / (CLK_PrescREG3 + 1) *  HSI_PrescREG0      /  HSI        = 16MHz  / 2 * 8  / 8MHz  = 8
+       
+    MDR_CLKCHK_Cfg cfgChk = {
+      //  Prescallers with
+      .slowHSI_PrescREG2 = 2 - 1,       // HSI_PrescREG2
+      .slowCLK_PrescREG1 = 10 - 1,      // CLK_PrescREG1
+      .fastCLK_PrescREG3 = 2 - 1,       // CLK_PrescREG3
+      .fastHSI_PrescREG0 = 8,           // HSI_PrescREG0
+      //  Event Levels
+      .level_SlowEvent0 = 5,
+      .level_SlowEvent1 = 7,
+      .level_FastEvent2 = 6,
+      .level_FastEvent3 = 8,
+      //  go to HSI by any Event
+      .enaGoHSI_byEvents.eventSel = MDR_CLKCHK_SEL_ALL_EVENTS
+    };
+    
+    MDR_CLKCHK_Init(ACTIVE_CHECKER, &cfgChk);
+  }
+  
+#endif
+
 

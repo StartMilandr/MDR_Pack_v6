@@ -38,10 +38,10 @@ typedef union {
 
 typedef struct {
   //  Prescallers
-  uint16_t  PrescSlow_HSI;
-  uint16_t  PrescSlow_CLK;
-  uint16_t  PrescFast_HSI;  
-  uint16_t  PrescFast_CLK;
+  uint16_t  slowHSI_PrescREG2;    // CHK0_LO__REG2
+  uint16_t  slowCLK_PrescREG1;    // CHK1_LO__REG1
+  uint16_t  fastHSI_PrescREG0;    // CHK0_HI__REG0
+  uint16_t  fastCLK_PrescREG3;    // CHK1_HI__REG3
   //  Event Levels
   uint8_t   level_SlowEvent0;
   uint8_t   level_SlowEvent1;

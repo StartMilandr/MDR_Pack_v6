@@ -383,12 +383,12 @@
       <resetMask>0xFFFFFFFF</resetMask>
       <fields> 
         <field>
-          <name>PRES_REG3</name>
+          <name>PRES_REG1</name>
           <description>Clock Prescaller for Fast</description>
           <bitRange>[15:0]</bitRange>
         </field>
         <field>
-          <name>PRES_REG1</name>
+          <name>PRES_REG3</name>
           <description>Clock Prescaller for Slow</description>
           <bitRange>[31:16]</bitRange>
         </field>

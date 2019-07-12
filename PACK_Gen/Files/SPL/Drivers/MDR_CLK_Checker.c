@@ -63,8 +63,8 @@ void MDR_CLKCHK_Init(MDR_CLKCHK_Target target, const MDR_CLKCHK_Cfg *cfg)
 {
   MDR_CLKCHK_Regs cfgRegs;
   
-  cfgRegs.CLK_CHK0 =  VAL2FLD(cfg->PrescSlow_HSI, MDR_CLK_CHK0_PRES_HSI_SLOW) | VAL2FLD(cfg->PrescFast_HSI, MDR_CLK_CHK0_PRES_HSI_FAST);
-  cfgRegs.CLK_CHK1 =  VAL2FLD(cfg->PrescSlow_CLK, MDR_CLK_CHK1_PRES_CLK_SLOW) | VAL2FLD(cfg->PrescFast_CLK, MDR_CLK_CHK1_PRES_CLK_FAST);
+  cfgRegs.CLK_CHK0 =  VAL2FLD(cfg->slowHSI_PrescREG2, MDR_CLK_CHK0_PRES_HSI_SLOW) | VAL2FLD(cfg->fastHSI_PrescREG0, MDR_CLK_CHK0_PRES_HSI_FAST);
+  cfgRegs.CLK_CHK1 =  VAL2FLD(cfg->slowCLK_PrescREG1, MDR_CLK_CHK1_PRES_CLK_SLOW) | VAL2FLD(cfg->fastCLK_PrescREG3, MDR_CLK_CHK1_PRES_CLK_FAST);
   cfgRegs.CLK_CHK2 =  VAL2FLD(cfg->level_SlowEvent0, MDR_RST_CHK2_BASE_SLOW_EVENT0) | VAL2FLD(cfg->level_SlowEvent1, MDR_RST_CHK2_BASE_SLOW_EVENT1)
                     | VAL2FLD(cfg->level_FastEvent2, MDR_RST_CHK2_BASE_FAST_EVENT2) | VAL2FLD(cfg->level_FastEvent3, MDR_RST_CHK2_BASE_FAST_EVENT3);
   

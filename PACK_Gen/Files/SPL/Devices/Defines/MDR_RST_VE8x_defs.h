@@ -245,6 +245,10 @@ typedef struct {
 #define MDR_RST_SYNC_CLK_CLK_EN_Pos  (16UL)                    /*!< MDR_RST_CLOCK ETH_CLK: CLK_EN (Bit 16)                */
 #define MDR_RST_SYNC_CLK_CLK_EN_Msk  (0x10000UL)               /*!< MDR_RST_CLOCK ETH_CLK: CLK_EN (Bitfield-Mask: 0x01)   */
 
+typedef union {
+  uint32_t                Value;
+  MDR_RST_SYNC_CLK_Bits   Flags;
+} MDR_PERCLK_SYNC_REG;
 
 //--------------- ASYNC PeriphClock Bits (CPU Clock)  ------------------ 
 typedef enum {                                  /*!< MDR_RST_CLOCK_ETH_CLK_SELECT                                              */
@@ -260,10 +264,10 @@ typedef enum {                                  /*!< MDR_RST_CLOCK_ETH_CLK_SELEC
 } MDR_RST_ASYNC_IN_SEL;
 
 typedef struct {
-      __IOM uint32_t              DIV        : 16;           /*!< [15..0] Div to PeriphClock                                                */
-      __IOM MDR_OnOff             CLK_EN     : 1;            /*!< [16..16] PeriphClock Enable                                               */
+      __IOM uint32_t              DIV        : 16;             /*!< [15..0] Div to PeriphClock                             */
+      __IOM MDR_OnOff             CLK_EN     : 1;              /*!< [16..16] PeriphClock Enable                            */
       __IM  uint32_t                         : 11;
-      __IOM MDR_RST_ASYNC_IN_SEL  SELECT     : 4;            /*!< [31..28] PeriphClock Enable                                               */
+      __IOM MDR_RST_ASYNC_IN_SEL  SELECT     : 4;              /*!< [31..28] PeriphClock Enable                            */
 } MDR_RST_ASYNC_CLK_Bits;
 
 #define MDR_RST_ASYNC_CLK_DIV_Pos     (0UL)                     /*!< MDR_RST_CLOCK ETH_CLK: DIV (Bit 0)                    */
@@ -273,6 +277,16 @@ typedef struct {
 #define MDR_RST_ASYNC_CLK_SELECT_Pos  (28UL)                    /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bit 28)                */
 #define MDR_RST_ASYNC_CLK_SELECT_Msk  (0xf0000000UL)            /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bitfield-Mask: 0x0f)   */
 
+typedef union {
+    uint32_t                Value;
+    MDR_RST_ASYNC_CLK_Bits  Flags;
+} MDR_PERCLK_ASYNC_REG;
+
+//  --------- Unified defines for Sync and Async bits
+#define MDR_PER_CLK_DIV_Pos     (0UL)
+#define MDR_PER_CLK_DIV_Msk     (0xffffUL)
+#define MDR_PER_CLK_CLK_EN_Pos  (16UL)
+#define MDR_PER_CLK_CLK_EN_Msk  (0x10000UL)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

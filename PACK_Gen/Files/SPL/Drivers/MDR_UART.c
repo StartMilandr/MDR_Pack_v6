@@ -9,8 +9,10 @@ const MDR_UART_TypeEx _MDR_UART1ex = {
   .CfgClock.ClockEna_Mask = MDR_UART1_CLK_EN_MSK,
   //  UartClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_UART1_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8  
   .CfgClock.ClockGate_ClockOn_Msk = MDR_UART1_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_UART1_CLOCK_GATE_BRG_POS,
+#endif
    //  NVIC
   .UARTx_IRQn       = UART1_IRQn
 };
@@ -22,8 +24,10 @@ const MDR_UART_TypeEx _MDR_UART2ex = {
   .CfgClock.ClockEna_Mask = MDR_UART2_CLK_EN_MSK,
   //  UartClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_UART2_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8  
   .CfgClock.ClockGate_ClockOn_Msk = MDR_UART2_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_UART2_CLOCK_GATE_BRG_POS,
+#endif
    //  NVIC
   .UARTx_IRQn = UART2_IRQn
 };
@@ -36,8 +40,10 @@ const MDR_UART_TypeEx _MDR_UART2ex = {
     .CfgClock.ClockEna_Mask = MDR_UART3_CLK_EN_MSK,
     //  UartClock Gate On and BRG
     .CfgClock.ClockGate_Addr        = MDR_UART3_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8      
     .CfgClock.ClockGate_ClockOn_Msk = MDR_UART3_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_UART3_CLOCK_GATE_BRG_POS,
+#endif
      //  NVIC
     .UARTx_IRQn = UART3_IRQn
   };
@@ -51,8 +57,10 @@ const MDR_UART_TypeEx _MDR_UART2ex = {
     .CfgClock.ClockEna_Mask = MDR_UART4_CLK_EN_MSK,
     //  UartClock Gate On and BRG
     .CfgClock.ClockGate_Addr        = MDR_UART4_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8      
     .CfgClock.ClockGate_ClockOn_Msk = MDR_UART4_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_UART4_CLOCK_GATE_BRG_POS,
+#endif
      //  NVIC
     .UARTx_IRQn = UART34_IRQn
   };
@@ -202,10 +210,7 @@ void MDR_UART_ToCfgRegs(const MDR_UART_Cfg *cfg, const MDR_UART_cfgBaud *cfgBaud
 
 
 void MDR_UART_Init_ByCfgRegs(MDR_UART_Type *UART, MDR_UART_CfgRegs *pCfgRegs)
-{
-  //  Clock On
-
-  
+{  
   MDR_UART_CfgRegs_Apply(UART, pCfgRegs);
 }
 
@@ -258,18 +263,23 @@ void MDR_UART_CfgRegs_Clear(MDR_UART_CfgRegs *pCfgRegs)
 void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower)
 {
   MDR_PinDig_PermRegs pinPermCfg;
+
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinPermCfg);  
+#endif
   
-  MDR_Port_InitDigPermRegs(MDR_PIN_PullPush, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
   //  TX
   if (pinsCfg->pPinTX != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinTX->portGPIO);
+    MDR_GPIO_Enable(pinsCfg->pPinTX->portGPIO);
     MDR_GPIO_InitDigPin(pinsCfg->pPinTX->portGPIO, pinsCfg->pPinTX->pinIndex, MDR_Pin_In, pinsCfg->pPinTX->pinFunc, &pinPermCfg);  
   }
   //  RX
   if (pinsCfg->pPinRX != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinRX->portGPIO);
+    MDR_GPIO_Enable(pinsCfg->pPinRX->portGPIO);
     MDR_GPIO_InitDigPin(pinsCfg->pPinRX->portGPIO, pinsCfg->pPinRX->pinIndex, MDR_Pin_In, pinsCfg->pPinRX->pinFunc, &pinPermCfg);
   }
 }
@@ -280,28 +290,42 @@ void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pins
 //  Возвращает частоту UART_CLOCK, определяется по значению ключей в схеме тактирования. 
 //  Используется для подачи в функцию MDR_UART_Init, MDR_UART_AssignBaudRate и т.д.
 //  Обычно частота задается в ПО, поэтому рациональней задать ее напрямую.
-uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART)
+uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate)
 {
   uint32_t regBRG; 
   uint32_t scrUartHz;
 
 #if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
   //  VK214
-   if (exUART == MDR_UART1ex)
-     scrUartHz = MDR_GetFreqHz_UART1_C2();
-   else
-     scrUartHz = MDR_GetFreqHz_UART2_C2();
+  if (exUART == MDR_UART1ex)
+    scrUartHz = MDR_GetFreqHz_UART1_C2();
+  else
+    scrUartHz = MDR_GetFreqHz_UART2_C2();
 
 #elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
-  //  VK234  
+  //  VK234, VE4
   scrUartHz = MDR_GetFreqHz_Per1_C2();    
-#else
-  //  VE4
-  scrUartHz = MDR_CPU_GetFreqHz(true);
+   
+#elif defined (MDR_CLK_LIKE_VE8)   
+  // VE8
+  MDR_PERCLK_ASYNC_REG regValue; 
+  
+  if (exUART == MDR_UART1ex)
+    regValue.Value = REG32(_MDR_UART1ex.CfgClock.ClockGate_Addr); 
+  else
+    regValue.Value = REG32(_MDR_UART2ex.CfgClock.ClockGate_Addr);  
+  scrUartHz = MDR_GetFreqHz_PerAsync(regValue, doUpdate);
+  
+#else  
+  scrUartHz = MDR_CPU_GetFreqHz(doUpdate);
 #endif  
   
-  regBRG = REG32(exUART->CfgClock.ClockGate_Addr);  
+  regBRG = REG32(exUART->CfgClock.ClockGate_Addr);    
+#ifdef MDR_CLK_LIKE_VE8
+  regBRG = FLD2VAL(regBRG, MDR_PER_CLK_DIV);
+#else
   regBRG = (regBRG >> exUART->CfgClock.ClockGate_BRG_Pos) & MDR_RST_UART__UART1_BRG_Msk;
+#endif
   
   scrUartHz = scrUartHz << regBRG;   
   return scrUartHz;
@@ -433,7 +457,7 @@ void MDR_UART_ChangeEventTxFIFO(MDR_UART_Type *UART, MDR_UART_EventFIFO levelFIF
   uint32_t tmpCR = UART->CR;
   
   UART->CR &= ~MDR_UART_CR_EN_Msk;  
-  UART->IFLS = MaskClrSet(UART->IFLS, MDR_UART_IFLS_TXIFLSES_Msk, VAL2FLD_Pos(levelFIFO, MDR_UART_IFLS_TXIFLSES_Pos));
+  UART->IFLS = MDR_MaskClrSet(UART->IFLS, MDR_UART_IFLS_TXIFLSES_Msk, VAL2FLD_Pos(levelFIFO, MDR_UART_IFLS_TXIFLSES_Pos));
   UART->CR = tmpCR;   
 }
 
@@ -442,7 +466,7 @@ void MDR_UART_ChangeEventRxFIFO(MDR_UART_Type *UART, MDR_UART_EventFIFO levelFIF
   uint32_t tmpCR = UART->CR;
   
   UART->CR &= ~MDR_UART_CR_EN_Msk;  
-  UART->IFLS = MaskClrSet(UART->IFLS, MDR_UART_IFLS_TXIFLSES_Msk, VAL2FLD_Pos(levelFIFO, MDR_UART_IFLS_RXIFLSES_Pos));
+  UART->IFLS = MDR_MaskClrSet(UART->IFLS, MDR_UART_IFLS_TXIFLSES_Msk, VAL2FLD_Pos(levelFIFO, MDR_UART_IFLS_RXIFLSES_Pos));
   UART->CR = tmpCR;
 }
 

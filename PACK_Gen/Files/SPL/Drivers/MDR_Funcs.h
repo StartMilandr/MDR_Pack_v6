@@ -59,6 +59,7 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 #define REG32_C(x) (*((const volatile uint32_t *)(x)))
 
 //  Доступ к полям в слове
+#define FLD2VAL(value, field)      _FLD2VAL(field, value)
 #define VAL2FLD(value, field)      _VAL2FLD(field, value)
 #define VAL2FLD_Pos(value, pos)     ((uint32_t)(value) << pos)
 

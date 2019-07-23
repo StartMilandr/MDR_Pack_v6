@@ -9,7 +9,7 @@
 #define HSE_LOW_SELRI_MAX       MDR_LOWRI_gt80MHz
 #define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le150MHz
 
-#define MDR_CPU_SetClock_HSE_Max(bypass)  MDR_CPU_SetClock_HSE_PLL((bypass), HSE_PLL_MUL_MAX, HSE_LOW_SELRI_MAX, HSE_EEPROM_DELAY_MAX, MDR_CLK_div1, HSE_TIMEOUT)
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CPU_CFG_PLL_HSE_RES_DEF(HSE_PLL_MUL_MAX, HSE_EEPROM_DELAY_MAX, HSE_LOW_SELRI_MAX)
 
 //===================================    Заметки по плате    ========================================
 // -  Кнопки Up и Down совпадают в выводами JTAG. Поэтому, при работе с кнопками необходимо подключаться по Jtag_А. В файле MDR_Congif.h выбрать USE_JTAG_А.

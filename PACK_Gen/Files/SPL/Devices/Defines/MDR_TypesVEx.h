@@ -28,9 +28,7 @@
   #define __IOM  __IO
 #endif
 
-
-//#define MDR_CLK_DIV_256       MDR_Div256P  
-  
+ 
 #define MDR_BRG_DIV_128_CLR   0x00FFUL
 
 typedef enum {

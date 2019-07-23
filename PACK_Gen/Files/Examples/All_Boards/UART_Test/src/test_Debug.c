@@ -15,6 +15,9 @@ static void  Test_Exec(void);
 static void  Test_HandleIRQ(void);
 static void  Test_HandleIRQ_Empty(void);
 
+extern TestInterface TI_Uart_Debug;
+extern TestInterface TI_Uart_DebugRate;
+
 TestInterface TI_Uart_Debug = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -72,13 +75,13 @@ static void Test_Exec(void)
 }
 
 #define  TEST_BAUDS_COUNT   6
-uint32_t baudsUART[TEST_BAUDS_COUNT] = {UART_BAUD_9600, UART_BAUD_19200, UART_BAUD_38400, UART_BAUD_57600, UART_BAUD_115200, UART_BAUD_230400};
+static uint32_t baudsUART[TEST_BAUDS_COUNT] = {UART_BAUD_9600, UART_BAUD_19200, UART_BAUD_38400, UART_BAUD_57600, UART_BAUD_115200, UART_BAUD_230400};
   
 
 static void Test_HandleIRQ(void)
 {
   char command;
-  char rateInd;
+  char rateInd = 0;
   uint32_t cntOK = 0;
   
   //  Прерывание приходит при заполнении FIFO_RX двумя значениями!
@@ -106,7 +109,7 @@ static void Test_HandleIRQ(void)
     
     if (cntOK == 2)
     {
-      MDR_UART_DBG_ChangeRate(baudsUART[rateInd]);
+      MDR_UART_DBG_ChangeRate(baudsUART[(uint32_t)rateInd]);
     }    
   }
   

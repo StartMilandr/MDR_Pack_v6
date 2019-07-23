@@ -90,6 +90,45 @@ typedef union {
     MDR_CLK_CHK_CTRL_Bits CTRL_b;
 } MDR_CLKCHK_Ctrl;
 
+
+#ifdef MDR_RST_PLL_LIKE_ESILA
+  //---------------   ESila PLL CNTRL ONLY!!!  ---------------
+  #define MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT0_Pos      (21UL)        
+  #define MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT0_Msk      (0x200000UL)  
+  #define MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT1_Pos      (22UL)        
+  #define MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT1_Msk      (0x400000UL)  
+  #define MDR_CLKCHK_ES_PLL_EN_FAST_EVENT2_Pos      (23UL)        
+  #define MDR_CLKCHK_ES_PLL_EN_FAST_EVENT2_Msk      (0x800000UL)  
+  #define MDR_CLKCHK_ES_PLL_EN_FAST_EVENT3_Pos      (24UL)        
+  #define MDR_CLKCHK_ES_PLL_EN_FAST_EVENT3_Msk      (0x1000000UL) 
+  #define MDR_CLKCHK_ES_PLL_EN_CHK_Pos              (25UL)        
+  #define MDR_CLKCHK_ES_PLL_EN_CHK_Msk              (0x2000000UL) 
+  #define MDR_CLKCHK_ES_PLL_CLR_SHIFT_SLOW_Pos      (26UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_SHIFT_SLOW_Msk      (0x4000000UL) 
+  #define MDR_CLKCHK_ES_PLL_CLR_SHIFT_FAST_Pos      (27UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_SHIFT_FAST_Msk      (0x8000000UL) 
+  #define MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT0_Pos     (28UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT0_Msk     (0x10000000UL)
+  #define MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT1_Pos     (29UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT1_Msk     (0x20000000UL)
+  #define MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT2_Pos     (30UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT2_Msk     (0x40000000UL)
+  #define MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT3_Pos     (31UL)        
+  #define MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT3_Msk     (0x80000000UL)
+
+  #define MDR_CLKCHK_ES_CLR_ALL_EVENTS  ( MDR_CLKCHK_ES_PLL_CLR_SHIFT_SLOW_Msk  | MDR_CLKCHK_ES_PLL_CLR_SHIFT_FAST_Msk    \
+                                        | MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT0_Msk | MDR_CLKCHK_ES_PLL_CLR_SLOW_EVENT1_Msk   \
+                                        | MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT2_Msk | MDR_CLKCHK_ES_PLL_CLR_FAST_EVENT3_Msk)
+
+  #define MDR_CLKCHK_ES_SEL_ALL         (0xFFE00000UL)
+  #define MDR_CLKCHK_ES_SEL_EN_EVENTS   (MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT0_Msk | MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT1_Msk |    \
+                                         MDR_CLKCHK_ES_PLL_EN_FAST_EVENT2_Msk | MDR_CLKCHK_ES_PLL_EN_FAST_EVENT3_Msk)
+                                         
+   #define MDR_CHK_ES_CTRL_TO_PLL(CLKCHK_Ctrl)        ((CLKCHK_Ctrl << (MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT0_Pos - MDR_CLK_CHK_EN_SLOW_EVENT0_Pos)) & MDR_CLKCHK_ES_SEL_ALL)
+   #define MDR_CHK_ES_CTRL_FROM_PLL(CLKCHK_CtrlPLL)   ((CLKCHK_CtrlPLL & MDR_CLKCHK_ES_SEL_ALL) >> (MDR_CLKCHK_ES_PLL_EN_SLOW_EVENT0_Pos - MDR_CLK_CHK_EN_SLOW_EVENT0_Pos))
+#endif
+
+
 //---------------   Status Bits  ---------------
 typedef struct {
       uint32_t    MAX_CLK_SHIFT_SLOW : 8;  

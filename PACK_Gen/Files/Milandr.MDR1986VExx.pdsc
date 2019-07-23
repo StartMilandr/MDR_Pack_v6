@@ -1105,6 +1105,15 @@
         <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_RST_Clock_ESila.c" version="2.0.0"/>
       </files>
+    </component>
+    <!-- Clock Checker-->
+    <component Cclass="Drivers" Cgroup="Clock Checker" Cversion="2.0" condition="CON_MDR_VE8xES">
+      <description>ClockChecker driver for MDR1986VE8 and 1923VK014</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_CLK_Checker.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_CLK_Checker.c" version="2.0.0"/>
+      </files>
     </component>    
     <!-- GPIO PORT Driver -->
     <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_UseFuncs">
@@ -1201,6 +1210,14 @@
         <file category="source"  name="SPL/Drivers/MDR_PER_ClockVE4.c" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Drivers" Cgroup="PER_Clock" Cversion="2.0" condition="CON_MDR_VE8xES">
+      <description>Peripherial clock select functions</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_PER_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_PER_ClockVE8x.c" version="2.0.0"/>
+      </files>
+    </component>    
     <!--SSP-->
     <component Cclass="Drivers" Cgroup="SSP" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Synchronous Serial Port</description>

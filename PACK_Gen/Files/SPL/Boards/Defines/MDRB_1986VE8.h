@@ -3,6 +3,11 @@
 
 #ifdef USE_BOARD_VE8 
 
+#include <MDR_CPU_ClockSelect.h>
+
+//===================================    Частота тактирования    ========================================
+
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
 
 
 //  Переопределение пинов для удобства поиска конфликтов
@@ -56,7 +61,19 @@
     // Active buttons Level
     #define MDRB_BTNs_PUSH_TO_GND
 
+//  ---------------  UART2 Pin Definition ----------------
+    //  PORT_F: PF0, PF1 - Main
+    #define MDRB_UART1_TX_PE15_Ind	    15
+    #define MDRB_UART1_RX_PE16_Ind	    16
 
+    #define MDRB_UART1_TX_PE15_Msk	    MDR_Pin_15
+    #define MDRB_UART1_RX_PE16_Msk		  MDR_Pin_16
+
+    #define MDRB_UART1_TX_PE15_Port	    MDR_GPIO_E
+    #define MDRB_UART1_RX_PE16_Port		  MDR_GPIO_E
+    
+    #define MDRB_UART1_TX_PE15_Func	    MDR_PIN_FUNC_5
+    #define MDRB_UART1_RX_PE16_Func	    MDR_PIN_FUNC_5 
 
 #else
    Please, select board in MDRB_BoardSelect.h!

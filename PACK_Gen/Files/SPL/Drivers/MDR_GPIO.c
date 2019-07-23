@@ -112,11 +112,9 @@ void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_GPIO_PinCfg
   for (i = 0; i < MDR_GPIO_Pin_Count; ++i)
     if (pinSelect & (1 << i))
     { 
-      //  PWD by two bits
+      //  By two bits
       offsVal = i << 1;
-      tmpRegs.PWR = (tmpRegs.PWR & ~(MDR_GPIO_PWR__Pin_Msk << offsVal)) | ((uint32_t)pinCfg->Power << offsVal);
-      //  FUNC by four bits
-      offsVal = i << 2;
+      tmpRegs.PWR  = (tmpRegs.PWR & ~(MDR_GPIO_PWR__Pin_Msk   << offsVal)) | ((uint32_t)pinCfg->Power << offsVal);
       tmpRegs.FUNC = (tmpRegs.FUNC & ~(MDR_GPIO_FUNC__Pin_Msk << offsVal)) | ((uint32_t)pinCfg->Func << offsVal);
     }
   
@@ -144,10 +142,9 @@ void MDR_Port_InitAnalog(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
   for (i = 0; i < MDR_GPIO_Pin_Count; ++i)
     if (pinSelect & (1 << i)) 
     {  
-      //  PWD by two bits
-      tmpRegs.PWR &= ~(MDR_GPIO_PWR__Pin_Msk << (i << 1));
-      //  FUNC by four bits
-      tmpRegs.FUNC &= ~(MDR_GPIO_FUNC__Pin_Msk << (i << 2));
+      //  By two bits
+      tmpRegs.PWR  &= ~(MDR_GPIO_PWR__Pin_Msk  << (i << 1));
+      tmpRegs.FUNC &= ~(MDR_GPIO_FUNC__Pin_Msk << (i << 1));
     }
   
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);    
@@ -264,11 +261,9 @@ void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO p
   SET_OR_CLEAR   (groupPinCfg->OpenDrain,   MDR_On, tmpRegs.PD,   pinSelect);
   SET_OR_CLEAR_HI(groupPinCfg->InpSchmEn,   MDR_On, tmpRegs.PD,   pinSelect);
    
-  //  PWD by two bits
+  //  By two bits
   offsVal = pinInd << 1;
-  tmpRegs.PWR = (tmpRegs.PWR & ~(MDR_GPIO_PWR__Pin_Msk << offsVal)) | ((uint32_t)groupPinCfg->Power << offsVal);
-  //  FUNC by four bits
-  offsVal = pinInd << 2;
+  tmpRegs.PWR  = (tmpRegs.PWR & ~(MDR_GPIO_PWR__Pin_Msk << offsVal)) | ((uint32_t)groupPinCfg->Power << offsVal);
   tmpRegs.FUNC = (tmpRegs.FUNC & ~(MDR_GPIO_FUNC__Pin_Msk << offsVal)) | ((uint32_t)pinFunc << offsVal);
   
   MDR_Port_WriteRegs(GPIO_Port, &tmpRegs);
@@ -313,10 +308,9 @@ void MDR_Port_FillClearMask(uint32_t pinSelect, MDR_GPIO_ClearCfg *cfgClr)
   for (i = 0; i < MDR_GPIO_Pin_Count; ++i)
     if (pinSelect & (1 << i)) 
     {  
-      //  PWD by two bits
+      //  By two bits
       cfgClr->clrPWR  |= MDR_GPIO_PWR__Pin_Msk  << (i << 1);
-      //  FUNC by four bits
-      cfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << (i << 2);
+      cfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << (i << 1);
     };
 }
 
@@ -352,13 +346,11 @@ void MDR_Port_MaskAdd(uint32_t pinSelect, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
   for (i = 0; i < MDR_GPIO_Pin_Count; ++i)
     if (pinSelect & (1 << i)) 
     {  
-      //  PWD by two bits
+      //  By two bits
       offsVal = i << 1;
       pCfgSet->PWR    |= (uint32_t)groupPinCfg->Power    << offsVal;      
       pCfgClr->clrPWR |= MDR_GPIO_PWR__Pin_Msk << offsVal;
       
-      //  FUNC by four bits
-      offsVal = i << 2;
       pCfgSet->FUNC    |= (uint32_t)pinFunc   << offsVal;      
       pCfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << offsVal;
     };
@@ -390,13 +382,11 @@ void MDR_Port_MaskAddPin(uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
   if (groupPinCfg->OpenDrain == MDR_On)   pCfgSet->PD     |= pinSelect;  
   if (groupPinCfg->InpSchmEn == MDR_On)   pCfgSet->PD     |= (pinSelect << 16);  
   
-  //  PWD by two bits
+  //  By two bits
   offsVal = pinInd << 1;
   pCfgSet->PWR    |= (uint32_t)groupPinCfg->Power    << offsVal;      
   pCfgClr->clrPWR |= MDR_GPIO_PWR__Pin_Msk << offsVal;
   
-  //  FUNC by four bits
-  offsVal = pinInd << 2;
   pCfgSet->FUNC    |= (uint32_t)pinFunc   << offsVal;      
   pCfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << offsVal;
 }

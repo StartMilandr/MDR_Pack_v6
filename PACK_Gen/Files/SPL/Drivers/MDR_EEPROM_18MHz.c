@@ -29,14 +29,17 @@ void MDR_EEPROM_Init(uint32_t CPU_FreqHz)
 {
   MDR_EEPROM_InitDelayStruct(CPU_FreqHz, &_Delays);
      
-  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;
+  //MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;
+  
+  MDR_CLOCK->PER2_CLOCK |= MDR_RST_PER2__EEPROM_CLK_EN_Msk;
 }
 
 void MDR_EEPROM_InitEx(MDR_EEPROM_Delays * delays)
 {
   _Delays = *delays;
   
-  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;
+  //MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;
+  MDR_CLOCK->PER2_CLOCK |= MDR_RST_PER2__EEPROM_CLK_EN_Msk;
 }
 
 static void RAM_Delay(uint32_t delayLoops)

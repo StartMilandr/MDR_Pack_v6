@@ -8,6 +8,13 @@
 #include <MDR_UART_defs.h>
 #include <MDR_UART_CfgRegs.h>
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+
 //  ----------------    Some Standards BaudRates   -------------------------
 #define UART_BAUD_9600        9600
 #define UART_BAUD_19200      19200
@@ -74,7 +81,7 @@ typedef struct {
 } MDR_UART_CfgBase;
 
 
-  //  Events for IRQ
+//  Events for IRQ
 typedef struct {
   MDR_UART_EventFlags SelEventIRQ;
   MDR_UART_EventFIFO  Rx_FIFO_Event;
@@ -214,11 +221,11 @@ extern const MDR_UART_TypeEx   _MDR_UART2ex;
 //  Возвращает частоту UART_CLOCK, определяется по значению ключей в схеме тактирования. 
 //  Используется для подачи в функцию MDR_UART_Init, MDR_UART_AssignBaudRate и т.д.
 //  Обычно частота задается в ПО, поэтому рациональней задать ее напрямую.
-uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART);
+uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate);
 
 typedef struct {
   //  Делитель частоты для Uart_Clock
-  MDR_BRG_DIV_128 ClockBRG;
+  MDR_Div128P ClockBRG;
   //  Настройки блока
   MDR_UART_Cfg *pCfgUART;
   //  Инициализация прерываний в NVIC
@@ -317,6 +324,12 @@ __STATIC_INLINE void MDR_UART_RX_DMA_Disable(MDR_UART_Type *UARTx) {UARTx->DMACR
 __STATIC_INLINE void MDR_UART_TX_DMA_Enable (MDR_UART_Type *UARTx) {UARTx->DMACR |=  MDR_UART_DMA_TX_EN;}
 __STATIC_INLINE void MDR_UART_TX_DMA_Disable(MDR_UART_Type *UARTx) {UARTx->DMACR &= ~MDR_UART_DMA_TX_EN;}
 #endif
+
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
+
 
 #endif // MDR_UART_H
 

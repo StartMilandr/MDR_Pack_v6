@@ -53,18 +53,18 @@
 
 #elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
   //  см. MDRB_1986VE4.h / MDRB_1986VK214.h / MDRB_1986VK234.h
-//  #if UART_DEBUG_IND == 1
-    const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
-  
-    static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB0_Port, MDRB_UART1_TX_PB0_Ind, MDRB_UART1_TX_PB0_Func};
-    static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB1_Port, MDRB_UART1_RX_PB1_Ind, MDRB_UART1_RX_PB1_Func};    
+  const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
+
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB0_Port, MDRB_UART1_TX_PB0_Ind, MDRB_UART1_TX_PB0_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB1_Port, MDRB_UART1_RX_PB1_Ind, MDRB_UART1_RX_PB1_Func};    
                                      
-//  #elif UART_DEBUG_IND == 2
-//    const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
-//                                       
-//    static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART2_TX_PC0_Port, MDRB_UART2_TX_PC0_Ind, MDRB_UART2_TX_PC0_Func};
-//    static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART2_RX_PC1_Port, MDRB_UART2_RX_PC1_Ind, MDRB_UART2_RX_PC1_Func};
-//  #endif
+
+#elif defined(USE_BOARD_VE8)
+  //  см. MDRB_1986VE8.h
+  const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
+
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};
     
 #endif
    
@@ -93,7 +93,7 @@ static MDR_UART_Cfg _cfgUART = {
 
 static MDR_UART_CfgEx _cfgUartEx = {
   //  Делитель частоты для Uart_Clock
-  .ClockBRG = MDR_BRG_div1,
+  .ClockBRG = MDR_Div128P_div1,
   //  Настройки блока
   .pCfgUART = &_cfgUART,  
   //  Инициализация прерываний в NVIC
@@ -108,17 +108,28 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
   MDR_UART_CfgPinsGPIO pinsGPIO;
 
 #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-//  #if UART_DEBUG_IND == 1  
+  
+  #if UART_DEBUG_IND == 1  
     MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
-//  #elif UART_DEBUG_IND == 2
-//    MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
-//  #endif
-#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
+  #elif UART_DEBUG_IND == 2
+    MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
+  #endif
+  
+#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)  
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  
+#elif defined (MDR_CLK_LIKE_VE8)  
+  
+  #if UART_DEBUG_IND == 1  
+    MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_MAX_CLK);  
+  #elif UART_DEBUG_IND == 2
+    MDR_SetClock_Uart2(MDR_RST_ASYNC_IN_MAX_CLK);  
+  #endif  
+  
 #endif  
   
   //  Baud Rate
-  UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG);  
+  UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
   
   //  Uart Init
@@ -163,7 +174,7 @@ void MDR_UART_DBG_ChangeRate(uint32_t baudRate)
   MDR_UART_cfgBaud cfgBaud;
 
   //  Baud Rate
-  UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG);  
+  UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
   
 #if UART_DEBUG_SHOW_WELLCOME

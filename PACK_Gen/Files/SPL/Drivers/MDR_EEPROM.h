@@ -29,7 +29,7 @@ void MDR_EEPROM_InitEx(MDR_EEPROM_Delays * delays);
 void MDR_EEPROM_InitDelayStruct(uint32_t CPU_FreqHz, MDR_EEPROM_Delays * delays);
 
 //  Выключение тактирования блока
-__STATIC_INLINE void MDR_EEPROM_Finit(void) {MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;}
+__STATIC_INLINE void MDR_EEPROM_Finit(void) {MDR_CLOCK->PER2_CLOCK &= ~MDR_RST_PER2__EEPROM_CLK_EN_Msk;} //  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;}
 
 
 //====================  Отключение прерываний ======================
@@ -92,10 +92,24 @@ uint32_t MDR_EEPROM_GetSize(MDR_EEPROM_MEM memBank);
   uint32_t MDR_EEPROM_PageToAddr(MDR_EEPROM_PAGE page, MDR_EEPROM_MEM memBank);  
   
 #else
-  //  
-  typedef enum {
-    EEPROM_Block1,    EEPROM_Block2,    EEPROM_Block3,  EEPROM_Block4
-  } MDR_EEPROM_BLOCK;
+
+  #ifdef MDR_EEPROM_HAS_TWO_BLOCK_ONLY  
+    // VK214 64KB
+    typedef enum {
+      EEPROM_Block1,    EEPROM_Block2
+    } MDR_EEPROM_BLOCK;
+
+    #define MDR_EEPROM_LastBlock_Main     EEPROM_Block2
+    #define MDR_EEPROM_LastBlock_Info     EEPROM_Block2
+  #else  
+    // VK234 128KB
+    typedef enum {
+      EEPROM_Block1,    EEPROM_Block2,    EEPROM_Block3,  EEPROM_Block4
+    } MDR_EEPROM_BLOCK;
+
+    #define MDR_EEPROM_LastBlock_Main     EEPROM_Block4
+    #define MDR_EEPROM_LastBlock_Info     EEPROM_Block4  
+  #endif
   
   //  Страницы в блоке
   typedef enum {
@@ -113,10 +127,8 @@ uint32_t MDR_EEPROM_GetSize(MDR_EEPROM_MEM memBank);
     EEPROM_Page56,   EEPROM_Page57,   EEPROM_Page58,  EEPROM_Page59,   EEPROM_Page60,
     EEPROM_Page61,   EEPROM_Page62,   EEPROM_Page63,  EEPROM_Page64
   } MDR_EEPROM_PAGE;
-  
-  #define MDR_EEPROM_LastBlock_Main     EEPROM_Block4
-  #define MDR_EEPROM_LastBlock_Info     EEPROM_Block4
-  
+
+
   #define MDR_EEPROM_LastPage_Main      EEPROM_Page64
   #define MDR_EEPROM_LastPage_Info      EEPROM_Page4
   

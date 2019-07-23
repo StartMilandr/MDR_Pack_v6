@@ -2,6 +2,12 @@
 #define MDR_CONFIG_VE8_H
 
 #include <MDR_1986VE8.h>
+
+
+//=============  Debug Uart printf settings  ==================
+#define UART_DEBUG_IND              1    
+#define UART_DEBUG_SHOW_WELLCOME    1
+#define UART_DEBUG_BAUD_DEF         9600
   
 
 //================  Параметры источников частоты ================

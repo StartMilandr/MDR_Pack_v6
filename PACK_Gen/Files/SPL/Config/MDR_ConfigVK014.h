@@ -4,6 +4,12 @@
 #include <MDR_1923VK014.h>
   
 
+//=============  Debug Uart printf settings  ==================
+#define UART_DEBUG_IND              1    
+#define UART_DEBUG_SHOW_WELLCOME    1
+#define UART_DEBUG_BAUD_DEF         9600
+
+
 //================  Параметры источников частоты ================
 //  Internal Generators
 #define HSI_FREQ_HZ       8000000UL

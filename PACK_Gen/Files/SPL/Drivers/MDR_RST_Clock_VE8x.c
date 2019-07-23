@@ -1,4 +1,4 @@
-#include <MDR_RST_Clock.h>
+#include <MDR_RST_Clock_VE8x.h>
 
 //=================   Сброс блока и чтение текущей частоты CPU ==============
 //  Желательно обновить после смены частоты, тогда впоследствии можно вызывать без флага обновления
@@ -373,4 +373,4 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSE(MDR_RST_PLL_Type *PLLx, MDR_
 }
 
 
-  
+

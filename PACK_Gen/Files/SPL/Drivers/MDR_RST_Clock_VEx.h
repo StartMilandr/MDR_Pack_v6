@@ -538,10 +538,19 @@ __STATIC_INLINE void MDR_PerClock_Enable (const MDR_PerClock_Cfg *pCfgClock) {RE
 __STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) &= ~pCfgClock->ClockEna_Mask;}
 
 //  Подача рабочей частоты Uart_Clock, SSP_Clock, Timer_Clock
-                void MDR_PerClock_GateOpen (const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG);
+__STATIC_INLINE void MDR_PerClock_GateOpen (const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG)
+  { REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), 
+                                                            MDR_BRG_DIV_128_CLR << pCfgClock->ClockGate_BRG_Pos, 
+                                                            ((uint32_t)clockBRG << pCfgClock->ClockGate_BRG_Pos) | pCfgClock->ClockGate_ClockOn_Msk); } 
+  
+
 __STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~pCfgClock->ClockGate_ClockOn_Msk;}
 
-                void MDR_PerClock_SetBRG     (const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG);  //  Change BRG, not set Enable!
+__STATIC_INLINE void MDR_PerClock_SetBRG(const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG)
+  { REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), 
+                                                      MDR_BRG_DIV_128_CLR << pCfgClock->ClockGate_BRG_Pos, 
+                                                      ((uint32_t)clockBRG << pCfgClock->ClockGate_BRG_Pos)); }
+                
 __STATIC_INLINE void MDR_PerClock_SetGateOpen(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) |= pCfgClock->ClockGate_ClockOn_Msk;}
 
 

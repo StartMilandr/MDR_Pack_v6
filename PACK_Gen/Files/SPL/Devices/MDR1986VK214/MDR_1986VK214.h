@@ -289,6 +289,7 @@ typedef enum IRQn
 //----------------    EEPROM Definitions  --------------------
 #define   MDR_CLK_EN_REG_EEPROM     PER2_CLOCK
 #define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER2__EEPROM_CLK_EN_Pos
+#define   MDR_EEPROM_HAS_TWO_BLOCK_ONLY
 
 //----------------    PORT Definitions  --------------------
 #define   MDR_CLK_EN_ADDR_PORT_A          &MDR_CLOCK->PER2_CLOCK

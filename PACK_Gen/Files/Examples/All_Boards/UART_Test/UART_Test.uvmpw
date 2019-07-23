@@ -49,8 +49,13 @@
 
   <project>
     <PathAndName>.\UART_TestVC1\UART_TestVC1.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\UART_TestVE8\UART_TestVE8.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

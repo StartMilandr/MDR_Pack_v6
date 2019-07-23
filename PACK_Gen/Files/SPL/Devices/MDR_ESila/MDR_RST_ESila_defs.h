@@ -359,6 +359,8 @@ typedef struct {
 #define MDR_RST_PLL_CLR_CHK_EVENT3_Pos (31UL)            /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bit 31)       */
 #define MDR_RST_PLL_CLR_CHK_EVENT3_Msk (0x80000000UL)    /*!< MDR_RST_CLOCK PLL0_CLK: CLR_CHK_EVENT3 (Bitfield-Mask: 0x01) */
 
+#define MDR_RST_PLL_LIKE_ESILA
+
 
 /* =========================================================================================================================== */
 /* ================                                       MDR_RST_CLOCK                                       ================ */

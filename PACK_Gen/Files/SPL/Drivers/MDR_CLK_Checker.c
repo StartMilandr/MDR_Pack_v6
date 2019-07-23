@@ -44,6 +44,68 @@ volatile MDR_CLKCHK_Ctrl* const MDR_CLKCHK_CTRL[MDR_CLKCHK_COUNT] = {
 };
 
 
+
+
+#ifdef MDR_RST_PLL_LIKE_ESILA
+  void MDR_CLKCHK_ReadCfgRegs(MDR_CLKCHK_Target target, MDR_CLKCHK_Regs *cfgRegs)
+  {
+    MDR_RST_CLK_CHECKER* chkrHrd = MDR_CLKCHK_REGS[target];
+    
+    cfgRegs->CLK_CHK0 = chkrHrd->CLK_CHK0;
+    cfgRegs->CLK_CHK1 = chkrHrd->CLK_CHK1;
+    cfgRegs->CLK_CHK2 = chkrHrd->CLK_CHK2;
+    
+    if (target >= MDR_CLKCHK_PLL0)
+      cfgRegs->CTRL = MDR_CHK_ES_CTRL_FROM_PLL((*MDR_CLKCHK_CTRL[target]).CTRL);
+    else
+      cfgRegs->CTRL = (*MDR_CLKCHK_CTRL[target]).CTRL;
+      
+    cfgRegs->STAT = (*MDR_CLKCHK_STATUS[target]).STAT;
+  }  
+
+
+  __STATIC_INLINE void MDR_CLKCHK_ApplyCTRL(MDR_CLKCHK_Target target, uint32_t ctrl)
+  {
+    if (target >= MDR_CLKCHK_PLL0)
+    {
+      uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLKCHK_ES_SEL_ALL, MDR_CHK_ES_CTRL_TO_PLL(ctrl));
+      //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
+      (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLKCHK_ES_SEL_EN_EVENTS);
+      (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;      
+    } 
+    else 
+    {
+      uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLK_CHK_SEL_ALL, ctrl);      
+      //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
+      (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_SEL_EN_EVENTS);
+      (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;      
+    }
+  }
+#else
+  
+  void MDR_CLKCHK_ReadCfgRegs(MDR_CLKCHK_Target target, MDR_CLKCHK_Regs *cfgRegs)
+  {
+    MDR_RST_CLK_CHECKER* chkrHrd = MDR_CLKCHK_REGS[target];
+    
+    cfgRegs->CLK_CHK0 = chkrHrd->CLK_CHK0;
+    cfgRegs->CLK_CHK1 = chkrHrd->CLK_CHK1;
+    cfgRegs->CLK_CHK2 = chkrHrd->CLK_CHK2;
+    
+    cfgRegs->CTRL = (*MDR_CLKCHK_CTRL[target]).CTRL;
+    cfgRegs->STAT = (*MDR_CLKCHK_STATUS[target]).STAT;
+  }  
+  
+  __STATIC_INLINE void MDR_CLKCHK_ApplyCTRL(MDR_CLKCHK_Target target, uint32_t ctrl)
+  {
+    uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLK_CHK_SEL_ALL, ctrl);
+    //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
+    (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_SEL_EN_EVENTS);  
+    (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;
+  }
+#endif
+
+
+
 void MDR_CLKCHK_Init_byRegs(MDR_CLKCHK_Target target, const MDR_CLKCHK_Regs *cfgRegs)
 {
   MDR_RST_CLK_CHECKER* chkrHrd = MDR_CLKCHK_REGS[target];
@@ -52,10 +114,7 @@ void MDR_CLKCHK_Init_byRegs(MDR_CLKCHK_Target target, const MDR_CLKCHK_Regs *cfg
   chkrHrd->CLK_CHK1 = cfgRegs->CLK_CHK1;
   chkrHrd->CLK_CHK2 = cfgRegs->CLK_CHK2;
   
-  uint32_t regCTRL = MDR_MaskClrSet((*MDR_CLKCHK_CTRL[target]).CTRL, MDR_CLK_CHK_SEL_ALL, cfgRegs->CTRL);
-  //  Сбросить теневые регистры MAX_SHIFT раньше разрешения аварийных переключений на HSI!
-  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL & (~MDR_CLK_CHK_SEL_EN_EVENTS);  
-  (*MDR_CLKCHK_CTRL[target]).CTRL = regCTRL;
+  MDR_CLKCHK_ApplyCTRL(target, cfgRegs->CTRL);  
 }
 
 

@@ -3,6 +3,8 @@
 #include <MDR_PER_Clock.h>
 #include <MDRB_LCD.h>
 #include <MDRB_Buttons.h>
+//#include <MDR_CPU_ClockSelect.h>
+
 
 //#include "UART_Cfg.h"
 //#include "UART_Select.h"
@@ -13,6 +15,8 @@
 extern TestInterface TI_Uart_Debug;
 extern TestInterface TI_Uart_DebugRate;
 
+void UART1_IRQHandler(void);
+void UART2_IRQHandler(void);
 
 #ifdef BDR_NO_SLAVE_UART
   static  TestInterface *testStack[] = {&TI_Uart_Debug, &TI_Uart_DebugRate};
@@ -20,8 +24,8 @@ extern TestInterface TI_Uart_DebugRate;
   static  TestInterface *testStack[] = {&TI_Uart_Debug, &TI_Uart_DebugRate};
 #endif
 
-uint32_t activeTest = 0;
-uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
+static uint32_t activeTest = 0;
+static uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
 
 #define BTN_DEBOUNCE_MS 10
 
@@ -30,7 +34,8 @@ int main(void)
   uint32_t freqCPU_Hz;
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true); 
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -43,8 +48,13 @@ int main(void)
 #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
   MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
   MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
+  
 #elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  
+#elif defined (MDR_CLK_LIKE_VE8)  
+  MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_MAX_CLK);
+  
 #endif
   
   //  Активный тест
@@ -66,16 +76,9 @@ int main(void)
       
       testStack[activeTest]->funcInit();
     }
-
-    //  Изменение режима теста
-    if (MDRB_BntClicked_Right(true))
-    {
-      //testStack[activeTest]->funcChange();
-      testStack[activeTest]->funcExec();
-    }    
     
     //  Запуск
-    if (MDRB_BntClicked_Down(true))
+    if (MDRB_BntClicked_Right(true))
     {
       testStack[activeTest]->funcExec();
     }   

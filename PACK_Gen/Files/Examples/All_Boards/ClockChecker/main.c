@@ -39,7 +39,9 @@
 //    Менять надо хотя бы два значения HSI_Trim в троированных регистрах BKP чтобы значение применилось.
 //    Наблюдать можно выработку флагов и изменение MAX_SHIFT_REG0 и MAX_SHIFT_REG1.
  
-
+ //  ЭЛЕКТРОСИЛА: Если при нчальном включении светодиода не успеть нажать кнопку разрывающую питание (S5 на отладочной рядом с Reset), то чекер сваливается на аварийную частоту. 
+ //  Если кнопку обхода ошибки питания успеть нажать, то тест запускается нормально как в 1986ВЕ8Т.
+ 
 
 #define PERIOD_MS     1000
 #define LED_TIMER     MDRB_LED_1
@@ -114,8 +116,12 @@ void RestoreClock(void)
 // ============  Для тактирования от HSE1_PLL0  ==============
 
   void SetWorkClock(void)
-  {     
+  { 
+#if HSE0_FREQ_HZ == 10000000UL    
     MDR_CPU_PLL_CfgHSE cfgPLL_HSE_40M = MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
+#else
+    MDR_CPU_PLL_CfgHSE cfgPLL_HSE_40M = MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
+#endif    
     MDR_CPU_SetClock_HSE0_PLL0(&cfgPLL_HSE_40M, true);  
   }
   

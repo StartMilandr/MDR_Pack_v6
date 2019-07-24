@@ -353,23 +353,17 @@ typedef enum IRQn
 // #define   MDR_SSP2_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP2_BRG_Pos
 
 
-// //----------------    UART Definitions  --------------------
-// //  UART Block Clock enable
-// #define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+ //----------------    UART Definitions  --------------------
+ //  UART Block Clock enable
+ #define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER1_CLK)
+ #define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER1_CLK)
 
-// #define   MDR_UART1_CLK_EN_MSK            MDR_RST_PER__UART1_CLK_EN_Msk
-// #define   MDR_UART2_CLK_EN_MSK            MDR_RST_PER__UART2_CLK_EN_Msk
+ #define   MDR_UART1_CLK_EN_MSK            MDR_RST_PER1_UART1_CLK_EN_Msk
+ #define   MDR_UART2_CLK_EN_MSK            MDR_RST_PER1_UART2_CLK_EN_Msk
 
-// //  UART_ClockGate configs
-// #define   MDR_UART1_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
-// #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
-
-// #define   MDR_UART1_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART1_CLK_EN_Msk
-// #define   MDR_UART2_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART2_CLK_EN_Msk
-
-// #define   MDR_UART1_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART1_BRG_Pos
-// #define   MDR_UART2_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART2_BRG_Pos
+ //  UART_ClockGate configs
+ #define   MDR_UART1_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART1_CLK)
+ #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART2_CLK)
 
 
 // //----------------    TIMER Definitions  --------------------

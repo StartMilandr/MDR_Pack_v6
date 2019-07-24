@@ -3,7 +3,11 @@
 
 #ifdef USE_BOARD_VK014 
 
+#include <MDR_CPU_ClockSelect.h>
 
+//===================================    Частота тактирования    ========================================
+
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz);
 
 //  Переопределение пинов для удобства поиска конфликтов
 
@@ -40,21 +44,21 @@
 
 
     //  --------------  Buttons Definition  ------------
-//    #define MDRB_BTN_PORT_KEY1        MDR_GPIO_E
-//    #define MDRB_BTN_PIN_KEY1         PIN_PE18  // Up
-//	
-//    #define MDRB_BTN_PORT_KEY2        MDR_GPIO_E
-//    #define MDRB_BTN_PIN_KEY2         PIN_PE21  // Right
-//	
-//    #define MDRB_BTN_PORT_KEY3        MDR_GPIO_E
-//    #define MDRB_BTN_PIN_KEY3         PIN_PE22  // Down
-//	
-//    // for Initialization
-//    #define MDRB_BTN_GPIO             MDR_GPIO_E
-//    #define MDRB_BTN_PinSel           (PIN_PE18 | PIN_PE21 | PIN_PE22)
-//    
-//    // Active buttons Level
-//    #define MDRB_BTNs_PUSH_TO_GND
+    //  NO BUTTONS AVAILABLE by DEFAULT!!!
+    
+//  ---------------  UART1 Pin Definition ----------------
+    //  PORT_F: PF0, PF1 - Main
+    #define MDRB_UART1_TX_PE15_Ind	    15
+    #define MDRB_UART1_RX_PE16_Ind	    16
+
+    #define MDRB_UART1_TX_PE15_Msk	    MDR_Pin_15
+    #define MDRB_UART1_RX_PE16_Msk		  MDR_Pin_16
+
+    #define MDRB_UART1_TX_PE15_Port	    MDR_GPIO_E
+    #define MDRB_UART1_RX_PE16_Port		  MDR_GPIO_E
+    
+    #define MDRB_UART1_TX_PE15_Func	    MDR_PIN_FUNC_5
+    #define MDRB_UART1_RX_PE16_Func	    MDR_PIN_FUNC_5    
 
 
 

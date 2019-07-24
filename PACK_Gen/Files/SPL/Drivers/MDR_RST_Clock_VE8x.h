@@ -698,8 +698,6 @@ typedef struct {
   uint32_t           ClockEna_Mask;
   //  Clock Sync/Asunc control register. Like
   volatile uint32_t* ClockGate_Addr;
-  //uint32_t           ClockGate_ClockOn_Msk;
-  //uint32_t           ClockGate_BRG_Pos;
 } MDR_PerClock_Cfg;
 
 //  Включение тактирования на блок для доступа к регистрам

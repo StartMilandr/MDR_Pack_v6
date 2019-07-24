@@ -65,6 +65,13 @@
 
   static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
   static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};
+  
+#elif defined(USE_BOARD_ESila)
+  //  см. MDRB_ESila.h
+  const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
+
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB1_Port, MDRB_UART1_TX_PB1_Ind, MDRB_UART1_TX_PB1_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func};  
     
 #endif
    

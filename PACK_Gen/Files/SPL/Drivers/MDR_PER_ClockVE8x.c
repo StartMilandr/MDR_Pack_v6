@@ -64,7 +64,9 @@ uint32_t MDR_GetClockHz_AsyncSrc(uint32_t freqSel, bool doUpdate)
     {
       case MAXCLK_PLL1: regCLK = MDR_CLOCK->PLL1_CLK; break;        
       case MAXCLK_PLL2: regCLK = MDR_CLOCK->PLL2_CLK; break;
-//      case MAXCLK_PLL3: regCLK = MDR_CLOCK->PLL3_CLK; break;
+#ifdef MDR_HAS_PLL3 
+      case MAXCLK_PLL3: regCLK = MDR_CLOCK->PLL3_CLK; break;
+#endif
       default:          regCLK = MDR_CLOCK->PLL0_CLK; break;
     }  
     sel_pll = _FLD2VAL(MDR_RST_PLL_SELECT, regCLK);

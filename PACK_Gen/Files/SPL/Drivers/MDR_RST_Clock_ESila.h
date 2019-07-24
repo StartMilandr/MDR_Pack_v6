@@ -905,5 +905,34 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1div2_PLL3_Def(MDR_CLK_Source freqSo
 #endif
 
 
+//===============  Функции включения тактирования и подачи тактирования для блоков с BRG  ===============
+typedef struct {
+  // Clock Enable reg: PER_CLock
+  volatile uint32_t* ClockEna_Addr;
+  uint32_t           ClockEna_Mask;
+  //  Clock Sync/Asunc control register. Like
+  volatile uint32_t* ClockGate_Addr;  
+} MDR_PerClock_Cfg;
+
+//  Включение тактирования на блок для доступа к регистрам
+__STATIC_INLINE void MDR_PerClock_Enable (const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) |= pCfgClock->ClockEna_Mask;}
+__STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockEna_Addr) &= ~pCfgClock->ClockEna_Mask;}
+
+//  Выставление делителя и подача рабочей частоты Uart_Clock, SSP_Clock, Timer_Clock, и т.д.
+__STATIC_INLINE void MDR_PerClock_GateOpen(const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG) 
+  {  REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_PER_CLK_DIV_Msk, (uint32_t)clockBRG | MDR_PER_CLK_CLK_EN_Msk); }
+  //  Отключение частоты Uart_Clock, SSP_Clock, Timer_Clock, и т.д.
+__STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~MDR_PER_CLK_CLK_EN_Msk;}
+
+
+//  Выставление делителя входной частоты для получения UART_Clock, SSP_Clock, TIM_Clock, и т.д.
+__STATIC_INLINE void MDR_PerClock_SetBRG(const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG) 
+  { REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_PER_CLK_DIV_Msk, clockBRG); }
+
+//  Подача на блок периферии частоты UART_Clock, SSP_Clock, TIM_Clock, и т.д.
+__STATIC_INLINE void MDR_PerClock_SetGateOpen(const MDR_PerClock_Cfg *pCfgClock) { REG32(pCfgClock->ClockGate_Addr) |= MDR_PER_CLK_CLK_EN_Msk; }
+
+
+
 
 #endif //MDR_RST_CLOCK_VE8x_H

@@ -61,7 +61,7 @@
     // Active buttons Level
     #define MDRB_BTNs_PUSH_TO_GND
 
-//  ---------------  UART2 Pin Definition ----------------
+//  ---------------  UART1 Pin Definition ----------------
     //  PORT_F: PF0, PF1 - Main
     #define MDRB_UART1_TX_PE15_Ind	    15
     #define MDRB_UART1_RX_PE16_Ind	    16

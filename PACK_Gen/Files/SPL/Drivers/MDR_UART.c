@@ -60,9 +60,11 @@ const MDR_UART_TypeEx _MDR_UART2ex = {
 #ifndef MDR_CLK_LIKE_VE8      
     .CfgClock.ClockGate_ClockOn_Msk = MDR_UART4_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_UART4_CLOCK_GATE_BRG_POS,
-#endif
      //  NVIC
     .UARTx_IRQn = UART34_IRQn
+#else    
+    .UARTx_IRQn = UART4_IRQn
+#endif
   };
 #endif
 

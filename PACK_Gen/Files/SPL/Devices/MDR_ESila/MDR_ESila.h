@@ -607,23 +607,24 @@ typedef struct
 // #define   MDR_SSP2_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP2_BRG_Pos
 
 
-// //----------------    UART Definitions  --------------------
-// //  UART Block Clock enable
-// #define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+ //----------------    UART Definitions  --------------------
+ //  UART Block Clock enable
+ //  UART Block Clock enable
+ #define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_UART3_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_UART4_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
 
-// #define   MDR_UART1_CLK_EN_MSK            MDR_RST_PER__UART1_CLK_EN_Msk
-// #define   MDR_UART2_CLK_EN_MSK            MDR_RST_PER__UART2_CLK_EN_Msk
+ #define   MDR_UART1_CLK_EN_MSK            MDR_RST_PER0_UART1_CLK_EN_Msk
+ #define   MDR_UART2_CLK_EN_MSK            MDR_RST_PER0_UART2_CLK_EN_Msk
+ #define   MDR_UART3_CLK_EN_MSK            MDR_RST_PER0_UART3_CLK_EN_Msk
+ #define   MDR_UART4_CLK_EN_MSK            MDR_RST_PER0_UART4_CLK_EN_Msk
 
-// //  UART_ClockGate configs
-// #define   MDR_UART1_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
-// #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART_CLOCK)
-
-// #define   MDR_UART1_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART1_CLK_EN_Msk
-// #define   MDR_UART2_CLOCK_GATE_ENA_MSK    MDR_RST_UART__UART2_CLK_EN_Msk
-
-// #define   MDR_UART1_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART1_BRG_Pos
-// #define   MDR_UART2_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART2_BRG_Pos
+ //  UART_ClockGate configs
+ #define   MDR_UART1_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART1_CLK)
+ #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART2_CLK)
+ #define   MDR_UART3_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART3_CLK)
+ #define   MDR_UART4_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART4_CLK)
 
 
 // //----------------    TIMER Definitions  --------------------

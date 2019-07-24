@@ -3,6 +3,13 @@
 
 #ifdef USE_BOARD_ESila 
 
+#include <MDR_CPU_ClockSelect.h>
+
+//===================================    Частота тактирования    ========================================
+
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_120MHz, MDRB_CPU_FREQ_SUPP_120MHz);
+
+
 //  Переопределение пинов для удобства поиска конфликтов
     //  Port_A    
     #define PIN_PA16     MDR_Pin_16  //          LCD_A0
@@ -10,6 +17,9 @@
     #define PIN_PA23     MDR_Pin_23  //          LCD_E1        
 
     //  Port_B
+    #define PIN_PB0      MDR_Pin_0   //             UART1_RX
+    #define PIN_PB1      MDR_Pin_1   //             UART1_TX
+    
     #define PIN_PB10     MDR_Pin_10  //          LCD_RES
     #define PIN_PB14     MDR_Pin_14  //          LCD_RW
     #define PIN_PB19     MDR_Pin_19  //          LCD_??
@@ -123,6 +133,22 @@
     
 
     #define MDRB_LCD_CONFLICT_LED
+
+
+//  ---------------  UART1 Pin Definition ----------------
+    //  PORT_F: PF0, PF1 - Main
+    #define MDRB_UART1_TX_PB1_Ind	      1
+    #define MDRB_UART1_RX_PB0_Ind	      0
+
+    #define MDRB_UART1_TX_PB1_Msk	      MDR_Pin_1
+    #define MDRB_UART1_RX_PB0_Msk		    MDR_Pin_0
+
+    #define MDRB_UART1_TX_PB1_Port	    MDR_GPIO_B
+    #define MDRB_UART1_RX_PB0_Port		  MDR_GPIO_B
+    
+    #define MDRB_UART1_TX_PB1_Func	    MDR_PIN_FUNC_5
+    #define MDRB_UART1_RX_PB0_Func	    MDR_PIN_FUNC_5 
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

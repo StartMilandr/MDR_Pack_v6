@@ -357,4 +357,6 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_PLL_srcHSE1(MDR_RST_PLL_Type *PLLx, MDR
   MDR_CPU_SetClock_srcMAXCLK(selMaxClk, cfgPLL_HSE->divMaxToCpu_0, &cfgPLL_HSE->freqSupp, fromLowerFreq);
   return MDR_SET_CLOCK_OK;
 }
-  
+
+
+

@@ -34,6 +34,8 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
+#define MDR_HAS_PLL3
+
 //---------------   MAX_Clock  ---------------
 typedef enum {
   MAXCLK_HSI      = 0,

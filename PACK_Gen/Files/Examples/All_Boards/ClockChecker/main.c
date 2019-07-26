@@ -8,11 +8,22 @@
 
 #ifndef USE_MDR1923VK014
   #include <MDRB_Buttons.h>
+  
+  //  Выбрать только один источник частоты для теста!
+  #define USE_PLL_CLOCK    1
+  #define USE_HSI0_CLOCK   0  
+  
+#else  
+  // только режим в PLL
+  #define USE_PLL_CLOCK    1
+  
+  #define VK014_DELAY_CNT  10
+  uint32_t delayBreakCnt = 0;
+  bool doBreak = true; 
+  bool doBreakSwitch = false;
 #endif
 
-//  Выбрать только один источник частоты для теста!
-#define USE_PLL_CLOCK    1
-#define USE_HSI0_CLOCK   0
+
 
 
 #if USE_PLL_CLOCK
@@ -53,8 +64,10 @@ void BreakClock(void);
 void SetWorkClock(void);
 void RestoreClock(void);
 
+
+
 int main(void)
-{ 
+{   
   MDR_CPU_SetClock_HSI_def(false);
   
   //  LED and Buttons
@@ -76,6 +89,7 @@ int main(void)
   
   while (1)
   {    
+#ifndef USE_MDR1923VK014      
     if (MDRB_BntClicked_Up(true))
       BreakClock();
     
@@ -84,12 +98,34 @@ int main(void)
     
     if (MDRB_BntClicked_Down(true))
       MDR_CLKCHK_ClearAllEvents(ACTIVE_CHECKER);
+    
+#else
+    if (doBreakSwitch)
+    {
+      doBreakSwitch = false;
+    
+      if (doBreak)
+        BreakClock();
+      else
+        RestoreClock();    
+      doBreak = !doBreak;
+    }
+#endif
   }    
 }
 
 void SysTick_Handler(void)
 {
   MDRB_LED_Toggle(LED_TIMER);
+  
+#ifdef USE_MDR1923VK014  
+  ++delayBreakCnt;
+  if (delayBreakCnt >= VK014_DELAY_CNT)
+  {
+    delayBreakCnt = 0;
+    doBreakSwitch = true;
+  }
+#endif
 }
 
 void BreakClock(void)

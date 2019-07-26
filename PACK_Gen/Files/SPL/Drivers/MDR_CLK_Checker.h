@@ -14,7 +14,7 @@ typedef enum {
   MDR_CLKCHK_PLL1,
   MDR_CLKCHK_PLL2,
 #ifdef MDR_HAS_PLL3  
-  MDR_CLKCHK_PLL3
+  MDR_CLKCHK_PLL3,
 #endif      
   MDR_CLKCHK_COUNT  // - Not for Use as Item!
 } MDR_CLKCHK_Target;

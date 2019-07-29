@@ -3386,7 +3386,7 @@
               <bitRange>[5:5]</bitRange>
             </field>
             <field>
-              <name>I0GAIN</name>
+              <name>VGAIN</name>
               <description>PGA value</description>
               <bitRange>[7:6]</bitRange>
               <access>read-write</access>
@@ -3397,8 +3397,8 @@
                 <enumeratedValue><name>x8</name><description>Signal amplification 18dB</description><value>3</value></enumeratedValue>
               </enumeratedValues>
             </field>
-            <field derivedFrom="I0GAIN">
-              <name>VGAIN</name>
+            <field derivedFrom="VGAIN">
+              <name>I0GAIN</name>
               <bitRange>[9:8]</bitRange>
             </field>
             <field>
@@ -3407,7 +3407,7 @@
               <bitRange>[17:10]</bitRange>
               <access>read-write</access>
             </field>
-            <field derivedFrom="I0GAIN">
+            <field derivedFrom="VGAIN">
               <name>I3GAIN</name>
               <bitRange>[19:18]</bitRange>
             </field>

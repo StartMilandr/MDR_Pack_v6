@@ -135,10 +135,10 @@ typedef struct {
 #define MDR_ADCUI_F0CTR_RRRS_Msk          (0x10UL)                  /*!< MDR_ADCUI F0CTR: RRRS (Bitfield-Mask: 0x01)           */
 #define MDR_ADCUI_F0CTR_RVRS_Pos          (5UL)                     /*!< MDR_ADCUI F0CTR: RVRS (Bit 5)                         */
 #define MDR_ADCUI_F0CTR_RVRS_Msk          (0x20UL)                  /*!< MDR_ADCUI F0CTR: RVRS (Bitfield-Mask: 0x01)           */
-#define MDR_ADCUI_F0CTR_V0GAIN_Pos        (6UL)                     /*!< MDR_ADCUI F0CTR: I0GAIN (Bit 6)                       */
-#define MDR_ADCUI_F0CTR_V0GAIN_Msk        (0xc0UL)                  /*!< MDR_ADCUI F0CTR: I0GAIN (Bitfield-Mask: 0x03)         */
-#define MDR_ADCUI_F0CTR_I0GAIN_Pos        (8UL)                     /*!< MDR_ADCUI F0CTR: VGAIN (Bit 8)                        */
-#define MDR_ADCUI_F0CTR_I0GAIN_Msk        (0x300UL)                 /*!< MDR_ADCUI F0CTR: VGAIN (Bitfield-Mask: 0x03)          */
+#define MDR_ADCUI_F0CTR_V0GAIN_Pos        (6UL)                     /*!< MDR_ADCUI F0CTR: VGAIN (Bit 6)                       */
+#define MDR_ADCUI_F0CTR_V0GAIN_Msk        (0xc0UL)                  /*!< MDR_ADCUI F0CTR: VGAIN (Bitfield-Mask: 0x03)         */
+#define MDR_ADCUI_F0CTR_I0GAIN_Pos        (8UL)                     /*!< MDR_ADCUI F0CTR: I0GAIN (Bit 8)                        */
+#define MDR_ADCUI_F0CTR_I0GAIN_Msk        (0x300UL)                 /*!< MDR_ADCUI F0CTR: I0GAIN (Bitfield-Mask: 0x03)          */
 #define MDR_ADCUI_F0CTR_VPHASE_Pos        (10UL)                    /*!< MDR_ADCUI F0CTR: VPHASE (Bit 10)                      */
 #define MDR_ADCUI_F0CTR_VPHASE_Msk        (0x3fc00UL)               /*!< MDR_ADCUI F0CTR: VPHASE (Bitfield-Mask: 0xff)         */
 #define MDR_ADCUI_F0CTR_I3GAIN_Pos        (18UL)                    /*!< MDR_ADCUI F0CTR: I3GAIN (Bit 18)                      */

@@ -79,7 +79,8 @@ int main(void)
   uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
    
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -88,13 +89,15 @@ int main(void)
     
   //  Инициализация конфигруации в глобальных переменных
   Cfg_InitSelectedConfigs();
+  
   // Настройка частоты ADC_Clock=HSE=8MHz. Используется в некоторых тестах вместо CPU_Clk.
-  MDR_ADC_SetClock_CPU_C1(MDR_CLK_div1);
+  MDR_ADC_SetClock_CPU_C1(MDR_Div256P_div1);
+  
   //  Выводы GPIO в аналоговую функцию для выбраных сигналов в ADC_Cfg.с  
   if (Cfg_GPIO_PinSelected)
     MDR_ADC_PinsInitByMask(CFG_ADC_GPIO_Port, Cfg_GPIO_PinSelected);
 #ifdef CFG_ADC_GPIO_PortEx  
-  //  В ВЕ4,ВК214,ВК234 пины каналов АЦП находятся в разных портах
+  //  В ВЕ4,ВК214,ВК234 пины каналов АЦП находятся в двух портах
   if (Cfg_GPIO_PinSelectedEx)
     MDR_ADC_PinsInitByMask(CFG_ADC_GPIO_PortEx, Cfg_GPIO_PinSelectedEx);
 #endif  
@@ -103,6 +106,10 @@ int main(void)
   
   //  Активный тест
   testStack[activeTest]->funcInit();
+  
+#ifdef USE_MDR1986VK214  
+  MDR_SysTimerStart(SYS_TIMER_VALUE_MAX);
+#endif
   
   while (1)
   {
@@ -121,6 +128,10 @@ int main(void)
         activeTest = 0;
       
       testStack[activeTest]->funcInit();
+    #ifdef USE_MDR1986VK214  
+      MDR_SysTimerStart(SYS_TIMER_VALUE_MAX);
+    #endif      
+      
     }
 
     //  Изменение режима теста
@@ -143,7 +154,7 @@ int main(void)
       if (timerStarted)
         MDR_SysTimerStop();
       else  
-        MDR_SysTimerStart(SYS_TIMER_VALUE_MAX);      
+        MDR_SysTimerStart(SYS_TIMER_VALUE_MAX);
       timerStarted = !timerStarted;
     }
     
@@ -152,7 +163,13 @@ int main(void)
 
 void SysTick_Handler(void)
 {
-  startByTimer = true;
+  static uint32_t cnt = 0;
+  ++cnt;
+  if (cnt > 4)
+  {
+    cnt = 0;
+    startByTimer = true;
+  }
 }
 
 void ADC_IRQHandler(void)

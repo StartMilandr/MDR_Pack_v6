@@ -74,8 +74,8 @@ void MDR_ADCUI_DeInit(void);
 void MDR_ADCUI_ClearRegs(void);
 void MDR_ADCUI_Reset(void);
 
-__STATIC_INLINE void MDR_ADCUI_ClockOn(void)  {MDR_CLOCK->MDR_CLK_EN_REG_PER_b.ADCIU_CLK_EN  = MDR_On;}
-__STATIC_INLINE void MDR_ADCUI_ClockOff(void) {MDR_CLOCK->MDR_CLK_EN_REG_PER_b.ADCIU_CLK_EN  = MDR_Off;}
+__STATIC_INLINE void MDR_ADCUI_ClockOn(void)  {MDR_CLOCK->PER2_CLOCK |= MDR_RST_PER2__ADCIU_CLK_EN_Msk;}
+__STATIC_INLINE void MDR_ADCUI_ClockOff(void) {MDR_CLOCK->PER2_CLOCK &= ~MDR_RST_PER2__ADCIU_CLK_EN_Msk;}
 
 
 // ==============    Инициализация через структуру CfgRegs - выполняется быстрее ===========

@@ -88,6 +88,11 @@ void MDR_ADC_Change_CfgLims(MDR_ADCx_ItemType *ADCx, const MDR_ADCx_CfgLimits *c
 //  Параметры прерываний (_IRQ) активируют прерывания в контроллере NVIC (Упрощение, чтобы не вызывать эти функции извне).
 //  Прерывания в самом блоке АЦП должны быть активированы опциями MDR_ADCx_CfgIRQ.
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 typedef struct {
   const MDR_ADC_CfgThermo   *pCfgThermo;
   
@@ -108,14 +113,18 @@ typedef struct {
   uint32_t            Priority_IRQ;
 } MDR_ADC_Config;
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
+
 
 void MDR_ADC_Init(const MDR_ADC_Config *cfg);
 
 //  Вспомогательные функции, могут пригодится
 void MDR_ADC_ClearRegs(void);
 
-__STATIC_INLINE void MDR_ADC_ClockOn(void)  {MDR_CLOCK->MDR_CLK_EN_REG_PER_b.ADC_CLK_EN  = MDR_On;}
-__STATIC_INLINE void MDR_ADC_ClockOff(void) {MDR_CLOCK->MDR_CLK_EN_REG_PER_b.ADC_CLK_EN  = MDR_Off;}
+__STATIC_INLINE void MDR_ADC_ClockOn(void)  {MDR_CLOCK->MDR_CLK_EN_REG_ADC |=  MDR_CLK_EN_BIT_ADC;}
+__STATIC_INLINE void MDR_ADC_ClockOff(void) {MDR_CLOCK->MDR_CLK_EN_REG_ADC &= ~MDR_CLK_EN_BIT_ADC;}
 __STATIC_INLINE void MDR_ADC_DeInit(void);
 
 

@@ -114,9 +114,12 @@ MDR_ADC_Config _cfgAdc =
   static MDR_ADC_Signal _UsedSignals[] = {ADC_Signal_Ch2, ADC_Signal_Ch5, ADC_Signal_Ch7, ADC_Signal_TS_Temper, ADC_Signal_TS_Vref, ADC_Signal_TS_VrefBuf};
   
 #elif defined (USE_MDR1986VK214)
+  //  см. MDRB_1986VK214.h
+  //  ADC_Ch4 - ADC_Ch7 совмещены с контроллером LCD
+  static MDR_ADC_Signal _UsedSignals[] = {ADC_Signal_Ch0, ADC_Signal_Ch1, ADC_Signal_TS_Temper, ADC_Signal_TS_Vref, ADC_Signal_TS_VrefBuf};
   
 #elif defined (USE_MDR1986VK234)
-  //  см. MDRB_1986VE4.h
+  //  см. MDRB_1986VK234.h
   //  Не использовать Ch0 - совмещен с LED1
   static MDR_ADC_Signal _UsedSignals[] = {ADC_Signal_Ch4, ADC_Signal_Ch5, ADC_Signal_TS_Temper, ADC_Signal_TS_Vref, ADC_Signal_TS_VrefBuf};
 #endif

@@ -289,6 +289,10 @@ typedef enum IRQn
 #define   MDR_CLK_EN_REG_BKP        PER2_CLOCK
 #define   MDR_CLK_EN_BIT_BKP        MDR_RST_PER2__BKP_CLK_EN_Msk
 
+//----------------    ADC Clock Definitions  --------------------
+#define   MDR_CLK_EN_REG_ADC        PER2_CLOCK
+#define   MDR_CLK_EN_BIT_ADC        MDR_RST_PER2__ADC_CLK_EN_Msk
+
 //----------------    EEPROM Definitions  --------------------
 #define   MDR_CLK_EN_REG_EEPROM     PER2_CLOCK
 #define   MDR_CLK_EN_BIT_EEPROM     MDR_RST_PER2__EEPROM_CLK_EN_Pos

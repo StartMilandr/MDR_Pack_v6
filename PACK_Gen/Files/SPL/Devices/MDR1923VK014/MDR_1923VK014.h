@@ -169,6 +169,39 @@ typedef enum IRQn
 #include <MDR_TimerVE13_defs.h>
 
 
+/*=========  FT Control ========*/
+#define MDR_FTCTRL_EVENT_COUNT  13
+
+typedef struct
+{
+  __IO	uint32_t KEY;
+  __IO	uint32_t CONTROL;
+  __IO	uint32_t STATUS;
+  __IO	uint32_t TIMEOUT;
+  __IO	uint32_t TICKCNT;
+  __IO	uint32_t FIRSTEVENT;
+  __IO	uint32_t LASTEVENT;
+  __IO	uint32_t TIMEOUTCNT;
+  __IO	uint32_t EVENT[MDR_FTCTRL_EVENT_COUNT];
+  __IO	uint32_t RESET_EVENT0;
+  __IO	uint32_t RESET_EVENT1;
+  __IO	uint32_t RESET_EVENT2;
+  __IO	uint32_t RESET_EVENT3;
+  __IO	uint32_t RESET_EVENT4;
+  __IO	uint32_t IE_EVENT5;
+  __IO	uint32_t IE_EVENT6;
+  __IO	uint32_t IE_EVENT7;
+  __IO	uint32_t IE_EVENT8;
+  __IO	uint32_t IE_EVENT9;
+  __IO	uint32_t IE_EVENT10;
+  __IO	uint32_t IE_EVENT11;
+  __IO	uint32_t IE_EVENT12;
+} MDR_FTControl_Type;
+
+#define FT_CNTR_BASE	    (( uint32_t) 0x40003000)
+
+#define	MDR_FTCNTR		    ((MDR_FTControl_Type *) FT_CNTR_BASE)
+
 
 
 /*@}*/ /* end of group MDR1923VK014_Peripherals */

@@ -115,11 +115,31 @@ void SystemInit (void)
          do not use global variables because this function is called before
          reaching pre-main. RW section maybe overwritten afterwards. */
   
-//  //  Disable Reset by Upor
+  //  Disable Reset by Upor
   MDR_BKP->KEY = MDR_KEY_UNLOCK;
   MDR_BKP->TMR0.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
   MDR_BKP->TMR1.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
   MDR_BKP->TMR2.REG_60 |= MDR_BKP_REG60_PORSTn_Dis_Msk;
+
+  //  Clear EVENTs in FTCNTR
+  MDR_CLOCK->KEY = MDR_KEY_UNLOCK;  
+  MDR_CLOCK->PER0_CLK |= MDR_RST_PER0_FTCNTR_CLK_EN_Msk;
+    
+	MDR_FTCNTR->KEY = MDR_KEY_UNLOCK;
+	
+  // Disable reset by EVENT0-EVENT4
+  MDR_FTCNTR->RESET_EVENT0 = 0x0;
+  MDR_FTCNTR->RESET_EVENT1 = 0x0;
+  MDR_FTCNTR->RESET_EVENT2 = 0x0;
+  MDR_FTCNTR->RESET_EVENT3 = 0x0;
+  MDR_FTCNTR->RESET_EVENT4 = 0x0;
+  
+  //  Clear EVENTS
+  uint32_t i;
+  for (i = 0; i < MDR_FTCTRL_EVENT_COUNT; ++i)
+    MDR_FTCNTR->EVENT[i] = 0xFFFFFFFFUL;
+  
+  MDR_FTCNTR->KEY = 0;
   MDR_BKP->KEY = 0;
   
   SystemCoreClock = SYSTEM_CLOCK;

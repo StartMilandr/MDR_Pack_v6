@@ -173,7 +173,7 @@ typedef struct {
 
 
 /* ====================================================  ADC2_Cfg  ======================================================= */
-typedef struct {
+typedef __PACKED_STRUCT  {
   __IOM MDR_OnOff           ADON       : 1;            /*!< [0..0] Enable ADC                                              */
   __IOM MDR_OnOff           GO         : 1;            /*!< [1..1] Start single ADC mesurement                             */
   __IOM MDR_ADC_CLK_SEL     CLKS       : 1;            /*!< [2..2] Select Clock                                            */

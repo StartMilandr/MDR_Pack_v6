@@ -60,9 +60,9 @@ void MDR_ADC_SetClock_HSI_C1(MDR_Div256P divClk);
 //=================   Выбор источника тактовой частоты для ADCUI_CLOCK ==================
 #ifdef MDR_ADCUI_CLOCK_FROM_PER_CLOCK
   void MDR_ADCUI_SetClock_PllCPU(MDR_Div256P divClk);
-  void MDR_ADCUI_SetClock_HSI_С1(MDR_Div256P divClk);
+  void MDR_ADCUI_SetClock_HSI_C1(MDR_Div256P divClk);
   void MDR_ADCUI_SetClock_CPU_C1(MDR_Div256P divClk);
-  void MDR_ADCUI_SetClock_PER_С1(MDR_Div256P divClk);
+  void MDR_ADCUI_SetClock_PER1_C1(MDR_Div256P divClk);
 #endif
 
 

@@ -84,8 +84,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
 				DCD     EXT1_IRQHandler           ; 11: EXT_INT1 Interrupt
 				DCD     EXT2_IRQHandler	          ; 12: EXT_INT2 Interrupt
 				DCD     EXT3_IRQHandler	          ; 13: EXT_INT3 Interrupt
-				DCD     EXT4_IRQHandler	          ; 14: EXT_INT4 Interrupt
-                DCD     ADCIU_F1_IRQHandler       ; 15: ADCIU_F0 Interrupt
+                DCD     ADCUI_F0_IRQHandler       ; 14: ADCUI_F0 Interrupt
 
                 AREA    |.text|, CODE, READONLY
 
@@ -139,8 +138,7 @@ Default_Handler PROC
                 EXPORT  EXT1_IRQHandler              [WEAK]
                 EXPORT  EXT2_IRQHandler	             [WEAK]
                 EXPORT  EXT3_IRQHandler	             [WEAK]
-                EXPORT  EXT4_IRQHandler	             [WEAK]
-                EXPORT  ADCIU_F1_IRQHandler          [WEAK]
+                EXPORT  ADCUI_F0_IRQHandler          [WEAK]
 
 
 UART1_IRQHandler
@@ -156,8 +154,7 @@ BKP_IRQHandler
 EXT1_IRQHandler
 EXT2_IRQHandler
 EXT3_IRQHandler
-EXT4_IRQHandler
-ADCIU_F1_IRQHandler
+ADCUI_F0_IRQHandler
                 B       .
 
                 ENDP

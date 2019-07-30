@@ -10,13 +10,12 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060422::V5.06 update 4 (build 422)::ARMCC</pArmCC>
       <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>MDR1986VE3</Device>
           <Vendor>Milandr</Vendor>
-          <PackID>Milandr.MDR1986VExx.2.0</PackID>
+          <PackID>Milandr.MDR1986VExx.2.0x</PackID>
           <PackURL>https://ic.milandr.ru/soft/</PackURL>
           <Cpu>IRAM(0x20000000,0x8000) IRAM2(0x20100000,0x4000) IROM(0x00000000,0x20000) CPUTYPE("Cortex-M1") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -311,12 +310,12 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
-            <EnumInt>1</EnumInt>
+            <EnumInt>0</EnumInt>
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
@@ -435,14 +434,14 @@
       </api>
     </apis>
     <components>
-      <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+      <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_BUTTONS">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_CM1CM3">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+      <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_LCD">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -465,14 +464,14 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Drivers" Cgroup="PER_Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+      <component Cclass="Drivers" Cgroup="PER_Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_CM1CM3">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_UseFuncs">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+      <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -493,16 +492,22 @@
     <files>
       <file attr="config" category="header" name="SPL\Config\MDRB_BoardSelect.h" version="2.0.0">
         <instance index="0">RTE\Board_Support\MDR1986VE3\MDRB_BoardSelect.h</instance>
-        <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_CM1CM3"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_LCD"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </file>
       <file attr="config" category="header" name="SPL\Config\MDR_Config.h" version="2.0.0">
-        <instance index="0">RTE\Device\MDR1986VE3\MDR_Config.h</instance>
+        <instance index="0" removed="1">RTE\Device\MDR1986VE3\MDR_Config.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE3"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="header" name="SPL\Config\MDR_ConfigVE3.h" version="2.0.0">
+        <instance index="0">RTE\Device\MDR1986VE3\MDR_ConfigVE3.h</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE3"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -510,7 +515,7 @@
       <file attr="config" category="source" condition="Startup ARM" name="SPL\Devices\MDR1986VE3\startup_MDR1986VE3.s" version="2.0.0">
         <instance index="0">RTE\Device\MDR1986VE3\startup_MDR1986VE3.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE3"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -518,7 +523,7 @@
       <file attr="config" category="source" name="SPL\Devices\MDR1986VE3\system_MDR1986VE3.c" version="2.0.0">
         <instance index="0">RTE\Device\MDR1986VE3\system_MDR1986VE3.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE3"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -526,7 +531,7 @@
       <file attr="config" category="header" name="SPL\Devices\MDR1986VE3\system_MDR1986VE3.h" version="2.0.0">
         <instance index="0">RTE\Device\MDR1986VE3\system_MDR1986VE3.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE3"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>

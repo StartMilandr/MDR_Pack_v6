@@ -8,6 +8,11 @@
 
 #include <MDR_SSP_def.h>
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 typedef enum {
   SPI_CPHA0_CPOL0,
@@ -155,7 +160,7 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
 //   - активацию прерываний.
 //  Т.е. обеспечавают полную инициализацию блока "под ключ".
 
-void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_BRG_DIV_128 ClockBRG);
+void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG);
 void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx);
 
 void MDR_SSP_EnableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ);
@@ -165,7 +170,7 @@ void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx);
 //  Оставлено для работоспособности примеров к паку
 typedef struct {
   //  Делитель частоты SSP_Clock
-  MDR_BRG_DIV_128 ClockBRG;
+  MDR_Div128P ClockBRG;
   //  Настройки блока SSP
   MDR_SSP_Config *cfgSSP;
   //  Инициализация прерываний в NVIC
@@ -274,6 +279,11 @@ typedef struct {
 } MDR_SSP_CfgPinsGPIO;
 
 void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower);
+
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
 
 
 #endif //  _MDR_SSP_H

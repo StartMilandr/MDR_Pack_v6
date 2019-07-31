@@ -50,7 +50,8 @@ int main(void)
   uint32_t freqCPU_Hz;
   
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация кнопок и LCD дисплея (кроме 7-ми сегментного)
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);

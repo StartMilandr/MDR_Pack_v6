@@ -112,7 +112,7 @@ static uint32_t Microwire_MasterSlave_TestTransfer(void)
     //  Вычитывание слова из ведомого
     //  Ожидание флага наличия данных в FIFO_RX необязательно в данном случае.
     //  После окончания трансфера в мастере очевидно, что он выставился и в ведомом.
-    dataRD_S = MDR_SSPex_WaitAndReadData(SSP_SLAVE);
+    dataRD_S = (uint8_t)MDR_SSPex_WaitAndReadData(SSP_SLAVE);
     
     if ((dataRD_M != dataWR_S) ||  (dataRD_S != dataWR_M))
       ++errCount;

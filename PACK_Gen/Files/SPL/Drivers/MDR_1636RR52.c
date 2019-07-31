@@ -76,8 +76,10 @@ MDR_1636RR52_Obj MDR_RR52_Init(const MDR_SSP_TypeEx *exSSPx, const MDR_1636RR52_
 
 void MDR_RR52_InitPinCS(const MDR_SSP_CfgPinGPIO  *pPinManualCS, MDR_PIN_PWR pinsPower, MDR_1636RR52_Obj *pObjRR52)
 {
-  MDR_PinDig_PermRegs pinPermRegs;
-  MDR_Port_InitDigPermRegs(MDR_PIN_PullPush, pinsPower, MDR_Off, MDR_Off, &pinPermRegs);
+  MDR_PinDig_GroupPinCfg pinPermRegs;
+  
+  MDR_GPIO_Enable(pPinManualCS->portGPIO);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermRegs);
   MDR_GPIO_InitDigPin(pPinManualCS->portGPIO, pPinManualCS->pinIndex, MDR_Pin_Out, MDR_PIN_PORT, &pinPermRegs);  
   
   pObjRR52->CS_Port    = pPinManualCS->portGPIO->PORTx; 
@@ -205,7 +207,7 @@ uint8_t MDR_RR52_ReadProtSectReg (const MDR_1636RR52_Obj *objRR52, uint32_t addr
   MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
 #endif  
   
-  rdData = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
+  rdData = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
   MDR_RR52_CS_SetInactive(objRR52);  
   
   return rdData;
@@ -230,7 +232,7 @@ uint8_t MDR_RR52_ReadStatusReg (const MDR_1636RR52_Obj *objRR52)
   MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
 #endif  
   
-  rdData = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
+  rdData = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);  
   MDR_RR52_CS_SetInactive(objRR52);  
   
   return rdData;
@@ -273,7 +275,7 @@ bool MDR_RR52_ByteProgram(const MDR_1636RR52_Obj *objRR52, uint32_t addr, uint8_
 uint32_t MDR_RR52_ProgramArray(const MDR_1636RR52_Obj *objRR52, uint32_t addr, uint32_t count, uint8_t *pData)
 {
   uint32_t i;
-  uint32_t wrCount;
+  uint32_t wrCount = 0;
   for (i = 0; i < count; ++i)
     if (MDR_RR52_ByteProgram(objRR52, addr + i, pData[i]))
     {
@@ -300,8 +302,8 @@ uint16_t MDR_RR52_ReadID(const MDR_1636RR52_Obj *objRR52)
   
   MDR_RR52_CS_SetActive(objRR52);  
   MDR_SSP_MasterTransfer(objRR52->SSPx, MDR_RR52_CMD__READ_ID);
-  rdHi = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
-  rdLo = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
+  rdHi = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
+  rdLo = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
   MDR_RR52_CS_SetInactive(objRR52);  
   
   return (uint16_t)((rdHi << 8) | rdLo);
@@ -317,7 +319,7 @@ void MDR_RR52_ReadArray_15MHz(const MDR_1636RR52_Obj *objRR52, uint32_t addr, ui
   //  Read Data
   for (i = 0; i < count; ++i)
   {
-    pData[i] = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
+    pData[i] = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
     MDR_Delay(_RR52_Delay.RD_30ns);
   }
   
@@ -334,7 +336,7 @@ void MDR_RR52_ReadArray(const MDR_1636RR52_Obj *objRR52, uint32_t addr, uint32_t
   MDR_SSP_MasterTransfer(objRR52->SSPx, 0);    
   for (i = 0; i < count; ++i)
   {
-    pData[i] = MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
+    pData[i] = (uint8_t)MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
     MDR_Delay(_RR52_Delay.RD_30ns);
   }
   

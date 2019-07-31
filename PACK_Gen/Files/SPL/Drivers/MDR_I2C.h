@@ -8,6 +8,12 @@
 #include <MDR_GPIO.h>
 
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 //===================   I2C GPIO pins Init ==========================
 //  Функция инициализации выводов GPIO в функции I2C
 typedef struct {
@@ -96,6 +102,9 @@ bool MDR_I2C_IRQ_TryStartTransfer(uint8_t addr_7bit, uint32_t count, uint8_t *pD
 void MDR_I2C_IRQ_HandlerProcess(void);
 bool MDR_I2C_IRQ_GetCompleted(bool *success) ;
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
 
 #endif // MDR_I2C_H
 

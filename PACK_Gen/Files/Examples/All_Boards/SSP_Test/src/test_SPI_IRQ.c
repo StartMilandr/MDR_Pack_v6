@@ -27,7 +27,6 @@ static void TestSSP_Exec(void);
 static void TestSSP_MasterHandleIRQ(void);
 static void TestSSP_SlaveHandleIRQ(void);
 
-
 TestInterface TI_SSP_IRQ = {
   .funcInit       = TestSSP_Init,
   .funcFinit      = TestSSP_Finit,
@@ -38,7 +37,7 @@ TestInterface TI_SSP_IRQ = {
 };
 
 
-uint8_t tempDivPSR_2_254;
+static uint8_t tempDivPSR_2_254;
 
 static void TestSSP_Init(void)
 { 
@@ -79,9 +78,9 @@ static void TestSSP_Change(void)
 
 
 #define TRANSF_DATA_COUNT   100
-uint16_t transferData[TRANSF_DATA_COUNT];
-uint16_t dataRX_M[TRANSF_DATA_COUNT];
-uint16_t dataRX_S[TRANSF_DATA_COUNT];
+static uint16_t transferData[TRANSF_DATA_COUNT];
+static uint16_t dataRX_M[TRANSF_DATA_COUNT];
+static uint16_t dataRX_S[TRANSF_DATA_COUNT];
 
 typedef struct {
   uint32_t indSend; 
@@ -89,10 +88,13 @@ typedef struct {
   uint16_t *pDataRD;
 } SSP_DataCfg;
 
-SSP_DataCfg cfgDataMaster, cfgDataSlave;
+static SSP_DataCfg cfgDataMaster, cfgDataSlave;
 
-uint32_t TransferReady = 0;
-uint32_t lastData = 0;
+static uint32_t TransferReady = 0;
+static uint16_t lastData = 0;
+
+static void SSP_Handler_WriteSlave(const MDR_SSP_TypeEx *exSSPx, SSP_DataCfg * cfg);
+void SSP_Handler_WriteMaster(const MDR_SSP_TypeEx *exSSPx, SSP_DataCfg * cfg);
 
 static void PrepareDataBuffs(void)
 {  

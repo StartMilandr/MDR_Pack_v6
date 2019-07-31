@@ -30,7 +30,7 @@ TestInterface TI_SPI_LBM_ALL = {
 };
 
 
-uint8_t divForRestore;
+static uint8_t divForRestore;
 
 
 static void TestSSP_Init(void)

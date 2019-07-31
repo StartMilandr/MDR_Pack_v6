@@ -18,7 +18,7 @@
   #define MDR_RR52_READ    MDR_RR52_ReadArray
 #endif
 
-MDR_1636RR52_Obj RR52_Obj;
+static MDR_1636RR52_Obj RR52_Obj;
 
 typedef enum {
   tstReadID,
@@ -36,11 +36,16 @@ typedef enum {
   tstReset,  
 } TEST_COM_ID;
 
-TEST_COM_ID activeID = tstReadID;
+static TEST_COM_ID activeID = tstReadID;
 
 void ShowActionName(TEST_COM_ID testID);
 void PerformTestAction(TEST_COM_ID testID);
-//void ShowActionStatus(TEST_COM_ID testID);
+
+void ChangeStatusAction(void);
+void ChangeProtection(void);
+void WriteSectionData(MDR_1636RR52_Sector sector, uint8_t valueOffs);
+uint32_t CheckSectionClear(MDR_1636RR52_Sector sector);
+uint32_t CheckSectionData(MDR_1636RR52_Sector sector, uint8_t valueOffs);
 
 #ifdef USE_MDR1986VK234
   static const MDR_SSP_CfgPinGPIO _pinCS = {MDR_GPIO_B, 12, MDR_PIN_MAIN};
@@ -53,7 +58,7 @@ int main(void)
     //  SPI BitRate = SSP_Clock / (PSR * (1 + SCR))
     .DivSCR_0_255 = 20,
     .DivPSR_2_254 = 2,
-    .ClockBRG = MDR_BRG_div1,
+    .ClockBRG = MDR_Div128P_div1,
     //  Pins
     .pPinCLK = MDRB_PinsSSP1.pPinCLK,
     .pPinTX  = MDRB_PinsSSP1.pPinTX,
@@ -68,7 +73,8 @@ int main(void)
 
   
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -107,6 +113,7 @@ int main(void)
     } 
   }
 }
+
 
 void ChangeStatusAction(void)
 {
@@ -155,8 +162,8 @@ void ChangeProtection(void)
 //-------------------     DataBuffs ------------------
 #define BUFF_L          1024
 #define BUFF_IN_SECT    MDR_1636RR52_SectSize / BUFF_L
-uint8_t buff[BUFF_L];
-uint8_t ValueOffs[MDR_1636RR52_SectCount] = {0, 0};
+static uint8_t buff[BUFF_L];
+static uint8_t ValueOffs[MDR_1636RR52_SectCount] = {0, 0};
 
 uint32_t CheckSectionClear(MDR_1636RR52_Sector sector)
 {

@@ -1,6 +1,6 @@
 #include "SSP_cfg.h"
 
-MDR_SSP_Config cfgSSP = {
+static MDR_SSP_Config cfgSSP = {
   //  Config
   .DataBits = SSP_DataBits_16,
   .FrameFormat = SSP_Frame_SPI,
@@ -13,7 +13,7 @@ MDR_SSP_Config cfgSSP = {
 };
 
 MDR_SSP_ConfigEx cfgSSPex = {
-  .ClockBRG         = MDR_BRG_div1,
+  .ClockBRG         = MDR_Div128P_div1,
   .cfgSSP           = &cfgSSP,
   .activateNVIC_IRQ = true,
   .priorityIRQ      = 1
@@ -21,6 +21,7 @@ MDR_SSP_ConfigEx cfgSSPex = {
 
 //  ------  Смена количества бит в посылке  ------
 uint16_t Cfg_DataMaxValue = 0xFFFF;
+
 void Cfg_NextDataBits(void)
 {
   if (cfgSSP.DataBits == MDR_SSP_DATABITS_MAX)
@@ -31,7 +32,7 @@ void Cfg_NextDataBits(void)
   else
   {
     cfgSSP.DataBits++;
-    Cfg_DataMaxValue = (Cfg_DataMaxValue << 1) | 1;
+    Cfg_DataMaxValue = (uint16_t)(Cfg_DataMaxValue << 1) | 1;
   }
 }
 
@@ -60,7 +61,7 @@ char *Cfg_getActiveFrameName(void)
     case SSP_Frame_SPI: return "SPI";
     case SSP_Frame_SSI: return "SSI";
     case SSP_Frame_Microwire: return "MCR";
-    default: return "Err";
+    //default: return "Err";
   }  
 }
 
@@ -121,7 +122,7 @@ uint32_t Cfg_GetIndexSPI(const MDR_SSP_TypeEx *exSSPx)
 #endif  
 
 
-uint32_t listLenSSP = sizeof(SSP_List)/sizeof(SSP_List[0]);  
+static const uint32_t listLenSSP = sizeof(SSP_List)/sizeof(SSP_List[0]);  
 uint8_t  activeIndSSP = 0;
 
 uint8_t NextIndexSSP(void)
@@ -336,7 +337,7 @@ uint8_t NextIndexSSP(void)
 typedef struct {
   MDR_Port_ApplyMask     applyGPIO_Pins[SSP_PIN_COUNT];
   //  Backup настройки пинов до переключения на функции SSP
-  MDR_GPIO_CfgRegs       tempGPIOPins[SSP_PIN_COUNT];
+  MDR_GPIO_SetCfg         tempGPIOPins[SSP_PIN_COUNT];
   const MDR_GPIO_Port*   SSP_GPIOPort[SSP_PIN_COUNT];
 
   uint32_t usedPortCount;
@@ -348,8 +349,8 @@ static SSP_ApplyPinMasks applyPinsMaster, applyPinsSlave;
 static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MDR_PIN_PWR pinsPower, SSP_ApplyPinMasks *pinMasks)
 {
   uint32_t i;
-  uint32_t portInd;
-  MDR_PinDig_PermRegs pinsPermRegs;
+  int32_t portInd = -1;
+  MDR_PinDig_GroupPinCfg pinsPermRegs;
   
   if (pCFG_PinsSSP2 == NULL)
     return;
@@ -359,7 +360,7 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
     MDR_Port_MaskClear(&pinMasks->applyGPIO_Pins[i]);  
   
   //  Базовые настройки пинов
-  MDR_GPIO_InitDigPermRegs(MDR_PIN_PullPush, pinsPower, MDR_Off, MDR_Off, &pinsPermRegs);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinsPermRegs);
   
   //  Формирование конфигурационных масок AND и OR 
   //  CLK
@@ -367,7 +368,7 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
   {
     portInd = 0;
     pinMasks->SSP_GPIOPort[portInd] = pCFG_PinsSSP2->pPinCLK->portGPIO;
-    MDR_GPIO_ClockOn(pCFG_PinsSSP2->pPinCLK->portGPIO);
+    MDR_GPIO_Enable(pCFG_PinsSSP2->pPinCLK->portGPIO);
     MDR_GPIO_MaskAddPin(pCFG_PinsSSP2->pPinCLK->pinIndex, MDR_Pin_In, pCFG_PinsSSP2->pPinCLK->pinFunc, &pinsPermRegs, &pinMasks->applyGPIO_Pins[portInd]);
   }
   
@@ -376,10 +377,12 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
   {
     if (pCFG_PinsSSP2->pPinTX->portGPIO != pinMasks->SSP_GPIOPort[0])
     {
-      portInd = 0;
+      portInd = 1;
       pinMasks->SSP_GPIOPort[portInd] = pCFG_PinsSSP2->pPinTX->portGPIO;
-      MDR_GPIO_ClockOn(pCFG_PinsSSP2->pPinTX->portGPIO);
+      MDR_GPIO_Enable(pCFG_PinsSSP2->pPinTX->portGPIO);
     }
+    else
+      portInd = 0;
     MDR_GPIO_MaskAddPin(pCFG_PinsSSP2->pPinTX->pinIndex, MDR_Pin_In, pCFG_PinsSSP2->pPinTX->pinFunc, &pinsPermRegs, &pinMasks->applyGPIO_Pins[portInd]);
   }
   
@@ -394,7 +397,7 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
     {
       portInd = 2;
       pinMasks->SSP_GPIOPort[portInd] = pCFG_PinsSSP2->pPinRX->portGPIO;
-      MDR_GPIO_ClockOn(pCFG_PinsSSP2->pPinRX->portGPIO);
+      MDR_GPIO_Enable(pCFG_PinsSSP2->pPinRX->portGPIO);
     }
     MDR_GPIO_MaskAddPin(pCFG_PinsSSP2->pPinRX->pinIndex, MDR_Pin_In, pCFG_PinsSSP2->pPinRX->pinFunc, &pinsPermRegs, &pinMasks->applyGPIO_Pins[portInd]);
   }
@@ -412,12 +415,12 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
     {
       portInd = 3;
       pinMasks->SSP_GPIOPort[portInd] = pCFG_PinsSSP2->pPinFSS->portGPIO;
-      MDR_GPIO_ClockOn(pCFG_PinsSSP2->pPinFSS->portGPIO);
+      MDR_GPIO_Enable(pCFG_PinsSSP2->pPinFSS->portGPIO);
     }
     MDR_GPIO_MaskAddPin(pCFG_PinsSSP2->pPinFSS->pinIndex, MDR_Pin_In, pCFG_PinsSSP2->pPinFSS->pinFunc, &pinsPermRegs, &pinMasks->applyGPIO_Pins[portInd]);
   }
   
-  pinMasks->usedPortCount = portInd + 1;
+  pinMasks->usedPortCount = (uint32_t)(portInd + 1);
 }
 	
 void Cfg_SSP_CapturePinsInit(MDR_PIN_PWR pinsPower)

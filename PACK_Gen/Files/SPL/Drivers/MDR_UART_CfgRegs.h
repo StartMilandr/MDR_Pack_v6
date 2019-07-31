@@ -37,8 +37,7 @@ extern "C" {
 
 //==================    CfgRegs - выборка только конфигурационных регистров ===============
 
-
-typedef struct {
+typedef __PACKED_STRUCT {
   uint8_t   DATA       : 8;            /*!< [7..0] Data FIFO access                                                   */
   MDR_OnOff FE         : 1;            /*!< [8..8] Stop Bit Error                                                     */
   MDR_OnOff PE         : 1;            /*!< [9..9] Parity Error                                                       */

@@ -4,7 +4,7 @@
 //===================   I2C GPIO pins Init ==========================
 void MDR_I2C_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower, bool pullUpPins)
 {
-  MDR_PinDig_PermRegs pinPermCfg;
+  MDR_PinDig_GroupPinCfg pinGroupCfg;
   MDR_Pin_IO pinModeIO;
   
   if (pullUpPins)
@@ -12,18 +12,18 @@ void MDR_I2C_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
   else
     pinModeIO = MDR_Pin_In;
   
-  MDR_Port_InitDigPermRegs(MDR_PIN_OpenDrain, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinGroupCfg);
   //  pPinSCL
   if (pinsCfg->pPinSCL != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinSCL->portGPIO);
-    MDR_GPIO_InitDigPin(pinsCfg->pPinSCL->portGPIO, pinsCfg->pPinSCL->pinIndex, pinModeIO, pinsCfg->pPinSCL->pinFunc, &pinPermCfg);  
+    MDR_GPIO_Enable(pinsCfg->pPinSCL->portGPIO);
+    MDR_GPIO_InitDigPin(pinsCfg->pPinSCL->portGPIO, pinsCfg->pPinSCL->pinIndex, pinModeIO, pinsCfg->pPinSCL->pinFunc, &pinGroupCfg);  
   }
   //  pPinSDA
   if (pinsCfg->pPinSDA != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinSDA->portGPIO);
-    MDR_GPIO_InitDigPin(pinsCfg->pPinSDA->portGPIO, pinsCfg->pPinSDA->pinIndex, pinModeIO, pinsCfg->pPinSDA->pinFunc, &pinPermCfg);
+    MDR_GPIO_Enable(pinsCfg->pPinSDA->portGPIO);
+    MDR_GPIO_InitDigPin(pinsCfg->pPinSDA->portGPIO, pinsCfg->pPinSDA->pinIndex, pinModeIO, pinsCfg->pPinSDA->pinFunc, &pinGroupCfg);
   }
 }
 
@@ -123,9 +123,9 @@ __STATIC_INLINE void I2C_StartTransfer_loc(uint8_t addr_7bit, bool modeWrite)
 {
   //  Запуск передачи адреса с флагом чтение или запись
   if (modeWrite)
-    MDR_I2C->TXD = (addr_7bit << 1) | MDR_I2C_ADDR_WR_BIT;
+    MDR_I2C->TXD = (((uint32_t)addr_7bit << 1) | MDR_I2C_ADDR_WR_BIT);
   else
-    MDR_I2C->TXD = (addr_7bit << 1) | MDR_I2C_ADDR_RD_BIT;
+    MDR_I2C->TXD = (((uint32_t)addr_7bit << 1) | MDR_I2C_ADDR_RD_BIT);
   MDR_I2C->CMD = MDR_I2C_CMD_Send_Start_Msk | MDR_I2C_CMD_Start_Write_Msk;
 }
 
@@ -253,7 +253,7 @@ static uint8_t *_I2C_pData;
 static bool     _I2C_TransfOk;
 static pVoidFunc_void _StopCallBack;
 
-bool     _I2C_Started = false;
+static bool     _I2C_Started = false;
 
 bool MDR_I2C_IRQ_GetCompleted(bool *success) 
 {
@@ -261,7 +261,7 @@ bool MDR_I2C_IRQ_GetCompleted(bool *success)
   return !_I2C_Started;
 }
 
-pVoidFunc_void  pNextFuncI2C;
+static pVoidFunc_void  pNextFuncI2C;
 
 //  Варианты для pNextFuncI2C
 static void MDR_I2C_IRQ_WriteNext(void);
@@ -353,7 +353,7 @@ static void MDR_I2C_IRQ_ReadStart(void)
 static void MDR_I2C_IRQ_ReadNext(void)
 { 
   //  Чтение полученного слова
-  _I2C_pData[_I2C_Index] = MDR_I2C->RXD;
+  _I2C_pData[_I2C_Index] = (uint8_t)MDR_I2C->RXD;
   ++_I2C_Index;
   
   //  Запуск седующего цикла чтения

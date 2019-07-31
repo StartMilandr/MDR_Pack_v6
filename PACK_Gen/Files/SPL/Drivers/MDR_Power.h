@@ -5,6 +5,11 @@
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
 
 //  Инициализация блока
 typedef struct {
@@ -23,6 +28,10 @@ typedef struct {
   uint32_t                  priorityIRQ;
 } MDR_Power_Cfg;
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
+
 void MDR_Power_Init(const MDR_Power_Cfg *cfgPWR);
 
 void MDR_Power_InitReg(const MDR_Power_CtrlAndStatus cfgPWR, bool activateNVIC_IRQ, uint32_t priorityIRQ);
@@ -31,18 +40,18 @@ void MDR_Power_DeInit(void);
 
 //  Выставление пороговых уровней
 __STATIC_INLINE void MDR_Power_ChangeLevelUcc (MDR_PWR_LevelUcc levelUcc)   
-  {MDR_POWER->PVDCS = MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_PLS_Msk,  VAL2FLD_Pos(levelUcc,  MDR_PWR_PVDCS_PLS_Pos));}
+  {MDR_POWER->PVDCS = MDR_MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_PLS_Msk,  VAL2FLD_Pos(levelUcc,  MDR_PWR_PVDCS_PLS_Pos));}
   
 __STATIC_INLINE void MDR_Power_ChangeLevelBUcc(MDR_PWR_LevelBUcc levelBUcc) 
-  {MDR_POWER->PVDCS = MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_PBLS_Msk, VAL2FLD_Pos(levelBUcc, MDR_PWR_PVDCS_PBLS_Pos));}
+  {MDR_POWER->PVDCS = MDR_MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_PBLS_Msk, VAL2FLD_Pos(levelBUcc, MDR_PWR_PVDCS_PBLS_Pos));}
 
 
 //  Изменение условия срабатывания событий
 __STATIC_INLINE void MDR_Power_ChangeEventCondUcc(MDR_Power_EventCondition eventCond)  
-  {MDR_POWER->PVDCS = MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_INV_Msk,  VAL2FLD_Pos(eventCond, MDR_PWR_PVDCS_INV_Pos));}
+  {MDR_POWER->PVDCS = MDR_MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_INV_Msk,  VAL2FLD_Pos(eventCond, MDR_PWR_PVDCS_INV_Pos));}
   
 __STATIC_INLINE void MDR_Power_ChangeEventCondBUcc(MDR_Power_EventCondition eventCond) 
-  {MDR_POWER->PVDCS = MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_INVB_Msk, VAL2FLD_Pos(eventCond, MDR_PWR_PVDCS_INVB_Pos));}
+  {MDR_POWER->PVDCS = MDR_MaskClrSet(MDR_POWER->PVDCS, MDR_PWR_PVDCS_INVB_Msk, VAL2FLD_Pos(eventCond, MDR_PWR_PVDCS_INVB_Pos));}
 
 
 //  Доступ к Флагам событий

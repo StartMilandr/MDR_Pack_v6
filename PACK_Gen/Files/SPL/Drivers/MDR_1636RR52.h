@@ -16,6 +16,13 @@
   #define MDR_RR52_CHECK_COMPLETED_COUNT_DEF     10
 #endif
 
+
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 //==================  Инициализация задержек, необходимых по протоколу ======================
 
 typedef struct {
@@ -38,7 +45,7 @@ typedef struct {
   //  SPI BitRate                               // BitRate = SSP_Clock / (PSR * (1 + SCR))
   uint8_t               DivSCR_0_255;           // 0 - 255, Serial Clock Rate
   uint8_t               DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
-  MDR_BRG_DIV_128       ClockBRG;               // SPI Делитель для частоты SSP_Clock
+  MDR_Div128P           ClockBRG;               // SPI Делитель для частоты SSP_Clock
  
   //  Pins
   const MDR_SSP_CfgPinGPIO  *pPinCLK;
@@ -55,6 +62,10 @@ typedef struct {
   uint32_t        CS_PinSel;
   uint32_t        CompletedTimeoutCount;
 } MDR_1636RR52_Obj;
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
 
 //  Инициализация SPI для работы с 1636РР52, с тактированием и пинами. 
 MDR_1636RR52_Obj MDR_RR52_Init(const MDR_SSP_TypeEx *exSSPx, const MDR_1636RR52_Cfg *cfgRR52);

@@ -58,6 +58,10 @@
 
   <project>
     <PathAndName>.\UART_TestESila\UART_TestESila.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\UART_TestVK014\UART_TestVK014.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>

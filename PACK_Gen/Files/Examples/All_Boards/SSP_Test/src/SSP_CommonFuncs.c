@@ -87,6 +87,9 @@ void LCD_ShowInit(const MDR_SSP_TypeEx *exSSPx, char *testName)
   sprintf(message , "%s%d M:%d D:%d", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
   MDRB_LCD_Print (message, LCD_LINE_INIT);  
 #else
+  UNUSED(exSSPx);
+  UNUSED(testName);
+  
   sprintf(message , "C%d", activeTest);
   MDRB_LCD_Print (message);
 #endif

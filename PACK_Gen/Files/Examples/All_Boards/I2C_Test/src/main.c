@@ -65,9 +65,9 @@ void Init_RTC_DS1307(void);
 void ReadSensorI2C(void);
 void ReadSensorI2C_IRQ(void);
 
-uint8_t seconds;
-bool    ready_WriteReg;
-bool    ready_ReadReg;
+static uint8_t seconds;
+static bool    ready_WriteReg;
+static bool    ready_ReadReg;
 
 bool I2C_GetStatus(void);
 bool I2C_GetResultAndStatus(uint8_t *dataRX);
@@ -78,7 +78,7 @@ bool I2C_GetRegister(uint8_t addr, uint8_t regAddr, uint8_t *regData);
 bool I2C_IRQ_SetRegisterStart(uint8_t addr, uint8_t regAddr, uint8_t regData);
 bool I2C_IRQ_GetRegisterStart(uint8_t addr, uint8_t regAddr);
 
-
+void I2C_IRQHandler(void);
 
 int main(void)
 {
@@ -86,7 +86,8 @@ int main(void)
   uint32_t freqCPU_Hz;
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -220,10 +221,10 @@ bool I2C_GetRegister(uint8_t addr, uint8_t regAddr, uint8_t *regData)
 
 
 //===============  Реализация черезIRQ  ===============
-uint8_t _activeI2C_addr;
-uint8_t _activeI2C_data;
-bool    _successI2C;
-bool    _startedI2C;
+static uint8_t _activeI2C_addr;
+static uint8_t _activeI2C_data;
+static bool    _successI2C;
+static bool    _startedI2C;
 
 void I2C_OnWriteReg_Completed(void);
 void I2C_IRQ_OnSelectReg_Completed(void);

@@ -1,14 +1,12 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_UART.h>
 #include <MDR_PER_Clock.h>
-#include <MDRB_LCD.h>
-#include <MDRB_Buttons.h>
-//#include <MDR_CPU_ClockSelect.h>
 
+#ifndef USE_MDR1923VK014
+  #include <MDRB_Buttons.h>  
+#endif
 
-//#include "UART_Cfg.h"
-//#include "UART_Select.h"
-
+#include "MDRB_BoardSelect.h"
 #include "test_Defs.h"
 
 //  Некоторые тесты можно закомментировать для рассмотрения только интересующих
@@ -24,8 +22,12 @@ void UART2_IRQHandler(void);
   static  TestInterface *testStack[] = {&TI_Uart_Debug, &TI_Uart_DebugRate};
 #endif
 
-static uint32_t activeTest = 0;
-static uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
+#ifndef USE_MDR1923VK014
+  static uint32_t activeTest = 0;
+  static uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);    
+#else
+  static uint32_t activeTest = 1;
+#endif
 
 #define BTN_DEBOUNCE_MS 10
 
@@ -33,14 +35,21 @@ int main(void)
 { 
   uint32_t freqCPU_Hz;
  
+#ifdef USE_MDR1923VK014 
+  //  Задержка для 1923ВК014 для переключения в PC с программы UART загрузчика на Terminal.
+  MDR_Delay_ms(7000, HSI_FREQ_HZ);
+#endif
+  
   //  Максимальная скорость тактирования
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true); 
-  
+
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
-  //MDRB_LCD_Init(freqCPU_Hz);
+  
+#ifndef USE_MDR1923VK014  
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
+#endif 
   
   //  Для 1986VE4,VE214,VE234 частота UART_Clock формируется мультиплексорами
   //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer
@@ -58,11 +67,11 @@ int main(void)
 #endif
   
   //  Активный тест
-  activeTest = 0;  
   testStack[activeTest]->funcInit();
-  
+
   while (1)
   {
+#ifndef USE_MDR1923VK014    
     //  Смена теста
     if (MDRB_BntClicked_Up(true))
     {      
@@ -81,7 +90,12 @@ int main(void)
     if (MDRB_BntClicked_Right(true))
     {
       testStack[activeTest]->funcExec();
-    }   
+    } 
+#else 
+    // Для 1923ВК014 вместо кнопок цикличная выдача приветствия по UART
+    MDR_Delay_ms(2000, freqCPU_Hz);
+    testStack[activeTest]->funcExec();   
+#endif
   }  
 }
 

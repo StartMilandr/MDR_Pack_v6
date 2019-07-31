@@ -9,6 +9,7 @@
 
   <project>
     <PathAndName>.\Power_Test_VE1\Power_Test_VE1.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 

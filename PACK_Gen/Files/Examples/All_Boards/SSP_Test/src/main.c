@@ -60,14 +60,27 @@
   static  TestInterface *testStack[] = {&TI_SPI_LBM, &TI_SPI_TXRX, &TI_SPI_MasterSlave, &TI_SSP_DataBits, &TI_SSP_Frames, &TI_SSP_Microwire, &TI_SSP_IRQ, &TI_SPI_LBM_ALL};
 #endif
 
+void SSP1_IRQHandler(void);
+void SSP2_IRQHandler(void);
+void SSP3_IRQHandler(void);
 
+//#ifdef MDR_SSP2ex
+//void SSP2_IRQHandler(void);
+//#endif
+
+
+//#ifdef MDR_SSP4ex
+//void SSP3_IRQHandler(void)
+//#endif;  
+  
 int main(void)
 {
   uint32_t freqCPU_Hz;
   uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -150,4 +163,5 @@ void SSP3_IRQHandler(void)
     testStack[activeTest]->funcHandlerIrqSlave();
 }
 #endif
+
 

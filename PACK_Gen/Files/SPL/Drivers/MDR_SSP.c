@@ -299,7 +299,7 @@ void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx)
 }
   
 
-void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_BRG_DIV_128 ClockBRG)
+void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG)
 {
   //  Подача тактирования блока
   MDR_PerClock_Enable(&exSSPx->CfgClock);  
@@ -320,28 +320,28 @@ void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx)
 //===================   SSP GPIO pins Init ==========================
 void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower)
 {
-  MDR_PinDig_PermRegs pinPermCfg;
+  MDR_PinDig_GroupPinCfg pinPermCfg;
   
-  MDR_Port_InitDigPermRegs(MDR_PIN_PullPush, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
   //  CLK
-  MDR_GPIO_ClockOn(pinsCfg->pPinCLK->portGPIO);
+  MDR_GPIO_Enable(pinsCfg->pPinCLK->portGPIO);
   MDR_GPIO_InitDigPin(pinsCfg->pPinCLK->portGPIO, pinsCfg->pPinCLK->pinIndex, MDR_Pin_In, pinsCfg->pPinCLK->pinFunc, &pinPermCfg);
   //  TX
   if (pinsCfg->pPinTX != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinTX->portGPIO);
+    MDR_GPIO_Enable(pinsCfg->pPinTX->portGPIO);
     MDR_GPIO_InitDigPin(pinsCfg->pPinTX->portGPIO, pinsCfg->pPinTX->pinIndex, MDR_Pin_In, pinsCfg->pPinTX->pinFunc, &pinPermCfg);
   }
   //  RX  
   if (pinsCfg->pPinRX != NULL)
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinRX->portGPIO);
+    MDR_GPIO_Enable(pinsCfg->pPinRX->portGPIO);
     MDR_GPIO_InitDigPin(pinsCfg->pPinRX->portGPIO, pinsCfg->pPinRX->pinIndex, MDR_Pin_In, pinsCfg->pPinRX->pinFunc, &pinPermCfg);
   }
   //  FSS
   if (pinsCfg->pPinFSS != NULL)  
   {
-    MDR_GPIO_ClockOn(pinsCfg->pPinFSS->portGPIO);
+    MDR_GPIO_Enable(pinsCfg->pPinFSS->portGPIO);
     MDR_GPIO_InitDigPin(pinsCfg->pPinFSS->portGPIO, pinsCfg->pPinFSS->pinIndex, MDR_Pin_In, pinsCfg->pPinFSS->pinFunc, &pinPermCfg);  
   }
 }

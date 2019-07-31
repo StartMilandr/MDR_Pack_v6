@@ -22,3 +22,4 @@ Pack поддержки микроконтроллеров 1986ВК214 и 1986В
 
 Структуры:
   * MDR_PinDig_PermRegs на MDR_PinDig_GroupPinCfg
+  * MDR_GPIO_CfgRegs на MDR_GPIO_SetCfg

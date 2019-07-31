@@ -74,7 +74,7 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     UART1_IRQHandler         ; 1:  UART1  Interrupt
                 DCD     UART2_IRQHandler         ; 2:  UART2  Interrupt
                 DCD     SSP1_IRQHandler          ; 3:  SSP1  Interrupt
-                DCD     POWER_IRQHandler         ; 4:  Power Detector Interrupt
+                DCD     PWR_IRQHandler           ; 4:  Power Detector Interrupt
                 DCD     WWDG_IRQHandler          ; 5:  WWDG Interrupt
                 DCD     TIMER1_IRQHandler        ; 6:  Timer1  Interrupt
                 DCD     TIMER2_IRQHandler        ; 7:  Timer2  Interrupt
@@ -138,7 +138,7 @@ Default_Handler PROC
                 EXPORT  UART1_IRQHandler           [WEAK]
                 EXPORT  UART2_IRQHandler           [WEAK]
                 EXPORT  SSP1_IRQHandler            [WEAK]
-                EXPORT  POWER_IRQHandler           [WEAK]
+                EXPORT  PWR_IRQHandler             [WEAK]
                 EXPORT  WWDG_IRQHandler            [WEAK]
                 EXPORT  TIMER1_IRQHandler          [WEAK]
                 EXPORT  TIMER2_IRQHandler          [WEAK]
@@ -162,7 +162,7 @@ DMA_IRQHandler
 UART1_IRQHandler
 UART2_IRQHandler
 SSP1_IRQHandler
-POWER_IRQHandler
+PWR_IRQHandler
 WWDG_IRQHandler
 TIMER1_IRQHandler
 TIMER2_IRQHandler

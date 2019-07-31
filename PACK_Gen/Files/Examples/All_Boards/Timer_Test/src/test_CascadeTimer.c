@@ -27,6 +27,8 @@ static void  Test_HandleTim2IRQ(void);
 static void  Test_HandleTim3IRQ(void);
 static void  Test_HandleTim4IRQ(void);
 
+extern TestInterface TI_CascadeTimer;
+
 TestInterface TI_CascadeTimer = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -101,7 +103,7 @@ static void Test_HandleTim1IRQ(void)
   if (MDR_TIMER1->STATUS & TIM_FL_CNT_ARR)
   {      
     MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);  
-    MDRB_LED_Switch(MDRB_LED_1);
+    MDRB_LED_Toggle(MDRB_LED_1);
   }
 }
 
@@ -112,7 +114,7 @@ static void Test_HandleTim2IRQ(void)
     MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);    
     
 #ifdef MDRB_LED_2
-    MDRB_LED_Switch(MDRB_LED_2);
+    MDRB_LED_Toggle(MDRB_LED_2);
 #endif
   }
 }
@@ -123,7 +125,7 @@ static void Test_HandleTim3IRQ(void)
   if (MDR_TIMER3->STATUS & TIM_FL_CNT_ARR)
   {    
     MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
-    MDRB_LED_Switch(MDRB_LED_3);
+    MDRB_LED_Toggle(MDRB_LED_3);
   }
 #endif
 }
@@ -134,7 +136,7 @@ static void Test_HandleTim4IRQ(void)
   if (MDR_TIMER4->STATUS & TIM_FL_CNT_ARR)
   {    
     MDR_Timer_ClearEvent(MDR_TIMER4, TIM_FL_CNT_ARR);  
-    MDRB_LED_Switch(MDRB_LED_4);
+    MDRB_LED_Toggle(MDRB_LED_4);
   }
 #endif
 }

@@ -297,8 +297,9 @@ uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate
   uint32_t regBRG; 
   uint32_t scrUartHz;
 
-#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)   
   //  VK214
+  UNUSED(doUpdate);
   if (exUART == MDR_UART1ex)
     scrUartHz = MDR_GetFreqHz_UART1_C2();
   else
@@ -306,6 +307,7 @@ uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate
 
 #elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
   //  VK234, VE4
+  UNUSED(doUpdate);
   scrUartHz = MDR_GetFreqHz_Per1_C2();    
    
 #elif defined (MDR_CLK_LIKE_VE8)   

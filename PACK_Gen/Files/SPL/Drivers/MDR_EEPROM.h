@@ -1,8 +1,8 @@
 #ifndef _MDR_EEPROM_H
 #define _MDR_EEPROM_H
 
-#include "MDR_Config.h"
-#include "MDR_Funcs.h"
+#include <MDR_Config.h>
+#include <MDR_Funcs.h>
 
 
 #define MDR_EEPROM_Main      EEPROM_IFREN_Main
@@ -29,7 +29,7 @@ void MDR_EEPROM_InitEx(MDR_EEPROM_Delays * delays);
 void MDR_EEPROM_InitDelayStruct(uint32_t CPU_FreqHz, MDR_EEPROM_Delays * delays);
 
 //  Выключение тактирования блока
-__STATIC_INLINE void MDR_EEPROM_Finit(void) {MDR_CLOCK->PER2_CLOCK &= ~MDR_RST_PER2__EEPROM_CLK_EN_Msk;} //  MDR_CLOCK->MDR_CLK_EN_REG_EEPROM_b.EEPROM_CLK_EN = MDR_On;}
+__STATIC_INLINE void MDR_EEPROM_Finit(void) {MDR_CLOCK->MDR_CLK_EN_REG_EEPROM &= ~MDR_CLK_EN_BIT_EEPROM;}
 
 
 //====================  Отключение прерываний ======================

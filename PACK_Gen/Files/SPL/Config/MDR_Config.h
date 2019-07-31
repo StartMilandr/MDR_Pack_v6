@@ -32,7 +32,7 @@
 // ===========   Аттрибут для расположения кода в исполняемой памяти - для DMA и контроллера EEPROM   ============
 #if defined ( __ICCARM__ )
   #define __RAM_EXEC    IAR_SECTION ("EXECUTABLE_MEMORY_SECTION")
-#elif defined ( __CC_ARM )
+#else
   #define __RAM_EXEC    __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
 #endif
 

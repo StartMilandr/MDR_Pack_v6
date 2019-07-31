@@ -26,6 +26,8 @@ static void  Test_Empty(void);
 static void  Test_HandleIRQ_PWM(void);
 static void  Test_HandleIRQ_CAP(void);
 
+extern TestInterface TI_PWM_CountCAP;
+
 TestInterface TI_PWM_CountCAP = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -78,7 +80,7 @@ static const MDR_Timer_CfgCountCH cfgCntCH = {
 
 static const MDR_TimerCh_CfgCAP cfgCAP = {
   .Filter   = MDR_TIM_FLTR_TIM_CLK, 
-  .EventPSC = MDR_PSC_div1,
+  .EventPSC = MDR_Div8P_div1,
   .EventCAP = MDR_TIM_CAP_RiseOnPin,
   .enableCAP1 = false,
   .EventCAP1  = MDR_TIM_CAP1_FallOnPin
@@ -161,7 +163,7 @@ static void Test_HandleIRQ_PWM(void)
   MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
   
 #ifdef MDRB_LED_2
-  MDRB_LED_Switch(MDRB_LED_2);
+  MDRB_LED_Toggle(MDRB_LED_2);
 #endif
 }
 
@@ -169,7 +171,7 @@ static void Test_HandleIRQ_CAP(void)
 {
   MDR_Timer_ClearEvent(CAP_TIM, TIM_FL_CNT_ARR);
   
-  MDRB_LED_Switch(MDRB_LED_1);  
+  MDRB_LED_Toggle(MDRB_LED_1);  
 }
 
 static void  Test_Empty(void)

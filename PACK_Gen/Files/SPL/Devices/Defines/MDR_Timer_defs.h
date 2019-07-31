@@ -184,6 +184,7 @@ typedef struct {
   __IOM MDR_TIM_SelOutEn  NSelOE     : 2;       /*!< [9..8] Select Pin Output Enable                                           */
   __IOM MDR_TIM_SelOut    NSelO      : 2;       /*!< [11..10] Select Output Signal                                             */
   __IOM MDR_OnOff         NInv       : 1;       /*!< [12..12] Invert Output Signal                                             */
+  __IM  uint32_t                     : 19;
 } MDR_TIM_CHx_CNTRL1_Bits;
 
 #define MDR_TIM_CHx_CNTRL1_SelOE_Pos   (0UL)                     /*!< MDR_TIMER1 CH1_CNTRL1: SelOE (Bit 0)                  */
@@ -231,6 +232,7 @@ typedef struct {
   __IOM MDR_TIM_DTG_CLK   EDTS  : 1;            /*!< [4..4] DTG Clock Select                                                   */
   __IM  uint32_t                : 3;
   __IOM uint32_t          DTGx  : 8;            /*!< [15..8] DTGx scale, Delay = DTGx*(DTG + 1)                                */
+  __IM  uint32_t                : 16;
 } MDR_TIM_CHx_DTG_Bits;
 
 #define MDR_TIM_CHx_DTG_DTG_Pos        (0UL)                     /*!< MDR_TIMER1 CH3_DTG: DTG (Bit 0)                       */
@@ -287,6 +289,7 @@ typedef struct {
   __IOM MDR_OnOff  CCR1_CAP_CH2 : 1;          /*!< [14..14] Captured to CCR1                                                 */
   __IOM MDR_OnOff  CCR1_CAP_CH3 : 1;          /*!< [15..15] Captured to CCR1                                                 */
   __IOM MDR_OnOff  CCR1_CAP_CH4 : 1;          /*!< [16..16] Captured to CCR1                                                 */
+  __IM  uint32_t                : 15;
 } MDR_TIM_EVENT_Bits;
 
 #define MDR_TIM_EVENT_CNT_ZERO_Pos    (0UL)                     /*!< MDR_TIMER1 STATUS: CNT_ZERO (Bit 0)                   */
@@ -337,6 +340,7 @@ typedef struct {
   __IOM MDR_OnOff           CCR1_En: 1;            /*!< [2..2] Enable CCR1                                                  */
   __IOM MDR_TIM_CCR_Update  CCRRLD : 1;            /*!< [3..3] CCR Reload Mode                                              */
   __IOM MDR_OnOff           CAP_Fix: 1;            /*!< [4..4] Fix capture - IQR waits CCR regs update                      */
+  __IM  uint32_t                   : 27;
 } MDR_TIM_CHx_CNTRL2_Bits;
 
 #define MDR_TIM_CHx_CNTRL2_CHSel1_Pos  (0UL)                     /*!< MDR_TIMER1 CH1_CNTRL2: CHSel1 (Bit 0)                 */

@@ -1,4 +1,4 @@
-#include "MDR_Funcs.h"
+#include <MDR_Funcs.h>
 
 //===================    Функция ожидания с таймаутом  ===================
 bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc)

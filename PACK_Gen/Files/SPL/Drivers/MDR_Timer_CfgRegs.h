@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-#include <MDR_Timer_Defs.h>
+#include <MDR_Timer_defs.h>
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -47,6 +47,7 @@ typedef struct {
   MDR_OnOff         ETR_En      : 1;            /*!< [13..13] Clear Ref by BRK                                                 */
   MDR_OnOff         WR_CCR_Busy : 1;            /*!< [14..14] Can write to CCRx                                                */
   MDR_TIM_CH_MODE   CAP_nPWM    : 1;            /*!< [15..15] CAP or PWM Mode                                                  */
+  uint32_t                      : 16; 
 } MDR_Timer_CHx_CNTRL_Bits;
 
 typedef struct {
@@ -57,6 +58,7 @@ typedef struct {
   MDR_TIM_SelOutEn  NSelOE     : 2;       /*!< [9..8] Select Pin Output Enable                                           */
   MDR_TIM_SelOut    NSelO      : 2;       /*!< [11..10] Select Output Signal                                             */
   MDR_OnOff         NInv       : 1;       /*!< [12..12] Invert Output Signal                                             */
+  uint32_t                     : 19; 
 } MDR_Timer_CHx_CNTRL1_Bits;
 
 typedef struct {
@@ -64,12 +66,14 @@ typedef struct {
   MDR_TIM_DTG_CLK   EDTS  : 1;            /*!< [4..4] DTG Clock Select                                                   */
   uint32_t                : 3;
   uint32_t          DTGx  : 8;            /*!< [15..8] DTGx scale, Delay = DTGx*(DTG + 1)                                */
+  uint32_t                : 16;
 } MDR_Timer_CHx_DTG_Bits;
 
 typedef struct {
   MDR_TIM_EventCAP1   CHSel1 : 2;            /*!< [1..0] Event to capture in CCR1                                     */
   MDR_OnOff           CCR1_En: 1;            /*!< [2..2] Enable CCR1                                                  */
   MDR_TIM_CCR_Update  CCRRLD : 1;            /*!< [3..3] CCR Reload Mode                                              */
+  uint32_t                   : 28;
 } MDR_Timer_CHx_CNTRL2_Bits;
 
 typedef struct {

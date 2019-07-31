@@ -18,6 +18,8 @@ static void  Test_HandleTim1IRQ(void);
 static void  Test_HandleTim2IRQ(void);
 static void  Test_HandleTim3IRQ(void);
 
+extern TestInterface TI_SimplestFlash;
+
 TestInterface TI_SimplestFlash = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -88,14 +90,14 @@ static void Test_Change(void)
 static void Test_HandleTim1IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER1, TIM_FL_CNT_ARR);
-  MDRB_LED_Switch(MDRB_LED_1);
+  MDRB_LED_Toggle(MDRB_LED_1);
 }
 
 static void Test_HandleTim2IRQ(void)
 {
   MDR_Timer_ClearEvent(MDR_TIMER2, TIM_FL_CNT_ARR);
 #ifdef MDRB_LED_2
-  MDRB_LED_Switch(MDRB_LED_2);
+  MDRB_LED_Toggle(MDRB_LED_2);
 #endif
 }
 
@@ -103,6 +105,6 @@ static void Test_HandleTim3IRQ(void)
 {
 #ifdef  USE_TIMER3    
   MDR_Timer_ClearEvent(MDR_TIMER3, TIM_FL_CNT_ARR);  
-  MDRB_LED_Switch(MDRB_LED_3);
+  MDRB_LED_Toggle(MDRB_LED_3);
 #endif
 }

@@ -21,6 +21,8 @@
 #if USE_PSEUDO_RAND_VALUES
   #define GetTestValue  MDR_ToPseudoRand
 #else
+  uint32_t ReturnInput(uint32_t value);
+
   uint32_t ReturnInput(uint32_t value) { return value; }
 
   #define GetTestValue  ReturnInput
@@ -34,9 +36,9 @@
   
 //----------  TestInterfaces ------------
 #define TEST_COUNT    4
-TestInterface * pTI[] = {&TI_EEPROM_PageWRRD_Main, &TI_EEPROM_PageWRRD_Info, &TI_EEPROM_Buff_Main, &TI_EEPROM_Buff_Info};
+static TestInterface * pTI[] = {&TI_EEPROM_PageWRRD_Main, &TI_EEPROM_PageWRRD_Info, &TI_EEPROM_Buff_Main, &TI_EEPROM_Buff_Info};
 
-uint32_t activeTest;
+static uint32_t activeTest;
 
 
 //--------------  BKP  -----------------
@@ -44,7 +46,7 @@ uint32_t activeTest;
 #define RUN_IND_Info  MDR_BKP_REG1
 #define RUN_IND_SEL   MDR_BKP_REGs
 
-MDR_BKP_REGs  BKP_RunIndReg[TEST_COUNT] = {MDR_BKP_REG0, MDR_BKP_REG1, MDR_BKP_REG0, MDR_BKP_REG1};
+static MDR_BKP_REGs  BKP_RunIndReg[TEST_COUNT] = {MDR_BKP_REG0, MDR_BKP_REG1, MDR_BKP_REG0, MDR_BKP_REG1};
 
 #define RUN_IND_MAX   20
 
@@ -85,15 +87,13 @@ int main(void)
 {
   uint32_t result;
   uint32_t CPU_FreqHz;
-  MDR_BKP_LOW_RI    BKP_LowRI;
-  MDR_EEPROM_DELAY  EEPROM_Delay;
   
  // MDR_DebugerProtectDelay();
 
-  //  Тактирование на максимальной частоте
-  BKP_LowRI = MDR_FreqCPU_ToLowRI(HSE_FREQ_HZ * (HSE_PLL_MUL_MAX) + 1);  
-  EEPROM_Delay = MDR_FreqCPU_ToDelayEEPROM(HSE_FREQ_HZ * (HSE_PLL_MUL_MAX) + 1);
-  MDR_CPU_SetClock_HSE_PLL_def(MDR_Off, PLL_MUL, BKP_LowRI, EEPROM_Delay);
+  //  Максимальная скорость тактирования
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
+  
   //  Текущая частота
   CPU_FreqHz = MDR_CPU_GetFreqHz(true);
   
@@ -184,15 +184,16 @@ void SysTick_Handler(void)
 void LCD_ShowTestName(uint32_t testInd)
 {
   static char mess[64];  
-  uint32_t cpuFreqHz = (uint32_t)MDR_CPU_GetFreqHz(false) / 1000000;
   
   LCD_PIN_CAPTURE;
   
 #ifndef LCD_IS_7SEG_DISPLAY   
+  uint32_t cpuFreqHz = (uint32_t)MDR_CPU_GetFreqHz(false) / 1000000;
   
   sprintf(mess, "%s, %dMHz", pTI[testInd]->funcTestName(), cpuFreqHz);  
   MDRB_LCD_Print(mess, LCD_LINE_INFO);
   MDRB_LCD_ClearLine(LCD_LINE_RESULT);
+  
 #else
   //  Вывод источника тактирования
   sprintf(mess, "%d", (uint8_t)testInd);

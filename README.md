@@ -21,4 +21,4 @@ Pack поддержки микроконтроллеров 1986ВК214 и 1986В
     * MDR_Port_InitDigGroupPinCfg(MDR_PIN_PullPush на MDR_Port_InitDigGroupPinCfg(MDR_Off
 
 Структуры:
-  * MDR_Port_InitDigGroupPinCfg на MDR_PinDig_GroupPinCfg
+  * MDR_PinDig_PermRegs на MDR_PinDig_GroupPinCfg

@@ -12,7 +12,7 @@
 #if USE_PSEUDO_RAND_VALUES
   #define GetTestValue  MDR_ToPseudoRand
 #else
-  uint32_t ReturnInput(uint32_t value) { return value; }
+  static uint32_t ReturnInput(uint32_t value) { return value; }
 
   #define GetTestValue  ReturnInput
 #endif

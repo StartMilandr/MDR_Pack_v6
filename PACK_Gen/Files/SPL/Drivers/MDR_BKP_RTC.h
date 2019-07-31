@@ -22,12 +22,12 @@ typedef enum {
 
 __STATIC_INLINE void MDR_BKP_ClockOn(void)
 {
-  MDR_CLOCK->MDR_CLK_EN_REG_PER_b.BKP_CLK_EN  = MDR_On;
+  MDR_CLOCK->MDR_CLK_EN_REG_BKP |= MDR_CLK_EN_BIT_BKP;
 }
 
 __STATIC_INLINE void MDR_BKP_ClockOff(void)
 {
-  MDR_CLOCK->MDR_CLK_EN_REG_PER_b.BKP_CLK_EN  = MDR_Off;
+  MDR_CLOCK->MDR_CLK_EN_REG_BKP &= ~MDR_CLK_EN_BIT_BKP;
 }
 
 __STATIC_INLINE void MDR_BKP_SetReg(MDR_BKP_REGs bkpReg, uint32_t value)

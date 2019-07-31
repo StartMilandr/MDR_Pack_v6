@@ -34,21 +34,21 @@ typedef struct {
 
 //  Time defines for microcontrollers for MaxFreq
 #if defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
-  #define TIM_BRG_LED       MDR_BRG_div4
+  #define TIM_BRG_LED       MDR_Div128P_div4
   #define TIM_PSG_LED       1000
   #define TIM_PERIOD_LED    4000
   
-  #define TIM_BRG_PWM       MDR_BRG_div1
+  #define TIM_BRG_PWM       MDR_Div128P_div1
   #define TIM_PSG_PWM1      100
   //#define TIM_PSG_PWM2      50
   #define TIM_PERIOD_PWM    900
 
 #else
-  #define TIM_BRG_LED       MDR_BRG_div16
+  #define TIM_BRG_LED       MDR_Div128P_div16
   #define TIM_PSG_LED       1000
   #define TIM_PERIOD_LED    4000
 
-  #define TIM_BRG_PWM       MDR_BRG_div4
+  #define TIM_BRG_PWM       MDR_Div128P_div4
   #define TIM_PSG_PWM1      100
   //#define TIM_PSG_PWM2      50
   #define TIM_PERIOD_PWM    900

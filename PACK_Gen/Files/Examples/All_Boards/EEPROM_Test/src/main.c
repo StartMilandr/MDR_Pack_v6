@@ -22,9 +22,6 @@
  
 //--------------  Параметры тактирования  -----------------
 // Тест запускается на двух частотах - от HSI и от HSE с максимальным умножением в PLL
-#define PLL_MUL   HSE_PLL_MUL_MAX
-static MDR_BKP_LOW_RI    BKP_LowRI;
-static MDR_EEPROM_DELAY  EEPROM_Delay;
 
 static bool       activeFreqIsHSI;  //  Текущее тактирование
 
@@ -104,7 +101,7 @@ int main(void)
  // MDR_DebugerProtectDelay();
    
   //  Сброс блока, тактирование от HSI
-  MDR_RST_ResetBlock_def();
+  MDR_CLK_ResetBlock_def(false);
 
   // Инициализация экрана для вывода статуса
   MDRB_LCD_Init(HSI_FREQ_HZ);
@@ -119,20 +116,20 @@ int main(void)
   // Тактирование от HSI и выставление задержек
   activeFreqIsHSI = true;
   MDR_EEPROM_Init(HSI_FREQ_HZ);
-  
-  //  Параметры для тактирования на максимальной частоте
-  BKP_LowRI = MDR_FreqCPU_ToLowRI(HSE_FREQ_HZ * (HSE_PLL_MUL_MAX) + 1);  
-  EEPROM_Delay = MDR_FreqCPU_ToDelayEEPROM(HSE_FREQ_HZ * (HSE_PLL_MUL_MAX) + 1);
-  
+    
   while (1)
   {
     //  Смена частоты HSI или HSE_Max
     if (MDRB_BntClicked_Up(true))
     {
       if (!activeFreqIsHSI)
-        MDR_CPU_SetClock_HSI_def();
+        MDR_CPU_SetClock_HSI_def(false);
       else
-        MDR_CPU_SetClock_HSE_PLL_def(MDR_Off, PLL_MUL, BKP_LowRI, EEPROM_Delay);
+      {  
+        //  Максимальная скорость тактирования
+        MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+        MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
+      }
       
       CPU_FreqHz = MDR_CPU_GetFreqHz(true);
       MDR_EEPROM_Init(CPU_FreqHz);

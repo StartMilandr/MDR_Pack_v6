@@ -70,29 +70,29 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     SysTick_Handler           ; SysTick Handler
 
                 ; External Interrupts - MDR1986BE4 Specific 
-                DCD     DMA_IRQ_Handler           ; 0:  DMA Interrupt
-                DCD     UART1_IRQ_Handler         ; 1:  UART1  Interrupt
-                DCD     UART2_IRQ_Handler         ; 2:  UART2  Interrupt
-                DCD     SSP1_IRQ_Handler          ; 3:  SSP1  Interrupt
-                DCD     PWR_IRQ_Handler           ; 4:  Power Detector Interrupt
-                DCD     WWDG_IRQ_Handler          ; 5:  WWDG Interrupt
-                DCD     TIMER1_IRQ_Handler        ; 6:  Timer1  Interrupt
-                DCD     TIMER2_IRQ_Handler        ; 7:  Timer2  Interrupt
-                DCD     ADC_IRQ_Handler           ; 8:  ADC  Interrupt
-                DCD     COMP_IRQ_Handler          ; 9:  Comparator Interrupt
-                DCD     BKP_IRQ_Handler           ; 10: Backup and RTC Interrupt
-                DCD     EXT1_IRQ_Handler          ; 11: EXT_INT0  Interrupt
-                DCD     EXT2_IRQ_Handler          ; 12: EXT_INT1  Interrupt
-                DCD     EXT3_IRQ_Handler          ; 13: EXT_INT2  Interrupt
-                DCD     ADCIU_CH1_IRQ_Handler     ; 14: ADCIU_CH1 Interrupt
-                DCD     ADCIU_CH2_IRQ_Handler     ; 15: ADCIU_CH2 Interrupt
-                DCD     ADCIU_CH3_IRQ_Handler     ; 16: ADCIU_CH3 Interrupt
-                DCD     ADCIU_CH4_IRQ_Handler     ; 17: ADCIU_CH4 Interrupt
-                DCD     ADCIU_CH5_IRQ_Handler     ; 18: ADCIU_CH5 Interrupt
-                DCD     ADCIU_CH6_IRQ_Handler     ; 19: ADCIU_CH6 Interrupt
-                DCD     ADCIU_CH7_IRQ_Handler     ; 20: ADCIU_CH7 Interrupt
-                DCD     ADCIU_CH8_IRQ_Handler     ; 21: ADCIU_CH8 Interrupt
-                DCD     ADCIU_IRQ_Handler         ; 22: ADCIU Interrupt
+                DCD     DMA_IRQHandler           ; 0:  DMA Interrupt
+                DCD     UART1_IRQHandler         ; 1:  UART1  Interrupt
+                DCD     UART2_IRQHandler         ; 2:  UART2  Interrupt
+                DCD     SSP1_IRQHandler          ; 3:  SSP1  Interrupt
+                DCD     PWR_IRQHandler           ; 4:  Power Detector Interrupt
+                DCD     WWDG_IRQHandler          ; 5:  WWDG Interrupt
+                DCD     TIMER1_IRQHandler        ; 6:  Timer1  Interrupt
+                DCD     TIMER2_IRQHandler        ; 7:  Timer2  Interrupt
+                DCD     ADC_IRQHandler           ; 8:  ADC  Interrupt
+                DCD     COMP_IRQHandler          ; 9:  Comparator Interrupt
+                DCD     BKP_IRQHandler           ; 10: Backup and RTC Interrupt
+                DCD     EXT1_IRQHandler          ; 11: EXT_INT0  Interrupt
+                DCD     EXT2_IRQHandler          ; 12: EXT_INT1  Interrupt
+                DCD     EXT3_IRQHandler          ; 13: EXT_INT2  Interrupt
+                DCD     ADCUI_CH1_IRQHandler     ; 14: ADCIU_CH1 Interrupt
+                DCD     ADCUI_CH2_IRQHandler     ; 15: ADCIU_CH2 Interrupt
+                DCD     ADCUI_CH3_IRQHandler     ; 16: ADCIU_CH3 Interrupt
+                DCD     ADCUI_CH4_IRQHandler     ; 17: ADCIU_CH4 Interrupt
+                DCD     ADCUI_CH5_IRQHandler     ; 18: ADCIU_CH5 Interrupt
+                DCD     ADCUI_CH6_IRQHandler     ; 19: ADCIU_CH6 Interrupt
+                DCD     ADCUI_CH7_IRQHandler     ; 20: ADCIU_CH7 Interrupt
+                DCD     ADCUI_CH8_IRQHandler     ; 21: ADCIU_CH8 Interrupt
+                DCD     ADCUI_IRQHandler         ; 22: ADCIU Interrupt
 
 
                 AREA    |.text|, CODE, READONLY
@@ -134,53 +134,53 @@ SysTick_Handler PROC
 
 Default_Handler PROC
 
-                EXPORT  DMA_IRQ_Handler             [WEAK]
-                EXPORT  UART1_IRQ_Handler           [WEAK]
-                EXPORT  UART2_IRQ_Handler           [WEAK]
-                EXPORT  SSP1_IRQ_Handler            [WEAK]
-                EXPORT  PWR_IRQ_Handler             [WEAK]
-                EXPORT  WWDG_IRQ_Handler            [WEAK]
-                EXPORT  TIMER1_IRQ_Handler          [WEAK]
-                EXPORT  TIMER2_IRQ_Handler          [WEAK]
-                EXPORT  ADC_IRQ_Handler             [WEAK]
-                EXPORT  COMP_IRQ_Handler            [WEAK]
-                EXPORT  BKP_IRQ_Handler             [WEAK]
-                EXPORT  EXT1_IRQ_Handler            [WEAK]
-                EXPORT  EXT2_IRQ_Handler            [WEAK]
-                EXPORT  EXT3_IRQ_Handler            [WEAK]
-                EXPORT  ADCIU_CH1_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH2_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH3_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH4_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH5_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH6_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_CH7_IRQ_Handler       [WEAK]
-				EXPORT  ADCIU_CH8_IRQ_Handler       [WEAK]
-                EXPORT  ADCIU_IRQ_Handler           [WEAK]
+                EXPORT  DMA_IRQHandler             [WEAK]
+                EXPORT  UART1_IRQHandler           [WEAK]
+                EXPORT  UART2_IRQHandler           [WEAK]
+                EXPORT  SSP1_IRQHandler            [WEAK]
+                EXPORT  PWR_IRQHandler             [WEAK]
+                EXPORT  WWDG_IRQHandler            [WEAK]
+                EXPORT  TIMER1_IRQHandler          [WEAK]
+                EXPORT  TIMER2_IRQHandler          [WEAK]
+                EXPORT  ADC_IRQHandler             [WEAK]
+                EXPORT  COMP_IRQHandler            [WEAK]
+                EXPORT  BKP_IRQHandler             [WEAK]
+                EXPORT  EXT1_IRQHandler            [WEAK]
+                EXPORT  EXT2_IRQHandler            [WEAK]
+                EXPORT  EXT3_IRQHandler            [WEAK]
+                EXPORT  ADCUI_CH1_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH2_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH3_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH4_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH5_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH6_IRQHandler       [WEAK]
+                EXPORT  ADCUI_CH7_IRQHandler       [WEAK]
+				EXPORT  ADCUI_CH8_IRQHandler       [WEAK]
+                EXPORT  ADCUI_IRQHandler           [WEAK]
 
-DMA_IRQ_Handler
-UART1_IRQ_Handler
-UART2_IRQ_Handler
-SSP1_IRQ_Handler
-PWR_IRQ_Handler
-WWDG_IRQ_Handler
-TIMER1_IRQ_Handler
-TIMER2_IRQ_Handler
-ADC_IRQ_Handler
-COMP_IRQ_Handler
-BKP_IRQ_Handler
-EXT1_IRQ_Handler
-EXT2_IRQ_Handler
-EXT3_IRQ_Handler
-ADCIU_CH1_IRQ_Handler
-ADCIU_CH2_IRQ_Handler
-ADCIU_CH3_IRQ_Handler
-ADCIU_CH4_IRQ_Handler
-ADCIU_CH5_IRQ_Handler
-ADCIU_CH6_IRQ_Handler
-ADCIU_CH7_IRQ_Handler
-ADCIU_CH8_IRQ_Handler
-ADCIU_IRQ_Handler
+DMA_IRQHandler
+UART1_IRQHandler
+UART2_IRQHandler
+SSP1_IRQHandler
+PWR_IRQHandler
+WWDG_IRQHandler
+TIMER1_IRQHandler
+TIMER2_IRQHandler
+ADC_IRQHandler
+COMP_IRQHandler
+BKP_IRQHandler
+EXT1_IRQHandler
+EXT2_IRQHandler
+EXT3_IRQHandler
+ADCUI_CH1_IRQHandler
+ADCUI_CH2_IRQHandler
+ADCUI_CH3_IRQHandler
+ADCUI_CH4_IRQHandler
+ADCUI_CH5_IRQHandler
+ADCUI_CH6_IRQHandler
+ADCUI_CH7_IRQHandler
+ADCUI_CH8_IRQHandler
+ADCUI_IRQHandler
                 B       .
 
                 ENDP

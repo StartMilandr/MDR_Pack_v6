@@ -51,17 +51,23 @@ static  TestInterface *testStack[] = {
 #endif
 };
 
-uint32_t activeTest = 0;
-uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
+static uint32_t activeTest = 0;
+static const uint32_t testCount = sizeof(testStack)/sizeof(testStack[0]);
 
 #define BTN_DEBOUNCE_MS 10
+
+void TIMER1_IRQHandler(void);
+void TIMER2_IRQHandler(void);
+void TIMER3_IRQHandler(void);
+void TIMER4_IRQHandler(void);
 
 int main(void)
 {
   uint32_t freqCPU_Hz;
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);

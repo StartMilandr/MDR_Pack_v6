@@ -8,6 +8,14 @@
 
 #include <MDR_Timer_CfgRegs.h>
 
+
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
+
 #ifdef MDR_TIMER3_CLK_EN_ADDR
   #define TIMER3_EXIST
 #endif
@@ -18,6 +26,7 @@
 //  Вспомогательная функция для рассчета параметров периода таймера - period, PSG
 bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint_tim *period, uint16_t *PSG);
 
+
 //=====================   TimerEx Definitions ============
 typedef struct {
   // TIMER Block
@@ -27,6 +36,7 @@ typedef struct {
   //  IRQn
   IRQn_Type         TIMERx_IRQn;
 } MDR_TIMER_TypeEx;
+
 
 extern const MDR_TIMER_TypeEx    _MDR_TIMER1ex;
 #define MDR_TIMER1ex            (&_MDR_TIMER1ex)
@@ -78,7 +88,7 @@ __STATIC_INLINE void MDR_Timer_DisableEventIQR(MDR_TIMER_Type *TIMERx, uint32_t 
 //=====================   Простейшая инициализация счета с разрешением прерывания по периоду (аналог SystemTimer) ==================
 
 //  ARR = period - 1, поэтому задавать period > 0.
-void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ);
+void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ);
 
 
 //=====================   Простейшая инициализация счета с указанием направления счета и выбором прерываний ==================
@@ -100,9 +110,9 @@ typedef enum {
 //  Аналог MDR_Timer_InitPeriod, но с возможностью явно задать направление счета
 //  Может быть полезна при некоторых режимах формирования сигнала Ref
 //  ARR = period - 1, поэтому задавать period > 0.
-void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir);
+void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir);
 //  Аналог MDR_Timer_InitPeriodDir, но с возможностью разрешить необходимые прерывания.
-void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir);
+void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir);
 
 
 //=====================   Каскадное объединение таймеров ==================
@@ -118,7 +128,7 @@ typedef enum {
 } MDR_Timer_EventTimer;
 
 //  ARR = period - 1, поэтому задавать period > 0.
-void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, MDR_Timer_EventTimer countEvent, uint_tim period, bool enaIRQ);
+void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, MDR_Timer_EventTimer countEvent, uint_tim period, bool enaIRQ);
 
 
 //=====================   Timers Start and most usefull control ==================
@@ -170,8 +180,9 @@ typedef struct {
   bool     activateNVIC_IRQ;
 } MDR_Timer_CfgIRQ;
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
 typedef struct {
-  MDR_BRG_DIV_128   clockBRG;             //  BRG for TimClock  
+  MDR_Div128P   clockBRG;             //  BRG for TimClock  
   uint_tim          period;               //  Timer Period - ARR
   uint_tim          startValue;           //  Start Value - CNT
   MDR_OnOff         periodUpdateImmediately;
@@ -272,6 +283,7 @@ typedef struct {
   MDR_PIN_FUNC   pinFunc;
 } MDR_Timer_CfgPinGPIO;
 
+
 void MDR_TimerCh_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower);
 void MDR_TimerCh_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg);
 
@@ -365,7 +377,7 @@ void MDR_TimerCh_InitByCfgRegs(MDR_TIMER_CH_Type *TIMER_CH, MDR_TIMER_CH_CfgRegs
 
 typedef struct {
   MDR_TIM_FLTR            Filter;   
-  MDR_PSC_DIV_8           EventPSC;       //  div1, div2, div4, div8
+  MDR_Div8P               EventPSC;       //  div1, div2, div4, div8
   MDR_TIM_EventCAP        EventCAP;       //  Event to capture to CCR
   
   bool                    enableCAP1;
@@ -375,9 +387,12 @@ typedef struct {
 //  При *cfgCAP = NULL настраивается захват фронта в CCR и среза в CCR1, фильтр и прореживание не используются.
 void MDR_TimerCh_InitCAP(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgCAP *cfgCAP);
 
-__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR (MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR;}
-__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR1(MDR_TIMER_CH_Type *TIMER_CH) {return TIMER_CH->CCR1;}
+__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR (MDR_TIMER_CH_Type *TIMER_CH) {return (uint_tim)TIMER_CH->CCR;}
+__STATIC_INLINE uint_tim MDR_TimerCh_GetCCR1(MDR_TIMER_CH_Type *TIMER_CH) {return (uint_tim)TIMER_CH->CCR1;}
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
 
 //=========================================================================================================
 //======================================      Timer DMA    ================================================
@@ -405,16 +420,16 @@ __STATIC_INLINE void MDR_Timer_DMA_Enable_RizeBRK (MDR_TIMER_Type *TIMERx) {MDR_
 __STATIC_INLINE void MDR_Timer_DMA_Disable_RizeBRK(MDR_TIMER_Type *TIMERx) {MDR_Timer_DMA_Disable(TIMERx, MDR_TIM_EVENT_BRK_Msk);}
 
 
-__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeCAP (MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel));}
-__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeCAP(MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel));}
+__STATIC_INLINE void MDR_Timer_DMA_Enable_RizeCAP (MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) 
+    { MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel)); }
+__STATIC_INLINE void MDR_Timer_DMA_Disable_RizeCAP(MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) 
+    { MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_CAP_CH1_Pos + timChannel)); }
 
 __STATIC_INLINE void MDR_Timer_DMA_Enable_RizeCAP1 (MDR_TIMER_Type *TIMERx, MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR1_CAP_CH1_Pos + timChannel));}
 __STATIC_INLINE void MDR_Timer_DMA_Disable_RizeCAP1(MDR_TIMER_Type *TIMERx, MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR1_CAP_CH1_Pos + timChannel));}
 
 __STATIC_INLINE void MDR_Timer_DMA_Enable_RizePWM (MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Enable (TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_REF_CH1_Pos + timChannel));}
 __STATIC_INLINE void MDR_Timer_DMA_Disable_RizePWM(MDR_TIMER_Type *TIMERx,  MDR_Timer_Channel timChannel) {MDR_Timer_DMA_Disable(TIMERx, VAL2FLD_Pos(1, MDR_TIM_EVENT_CCR_REF_CH1_Pos + timChannel));}
-
-
 
 #endif
 

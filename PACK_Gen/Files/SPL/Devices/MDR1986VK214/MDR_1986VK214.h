@@ -265,8 +265,14 @@ typedef enum IRQn
 #define MDR_TIMER2                     ((MDR_TIMER_Type 	  *) ADDR_TIMER2_BASE)
 
 //  Timer Channels - there is only one channel in Timer
-#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
-#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER1->CCR1))
+  #define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER2->CCR1))    
+#else
+  #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))  
+  #define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))  
+#endif
+
 
 #define MDR_POWER                      ((MDR_PWR_Type 	    *) ADDR_POWER_BASE)
 #define MDR_I2C                        ((MDR_I2C_Type       *) ADDR_I2C_BASE)

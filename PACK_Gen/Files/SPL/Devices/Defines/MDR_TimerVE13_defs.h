@@ -75,6 +75,7 @@ typedef struct {
   __IOM MDR_TIM_FDTS    FDTS       : 2;            /*!< [5..4] Select Data Sampling frequency                                     */
   __IOM MDR_TIM_CntMode CNT_MODE   : 2;            /*!< [7..6] Counting mode                                                      */
   __IOM MDR_TIM_Event   EVENT_SEL  : 4;            /*!< [11..8] Events for counting                                               */
+  __IM  uint32_t                   : 20;
 } MDR_TIM_CNTRL_Bits;
 
 #define MDR_TIMER_CNTRL_CNT_EN_Pos       (0UL)                     /*!< MDR_TIMER1 CNTRL: CNT_EN (Bit 0)                      */

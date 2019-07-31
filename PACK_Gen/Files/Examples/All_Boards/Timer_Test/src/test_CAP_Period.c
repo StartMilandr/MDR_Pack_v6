@@ -34,6 +34,7 @@ static void  Test_Exec(void);
 static void  Test_MainLoop(void);
 static void  Test_HandleTimIRQ_CAP(void);
 
+extern TestInterface TI_CAP_Period;
 
 TestInterface TI_CAP_Period = {
   .funcInit       = Test_Init,
@@ -47,22 +48,22 @@ TestInterface TI_CAP_Period = {
   .funcHandlerTim4 = Test_HandleTimIRQ_CAP,
 };
 
-#define   TIM_BRG       MDR_BRG_div1
+#define   TIM_BRG       MDR_Div128P_div1
 #define   TIM_PSC       0
 
 #define  AVER_COUNT    50
-uint32_t averInd;
-uint_tim valRE[AVER_COUNT + 1], valFE[AVER_COUNT + 1];  //  RiseEdge and FallEdge
-uint32_t periods[AVER_COUNT], widthes[AVER_COUNT];
+static uint32_t averInd;
+static uint_tim valRE[AVER_COUNT + 1], valFE[AVER_COUNT + 1];  //  RiseEdge and FallEdge
+static uint32_t periods[AVER_COUNT], widthes[AVER_COUNT];
 
-bool doProcessResult = false;
+static bool doProcessResult = false;
 
 void CalcAndShowResult(void);
 
 //  Конфигурация аналогична test_CAP_Simlpest, где вместо структуры задается NULL
 static const MDR_TimerCh_CfgCAP cfgCAP = {
   .Filter   = MDR_TIM_FLTR_TIM_CLK, 
-  .EventPSC = MDR_PSC_div1,
+  .EventPSC = MDR_Div8P_div1,
   .EventCAP = MDR_TIM_CAP_RiseOnPin,
   .enableCAP1 = true,
   .EventCAP1  = MDR_TIM_CAP1_FallOnPin
@@ -70,31 +71,31 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
 
 #if defined (USE_MDR1986VK214) 
   #define OUT_TO_UART
-  uint_tim  pulsePeriod = 250;
+  static uint_tim  pulsePeriod = 250;
 
 #elif defined (USE_MDR1986VK234)
   #define OUT_TO_UART
-  uint_tim  pulsePeriod = 290;
+  static uint_tim  pulsePeriod = 290;
 
 #elif defined (USE_MDR1986VE91)
   #define OUT_TO_LCD
-  uint_tim  pulsePeriod = 200;
+  static uint_tim  pulsePeriod = 200;
 
 #elif defined (USE_MDR1986VE93)
   #define OUT_TO_UART
-  uint_tim  pulsePeriod = 200;
+  static uint_tim  pulsePeriod = 200;
 
 #elif defined (USE_MDR1986VE1) || defined (USE_MDR1986VE3)
   #define OUT_TO_LCD
-  uint_tim  pulsePeriod = 300;
+  static uint_tim  pulsePeriod = 300;
 
 #elif defined (USE_MDR1986VE4)
   #define OUT_TO_UART
-  uint_tim  pulsePeriod = 280;
+  static uint_tim  pulsePeriod = 280;
 
 #else
   #define OUT_TO_LCD
-  uint_tim  pulsePeriod = 200;
+  static uint_tim  pulsePeriod = 200;
 #endif
 
 #define CAP_IRQ_byFALL       CAP_EVENT_FALL
@@ -248,27 +249,27 @@ static void Test_MainLoop(void)
 static uint32_t calcRMS(uint32_t *pData, uint32_t count, uint32_t *pAver)
 {
   uint32_t i;
-  uint32_t sum = 0;
-  uint32_t aver = 0;
+  double sum = 0;
+  double aver = 0;
   int32_t disp;
   
   //  Calc Aver
   for (i = 0; i < count; ++i)
     sum += pData[i];
   aver = sum / count;
-  *pAver = aver;
+  *pAver = (uint32_t)aver;
   
   //  RMS
   sum = 0;
   for (i = 0; i < count; ++i)
   {
-    disp = pData[i] - aver;
-    sum += disp * disp;
+    disp = (int32_t)pData[i] - (int32_t)aver;
+    sum += (disp * disp);
   }
   sum = sum / count;
   sum = sqrt(sum); 
   
-  return sum;
+  return (uint32_t)sum;
 }
 
 void CalcAndShowResult(void)

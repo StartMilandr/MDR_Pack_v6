@@ -9,6 +9,7 @@
 
   <project>
     <PathAndName>.\VC1\EEPROM_Test_VC1.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -39,11 +40,11 @@
 
   <project>
     <PathAndName>.\VE4\EEPROM_Test_VE4.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
     <PathAndName>.\VK234\EEPROM_Test_VK234.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

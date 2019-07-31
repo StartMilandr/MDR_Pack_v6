@@ -27,6 +27,8 @@ static void  Test_Empty(void);
 static void  Test_HandleIRQ_PWM(void);
 static void  Test_HandleIRQ_CAP(void);
 
+extern TestInterface TI_CAP_Simplest;
+
 TestInterface TI_CAP_Simplest = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -135,7 +137,7 @@ static void Test_HandleIRQ_PWM(void)
   MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
   
 #ifdef MDRB_LED_2
-  MDRB_LED_Switch(MDRB_LED_2);
+  MDRB_LED_Toggle(MDRB_LED_2);
 #endif
 }
 
@@ -146,7 +148,7 @@ static void Test_HandleIRQ_CAP(void)
   else if (MDR_Timer_GetStatus(CAP_TIM) & CAP_EVENT_FALL)
     MDR_Timer_ClearEvent(CAP_TIM, CAP_EVENT_FALL);
   
-  MDRB_LED_Switch(MDRB_LED_1);  
+  MDRB_LED_Toggle(MDRB_LED_1);  
 }
 
 static void  Test_Empty(void)

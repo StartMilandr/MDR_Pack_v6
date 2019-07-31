@@ -311,20 +311,40 @@ typedef enum IRQn
 #define MDR_TIMER3                     ((MDR_TIMER_Type 	  *) ADDR_TIMER3_BASE)
 
 //  Timer Channels
-#define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
-#define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR2))
-#define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR3))
-#define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR4))
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+ 
+  #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER1->CCR1))
+  #define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER1->CCR2))
+  #define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER1->CCR3))
+  #define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER1->CCR4))
 
-#define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
-#define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR2))
-#define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
-#define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
+  #define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER2->CCR1))
+  #define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER2->CCR2))
+  #define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER2->CCR3))
+  #define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER2->CCR4))
 
-#define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR1))
-#define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR2))
-#define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR3))
-#define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
+  #define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER3->CCR1))
+  #define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER3->CCR2))
+  #define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER3->CCR3))
+  #define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (__IOM uint32_t)(&MDR_TIMER3->CCR4))
+
+#else
+
+  #define MDR_TIMER1_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR1))
+  #define MDR_TIMER1_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR2))
+  #define MDR_TIMER1_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR3))
+  #define MDR_TIMER1_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER1->CCR4))
+
+  #define MDR_TIMER2_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR1))
+  #define MDR_TIMER2_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR2))
+  #define MDR_TIMER2_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR3))
+  #define MDR_TIMER2_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER2->CCR4))
+
+  #define MDR_TIMER3_CH1                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR1))
+  #define MDR_TIMER3_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR2))
+  #define MDR_TIMER3_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR3))
+  #define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
+#endif
 
 #define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
 #define MDR_I2C                        ((MDR_I2C_Type       *)  ADDR_I2C_BASE)

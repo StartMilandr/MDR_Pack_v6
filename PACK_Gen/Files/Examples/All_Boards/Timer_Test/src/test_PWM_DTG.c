@@ -18,6 +18,7 @@ static void  Test_Init(void);
 static void  Test_Finit(void);
 static void  Test_Empty(void);
 
+extern TestInterface TI_PWM_DTG;
 
 TestInterface TI_PWM_DTG = {
   .funcInit       = Test_Init,

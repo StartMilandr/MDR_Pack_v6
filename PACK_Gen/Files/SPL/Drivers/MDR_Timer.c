@@ -1,4 +1,4 @@
-#include "MDR_Timer.h"
+#include <MDR_Timer.h>
 
 //=====================   TimerEx Definitions ============
 const MDR_TIMER_TypeEx _MDR_TIMER1ex = {
@@ -68,7 +68,7 @@ static void MDR_Timer_ClearRegs(const MDR_TIMER_TypeEx *TIMERex)
   
   //  TIM_CLOCK On
   //  Need to apply to CNT, PSG, ARR, CCRx shadow registers!
-  MDR_PerClock_GateOpen(&TIMERex->CfgClock, MDR_BRG_div1);
+  MDR_PerClock_GateOpen(&TIMERex->CfgClock, MDR_Div128P_div1);
   
   //  Clear Regs
   TIMER->CNT = 0;
@@ -161,7 +161,7 @@ static void MDR_Timer_InitAndClear_loc(const MDR_TIMER_TypeEx *TIMERex)
   MDR_Timer_ClearRegs(TIMERex);  
 }
 
-static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint_tim period, const uint32_t selectIRQ, const uint32_t flags)
+static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint_tim period, const uint32_t selectIRQ, const uint32_t flags)
 { 
   //  Set Timer Settings
   TIMERex->TIMERx->ARR = period - 1;
@@ -186,7 +186,7 @@ static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DI
   MDR_PerClock_SetBRG(&TIMERex->CfgClock, clockBRG);  
 }
 
-void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ)
+void MDR_Timer_InitPeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ)
 {
   MDR_Timer_InitAndClear_loc(TIMERex);
   TIMERex->TIMERx->PSG = timClockPSG;
@@ -202,7 +202,7 @@ static const uint32_t _TIM_DirFlags_CountClock[3] = {
        VAL2FLD_Pos(TIM_CntMode_UpDown_TimClk, MDR_TIMER_CNTRL_CNT_MODE_Pos)     // TIM_CountUpDown 
 };
 
-void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir)
+void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, bool enaIRQ, MDR_TIM_CountDir dir)
 {  
   if (enaIRQ)
     MDR_Timer_InitPeriodDirIRQ(TIMERex, clockBRG, timClockPSG, period, TIM_FL_CNT_ARR, dir);
@@ -210,7 +210,7 @@ void MDR_Timer_InitPeriodDir(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 cl
     MDR_Timer_InitPeriodDirIRQ(TIMERex, clockBRG, timClockPSG, period, 0, dir);
 }
 
-void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir)
+void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, uint16_t timClockPSG, uint_tim period, uint32_t selectIRQ, MDR_TIM_CountDir dir)
 {  
   MDR_Timer_InitAndClear_loc(TIMERex);  
   TIMERex->TIMERx->PSG = timClockPSG;
@@ -237,7 +237,7 @@ void MDR_Timer_InitPeriodDirIRQ(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128
   };
 #endif  
   
-void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_BRG_DIV_128 clockBRG, MDR_Timer_EventTimer countEvent, uint_tim period, bool enaIRQ)
+void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clockBRG, MDR_Timer_EventTimer countEvent, uint_tim period, bool enaIRQ)
 {
   uint32_t regCNTRL = _TIM_EventSel_CountTIMs[countEvent] | VAL2FLD_Pos(TIM_CntMode_DIR_ExtEvents, MDR_TIMER_CNTRL_CNT_MODE_Pos);
   
@@ -347,12 +347,12 @@ void MDR_Timer_InitCountChannelEvent(const MDR_TIMER_TypeEx *TIMERex, const MDR_
 
 void MDR_TimerCh_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pinsPower)
 {
-  MDR_PinDig_PermRegs pinPermCfg;
+  MDR_PinDig_GroupPinCfg pinGroupCfg;
   
-  MDR_Port_InitDigPermRegs(MDR_PIN_PullPush, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinGroupCfg);
 
-  MDR_GPIO_ClockOn(pinCfg->portGPIO);
-  MDR_GPIO_InitDigPin(pinCfg->portGPIO, pinCfg->pinIndex, MDR_Pin_In, pinCfg->pinFunc, &pinPermCfg);
+  MDR_GPIO_Enable(pinCfg->portGPIO);
+  MDR_GPIO_InitDigPin(pinCfg->portGPIO, pinCfg->pinIndex, MDR_Pin_In, pinCfg->pinFunc, &pinGroupCfg);
 }
 
 void MDR_TimerCh_DeInitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg)
@@ -403,7 +403,8 @@ static void MDR_TimerCh_OptionsToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MD
 
 static void MDR_TimerCh_CfgPWM_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs, const MDR_TimerCh_CfgPWM *cfgPWM)
 {
-  bool defInit_CH, defInit_nCH = true;
+  bool defInit_CH = true;
+  bool defInit_nCH = true;
   MDR_TIM_SelOut selOutSignal = MDR_TIM_SelO_Ref;
   
   // Gather settings
@@ -548,7 +549,7 @@ static void MDR_TimerCh_DefaultCAP_ToCfgRegs(MDR_TIMER_CH_CfgRegs *cfgRegs)
 {
   cfgRegs->CH_CNTRL = VAL2FLD_Pos(MDR_TIM_FLTR_TIM_CLK,   MDR_TIM_CHx_CNTRL_CHFLTR_Pos)
                     | VAL2FLD_Pos(MDR_TIM_CAP_RiseOnPin,  MDR_TIM_CHx_CNTRL_CHSEL_Pos)
-                    | VAL2FLD_Pos(MDR_PSC_div1,           MDR_TIM_CHx_CNTRL_CHPSC_Pos)
+                    | VAL2FLD_Pos(MDR_Div8P_div1,           MDR_TIM_CHx_CNTRL_CHPSC_Pos)
                     | MDR_TIM_CHx_CNTRL_CAP_Mode;
   
   cfgRegs->CH_CNTRL2 = VAL2FLD_Pos(MDR_TIM_CAP1_FallOnPin,  MDR_TIM_CHx_CNTRL2_CHSel1_Pos)
@@ -586,7 +587,7 @@ bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint
   if (clockPeriod < TIM_MAX_VALUE)
   {
     *PSG = 0;
-    *period = clockPeriod;
+    *period = (uint_tim)clockPeriod;
   }
   else
   {
@@ -594,8 +595,8 @@ bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint
     if ((clkDiv > 0xFFFFUL) || (clkDiv == 0x0UL))
       return false;
     
-    *period = clockPeriod / clkDiv;
-    *PSG = clkDiv - 1;    
+    *period = (uint_tim)(clockPeriod / clkDiv);
+    *PSG = (uint16_t)(clkDiv - 1);
   }
   
   return true;

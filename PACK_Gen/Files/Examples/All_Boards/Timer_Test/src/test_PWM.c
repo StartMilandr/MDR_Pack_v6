@@ -15,6 +15,8 @@ static void  Test_Init(void);
 static void  Test_Finit(void);
 static void  Test_Empty(void);
 
+extern TestInterface TI_PWM;
+
 TestInterface TI_PWM = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,

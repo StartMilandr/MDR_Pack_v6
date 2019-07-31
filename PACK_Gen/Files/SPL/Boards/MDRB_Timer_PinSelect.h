@@ -107,6 +107,10 @@
   extern const MDR_Timer_CfgPinGPIO _pinTim3_CH2;
   extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH2;
   extern const MDR_Timer_CfgPinGPIO _pinTim3_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH3;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH4;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH4;
   
   
 #elif defined(USE_BOARD_VE93)

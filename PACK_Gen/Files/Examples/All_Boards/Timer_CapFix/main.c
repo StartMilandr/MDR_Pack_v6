@@ -13,11 +13,11 @@
 
 #define BTN_DEBOUNCE_MS 10
 
-#define PWM_BRG           MDR_BRG_div4
+#define PWM_BRG           MDR_Div128P_div4
 #define PWM_PSG           10
 #define PWM_PERIOD        900
 
-#define CAP_BRG           MDR_BRG_div1
+#define CAP_BRG           MDR_Div128P_div1
 #define CAP_PSG           0
 
 
@@ -25,12 +25,18 @@ void InitTest(void);
 void ExecTest_CAP(void);
 void ExecTest_BRG(bool useCapFix);
 
+void Timer_Handler_IRQ(void);
+void TIMER1_IRQHandler(void);
+void TIMER2_IRQHandler(void);
+void TIMER3_IRQHandler(void);
+
 int main(void)
 {
   uint32_t freqCPU_Hz;
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);  
   
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -75,7 +81,7 @@ void InitTest(void)
 {
   MDR_TimerCh_CfgCAP cfgCAP = {
     .Filter   = MDR_TIM_FLTR_TIM_CLK, 
-    .EventPSC = MDR_PSC_div1,
+    .EventPSC = MDR_Div8P_div1,
     .EventCAP = MDR_TIM_CAP_RiseOnPin,
     .enableCAP1 = false,
     .EventCAP1  = MDR_TIM_CAP1_FallOnPin
@@ -113,7 +119,7 @@ static const uint32_t _BRG_Div[] = {1, 2, 4, 8, 16, 32, 64, 128};
 
 void ExecTest_BRG(bool useCapFix)
 {
-  MDR_BRG_DIV_128 valueBRG;
+  MDR_Div128P valueBRG;
   
   printf("\n");
   printf("=====   CAP Fix Test =====\n");
@@ -126,7 +132,7 @@ void ExecTest_BRG(bool useCapFix)
   else
     CAP_TIM_CH->CHx_CNTRL2 &= ~MDR_TIM_CHx_CNTRL2_CAP_Fix_Msk;
   
-  for (valueBRG = MDR_BRG_div1; valueBRG <= MDR_BRG_div128; ++valueBRG)
+  for (valueBRG = MDR_Div128P_div1; valueBRG <= MDR_Div128P_div128; ++valueBRG)
   {    
     MDR_PerClock_SetBRG(&CAP_TIMex->CfgClock, valueBRG);
     printf("\n");

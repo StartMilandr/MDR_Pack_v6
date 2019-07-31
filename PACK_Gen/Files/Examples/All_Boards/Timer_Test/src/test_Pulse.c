@@ -22,6 +22,8 @@ static void  Test_Finit(void);
 static void  Test_Empty(void);
 static void  Test_Exec(void);
 
+extern TestInterface TI_Pulse;
+
 TestInterface TI_Pulse = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -35,7 +37,7 @@ TestInterface TI_Pulse = {
 };
 
 
-uint32_t pulseWidthPerc = 50;
+static uint8_t pulseWidthPerc = 50;
 
 static void Test_Init(void)
 {  

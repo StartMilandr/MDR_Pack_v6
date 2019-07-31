@@ -26,6 +26,8 @@ static void  Test_Empty(void);
 static void  Test_HandleIRQ_PWM(void);
 static void  Test_HandleIRQ_ETR(void);
 
+extern TestInterface TI_PWM_CountETR;
+
 TestInterface TI_PWM_CountETR = {
   .funcInit       = Test_Init,
   .funcFinit      = Test_Finit,
@@ -158,7 +160,7 @@ static void Test_HandleIRQ_PWM(void)
 {
   MDR_Timer_ClearEvent(PWM1_TIM, TIM_FL_CNT_ARR);
 #ifdef MDRB_LED_2
-  MDRB_LED_Switch(MDRB_LED_2);
+  MDRB_LED_Toggle(MDRB_LED_2);
 #endif
 }
 
@@ -166,7 +168,7 @@ static void Test_HandleIRQ_ETR(void)
 {
   MDR_Timer_ClearEvent(ETR_TIM, TIM_FL_CNT_ARR);
     
-  MDRB_LED_Switch(MDRB_LED_1);  
+  MDRB_LED_Toggle(MDRB_LED_1);  
 }
 
 static void Test_Empty(void)

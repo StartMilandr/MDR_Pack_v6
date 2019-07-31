@@ -91,7 +91,7 @@ static void TestInit(void)
 static char * TestGetName_Main(void)
 {
   return "MainBf";
-};
+}
 
 static uint32_t TestExec_Main(uint32_t runIndex)
 { 
@@ -101,13 +101,14 @@ static uint32_t TestExec_Main(uint32_t runIndex)
 
 static uint32_t TestCheckResult_Main(uint32_t runIndex)
 {
+  UNUSED(runIndex);
   return CheckResult(pageAddrMain, MDR_EEPROM_Main, buffCountWR_Main, BUFF_DATA_OFFS_MAIN);
 }
 
 static char * TestGetName_Info(void)
 {
   return "InfoBf";
-};
+}
 
 static uint32_t TestExec_Info(uint32_t runIndex)
 {
@@ -117,6 +118,7 @@ static uint32_t TestExec_Info(uint32_t runIndex)
 
 static uint32_t TestCheckResult_Info(uint32_t runIndex)
 {
+  UNUSED(runIndex);
   return CheckResult(pageAddrInfo, MDR_EEPROM_Info, buffCountWR_Info, BUFF_DATA_OFFS_INFO);
 }
 

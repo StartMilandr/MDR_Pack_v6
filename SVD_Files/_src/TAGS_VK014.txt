@@ -2,6 +2,7 @@
 f1=../RST_VE8x/RST_VK014.txt
 f2=../BKP/BKP_VK14.txt
 f3=../GPIO/GPIO_VE8VK14.txt
+f4=../UART/UART_VK014.txt
 
 [TAGS]
 #RST=f1
@@ -9,6 +10,8 @@ f3=../GPIO/GPIO_VE8VK14.txt
 #BKP=f2
 #GPIOs=f3
 #GPIOs_R=#GPIO
+#UARTs=f4
+#UARTs_R=#UART
 
 [TAGS_New]
 #PWR=
@@ -41,8 +44,6 @@ f3=../GPIO/GPIO_VE8VK14.txt
 #CANs_R=
 #SSPs=
 #SSPs_R=
-#UARTs=
-#UARTs_R=
 #CRC=
 #CRC_R=
 #ECC=

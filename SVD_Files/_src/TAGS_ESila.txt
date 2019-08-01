@@ -2,6 +2,7 @@
 f1=../RST_VE8x/RST_ESila.txt
 f2=../BKP/BKP_ESila.txt
 f3=../GPIO/GPIO_ESila.txt
+f4=../UART/UART_ESila.txt
 
 [TAGS]
 #RST=f1
@@ -9,6 +10,8 @@ f3=../GPIO/GPIO_ESila.txt
 #BKP=f2
 #GPIOs=f3
 #GPIOs_R=#GPIO
+#UARTs=f4
+#UARTs_R=#UART
 
 [TAGS_New]
 #FTMODE=
@@ -37,8 +40,6 @@ f3=../GPIO/GPIO_ESila.txt
 #SSPs_R=
 #CANs=
 #CANs_R=
-#UARTs=
-#UARTs_R=
 #USB=
 #USB_R=
 #TIMERs=

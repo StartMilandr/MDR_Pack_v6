@@ -172,9 +172,18 @@ void MDR_UART_ToCfgRegs(const MDR_UART_Cfg *cfg, const MDR_UART_cfgBaud *cfgBaud
   // Enable All
   pCfgRegs->CR = MDR_UART_CR_TXE_Msk | MDR_UART_CR_RXE_Msk | MDR_UART_CR_EN_Msk;
   //  Main Settings
+#ifdef MDR_UART_HAS_LEN9  
+  pCfgRegs->LCR_H =  VAL2FLD(cfg->cfgBase.WordLength, MDR_UART_LCR_H_WLEN)
+                   | VAL2FLD_Pos(cfg->cfgBase.useFIFO,    MDR_UART_LCR_H_FEN_Pos)
+                   | _ParityToBits[(uint32_t) cfg->cfgBase.Parity];
+  
+  if (cfg->cfgBase.WordLength == MDR_UART_WordLen9)
+    pCfgRegs->LCR_H |= MDR_UART_LCR_H_Len9En_Msk;
+#else
   pCfgRegs->LCR_H =  VAL2FLD_Pos(cfg->cfgBase.WordLength, MDR_UART_LCR_H_WLEN_Pos)
                    | VAL2FLD_Pos(cfg->cfgBase.useFIFO,    MDR_UART_LCR_H_FEN_Pos)
                    | _ParityToBits[(uint32_t) cfg->cfgBase.Parity];  
+#endif
   
   //  Base Options
   if (cfg->cfgBase.Options.Value != 0)

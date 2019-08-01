@@ -90,7 +90,7 @@ void MDR_UART_DBG_Init(void)
 //  Настройки блока
 static MDR_UART_Cfg _cfgUART = {
   //  Main Settings
-  .cfgBase.WordLength    = UART_BITS_8,
+  .cfgBase.WordLength    = MDR_UART_WordLen8,
   .cfgBase.Parity        = UART_Parity_Off,
   .cfgBase.useFIFO       = MDR_On,
   //  Some Options, инициализировать нулем если опции не нужны

@@ -84,7 +84,15 @@ typedef struct {
   MDR_OnOff PE      : 1;            /*!< [8..8] Parity Error IRQ Mask                                              */
   MDR_OnOff BE      : 1;            /*!< [9..9] BreakLine IRQ Mask                                                 */
   MDR_OnOff OE      : 1;            /*!< [10..10] Overrun FIFO_RX IRQ Mask                                         */
+  
+#ifdef MDR_UART_HAS_LEN9  
+  MDR_OnOff RX_FNE  : 1;            /*!< [11..11] FIFO_RX not Empty                                                */
+  MDR_OnOff TX_FE   : 1;            /*!< [12..12] FIFO_TX empty                                                    */
+  MDR_OnOff TX_BSY  : 1;            /*!< [13..13] TX data in shift register                                        */    
+  uint32_t          : 18;
+#else
   uint32_t          : 21;
+#endif
 } MDR_UART_EventBits;
 
 #define MDR_UART_EFL_RIM         MDR_UART_EVENT_RIM_Msk
@@ -99,6 +107,11 @@ typedef struct {
 #define MDR_UART_EFL_BE          MDR_UART_EVENT_BE_Msk
 #define MDR_UART_EFL_OE          MDR_UART_EVENT_OE_Msk
 
+#ifdef MDR_UART_HAS_LEN9
+  #define MDR_UART_EFL_RX_FNE    MDR_UART_EVENT_RX_FNE_Msk
+  #define MDR_UART_EFL_TX_FE     MDR_UART_EVENT_TX_FE_Msk
+  #define MDR_UART_EFL_TX_BSY    MDR_UART_EVENT_TX_BSY_Msk
+#endif
 
 typedef struct {
   uint32_t DVSR       : 8;

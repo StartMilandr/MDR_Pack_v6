@@ -1,0 +1,31 @@
+#UART1_ADDR__ES
+<baseAddress>0x4008D000</baseAddress>
+
+
+#MDR_UART2__ES
+<peripheral derivedFrom="MDR_UART1">
+  <name>MDR_UART2</name>
+  <baseAddress>0x4008E000</baseAddress>
+</peripheral>
+
+#MDR_UART3__ES
+<peripheral derivedFrom="MDR_UART1">
+  <name>MDR_UART3</name>
+  <baseAddress>0x4008F000</baseAddress>
+</peripheral>
+
+#MDR_UART4__ES
+<peripheral derivedFrom="MDR_UART1">
+  <name>MDR_UART4</name>
+  <baseAddress>0x40090000</baseAddress>
+</peripheral>
+
+
+#UART1_ADDR__VK014
+<baseAddress>0x40099000</baseAddress>
+
+#MDR_UART2__VK014
+<peripheral derivedFrom="MDR_UART1">
+  <name>MDR_UART2</name>
+  <baseAddress>0x4009A000</baseAddress>
+</peripheral>

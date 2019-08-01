@@ -150,7 +150,7 @@ typedef enum IRQn
 #include "MDR_ADCUI_VK214_defs.h"
 
 /*=========  UART ========*/
-#include <MDR_UART_defs.h>
+#include <MDR_UART_8Bit_defs.h>
 
 ///*=========  TIMER ========*/
 #include <MDR_TimerVx_defs.h>

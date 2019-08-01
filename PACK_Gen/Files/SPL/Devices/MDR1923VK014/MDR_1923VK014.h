@@ -163,7 +163,7 @@ typedef enum IRQn
 #include "MDR_SSP_def.h"
 
 /*=========  UART ========*/
-#include <MDR_UART_defs.h>
+#include <MDR_UART_9Bit_defs.h>
 
 /*=========  TIMER ========*/
 #include <MDR_TimerVE13_defs.h>

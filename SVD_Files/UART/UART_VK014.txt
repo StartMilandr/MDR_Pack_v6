@@ -1,0 +1,824 @@
+#UARTs
+<!--UART1-->
+<peripheral>
+  <name>MDR_UART1</name>
+  <version>1.0</version>
+  <description>UART Control</description>
+  <groupName>UART</groupName>
+  <!-- #UART1_ADDR -->
+  <baseAddress>0x40099000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <size>0x84</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!--DR-->
+    <register>
+      <name>DR</name>
+      <description>Data Register</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00001FFF</resetMask>
+      <fields>
+        <field>
+          <name>DATA</name>
+          <description>Data FIFO access</description>
+          <bitRange>[8:0]</bitRange>
+          <access>read-write</access>
+        </field>
+        <field>
+          <name>FE</name>
+          <description>Stop Bit Error</description>
+          <bitRange>[9:9]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Ok</name><description>No Error</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ERROR</name><description>Error is active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="FE">
+          <name>PE</name>
+          <description>Parity Error</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="FE">
+          <name>BE</name>
+          <description>Break Error</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="FE">
+          <name>OE</name>
+          <description>Overrun FIFO_RX</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--RSR_ECR-->
+    <register>
+      <name>RSR_ECR</name>
+      <description>Receive Status and Error Clear Register</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000000F</resetMask>
+      <fields>
+        <field>
+          <name>FE</name>
+          <description>Stop Bit Error</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Ok</name><description>No Error</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ERROR</name><description>Error is active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="FE">
+          <name>PE</name>
+          <description>Parity Error</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="FE">
+          <name>BE</name>
+          <description>Break Error</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="FE">
+          <name>OE</name>
+          <description>Overrun FIFO_RX</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--FR-->
+    <register>
+      <name>FR</name>
+      <description>Flag Register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000001FF</resetMask>
+      <fields>
+        <field>
+          <name>CTS</name>
+          <description>Modem Clear To Send</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Modem line is High</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Active</name><description>Modem line is Low</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="CTS">
+          <name>DSR</name>
+          <description>Modem Data Set Ready</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="CTS">
+          <name>DCD</name>
+          <description>Modem Data Carrier Detect</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field>
+          <name>BUSY</name>
+          <description>Transmitting data</description>
+          <bitRange>[3:3]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RXFE</name>
+          <description>FIFO_RX Empty status</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>FIFO not Empty</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Empty</name><description>FIFO Empty</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>TXFF</name>
+          <description>FIFO_TX Full Status</description>
+          <bitRange>[5:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>FIFO not Full</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Full</name><description>FIFO Full</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="TXFF">
+          <name>RXFF</name>
+          <description>FIFO_RX Full Status</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RXFE">
+          <name>TXFE</name>
+          <description>FIFO_RX Empty status</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="CTS">
+          <name>RI</name>
+          <description>Modem Ring Indicator</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--ILPR-->
+    <register>
+      <name>ILPR</name>
+      <description>IrDA Low-Power Counter</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000000FF</resetMask>
+      <fields>
+        <field>
+          <name>DVSR</name>
+          <description>Div of SampleRate</description>
+          <bitRange>[7:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!--IBRD-->
+    <register>
+      <name>IBRD</name>
+      <description>Integer BaudRate Divisor</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>Baud_DivInt</name>
+          <description>Integer part of Rate divisor</description>
+          <bitRange>[15:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!--FBRD-->
+    <register>
+      <name>FBRD</name>
+      <description>Fractional BaudRate Divisor</description>
+      <addressOffset>0x00000028</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000003F</resetMask>
+      <fields>
+        <field>
+          <name>Baud_DivFrac</name>
+          <description>Fractional part of Rate divisor</description>
+          <bitRange>[5:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
+    <!--LCR_H-->
+    <register>
+      <name>LCR_H</name>
+      <description>Line Control Register</description>
+      <addressOffset>0x0000002C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000001FF</resetMask>
+      <fields>
+        <field>
+          <name>BRK</name>
+          <description>Send Break - TX LOW for 2 words</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="BRK">
+          <name>PEN</name>
+          <description>Parity Enable</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field>
+          <name>EPS</name>
+          <description>Even Parity Select</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Odd</name><description>Odd parity bit</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Even</name><description>Even parity bit</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="BRK">
+          <name>STP2</name>
+          <description>Double Stop Bits Enable</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="BRK">
+          <name>FEN</name>
+          <description>FIFOs Enable</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field>
+          <name>WLEN</name>
+          <description>Word Length</description>
+          <bitRange>[6:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>bit_5</name><description>Word bits length</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>bit_6</name><description>Word bits length</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>bit_7</name><description>Word bits length</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>bit_8</name><description>Word bits length</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="BRK">
+          <name>SPS</name>
+          <description>Stick Parity Select</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field>
+          <name>9Bit_En</name>
+          <description>Enable 9bit length mode</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>byWLEN</name><description>Length by WLEN field</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>9BitLen</name><description>9bit length</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>      
+    </register>    
+    <!--CR-->
+    <register>
+      <name>CR</name>
+      <description>Control Register</description>
+      <addressOffset>0x00000030</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FF87</resetMask>
+      <fields>
+        <field>
+          <name>EN</name>
+          <description>Enable UART</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="EN">
+          <name>SIREN</name>
+          <description>IrDA Enable</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>SIRLP</name>
+          <description>IrDA Low-Power Enable</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>LBE</name>
+          <description>LoopBack Enable</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>TXE</name>
+          <description>Transmitter Enable</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>RXE</name>
+          <description>Receiver Enable</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field>
+          <name>DTR</name>
+          <description>Data Transmit Ready</description>
+          <bitRange>[10:10]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Sets modem line to Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Active</name><description>Sets modem line to Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field derivedFrom="DTR">
+          <name>RTS</name>
+          <description>Request To Send</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="DTR">
+          <name>Out1</name>
+          <description>Custom Modem Output1 - DCD</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="DTR">
+          <name>Out2</name>
+          <description>Custom Modem Output2 - RI</description>
+          <bitRange>[13:13]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>RTSEn</name>
+          <description>Hardware RTS Control</description>
+          <bitRange>[14:14]</bitRange>
+        </field>
+        <field derivedFrom="EN">
+          <name>CTSEn</name>
+          <description>Hardware CTS Control</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--IFLS-->
+    <register>
+      <name>IFLS</name>
+      <description>IRQ FIFO Level</description>
+      <addressOffset>0x00000034</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000003F</resetMask>
+      <fields>
+        <field>
+          <name>TXIFLSES</name>
+          <description>IRQ FIFO_TX level</description>
+          <bitRange>[2:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Words_le4</name><description>Less or Equal words in FIFO_TX</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Words_le8</name><description>Less or Equal words in FIFO_TX</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Words_le16</name><description>Less or Equal words in FIFO_TX</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Words_le24</name><description>Less or Equal words in FIFO_TX</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Words_le32</name><description>Less or Equal words in FIFO_TX</description><value>4</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>RXIFLSES</name>
+          <description>IRQ FIFO_RX level</description>
+          <bitRange>[5:3]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Words_ge4</name><description>Greater or Equal words in FIFO_RX</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Words_ge8</name><description>Greater or Equal words in FIFO_RX</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Words_ge16</name><description>Greater or Equal words in FIFO_RX</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Words_ge24</name><description>Greater or Equal words in FIFO_RX</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>Words_ge32</name><description>Greater or Equal words in FIFO_RX</description><value>4</value></enumeratedValue>
+          </enumeratedValues>             
+        </field>
+      </fields>
+    </register>
+    <!--IMSC-->
+    <register>
+      <name>IMSC</name>
+      <description>IRQ Mask Set Clear</description>
+      <addressOffset>0x00000038</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000007FF</resetMask>
+      <fields>
+        <field>
+          <name>RIM_IM</name>
+          <description>RI Modem IRQ Mask</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>IRQ Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>IRQ Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>STCM_IM</name>
+          <description>STC Modem IRQ Mask</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>DCDM_IM</name>
+          <description>DCD Modem IRQ Mask</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>DSRM_IM</name>
+          <description>DSR Modem IRQ Mask</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>RX_IM</name>
+          <description>RX IRQ Mask</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>TX_IM</name>
+          <description>TX IRQ Mask</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>RT_IM</name>
+          <description>RX Timeout IRQ Mask</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>FE_IM</name>
+          <description>Frame Error IRQ Mask</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>PE_IM</name>
+          <description>Parity Error IRQ Mask</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>BE_IM</name>
+          <description>BreakLine IRQ Mask</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>OE_IM</name>
+          <description>Overrun FIFO_RX IRQ Mask</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>RNE_IM</name>
+          <description>FIFO_RX not Empty</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>TFE_IM</name>
+          <description>FIFO_TX empty</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IM">
+          <name>TBSY_IM</name>
+          <description>TX data in shift register</description>
+          <bitRange>[13:13]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--RIS-->
+    <register>
+      <name>RIS</name>
+      <description>Raw IQR Status Register</description>
+      <addressOffset>0x0000003C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00003FFF</resetMask>
+      <fields>
+        <field>
+          <name>RIM_RIS</name>
+          <description>RI Modem Event</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Event Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Event Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>STCM_RIS</name>
+          <description>STC Modem Event</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>DCDM_RIS</name>
+          <description>DCD Modem Event</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>DSRM_RIS</name>
+          <description>DSR Modem Event</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>RX_RIS</name>
+          <description>RX Event</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>TX_RIS</name>
+          <description>TX Event</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>RT_RIS</name>
+          <description>RX Timeout Event</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>FE_RIS</name>
+          <description>Frame Error Event</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>PE_RIS</name>
+          <description>Parity Error Event</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>BE_RIS</name>
+          <description>BreakLine Event</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>OE_RIS</name>
+          <description>Overrun FIFO_RX Event</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>RNE_RIS</name>
+          <description>FIFO_RX not Empty</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>TFE_RIS</name>
+          <description>FIFO_TX empty</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="RIM_RIS">
+          <name>TBSY_RIS</name>
+          <description>TX data in shift register</description>
+          <bitRange>[13:13]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--MIS-->
+    <register>
+      <name>MIS</name>
+      <description>Masked IQR Status Register</description>
+      <addressOffset>0x00000040</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00003FFF</resetMask>
+      <fields>
+        <field>
+          <name>RIM_MIS</name>
+          <description>RI Modem Event</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Event Inactive</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Event Active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>STCM_MIS</name>
+          <description>STC Modem Event</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>DCDM_MIS</name>
+          <description>DCD Modem Event</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>DSRM_MIS</name>
+          <description>DSR Modem Event</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>RX_MIS</name>
+          <description>RX Event</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>TX_MIS</name>
+          <description>TX Event</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>RT_MIS</name>
+          <description>RX Timeout Event</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>FE_MIS</name>
+          <description>Frame Error Event</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>PE_MIS</name>
+          <description>Parity Error Event</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>BE_MIS</name>
+          <description>BreakLine Event</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>OE_MIS</name>
+          <description>Overrun FIFO_RX Event</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>RNE_MIS</name>
+          <description>FIFO_RX not Empty</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>TFE_MIS</name>
+          <description>FIFO_TX empty</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="RIM_MIS">
+          <name>TBSY_MIS</name>
+          <description>TX data in shift register</description>
+          <bitRange>[13:13]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--ICR-->
+    <register>
+      <name>ICR</name>
+      <description>IRQ Clear Register</description>
+      <addressOffset>0x00000044</addressOffset>
+      <size>32</size>
+      <access>write-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000007FF</resetMask>
+      <fields>
+        <field>
+          <name>RIM_IC</name>
+          <description>RI Modem Event</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>Inactive state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Clear</name><description>Clear event</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>STCM_IC</name>
+          <description>STC Modem Event</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>DCDM_IC</name>
+          <description>DCD Modem Event</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>DSRM_IC</name>
+          <description>DSR Modem Event</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>RX_IC</name>
+          <description>RX Event</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>TX_IC</name>
+          <description>TX Event</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>RT_IC</name>
+          <description>RX Timeout Event</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>FE_IC</name>
+          <description>Frame Error Event</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>PE_IC</name>
+          <description>Parity Error Event</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>BE_IC</name>
+          <description>BreakLine Event</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RIM_IC">
+          <name>OE_IC</name>
+          <description>Overrun FIFO_RX Event</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!--DMACR-->
+    <register>
+      <name>DMACR</name>
+      <description>DMA Control Register</description>
+      <addressOffset>0x00000048</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000007</resetMask>
+      <fields>
+        <field>
+          <name>RXDMAE</name>
+          <description>RX DMA Enable</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Disabled</name><description>DMA disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Enabled</name><description>DMA enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RXDMAE">
+          <name>TXDMAE</name>
+          <description>TX DMA Enable</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field>
+          <name>DMAonErr</name>
+          <description>Disable DMA req on Error</description>
+          <bitRange>[2:2]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>IgnoreError</name><description>Ignore Errors</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>StopOnError</name><description>SReq and Req disable on Error</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!--TCR-->
+    <register>
+      <name>TCR</name>
+      <description>Test Control Register</description>
+      <addressOffset>0x00000080</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000007</resetMask>
+      <fields>
+        <field>
+          <name>ITEN</name>
+          <description>Test Mode Enable</description>
+          <bitRange>[0:0]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Disabled</name><description>Normal operation</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Enabled</name><description>Testing Mode</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="ITEN">
+          <name>TestFIFO</name>
+          <description>FIFO test mode</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="ITEN">
+          <name>SIRTest</name>
+          <description>IrDA test mode</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+      </fields>
+    </register>
+  </registers>
+  <!-- peripheral end-->
+</peripheral>
+<!-- #MDR_UART2 -->
+<peripheral derivedFrom="MDR_UART1">
+  <name>MDR_UART2</name>
+  <baseAddress>0x4009A000</baseAddress>
+</peripheral>
+<!-- #MDR_UART3 -->
+<!-- #MDR_UART4 -->
+

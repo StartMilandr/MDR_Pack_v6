@@ -70,9 +70,20 @@ typedef union {
 } MDR_UART_CfgOptions;
 
 //  Основные настройки (минимальные)
+typedef enum {
+  MDR_UART_WordLen5 = 0,
+  MDR_UART_WordLen6 = 1,
+  MDR_UART_WordLen7 = 2,
+  MDR_UART_WordLen8 = 3,
+#ifdef MDR_UART_HAS_LEN9  
+  MDR_UART_WordLen9 = 4
+#endif  
+} MDR_UART_WordLen;
+
+
 typedef struct {  
   //  Main Settings
-  MDR_UART_WLEN       WordLength;
+  MDR_UART_WordLen    WordLength;
   MDR_UART_Parity     Parity;
   MDR_OnOff           useFIFO;
     

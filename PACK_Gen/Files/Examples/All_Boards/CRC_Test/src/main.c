@@ -9,6 +9,12 @@
 
 #define BTN_DEBOUNCE_MS   20
 
+//  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 typedef struct {
   uint16_t          Poly;
   uint16_t          Init;
@@ -17,6 +23,12 @@ typedef struct {
   uint16_t          checkCRC;   //  for string "123456789"
   char              name[20];
 } MDR_CRC_PolyCfg;
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop  
+#endif
+
+uint16_t CalcHardCRC(uint32_t indPoly);
 
 // Таблица из Википедии
 //   https://ru.wikipedia.org/wiki/%D0%A6%D0%B8%D0%BA%D0%BB%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D0%B8%D0%B7%D0%B1%D1%8B%D1%82%D0%BE%D1%87%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%B4
@@ -49,7 +61,7 @@ static const MDR_CRC_PolyCfg CRC_TABLE[] = {
     {0x1021,	0x0,	  CRC_FIRST_MSB,	   0x0,  0x31C3,	"CRC-16/XMODEM"},
 };
 
-MDR_CRC_CfgReg cfgCRC = {
+static MDR_CRC_CfgReg cfgCRC = {
   .Cfg_b.Enable       = MDR_On,
   .Cfg_b.FirstBit     = CRC_FIRST_LSB,  
   .Cfg_b.DMA_En       = MDR_Off,
@@ -67,7 +79,8 @@ int main(void)
 //MDR_DebugerProtectDelay();
   
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -94,7 +107,7 @@ int main(void)
   }  
 }
 
-uint8_t testStr[] = "123456789";
+static uint8_t testStr[] = "123456789";
 
 uint16_t CalcHardCRC(uint32_t indPoly)
 {

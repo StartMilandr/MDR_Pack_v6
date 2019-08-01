@@ -8,25 +8,25 @@
 #include <stdio.h>
 
 //  Обязательная настройка отдельного АЦП
-const MDR_ADCx_CfgBase _CfgADCx_clkCPU = {
+static const MDR_ADCx_CfgBase _CfgADCx_clkCPU = {
   .ClockSource    = MDR_ADC_CLK_CPU,
   .CPU_ClockDiv   = MDR_ADC_CPU_div512,
   .MagRefExternal = MDR_Off,             // GND..AUcc
   .SwitchDelay_GO = MDR_ADC_DelayGO_1    // Delay between continuous start
 };
 
-const MDR_ADC_CfgThermo   _CfgThermo = {
+static const MDR_ADC_CfgThermo   _CfgThermo = {
   .UseThermoVref  = MDR_On,              //  Vref from ThermoSensor - ADC1_OP and ADC2_OP
   .TrimThermoVref = MDR_ADC_TRIM_def
 };
 
-const MDR_ADCx_CfgIRQ _CfgIRQ_OnResult = {
+static const MDR_ADCx_CfgIRQ _CfgIRQ_OnResult = {
   .OnResult_IRQEna = MDR_On,             // Enable IRQ on ResultReady
   .OnLimit_IRQEna  = MDR_Off             // Enable IRQ on Limit
 };
 
 //  Общая базовая конфигурация для примеров
-MDR_ADC_Config _cfgAdc = 
+static MDR_ADC_Config _cfgAdc = 
 {
   .pCfgThermo = &_CfgThermo,
   
@@ -40,15 +40,16 @@ MDR_ADC_Config _cfgAdc =
 };
 
 #define COUNT_TO_SEND   200
-uint16_t dataADC[COUNT_TO_SEND];
-uint16_t lastDataADC;
-uint32_t countToSend = 0;
-bool     doSendData = false;
+static uint16_t dataADC[COUNT_TO_SEND];
+static uint16_t lastDataADC;
+static uint32_t countToSend = 0;
+static bool     doSendData = false;
 
 #define BUTTON_DEBOUNCE_MS  10
 #define LCD_UPDATE_PERIOD   100000
 
 void LCD_ShowTemperature(uint16_t valueADC);
+void ADC_IRQHandler(void);
 
 int main(void)
 {
@@ -57,9 +58,10 @@ int main(void)
   uint32_t cntShow = 0;
 
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);  
-  freqCPU_Hz = MDR_CPU_GetFreqHz(true);  
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
+  freqCPU_Hz = MDR_CPU_GetFreqHz(true);   
   MDRB_Buttons_Init(BUTTON_DEBOUNCE_MS, freqCPU_Hz);
   MDRB_LCD_Init(freqCPU_Hz);
   MDR_UART_DBG_Init();
@@ -125,7 +127,7 @@ void ADC_IRQHandler(void)
 void LCD_ShowTemperature(uint16_t valueADC)
 {  
   static char message[64];
-  float       temper = valueADC * T_SCALE + T_BIAS;
+  double      temper = (double)(valueADC * T_SCALE + T_BIAS);
   
   sprintf(message , "T = %.1f\xB0\x43", temper);      
   MDRB_LCD_Print (message, 3);

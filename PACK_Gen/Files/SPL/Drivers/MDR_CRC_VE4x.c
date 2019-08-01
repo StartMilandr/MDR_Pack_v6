@@ -33,7 +33,7 @@ void MDR_CRC_DeInit(void)
 uint16_t MDR_CRC_Calc(uint16_t startValue, uint32_t count,  uint8_t  *data)
 {
   uint32_t i;
-  MDR_CRC->CTRL = MaskClrSet(MDR_CRC->CTRL, MDR_CRC_CNTRL_CLR_SIZES, MDR_CRC_CNTRL_SIZE_8BIT);
+  MDR_CRC->CTRL = MDR_MaskClrSet(MDR_CRC->CTRL, MDR_CRC_CNTRL_CLR_SIZES, MDR_CRC_CNTRL_SIZE_8BIT);
   MDR_CRC->CRC_OUT = startValue;
   
   for (i = 0; i < count; ++i)

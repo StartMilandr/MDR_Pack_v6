@@ -5,20 +5,20 @@
 #include <MDR_EEPROM.h>
 
 //  Обязательная настройка отдельного АЦП
-const MDR_ADCx_CfgBase _CfgADCx_clkCPU = {
+static const MDR_ADCx_CfgBase _CfgADCx_clkCPU = {
   .ClockSource    = MDR_ADC_CLK_CPU,
   .CPU_ClockDiv   = MDR_ADC_CPU_div2048,
   .MagRefExternal = MDR_Off,             // GND..AUcc
   .SwitchDelay_GO = MDR_ADC_DelayGO_7    // Delay between continuous start
 };
 
-const MDR_ADCx_CfgIRQ _CfgIRQ_OnResult = {
+static const MDR_ADCx_CfgIRQ _CfgIRQ_OnResult = {
   .OnResult_IRQEna = MDR_On,             // Enable IRQ on ResultReady
   .OnLimit_IRQEna  = MDR_Off             // Enable IRQ on Limit
 };
 
 //  Общая базовая конфигурация для примеров
-MDR_ADC_Config _cfgAdc = 
+static MDR_ADC_Config _cfgAdc = 
 {
   .pCfgThermo = NULL,
   
@@ -32,21 +32,23 @@ MDR_ADC_Config _cfgAdc =
 };
 
 #define MEAS_AVER     10
-uint32_t dataADC[MEAS_AVER];
-uint32_t ind = 0;
-volatile uint32_t resultADC;
+static uint32_t dataADC[MEAS_AVER];
+static uint32_t ind = 0;
+static volatile uint32_t resultADC;
 
 #define EE_READ_CNT   3000
-uint32_t SectDataEE[EE_READ_CNT];
+static uint32_t SectDataEE[EE_READ_CNT];
 
+void ADC_IRQHandler(void);
 
 int main(void)
 {
   uint32_t i; //, data;
   volatile uint32_t sum;
- 
-  uint32_t startPageAddr = MDR_EEPROM_PageToAddr(EEPROM_Page16, EEPROM_IFREN_Main);
+
   //MDR_DebugerProtectDelay();
+  
+  uint32_t startPageAddr = MDR_EEPROM_PageToAddr(EEPROM_Page16, EEPROM_IFREN_Main);
   
   //  Максимальная скорость тактирования
   MDR_EEPROM_Init(HSI_FREQ_HZ);
@@ -68,7 +70,7 @@ int main(void)
         sum += dataADC[i];
       resultADC = sum / MEAS_AVER;
       
-      MDRB_LED_Switch(MDRB_LED_1);
+      MDRB_LED_Toggle(MDRB_LED_1);
       
       ind = 0;
     }
@@ -85,7 +87,7 @@ int main(void)
         ++sum;
     }
     if (sum == 0)
-      MDRB_LED_Switch(MDRB_LED_2);
+      MDRB_LED_Toggle(MDRB_LED_2);
     
     //------- EEPROM Write ---------
     if (MDRB_BntClicked_Up(true))

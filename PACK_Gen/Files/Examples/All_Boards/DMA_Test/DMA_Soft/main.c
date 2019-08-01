@@ -13,44 +13,47 @@
   //  Для 1986ВЕ1 и 1986ВЕ3Т массивы должны лежать в области памяти доступной для DMA - с адресов 0x2010_0000
   //  Необходимо задать это в скаттер файле, или в настройках модуля *.с
   //  В закладке линкера подключен готовый скаттер файл MDR1986VE1T_sctr.txt.
-  uint32_t SrcData[DATA_LEN]    __RAM_EXEC;
-  uint32_t DestData32[DATA_LEN] __RAM_EXEC;
-  uint16_t DestData16[DATA_LEN] __RAM_EXEC;
-  uint8_t  DestData8[DATA_LEN]  __RAM_EXEC;
+  static uint32_t SrcData[DATA_LEN]    __RAM_EXEC;
+  static uint32_t DestData32[DATA_LEN] __RAM_EXEC;
+  static uint16_t DestData16[DATA_LEN] __RAM_EXEC;
+  static uint8_t  DestData8[DATA_LEN]  __RAM_EXEC;
 #else
-  uint32_t SrcData[DATA_LEN];
-  uint32_t DestData32[DATA_LEN];
-  uint16_t DestData16[DATA_LEN];
-  uint8_t  DestData8[DATA_LEN];
+  static uint32_t SrcData[DATA_LEN];
+  static uint32_t DestData32[DATA_LEN];
+  static uint16_t DestData16[DATA_LEN];
+  static uint8_t  DestData8[DATA_LEN];
 #endif
 
-uint32_t *pSrc32 = SrcData;
-uint16_t *pSrc16 = (uint16_t *)SrcData;
-uint8_t  *pSrc8  = (uint8_t  *)SrcData;
+static uint32_t *pSrc32 = SrcData;
+static uint16_t *pSrc16 = (uint16_t *)SrcData;
+static uint8_t  *pSrc8  = (uint8_t  *)SrcData;
 
-uint32_t *pDest32 = DestData32;
-uint16_t *pDest16 = (uint16_t *)DestData16;
-uint8_t  *pDest8  = (uint8_t  *)DestData8;
+static uint32_t *pDest32 = DestData32;
+static uint16_t *pDest16 = (uint16_t *)DestData16;
+static uint8_t  *pDest8  = (uint8_t  *)DestData8;
 
 bool ClearData(void);
 bool CompareData(void);
 
 #define LED_FLASH_PERIOD  50000
 
-#ifndef MDRB_LED_3
-  #define LED_CYCLE         MDRB_LED_1
-  #define LED_ERROR         MDRB_LED_2
-  #define LED_IRQ           MDRB_LED_2
-
-#elif !defined(MDRB_LED_2)
-  #define LED_CYCLE         MDRB_LED_1
-  #define LED_ERROR         MDRB_LED_1
-  #define LED_IRQ           MDRB_LED_1
-#else
+#ifdef MDRB_LED_3
   #define LED_CYCLE         MDRB_LED_1
   #define LED_ERROR         MDRB_LED_2
   #define LED_IRQ           MDRB_LED_3
+
+#elif defined(MDRB_LED_2)
+  #define LED_CYCLE         MDRB_LED_1
+  #define LED_ERROR         MDRB_LED_2
+  #define LED_IRQ           MDRB_LED_2
+#else
+  #define LED_CYCLE         MDRB_LED_1
+  #define LED_ERROR         MDRB_LED_1
+  #define LED_IRQ           MDRB_LED_1
 #endif
+
+void DMA_IRQHandler(void);
+
 
 int main(void)
 {
@@ -58,7 +61,8 @@ int main(void)
   uint32_t cycleCnt = 0;
  
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация кнопок и светодиодов
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -121,7 +125,7 @@ int main(void)
     if (cycleCnt > LED_FLASH_PERIOD)
     {
       cycleCnt = 0;
-      MDRB_LED_Switch(LED_CYCLE);
+      MDRB_LED_Toggle(LED_CYCLE);
 #ifdef MDRB_LED_2      
       MDRB_LED_Set(LED_IRQ, MDR_Off);
 #endif
@@ -130,7 +134,7 @@ int main(void)
  
 }
 
-uint32_t  nextData = 0;
+static uint32_t  nextData = 0;
 
 bool ClearData(void)
 {

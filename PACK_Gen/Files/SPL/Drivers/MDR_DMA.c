@@ -19,17 +19,17 @@ static const MDR_DMA_ProtAHB _DMA_ProtAHB_Def = {
   #if defined ( __ICCARM__ ) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
     //  For IAR Compiler 
     #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
-      MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC;
+      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC;
     #else
-      MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)];
+      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)];
     #endif
     
   #elif defined ( __CC_ARM )
     //  For Keil Compiler
     #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
-      MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
+      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
     #else
-      MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
+      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
     #endif
   #endif
   
@@ -130,7 +130,7 @@ void MDR_DMA_EnableIRQ(uint32_t priority)
 
 
 //==================   Настройка каналов DMA ===================
-uint32_t MDR_DMA_GetCfgControl(const MDR_DMA_CfgTransf *cfgTransf, uint16_t count)
+static uint32_t MDR_DMA_GetCfgControl(const MDR_DMA_CfgTransf *cfgTransf, uint16_t count)
 {
   uint32_t control = cfgTransf->CfgValue;
   control |= (control & MDR_DMA_ChCtrl_SrcDataSize_Msk) << (MDR_DMA_ChCtrl_DestDataSize_Pos - MDR_DMA_ChCtrl_SrcDataSize_Pos);
@@ -149,7 +149,7 @@ uint32_t MDR_DMA_GetCfgControl(const MDR_DMA_CfgTransf *cfgTransf, uint16_t coun
   return control;
 }
 
-void MDR_DMA_FillChStruct(uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf, MDR_DMA_Init_ChCfg *iniChCfg)
+static void MDR_DMA_FillChStruct(uint32_t srcAddr, uint32_t destAddr, uint16_t count, const MDR_DMA_CfgTransf *cfgTransf, MDR_DMA_Init_ChCfg *iniChCfg)
 {
   iniChCfg->Src_EndAddr  = MDR_DMA_Calc_SrcEndAddr (srcAddr,  cfgTransf->CfgFileds.Src_AddrInc,  count);
   iniChCfg->Dest_EndAddr = MDR_DMA_Calc_DestEndAddr(destAddr, cfgTransf->CfgFileds.Dest_AddrInc, count, cfgTransf->CfgFileds.Mode);
@@ -302,8 +302,8 @@ void MDR_DMA_CopyStart16(uint32_t chIndex, uint16_t *src, uint16_t *dest, uint16
 {
   MDR_DMA_ChCfg chCfg;
   
-  chCfg.Src_EndAddr  = (uint32_t)src  + ((count - 1) << 1);
-  chCfg.Dest_EndAddr = (uint32_t)dest + ((count - 1) << 1);
+  chCfg.Src_EndAddr  = (uint32_t)src  + (uint32_t)((count - 1) << 1);
+  chCfg.Dest_EndAddr = (uint32_t)dest + (uint32_t)((count - 1) << 1);
   chCfg.Control.Value = VAL2FLD(count - 1, MDR_DMA_ChCtrl_N_minus1) | _DMA_CtrlCopy16;
   
   MDR_DMA_CtrlTablePri(chIndex) = chCfg;
@@ -323,8 +323,8 @@ void MDR_DMA_CopyStart32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16
 {
   MDR_DMA_ChCfg chCfg;
   
-  chCfg.Src_EndAddr  = (uint32_t)src  + ((count - 1) << 2);
-  chCfg.Dest_EndAddr = (uint32_t)dest + ((count - 1) << 2);
+  chCfg.Src_EndAddr  = (uint32_t)src  + (uint32_t)((count - 1) << 2);
+  chCfg.Dest_EndAddr = (uint32_t)dest + (uint32_t)((count - 1) << 2);
   chCfg.Control.Value = VAL2FLD(count - 1, MDR_DMA_ChCtrl_N_minus1) | _DMA_CtrlCopy32;
   
   MDR_DMA_CtrlTablePri(chIndex) = chCfg;

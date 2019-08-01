@@ -44,13 +44,13 @@ static const MDR_ADC_Config _cfgAdc =
   //  Для 1986ВЕ1 и 1986ВЕ3Т массивы должны лежать в области памяти доступной для DMA - с адресов 0x2010_0000
   //  Необходимо задать это в скаттер файле, или в настройках модуля *.с
   //  В закладке линкера подключен готовый скаттер файл MDR1986VE1T_sctr.txt.
-  uint16_t DataPri[DATA_LEN] __RAM_EXEC;
-  uint16_t DataAlt[DATA_LEN] __RAM_EXEC;
+  static uint16_t DataPri[DATA_LEN] __RAM_EXEC;
+  static uint16_t DataAlt[DATA_LEN] __RAM_EXEC;
 
 #else
   // Для остальных МК этого не нужно
-  uint16_t DataPri[DATA_LEN] __RAM_EXEC;
-  uint16_t DataAlt[DATA_LEN] __RAM_EXEC;
+  static uint16_t DataPri[DATA_LEN] __RAM_EXEC;
+  static uint16_t DataAlt[DATA_LEN] __RAM_EXEC;
 #endif
 
 //  ----------- Настройка канала DMA  ----------
@@ -62,7 +62,7 @@ static const MDR_ADC_Config _cfgAdc =
 
 #define DMA_IRQ_PRIORITY    0
 
-const MDR_DMA_CfgTransf  cfgDMA_ADC = { 
+static const MDR_DMA_CfgTransf  cfgDMA_ADC = { 
   //  DMA
   .CfgFileds.Mode         = DMA_MODE_PingPong,
   .CfgFileds.UseBurst     = MDR_Off,
@@ -75,33 +75,34 @@ const MDR_DMA_CfgTransf  cfgDMA_ADC = {
   .Dest_ProtAHB = NULL,
 };
 
-MDR_DMA_ChCtrl RestartCtrlPri;
-MDR_DMA_ChCtrl RestartCtrlAlt;
-bool DoProcessDataPri = false;
-bool DoProcessDataAlt = false;
-bool DoStop  = false;
-bool Stopped = false;
+static MDR_DMA_ChCtrl RestartCtrlPri;
+static MDR_DMA_ChCtrl RestartCtrlAlt;
+static bool DoProcessDataPri = false;
+static bool DoProcessDataAlt = false;
+static bool DoStop  = false;
+static bool Stopped = false;
 
-uint32_t AverADC_Pri;
-uint32_t AverADC_Alt;
+static uint32_t AverADC_Pri;
+static uint32_t AverADC_Alt;
 
 uint32_t CalcAverData(uint16_t *data);
 void LCD_PrintResult(uint32_t valuePri, uint32_t valueAlt, uint32_t ind);
 void LCD_PrintStopped(void);
 void DMA_IRQHandler(void);
 
-void _checkDMA(void)
-{
-  volatile uint32_t ctrlDMA_Pri = MDR_DMA_CtrlTablePri(DMA_Chan).Control.Value;
-  volatile uint32_t ctrlDMA_Alt = MDR_DMA_CtrlTableAlt(DMA_Chan).Control.Value;
-}
+//void _dbg_checkDMA(void)
+//{
+//  volatile uint32_t ctrlDMA_Pri = MDR_DMA_CtrlTablePri(DMA_Chan).Control.Value;
+//  volatile uint32_t ctrlDMA_Alt = MDR_DMA_CtrlTableAlt(DMA_Chan).Control.Value;
+//}
 
 int main(void)
 {
   uint32_t freqCPU_Hz;
 
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация кнопок и LCD экрана
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -116,7 +117,7 @@ int main(void)
   MDR_DMA_StartChannel(DMA_Chan, false, false, true);
 
   // ADC
-  MDR_ADC_SetClock_CPU_C1(MDR_CLK_div256);
+  MDR_ADC_SetClock_CPU_C1(MDR_Div256P_div256);
   MDR_ADC_PinsInitByMask(MDRB_ADC_TUNE_PORT, MDRB_ADC_TUNE_PIN);  
   MDR_ADC_Init(&_cfgAdc);
   MDR_ADC_StartSignal(MDR_ADC1, MDRB_ADC_CH_TUNE, true, NULL);
@@ -160,7 +161,7 @@ int main(void)
       Stopped = false;
     }
     
-    _checkDMA();
+    //_dbg_checkDMA();
   }
 
 }

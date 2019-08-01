@@ -338,7 +338,7 @@ typedef enum {
   MDR_DMA_AddrIncOff  = 3,
 } MDR_DMA_AddrInc;
 
-typedef struct {
+typedef __PACKED_STRUCT {
   MDR_DMA_Mode      Mode               : 3;
   MDR_OnOff         UseBurst           : 1;
   uint32_t          N_minus1           : 10;

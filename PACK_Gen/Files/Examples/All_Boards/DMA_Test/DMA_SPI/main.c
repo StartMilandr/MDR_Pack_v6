@@ -114,7 +114,8 @@ int main(void)
   bool      firstStart = true;
 
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация кнопок и LCD экрана
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -128,13 +129,13 @@ int main(void)
 #endif  
 
   //  Init  Master SPI
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_BRG_div1);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);  
   MDR_SSP_InitPinsGPIO(&SSP_MASTER_PINS, MDR_PIN_MAXFAST);
   
 #ifndef  SINGLE_SPI_MODE
   //  Init  Slave SPI
-  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_BRG_div1);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);   
   MDR_SSP_InitPinsGPIO(&SSP_SLAVE_PINS, MDR_PIN_MAXFAST);  
 #endif
@@ -245,6 +246,6 @@ void CyclicLedFlash(void)
   if (cnt > LED_PERIOD)
   {
     cnt = 0;
-    MDRB_LED_Switch(LED_CYCLE);
+    MDRB_LED_Toggle(LED_CYCLE);
   }
 }

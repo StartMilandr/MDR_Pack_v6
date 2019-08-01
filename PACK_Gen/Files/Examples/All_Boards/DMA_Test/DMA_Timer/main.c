@@ -18,10 +18,10 @@
   //  Для 1986ВЕ1 и 1986ВЕ3Т массивы должны лежать в области памяти доступной для DMA - с адресов 0x2010_0000
   //  Необходимо задать это в скаттер файле, или в настройках модуля *.с
   //  В закладке линкера подключен готовый скаттер файл MDR1986VE1T_sctr.txt.
-  uint8_t DataTX[DATA_LEN] __RAM_EXEC;
+  static uint8_t DataTX[DATA_LEN] __RAM_EXEC;
 #else
   // Для остальных МК этого не нужно
-  uint8_t DataTX[DATA_LEN];
+  static uint8_t DataTX[DATA_LEN];
 #endif
 
 //  ----------- Настройка каналов DMA  ----------
@@ -29,7 +29,7 @@
 #define UART_TX               MDR_UART1ex
 
 
-MDR_UART_CfgPinsGPIO UART_TX_Pins = {
+static MDR_UART_CfgPinsGPIO UART_TX_Pins = {
   .pPinTX = &_pinTX_UART1,
   .pPinRX = NULL,
 };
@@ -37,7 +37,7 @@ MDR_UART_CfgPinsGPIO UART_TX_Pins = {
 
 #define DMA_IRQ_PRIORITY    0
 
-const MDR_DMA_CfgTransf  cfgDMA_TX = { 
+static const MDR_DMA_CfgTransf  cfgDMA_TX = { 
   //  DMA
   .CfgFileds.Mode         = DMA_MODE_Base,
   .CfgFileds.UseBurst     = MDR_Off,
@@ -51,7 +51,7 @@ const MDR_DMA_CfgTransf  cfgDMA_TX = {
 };
 
 //  ----------- Настройки UART  ----------
-MDR_UART_Cfg CfgUART = 
+static MDR_UART_Cfg CfgUART = 
 {
   .cfgBase.WordLength   = UART_BITS_8,
   .cfgBase.Parity  = UART_Parity_Off,
@@ -69,16 +69,18 @@ MDR_UART_Cfg CfgUART =
   .pCfgModem = NULL,
 };
   
-MDR_UART_CfgEx cfgUARTex =  {
-  .ClockBRG     = MDR_BRG_div1,
+static MDR_UART_CfgEx cfgUARTex =  {
+  .ClockBRG     = MDR_Div128P_div1,
   .pCfgUART     = &CfgUART,
   .priorityIRQ  = 0,
   .activateNVIC_IRQ = false,
 } ;
 
+void DMA_IRQHandler(void);
+
 
 //  ----------- Application  ----------
-MDR_DMA_ChCtrl RestartCtrl_TX;
+static MDR_DMA_ChCtrl RestartCtrl_TX;
 
 
 int main(void)
@@ -89,7 +91,8 @@ int main(void)
   uint16_t timPSG;
   
   //  Максимальная скорость тактирования
-  MDR_CPU_SetClock_HSE_Max(MDR_Off);
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
   //  Инициализация светодиода
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
@@ -107,7 +110,7 @@ int main(void)
 
   //  Данные для посылки по UART
   for (i = 0; i < DATA_LEN; ++i)
-    DataTX[i] = '0' + i;
+    DataTX[i] = (uint8_t)('0' + i);
 
   //  DMA
   MDR_DMA_Init();
@@ -118,7 +121,7 @@ int main(void)
 
   //  Timer Period 1sec
   MDR_Timer_CalcPeriodAndPSG(1, freqCPU_Hz, &timPeriod, &timPSG);  
-  MDR_Timer_InitPeriod(MDR_TIMER1ex, MDR_BRG_div1, timPSG, timPeriod, false);
+  MDR_Timer_InitPeriod(MDR_TIMER1ex, MDR_Div128P_div1, timPSG, timPeriod, false);
   MDR_Timer_DMA_Enable_CntArr(MDR_TIMER1ex->TIMERx);
   MDR_Timer_Start(MDR_TIMER1ex);
 
@@ -133,7 +136,7 @@ void DMA_IRQHandler(void)
   MDR_DMA_RunNextCyclePri(DMA_Chan_TX, RestartCtrl_TX);
   
   // Индикация на светодиод
-  MDRB_LED_Switch(LED_CYCLE);
+  MDRB_LED_Toggle(LED_CYCLE);
 }
 
 

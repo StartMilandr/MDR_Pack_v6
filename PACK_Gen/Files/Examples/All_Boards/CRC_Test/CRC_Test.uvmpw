@@ -9,12 +9,11 @@
 
   <project>
     <PathAndName>.\CRC_Test_VK234\CRC_Test_VK234.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
   <project>
     <PathAndName>.\CRC_Test_VE4\CRC_Test_VE4.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>

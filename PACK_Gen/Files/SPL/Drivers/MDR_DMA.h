@@ -23,6 +23,9 @@ void MDR_DMA_InitProtEx(const MDR_DMA_ChCfg *channelsCtrlTable,  MDR_DMA_ProtAHB
 //  Деинициализация DMA, выключает тактирование блока
 void MDR_DMA_DeInit(void);
 
+//  Обнуляет регистр блока
+void DMA_ClearRegs(void);
+
 
 //  ============   Инициализация каналов DMA   ======================
 //  Инициализация через упрощенную структуру MDR_DMA_CfgTransf
@@ -95,7 +98,7 @@ __STATIC_INLINE void MDR_DMA_InitNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl c
 __STATIC_INLINE void MDR_DMA_InitNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl) {MDR_DMA_SetChCtrlAlt(chIndex, chCtrl.Value);}
 
 //  Выбор активной структуры
-__STATIC_INLINE bool MDR_DMA_GetActivePri(uint32_t chIndex, bool setActive) {return (MDR_DMA->CHNL_PRI_ALT_SET & (1 << chIndex)) == 0;}
+__STATIC_INLINE bool MDR_DMA_GetActivePri(uint32_t chIndex) {return (MDR_DMA->CHNL_PRI_ALT_SET & (1 << chIndex)) == 0;}
 __STATIC_INLINE void MDR_DMA_SetActivePri(uint32_t chIndex, bool setActive)
   { if (setActive) MDR_DMA->CHNL_PRI_ALT_CLR = 1 << chIndex; else MDR_DMA->CHNL_PRI_ALT_SET = 1 << chIndex;}
 

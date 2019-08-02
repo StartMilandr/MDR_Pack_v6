@@ -224,14 +224,14 @@ MDR_SSP_Status MDR_SSP_GetStatus(MDR_SSP_Type *SSPx)
 
 void MDR_SSP_WaitAndSendData(MDR_SSP_Type *SSPx, uint16_t data)
 {
-  while (!MDR_SSP_CanWrite(SSPx)){};
+  while (!MDR_SSP_CanWrite(SSPx));
   MDR_SSP_WriteData(SSPx, data);
 }
 
 uint16_t MDR_SSP_WaitAndReadData(MDR_SSP_Type *SSPx)
 {
   // Wait
-  while (MDR_SSP_GetStatus(SSPx).Flags.RX_NotEmpty == MDR_Off){};
+  while (MDR_SSP_GetStatus(SSPx).Flags.RX_NotEmpty == MDR_Off);
   // Read
   return MDR_SSP_ReadData(SSPx);
 }

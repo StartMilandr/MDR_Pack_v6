@@ -200,14 +200,14 @@
 
     
     //  Bus Commands
-    #define MDRB_LCD_BusSetOUT()        MDR_PORTA->OE |= 0x00FF;
+    #define MDRB_LCD_BusSetOUT()        MDR_PORTA->OE |= 0x00FF
     
-    #define MDRB_LCD_BusSetIN()         MDR_PORTA->OE &= 0xFF00;
+    #define MDRB_LCD_BusSetIN()         MDR_PORTA->OE &= 0xFF00
                                 
     #define MDRB_LCD_BusWrite(value)    MDR_PORTA->RXTX &= 0xFF00;          \
-                                        MDR_PORTA->RXTX |= (value & 0xFF);
+                                        MDR_PORTA->RXTX |= (value & 0xFF)
                                     
-    #define MDRB_LCD_BusRead()          (uint8_t)(MDR_PORTA->RXTX & 0xFF);
+    #define MDRB_LCD_BusRead()          (uint8_t)(MDR_PORTA->RXTX & 0xFF)
 
 
 //  ---------------  SPI1 Pin Definition ----------------

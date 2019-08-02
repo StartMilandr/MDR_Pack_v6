@@ -452,7 +452,7 @@ void MDR_Port_MaskAddPin(uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
       setRegs->FUNC_24_31 = (uint32_t)pinFunc << offs; 
       clrRegs->clrFUNC_24_31 = MDR_GPIO_FUNC__Pin_Msk << offs;
       break;
-  };
+  }
   //  PWR
   setRegs->PWR_0_15 = 0;
   setRegs->PWR_16_31 = 0;
@@ -469,7 +469,7 @@ void MDR_Port_MaskAddPin(uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
       setRegs->PWR_16_31  = (uint32_t)groupPinCfg->Power << offs; 
       clrRegs->clrPWR_16_31 = MDR_GPIO_PWR__Pin_Msk << offs;
       break;
-  };  
+  }  
 }
 
 //  Применение маски в порт

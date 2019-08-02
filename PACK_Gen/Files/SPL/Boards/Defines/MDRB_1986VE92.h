@@ -149,15 +149,15 @@
     
     //  Bus Commands
     #define MDRB_LCD_BusSetOUT()        MDR_PORTA->OE |= 0x003F; \
-                                        MDR_PORTF->OE |= 0x000C;
+                                        MDR_PORTF->OE |= 0x000C
     
     #define MDRB_LCD_BusSetIN()         MDR_PORTA->OE &= 0xFFC0;  \
-                                        MDR_PORTF->OE &= 0xFFF3;
+                                        MDR_PORTF->OE &= 0xFFF3
                                 
     #define MDRB_LCD_BusWrite(value)    MDR_PORTA->RXTX &= 0xFFC0;          \
                                         MDR_PORTA->RXTX |= (value & 0x3F);  \
                                         MDR_PORTF->RXTX &= 0xFFF3;          \
-                                        MDR_PORTF->RXTX |= ((value >> 4) & 0x0C);
+                                        MDR_PORTF->RXTX |= ((value >> 4) & 0x0C)
                                     
     #define MDRB_LCD_BusRead()   (uint8_t)(MDR_PORTA->RXTX & 0x3F) | (uint8_t)((MDR_PORTF->RXTX << 4) & 0xC0)
 

@@ -26,6 +26,6 @@ int main(void)
   #endif   
     
     MDR_Delay_ms(PERIOD_MS, HSI_FREQ_HZ);  
-  };
+  }
 }
 

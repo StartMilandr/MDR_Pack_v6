@@ -43,8 +43,10 @@ extern "C" {
 
 
 /* ====================================================  DR  ==================================================== */
+typedef uint16_t  uart_t;
+
 typedef struct {
-  __IOM uint8_t   DATA       : 9;            /*!< [8..0] Data FIFO access                                                   */
+  __IOM uart_t    DATA       : 9;            /*!< [8..0] Data FIFO access                                                   */
   __IOM MDR_OnOff FE         : 1;            /*!< [9..9] Stop Bit Error                                                     */
   __IOM MDR_OnOff PE         : 1;            /*!< [10..10] Parity Error                                                       */
   __IOM MDR_OnOff BE         : 1;            /*!< [11..11] Break Error - Line RX is LOW for 2 words long                    */

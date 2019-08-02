@@ -53,7 +53,7 @@ static const MDR_DMA_CfgTransf  cfgDMA_TX = {
 //  ----------- Настройки UART  ----------
 static MDR_UART_Cfg CfgUART = 
 {
-  .cfgBase.WordLength   = UART_BITS_8,
+  .cfgBase.WordLength   = MDR_UART_WordLen8,
   .cfgBase.Parity  = UART_Parity_Off,
   .cfgBase.useFIFO = MDR_Off,
   //  Some Options, инициализировать нулем если опции не нужны

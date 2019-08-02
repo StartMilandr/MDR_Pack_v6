@@ -802,6 +802,19 @@
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
     </condition>
+    <condition id="CON_MDR_Base">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+    </condition>    
     <condition id="CON_HAS_DMA">
       <description>Devices with DMA</description>
       <accept Dname="MDR1986VE1"/>
@@ -1082,7 +1095,7 @@
     </component>
 
     <!-- RST_CLOCK Driver -->
-    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_Base">
       <description>CPU Clock driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1116,7 +1129,7 @@
       </files>
     </component>    
     <!-- GPIO PORT Driver -->
-    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_UseFuncs">
+    <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_Base">
       <description>PORT driver for MDR1986VExx Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1159,7 +1172,7 @@
       </files>
     </component> 
     <!-- BKP RTC -->
-    <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_Base">
       <description>Backup and RTC</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1185,7 +1198,7 @@
       </files>
     </component>
     <!--ADC-->
-    <component Cclass="Drivers" Cgroup="ADC" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="Drivers" Cgroup="ADC" Cversion="2.0" condition="CON_MDR_Base">
       <description>SAR ADC Control functions</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>

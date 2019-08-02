@@ -32,8 +32,8 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-#define ADC_MIN_VALUE   0x0000UL;
-#define ADC_MAX_VALUE   0x0FFFUL;
+#define ADC_MIN_VALUE   0x0000UL
+#define ADC_MAX_VALUE   0x0FFFUL
 
 /* =========================================================  ADC1_Cfg  ====================================================== */
 typedef enum {

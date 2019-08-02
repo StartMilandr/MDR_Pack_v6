@@ -87,8 +87,8 @@ void MDR_Port_Reset(MDR_PORT_Type *GPIO_Port)
 #define CLR_FUNC     MDR_GPIO_FUNC__Pin_Msk
 #define CLR_PD      (MDR_GPIO_PD_Driver__Pin_Msk | MDR_GPIO_PD_Schmitt__Pin_Msk)
 
-#define SET_OR_CLEAR(cfg, valSet, outReg, mask)     if ((cfg) == valSet) (outReg) =  (mask); else (outReg) &= ~(mask);
-#define SET_OR_CLEAR_HI(cfg, valSet, outReg, mask)  if ((cfg) == valSet) (outReg) = ((mask) << 16); else (outReg) &= ~((mask) << 16);
+#define SET_OR_CLEAR(cfg, valSet, outReg, mask)     if ((cfg) == valSet) (outReg) =  (mask); else (outReg) &= ~(mask)
+#define SET_OR_CLEAR_HI(cfg, valSet, outReg, mask)  if ((cfg) == valSet) (outReg) = ((mask) << 16); else (outReg) &= ~((mask) << 16)
 
 void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_GPIO_PinCfg *pinCfg)
 {
@@ -311,7 +311,7 @@ void MDR_Port_FillClearMask(uint32_t pinSelect, MDR_GPIO_ClearCfg *cfgClr)
       //  By two bits
       cfgClr->clrPWR  |= MDR_GPIO_PWR__Pin_Msk  << (i << 1);
       cfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << (i << 1);
-    };
+    }
 }
 
 void MDR_Port_MaskAddAnalog(uint32_t pinSelect, MDR_Port_ApplyMask *applyMask)
@@ -353,7 +353,7 @@ void MDR_Port_MaskAdd(uint32_t pinSelect, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
       
       pCfgSet->FUNC    |= (uint32_t)pinFunc   << offsVal;      
       pCfgClr->clrFUNC |= MDR_GPIO_FUNC__Pin_Msk << offsVal;
-    };
+    }
 }
 
 // Внесение настроек Variable и Permanent в маски CLR и SET для одного пина

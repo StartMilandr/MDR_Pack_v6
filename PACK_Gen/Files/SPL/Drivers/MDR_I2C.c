@@ -198,7 +198,7 @@ uint32_t MDR_I2C_TransferWrite(uint8_t addr_7bit, uint32_t count, uint8_t *pData
   uint32_t sentCount = 0;
   
   //  Ожидание освобождения шины - BUSY между стартом и стопом.
-  while (!MDR_I2C_GetBusFree()){};
+  while (!MDR_I2C_GetBusFree());
 
   // Start Transfer and send Address
   if (MDR_I2C_StartTransfer(addr_7bit, true))    
@@ -225,7 +225,7 @@ uint32_t MDR_I2C_TransferRead (uint8_t addr_7bit, uint32_t count, uint8_t *pData
   uint32_t readCount = 0;
   
   //  Ожидание освобождения шины - BUSY между стартом и стопом.
-  while (!MDR_I2C_GetBusFree()){};
+  while (!MDR_I2C_GetBusFree());
 
   // Start Transfer and send Address
   if (MDR_I2C_StartTransfer(addr_7bit, false))

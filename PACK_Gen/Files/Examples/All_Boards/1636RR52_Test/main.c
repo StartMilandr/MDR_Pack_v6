@@ -128,7 +128,7 @@ void ChangeStatusAction(void)
     case 1: MDR_RR52_WriteStatusReg(&RR52_Obj, MDR_RR52_STATUS__RSTE_Msk); break;
     case 2: MDR_RR52_WriteStatusReg(&RR52_Obj, MDR_RR52_STATUS__SPRL_Msk); break;
     case 3: MDR_RR52_WriteStatusReg(&RR52_Obj, MDR_RR52_STATUS__RSTE_Msk | MDR_RR52_STATUS__SPRL_Msk); break;
-  };
+  }
 }
 
 void ChangeProtection(void)
@@ -156,7 +156,7 @@ void ChangeProtection(void)
       MDR_RR52_ProtectSector(&RR52_Obj, MDR_RR52_SectToAddr(RR52_Sector1));
       MDR_RR52_ProtectSector(&RR52_Obj, MDR_RR52_SectToAddr(RR52_Sector2));
       break;     
-  };
+  }
 }
 
 //-------------------     DataBuffs ------------------

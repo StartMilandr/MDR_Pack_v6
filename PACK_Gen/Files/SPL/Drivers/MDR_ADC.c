@@ -375,7 +375,7 @@ MDR_ADC_Result MDR_ADC_GetResult(MDR_ADCx_ItemType *ADCx)
 
 MDR_ADC_Result MDR_ADC_WaitAndGetResult(MDR_ADCx_ItemType *ADCx)
 {
-  while (MDR_ADC_GetStatus(ADCx).Flags.Ready != MDR_On){};
+  while (MDR_ADC_GetStatus(ADCx).Flags.Ready != MDR_On);
   
   return MDR_ADC_GetResult(ADCx);
 }

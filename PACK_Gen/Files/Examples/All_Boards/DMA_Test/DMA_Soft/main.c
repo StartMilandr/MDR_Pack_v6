@@ -111,7 +111,7 @@ int main(void)
         MDR_DMA_CopyStart32(2, pSrc32, pDest32, DATA_LEN);
         
         //  Ожидание окончания
-        while (!MDR_DMA_CopyGetCompletedSel(0x7UL)){};
+        while (!MDR_DMA_CopyGetCompletedSel(0x7UL));
       
         if (CompareData())
           MDRB_LED_Set(LED_CYCLE | LED_ERROR, MDR_Off);

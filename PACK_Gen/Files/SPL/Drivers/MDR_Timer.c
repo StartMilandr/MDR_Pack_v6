@@ -118,31 +118,31 @@ static void MDR_Timer_ClearRegs(const MDR_TIMER_TypeEx *TIMERex)
 //=====================   Timers Start and most usefull control ==================
 void MDR_Timer_ChangeCNT(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0);
   TIMERx->CNT = (uint32_t)value;
 }
 
 void MDR_Timer_ChangePeriod(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0);
   TIMERx->ARR = (uint32_t)(value - 1);
 }
 
 void MDR_Timer_ChangePSG(MDR_TIMER_Type *TIMERx, uint_tim value)
 {
-  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0){};
+  while ((TIMERx->CNTRL & MDR_TIMER_CNTRL_WR_CMPL_Msk) != 0);
   TIMERx->PSG = (uint32_t)value;
 }
 
 void MDR_TimerCh_ChangeCCR(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
 {
-  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0){};
+  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0);
   TIMER_CH->CCR = (uint32_t)value;
 }
 
 void MDR_TimerCh_ChangeCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value)
 {
-  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0){};
+  while ((TIMER_CH->CHx_CNTRL & MDR_TIM_CHx_CNTRL_WR_CMPL_Msk) != 0);
   TIMER_CH->CCR1 = (uint32_t)value;
 }
 

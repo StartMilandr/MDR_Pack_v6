@@ -23,7 +23,7 @@ int main(void)
     MDRB_LCD_ScrollStringLeft(message, strLength);
     
     MDR_Delay_ms(PERIOD_MS, HSI_FREQ_HZ);  
-  };
+  }
 }
 
 void ShowDisplay_VK214(void)

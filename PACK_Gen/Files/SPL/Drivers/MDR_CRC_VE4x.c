@@ -38,11 +38,11 @@ uint16_t MDR_CRC_Calc(uint16_t startValue, uint32_t count,  uint8_t  *data)
   
   for (i = 0; i < count; ++i)
   {
-    while (MDR_CRC_GetFIFO_Full()) {};
+    while (MDR_CRC_GetFIFO_Full());
     MDR_CRC->DATAI = data[i];    
   }
   
-  while (!MDR_CRC_GetCompleted()) {};  
+  while (!MDR_CRC_GetCompleted());
   return  (uint16_t)MDR_CRC->CRC_OUT; 
 }
 

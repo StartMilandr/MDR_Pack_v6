@@ -180,7 +180,7 @@ static bool SSP_Handler_Read(const MDR_SSP_TypeEx *exSSPx, SSP_DataCfg * cfg)
       }
     }
     else
-      while (1) {};   // Error - Событие замаскировано!
+      while (1);   // Error - Событие замаскировано!
   }
   
   //  Таймаут RX - вычитывает оставшиеся данные
@@ -200,7 +200,7 @@ static bool SSP_Handler_Read(const MDR_SSP_TypeEx *exSSPx, SSP_DataCfg * cfg)
       }
     }
     else
-      while (1) {};   // Error - Событие замаскировано!
+      while (1);   // Error - Событие замаскировано!
   }
   return false;
 }
@@ -224,7 +224,7 @@ void SSP_Handler_WriteSlave(const MDR_SSP_TypeEx *exSSPx, SSP_DataCfg * cfg)
       MDR_SSPex_TxHalfEmpty_IRQ_Enable(SSP_MASTER);
     }
     else
-      while (1) {};   // Error - Событие замаскировано!
+      while (1);   // Error - Событие замаскировано!
   }  
 }
 

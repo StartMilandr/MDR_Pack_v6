@@ -125,7 +125,7 @@
     
     //  Bus Commands                              
     #define MDRB_LCD_BusWrite(value)    MDR_PORTA->RXTX &= 0xFFF0;          \
-                                        MDR_PORTA->RXTX |= ((value) & 0x0FUL);
+                                        MDR_PORTA->RXTX |= ((value) & 0x0FUL)
     
     #define LCD_MT_10T7_DISPLAY
 

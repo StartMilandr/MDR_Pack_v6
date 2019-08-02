@@ -1,267 +1,0 @@
-Dependencies for Project 'ClockCPU', Target 'VE8': (DO NOT MODIFY !)
-F (.\main.c)(0x5D0C85CA)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO.h)(0x5D089384)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock.h)(0x5D09DFF6)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_VE8x.h)(0x5D0A2D5D)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_DefsVE8.h)(0x5D08F784)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_SysTimer.h)(0x5BF3A904)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_LEDs.h)(0x5D08B7AC)
-I (.\RTE\Board_Support\MDR1986VE8\MDRB_BoardSelect.h)(0x5CED2465)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines\MDRB_1986VE8.h)(0x5CEBC0D5)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_Buttons.h)(0x5BC5F5CC)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_LCD.h)(0x5D089778)
-I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x57F64D08)
-I (ClockItems.h)(0x5D0C8E9B)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_CPU_ClockSelect.h)(0x5D0C8E65)
-F (.\ClockItems.h)(0x5D0C8E9B)()
-F (.\ClockItems.c)(0x5D0B95FE)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\clockitems.o --omf_browse .\objects\clockitems.crf --depend .\objects\clockitems.d)
-I (ClockItems.h)(0x5D0C8E9B)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_CPU_ClockSelect.h)(0x5D0C8E65)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock.h)(0x5D09DFF6)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_VE8x.h)(0x5D0A2D5D)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_DefsVE8.h)(0x5D08F784)
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_Buttons.c)(0x5D0C972A)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdrb_buttons.o --omf_browse .\objects\mdrb_buttons.crf --depend .\objects\mdrb_buttons.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_Buttons.h)(0x5BC5F5CC)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (.\RTE\Board_Support\MDR1986VE8\MDRB_BoardSelect.h)(0x5CED2465)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines\MDRB_1986VE8.h)(0x5CEBC0D5)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO.h)(0x5D089384)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_LCD_MT_12864x.c)(0x5CEE424B)()
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_LEDs.c)(0x5D08B79A)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdrb_leds.o --omf_browse .\objects\mdrb_leds.crf --depend .\objects\mdrb_leds.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\MDRB_LEDs.h)(0x5D08B7AC)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO.h)(0x5D089384)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-I (.\RTE\Board_Support\MDR1986VE8\MDRB_BoardSelect.h)(0x5CED2465)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines\MDRB_1986VE8.h)(0x5CEBC0D5)
-F (RTE\Board_Support\MDR1923VK014\MDRB_BoardSelect.h)(0x5CED2465)()
-F (RTE\Board_Support\MDR1986VE1\MDRB_BoardSelect.h)(0x5CED2465)()
-F (RTE\Board_Support\MDR1986VE8\MDRB_BoardSelect.h)(0x5CED2465)()
-F (RTE\Board_Support\MDR1986VE91\MDRB_BoardSelect.h)(0x5CED2465)()
-F (RTE\Board_Support\MDR_ESila\MDRB_BoardSelect.h)(0x5CED2465)()
-F (RTE\Device\MDR1923VK014\MDR_ConfigVK014.h)(0x5D0A4B47)()
-F (RTE\Device\MDR1923VK014\startup_MDR1923VK014.s)(0x5CEBD60F)()
-F (RTE\Device\MDR1923VK014\system_MDR1923VK014.c)(0x5CE64897)()
-F (RTE\Device\MDR1923VK014\system_MDR1923VK014.h)(0x5CC1BF5E)()
-F (RTE\Device\MDR1986VE1\MDR_ConfigVE1.h)(0x5D08B4A4)()
-F (RTE\Device\MDR1986VE1\startup_MDR1986VE1.s)(0x5CC17AA8)()
-F (RTE\Device\MDR1986VE1\system_MDR1986VE1.c)(0x5D020445)()
-F (RTE\Device\MDR1986VE1\system_MDR1986VE1.h)(0x5BA892D4)()
-F (RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)()
-F (RTE\Device\MDR1986VE8\startup_MDR1986VE8.s)(0x5CEBD4D1)(--cpu Cortex-M4.fp -g --apcs=interwork -I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 523" --pd "_RTE_ SETA 1" --pd "USE_MDR1986VE8 SETA 1"--list .\listings\startup_mdr1986ve8.lst --xref -o .\objects\startup_mdr1986ve8.o --depend .\objects\startup_mdr1986ve8.d)
-F (RTE\Device\MDR1986VE8\system_MDR1986VE8.c)(0x5CED2B64)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\system_mdr1986ve8.o --omf_browse .\objects\system_mdr1986ve8.crf --depend .\objects\system_mdr1986ve8.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-F (RTE\Device\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)()
-F (RTE\Device\MDR1986VE91\MDR_ConfigVE9x.h)(0x5CFE6388)()
-F (RTE\Device\MDR1986VE91\startup_MDR1986VE9x.s)(0x5BA1FF96)()
-F (RTE\Device\MDR1986VE91\system_MDR1986VE9x.c)(0x5CF8D843)()
-F (RTE\Device\MDR1986VE91\system_MDR1986VE9x.h)(0x5BA89438)()
-F (RTE\Device\MDR_ESila\MDR_ConfigESila.h)(0x5D0A4251)()
-F (RTE\Device\MDR_ESila\startup_ESila.s)(0x5CEE4646)()
-F (RTE\Device\MDR_ESila\system_ESila.c)(0x5D0B9835)()
-F (RTE\Device\MDR_ESila\system_ESila.h)(0x5CC6C68C)()
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.c)(0x5D02001F)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdr_funcs.o --omf_browse .\objects\mdr_funcs.crf --depend .\objects\mdr_funcs.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO_VE8x.c)(0x5CEE415F)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdr_gpio_ve8x.o --omf_browse .\objects\mdr_gpio_ve8x.crf --depend .\objects\mdr_gpio_ve8x.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO.h)(0x5D089384)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_ESila.c)(0x5D0B8439)()
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_SysTimer.c)(0x5BF3A914)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdr_systimer.o --omf_browse .\objects\mdr_systimer.crf --depend .\objects\mdr_systimer.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_SysTimer.h)(0x5BF3A904)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_GPIO.c)(0x5CEE7033)()
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock.c)(0x5D09F91E)()
-F (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_VE8x.c)(0x5D0A2F26)(--c99 -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\ClockCPU-I.\RTE\Board_Support\MDR1986VE8-I.\RTE\Device\MDR1986VE8-I.\RTE\_VE8-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.4.0\Board-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Boards\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8-IC:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -D_RTE_ -DUSE_MDR1986VE8-o .\objects\mdr_rst_clock_ve8x.o --omf_browse .\objects\mdr_rst_clock_ve8x.crf --depend .\objects\mdr_rst_clock_ve8x.d)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock.h)(0x5D09DFF6)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Config\MDR_Config.h)(0x5CF0EA9F)
-I (.\RTE\Device\MDR1986VE8\MDR_ConfigVE8.h)(0x5CF8BE55)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_1986VE8.h)(0x5CF7C403)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\core_cm4.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_version.h)(0x5A55DC32)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_compiler.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\cmsis_armcc.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\Keil\CMSIS_Core\mpu_armv7.h)(0x5A8E6632)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\system_MDR1986VE8.h)(0x5CC18322)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RST_VE8x_defs.h)(0x5D0A3F53)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Types.h)(0x5CF8D577)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x57F64D08)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_RST_VE8_defs.h)(0x5D0A22E7)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\MDR1986VE8\MDR_BKP_VE8_defs.h)(0x5CF77EAA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_BKP_VE8VK14_defs.h)(0x5D08F2BB)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_RTC_VE8x_defs.h)(0x5CE5239E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_GPIO_VE8x_defs.h)(0x5CEE3857)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_SSP_def.h)(0x5C08E6AA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_UART_defs.h)(0x5CA4ADDA)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_TimerVE13_defs.h)(0x5CA4B53E)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Devices\Defines\MDR_Timer_defs.h)(0x5CBDC7D2)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_VE8x.h)(0x5D0A2D5D)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_Funcs.h)(0x5CEFDA2A)
-I (C:\Keil_v5\ARM\PACK\Milandr\MDR1986VExx\2.0x\SPL\Drivers\MDR_RST_Clock_DefsVE8.h)(0x5D08F784)

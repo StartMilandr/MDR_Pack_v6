@@ -281,7 +281,7 @@ void CalcAndShowResult(void)
   uint_tim *DataRE = valRE + 1;
   uint_tim *DataFE = valFE + 1;  
   
-  while (averInd <= AVER_COUNT + 1) {};
+  while (averInd <= AVER_COUNT + 1);
   
   for (i = 0; i < AVER_COUNT-1; ++i)
   {

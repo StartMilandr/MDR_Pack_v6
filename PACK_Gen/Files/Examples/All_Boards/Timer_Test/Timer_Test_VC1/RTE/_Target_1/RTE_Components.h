@@ -1,6 +1,6 @@
 
 /*
- * Auto generated Run-Time-Environment Component Configuration File
+ * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
  * Project: 'Timer_Test_VC1' 
@@ -14,7 +14,8 @@
 /*
  * Define the Device Header File: 
  */
-#define CMSIS_device_header "MDR1901VC1T.h"
+#define CMSIS_device_header "MDR_1901VC1.h"
+
 
 
 #endif /* RTE_COMPONENTS_H */

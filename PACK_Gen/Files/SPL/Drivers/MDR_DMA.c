@@ -334,19 +334,19 @@ void MDR_DMA_CopyStart32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16
 void MDR_DMA_Copy8 (uint32_t chIndex, uint8_t  *src, uint8_t  *dest, uint16_t count)
 {
   MDR_DMA_CopyStart8(chIndex, src, dest, count);
-  while (!MDR_DMA_CopyGetCompleted(chIndex)){};   
+  while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
 void MDR_DMA_Copy16(uint32_t chIndex, uint16_t *src, uint16_t *dest, uint16_t count)
 {
   MDR_DMA_CopyStart16(chIndex, src, dest, count);
-  while (!MDR_DMA_CopyGetCompleted(chIndex)){}; 
+  while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
 void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
 {
   MDR_DMA_CopyStart32(chIndex, src, dest, count);
-  while (!MDR_DMA_CopyGetCompleted(chIndex)){};   
+  while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
 

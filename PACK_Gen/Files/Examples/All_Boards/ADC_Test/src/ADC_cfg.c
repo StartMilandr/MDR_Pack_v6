@@ -277,9 +277,9 @@ static char signalThermoName[] = {
 char Cfg_GetActiveSignalName(void)
 {
   if (_UsedSignals[activeSignal] <= MDR_ADC_PinSignal_Last)
-    return ('0' + _UsedSignals[activeSignal]);
+    return ('0' + (char)_UsedSignals[activeSignal]);
   else if (_UsedSignals[activeSignal] < ADC_Signal_TS_Temper)
-    return ('A' + _UsedSignals[activeSignal] - MDR_ADC_PinSignal_Last);  
+    return ('A' + (char)_UsedSignals[activeSignal] - MDR_ADC_PinSignal_Last);  
   else
     return signalThermoName[(uint32_t)(_UsedSignals[activeSignal] - ADC_Signal_TS_Temper)];  
 }

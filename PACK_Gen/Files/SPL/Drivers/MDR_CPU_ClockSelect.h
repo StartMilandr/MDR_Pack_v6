@@ -190,7 +190,7 @@
                                                      .cfgPLL              = pllCfg,                   \
                                                      .timeoutCycles_PLL   = PLL_TIMEOUT,              \
                                                      .divMaxToCpu_0       = 0,                        \
-                                                     .freqSupp            = suppFreq};
+                                                     .freqSupp            = suppFreq}
 
   #define MDR_CLK_PLL_HSE_GEN_DEF(pllCfg, suppFreq) {.freqSource          = MDR_CLK_Generator,        \
                                                      .selDiv2             = false,                    \
@@ -198,7 +198,7 @@
                                                      .cfgPLL              = pllCfg,                   \
                                                      .timeoutCycles_PLL   = PLL_TIMEOUT,              \
                                                      .divMaxToCpu_0       = 0,                        \
-                                                     .freqSupp            = suppFreq};
+                                                     .freqSupp            = suppFreq}
                                   
 #endif
                                    

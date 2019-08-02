@@ -122,14 +122,14 @@
     #define MDRB_LCD_CONFLICT_PIN       PIN_PB19
 
     //  Bus Commands
-    #define MDRB_LCD_BusSetOUT()        MDR_PORTC->OE_Set = 0x00FFUL;
+    #define MDRB_LCD_BusSetOUT()        MDR_PORTC->OE_Set = 0x00FFUL
     
-    #define MDRB_LCD_BusSetIN()         MDR_PORTC->OE_Clr = 0x00FFUL;
+    #define MDRB_LCD_BusSetIN()         MDR_PORTC->OE_Clr = 0x00FFUL
                                 
     #define MDRB_LCD_BusWrite(value)    MDR_PORTC->RXTX_Clr = 0xFFUL; \
-                                        MDR_PORTC->RXTX_Set = (value & 0xFFUL);
+                                        MDR_PORTC->RXTX_Set = (value & 0xFFUL)
                                         
-    #define MDRB_LCD_BusRead()          (uint8_t)(MDR_PORTC->RXTX & 0xFFUL);
+    #define MDRB_LCD_BusRead()          (uint8_t)(MDR_PORTC->RXTX & 0xFFUL)
     
 
     #define MDRB_LCD_CONFLICT_LED

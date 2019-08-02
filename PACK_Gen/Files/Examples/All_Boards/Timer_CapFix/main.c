@@ -150,7 +150,7 @@ void ExecTest_CAP(void)
   //  SyncStart
   MDR_Timer_StartSync(PWM_START_SEL_MSK | CAP_START_SEL_MSK);  
   //  Wait Data Gathering
-  while ((dataCnt1 < TEST_DATA_COUNT) || ((dataCnt2 < TEST_DATA_COUNT))) {};
+  while ((dataCnt1 < TEST_DATA_COUNT) || ((dataCnt2 < TEST_DATA_COUNT)));
   //  Stop
   MDR_Timer_StopSync(PWM_START_SEL_MSK | CAP_START_SEL_MSK);
     

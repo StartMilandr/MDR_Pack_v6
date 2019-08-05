@@ -1,0 +1,1 @@
+Картинка подключения UART для Электросилы тут - Examples\All_Boards\UART_Test\Images\UART_BoardESila.jpg

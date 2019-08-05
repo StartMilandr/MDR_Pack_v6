@@ -9,7 +9,13 @@ extern "C" {
 #include <MDR_UART_defs.h>
 #include <MDR_Types.h>
 
-#define MDR_UART_FIFO_LEN   16
+#ifdef MDR_UART_FIFO_32_FIXED
+	#define MDR_UART_FIFO_LEN   32
+#else
+	#define MDR_UART_FIFO_LEN   16
+#endif
+
+
 #define MDR_UART_HAS_LEN9
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -106,13 +112,37 @@ typedef struct {
 
 
 /* ===============================================  IFLS - IRQ Flags Level Select =========================================== */
-typedef enum {
-  UART_FIFO_4,
-  UART_FIFO_8,
-  UART_FIFO_16,
-  UART_FIFO_24,
-  UART_FIFO_28
-} MDR_UART_EventFIFO;
+#ifdef MDR_UART_FIFO_32_FIXED
+		В спецификации FIFO указано на 32 слова, но по факту глубина на 16 слов
+	typedef enum {
+		UART_FIFO_4,
+		UART_FIFO_8,
+		UART_FIFO_16,
+		UART_FIFO_24,
+		UART_FIFO_28
+	} MDR_UART_EventFIFO;
+
+	#define   MDR_UART_FIFO_1p8     UART_FIFO_4
+	#define   MDR_UART_FIFO_1p4     UART_FIFO_8
+	#define   MDR_UART_FIFO_1p2     UART_FIFO_16
+	#define   MDR_UART_FIFO_3p4     UART_FIFO_24
+	#define   MDR_UART_FIFO_7p8     UART_FIFO_28
+
+#else
+	typedef enum {
+		UART_FIFO_2,
+		UART_FIFO_4,
+		UART_FIFO_8,
+		UART_FIFO_12,
+		UART_FIFO_14
+	} MDR_UART_EventFIFO;
+
+	#define   MDR_UART_FIFO_1p8     UART_FIFO_2
+	#define   MDR_UART_FIFO_1p4     UART_FIFO_4
+	#define   MDR_UART_FIFO_1p2     UART_FIFO_8
+	#define   MDR_UART_FIFO_3p4     UART_FIFO_12
+	#define   MDR_UART_FIFO_7p8     UART_FIFO_14
+#endif
 
 typedef struct {
   __IOM MDR_UART_EventFIFO  TXIFLSES   : 3;            /*!< [2..0] IRQ FIFO_TX level                                         */
@@ -124,12 +154,6 @@ typedef struct {
 #define MDR_UART_IFLS_TXIFLSES_Msk       (0x7UL)                   /*!< MDR_UART1 IFLS: TXIFLSES (Bitfield-Mask: 0x07)        */
 #define MDR_UART_IFLS_RXIFLSES_Pos       (3UL)                     /*!< MDR_UART1 IFLS: RXIFLSES (Bit 3)                      */
 #define MDR_UART_IFLS_RXIFLSES_Msk       (0x38UL)                  /*!< MDR_UART1 IFLS: RXIFLSES (Bitfield-Mask: 0x07)        */
-
-#define   MDR_UART_FIFO_1p8     UART_FIFO_4
-#define   MDR_UART_FIFO_1p4     UART_FIFO_8
-#define   MDR_UART_FIFO_1p2     UART_FIFO_16
-#define   MDR_UART_FIFO_3p4     UART_FIFO_24
-#define   MDR_UART_FIFO_7p8     UART_FIFO_28
 
 
 /* ==========================================  IMSC - IRQ Mask Set/Clear register ======================================== */

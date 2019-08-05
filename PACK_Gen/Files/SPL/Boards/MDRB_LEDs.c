@@ -108,6 +108,12 @@ uint32_t 	LED_GetCount (void)
   return MDRB_LED_COUNT;
 }
 
+void 			LED_Toggle (uint32_t index)
+{
+  if (index < MDRB_LED_COUNT)
+		MDRB_LED_Toggle(_LED_Pins[index]);
+}
+
 
 uint32_t MDRB_LED_NumToSel(uint32_t num)
 {

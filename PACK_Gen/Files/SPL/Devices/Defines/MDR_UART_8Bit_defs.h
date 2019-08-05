@@ -109,6 +109,12 @@ typedef enum {
   UART_FIFO_14
 } MDR_UART_EventFIFO;
 
+#define   MDR_UART_FIFO_1p8     UART_FIFO_2
+#define   MDR_UART_FIFO_1p4     UART_FIFO_4
+#define   MDR_UART_FIFO_1p2     UART_FIFO_8
+#define   MDR_UART_FIFO_3p4     UART_FIFO_12
+#define   MDR_UART_FIFO_7p8     UART_FIFO_14
+
 typedef struct {
   __IOM MDR_UART_EventFIFO  TXIFLSES   : 3;            /*!< [2..0] IRQ FIFO_TX level                                         */
   __IOM MDR_UART_EventFIFO  RXIFLSES   : 3;            /*!< [5..3] IRQ FIFO_RX level                                         */
@@ -120,11 +126,6 @@ typedef struct {
 #define MDR_UART_IFLS_RXIFLSES_Pos       (3UL)                     /*!< MDR_UART1 IFLS: RXIFLSES (Bit 3)                      */
 #define MDR_UART_IFLS_RXIFLSES_Msk       (0x38UL)                  /*!< MDR_UART1 IFLS: RXIFLSES (Bitfield-Mask: 0x07)        */
 
-#define   MDR_UART_FIFO_1p8     UART_FIFO_2
-#define   MDR_UART_FIFO_1p4     UART_FIFO_4
-#define   MDR_UART_FIFO_1p2     UART_FIFO_8
-#define   MDR_UART_FIFO_3p4     UART_FIFO_12
-#define   MDR_UART_FIFO_7p8     UART_FIFO_14
 
 
 

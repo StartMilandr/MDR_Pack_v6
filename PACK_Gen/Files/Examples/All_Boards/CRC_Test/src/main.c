@@ -87,7 +87,7 @@ int main(void)
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
   
   //  Включение UART_DBG для printf
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
   
   //  Начальная инициализация модуля CRC.
   MDR_CRC_Init(cfgCRC, 0);

@@ -8,21 +8,34 @@
 #include <MDR_Config.h>
 
 
-#define USE_UART1
-
-#ifdef USE_UART1
-	#define UARTx_Ex 	MDR_UART1ex
-	#define UARTx 	  MDR_UART1ex->UARTx
-	
-  #ifdef USE_BOARD_VE8
-		static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
-		static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};
-	#elif defined(USE_BOARD_ESila)
-	  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB1_Port, MDRB_UART1_TX_PB1_Ind, MDRB_UART1_TX_PB1_Func};
-		static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func};  	
-	#endif
-		
+#ifdef USE_BOARD_VE8
+  #define UARTx_Ex 	MDR_UART1ex
+  #define UARTx 	  MDR_UART1ex->UARTx
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};
+#elif defined(USE_BOARD_ESila)
+  #define UARTx_Ex 	MDR_UART1ex
+  #define UARTx 	  MDR_UART1ex->UARTx
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB1_Port, MDRB_UART1_TX_PB1_Ind, MDRB_UART1_TX_PB1_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func};  	
+#elif defined (USE_MDR1986VE4) || defined (USE_MDR1986VK214) || defined (USE_MDR1986VK234)
+  #define UARTx_Ex 	MDR_UART1ex
+  #define UARTx 	  MDR_UART1ex->UARTx
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB0_Port, MDRB_UART1_TX_PB0_Ind, MDRB_UART1_TX_PB0_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB1_Port, MDRB_UART1_RX_PB1_Ind, MDRB_UART1_RX_PB1_Func};      
+#elif defined(USE_BOARD_VE1) || defined(USE_BOARD_VE3) 
+  #define UARTx_Ex 	MDR_UART1ex
+  #define UARTx 	  MDR_UART1ex->UARTx
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PC3_Port, MDRB_UART1_TX_PC3_Ind, MDRB_UART1_TX_PC3_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PC4_Port, MDRB_UART1_RX_PC4_Ind, MDRB_UART1_RX_PC4_Func};    
+#elif defined(USE_BOARD_VE91) || defined(USE_BOARD_VE94)
+  #define UARTx_Ex 	MDR_UART2ex
+  #define UARTx 	  MDR_UART2ex->UARTx
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART2_TX_PF1_Port, MDRB_UART2_TX_PF1_Ind, MDRB_UART2_TX_PF1_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART2_RX_PF0_Port, MDRB_UART2_RX_PF0_Ind, MDRB_UART2_RX_PF0_Func};    
 #endif
+		
+
 	
 //	В прерывании по уровню FIFO_RX вычитывать на 1 слово меньше, чтобы работало прерывание по таймауту
 #define UART_FIFO_LEVEL  UART_FIFO_8
@@ -40,6 +53,7 @@ int main(void)
 	//  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_80MHz, MDRB_CPU_FREQ_SUPP_80MHz);
 	
   //  Максимальная скорость тактирования
+  MDR_CLK_Enable_RST_BPK();
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;	
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);	
 	freqCPU_Hz = MDR_CPU_GetFreqHz(true);	
@@ -83,9 +97,7 @@ int main(void)
 void UartInit(uint32_t baudRate, uint32_t UART_ClockHz)
 {	
 	//	Включение MAX_Clock на UART_Clock 
-#ifdef USE_UART1	
-	MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_MAX_CLK);
-#endif
+  MDR_UARTex_SetUartClock_defPLLCPU(UARTx_Ex);  
 	
 	//	Рассчет делителей под частоту обмена (из UART_ClockHz под baudRate)
   MDR_UART_cfgBaud cfgBaud;	
@@ -115,19 +127,10 @@ void UartInit(uint32_t baudRate, uint32_t UART_ClockHz)
 		.pCfgIrDA = NULL,
 		//  Modem Disabled
 		.pCfgModem  = NULL
-	};	
-	//	Все настройки в одну структуру.
-	MDR_UART_CfgEx cfgUartEx = {
-		//  Делитель частоты для Uart_Clock
-		.ClockBRG = MDR_Div128P_div1,
-		//  Настройки блока
-		.pCfgUART = &cfgUART,  
-		//  Инициализация прерываний в NVIC
-		.priorityIRQ = 0,
-		.activateNVIC_IRQ = true
-	};	
+	};
 	
-	MDR_UARTex_InitByBaud(UARTx_Ex, &cfgUartEx, &cfgBaud);	
+	MDR_UARTex_InitByBaud(UARTx_Ex, &cfgUART, &cfgBaud);	
+	MDR_UARTex_NVIC_EnableIRQ(UARTx_Ex, 0);
 }
 
 void UartInitPins(void)
@@ -173,6 +176,10 @@ void UART1_IRQHandler(void)
 	}
 }
 
+void UART2_IRQHandler(void)
+{
+  UART1_IRQHandler();
+}
 
 //===========		PRINTF ===============
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6010050)

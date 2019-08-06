@@ -24,6 +24,7 @@
 
   <project>
     <PathAndName>.\misc\ADC_Term\ADC_Temperature.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -194,7 +195,6 @@
 
   <project>
     <PathAndName>.\All_Boards\DMA_Test\DMA_ADC_PingPong\DMA_ADC_PingPong.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -620,6 +620,11 @@
 
   <project>
     <PathAndName>.\All_Boards\UART_Test\UART_TestVK234\UART_TestVK234.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\misc\UART_Commands\UART_Commands.uvprojx</PathAndName>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 

@@ -93,7 +93,7 @@ int main(void)
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
   //  Результат на UART
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
   
   // Инициализация I2C
 #if DEBUG_MODE_FOR_OSCIL

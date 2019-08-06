@@ -38,16 +38,17 @@ TestInterface TI_Uart_DebugRate = {
 
 static void Test_Init(void)
 {
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
   printf("Debug print test!\n");
 }  
 
 static void Test_InitRX(void)
 {
-  MDR_UART_DBG_InitEx(UART_BAUD_9600, true); 
+  MDR_UART_DBG_InitEx(UART_BAUD_9600, true, true); 
   MDR_UART_ChangeEventIRQ(UART_DBG->UARTx, MDR_UART_EFL_RX);
   
-  NVIC_EnableIRQ(UART_DBG->UARTx_IRQn);
+	//	Разрешение прерываний с приоритетом 0
+  MDR_UARTex_NVIC_EnableIRQ(UART_DBG, 0);
   
   printf("Debug change rate test!\n");
   printf("To change baudRate send:\n");

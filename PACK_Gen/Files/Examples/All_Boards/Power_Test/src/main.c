@@ -61,7 +61,7 @@ int main(void)
   MDRB_LCD_Init(freqCPU_Hz);
 #endif
 #if UART_ENABLED  
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
 #endif
   
   //  Инициализация детектора питания

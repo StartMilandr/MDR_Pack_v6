@@ -134,7 +134,7 @@ static void Test_Init(void)
 #endif  
 
 #ifdef OUT_TO_UART
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
 #endif
   
   //  PWM - Output pulses for Capture

@@ -82,9 +82,9 @@
     
 #endif
    
-void MDR_UART_DBG_Init(void)
+void MDR_UART_DBG_Init(bool isCPUbyPLL)
 {
-  MDR_UART_DBG_InitEx(UART_DEBUG_BAUD_DEF, false);
+  MDR_UART_DBG_InitEx(UART_DEBUG_BAUD_DEF, isCPUbyPLL, false);
 }
 
 //  Настройки блока
@@ -105,42 +105,32 @@ static MDR_UART_Cfg _cfgUART = {
   .pCfgModem  = NULL
 };
 
-static MDR_UART_CfgEx _cfgUartEx = {
-  //  Делитель частоты для Uart_Clock
-  .ClockBRG = MDR_Div128P_div1,
-  //  Настройки блока
-  .pCfgUART = &_cfgUART,  
-  //  Инициализация прерываний в NVIC
-  .priorityIRQ = 0,
-  .activateNVIC_IRQ = false
-};
 
-void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
+void MDR_UART_DBG_InitEx(uint32_t baudRate, bool isCPUbyPLL, bool RX_Enable)
 {
   uint32_t UART_ClockHz;
   MDR_UART_cfgBaud cfgBaud;
   MDR_UART_CfgPinsGPIO pinsGPIO;
 
 #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
+  if (isCPUbyPLL)
+    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_PLLCPUo);
+  else
+    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_CPU_C1);
   
-  #if UART_DEBUG_IND == 1  
-    MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
-  #elif UART_DEBUG_IND == 2
-    MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
-  #endif
-  
-#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)  
+#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
+  UNUSED(isCPUbyPLL);  
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);  
   
 #elif defined (MDR_CLK_LIKE_VE8)  
+  UNUSED(isCPUbyPLL);  
+  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
   
-  #if UART_DEBUG_IND == 1  
-    MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_MAX_CLK);  
-  #elif UART_DEBUG_IND == 2
-    MDR_SetClock_Uart2(MDR_RST_ASYNC_IN_MAX_CLK);  
-  #endif  
-  
-#endif  
+#else
+  UNUSED(isCPUbyPLL);
+  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);
+#endif
   
   //  Baud Rate
   UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
@@ -148,16 +138,13 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable)
   
   //  Uart Init
   if (!RX_Enable)
-    MDR_UARTex_InitByBaud(UART_DBG, &_cfgUartEx, &cfgBaud);
+    MDR_UARTex_InitByBaud(UART_DBG, &_cfgUART, &cfgBaud);
   else
   {
-    MDR_UART_Cfg cfgUART = _cfgUART;
-    MDR_UART_CfgEx cfgUartEx = _cfgUartEx;
-    
+    MDR_UART_Cfg cfgUART = _cfgUART;   
     cfgUART.cfgBase.Options.Value = 0;
-    cfgUartEx.pCfgUART = &cfgUART;
     
-    MDR_UARTex_InitByBaud(UART_DBG, &cfgUartEx, &cfgBaud);
+    MDR_UARTex_InitByBaud(UART_DBG, &cfgUART, &cfgBaud);
   }
 
   //  Init Pins

@@ -200,7 +200,7 @@ void MDR_UART_CfgRegs_Apply(MDR_UART_Type *UART, MDR_UART_CfgRegs *pCfgRegs);
 void MDR_UART_CfgRegs_Clear(MDR_UART_CfgRegs *pCfgRegs);
 
 
-//==================    MDR_UART_TypeEx - Инициализация UART с тактированием и  прерваниями в NVIC  ===============
+//==================    MDR_UART_TypeEx - Инициализация UART с тактированием  ===============
 // Для ВЕ4, ВК214, ВК234 требуется предварительный выбор частоты для UART_Clock!
 // В остальных МК UART_Clock берется только от HCLK, т.е. частоты ядра.
 
@@ -228,34 +228,76 @@ extern const MDR_UART_TypeEx   _MDR_UART2ex;
   #define MDR_UART4ex          (&_MDR_UART4ex)
 #endif
 
+//----------	Шаг 1 - инициализация UART_Clock	-------------
 
 //  Возвращает частоту UART_CLOCK, определяется по значению ключей в схеме тактирования. 
 //  Используется для подачи в функцию MDR_UART_Init, MDR_UART_AssignBaudRate и т.д.
 //  Обычно частота задается в ПО, поэтому рациональней задать ее напрямую.
 uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate);
 
-typedef struct {
-  //  Делитель частоты для Uart_Clock
-  MDR_Div128P ClockBRG;
-  //  Настройки блока
-  MDR_UART_Cfg *pCfgUART;
-  //  Инициализация прерываний в NVIC
-  uint32_t priorityIRQ;  
-  bool activateNVIC_IRQ;
-} MDR_UART_CfgEx;
+//	Включение частоты UARTx_Clock
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+	//  VK214
+	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_CLK_SEL_PER clockSource);
+	
+#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
+  //  VK234, VE4
+	//	Входная частота - PER1_C2, предварительно задать MDR_SetClock_UartTimSSP(clockSource) из MDR_PER_Clock.h;
+  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock);
+	
+#elif defined (MDR_CLK_LIKE_VE8)  
+	//	VE8, VK014, ESila
+	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_RST_ASYNC_IN_SEL clockSource);
+	
+#else  
+	//	Входная частота - PCLK=HCLK=CPU_CLK
+  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock);
+#endif
 
+__STATIC_INLINE
+void  MDR_UARTex_SetUartClock_defPLLCPU(const MDR_UART_TypeEx *UARTex)
+{
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+	MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1, MDR_PER_PLLCPUo);	
+  
+#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1);
+  
+#elif defined (MDR_CLK_LIKE_VE8)  
+	MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
+  
+#else  
+  MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1);
+#endif
+}
+
+//----------	Шаг 2 - инициализация UART	-------------
 //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
-void MDR_UARTex_Init(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz);
+void MDR_UARTex_Init(const MDR_UART_TypeEx *UARTex, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz);
 
 //  Аналог MDR_UART_Init, но с проверкой ошибки выставления BaudRate_Hz
 //  При превышении ошибки BaudErrMax функция вернет Fault, блок не будет инициализирован
-bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax);
+//  divForUartClock - Делитель для формирования UART_Clock из частоты тактирования блока.
+bool MDR_UARTex_InitEx(const MDR_UART_TypeEx *UARTex, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz, double baudErrMax);
 
 //  Делители cfgBaud задаются вручную, рассчитываются пользователем заранее
-void MDR_UARTex_InitByBaud(const MDR_UART_TypeEx *UARTex, const MDR_UART_CfgEx *cfgEx, const MDR_UART_cfgBaud *cfgBaud);
+//  divForUartClock - Делитель для формирования UART_Clock из частоты тактирования блока.
+void MDR_UARTex_InitByBaud(const MDR_UART_TypeEx *UARTex, const MDR_UART_Cfg *cfg, const MDR_UART_cfgBaud *cfgBaud);
 
 //  Выключение со всеми частотами
 void MDR_UARTex_DeInit(const MDR_UART_TypeEx *UARTex);
+
+//	Включение соответствующего прерывания в NVIC
+__STATIC_INLINE 
+void MDR_UARTex_NVIC_EnableIRQ(const MDR_UART_TypeEx *UARTex, uint32_t priorityIRQ)
+{
+  NVIC_SetPriority(UARTex->UARTx_IRQn, priorityIRQ);
+	NVIC_EnableIRQ(UARTex->UARTx_IRQn);
+}
+
+__STATIC_INLINE
+void MDR_UARTex_NVIC_DisableIRQ(const MDR_UART_TypeEx *UARTex) { NVIC_DisableIRQ(UARTex->UARTx_IRQn); }
 
 //===================   UART GPIO pins Init ==========================
 //  Функция инициализации выводов GPIO в функции UART

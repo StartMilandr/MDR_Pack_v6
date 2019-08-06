@@ -57,8 +57,7 @@ static MDR_UART_Cfg CfgUART =
   .cfgBase.Parity  = UART_Parity_Off,
   .cfgBase.useFIFO = MDR_Off,
   //  Some Options, инициализировать нулем если опции не нужны
-  .cfgBase.Options.Value = 0,
-  
+  .cfgBase.Options.Value = 0,  
   //  IRQ Enable
   .pCfgIRQ = NULL,
   //  DMA Enable
@@ -69,13 +68,6 @@ static MDR_UART_Cfg CfgUART =
   .pCfgModem = NULL,
 };
   
-static MDR_UART_CfgEx cfgUARTex =  {
-  .ClockBRG     = MDR_Div128P_div1,
-  .pCfgUART     = &CfgUART,
-  .priorityIRQ  = 0,
-  .activateNVIC_IRQ = false,
-} ;
-
 void DMA_IRQHandler(void);
 
 
@@ -105,7 +97,7 @@ int main(void)
 #endif 
 
   //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
-  MDR_UARTex_Init(UART_TX, &cfgUARTex, UART_BAUD_9600, freqCPU_Hz);  
+  MDR_UARTex_Init(UART_TX, &CfgUART, UART_BAUD_9600, freqCPU_Hz);  
   MDR_UART_InitPinsGPIO(&UART_TX_Pins, MDR_PIN_FAST);
 
   //  Данные для посылки по UART

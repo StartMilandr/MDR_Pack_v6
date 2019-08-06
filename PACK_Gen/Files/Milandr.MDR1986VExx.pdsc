@@ -294,7 +294,7 @@
 
       <subFamily DsubFamily="Cortex-M1">
         <!--Core description-->
-        <processor Dcore="Cortex-M1" DcoreVersion="r0p0" Dfpu="0" Dmpu="0" Dendian="Little-endian" Dclock="144000000"/>
+        <processor Dcore="Cortex-M1" DcoreVersion="r1p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="144000000"/>
         <memory     name="IROM1" access="rx"  start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     name="IRAM1" access="rw"  start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
         <memory     name="IRAM2" access="rwx" start="0x20100000"  size="0x4000"     init   ="0"   default="1"/>
@@ -415,7 +415,7 @@
 
       <subFamily DsubFamily="Cortex-M3">
         <!--Core description-->
-        <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="80000000"/>
+        <processor  Dcore="Cortex-M3" DcoreVersion="r2p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="80000000"/>
         <debug      svd="Keil/SVD/MDR1986VE9x.svd"/>
         <memory     name="IROM1" access="rx"  start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
@@ -633,7 +633,7 @@
       <subFamily DsubFamily="Cortex-M3 with DSP">
         <!--Core description-->
         <device Dname="MDR1901VC1">
-          <processor  Dcore="Cortex-M3" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="100000000"/>
+          <processor  Dcore="Cortex-M3" DcoreVersion="r2p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="100000000"/>
           <compile    header="SPL/Devices/MDR1901VC1/MDR_1901VC1.h" define="USE_MDR1901VC1"/>          
           <debug      svd="Keil/SVD/MDR1901VC1.svd"/>
           <memory     name="IROM1" access="rx"  start="0x08000000"  size="0x20000"    startup="1"   default="1"/>
@@ -698,7 +698,7 @@
       <subFamily DsubFamily="Cortex-M4F">
         <!--Core description-->
         <device Dname="MDR1986VE8">
-          <processor  Dcore="Cortex-M4" DcoreVersion="r0p0" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
           <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE8.h" define="USE_MDR1986VE8"/>
           <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
           <memory     name="IROM1" access="rx"  start="0x20006000"  size="0x2000"    startup="1"   default="1"/>
@@ -751,7 +751,7 @@
         </device>
         <!-- MDR_ESila -->
         <device Dname="MDR_ESila" >
-          <processor  Dcore="Cortex-M4" DcoreVersion="r0p0" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="160000000"/>
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="160000000"/>
           <compile    header="SPL/Devices/MDR_ESila/MDR_ESila.h" define="USE_ESila"/>
           <debug      svd="Keil/SVD/MDR_ESila.svd"/>
           <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x100000"   startup="1"   default="1"/>

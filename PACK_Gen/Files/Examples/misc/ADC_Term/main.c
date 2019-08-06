@@ -64,7 +64,7 @@ int main(void)
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);   
   MDRB_Buttons_Init(BUTTON_DEBOUNCE_MS, freqCPU_Hz);
   MDRB_LCD_Init(freqCPU_Hz);
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
     
   MDR_ADC_Init(&_cfgAdc);
   MDR_ADC_StartSignal(MDR_ADC1, ADC_Signal_TS_Temper, true, NULL);

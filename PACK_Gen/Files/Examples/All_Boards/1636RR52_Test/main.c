@@ -81,7 +81,7 @@ int main(void)
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
 
   //  Включение UART_DBG для printf
-  MDR_UART_DBG_Init();  
+  MDR_UART_DBG_Init(true);  
   
   //  Инициализация RR52
   MDR_RR52_InitDelays(freqCPU_Hz); 

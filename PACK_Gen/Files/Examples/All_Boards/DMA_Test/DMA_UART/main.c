@@ -95,13 +95,6 @@ MDR_UART_Cfg CfgUART =
   //  Modem Options
   .pCfgModem = NULL,
 };
-  
-MDR_UART_CfgEx cfgUARTex =  {
-  .ClockBRG     = MDR_Div128P_div1,
-  .pCfgUART     = &CfgUART,
-  .priorityIRQ  = 0,
-  .activateNVIC_IRQ = false,
-} ;
 
 
 //  ----------- Application  ----------
@@ -142,8 +135,8 @@ int main(void)
 #endif 
 
   //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
-  MDR_UARTex_Init(UART_TX, &cfgUARTex, UART_BAUD_921600, freqCPU_Hz);  
-  MDR_UARTex_Init(UART_RX, &cfgUARTex, UART_BAUD_921600, freqCPU_Hz);
+  MDR_UARTex_Init(UART_TX, &CfgUART, UART_BAUD_921600, freqCPU_Hz);  
+  MDR_UARTex_Init(UART_RX, &CfgUART, UART_BAUD_921600, freqCPU_Hz);
 
   MDR_UART_InitPinsGPIO(&UART_TX_Pins, MDR_PIN_FAST);
   MDR_UART_InitPinsGPIO(&UART_RX_Pins, MDR_PIN_FAST);

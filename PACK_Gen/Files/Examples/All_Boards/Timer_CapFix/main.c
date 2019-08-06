@@ -41,7 +41,7 @@ int main(void)
   //  Инициализация LCD дисплея и кнопок
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
-  MDR_UART_DBG_Init();
+  MDR_UART_DBG_Init(true);
   
   //  Для 1986VE4,VE214,VE234 частота TIM_Clock формируется мультиплексорами
   //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer

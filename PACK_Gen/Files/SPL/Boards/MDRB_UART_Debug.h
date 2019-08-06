@@ -6,8 +6,8 @@
 
 extern const MDR_UART_TypeEx * UART_DBG;
 
-void MDR_UART_DBG_Init(void);
-void MDR_UART_DBG_InitEx(uint32_t baudRate, bool RX_Enable);
+void MDR_UART_DBG_Init(bool isCPUbyPLL);
+void MDR_UART_DBG_InitEx(uint32_t baudRate, bool isCPUbyPLL, bool RX_Enable);
 void MDR_UART_DBG_Finit(void);
 void MDR_UART_DBG_ChangeRate(uint32_t baudRate);
 

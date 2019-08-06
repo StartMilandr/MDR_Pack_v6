@@ -41,6 +41,7 @@ int main(void)
 #endif
   
   //  Максимальная скорость тактирования
+  MDR_CLK_Enable_RST_BPK();
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true); 
 

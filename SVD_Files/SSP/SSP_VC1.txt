@@ -97,6 +97,7 @@
           <bitRange>[15:8]</bitRange>
           <access>read-write</access>
         </field>
+        <!-- #ES_Ex_CR0 -->
       </fields>
     </register>
     <!-- CR1 -->
@@ -180,10 +181,12 @@
               <value>1</value>
             </enumeratedValue>
           </enumeratedValues>
-        </field>        
+        </field>
+        <!-- #ES_Ex_CR1 -->
       </fields>
     </register>
     <!-- Data -->
+    <!-- #DATA_REG -->
     <register>
       <name>DR</name>
       <description>FIFO_Rx and FIFO_Tx access</description>
@@ -323,6 +326,7 @@
             <enumeratedValue><name>TX_HalfEmpty</name><description>Flag Active</description><value>1</value></enumeratedValue>
           </enumeratedValues>          
         </field>
+        <!-- #ES_Ex_IMSC -->
       </fields>
     </register>
     <!-- RIS -->
@@ -359,6 +363,7 @@
           <bitRange>[3:3]</bitRange>
           <access>read-only</access>
         </field>
+        <!-- #ES_Ex_RIS -->
       </fields>
     </register>
     <!-- MIS -->
@@ -395,6 +400,7 @@
           <bitRange>[3:3]</bitRange>
           <access>read-only</access>
         </field>
+        <!-- #ES_Ex_MIS -->
       </fields>
     </register>
     <!-- ICR -->
@@ -469,3 +475,5 @@
   <name>MDR_SSP4</name>
   <baseAddress>0x40008000</baseAddress>
 </peripheral>
+<!-- #SSP5 -->
+<!-- #SSP6 -->

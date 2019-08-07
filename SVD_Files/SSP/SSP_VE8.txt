@@ -1,3 +1,4 @@
+#SSPs
 <!-- SSP1 -->
 <peripheral>
   <name>MDR_SSP1</name>
@@ -5,6 +6,7 @@
   <description>Synchronous Serial Port</description>
   <groupName>SSP</groupName>
   <!-- #SSP1_ADDR -->
+  <baseAddress>0x40095000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>
@@ -185,6 +187,23 @@
     </register>
     <!-- Data -->
     <!-- #DATA_REG -->
+    <register>
+      <name>DR</name>
+      <description>FIFO_Rx and FIFO_Tx access</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>Data</name>
+          <description>Data value</description>
+          <bitRange>[15:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
     <!-- SR -->
     <register>
       <name>SR</name>

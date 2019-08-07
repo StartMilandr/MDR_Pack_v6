@@ -1,3 +1,4 @@
+#SSPs
 <!-- SSP1 -->
 <peripheral>
   <name>MDR_SSP1</name>
@@ -5,6 +6,7 @@
   <description>Synchronous Serial Port</description>
   <groupName>SSP</groupName>
   <!-- #SSP1_ADDR -->
+  <baseAddress>0x40095000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>
@@ -96,6 +98,26 @@
           <access>read-write</access>
         </field>
         <!-- #ES_Ex_CR0 -->
+        <field>
+          <name>ExtraLen_En</name>
+          <description>Enable extra length</description>
+          <bitRange>[16:16]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Len by DSS </description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Len by DSS + 16bit</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
+        <field>
+          <name>FastRX_En</name>
+          <description>Enable fast mode for slave</description>
+          <bitRange>[17:17]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Normal mode</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Slave in Fast mode</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
       </fields>
     </register>
     <!-- CR1 -->
@@ -181,10 +203,37 @@
           </enumeratedValues>
         </field>
         <!-- #ES_Ex_CR1 -->
+        <field>
+          <name>ClearTX</name>
+          <description>Clear FIFO_TX</description>
+          <bitRange>[4:4]</bitRange>
+          <access>read-write</access>
+          <enumeratedValues>
+            <enumeratedValue><name>Inactive</name><description>no action</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ClearFIFO</name><description>Clear</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
       </fields>
     </register>
     <!-- Data -->
     <!-- #DATA_REG -->
+    <register>
+      <name>DR</name>
+      <description>FIFO_Rx and FIFO_Tx access</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0xFFFFFFFF</resetMask>
+      <fields>
+        <field>
+          <name>Data</name>
+          <description>Data value</description>
+          <bitRange>[31:0]</bitRange>
+          <access>read-write</access>
+        </field>
+      </fields>
+    </register>
     <!-- SR -->
     <register>
       <name>SR</name>
@@ -308,6 +357,25 @@
           </enumeratedValues>          
         </field>
         <!-- #ES_Ex_IMSC -->
+        <field>
+          <name>RNEIM</name>
+          <description>IRQ on FIFO_RX not empty</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>IRQ Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>IRQ Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
+        <field derivedFrom="RNEIM">
+          <name>TFEIM</name>
+          <description>IRQ on FIFO_TX empty</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RNEIM">
+          <name>TBSYIM</name>
+          <description>IRQ on TX completed</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
       </fields>
     </register>
     <!-- RIS -->
@@ -345,6 +413,25 @@
           <access>read-only</access>
         </field>
         <!-- #ES_Ex_RIS -->
+        <field>
+          <name>RNERIS</name>
+          <description>FIFO_RX not empty</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>No Event</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Event active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
+        <field derivedFrom="RNERIS">
+          <name>TFERIS</name>
+          <description>FIFO_TX empty</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RNERIS">
+          <name>TBSYRIS</name>
+          <description>TX completed</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
       </fields>
     </register>
     <!-- MIS -->
@@ -382,6 +469,25 @@
           <access>read-only</access>
         </field>
         <!-- #ES_Ex_MIS -->
+        <field>
+          <name>RNEMIS</name>
+          <description>FIFO_RX not empty</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>No Event</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Event active</description><value>1</value></enumeratedValue>
+          </enumeratedValues>  
+        </field>
+        <field derivedFrom="RNEMIS">
+          <name>TFEMIS</name>
+          <description>FIFO_TX empty</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RNEMIS">
+          <name>TBSYMIS</name>
+          <description>TX completed</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
       </fields>
     </register>
     <!-- ICR -->
@@ -442,7 +548,27 @@
   <!-- peripheral end-->
 </peripheral>
 <!-- #SSP2 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP2</name>
+  <baseAddress>0x40096000</baseAddress>
+</peripheral>
 <!-- #SSP3 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP3</name>
+  <baseAddress>0x40097000</baseAddress>
+</peripheral>
 <!-- #SSP4 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP4</name>
+  <baseAddress>0x40098000</baseAddress>
+</peripheral>
 <!-- #SSP5 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP5</name>
+  <baseAddress>0x400B1000</baseAddress>
+</peripheral>
 <!-- #SSP6 -->
+<peripheral derivedFrom="MDR_SSP1">
+  <name>MDR_SSP6</name>
+  <baseAddress>0x400B2000</baseAddress>
+</peripheral>

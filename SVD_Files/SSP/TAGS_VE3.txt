@@ -10,5 +10,14 @@ f1=SSP_text.xml
 #SSP3_R=#SSP3_VE13
 #SSP4=f1
 #SSP4_R=#SSP4_VE3
+#DATA_REG=f1
+#DATA_REG_R=#DATA_REG_16
 
 [TAGS_New]
+#SSP5=
+#SSP6=
+#ES_Ex_CR0=
+#ES_Ex_CR1=
+#ES_Ex_IMSC=
+#ES_Ex_RIS=
+#ES_Ex_MIS=

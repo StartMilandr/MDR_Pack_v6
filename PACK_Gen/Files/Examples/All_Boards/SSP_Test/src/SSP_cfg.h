@@ -4,7 +4,7 @@
 #include <MDR_SSP.h>
 #include <MDRB_BoardSelect.h>
 
-#if defined(USE_BOARD_VE93) || defined(USE_BOARD_VE4) || defined (USE_BOARD_VK214) || defined (USE_BOARD_VK234)
+#if defined(USE_BOARD_VE93) || defined(USE_BOARD_VE4) || defined (USE_BOARD_VK214) || defined (USE_BOARD_VK234) || defined (USE_BOARD_VE8)
   // VE93 - На отл. плате НЕТ выводов GPIO для SSP2. 
   // VE4, VK214, VK234 - Только один SSP в микроконтроллере
   // Некуда подключать FSS и CLK, поэтому доступны только тесты LBM и TX-RX.  

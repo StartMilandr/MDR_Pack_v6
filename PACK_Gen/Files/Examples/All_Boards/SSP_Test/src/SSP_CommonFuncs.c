@@ -1,5 +1,9 @@
 #include "SSP_CommonFuncs.h"
 
+#ifdef MDRB_HAS_NO_LCD
+  #include <stdio.h>
+#endif
+
 uint32_t activeTest = 0;
 
 #ifndef BDR_NO_SLAVE_SSP
@@ -72,65 +76,91 @@ uint32_t MasterTXRX_TestTransfer(const MDR_SSP_TypeEx *exSSPx)
 }
 
 
-static char message[64];
+#ifndef MDRB_HAS_NO_LCD
 
-void LCD_ShowInit(const MDR_SSP_TypeEx *exSSPx, char *testName)
-{
-  MDRB_LCD_CapturePins();
-  
-#ifndef LCD_IS_7SEG_DISPLAY  
-  MDRB_LCD_Clear();
-  
-  sprintf(message , "%s B:%d", testName, cfgSSPex.cfgSSP->DataBits + 1);
-  MDRB_LCD_Print (message, LCD_LINE_NAME);
-  
-  sprintf(message , "%s%d M:%d D:%d", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
-  MDRB_LCD_Print (message, LCD_LINE_INIT);  
-#else
-  UNUSED(exSSPx);
-  UNUSED(testName);
-  
-  sprintf(message , "C%d", activeTest);
-  MDRB_LCD_Print (message);
-#endif
-  
-  MDRB_LCD_ReleasePins();
-}
+  static char message[64];
 
-void LCD_ShowStarted(void)
-{
-  MDRB_LCD_CapturePins();
-  
-#ifndef LCD_IS_7SEG_DISPLAY  
-  
-  sprintf(message , "Started...");
-  MDRB_LCD_Print (message, LCD_LINE_RESULT);
-#else
-  sprintf(message , "C ");
-  MDRB_LCD_Print (message);
-#endif
-  
-  MDRB_LCD_ReleasePins();
-}
-
-void LCD_ShowResult(uint32_t errCount)
-{  
-  MDRB_LCD_CapturePins();
-  
-#ifndef LCD_IS_7SEG_DISPLAY  
-  if (errCount == 0) {   
-    sprintf(message , "Success Transfer");
-    MDRB_LCD_Print (message, LCD_LINE_RESULT);
-  }
-  else {   
-    sprintf(message , "cntErr=%d", errCount);
-    MDRB_LCD_Print (message, LCD_LINE_RESULT);
+  void LCD_ShowInit(const MDR_SSP_TypeEx *exSSPx, char *testName)
+  {
+    MDRB_LCD_CapturePins();
+    
+  #ifndef LCD_IS_7SEG_DISPLAY  
+    MDRB_LCD_Clear();
+    
+    sprintf(message , "%s B:%d", testName, cfgSSPex.cfgSSP->DataBits + 1);
+    MDRB_LCD_Print (message, LCD_LINE_NAME);
+    
+    sprintf(message , "%s%d M:%d D:%d", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
+    MDRB_LCD_Print (message, LCD_LINE_INIT);  
+  #else
+    UNUSED(exSSPx);
+    UNUSED(testName);
+    
+    sprintf(message , "C%d", activeTest);
+    MDRB_LCD_Print (message);
+  #endif
+    
+    MDRB_LCD_ReleasePins();
+    
   }
 
+  void LCD_ShowStarted(void)
+  {
+    MDRB_LCD_CapturePins();
+    
+  #ifndef LCD_IS_7SEG_DISPLAY  
+    
+    sprintf(message , "Started...");
+    MDRB_LCD_Print (message, LCD_LINE_RESULT);
+  #else
+    sprintf(message , "C ");
+    MDRB_LCD_Print (message);
+  #endif
+    
+    MDRB_LCD_ReleasePins();
+  }
+
+  void LCD_ShowResult(uint32_t errCount)
+  {  
+    MDRB_LCD_CapturePins();
+    
+  #ifndef LCD_IS_7SEG_DISPLAY  
+    if (errCount == 0) {   
+      sprintf(message , "Success Transfer");
+      MDRB_LCD_Print (message, LCD_LINE_RESULT);
+    }
+    else {   
+      sprintf(message , "cntErr=%d", errCount);
+      MDRB_LCD_Print (message, LCD_LINE_RESULT);
+    }
+
+  #else
+    sprintf(message , "C%d E%d ", activeTest, errCount);
+    MDRB_LCD_Print (message);  
+  #endif
+    
+    MDRB_LCD_ReleasePins();
+  }
+
 #else
-  sprintf(message , "C%d E%d ", activeTest, errCount);
-  MDRB_LCD_Print (message);  
-#endif
-  
-  MDRB_LCD_ReleasePins();
-}
+
+  void LCD_ShowInit(const MDR_SSP_TypeEx *exSSPx, char *testName)
+  {
+    printf("%s B:%d\n", testName, cfgSSPex.cfgSSP->DataBits + 1);    
+    printf("%s%d M:%d D:%d\n", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
+  }
+
+  void LCD_ShowStarted(void)
+  {
+    printf("Started...\n");
+  }
+
+  void LCD_ShowResult(uint32_t errCount)
+  {
+    if (errCount == 0)
+      printf("Success Transfer\n");
+    else
+      printf("cntErr=%d\n", errCount);    
+  }
+
+#endif 

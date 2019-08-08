@@ -61,8 +61,9 @@ char *Cfg_getActiveFrameName(void)
     case SSP_Frame_SPI: return "SPI";
     case SSP_Frame_SSI: return "SSI";
     case SSP_Frame_Microwire: return "MCR";
-    //default: return "Err";
   }  
+  
+  return "Err";
 }
 
 
@@ -97,6 +98,14 @@ uint32_t Cfg_GetIndexSPI(const MDR_SSP_TypeEx *exSSPx)
   else if (exSSPx == MDR_SSP4ex)
     return 4;
 #endif
+#ifdef MDR_SSP5  
+  else if (exSSPx == MDR_SSP5ex)
+    return 5;
+#endif
+#ifdef MDR_SSP6  
+  else if (exSSPx == MDR_SSP6ex)
+    return 6;
+#endif
   
   return 0;
 }
@@ -104,21 +113,25 @@ uint32_t Cfg_GetIndexSPI(const MDR_SSP_TypeEx *exSSPx)
 //======================  Список доступных блоков SSP ======================
 
 #if defined(USE_BOARD_VE1)
-  
   const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex, MDR_SSP2ex, MDR_SSP3ex};
   
 #elif defined(USE_BOARD_VE3) || defined(USE_BOARD_VC1)
-
   const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex, MDR_SSP2ex, MDR_SSP3ex, MDR_SSP4ex};
   
 #elif defined(USE_BOARD_VE91) || defined(USE_BOARD_VE94) || defined(USE_BOARD_VE92) || defined(USE_BOARD_VE93)  
-
   const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex, MDR_SSP2ex};
   
 #elif defined(USE_BOARD_VE4) || defined(USE_BOARD_VK214) || defined(USE_BOARD_VK234)
-  
   const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex};
+
+#elif defined(USE_BOARD_VE8)  
+  const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex};
+
+#elif defined(USE_BOARD_ESila)  
+  const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex, MDR_SSP2ex};  
   
+#elif defined(USE_BOARD_VK014)  
+  const MDR_SSP_TypeEx  *SSP_List[] = {MDR_SSP1ex, MDR_SSP2ex, MDR_SSP3ex, MDR_SSP4ex, MDR_SSP5ex, MDR_SSP6ex};  
 #endif  
 
 
@@ -329,6 +342,84 @@ uint8_t NextIndexSSP(void)
                                        .pPinTX  = &_pinTX_SSP1,
                                        .pPinRX  = &_pinRX_SSP1,
                                        .pPinFSS = &_pinFSS_SSP1};
+                                       
+#elif defined (USE_MDR1986VE8)
+  //  см. MDRB_1986VE8.h
+  //  SSP1
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA8_Port, MDRB_SPI1_CLK_PA8_Ind, MDRB_SPI1_CLK_PA8_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA9_Port, MDRB_SPI1_FSS_PA9_Ind, MDRB_SPI1_FSS_PA9_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA10_Port,  MDRB_SPI1_RX_PA10_Ind,  MDRB_SPI1_RX_PA10_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA7_Port,  MDRB_SPI1_TX_PA7_Ind,  MDRB_SPI1_TX_PA7_Func};
+
+  const MDR_SSP_TypeEx * SSP_MASTER = MDR_SSP1ex;
+  
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Master = 
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};                                       
+
+#elif defined(USE_BOARD_ESila)
+  //  см. MDRB_ESila.h
+
+  //  SSP2 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA24_Port, MDRB_SPI1_CLK_PA24_Ind, MDRB_SPI1_CLK_PA24_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA25_Port, MDRB_SPI1_FSS_PA25_Ind, MDRB_SPI1_FSS_PA25_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA26_Port,  MDRB_SPI1_RX_PA26_Ind,  MDRB_SPI1_RX_PA26_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA27_Port,  MDRB_SPI1_TX_PA27_Ind,   MDRB_SPI1_TX_PA27_Func};
+  
+  //  SSP4 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP2 = {MDRB_SPI2_CLK_PB20_Port, MDRB_SPI2_CLK_PB20_Ind, MDRB_SPI2_CLK_PB20_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP2 = {MDRB_SPI2_FSS_PB21_Port, MDRB_SPI2_FSS_PB21_Ind, MDRB_SPI2_FSS_PB21_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP2  = {MDRB_SPI2_RX_PB22_Port,  MDRB_SPI2_RX_PB22_Ind,  MDRB_SPI2_RX_PB22_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP2  = {MDRB_SPI2_TX_PB23_Port,  MDRB_SPI2_TX_PB23_Ind,  MDRB_SPI2_TX_PB23_Func};
+  
+  const MDR_SSP_TypeEx * SSP_MASTER = MDR_SSP2ex;
+  const MDR_SSP_TypeEx * SSP_SLAVE  = MDR_SSP1ex;  
+  
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Master =
+                                     { .pPinCLK = &_pinCLK_SSP2,
+                                       .pPinTX  = &_pinTX_SSP2,
+                                       .pPinRX  = &_pinRX_SSP2,
+                                       .pPinFSS = &_pinFSS_SSP2};  
+                                     
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Slave =
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};
+
+#elif defined(USE_BOARD_VK014)
+  //  см. MDRB_ESila.h
+
+  //  SSP2 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PD8_Port, MDRB_SPI1_CLK_PD8_Ind,  MDRB_SPI1_CLK_PD8_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PD9_Port, MDRB_SPI1_FSS_PD9_Ind,  MDRB_SPI1_FSS_PD9_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PD10_Port, MDRB_SPI1_RX_PD10_Ind,  MDRB_SPI1_RX_PD10_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PD7_Port,  MDRB_SPI1_TX_PD7_Ind,   MDRB_SPI1_TX_PD7_Func};
+    
+  //  SSP4 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP2 = {MDRB_SPI2_CLK_PD12_Port, MDRB_SPI2_CLK_PD12_Ind, MDRB_SPI2_CLK_PD12_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP2 = {MDRB_SPI2_FSS_PD13_Port, MDRB_SPI2_FSS_PD13_Ind, MDRB_SPI2_FSS_PD13_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP2  = {MDRB_SPI2_RX_PD14_Port,  MDRB_SPI2_RX_PD14_Ind,  MDRB_SPI2_RX_PD14_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP2  = {MDRB_SPI2_TX_PD11_Port,  MDRB_SPI2_TX_PD11_Ind,  MDRB_SPI2_TX_PD11_Func};
+
+  
+  const MDR_SSP_TypeEx * SSP_MASTER = MDR_SSP2ex;
+  const MDR_SSP_TypeEx * SSP_SLAVE  = MDR_SSP1ex;  
+  
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Master =
+                                     { .pPinCLK = &_pinCLK_SSP2,
+                                       .pPinTX  = &_pinTX_SSP2,
+                                       .pPinRX  = &_pinRX_SSP2,
+                                       .pPinFSS = &_pinFSS_SSP2};  
+                                     
+  static const MDR_SSP_CfgPinsGPIO CFG_PinsSSP_Slave =
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};
+
 #endif
 
                                        
@@ -360,7 +451,11 @@ static void SSP_PrepareCaptureMasks(const MDR_SSP_CfgPinsGPIO *pCFG_PinsSSP2, MD
     MDR_Port_MaskClear(&pinMasks->applyGPIO_Pins[i]);  
   
   //  Базовые настройки пинов
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT
   MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinsPermRegs);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinsPermRegs);
+#endif
   
   //  Формирование конфигурационных масок AND и OR 
   //  CLK
@@ -448,7 +543,11 @@ void Cfg_SSP_Master_ReleasePins(void)
   
   for (i = 0; i < applyPinsMaster.usedPortCount; ++i)
   {
+#ifdef MDR_GPIO_CFG_SET_CLEAR    
+    MDR_GPIO_WriteRegs(applyPinsMaster.SSP_GPIOPort[i], &applyPinsMaster.tempGPIOPins[i], &applyPinsMaster.applyGPIO_Pins[i].MaskCLR);
+#else
     MDR_GPIO_WriteRegs(applyPinsMaster.SSP_GPIOPort[i], &applyPinsMaster.tempGPIOPins[i]);
+#endif
   } 
 }
 
@@ -469,7 +568,11 @@ void Cfg_SSP_Slave_ReleasePins(void)
   
   for (i = 0; i < applyPinsSlave.usedPortCount; ++i)
   {
+#ifdef MDR_GPIO_CFG_SET_CLEAR    
+    MDR_GPIO_WriteRegs(applyPinsSlave.SSP_GPIOPort[i], &applyPinsSlave.tempGPIOPins[i], &applyPinsSlave.applyGPIO_Pins[i].MaskCLR);
+#else
     MDR_GPIO_WriteRegs(applyPinsSlave.SSP_GPIOPort[i], &applyPinsSlave.tempGPIOPins[i]);
+#endif    
   } 
 }
 

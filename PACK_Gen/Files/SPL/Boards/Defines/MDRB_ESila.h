@@ -9,12 +9,18 @@
 
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_120MHz, MDRB_CPU_FREQ_SUPP_120MHz);
 
+//  MDR_JTAG_A_PORT   MDR_PORTA [pin0..pin4]
+//  MDR_JTAG_B_PORT   MDR_PORTB [pin5..pin9]
 
 //  Переопределение пинов для удобства поиска конфликтов
     //  Port_A    
     #define PIN_PA16     MDR_Pin_16  //          LCD_A0
     #define PIN_PA22     MDR_Pin_22  //          LCD_E2    
-    #define PIN_PA23     MDR_Pin_23  //          LCD_E1        
+    #define PIN_PA23     MDR_Pin_23  //          LCD_E1           
+    #define PIN_PA24     MDR_Pin_24  //                 SSP1_CLK
+    #define PIN_PA25     MDR_Pin_25  //                 SSP1_FSS
+    #define PIN_PA26     MDR_Pin_26  //                 SSP1_RX
+    #define PIN_PA27     MDR_Pin_27  //                 SSP1_TX
 
     //  Port_B
     #define PIN_PB0      MDR_Pin_0   //             UART1_RX
@@ -23,6 +29,10 @@
     #define PIN_PB10     MDR_Pin_10  //          LCD_RES
     #define PIN_PB14     MDR_Pin_14  //          LCD_RW
     #define PIN_PB19     MDR_Pin_19  //          LCD_??
+    #define PIN_PA20     MDR_Pin_20  //                 SSP2_CLK
+    #define PIN_PA21     MDR_Pin_21  //                 SSP2_FSS
+    #define PIN_PA22     MDR_Pin_22  //                 SSP2_RX
+    #define PIN_PA23     MDR_Pin_23  //                 SSP2_TX
 
     //  Port_C
     #define PIN_PC0      MDR_Pin_0   //          LCD_D0
@@ -148,6 +158,48 @@
     
     #define MDRB_UART1_TX_PB1_Func	    MDR_PIN_FUNC_5
     #define MDRB_UART1_RX_PB0_Func	    MDR_PIN_FUNC_5 
+
+//  ---------------  SPI1 Pin Definition ----------------
+    #define MDRB_SPI1_FSS_PA25_Ind	     25
+    #define MDRB_SPI1_CLK_PA24_Ind	     24
+    #define MDRB_SPI1_RX_PA26_Ind 	     26
+    #define MDRB_SPI1_TX_PA27_Ind		     27
+
+    #define MDRB_SPI1_FSS_PA25_Msk	     PIN_PA25
+    #define MDRB_SPI1_CLK_PA24_Msk		   PIN_PA24
+    #define MDRB_SPI1_RX_PA26_Msk 		   PIN_PA26
+    #define MDRB_SPI1_TX_PA27_Msk		     PIN_PA27
+
+    #define MDRB_SPI1_FSS_PA25_Port	     MDR_GPIO_A
+    #define MDRB_SPI1_CLK_PA24_Port		   MDR_GPIO_A
+    #define MDRB_SPI1_RX_PA26_Port 		   MDR_GPIO_A
+    #define MDRB_SPI1_TX_PA27_Port		   MDR_GPIO_A
+    
+    #define MDRB_SPI1_FSS_PA25_Func	     MDR_PIN_FUNC_6
+    #define MDRB_SPI1_CLK_PA24_Func		   MDR_PIN_FUNC_6
+    #define MDRB_SPI1_RX_PA26_Func 		   MDR_PIN_FUNC_6
+    #define MDRB_SPI1_TX_PA27_Func		   MDR_PIN_FUNC_6
+
+//  ---------------  SPI2 Pin Definition ----------------
+    #define MDRB_SPI2_FSS_PB21_Ind	     21
+    #define MDRB_SPI2_CLK_PB20_Ind	     20
+    #define MDRB_SPI2_RX_PB22_Ind 	     22
+    #define MDRB_SPI2_TX_PB23_Ind		     23
+
+    #define MDRB_SPI2_FSS_PB21_Msk	     PIN_PB21
+    #define MDRB_SPI2_CLK_PB20_Msk		   PIN_PB20
+    #define MDRB_SPI2_RX_PB22_Msk 		   PIN_PB22
+    #define MDRB_SPI2_TX_PB23_Msk		     PIN_PB23
+
+    #define MDRB_SPI2_FSS_PB21_Port	     MDR_GPIO_B
+    #define MDRB_SPI2_CLK_PB20_Port		   MDR_GPIO_B
+    #define MDRB_SPI2_RX_PB22_Port 		   MDR_GPIO_B
+    #define MDRB_SPI2_TX_PB23_Port		   MDR_GPIO_B
+    
+    #define MDRB_SPI2_FSS_PB21_Func	     MDR_PIN_FUNC_6
+    #define MDRB_SPI2_CLK_PB20_Func		   MDR_PIN_FUNC_6
+    #define MDRB_SPI2_RX_PB22_Func 		   MDR_PIN_FUNC_6
+    #define MDRB_SPI2_TX_PB23_Func		   MDR_PIN_FUNC_6
 
 
 #else

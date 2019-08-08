@@ -567,48 +567,58 @@ typedef struct
 //  Jtag_A: PA[0..4] nTRST, TCK, TMS, TDI, TDO
 #define   MDR_JTAG_A_PORT           MDR_PORTA
 #define   MDR_JTAG_A_PINS           0x0000001FUL
-#define   MDR_JTAG_A_PINS_FUNC      0x000FFFFFUL
-#define   MDR_JTAG_A_PINS_PD        0x001F001FUL
+#define   MDR_JTAG_A_PINS_FUNC0     0x000FFFFFUL
+#define   MDR_JTAG_A_PINS_FUNC1     0x00000000UL
+#define   MDR_JTAG_A_PINS_FUNC2     0x00000000UL
+#define   MDR_JTAG_A_PINS_FUNC3     0x00000000UL
+#define   MDR_JTAG_A_PINS_PWR0      0x000003FFUL
+#define   MDR_JTAG_A_PINS_PWR1      0x00000000UL
 
-//  Jtag_A: PA[1,2] TCK, TMS
+//  SWD_A: PA[1,2] TCK, TMS
 #define   MDR_SWD_A_PORT            MDR_PORTA
 #define   MDR_SWD_A_PINS            0x00000006UL
-#define   MDR_SWD_A_PINS_FUNC       0x00000FF0UL
-#define   MDR_SWD_A_PINS_PD         0x00000006UL
+#define   MDR_SWD_A_PINS_FUNC0      0x00000FF0UL
+#define   MDR_SWD_A_PINS_FUNC1      0x00000000UL
+#define   MDR_SWD_A_PINS_FUNC2      0x00000000UL
+#define   MDR_SWD_A_PINS_FUNC3      0x00000000UL
+#define   MDR_SWD_A_PINS_PWR0       0x0000003CUL
+#define   MDR_SWD_A_PINS_PWR1       0x00000000UL
 
-//  Jtag_B: PB[4..8] nTRST, TCK, TMS, TDI, TDO
+//  Jtag_B: PB[5..9] nTRST, TCK, TMS, TDI, TDO
 #define   MDR_JTAG_B_PORT           MDR_PORTD
-#define   MDR_JTAG_B_PINS           0x00001F00UL
-#define   MDR_JTAG_B_PINS_FUNC      0x0FFFFF00UL
-#define   MDR_JTAG_B_PINS_PD        0x00001F00UL
+#define   MDR_JTAG_B_PINS           0x000003E0UL
+#define   MDR_JTAG_B_PINS_FUNC0     0xFFF00000UL
+#define   MDR_JTAG_B_PINS_FUNC1     0x000000FFUL
+#define   MDR_JTAG_B_PINS_FUNC2     0x00000000UL
+#define   MDR_JTAG_B_PINS_FUNC3     0x00000000UL
+#define   MDR_JTAG_B_PINS_PWR0      0x000FFC00UL
+#define   MDR_JTAG_B_PINS_PWR1      0x00000000UL
 
+//  SWD_B: PB[6,7] TCK, TMS
 #define   MDR_SWD_B_PORT            MDR_PORTD
-#define   MDR_SWD_B_PINS            0x00000060UL
-#define   MDR_SWD_B_PINS_FUNC       0x0FF00000UL
-#define   MDR_SWD_B_PINS_PD         0x00000060UL
+#define   MDR_SWD_B_PINS            0x000000C0UL
+#define   MDR_SWD_B_PINS_FUNC0      0xFF000000UL
+#define   MDR_SWD_B_PINS_FUNC1      0x00000000UL
+#define   MDR_SWD_B_PINS_FUNC2      0x00000000UL
+#define   MDR_SWD_B_PINS_FUNC3      0x00000000UL
+#define   MDR_SWD_B_PINS_PWR0       0x0000F000UL
+#define   MDR_SWD_B_PINS_PWR1       0x00000000UL
 
 
-// //----------------    SSP Definitions  --------------------
-// //  SSP Block Clock enable
-// #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_SSP2_CLK_EN_ADDR          (&MDR_CLOCK->PER_CLOCK)
+ //----------------    SSP Definitions  --------------------
+ //  SSP Block Clock enable
+ #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_SSP2_CLK_EN_ADDR          (&MDR_CLOCK->PER0_CLK)
 
-// #define   MDR_SSP1_CLK_EN_MSK             MDR_RST_PER__SSP1_CLK_EN_Msk
-// #define   MDR_SSP2_CLK_EN_MSK             MDR_RST_PER__SSP2_CLK_EN_Msk
+ #define   MDR_SSP1_CLK_EN_MSK             MDR_RST_PER0_SSP1_CLK_EN_Msk
+ #define   MDR_SSP2_CLK_EN_MSK             MDR_RST_PER0_SSP2_CLK_EN_Msk
 
-// //  SSP_Clock freq configs
-// #define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP_CLOCK)
-// #define   MDR_SSP2_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP_CLOCK)
-
-// #define   MDR_SSP1_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP1_CLK_EN_Msk
-// #define   MDR_SSP2_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP2_CLK_EN_Msk
-
-// #define   MDR_SSP1_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP1_BRG_Pos
-// #define   MDR_SSP2_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP2_BRG_Pos
+ //  SSP_Clock freq configs
+ #define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP1_CLK)
+ #define   MDR_SSP2_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP2_CLK)
 
 
  //----------------    UART Definitions  --------------------
- //  UART Block Clock enable
  //  UART Block Clock enable
  #define   MDR_UART1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
  #define   MDR_UART2_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)

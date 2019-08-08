@@ -7,9 +7,10 @@ const MDR_SSP_TypeEx _MDR_SSP1ex = {
   .CfgClock.ClockEna_Mask = MDR_SSP1_CLK_EN_MSK,
   //  SSPClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_SSP1_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8
   .CfgClock.ClockGate_ClockOn_Msk = MDR_SSP1_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_SSP1_CLOCK_GATE_BRG_POS,
-  
+#endif
   .SSPx_IRQn       = SSP1_IRQn
 };
 
@@ -21,9 +22,10 @@ const MDR_SSP_TypeEx _MDR_SSP1ex = {
     .CfgClock.ClockEna_Mask = MDR_SSP2_CLK_EN_MSK,
     //  SSPClock Gate On and BRG
     .CfgClock.ClockGate_Addr        = MDR_SSP2_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8
     .CfgClock.ClockGate_ClockOn_Msk = MDR_SSP2_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_SSP2_CLOCK_GATE_BRG_POS,
-        
+#endif
     .SSPx_IRQn       = SSP2_IRQn
   };
 #endif
@@ -36,9 +38,10 @@ const MDR_SSP_TypeEx _MDR_SSP1ex = {
     .CfgClock.ClockEna_Mask = MDR_SSP3_CLK_EN_MSK,
     //  SSPClock Gate On and BRG
     .CfgClock.ClockGate_Addr        = MDR_SSP3_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8
     .CfgClock.ClockGate_ClockOn_Msk = MDR_SSP3_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_SSP3_CLOCK_GATE_BRG_POS,
-    
+#endif
     .SSPx_IRQn       = SSP3_IRQn
   };
 #endif
@@ -52,12 +55,39 @@ const MDR_SSP_TypeEx _MDR_SSP1ex = {
     .CfgClock.ClockEna_Mask = MDR_SSP4_CLK_EN_MSK,
     //  SSPClock Gate On and BRG
     .CfgClock.ClockGate_Addr        = MDR_SSP4_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8
     .CfgClock.ClockGate_ClockOn_Msk = MDR_SSP4_CLOCK_GATE_ENA_MSK,
     .CfgClock.ClockGate_BRG_Pos     = MDR_SSP4_CLOCK_GATE_BRG_POS,
-    
+#endif
     .SSPx_IRQn       = SSP4_IRQn
   };  
 #endif
+
+#ifdef MDR_SSP5
+  const MDR_SSP_TypeEx _MDR_SSP5ex = {
+    .SSPx            = MDR_SSP5,
+    //  SSPClock Enable
+    .CfgClock.ClockEna_Addr = MDR_SSP5_CLK_EN_ADDR,
+    .CfgClock.ClockEna_Mask = MDR_SSP5_CLK_EN_MSK,
+    //  SSPClock Gate On and BRG
+    .CfgClock.ClockGate_Addr        = MDR_SSP5_CLOCK_GATE_ADDR,
+    .SSPx_IRQn       = SSP5_IRQn
+  };  
+#endif
+
+#ifdef MDR_SSP6
+  const MDR_SSP_TypeEx _MDR_SSP6ex = {
+    .SSPx            = MDR_SSP6,
+    //  SSPClock Enable
+    .CfgClock.ClockEna_Addr = MDR_SSP6_CLK_EN_ADDR,
+    .CfgClock.ClockEna_Mask = MDR_SSP6_CLK_EN_MSK,
+    //  SSPClock Gate On and BRG
+    .CfgClock.ClockGate_Addr        = MDR_SSP6_CLOCK_GATE_ADDR,
+    .SSPx_IRQn       = SSP6_IRQn
+  };  
+#endif
+
+
 
 void MDR_SSP_ClearFIFO_RX(MDR_SSP_Type *SSPx)
 {
@@ -322,7 +352,12 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
 {
   MDR_PinDig_GroupPinCfg pinPermCfg;
   
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT
   MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinPermCfg);
+#endif  
+  
   //  CLK
   MDR_GPIO_Enable(pinsCfg->pPinCLK->portGPIO);
   MDR_GPIO_InitDigPin(pinsCfg->pPinCLK->portGPIO, pinsCfg->pPinCLK->pinIndex, MDR_Pin_In, pinsCfg->pPinCLK->pinFunc, &pinPermCfg);

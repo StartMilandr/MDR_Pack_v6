@@ -106,6 +106,7 @@ void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *portCfg)
 
 void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgSet, MDR_GPIO_ClearCfg *cfgClr)
 {
+#ifndef PORT_JTAG
   GPIO_Port->ANALOG_Clr = cfgClr->clrPins;
   GPIO_Port->OE_Clr     = cfgClr->clrPins;  
   GPIO_Port->PD_Clr     = cfgClr->clrPins;  
@@ -116,13 +117,13 @@ void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgSet, MDR_G
   GPIO_Port->FUNC1_Clr  = cfgClr->clrFUNC_8_15;
   GPIO_Port->FUNC2_Clr  = cfgClr->clrFUNC_16_23;
   GPIO_Port->FUNC3_Clr  = cfgClr->clrFUNC_24_31;
+  GPIO_Port->PULLUP_Clr = cfgClr->clrPins;
+  GPIO_Port->PULLDOWN_Clr = cfgClr->clrPins;  
   
   GPIO_Port->FUNC0_Set  = cfgSet->FUNC_0_7;
   GPIO_Port->FUNC1_Set  = cfgSet->FUNC_8_15;
   GPIO_Port->FUNC2_Set  = cfgSet->FUNC_16_23;
   GPIO_Port->FUNC3_Set  = cfgSet->FUNC_24_31;
-  GPIO_Port->PULLUP_Clr = cfgClr->clrPins;
-  GPIO_Port->PULLDOWN_Clr = cfgClr->clrPins;  
   GPIO_Port->PULLUP_Set = cfgSet->PULL_Up;
   GPIO_Port->PULLDOWN_Set = cfgSet->PULL_Down;
   GPIO_Port->PD_Set     = cfgSet->PD;  
@@ -130,7 +131,67 @@ void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgSet, MDR_G
   GPIO_Port->PWR1_Set   = cfgSet->PWR_16_31;  
   GPIO_Port->RXTX_Set   = cfgSet->RXTX;
   GPIO_Port->OE_Set     = cfgSet->OE;
-  GPIO_Port->ANALOG_Set = cfgSet->ANALOG;   
+  GPIO_Port->ANALOG_Set = cfgSet->ANALOG; 
+#else
+  if (GPIO_Port != PORT_JTAG)
+  {
+    GPIO_Port->ANALOG_Clr = cfgClr->clrPins;
+    GPIO_Port->OE_Clr     = cfgClr->clrPins;  
+    GPIO_Port->PD_Clr     = cfgClr->clrPins;  
+    GPIO_Port->PWR0_Clr   = cfgClr->clrPWR_0_15;
+    GPIO_Port->PWR1_Clr   = cfgClr->clrPWR_16_31;  
+    GPIO_Port->RXTX_Clr   = cfgClr->clrPins;
+    GPIO_Port->FUNC0_Clr  = cfgClr->clrFUNC_0_7;
+    GPIO_Port->FUNC1_Clr  = cfgClr->clrFUNC_8_15;
+    GPIO_Port->FUNC2_Clr  = cfgClr->clrFUNC_16_23;
+    GPIO_Port->FUNC3_Clr  = cfgClr->clrFUNC_24_31;
+    GPIO_Port->PULLUP_Clr = cfgClr->clrPins;
+    GPIO_Port->PULLDOWN_Clr = cfgClr->clrPins;  
+    
+    GPIO_Port->FUNC0_Set  = cfgSet->FUNC_0_7;
+    GPIO_Port->FUNC1_Set  = cfgSet->FUNC_8_15;
+    GPIO_Port->FUNC2_Set  = cfgSet->FUNC_16_23;
+    GPIO_Port->FUNC3_Set  = cfgSet->FUNC_24_31;
+    GPIO_Port->PULLUP_Set = cfgSet->PULL_Up;
+    GPIO_Port->PULLDOWN_Set = cfgSet->PULL_Down;
+    GPIO_Port->PD_Set     = cfgSet->PD;  
+    GPIO_Port->PWR0_Set   = cfgSet->PWR_0_15;
+    GPIO_Port->PWR1_Set   = cfgSet->PWR_16_31;  
+    GPIO_Port->RXTX_Set   = cfgSet->RXTX;
+    GPIO_Port->OE_Set     = cfgSet->OE;
+    GPIO_Port->ANALOG_Set = cfgSet->ANALOG; 
+  }
+  else
+  {
+    //  Clear
+    GPIO_Port->ANALOG_Clr = cfgClr->clrPins;
+    GPIO_Port->OE_Clr     = cfgClr->clrPins;  
+    GPIO_Port->PD_Clr     = cfgClr->clrPins;  
+    GPIO_Port->PWR0_Clr   = cfgClr->clrPWR_0_15;
+    GPIO_Port->PWR1_Clr   = cfgClr->clrPWR_16_31;  
+    GPIO_Port->RXTX_Clr   = cfgClr->clrPins;
+    GPIO_Port->FUNC0_Clr  = cfgClr->clrFUNC_0_7;
+    GPIO_Port->FUNC1_Clr  = cfgClr->clrFUNC_8_15;
+    GPIO_Port->FUNC2_Clr  = cfgClr->clrFUNC_16_23;
+    GPIO_Port->FUNC3_Clr  = cfgClr->clrFUNC_24_31;
+    GPIO_Port->PULLUP_Clr   = cfgClr->clrPins;
+    GPIO_Port->PULLDOWN_Clr = cfgClr->clrPins;
+
+    //  Set
+    GPIO_Port->FUNC0_Set    = cfgSet->FUNC_0_7   & ~(PORT_JTAG_Func0Sel);
+    GPIO_Port->FUNC1_Set    = cfgSet->FUNC_8_15  & ~(PORT_JTAG_Func1Sel);
+    GPIO_Port->FUNC2_Set    = cfgSet->FUNC_16_23 & ~(PORT_JTAG_Func2Sel);
+    GPIO_Port->FUNC3_Set    = cfgSet->FUNC_24_31 & ~(PORT_JTAG_Func3Sel);
+    GPIO_Port->PULLUP_Set   = cfgSet->PULL_Up    & ~(PORT_JTAG_PinSel);
+    GPIO_Port->PULLDOWN_Set = cfgSet->PULL_Down  & ~(PORT_JTAG_PinSel);
+    GPIO_Port->PD_Set       = cfgSet->PD         & ~(PORT_JTAG_PinSel);
+    GPIO_Port->PWR0_Set     = cfgSet->PWR_0_15   & ~(PORT_JTAG_PWR0);
+    GPIO_Port->PWR1_Set     = cfgSet->PWR_16_31  & ~(PORT_JTAG_PWR1);
+    GPIO_Port->RXTX_Set     = cfgSet->RXTX       & ~(PORT_JTAG_PinSel);
+    GPIO_Port->OE_Set       = cfgSet->OE         & ~(PORT_JTAG_PinSel);
+    GPIO_Port->ANALOG_Set   = cfgSet->ANALOG     & ~(PORT_JTAG_PinSel);
+  }
+#endif   
 }
 
 void MDR_Port_Clear_ClearCfg(MDR_GPIO_ClearCfg *cfgClr)
@@ -415,59 +476,44 @@ void MDR_Port_MaskAddPin(uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
     
   IO_ToCfg(pinInOut, &regOutEn, &regPULL_Up, &regPULL_Down);    
   
-  setRegs->RXTX      = 0;
-  setRegs->OE        = (uint32_t)regOutEn     << pinInd;
-  setRegs->ANALOG    = 1                      << pinInd;
-  setRegs->PULL_Up   = (uint32_t)regPULL_Up   << pinInd;
-  setRegs->PULL_Down = (uint32_t)regPULL_Down << pinInd;
-  setRegs->PD        = (uint32_t)groupPinCfg->OpenDrain  << pinInd;
+  setRegs->OE        |= (uint32_t)regOutEn     << pinInd;
+  setRegs->ANALOG    |= 1                      << pinInd;
+  setRegs->PULL_Up   |= (uint32_t)regPULL_Up   << pinInd;
+  setRegs->PULL_Down |= (uint32_t)regPULL_Down << pinInd;
+  setRegs->PD        |= (uint32_t)groupPinCfg->OpenDrain  << pinInd;
   
-  clrRegs->clrPins = 1 << pinInd;
+  clrRegs->clrPins |= 1 << pinInd;
   
-  //  Func
-  setRegs->FUNC_0_7      = 0;
-  setRegs->FUNC_8_15     = 0;
-  setRegs->FUNC_16_23    = 0;
-  setRegs->FUNC_24_31    = 0;
-  clrRegs->clrFUNC_0_7   = 0;
-  clrRegs->clrFUNC_8_15  = 0;
-  clrRegs->clrFUNC_16_23 = 0;
-  clrRegs->clrFUNC_24_31 = 0;
-  
+  //  Func 
   offs = (pinInd % 8) << 2;
   switch (pinInd / 8) {
     case 0: 
-      setRegs->FUNC_0_7    = (uint32_t)pinFunc << offs; 
-      clrRegs->clrFUNC_0_7 = MDR_GPIO_FUNC__Pin_Msk << offs;
+      setRegs->FUNC_0_7    |= (uint32_t)pinFunc << offs; 
+      clrRegs->clrFUNC_0_7 |= MDR_GPIO_FUNC__Pin_Msk << offs;
       break;
     case 1: 
-      setRegs->FUNC_8_15  = (uint32_t)pinFunc << offs; 
-      clrRegs->clrFUNC_8_15 = MDR_GPIO_FUNC__Pin_Msk << offs;
+      setRegs->FUNC_8_15    |= (uint32_t)pinFunc << offs; 
+      clrRegs->clrFUNC_8_15 |= MDR_GPIO_FUNC__Pin_Msk << offs;
       break;
     case 2: 
-      setRegs->FUNC_16_23 = (uint32_t)pinFunc << offs; 
-      clrRegs->clrFUNC_16_23 = MDR_GPIO_FUNC__Pin_Msk << offs;
+      setRegs->FUNC_16_23    |= (uint32_t)pinFunc << offs; 
+      clrRegs->clrFUNC_16_23 |= MDR_GPIO_FUNC__Pin_Msk << offs;
       break;
     case 3: 
-      setRegs->FUNC_24_31 = (uint32_t)pinFunc << offs; 
-      clrRegs->clrFUNC_24_31 = MDR_GPIO_FUNC__Pin_Msk << offs;
+      setRegs->FUNC_24_31    |= (uint32_t)pinFunc << offs; 
+      clrRegs->clrFUNC_24_31 |= MDR_GPIO_FUNC__Pin_Msk << offs;
       break;
   }
-  //  PWR
-  setRegs->PWR_0_15 = 0;
-  setRegs->PWR_16_31 = 0;
-  clrRegs->clrPWR_0_15 = 0;
-  clrRegs->clrPWR_16_31 = 0;
-  
+  //  PWR 
   offs = (pinInd % 16) << 1;
   switch (pinInd / 16) {
     case 0: 
-      setRegs->PWR_0_15   = (uint32_t)groupPinCfg->Power << offs; 
-      clrRegs->clrPWR_0_15 = MDR_GPIO_PWR__Pin_Msk << offs;
+      setRegs->PWR_0_15    |= (uint32_t)groupPinCfg->Power << offs; 
+      clrRegs->clrPWR_0_15 |= MDR_GPIO_PWR__Pin_Msk << offs;
       break;
     case 1: 
-      setRegs->PWR_16_31  = (uint32_t)groupPinCfg->Power << offs; 
-      clrRegs->clrPWR_16_31 = MDR_GPIO_PWR__Pin_Msk << offs;
+      setRegs->PWR_16_31    |= (uint32_t)groupPinCfg->Power << offs; 
+      clrRegs->clrPWR_16_31 |= MDR_GPIO_PWR__Pin_Msk << offs;
       break;
   }  
 }

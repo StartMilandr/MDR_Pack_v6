@@ -3368,7 +3368,7 @@
       <description>Synchronous Serial Port</description>
       <groupName>SSP</groupName>
       <!-- #SSP1_ADDR -->
-      <baseAddress>0x40095000</baseAddress>
+      <baseAddress>0x40089000</baseAddress>
       <size>32</size>
       <access>read-write</access>
       <addressBlock>
@@ -3912,7 +3912,7 @@
     <!-- #SSP2 -->
     <peripheral derivedFrom="MDR_SSP1">
       <name>MDR_SSP2</name>
-      <baseAddress>0x40096000</baseAddress>
+      <baseAddress>0x4008A000</baseAddress>
     </peripheral>
     <!-- #SSP3 -->
     <!-- #SSP4 -->

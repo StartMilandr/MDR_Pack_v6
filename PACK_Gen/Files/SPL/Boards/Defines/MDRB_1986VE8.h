@@ -7,10 +7,17 @@
 
 //===================================    Частота тактирования    ========================================
 
+#define MDRB_HAS_NO_LCD
+
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz)
 
 
 //  Переопределение пинов для удобства поиска конфликтов
+    //  Port_A
+    #define PIN_PA7      MDR_Pin_7     //      SSP1_TX,
+    #define PIN_PA8      MDR_Pin_8     //      SSP1_CLK,
+    #define PIN_PA9      MDR_Pin_9     //      SSP1_FSS,
+    #define PIN_PA10     MDR_Pin_10    //      SSP1_RX,
 
     //  Port_C
     #define PIN_PC16     MDR_Pin_16   //  LED1,
@@ -23,6 +30,9 @@
     #define PIN_PC23     MDR_Pin_23   //  LED8,
 
     //  Port_E
+    #define PIN_PE15     MDR_Pin_15   //        UART1_TX
+    #define PIN_PE16     MDR_Pin_16   //        UART1_RX
+    
     #define PIN_PE18     MDR_Pin_18   //    KEY1,
     #define PIN_PE19     MDR_Pin_19   //  
     #define PIN_PE20     MDR_Pin_20   //  
@@ -66,14 +76,36 @@
     #define MDRB_UART1_TX_PE15_Ind	    15
     #define MDRB_UART1_RX_PE16_Ind	    16
 
-    #define MDRB_UART1_TX_PE15_Msk	    MDR_Pin_15
-    #define MDRB_UART1_RX_PE16_Msk		  MDR_Pin_16
+    #define MDRB_UART1_TX_PE15_Msk	    PIN_PE15
+    #define MDRB_UART1_RX_PE16_Msk		  PIN_PE16
 
     #define MDRB_UART1_TX_PE15_Port	    MDR_GPIO_E
     #define MDRB_UART1_RX_PE16_Port		  MDR_GPIO_E
     
     #define MDRB_UART1_TX_PE15_Func	    MDR_PIN_FUNC_5
     #define MDRB_UART1_RX_PE16_Func	    MDR_PIN_FUNC_5 
+    
+//  ---------------  SPI1 Pin Definition ----------------
+    #define MDRB_SPI1_FSS_PA9_Ind	       9
+    #define MDRB_SPI1_CLK_PA8_Ind	       8
+    #define MDRB_SPI1_RX_PA10_Ind 	     10
+    #define MDRB_SPI1_TX_PA7_Ind		     7
+
+    #define MDRB_SPI1_FSS_PA9_Msk	       PIN_PA9
+    #define MDRB_SPI1_CLK_PA8_Msk		     PIN_PA8
+    #define MDRB_SPI1_RX_PA10_Msk 		   PIN_PA10
+    #define MDRB_SPI1_TX_PA7_Msk		     PIN_PA7
+
+    #define MDRB_SPI1_FSS_PA9_Port	     MDR_GPIO_A
+    #define MDRB_SPI1_CLK_PA8_Port		   MDR_GPIO_A
+    #define MDRB_SPI1_RX_PA10_Port 		   MDR_GPIO_A
+    #define MDRB_SPI1_TX_PA7_Port		     MDR_GPIO_A
+    
+    #define MDRB_SPI1_FSS_PA9_Func	     MDR_PIN_FUNC_6
+    #define MDRB_SPI1_CLK_PA8_Func		   MDR_PIN_FUNC_6
+    #define MDRB_SPI1_RX_PA10_Func 		   MDR_PIN_FUNC_6
+    #define MDRB_SPI1_TX_PA7_Func		     MDR_PIN_FUNC_6
+    
 
 #else
    Please, select board in MDRB_BoardSelect.h!

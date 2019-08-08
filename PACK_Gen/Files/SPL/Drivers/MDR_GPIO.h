@@ -53,22 +53,58 @@
   #define PORT_JTAG_PinSel          MDR_JTAG_A_PINS
   #define PORT_JTAG_FuncSel         MDR_JTAG_A_PINS_FUNC
   #define PORT_JTAG_PDSel           MDR_JTAG_A_PINS_PD
+
+  //  for ESila
+  #define PORT_JTAG_Func0Sel        MDR_JTAG_A_PINS_FUNC0
+  #define PORT_JTAG_Func1Sel        MDR_JTAG_A_PINS_FUNC1
+  #define PORT_JTAG_Func2Sel        MDR_JTAG_A_PINS_FUNC2
+  #define PORT_JTAG_Func3Sel        MDR_JTAG_A_PINS_FUNC3 
+  #define PORT_JTAG_PWR0            MDR_JTAG_A_PINS_PWR0
+  #define PORT_JTAG_PWR1            MDR_JTAG_A_PINS_PWR1
+
 #elif defined (USE_JTAG_B)
   #define PORT_JTAG                 MDR_JTAG_B_PORT
   #define PORT_JTAG_PinSel          MDR_JTAG_B_PINS
   #define PORT_JTAG_FuncSel         MDR_JTAG_B_PINS_FUNC
   #define PORT_JTAG_PDSel           MDR_JTAG_B_PINS_PD
+  
+  //  for ESila
+  #define PORT_JTAG_Func0Sel        MDR_JTAG_B_PINS_FUNC0
+  #define PORT_JTAG_Func1Sel        MDR_JTAG_B_PINS_FUNC1
+  #define PORT_JTAG_Func2Sel        MDR_JTAG_B_PINS_FUNC2
+  #define PORT_JTAG_Func3Sel        MDR_JTAG_B_PINS_FUNC3
+  #define PORT_JTAG_PWR0            MDR_JTAG_B_PINS_PWR0
+  #define PORT_JTAG_PWR1            MDR_JTAG_B_PINS_PWR1
+
 #elif defined (USE_SWD_A)
   #define PORT_JTAG                 MDR_SWD_A_PORT
   #define PORT_JTAG_PinSel          MDR_SWD_A_PINS
   #define PORT_JTAG_FuncSel         MDR_SWD_A_PINS_FUNC
   #define PORT_JTAG_PDSel           MDR_SWD_A_PINS_PD  
+  
+  //  for ESila
+  #define PORT_JTAG_Func0Sel        MDR_SWD_A_PINS_FUNC0
+  #define PORT_JTAG_Func1Sel        MDR_SWD_A_PINS_FUNC1
+  #define PORT_JTAG_Func2Sel        MDR_SWD_A_PINS_FUNC2
+  #define PORT_JTAG_Func3Sel        MDR_SWD_A_PINS_FUNC3
+  #define PORT_JTAG_PWR0            MDR_SWD_A_PINS_PWR0
+  #define PORT_JTAG_PWR1            MDR_SWD_A_PINS_PWR1  
+  
 #elif defined (USE_SWD_B)
   #define PORT_JTAG                 MDR_SWD_B_PORT
   #define PORT_JTAG_PinSel          MDR_SWD_B_PINS
   #define PORT_JTAG_FuncSel         MDR_SWD_B_PINS_FUNC
   #define PORT_JTAG_PDSel           MDR_SWD_B_PINS_PD    
+  
+  //  for ESila
+  #define PORT_JTAG_Func0Sel        MDR_SWD_B_PINS_FUNC0
+  #define PORT_JTAG_Func1Sel        MDR_SWD_B_PINS_FUNC1
+  #define PORT_JTAG_Func2Sel        MDR_SWD_B_PINS_FUNC2
+  #define PORT_JTAG_Func3Sel        MDR_SWD_B_PINS_FUNC3  
+  #define PORT_JTAG_PWR0            MDR_SWD_B_PINS_PWR0
+  #define PORT_JTAG_PWR1            MDR_SWD_B_PINS_PWR1  
 #endif
+
 
 #if defined (PORT_JTAG)
   #define JTAG_PINS(PORT)          (((PORT) == PORT_JTAG) ? PORT_JTAG_PinSel  : 0)

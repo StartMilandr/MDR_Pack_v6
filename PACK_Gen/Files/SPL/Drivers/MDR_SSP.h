@@ -152,6 +152,14 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
   extern const MDR_SSP_TypeEx  _MDR_SSP4ex;
   #define MDR_SSP4ex          (&_MDR_SSP4ex)
 #endif
+#ifdef MDR_SSP5
+  extern const MDR_SSP_TypeEx  _MDR_SSP5ex;
+  #define MDR_SSP5ex          (&_MDR_SSP5ex)
+#endif
+#ifdef MDR_SSP6
+  extern const MDR_SSP_TypeEx  _MDR_SSP6ex;
+  #define MDR_SSP6ex          (&_MDR_SSP6ex)
+#endif
 
 //  Эти расширенные Функции Init/Finit включают/выключают 
 //   - частоту SSP_Clock. (В ВЕ4,ВК214,ВК234 предварительно должна быть выбрана входная частота для SSP_Clock (см. MDR_PER_Clock.h). 

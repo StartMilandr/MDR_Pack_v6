@@ -330,8 +330,8 @@ void MDR_Port_MaskAdd(uint32_t pinSelect, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinF
   IO_ToCfg(pinInOut, &regOutEn, &regPULL_Up, &regPULL_Down);  
   
   //  Clear Masks
-  pCfgClr->clrPins =  pinSelect;
-  pCfgClr->clrHiLo = (pinSelect | (pinSelect << 16));
+  pCfgClr->clrPins |=  pinSelect;
+  pCfgClr->clrHiLo |= (pinSelect | (pinSelect << 16));
   
   //  Set Mask
   if (regOutEn == MDR_On)     pCfgSet->OE     |= pinSelect;

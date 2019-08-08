@@ -43,7 +43,20 @@
 
   <project>
     <PathAndName>.\SSP_TestVK234\SSP_TestVK234.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\SSP_TestVE8\SSP_TestVE8.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\SSP_TestESila\SSP_TestESila.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\SSP_TestVK014\SSP_TestVK014.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

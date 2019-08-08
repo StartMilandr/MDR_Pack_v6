@@ -43,7 +43,7 @@
 #SSP2_ES
 <peripheral derivedFrom="MDR_SSP1">
   <name>MDR_SSP2</name>
-  <baseAddress>0x40089000</baseAddress>
+  <baseAddress>0x4008A000</baseAddress>
 </peripheral>
 
 #SSP2_VK014

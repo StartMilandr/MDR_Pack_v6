@@ -7,7 +7,7 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.0x" date="2019-05-07">
+    <release version="2.03" date="2019-08-07">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
@@ -1360,7 +1360,7 @@
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component> 
-    <component Cclass="Board Support" Cgroup="Buttons" Cversion="2.0" condition="CON_BRD_BUTTONS">
+    <component Cclass="Board Support" Cgroup="Buttons" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Buttons control</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>

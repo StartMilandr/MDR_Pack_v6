@@ -189,7 +189,7 @@ void MDRB_LCD_CapturePins(void)
       MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
     
     for (i = 0; i < MDR_LCD_PortCountOUT; ++i)
-      MDR_GPIO_WriteRegs(_LCD_PortIN[i], &_TempPinsIN[i]);
+      MDR_GPIO_WriteRegs(_LCD_PortOUT[i], &_TempPinsOUT[i]);
   }
 #endif
 

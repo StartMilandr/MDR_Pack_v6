@@ -401,17 +401,17 @@ typedef enum {
 #define   MDR_CLK_EN_BIT_PORT_E     MDR_RST_PER0_PORTE_CLK_EN_Pos
 
 
-// //----------------    SSP Definitions  --------------------
-// //  SSP Block Clock enable
-// #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_SSP2_CLK_EN_ADDR          (&MDR_CLOCK->PER_CLOCK)
+ //----------------    SSP Definitions  --------------------
+ //  SSP Block Clock enable
+ #define   MDR_SSP1_CLK_EN_ADDR          (&MDR_CLOCK->PER1_CLK)
+ #define   MDR_SSP2_CLK_EN_ADDR          (&MDR_CLOCK->PER1_CLK)
 
-// #define   MDR_SSP1_CLK_EN_MSK             MDR_RST_PER__SSP1_CLK_EN_Msk
-// #define   MDR_SSP2_CLK_EN_MSK             MDR_RST_PER__SSP2_CLK_EN_Msk
+ #define   MDR_SSP1_CLK_EN_MSK             MDR_RST_PER1_SSP1_CLK_EN_Msk
+ #define   MDR_SSP2_CLK_EN_MSK             MDR_RST_PER1_SSP1_CLK_EN_Msk
 
-// //  SSP_Clock freq configs
-// #define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP_CLOCK)
-// #define   MDR_SSP2_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP_CLOCK)
+ //  SSP_Clock freq configs
+ #define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP1_CLK)
+ #define   MDR_SSP2_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP1_CLK)
 
 // #define   MDR_SSP1_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP1_CLK_EN_Msk
 // #define   MDR_SSP2_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP2_CLK_EN_Msk

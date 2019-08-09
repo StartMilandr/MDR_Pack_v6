@@ -19,7 +19,7 @@ extern const MDR_SSP_TypeEx *SSP_MASTER;
 extern const MDR_SSP_TypeEx *SSP_SLAVE;
 
 //  Настройки SSP
-extern MDR_SSP_ConfigEx cfgSSPex;
+extern MDR_SSP_Config cfgSSP;
 
 //  Инициализация масок для захвата пинов под SSP и освобождения
 void  Cfg_SSP_CapturePinsInit(MDR_PIN_PWR pinsPower);

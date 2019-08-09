@@ -34,7 +34,7 @@ TestInterface TI_SPI_TXRX = {
 static void TestSSP_Init(void)
 {  
   //  Init
-  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
 
   LCD_ShowInit(SSP_MASTER, "TX-RX Rate");
@@ -48,7 +48,7 @@ static void TestSSP_Finit(void)
 static void TestSSP_Change(void)
 {
   Cfg_NextDIV_PSR_2_254();
-  MDR_SSPex_ChangeRate(SSP_MASTER, 0, cfgSSPex.cfgSSP->DivPSR_2_254);
+  MDR_SSPex_ChangeRate(SSP_MASTER, 0, cfgSSP.DivPSR_2_254);
   LCD_ShowInit(SSP_MASTER, "TX-RX Rate");
 }
 

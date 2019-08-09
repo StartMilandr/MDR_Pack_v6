@@ -34,19 +34,19 @@ static MDR_SSP_FrameFormat frameFormatForRestore;
 static void TestSSP_Init(void)
 {
   //  Ограничение на скорость ведомого
-  cfgSSPex.cfgSSP->DivSCR_0_255 = 0;
-  if (cfgSSPex.cfgSSP->DivPSR_2_254 < 12) 
-    cfgSSPex.cfgSSP->DivPSR_2_254 = 12; 
+  cfgSSP.DivSCR_0_255 = 0;
+  if (cfgSSP.DivPSR_2_254 < 12) 
+    cfgSSP.DivPSR_2_254 = 12; 
     
-  frameFormatForRestore = cfgSSPex.cfgSSP->FrameFormat;
-  cfgSSPex.cfgSSP->FrameFormat = SSP_Frame_Microwire;
+  frameFormatForRestore = cfgSSP.FrameFormat;
+  cfgSSP.FrameFormat = SSP_Frame_Microwire;
   
   //  Init  Master
-  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   
   //  Init  Slave
-  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);
 
   LCD_ShowInit(SSP_MASTER, "MCR Bits");
@@ -57,14 +57,14 @@ static void TestSSP_Finit(void)
   MDR_SSPex_DeInit(SSP_MASTER);
   MDR_SSPex_DeInit(SSP_SLAVE);
   
-  cfgSSPex.cfgSSP->FrameFormat = frameFormatForRestore;
+  cfgSSP.FrameFormat = frameFormatForRestore;
 }
 
 static void TestSSP_Change(void)
 {
   Cfg_NextDataBits();
-  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSPex.cfgSSP->DataBits);
-  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSPex.cfgSSP->DataBits);  
+  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSP.DataBits);
+  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSP.DataBits);  
   
   LCD_ShowInit(SSP_MASTER, "MCR Bits");
 }

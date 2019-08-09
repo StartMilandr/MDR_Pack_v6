@@ -98,6 +98,10 @@ void MDR_SSP_ClearFIFO_RX(MDR_SSP_Type *SSPx)
 
 void MDR_SSP_ClearFIFO_TX(MDR_SSP_Type *SSPx)
 {
+#ifdef MDR_SSP_HAS_LEN32  
+  SSPx->CR1 |= MDR_SSP_CR1_ClrTX_Msk;
+  
+#else
   typedef struct
   {
     __IO uint32_t SSPCR;
@@ -114,6 +118,7 @@ void MDR_SSP_ClearFIFO_TX(MDR_SSP_Type *SSPx)
     SSPHACKx->SSPDR;
 
   SSPHACKx->SSPCR = 0x0;
+#endif
 }
 
 static void MDR_SSP_ClearRegs_loc(MDR_SSP_Type *SSPx)
@@ -300,36 +305,7 @@ MDR_SSP_Events MDR_SSP_GetEventIRQ(MDR_SSP_Type *SSPx)
 }
 
 //  ===============   Функции управления через расширенную структуру блока MDR_SSP_TypeEx ==================
-
-void MDR_SSPex_InitEx (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx)
-{
-  //  Подача тактирования блока
-  MDR_PerClock_Enable(&exSSPx->CfgClock);  
-  //  Включение частоты SSP_Clock
-  MDR_PerClock_GateOpen(&exSSPx->CfgClock, cfgEx->ClockBRG);      
-  //  Инициализация параметров SSP
-  MDR_SSP_Init(exSSPx->SSPx, cfgEx->cfgSSP);
-  //  Инициализация прерываний в NVIC, чтобы пользователь не забыл
-  if (cfgEx->activateNVIC_IRQ)
-  {
-    NVIC_EnableIRQ(exSSPx->SSPx_IRQn);
-    NVIC_SetPriority(exSSPx->SSPx_IRQn, cfgEx->priorityIRQ);
-  }     
-}
-
-void MDR_SSP_EnableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ)
-{
-  NVIC_EnableIRQ(exSSPx->SSPx_IRQn);
-  NVIC_SetPriority(exSSPx->SSPx_IRQn, priorityIRQ);
-}
-
-void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx)
-{
-  NVIC_DisableIRQ(exSSPx->SSPx_IRQn);
-}
-  
-
-void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG)
+void MDR_SSPex_Init(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG)
 {
   //  Подача тактирования блока
   MDR_PerClock_Enable(&exSSPx->CfgClock);  
@@ -380,4 +356,49 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
     MDR_GPIO_InitDigPin(pinsCfg->pPinFSS->portGPIO, pinsCfg->pPinFSS->pinIndex, MDR_Pin_In, pinsCfg->pPinFSS->pinFunc, &pinPermCfg);  
   }
 }
+
+#ifdef MDR_SSP_HAS_LEN32
+  void MDR_SSP_Init_Len32(MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg, bool useFastForSlave)
+  {
+    uint32_t regCR0;
+    
+    //  Forced Disable SSP
+    SSPx->CR1 = 0;
+    
+    //  New config
+    regCR0 = VAL2FLD_Pos(cfg->DataBits,     MDR_SSP_CR0_DSS_Pos)
+           | VAL2FLD_Pos(cfg->FrameFormat,  MDR_SSP_CR0_FRF_Pos)
+           | VAL2FLD_Pos(cfg->DivSCR_0_255, MDR_SSP_CR0_SCR_Pos)
+           | MDR_SSP_CR0_ExLen16_En_Msk;
+    
+    if (useFastForSlave)
+      regCR0 |= MDR_SSP_CR0_SlvFastRX_En_Msk;
+    
+    if (cfg->FrameFormat == SSP_Frame_SPI)
+      regCR0 |= VAL2FLD_Pos(cfg->SPI_Mode, MDR_SSP_CR0_SPO_Pos);
+
+    //  Apply
+    SSPx->CR0   = regCR0;
+    SSPx->CPSR  = (uint32_t)cfg->DivPSR_2_254;
+    SSPx->IMSC  = 0;
+    SSPx->DMACR = 0;
+    
+    SSPx->ICR   = MDR_SSP_ICR_RORIC_Msk | MDR_SSP_ICR_RTIC_Msk;  
+    
+    //  Clear FIFOs
+    MDR_SSP_ClearFIFO_TX(SSPx);
+    MDR_SSP_ClearFIFO_RX(SSPx);  
+  }
+
+  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG, bool useFastForSlave)
+  {
+    //  Подача тактирования блока
+    MDR_PerClock_Enable(&exSSPx->CfgClock);  
+    //  Включение частоты SSP_Clock
+    MDR_PerClock_GateOpen(&exSSPx->CfgClock, ClockBRG);      
+    //  Инициализация параметров SSP
+    MDR_SSP_Init_Len32(exSSPx->SSPx, cfgSSP, useFastForSlave);
+  }    
+#endif
+
 

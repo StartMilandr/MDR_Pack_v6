@@ -161,7 +161,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_SPI_TXRT.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_SPI_TXRT.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>

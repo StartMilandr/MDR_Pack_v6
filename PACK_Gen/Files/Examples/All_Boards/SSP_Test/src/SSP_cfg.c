@@ -1,6 +1,6 @@
 #include "SSP_cfg.h"
 
-static MDR_SSP_Config cfgSSP = {
+MDR_SSP_Config cfgSSP = {
   //  Config
   .DataBits = SSP_DataBits_16,
   .FrameFormat = SSP_Frame_SPI,
@@ -12,12 +12,10 @@ static MDR_SSP_Config cfgSSP = {
                                     // 14 - делитель, при котором у меня на плате обмены мастера со слейвом проходит успешно
 };
 
-MDR_SSP_ConfigEx cfgSSPex = {
-  .ClockBRG         = MDR_Div128P_div1,
-  .cfgSSP           = &cfgSSP,
-  .activateNVIC_IRQ = true,
-  .priorityIRQ      = 1
-};
+//MDR_SSP_ConfigEx cfgSSPex = {
+//  .ClockBRG         = MDR_Div128P_div1,
+//  .cfgSSP           = &cfgSSP,
+//};
 
 //  ------  Смена количества бит в посылке  ------
 uint16_t Cfg_DataMaxValue = 0xFFFF;
@@ -75,9 +73,9 @@ char *Cfg_getActiveFrameName(void)
 
 void Cfg_NextDIV_PSR_2_254(void)
 {
-  cfgSSPex.cfgSSP->DivPSR_2_254 += DIV_INC_STEP;
-  if (cfgSSPex.cfgSSP->DivPSR_2_254 > DIV_MAX)
-    cfgSSPex.cfgSSP->DivPSR_2_254 = 2; 
+  cfgSSP.DivPSR_2_254 += DIV_INC_STEP;
+  if (cfgSSP.DivPSR_2_254 > DIV_MAX)
+    cfgSSP.DivPSR_2_254 = 2; 
 }
 
 

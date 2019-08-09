@@ -76,9 +76,9 @@ void SSP2_IRQHandler(void);
 void SSP3_IRQHandler(void);
   
 void UART1_IRQHandler(void);  
-bool doNextTest   = false;
-bool doChangeMode = false;
-bool doExec       = false;
+static bool doNextTest   = false;
+static bool doChangeMode = false;
+static bool doExec       = false;
  
 int main(void)
 {

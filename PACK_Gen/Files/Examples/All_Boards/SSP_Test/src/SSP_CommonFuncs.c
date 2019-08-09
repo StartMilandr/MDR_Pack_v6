@@ -87,10 +87,10 @@ uint32_t MasterTXRX_TestTransfer(const MDR_SSP_TypeEx *exSSPx)
   #ifndef LCD_IS_7SEG_DISPLAY  
     MDRB_LCD_Clear();
     
-    sprintf(message , "%s B:%d", testName, cfgSSPex.cfgSSP->DataBits + 1);
+    sprintf(message , "%s B:%d", testName, cfgSSP.DataBits + 1);
     MDRB_LCD_Print (message, LCD_LINE_NAME);
     
-    sprintf(message , "%s%d M:%d D:%d", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
+    sprintf(message , "%s%d M:%d D:%d", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSP.SPI_Mode, cfgSSP.DivPSR_2_254);
     MDRB_LCD_Print (message, LCD_LINE_INIT);  
   #else
     UNUSED(exSSPx);
@@ -146,8 +146,8 @@ uint32_t MasterTXRX_TestTransfer(const MDR_SSP_TypeEx *exSSPx)
 
   void LCD_ShowInit(const MDR_SSP_TypeEx *exSSPx, char *testName)
   {
-    printf("%s B:%d\n", testName, cfgSSPex.cfgSSP->DataBits + 1);    
-    printf("%s%d M:%d D:%d\n", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSPex.cfgSSP->SPI_Mode, cfgSSPex.cfgSSP->DivPSR_2_254);
+    printf("%s B:%d\n", testName, cfgSSP.DataBits + 1);    
+    printf("%s%d M:%d D:%d\n", Cfg_getActiveFrameName(), Cfg_GetIndexSPI(exSSPx), cfgSSP.SPI_Mode, cfgSSP.DivPSR_2_254);
   }
 
   void LCD_ShowStarted(void)

@@ -160,7 +160,7 @@ typedef enum IRQn
 
 
 /*=========  SSP - Synchronous Serial Port ========*/
-#include "MDR_SSP_def.h"
+#include "MDR_SSP_def32.h"
 
 /*=========  UART ========*/
 #include <MDR_UART_9Bit_defs.h>

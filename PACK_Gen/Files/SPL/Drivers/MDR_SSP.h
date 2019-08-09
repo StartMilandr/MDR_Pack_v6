@@ -40,6 +40,7 @@ void MDR_SSP_Init  (MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg);
 //  Сброс регистров блока и FIFO_RX, FIFO_TX  
 void MDR_SSP_DeInit(MDR_SSP_Type *SSPx);
 
+
 //  Включение - выключение блока. Данные могут быть записаны в FIFO_TX до включения.
 void MDR_SSP_EnableMaster(MDR_SSP_Type *SSPx, bool loopBackEnable);
 void MDR_SSP_EnableSlave (MDR_SSP_Type *SSPx, bool outputDisable);
@@ -171,24 +172,20 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
 void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG);
 void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx);
 
-void MDR_SSP_EnableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ);
-void MDR_SSP_DisableNVIC_IRQ(const MDR_SSP_TypeEx *exSSPx);
 
-//  ---------     Будет удалено Begin --------------
-//  Оставлено для работоспособности примеров к паку
-typedef struct {
-  //  Делитель частоты SSP_Clock
-  MDR_Div128P ClockBRG;
-  //  Настройки блока SSP
-  MDR_SSP_Config *cfgSSP;
-  //  Инициализация прерываний в NVIC
-  uint32_t priorityIRQ;  
-  bool activateNVIC_IRQ;
-} MDR_SSP_ConfigEx;
+//	Включение соответствующего прерывания в NVIC
+__STATIC_INLINE
+void MDR_SSP_NVIC_EnableIRQ(const MDR_SSP_TypeEx *exSSPx, uint32_t priorityIRQ)
+{
+  NVIC_EnableIRQ(exSSPx->SSPx_IRQn);
+  NVIC_SetPriority(exSSPx->SSPx_IRQn, priorityIRQ);
+}
 
-
-void MDR_SSPex_InitEx  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_ConfigEx *cfgEx);
-//  ---------     Будет удалено End --------------
+__STATIC_INLINE
+void MDR_SSP_NVIC_DisableIRQ(const MDR_SSP_TypeEx *exSSPx)
+{
+  NVIC_DisableIRQ(exSSPx->SSPx_IRQn);
+}
 
 // Следующие функции повтояют варинт без "ex" для единообразия вызова. Вместо структуры блока SSPx, просто подается расширенная exSSPx.
 // Т.к. в коде проще использовать одну структуру для вызова всех функций. Но выборка адреса exSSPx->SSPx занимает дополнительное время.
@@ -287,6 +284,19 @@ typedef struct {
 } MDR_SSP_CfgPinsGPIO;
 
 void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower);
+
+
+//  ============    Расширенная инициализация для ESila и 1923ВК014   =============
+//  Длина посылки до 32-бит, Fast режим для slave
+#ifdef MDR_SSP_HAS_LEN32
+  //  Инициализация только SSP
+  void MDR_SSP_Init_Len32(MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg, bool useFastForSlave);
+
+  //  Инициализация SSP c тактированием и SSP_CLock
+  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG, bool useFastForSlave);
+
+#endif
+
 
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)

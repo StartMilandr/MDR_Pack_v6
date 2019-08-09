@@ -177,7 +177,7 @@ typedef enum IRQn
 #include "MDR_ADC_VE9xVC1_def.h"
 
 /*=========  SSP - Synchronous Serial Port ========*/
-#include "MDR_SSP_def.h"
+#include "MDR_SSP_def16.h"
 
 /*=========  WWDT - IWDT ========*/
 #include "MDR_WWDT_defs.h"

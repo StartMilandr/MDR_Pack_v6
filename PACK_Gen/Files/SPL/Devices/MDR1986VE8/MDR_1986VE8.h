@@ -224,7 +224,7 @@ typedef enum {
 
 
 /*=========  SSP - Synchronous Serial Port ========*/
-#include <MDR_SSP_def.h>
+#include <MDR_SSP_def16.h>
 
 /*=========  UART ========*/
 #include <MDR_UART_8Bit_defs.h>

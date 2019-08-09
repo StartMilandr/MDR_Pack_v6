@@ -36,14 +36,14 @@ static uint8_t divForRestore;
 static void TestSSP_Init(void)
 {
   // Сохраняем выбраный общий делитель для всех тестов.
-  divForRestore = cfgSSPex.cfgSSP->DivPSR_2_254;
+  divForRestore = cfgSSP.DivPSR_2_254;
   
   //  Включаем минимальный делитель для получения максимальной скорости
-  cfgSSPex.cfgSSP->DivSCR_0_255 = 0;
-  cfgSSPex.cfgSSP->DivPSR_2_254 = 2;
+  cfgSSP.DivSCR_0_255 = 0;
+  cfgSSP.DivPSR_2_254 = 2;
   
   //  Init
-  MDR_SSPex_InitEx(SSP_List[activeIndSSP], &cfgSSPex);
+  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_List[activeIndSSP], true);
   
   LCD_ShowInit(SSP_List[activeIndSSP], "LBM ALL");
@@ -53,7 +53,7 @@ static void TestSSP_Finit(void)
 {
   MDR_SSPex_DeInit(SSP_List[activeIndSSP]);
   // Восстанавливаем делитель в глобальной конфигурации для других тестов
-  cfgSSPex.cfgSSP->DivPSR_2_254 = divForRestore;  
+  cfgSSP.DivPSR_2_254 = divForRestore;  
 }
 
 static void TestSSP_Change(void)
@@ -63,7 +63,7 @@ static void TestSSP_Change(void)
   //  Change Active
   NextIndexSSP();
   //  Init
-  MDR_SSPex_InitEx(SSP_List[activeIndSSP], &cfgSSPex);
+  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_List[activeIndSSP], true);  
    
   LCD_ShowInit(SSP_List[activeIndSSP], "LBM ALL");

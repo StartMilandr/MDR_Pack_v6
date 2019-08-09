@@ -33,16 +33,16 @@ TestInterface TI_SSP_DataBits = {
 static void TestSSP_Init(void)
 {
   //  Ограничение на скорость ведомого
-  cfgSSPex.cfgSSP->DivSCR_0_255 = 0;
-  if (cfgSSPex.cfgSSP->DivPSR_2_254 < 12) 
-    cfgSSPex.cfgSSP->DivPSR_2_254 = 12;  
+  cfgSSP.DivSCR_0_255 = 0;
+  if (cfgSSP.DivPSR_2_254 < 12) 
+    cfgSSP.DivPSR_2_254 = 12;  
     
   //  Init  Master
-  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   
   //  Init  Slave
-  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);
 
   LCD_ShowInit(SSP_MASTER, "Ms-Sl Bits");
@@ -57,8 +57,8 @@ static void TestSSP_Finit(void)
 static void TestSSP_ChangeRate(void)
 {
   Cfg_NextDataBits();
-  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSPex.cfgSSP->DataBits);
-  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSPex.cfgSSP->DataBits);
+  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSP.DataBits);
+  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSP.DataBits);
   
   LCD_ShowInit(SSP_MASTER, "Ms-Sl Bits");
 }

@@ -42,16 +42,16 @@ TestInterface TI_SPI_MasterSlave = {
 static void TestSSP_Init(void)
 {
   //  Ограничение на скорость ведомого
-  cfgSSPex.cfgSSP->DivSCR_0_255 = 0;
-  if (cfgSSPex.cfgSSP->DivPSR_2_254 < 12) 
-    cfgSSPex.cfgSSP->DivPSR_2_254 = 12;
+  cfgSSP.DivSCR_0_255 = 0;
+  if (cfgSSP.DivPSR_2_254 < 12) 
+    cfgSSP.DivPSR_2_254 = 12;
    
   //  Init  Master
-  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   
   //  Init  Slave
-  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);
 
   LCD_ShowInit(SSP_MASTER, "Ms-Sl Rate");
@@ -65,7 +65,7 @@ static void TestSSP_Finit(void)
 static void TestSSP_ChangeRate(void)
 {
   Cfg_NextDIV_PSR_2_254();
-  MDR_SSPex_ChangeRate(SSP_MASTER, cfgSSPex.cfgSSP->DivSCR_0_255, cfgSSPex.cfgSSP->DivPSR_2_254);
+  MDR_SSPex_ChangeRate(SSP_MASTER, cfgSSP.DivSCR_0_255, cfgSSP.DivPSR_2_254);
   LCD_ShowInit(SSP_MASTER, "Ms-Sl Rate");
 }
 

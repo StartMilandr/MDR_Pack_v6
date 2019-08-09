@@ -41,20 +41,23 @@ static uint8_t tempDivPSR_2_254;
 
 static void TestSSP_Init(void)
 { 
-  tempDivPSR_2_254 = cfgSSPex.cfgSSP->DivPSR_2_254;
+  tempDivPSR_2_254 = cfgSSP.DivPSR_2_254;
   //  Уменьшаем скорость обмена
   //  Необходимо, чтобы SPI работал медленнее, чем исполняется код.
   //  Иначе исполнение кода исполняется дольше, чем длительность таймаута для RX. 
   //  Т.е. задержка на посылку новой порции данных превышает длительность в 32-такта частоты обмена.
-  cfgSSPex.cfgSSP->DivSCR_0_255 = 0;
-  cfgSSPex.cfgSSP->DivPSR_2_254 = 254;
+  cfgSSP.DivSCR_0_255 = 0;
+  cfgSSP.DivPSR_2_254 = 254;
   
   //  Init  Master  
-  MDR_SSPex_InitEx(SSP_MASTER, &cfgSSPex);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
+  MDR_SSP_NVIC_EnableIRQ(SSP_MASTER, 0);
+  
   //  Init  Slave
-  MDR_SSPex_InitEx(SSP_SLAVE, &cfgSSPex);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);  
+  MDR_SSP_NVIC_EnableIRQ(SSP_SLAVE, 0);
   
   LCD_ShowInit(SSP_MASTER, "IRQ Bits");
 }
@@ -63,15 +66,17 @@ static void TestSSP_Finit(void)
 { 
   MDR_SSPex_DeInit(SSP_MASTER);
   MDR_SSPex_DeInit(SSP_SLAVE);
+  MDR_SSP_NVIC_DisableIRQ(SSP_MASTER);
+  MDR_SSP_NVIC_DisableIRQ(SSP_SLAVE);
   
-  cfgSSPex.cfgSSP->DivPSR_2_254 = tempDivPSR_2_254;
+  cfgSSP.DivPSR_2_254 = tempDivPSR_2_254;
 }
 
 static void TestSSP_Change(void)
 {
   Cfg_NextDataBits();
-  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSPex.cfgSSP->DataBits);
-  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSPex.cfgSSP->DataBits);  
+  MDR_SSPex_ChangeDataBits(SSP_MASTER, cfgSSP.DataBits);
+  MDR_SSPex_ChangeDataBits(SSP_SLAVE,  cfgSSP.DataBits);  
   
   LCD_ShowInit(SSP_MASTER, "IRQ Bits");
 }

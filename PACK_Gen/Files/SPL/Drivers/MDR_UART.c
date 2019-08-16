@@ -344,45 +344,6 @@ uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *UARTex, bool doUpdate
   return scrUartHz;
 }
 
-//	Включение частоты UARTx_Clock
-#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
-	//  VK214
-	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_CLK_SEL_PER clockSource)
-	{
-		if (UARTex == MDR_UART1ex) 
-			MDR_SetClock_Uart1(clockSource);
-		else
-			MDR_SetClock_Uart2(clockSource);
-		MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock);
-	}
-	
-#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
-  //  VK234, VE4
-	//	Входная частота - PER1_C2, предварительно задать MDR_SetClock_UartTimSSP(clockSource) из MDR_PER_Clock.h;
-  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock)
-	{
-    MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock);
-	}	
-#elif defined (MDR_CLK_LIKE_VE8)  
-	//	VE8, VK014, ESila
-	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_RST_ASYNC_IN_SEL clockSource)
-	{
-	  if (UARTex == MDR_UART1ex)  
-			MDR_SetClock_Uart1(clockSource);  
-		else
-			MDR_SetClock_Uart2(clockSource);  
-		MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock);
-	}
-#else  
-	//	Входная частота - PCLK=HCLK=CPU_CLK
-	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock)
-	{	
-		 MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock);
-	}
-#endif
-
-
-
 
 //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
 void MDR_UARTex_Init(const MDR_UART_TypeEx *UARTex, const MDR_UART_Cfg *cfg, uint32_t baudRate, uint32_t UART_ClockHz)

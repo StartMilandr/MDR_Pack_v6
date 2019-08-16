@@ -921,6 +921,14 @@ __STATIC_INLINE void MDR_PerClock_Disable(const MDR_PerClock_Cfg *pCfgClock) {RE
 //  Выставление делителя и подача рабочей частоты Uart_Clock, SSP_Clock, Timer_Clock, и т.д.
 __STATIC_INLINE void MDR_PerClock_GateOpen(const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG) 
   {  REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_PER_CLK_DIV_Msk, (uint32_t)clockBRG | MDR_PER_CLK_CLK_EN_Msk); }
+  
+//  Аналогично MDR_PerClock_GateOpen но езе и с выбором источника частоты
+__STATIC_INLINE void MDR_PerClock_GateOpenAsync(const MDR_PerClock_Cfg *pCfgClock, MDR_Div128P clockBRG, MDR_RST_ASYNC_IN_SEL selClockSrc) 
+  {  
+    REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_RST_ASYNC_CLK_CLEAR_ALL, 
+                                       (uint32_t)clockBRG | MDR_PER_CLK_CLK_EN_Msk | VAL2FLD_Pos(selClockSrc, MDR_RST_ASYNC_CLK_SELECT_Pos)); 
+  }
+  
   //  Отключение частоты Uart_Clock, SSP_Clock, Timer_Clock, и т.д.
 __STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~MDR_PER_CLK_CLK_EN_Msk;}
 

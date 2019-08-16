@@ -50,12 +50,14 @@ static void TestSSP_Init(void)
   cfgSSP.DivPSR_2_254 = 254;
   
   //  Init  Master  
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_MASTER, MDR_Div128P_div1);  
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
   MDR_SSP_NVIC_EnableIRQ(SSP_MASTER, 0);
   
   //  Init  Slave
-  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_SLAVE, MDR_Div128P_div1);
+  MDR_SSPex_Init(SSP_SLAVE, &cfgSSP);
   MDR_SSPex_EnableSlave(SSP_SLAVE, false);  
   MDR_SSP_NVIC_EnableIRQ(SSP_SLAVE, 0);
   

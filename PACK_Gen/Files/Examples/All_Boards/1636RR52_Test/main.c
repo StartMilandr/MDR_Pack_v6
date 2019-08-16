@@ -58,7 +58,6 @@ int main(void)
     //  SPI BitRate = SSP_Clock / (PSR * (1 + SCR))
     .DivSCR_0_255 = 20,
     .DivPSR_2_254 = 2,
-    .ClockBRG = MDR_Div128P_div1,
     //  Pins
     .pPinCLK = MDRB_PinsSSP1.pPinCLK,
     .pPinTX  = MDRB_PinsSSP1.pPinTX,
@@ -83,8 +82,10 @@ int main(void)
   //  Включение UART_DBG для printf
   MDR_UART_DBG_Init(true);  
   
+  //  Частота SSP_Clock для SPI
+  MDR_SSPex_SetSSPClock_InpPLLCPU(MDR_SSP1ex, MDR_Div128P_div1);  
   //  Инициализация RR52
-  MDR_RR52_InitDelays(freqCPU_Hz); 
+  MDR_RR52_InitDelays(freqCPU_Hz);
   RR52_Obj = MDR_RR52_Init(MDR_SSP1ex, &cfgRR52);  
   
   //  Начальные настройки

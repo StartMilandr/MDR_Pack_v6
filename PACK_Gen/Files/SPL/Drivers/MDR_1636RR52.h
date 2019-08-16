@@ -45,7 +45,6 @@ typedef struct {
   //  SPI BitRate                               // BitRate = SSP_Clock / (PSR * (1 + SCR))
   uint8_t               DivSCR_0_255;           // 0 - 255, Serial Clock Rate
   uint8_t               DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
-  MDR_Div128P           ClockBRG;               // SPI Делитель для частоты SSP_Clock
  
   //  Pins
   const MDR_SSP_CfgPinGPIO  *pPinCLK;

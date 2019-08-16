@@ -96,8 +96,8 @@ int main(void)
 //===========		UART ===============
 void UartInit(uint32_t baudRate, uint32_t UART_ClockHz)
 {	
-	//	Включение MAX_Clock на UART_Clock 
-  MDR_UARTex_SetUartClock_defPLLCPU(UARTx_Ex);  
+	//	Подача на UARTx_Clock частоты ядра или MAX_Clock.
+  MDR_UARTex_SetUartClock_InpPLLCPU(UARTx_Ex, MDR_Div128P_div1);  
 	
 	//	Рассчет делителей под частоту обмена (из UART_ClockHz под baudRate)
   MDR_UART_cfgBaud cfgBaud;	

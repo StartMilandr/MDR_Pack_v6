@@ -277,6 +277,8 @@ typedef struct {
 #define MDR_RST_ASYNC_CLK_SELECT_Pos  (28UL)                    /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bit 28)                */
 #define MDR_RST_ASYNC_CLK_SELECT_Msk  (0xf0000000UL)            /*!< MDR_RST_CLOCK ETH_CLK: SELECT (Bitfield-Mask: 0x0f)   */
 
+#define MDR_RST_ASYNC_CLK_CLEAR_ALL   (MDR_RST_ASYNC_CLK_DIV_Msk | MDR_RST_ASYNC_CLK_CLK_EN_Msk | MDR_RST_ASYNC_CLK_SELECT_Msk)
+
 typedef union {
     uint32_t                Value;
     MDR_RST_ASYNC_CLK_Bits  Flags;

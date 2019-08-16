@@ -305,12 +305,10 @@ MDR_SSP_Events MDR_SSP_GetEventIRQ(MDR_SSP_Type *SSPx)
 }
 
 //  ===============   Функции управления через расширенную структуру блока MDR_SSP_TypeEx ==================
-void MDR_SSPex_Init(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG)
+void MDR_SSPex_Init(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP)
 {
   //  Подача тактирования блока
   MDR_PerClock_Enable(&exSSPx->CfgClock);  
-  //  Включение частоты SSP_Clock
-  MDR_PerClock_GateOpen(&exSSPx->CfgClock, ClockBRG);      
   //  Инициализация параметров SSP
   MDR_SSP_Init(exSSPx->SSPx, cfgSSP);
 }
@@ -390,15 +388,15 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
     MDR_SSP_ClearFIFO_RX(SSPx);  
   }
 
-  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG, bool useFastForSlave)
+  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, bool useFastForSlave)
   {
     //  Подача тактирования блока
     MDR_PerClock_Enable(&exSSPx->CfgClock);  
-    //  Включение частоты SSP_Clock
-    MDR_PerClock_GateOpen(&exSSPx->CfgClock, ClockBRG);      
     //  Инициализация параметров SSP
     MDR_SSP_Init_Len32(exSSPx->SSPx, cfgSSP, useFastForSlave);
   }    
 #endif
+
+  
 
 

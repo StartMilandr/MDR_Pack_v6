@@ -51,22 +51,7 @@ int main(void)
 #ifndef USE_MDR1923VK014  
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
 #endif 
-  
-  //  Для 1986VE4,VE214,VE234 частота UART_Clock формируется мультиплексорами
-  //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer
-  //  В остальных МК UART_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
-#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-  MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
-  MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
-  
-#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-  
-#elif defined (MDR_CLK_LIKE_VE8)  
-  MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_MAX_CLK);
-  
-#endif
-  
+   
   //  Активный тест
   testStack[activeTest]->funcInit();
 

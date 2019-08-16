@@ -111,12 +111,6 @@ int main(void)
   //  Инициализация масок для захвата пинов под SSP и освобождения
   //  Необходимы из-за конфликтов пинов SSP с LCD на некоторых отладочных платах.
   Cfg_SSP_CapturePinsInit(MDR_PIN_FAST);
-
-  //  Для 1986VE4,VE214,VE234 частота SSP_Clock формируется мультиплексорами
-  //  В остальных МК SSP_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
-#ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK  
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-#endif
   
   //  Активный тест
   activeTest = 0;  

@@ -43,7 +43,8 @@ static void TestSSP_Init(void)
   cfgSSP.DivPSR_2_254 = 2;
   
   //  Init
-  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_List[activeIndSSP], MDR_Div128P_div1);  
+  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP);
   MDR_SSPex_EnableMaster(SSP_List[activeIndSSP], true);
   
   LCD_ShowInit(SSP_List[activeIndSSP], "LBM ALL");
@@ -63,7 +64,8 @@ static void TestSSP_Change(void)
   //  Change Active
   NextIndexSSP();
   //  Init
-  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_List[activeIndSSP], MDR_Div128P_div1);  
+  MDR_SSPex_Init(SSP_List[activeIndSSP], &cfgSSP);
   MDR_SSPex_EnableMaster(SSP_List[activeIndSSP], true);  
    
   LCD_ShowInit(SSP_List[activeIndSSP], "LBM ALL");

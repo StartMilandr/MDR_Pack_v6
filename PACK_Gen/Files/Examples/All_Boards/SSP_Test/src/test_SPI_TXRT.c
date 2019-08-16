@@ -34,7 +34,8 @@ TestInterface TI_SPI_TXRX = {
 static void TestSSP_Init(void)
 {  
   //  Init
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_MASTER, MDR_Div128P_div1);
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP);
   MDR_SSPex_EnableMaster(SSP_MASTER, false);
 
   LCD_ShowInit(SSP_MASTER, "TX-RX Rate");

@@ -18,6 +18,11 @@ uint32_t  MDR_GetFreqHz_PerSync (MDR_PERCLK_SYNC_REG  syncRegValue, bool doUpdat
 __STATIC_INLINE void MDR_SetClock_Uart1(MDR_RST_ASYNC_IN_SEL selClockSrc) { MDR_SetClock_AsyncSelect(MDR_CLOCK->UART1_CLK); }
 __STATIC_INLINE void MDR_SetClock_Uart2(MDR_RST_ASYNC_IN_SEL selClockSrc) { MDR_SetClock_AsyncSelect(MDR_CLOCK->UART2_CLK); }
 
+__STATIC_INLINE
+void MDR_SetClock_AsyncSelectEx(volatile uint32_t *regAddr, MDR_RST_ASYNC_IN_SEL selClockSrc)
+{
+  *regAddr = MDR_MaskClrSet(*regAddr, MDR_RST_ASYNC_CLK_SELECT_Msk, VAL2FLD_Pos(selClockSrc, MDR_RST_ASYNC_CLK_SELECT_Pos));
+}
 
   
 #endif  // _MDR_PER_CLOCK_VE8x_H

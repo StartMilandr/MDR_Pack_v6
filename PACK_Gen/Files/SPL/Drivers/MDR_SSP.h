@@ -4,6 +4,7 @@
 #include <MDR_Config.h>
 #include <MDR_Funcs.h>
 #include <MDR_RST_Clock.h>
+#include <MDR_PER_Clock.h>
 #include <MDR_GPIO.h>
 
 #include <MDR_SSP_def.h>
@@ -169,7 +170,7 @@ extern const MDR_SSP_TypeEx    _MDR_SSP1ex;
 //   - активацию прерываний.
 //  Т.е. обеспечавают полную инициализацию блока "под ключ".
 
-void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG);
+void MDR_SSPex_Init  (const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP);
 void MDR_SSPex_DeInit(const MDR_SSP_TypeEx *exSSPx);
 
 
@@ -293,7 +294,7 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
   void MDR_SSP_Init_Len32(MDR_SSP_Type *SSPx, MDR_SSP_Config *cfg, bool useFastForSlave);
 
   //  Инициализация SSP c тактированием и SSP_CLock
-  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, MDR_Div128P ClockBRG, bool useFastForSlave);
+  void MDR_SSPex_Init_Len32(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Config *cfgSSP, bool useFastForSlave);
 
 #endif
 
@@ -303,5 +304,56 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
   #pragma clang diagnostic pop  
 #endif
 
+
+
+//	Включение частоты SSPx_Clock
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+	//  VK214
+  __STATIC_INLINE
+  void  MDR_SSPex_SetSSPClock(const MDR_SSP_TypeEx *SSPex, MDR_Div128P divForSSPClock, MDR_CLK_SEL_PER clockSource)
+	{
+  	MDR_SetClock_SSP1(clockSource);
+		MDR_PerClock_GateOpen(&SSPex->CfgClock, divForSSPClock);
+	}
+	
+#elif defined (MDR_SSP_CLOCK_FROM_PER_CLOCK)
+  //  VK234, VE4
+	//	Входная частота - PER1_C2, предварительно задать MDR_SetClock_UartTimSSP(clockSource) из MDR_PER_Clock.h;
+  __STATIC_INLINE
+  void  MDR_SSPex_SetSSPClock(const MDR_SSP_TypeEx *SSPex, MDR_Div128P divForSSPClock)
+                              { MDR_PerClock_GateOpen(&SSPex->CfgClock, divForSSPClock); }
+  
+#elif defined (MDR_CLK_LIKE_VE8)  
+	//	VE8, VK014, ESila
+  __STATIC_INLINE
+  void  MDR_SSPex_SetSSPClock(const MDR_SSP_TypeEx *SSPex, MDR_Div128P divForSSPClock, MDR_RST_ASYNC_IN_SEL clockSource)
+                              { MDR_PerClock_GateOpenAsync(&SSPex->CfgClock, divForSSPClock, clockSource); }
+  
+#else  
+	//	Входная частота - PCLK=HCLK=CPU_CLK
+  __STATIC_INLINE
+  void  MDR_SSPex_SetSSPClock(const MDR_SSP_TypeEx *SSPex, MDR_Div128P divForSSPClock)
+                              {	MDR_PerClock_GateOpen(&SSPex->CfgClock, divForSSPClock); }
+#endif
+
+                              
+//  Выбор частоты и делителя для SSP_Clock "по умолчанию" (частота ядра от PLL или MAX_Clock)
+__STATIC_INLINE
+void  MDR_SSPex_SetSSPClock_InpPLLCPU(const MDR_SSP_TypeEx *SSPex, MDR_Div128P divForSSPClock)
+{
+#if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
+  MDR_SSPex_SetSSPClock(SSPex, divForSSPClock, MDR_PER_PLLCPUo);	
+  
+#elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  MDR_SSPex_SetSSPClock(SSPex, divForSSPClock);
+  
+#elif defined (MDR_CLK_LIKE_VE8)  
+	MDR_SSPex_SetSSPClock(SSPex, divForSSPClock, MDR_RST_ASYNC_IN_MAX_CLK);
+  
+#else  
+  MDR_SSPex_SetSSPClock(SSPex, divForSSPClock);
+#endif
+}
 
 #endif //  _MDR_SSP_H

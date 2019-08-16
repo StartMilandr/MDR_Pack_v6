@@ -238,37 +238,51 @@ uint32_t  MDR_UARTex_GetUartClockHz(const MDR_UART_TypeEx *exUART, bool doUpdate
 //	Включение частоты UARTx_Clock
 #if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
 	//  VK214
-	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_CLK_SEL_PER clockSource);
+  __STATIC_INLINE
+	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_CLK_SEL_PER clockSource)
+	{
+		if (UARTex == MDR_UART1ex) 
+			MDR_SetClock_Uart1(clockSource);
+		else
+			MDR_SetClock_Uart2(clockSource);
+		MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock);
+	}
 	
 #elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
   //  VK234, VE4
 	//	Входная частота - PER1_C2, предварительно задать MDR_SetClock_UartTimSSP(clockSource) из MDR_PER_Clock.h;
-  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock);
-	
+  __STATIC_INLINE
+  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock)
+                                { MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock); }	
 #elif defined (MDR_CLK_LIKE_VE8)  
 	//	VE8, VK014, ESila
-	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_RST_ASYNC_IN_SEL clockSource);
-	
+  __STATIC_INLINE
+	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock, MDR_RST_ASYNC_IN_SEL clockSource)
+                                { MDR_PerClock_GateOpenAsync(&UARTex->CfgClock, divForUartClock, clockSource); }
 #else  
 	//	Входная частота - PCLK=HCLK=CPU_CLK
-  void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock);
+  __STATIC_INLINE
+	void  MDR_UARTex_SetUartClock(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock)
+                                {	MDR_PerClock_GateOpen(&UARTex->CfgClock, divForUartClock); }
 #endif
 
+                                
+//  Выбор частоты и делителя для UART_Clock "по умолчанию" (частота ядра от PLL или MAX_Clock)
 __STATIC_INLINE
-void  MDR_UARTex_SetUartClock_defPLLCPU(const MDR_UART_TypeEx *UARTex)
+void  MDR_UARTex_SetUartClock_InpPLLCPU(const MDR_UART_TypeEx *UARTex, MDR_Div128P divForUartClock)
 {
 #if defined (MDR_PER_CLOCK_SELF_TIM_UART_SSP)
-	MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1, MDR_PER_PLLCPUo);	
+	MDR_UARTex_SetUartClock(UARTex, divForUartClock, MDR_PER_PLLCPUo);	
   
 #elif defined (MDR_UART_CLOCK_FROM_PER_CLOCK)
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-  MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1);
+  MDR_UARTex_SetUartClock(UARTex, divForUartClock);
   
 #elif defined (MDR_CLK_LIKE_VE8)  
-	MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
+	MDR_UARTex_SetUartClock(UARTex, divForUartClock, MDR_RST_ASYNC_IN_MAX_CLK);
   
 #else  
-  MDR_UARTex_SetUartClock(UARTex, MDR_Div128P_div1);
+  MDR_UARTex_SetUartClock(UARTex, divForUartClock);
 #endif
 }
 
@@ -382,6 +396,7 @@ __STATIC_INLINE void MDR_UART_TX_DMA_Disable(MDR_UART_Type *UARTx) {UARTx->DMACR
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
   #pragma clang diagnostic pop  
 #endif
+
 
 
 #endif // MDR_UART_H

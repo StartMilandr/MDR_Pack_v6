@@ -42,17 +42,8 @@ MDR_1636RR52_Obj MDR_RR52_Init(const MDR_SSP_TypeEx *exSSPx, const MDR_1636RR52_
     .DivSCR_0_255 = cfgRR52->DivSCR_0_255,
     .DivPSR_2_254 = cfgRR52->DivPSR_2_254,
   };  
-  MDR_SSPex_Init(exSSPx, &cfgSSP, cfgRR52->ClockBRG);
+  MDR_SSPex_Init(exSSPx, &cfgSSP);
   MDR_SSPex_EnableMaster(exSSPx, false);
-
-  //  Для 1986VE4,VE214,VE234 частота UART_Clock формируется мультиплексорами
-  //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer
-  //  В остальных МК UART_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
-#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-  MDR_SetClock_SSP1(MDR_PER_PLLCPUo);
-#elif defined (MDR_PER_CLK_LIKE_VE4)
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-#endif 
   
   //  Init SPI Pins  
   MDR_SSP_CfgPinsGPIO cfgPins;  

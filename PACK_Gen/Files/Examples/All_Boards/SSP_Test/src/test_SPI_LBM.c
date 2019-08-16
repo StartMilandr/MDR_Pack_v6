@@ -40,7 +40,8 @@ static void TestSSP_Init(void)
   cfgSSP.DivPSR_2_254 = 2;
   
   //  Init
-  MDR_SSPex_Init(SSP_MASTER, &cfgSSP, MDR_Div128P_div1);
+  MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_MASTER, MDR_Div128P_div1);  
+  MDR_SSPex_Init(SSP_MASTER, &cfgSSP);
   MDR_SSPex_EnableMaster(SSP_MASTER, true);
   
   LCD_ShowInit(SSP_MASTER, "LBM");

@@ -4,6 +4,7 @@ f2=../BKP/BKP_VE8.txt
 f3=../GPIO/GPIO_VE8VK14.txt
 f4=../UART/UART_VE8.txt
 f5=../SSP/SSP_VE8.txt
+f6=../Timer/Timer_VE8.txt
 
 [TAGS]
 #RST=f1
@@ -13,6 +14,7 @@ f5=../SSP/SSP_VE8.txt
 #GPIOs_R=#GPIO
 #UARTs=f4
 #SSPs=f5
+#TIMERs=f6
 
 
 [TAGS_New]
@@ -34,8 +36,6 @@ f5=../SSP/SSP_VE8.txt
 #CACHE_R=
 #SPWs=
 #SPWs_R=
-#TIMERs=
-#TIMERs_R=
 #CANs=
 #CANs_R=
 #ARINKs=

@@ -1,3 +1,4 @@
+#Timers
 <!--TIMER1-->
 <peripheral>
   <name>MDR_TIMER1</name>
@@ -5,11 +6,13 @@
   <description>TIMER Control</description>
   <groupName>TIMER</groupName>
   <!-- #TIMER1_ADDR -->
+  <baseAddress>0x4008A0000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>
     <offset>0</offset>
     <!-- #TIMER_SIZE -->
+    <size>0x90</size>
     <usage>registers</usage>
   </addressBlock>
   <registers>
@@ -22,11 +25,13 @@
       <access>read-write</access>
       <resetValue>0x00000000</resetValue>
       <!-- #TIMER_MASK -->
+      <resetMask>0xFFFFFFFF</resetMask>
       <fields>
         <field>
           <name>Value</name>
           <description>Counter Value</description>
           <!-- #TIMER_RANGE -->
+          <bitRange>[31:0]</bitRange>
           <access>read-write</access>
         </field>
       </fields>
@@ -58,11 +63,13 @@
       <access>read-write</access>
       <resetValue>0x00000000</resetValue>
       <!-- #TIMER_MASK -->
+      <resetMask>0xFFFFFFFF</resetMask>
       <fields>
         <field>
           <name>Value</name>
           <description>Counter Value</description>
           <!-- #TIMER_RANGE -->
+          <bitRange>[31:0]</bitRange>
           <access>read-write</access>
         </field>
       </fields>
@@ -150,7 +157,9 @@
             <enumeratedValue><name>Event_Ch4</name><description>Event in Channel4</description><value>7</value></enumeratedValue>
             <enumeratedValue><name>Rise_ETR</name><description>Rise front in ETR pin</description><value>8</value></enumeratedValue>
             <!-- #TIMER_Event_9_VE1 -->
+            <enumeratedValue><name>Fall_ETR</name><description>Fall front in ETR pin</description><value>9</value></enumeratedValue>
             <!-- #TIMER_Event_10_VE1 -->            
+            <enumeratedValue><name>CNT_eq_ARR_TIM4</name><description>CNT gets ARR in Timer4</description><value>10</value></enumeratedValue>
           </enumeratedValues>
         </field>
       </fields>
@@ -164,11 +173,13 @@
       <access>read-write</access>
       <resetValue>0x00000000</resetValue>
       <!-- #TIMER_MASK -->
+      <resetMask>0xFFFFFFFF</resetMask>
       <fields>
         <field>
           <name>Value</name>
           <description>Captured or PWM Value</description>
           <!-- #TIMER_RANGE -->
+          <bitRange>[31:0]</bitRange>
         </field>
       </fields>
     </register>
@@ -849,12 +860,56 @@
       <addressOffset>0x0000007C</addressOffset>
     </register>
     <!-- #TIMER_MDA_REX_VE1 -->
+    <!--DMA_RE1-->
+    <register derivedFrom="DMA_RE">
+      <name>DMA_RE1</name>
+      <description>DMA Request Enable for TIMx_DMA_REQ1</description>
+      <addressOffset>0x00000080</addressOffset>
+    </register>
+    <!--DMA_RE2-->
+    <register derivedFrom="DMA_RE">
+      <name>DMA_RE2</name>
+      <description>DMA Request Enable for TIMx_DMA_REQ2</description>
+      <addressOffset>0x00000084</addressOffset>
+    </register>
+    <!--DMA_RE3-->
+    <register derivedFrom="DMA_RE">
+      <name>DMA_RE3</name>
+      <description>DMA Request Enable for TIMx_DMA_REQ3</description>
+      <addressOffset>0x00000088</addressOffset>
+    </register>
+    <!--DMA_RE4-->
+    <register derivedFrom="DMA_RE">
+      <name>DMA_RE4</name>
+      <description>DMA Request Enable for TIMx_DMA_REQ4</description>
+      <addressOffset>0x0000008C</addressOffset>
+    </register>
   </registers>
   <!-- peripheral end-->
 </peripheral>
 <!-- #MDR_TIMER2 -->
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER2</name>
+  <baseAddress>0x4008B000</baseAddress>
+</peripheral>
 <!-- #MDR_TIMER3 -->
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER3</name>
+  <baseAddress>0x4008C000</baseAddress>
+</peripheral>
 <!-- #MDR_TIMER4 -->
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER4</name>
+  <baseAddress>0x4008D000</baseAddress>
+</peripheral>
 <!-- #MDR_TIMER5 -->
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER5</name>
+  <baseAddress>0x4008E000</baseAddress>
+</peripheral>
 <!-- #MDR_TIMER6 -->
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER6</name>
+  <baseAddress>0x4008F000</baseAddress>
+</peripheral>
 

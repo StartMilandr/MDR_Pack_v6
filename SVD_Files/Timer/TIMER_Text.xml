@@ -52,21 +52,72 @@
 </register>
 
 
-#MDR_TIMER2
+#TIMER1_ADDR_VEx
+<baseAddress>0x40070000</baseAddress>
+
+#MDR_TIMER2_VEx
 <peripheral derivedFrom="MDR_TIMER1">
   <name>MDR_TIMER2</name>
   <baseAddress>0x40078000</baseAddress>
 </peripheral>
 
-#MDR_TIMER3
+#MDR_TIMER3_VEx
 <peripheral derivedFrom="MDR_TIMER1">
   <name>MDR_TIMER3</name>
   <baseAddress>0x40080000</baseAddress>
 </peripheral>
 
-#MDR_TIMER4
+#MDR_TIMER4_VEx
 <peripheral derivedFrom="MDR_TIMER1">
   <name>MDR_TIMER4</name>
   <baseAddress>0x40098000</baseAddress>
 </peripheral>
 
+#TIMER1_ADDR_VE8VK014
+<baseAddress>0x4008A0000</baseAddress>
+
+#MDR_TIMER2_VE8VK014
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER2</name>
+  <baseAddress>0x4008B000</baseAddress>
+</peripheral>
+
+#MDR_TIMER3_VE8VK014
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER3</name>
+  <baseAddress>0x4008C000</baseAddress>
+</peripheral>
+
+#MDR_TIMER4_VE8VK014
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER4</name>
+  <baseAddress>0x4008D000</baseAddress>
+</peripheral>
+
+#MDR_TIMER5_VK014
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER5</name>
+  <baseAddress>0x4008E000</baseAddress>
+</peripheral>
+
+#MDR_TIMER6_VK014
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER6</name>
+  <baseAddress>0x4008F000</baseAddress>
+</peripheral>
+
+
+#TIMER1_ADDR_ES
+<baseAddress>0x400940000</baseAddress>
+
+#MDR_TIMER2_ES
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER2</name>
+  <baseAddress>0x40095000</baseAddress>
+</peripheral>
+
+#MDR_TIMER3_ES
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER3</name>
+  <baseAddress>0x40096000</baseAddress>
+</peripheral>

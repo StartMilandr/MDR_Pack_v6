@@ -4145,6 +4145,7 @@
       <version>1.0</version>
       <description>TIMER Control</description>
       <groupName>TIMER</groupName>
+      <!-- #TIMER1_ADDR -->
       <baseAddress>0x40070000</baseAddress>
       <size>32</size>
       <access>read-write</access>
@@ -5008,6 +5009,8 @@
     </peripheral>
     <!-- #MDR_TIMER3 -->
     <!-- #MDR_TIMER4 -->
+    <!-- #MDR_TIMER5 -->
+    <!-- #MDR_TIMER6 -->
     <!-- #SSPs  -->
     <!-- SSP1 -->
     <peripheral>

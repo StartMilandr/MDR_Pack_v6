@@ -1,8 +1,8 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 //  ОПИСАНИЕ:
 //  Пример каскадного включения таймеров.
@@ -46,11 +46,8 @@ TestInterface TI_CascadeTimer = {
 
 static void Test_Init(void)
 {
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Cascade Timer", 3);
-#else
-  MDRB_LCD_Print(TEST_ID__COUNT_CASCADE);
-#endif
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__COUNT_CASCADE);    
   
   MDRB_LED_Init(LED_SEL_MAX);
   MDRB_LED_Set(LED_SEL_MAX, 0);
@@ -65,32 +62,58 @@ static void Test_Init(void)
 #endif  
 #ifdef  TIMER4_EXIST
   //  Slowest Counter
-  MDR_Timer_AddCascadePeriod(MDR_TIMER4ex, TIM_BRG_LED, TIM_EventTIM3_CNT_ARR, TIM_CASCADE_PER, true);  
-  MDR_Timer_Start(MDR_TIMER4ex);
+  MDR_Timer_AddCascadePeriod(MDR_TIMER4ex, TIM_BRG_LED, TIM_EventTIM3_CNT_ARR, TIM_CASCADE_PER, true);    
 #endif
+
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
+  #ifdef  TIMER4_EXIST
+    MDR_Timer_Start(MDR_TIMER4ex);
+  #endif 
   
   MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+#else
+  // VE8 - Если инициализировать начиная с TIM3 до TIM1, то начинают непрерывно генерится прерывания и до включения TIM1 код не доходит.
+  MDR_Timer_Start(MDR_TIMER1ex);
+  MDR_Timer_Start(MDR_TIMER2ex);  
+  #ifdef  USE_TIMER3  
+    MDR_Timer_Start(MDR_TIMER3ex);
+  #endif
+  #ifdef  TIMER4_EXIST
+    MDR_Timer_Start(MDR_TIMER4ex);
+  #endif
+#endif
 }  
 
 static void Test_Finit(void)
 {
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+  #ifdef  USE_TIMER4  
+    MDR_Timer_Stop(MDR_TIMER4ex);
+  #endif    
+#else
+  #ifdef  TIMER4_EXIST  
+    MDR_Timer_Stop(MDR_TIMER4ex);
+  #endif      
+  #ifdef  USE_TIMER3  
+    MDR_Timer_Stop(MDR_TIMER3ex);
+  #endif  
+  MDR_Timer_Stop(MDR_TIMER2ex);
+  MDR_Timer_Stop(MDR_TIMER1ex);
+#endif
+  
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
-  
-#ifdef  TIMER4_EXIST  
-  MDR_Timer_Stop(MDR_TIMER4ex);
-  MDR_Timer_DeInit(MDR_TIMER4ex);
-#endif  
 #ifdef  USE_TIMER3   
   MDR_Timer_DeInit(MDR_TIMER3ex);
+#endif    
+#ifdef  TIMER4_EXIST  
+  MDR_Timer_DeInit(MDR_TIMER4ex);
 #endif  
   
   LED_Uninitialize();
-  
-#ifdef LCD_CONFLICT_LED
-  MDRB_LCD_CapturePins();
-#endif   
+
+  MDR_ShowRestore_IfConflLED();
 }
 
 static void Test_Empty(void)

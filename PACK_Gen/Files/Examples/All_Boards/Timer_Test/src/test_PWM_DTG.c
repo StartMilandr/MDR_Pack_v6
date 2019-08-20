@@ -1,9 +1,9 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include <MDRB_Timer_PinSelect.h>
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 //  ОПИСАНИЕ:
 //  Пример генерации ШИМ c задержкой между фронтами прямого и инверсного каналов - Dead Time Generator (DTG).
@@ -50,22 +50,8 @@ static void Test_Init(void)
                                           .ClearRef_ByETR = MDR_Off,
                                          };
   
-  //  To LCD
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("PWM with DTG", 3);
-  
-#elif defined (LCD_CONFLICT_TIM)
-  MDRB_LCD_Print(TEST_ID__PWM_DTG);  
-                                         
-  #ifdef LCD_BLINKY_ENA                                         
-    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
-    MDR_LCD_DeInit();                                         
-  #endif  
-
-#else
-  MDRB_LCD_Print(TEST_ID__PWM_DTG);
-#endif                                          
+    //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__PWM_DTG);                                       
 
   // PWM Settings
   cfgOptions.cfgDTG = &cfgDTG;
@@ -104,10 +90,7 @@ static void Test_Finit(void)
   //  Finit Timer
   MDR_Timer_DeInit(PWM1_TIMex);
   
-#ifdef LCD_CONFLICT_TIM 
-  // Restore LCD
-  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
-#endif
+  MDR_ShowRestore_IfConflTim();
 }
 
 static void Test_Empty(void)

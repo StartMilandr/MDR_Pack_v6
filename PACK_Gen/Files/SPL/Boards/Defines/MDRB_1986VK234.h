@@ -144,6 +144,7 @@
     #define MDRB_LCD_PINS_LD          PIN_PB11
     
     #define LCD_HTD_B083_DISPLAY
+    #define MDRB_HAS_LCD
 
 //  ---------------  UART1 Pin Definition ----------------
   //  PORT_B: PB0, PB1 - Main

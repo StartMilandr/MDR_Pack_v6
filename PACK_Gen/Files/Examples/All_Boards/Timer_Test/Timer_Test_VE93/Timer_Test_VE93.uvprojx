@@ -432,6 +432,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\test_SimplestFlash.c</FilePath>
             </File>
+            <File>
+              <FileName>MDRB_ShowMess.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\MDRB_ShowMess.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

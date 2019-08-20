@@ -1,8 +1,8 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 //  ОПИСАНИЕ:
 //  Пример простейшей инициализации таймера для получения прерываний с заданным периодом.
@@ -33,16 +33,14 @@ TestInterface TI_SimplestFlash = {
 };
 
 static bool started = false;
+static void TestStart(void);
+static void TestStop(void);
 
 static void Test_Init(void)
 {
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Simplest Timer", 3);
-  MDRB_LCD_Print("and Sync Run", 5);
-#else
-  MDRB_LCD_Print(TEST_ID__SIMPLE_FLASH);
-#endif
-  
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__SIMPLE_FLASH);   
+    
   MDRB_LED_Init(LED_SEL_MAX);
   MDRB_LED_Set (LED_SEL_MAX, 0);
   
@@ -51,14 +49,42 @@ static void Test_Init(void)
 #ifdef  USE_TIMER3  
   MDR_Timer_InitPeriod(MDR_TIMER3ex, TIM_BRG_LED, TIM_PSG_LED, TIM_PERIOD_LED, true);
 #endif
+
+  TestStart();
   
-  MDR_Timer_StartSync(START_SYNC_SEL_MAX);
   started = true;
 }  
 
+static void TestStart(void)
+{
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)    
+  MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+#else
+  MDR_Timer_Start(MDR_TIMER1ex);
+  MDR_Timer_Start(MDR_TIMER2ex);
+  #ifdef  USE_TIMER3    
+    MDR_Timer_Start(MDR_TIMER3ex);
+  #endif  
+#endif 
+}
+
+static void TestStop(void)
+{
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)    
+  MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+#else
+  MDR_Timer_Stop(MDR_TIMER1ex);
+  MDR_Timer_Stop(MDR_TIMER2ex);
+  #ifdef  USE_TIMER3    
+    MDR_Timer_Stop(MDR_TIMER3ex);
+  #endif    
+#endif
+}
+
 static void Test_Finit(void)
 {
-  MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+  TestStop();
+  
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
 #ifdef  USE_TIMER3  
@@ -67,9 +93,7 @@ static void Test_Finit(void)
   
   LED_Uninitialize();
   
-#ifdef LCD_CONFLICT_LED
-  MDRB_LCD_CapturePins();
-#endif  
+  MDR_ShowRestore_IfConflLED();  
 }
 
 static void Test_Empty(void)
@@ -80,9 +104,9 @@ static void Test_Empty(void)
 static void Test_Change(void)
 {
  if (started)
-   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+   TestStop();
  else
-   MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+   TestStart();
  
  started = !started;
 }

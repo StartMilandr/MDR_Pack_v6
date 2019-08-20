@@ -3,6 +3,7 @@
 #include <MDRB_LCD.h>
 
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 //  ОПИСАНИЕ:
 //    Пример настройки счета таймера с указанием всех настроек через структуру MDR_Timer_CfgCountClock.
@@ -35,13 +36,9 @@ static void Test_Init(void)
 {
   MDR_Timer_CfgCountClock cfgCntClock;
   
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Count TimClock", 3);
-  MDRB_LCD_Print("All Dirs", 5);
-#else
-  MDRB_LCD_Print(TEST_ID__COUNT_TIM_CLOCK);
-#endif  
-    
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__COUNT_TIM_CLOCK);
+      
   MDRB_LED_Init(LED_SEL_MAX);
   MDRB_LED_Set (LED_SEL_MAX, 0);
   
@@ -71,13 +68,30 @@ static void Test_Init(void)
   cfgCntClock.countDir = TIM_CountUp;
   MDR_Timer_InitCountTimClock(MDR_TIMER3ex, &cfgCntClock);  
 #endif
-  
+
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
   MDR_Timer_StartSync(START_SYNC_SEL_MAX);
+#else
+  MDR_Timer_Start(MDR_TIMER1ex);
+  MDR_Timer_Start(MDR_TIMER2ex);
+  #ifdef  USE_TIMER3  
+    MDR_Timer_Start(MDR_TIMER3ex);
+  #endif
+#endif
 }  
 
 static void Test_Finit(void)
 {
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)  
   MDR_Timer_StopSync(START_SYNC_SEL_MAX);
+#else
+  MDR_Timer_Stop(MDR_TIMER1ex);
+  MDR_Timer_Stop(MDR_TIMER2ex);
+  #ifdef  USE_TIMER3  
+    MDR_Timer_Stop(MDR_TIMER3ex);
+  #endif
+#endif
+  
   MDR_Timer_DeInit(MDR_TIMER1ex);
   MDR_Timer_DeInit(MDR_TIMER2ex);
 #ifdef  USE_TIMER3  
@@ -86,13 +100,7 @@ static void Test_Finit(void)
  
   LED_Uninitialize();
   
-#ifdef LCD_CONFLICT_LED
-  MDRB_LCD_CapturePins();
-#endif  
-  
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_ClearLine(5);
-#endif  
+  MDR_ShowRestore_IfConflLED();
 }
 
 static void Test_Empty(void)

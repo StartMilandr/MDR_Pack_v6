@@ -73,7 +73,7 @@
         <LExpSel>0</LExpSel>
       </OPTXL>
       <OPTFL>
-        <tvExp>1</tvExp>
+        <tvExp>0</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
@@ -241,7 +241,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\main.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -257,7 +257,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\main.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -273,7 +273,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\main.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -289,7 +289,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_CascadeTimer.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_CascadeTimer.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -305,7 +305,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_Pulse.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_Pulse.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -321,7 +321,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_PWM_ClearBRKETR.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -337,7 +337,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_PWM_ClearBRKETR.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_PWM_ClearBRKETR.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -353,7 +353,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_CountTimClock.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_CountTimClock.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -413,7 +413,7 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\src\main.c</PathWithFileName>
@@ -550,6 +550,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\src\test_PWM_DTG.c</PathWithFileName>
       <FilenameWithoutPath>test_PWM_DTG.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>13</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\src\MDRB_ShowMess.c</PathWithFileName>
+      <FilenameWithoutPath>MDRB_ShowMess.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

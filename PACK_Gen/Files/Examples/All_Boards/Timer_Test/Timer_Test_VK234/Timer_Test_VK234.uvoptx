@@ -156,7 +156,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_CAP_Period.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_CAP_Period.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\Timer_Test_VK234\../src/test_CAP_Period.c\160</Expression>
         </Bp>
@@ -172,7 +172,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\test_CAP_Period.c</Filename>
+          <Filename>C:\CODE\tmp\TestPack2x\Examples\1986VK214\src\test_CAP_Period.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -377,6 +377,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\src\test_PWM_CountCAP.c</PathWithFileName>
       <FilenameWithoutPath>test_PWM_CountCAP.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>13</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\src\MDRB_ShowMess.c</PathWithFileName>
+      <FilenameWithoutPath>MDRB_ShowMess.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

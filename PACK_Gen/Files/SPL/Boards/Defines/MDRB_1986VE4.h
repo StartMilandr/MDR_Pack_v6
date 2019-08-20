@@ -128,6 +128,8 @@
                                         MDR_PORTA->RXTX |= ((value) & 0x0FUL)
     
     #define LCD_MT_10T7_DISPLAY
+    #define MDRB_HAS_LCD
+
 
 //  ---------------  SPI1 Pin Definition ----------------
   //  PORT_A: SSP1_PA12,PC13,PC14,PC15 - Main

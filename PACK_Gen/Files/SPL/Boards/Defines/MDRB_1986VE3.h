@@ -204,6 +204,8 @@
     #define MDRB_LCD_RES_PORT         MDR_GPIO_D
     #define MDRB_LCD_RES_PIN          PIN_PD12
 
+    #define MDRB_HAS_LCD
+
     //  Bus Commands
     #define MDRB_LCD_BusSetOUT()        MDR_PORTA->OE |= 0x00FF
     

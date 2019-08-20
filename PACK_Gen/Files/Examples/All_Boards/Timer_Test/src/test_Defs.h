@@ -181,6 +181,18 @@ typedef struct {
   #define CAP_SEL_TIM2_CH2
   
   #define USE_SECOND_CHANNEL
+  
+#elif defined (USE_MDR1986VE8)
+  // PWM1: PA28, PA29  ETR: PA27, BRK: PA10
+  #define PWM1_SEL_TIM3_CH1
+  // PWM1: PA30, PA31
+  #define PWM1_SEL_TIM3_CH2_EX  
+  // PWM2: PA26, PA25
+  #define PWM2_SEL_TIM4_CH2
+  // CAP:  PA8  ETR: PA7
+  #define CAP_SEL_TIM1_CH1
+  
+  #define USE_SECOND_CHANNEL  
 
 #endif
 
@@ -252,6 +264,20 @@ typedef struct {
   #define PWM1_PIN_ETR          _pinTim2_ETR
   #define PWM1_PIN_BRK          _pinTim2_BRK
 
+#elif defined (PWM1_SEL_TIM3_CH1)
+  #define PWM1_IS_TIM3
+
+  #define PWM1_TIMex            MDR_TIMER3ex
+  #define PWM1_TIM              MDR_TIMER3
+  #define PWM1_TIM_CH           MDR_TIMER3_CH1
+  #define PWM1_PIN_CH           _pinTim3_CH1
+  #define PWM1_PIN_nCH          _pinTim3_nCH1
+  #define PWM1_START_SEL_MSK    TIM3_StartMsk
+  
+  #define PWM1_PIN_ETR          _pinTim3_ETR
+  #define PWM1_PIN_BRK          _pinTim3_BRK
+
+
 #elif defined (PWM1_SEL_TIM4_CH4)
   #define PWM1_IS_TIM4
 
@@ -283,6 +309,16 @@ typedef struct {
   #define PWM1_TIM_CH_EX        MDR_TIMER1_CH1
   #define PWM1_PIN_CH_EX        _pinTim1_CH1
   #define PWM1_PIN_nCH_EX       _pinTim1_nCH1
+  
+#elif defined (PWM1_SEL_TIM2_CH2_EX)
+  #define PWM1_TIM_CH_EX        MDR_TIMER2_CH2
+  #define PWM1_PIN_CH_EX        _pinTim2_CH2
+  #define PWM1_PIN_nCH_EX       _pinTim2_nCH2  
+  
+#elif defined (PWM1_SEL_TIM3_CH2_EX)
+  #define PWM1_TIM_CH_EX        MDR_TIMER3_CH2
+  #define PWM1_PIN_CH_EX        _pinTim3_CH2
+  #define PWM1_PIN_nCH_EX       _pinTim3_nCH2    
   
 #endif
 
@@ -344,6 +380,15 @@ typedef struct {
   #define PWM2_PIN_CH           _pinTim3_CH4
   #define PWM2_PIN_nCH          _pinTim3_nCH4
   #define PWM2_START_SEL_MSK    TIM3_StartMsk
+  
+#elif defined (PWM2_SEL_TIM4_CH2)
+  #define PWM2_TIMex            MDR_TIMER4ex
+  #define PWM2_TIM              MDR_TIMER4
+  #define PWM2_TIM_CH           MDR_TIMER4_CH2
+  #define PWM2_PIN_CH           _pinTim4_CH2
+  #define PWM2_PIN_nCH          _pinTim4_nCH2
+  #define PWM2_START_SEL_MSK    TIM4_StartMsk  
+  
 #endif
 
 
@@ -362,7 +407,22 @@ typedef struct {
   #define CAP_EVENT_CH         TIM_Event_CH2
   #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH2
   #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH2
+
+#elif defined (CAP_SEL_TIM1_CH1)
+  #define CAP_TIMex            MDR_TIMER1ex
+  #define CAP_TIM              MDR_TIMER1
+  #define CAP_TIM_CH           MDR_TIMER1_CH1
+  #define CAP_START_SEL_MSK    TIM1_StartMsk
   
+  #define CAP_PIN_CH           _pinTim1_CH1
+  //#define CAP_PIN_nCH          _pinTim1_nCH2
+  #define CAP_PIN_ETR          _pinTim1_ETR
+
+  #define CAP_EVENT_CH         TIM_Event_CH1
+  #define CAP_EVENT_RISE       TIM_FL_CCR_CAP_CH1
+  #define CAP_EVENT_FALL       TIM_FL_CCR1_CAP_CH1
+
+
 #elif defined (CAP_SEL_TIM2_CH1)
   #define CAP_TIMex            MDR_TIMER2ex
   #define CAP_TIM              MDR_TIMER2

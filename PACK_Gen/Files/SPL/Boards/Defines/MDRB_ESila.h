@@ -143,6 +143,7 @@
     
 
     #define MDRB_LCD_CONFLICT_LED
+    #define MDRB_HAS_LCD
 
 
 //  ---------------  UART1 Pin Definition ----------------

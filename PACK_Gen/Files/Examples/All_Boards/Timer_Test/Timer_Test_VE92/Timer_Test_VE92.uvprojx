@@ -442,6 +442,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\test_SimplestFlash.c</FilePath>
             </File>
+            <File>
+              <FileName>MDRB_ShowMess.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\MDRB_ShowMess.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -473,7 +478,7 @@
       </api>
     </apis>
     <components>
-      <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_BUTTONS">
+      <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
@@ -486,49 +491,61 @@
         </targetInfos>
       </component>
       <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Board Support" Cgroup="UART_Debug" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE9x">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_UseFuncs">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+      <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="PER_Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_CM1CM3">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
-      <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+      <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="Timer" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Drivers" Cgroup="UART" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="UseFuncs" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
@@ -537,7 +554,7 @@
     <files>
       <file attr="config" category="header" name="SPL\Config\MDRB_BoardSelect.h" version="2.0.0">
         <instance index="0">RTE\Board_Support\MDR1986VE92\MDRB_BoardSelect.h</instance>
-        <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
+        <component Cclass="Board Support" Cgroup="UART_Debug" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

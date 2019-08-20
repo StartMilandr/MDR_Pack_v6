@@ -209,6 +209,21 @@
   extern const MDR_Timer_CfgPinGPIO _pinTim2_ETR;    // PC6
   extern const MDR_Timer_CfgPinGPIO _pinTim2_BRK;    // PC7
 
+#elif defined(USE_BOARD_VE8)
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH1;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_nCH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_ETR;  
+  extern const MDR_Timer_CfgPinGPIO _pinTim3_BRK;  
+  
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_CH2;
+  extern const MDR_Timer_CfgPinGPIO _pinTim4_nCH2;
+
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_ETR;
+  extern const MDR_Timer_CfgPinGPIO _pinTim1_CH1;
+  
 #endif
 
 

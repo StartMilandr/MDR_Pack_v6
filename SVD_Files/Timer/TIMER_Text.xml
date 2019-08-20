@@ -74,7 +74,7 @@
 </peripheral>
 
 #TIMER1_ADDR_VE8VK014
-<baseAddress>0x4008A0000</baseAddress>
+<baseAddress>0x4008A000</baseAddress>
 
 #MDR_TIMER2_VE8VK014
 <peripheral derivedFrom="MDR_TIMER1">

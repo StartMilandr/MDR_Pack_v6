@@ -9,7 +9,6 @@
 
   <project>
     <PathAndName>.\Timer_Test_VC1\Timer_Test_VC1.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -20,6 +19,7 @@
 
   <project>
     <PathAndName>.\Timer_Test_VE3\Timer_Test_VE3.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -35,6 +35,7 @@
 
   <project>
     <PathAndName>.\Timer_Test_VE92\Timer_Test_VE92.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
@@ -50,6 +51,11 @@
 
   <project>
     <PathAndName>.\Timer_Test_VK234\Timer_Test_VK234.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\Timer_Test_VE8\Timer_Test_VE8.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
     <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>

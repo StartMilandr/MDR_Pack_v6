@@ -1,9 +1,9 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include <MDRB_Timer_PinSelect.h>
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 
 //  ОПИСАНИЕ:
@@ -64,22 +64,8 @@ TestInterface TI_CAP_Simplest = {
 
 static void Test_Init(void)
 {  
-  //  To LCD
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("CAP Simplest", 3);
-  
-#elif defined (LCD_CONFLICT_TIM)
-  MDRB_LCD_Print(TEST_ID__CAP_SIMPLEST);  
-  
-  #ifdef LCD_BLINKY_ENA  
-    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
-    MDR_LCD_DeInit();
-  #endif
-  
-#else
-  MDRB_LCD_Print(TEST_ID__CAP_SIMPLEST);
-#endif 
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__CAP_SIMPLEST);  
   
   MDRB_LED_Init(LED_SEL_CAP);
   MDRB_LED_Set(LED_SEL_CAP, 0);
@@ -95,7 +81,7 @@ static void Test_Init(void)
   MDR_TimerCh_InitPinGPIO(&CAP_PIN_CH, MDR_PIN_FAST);
       
   // Start
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)  
   MDR_Timer_StartSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
 #else
   MDR_Timer_Start(PWM1_TIMex);
@@ -106,7 +92,7 @@ static void Test_Init(void)
 static void Test_Finit(void)
 {
   //  Stop
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
   MDR_Timer_StopSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
 #else
   MDR_Timer_Stop(PWM1_TIMex);
@@ -122,14 +108,10 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(CAP_TIMex);
   
   LED_Uninitialize();  
-  
-#ifdef LCD_CONFLICT_LED
-  MDRB_LCD_CapturePins();
-#endif
-#ifdef LCD_CONFLICT_TIM
-  // Restore LCD
-  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
-#endif  
+
+  //  Переинициализация экрана после использования пинов LCD под выводы таймера / LEDs
+  if (!MDR_ShowRestore_IfConflTim())
+    MDR_ShowRestore_IfConflLED();
 }
 
 static void Test_HandleIRQ_PWM(void)

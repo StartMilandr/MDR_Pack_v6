@@ -1,11 +1,15 @@
 #include <MDR_Timer.h>
-#include <MDRB_LCD.h>
-#include <MDRB_UART_Debug.h>
-
-#include <math.h>
+//#include <MDRB_LCD.h>
+//#include <MDRB_UART_Debug.h>
 
 #include <MDRB_Timer_PinSelect.h>
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
+
+// Стандартные библиотеки языка Си
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
 
 
 //  ОПИСАНИЕ:
@@ -101,41 +105,19 @@ static const MDR_TimerCh_CfgCAP cfgCAP = {
 #define CAP_IRQ_byFALL       CAP_EVENT_FALL
 
 
-//#if !(defined(LCD_CONFLICT_TIM) || defined(LCD_IS_7SEG_DISPLAY))
-#if !defined(LCD_IS_7SEG_DISPLAY)
-static void LCD_ShowName(uint32_t period)
+static void ShowPulsePeriod(uint32_t period)
 {
-  static char message[64];
-  sprintf(message , "CAP Per=%d", period);
-  MDRB_LCD_Print (message, 3);  
+  static char message[32];
+  sprintf(message , "Period=%d", period);
+  MDR_ShowMessStr(message, 5);
 }
-#endif
 
 
 static void Test_Init(void)
 {   
-  //  To LCD
-#ifndef LCD_IS_7SEG_DISPLAY
-  LCD_ShowName(pulsePeriod);
-  MDRB_LCD_ClearLine(5);
-  MDRB_LCD_ClearLine(7);
-  
-#elif defined (LCD_CONFLICT_TIM)
-  MDRB_LCD_Print(TEST_ID__CAP_PERIOD);
-  
-  #ifdef LCD_BLINKY_ENA  
-    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
-    MDR_LCD_DeInit();
-  #endif  
-  
-#else
-  MDRB_LCD_Print(TEST_ID__CAP_PERIOD);
-#endif  
-
-#ifdef OUT_TO_UART
-  MDR_UART_DBG_Init(true);
-#endif
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__CAP_PERIOD);
+  ShowPulsePeriod(pulsePeriod);
   
   //  PWM - Output pulses for Capture
   MDR_Timer_InitPeriod(PWM1_TIMex, TIM_BRG, TIM_PSC, pulsePeriod, false);
@@ -150,7 +132,7 @@ static void Test_Init(void)
   // Start
   averInd = 0;
   
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
   MDR_Timer_StartSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
 #else
   MDR_Timer_Start(CAP_TIMex);
@@ -161,7 +143,7 @@ static void Test_Init(void)
 static void Test_Finit(void)
 {
   //  Stop
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)  
   MDR_Timer_StopSync(PWM1_START_SEL_MSK | CAP_START_SEL_MSK);
 #else
   MDR_Timer_Stop(PWM1_TIMex);
@@ -176,18 +158,7 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(CAP_TIMex);
   MDR_Timer_DeInit(PWM1_TIMex);
     
-#ifdef OUT_TO_UART
-  MDR_UART_DBG_Finit();
-#endif  
-  
-#ifdef LCD_CONFLICT_TIM   
-  // Restore LCD  
-  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));
-  
-#elif !defined(LCD_IS_7SEG_DISPLAY)
-  MDRB_LCD_ClearLine(5);
-  MDRB_LCD_ClearLine(7);  
-#endif
+  MDR_ShowRestore_IfConflTim();
 }
 
 static void Test_Change(void)
@@ -196,20 +167,13 @@ static void Test_Change(void)
     --pulsePeriod;
   MDR_TimerPulse_ChangePeriod(PWM1_TIM, pulsePeriod, PWM1_TIM_CH, 50);
   
-#ifdef OUT_TO_LCD  
-  LCD_ShowName(pulsePeriod); 
-#endif
+  ShowPulsePeriod(pulsePeriod);
   
   Test_Exec();
 }
 
 static void Test_Exec(void)
 {  
-#ifdef OUT_TO_LCD
-  MDRB_LCD_ClearLine(5);
-  MDRB_LCD_ClearLine(7);
-#endif
-  
   // Restart Measure
   averInd = 0;
   MDR_Timer_EnableEventIQR(CAP_TIM, CAP_IRQ_byFALL);
@@ -296,27 +260,15 @@ void CalcAndShowResult(void)
       widthes[i] = (TIM_MAX_VALUE - DataRE[i]) + DataFE[i];
   }
 
-#ifdef OUT_TO_LCD
   static char message[64];  
   //  Period
   RMS = calcRMS(periods, AVER_COUNT-2, &aver);
   sprintf(message , "Per=%d  RMS=%d", aver, RMS);
-  MDRB_LCD_Print (message, 5);
+  MDR_ShowMessStr (message, 5);
   //  Width
   RMS = calcRMS(widthes, AVER_COUNT-2, &aver);
   sprintf(message , "Wid=%d  RMS=%d", aver, RMS);
-  MDRB_LCD_Print (message, 7);
-  
-#elif defined (OUT_TO_UART)
-  printf("PWM=%d\n", pulsePeriod); 
-  //  Period
-  RMS = calcRMS(periods, AVER_COUNT-2, &aver);
-  printf("Per=%d  RMS=%d\n", aver, RMS);
-  //  Width
-  RMS = calcRMS(widthes, AVER_COUNT-2, &aver);
-  printf("Wid=%d  RMS=%d\n", aver, RMS);
-  
-#endif
+  MDR_ShowMessStr (message, 7);  
 }
 
 

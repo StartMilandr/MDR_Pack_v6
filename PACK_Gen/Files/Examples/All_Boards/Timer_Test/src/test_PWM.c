@@ -1,9 +1,9 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include <MDRB_Timer_PinSelect.h>
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 //  ОПИСАНИЕ:
 //  Пример генерации ШИМ по умолчанию - без задания опциональных настроек, MDR_TimerCh_CfgPWM = NULL.
@@ -31,22 +31,8 @@ TestInterface TI_PWM = {
 
 static void Test_Init(void)
 { 
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Simplest PWM", 3);
-  MDRB_LCD_Print("and Sync Run", 5);
-  
-#elif defined (LCD_CONFLICT_TIM)
-  MDRB_LCD_Print(TEST_ID__PWM);  
-  
-  #ifdef LCD_BLINKY_ENA  
-    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
-    MDR_LCD_DeInit();  
-  #endif  
-
-#else
-  MDRB_LCD_Print(TEST_ID__PWM);
-#endif    
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__PWM);
   
   //  PWM1
   MDR_Timer_InitPeriodDir(PWM1_TIMex, TIM_BRG_PWM, TIM_PSG_PWM1, TIM_PERIOD_PWM, false, TIM_CountUpDown);  
@@ -61,7 +47,7 @@ static void Test_Init(void)
   MDR_TimerCh_InitPinGPIO(&PWM2_PIN_nCH, MDR_PIN_FAST);
 
   // Start
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)  
   MDR_Timer_StartSync(PWM1_START_SEL_MSK | PWM2_START_SEL_MSK);
 #else
   MDR_Timer_Start(PWM1_TIMex);
@@ -72,7 +58,7 @@ static void Test_Init(void)
 static void Test_Finit(void)
 {
   //  Stop
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)  
   MDR_Timer_StopSync(PWM1_START_SEL_MSK | PWM2_START_SEL_MSK);
 #else
   MDR_Timer_Stop(PWM1_TIMex);
@@ -89,12 +75,7 @@ static void Test_Finit(void)
   MDR_Timer_DeInit(PWM1_TIMex);
   MDR_Timer_DeInit(PWM2_TIMex);
   
-#ifdef LCD_CONFLICT_TIM  
-  // Restore LCD
-  MDRB_LCD_Init(MDR_CPU_GetFreqHz(false));   
-#elif !defined(LCD_IS_7SEG_DISPLAY)
-  MDRB_LCD_ClearLine(5);
-#endif
+  MDR_ShowRestore_IfConflTim();
 }
 
 static void Test_Empty(void)

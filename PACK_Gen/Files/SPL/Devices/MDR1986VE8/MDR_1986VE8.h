@@ -413,12 +413,6 @@ typedef enum {
  #define   MDR_SSP1_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP1_CLK)
  #define   MDR_SSP2_CLOCK_GATE_ADDR      (&MDR_CLOCK->SSP1_CLK)
 
-// #define   MDR_SSP1_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP1_CLK_EN_Msk
-// #define   MDR_SSP2_CLOCK_GATE_ENA_MSK     MDR_RST_SSP__SSP2_CLK_EN_Msk
-
-// #define   MDR_SSP1_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP1_BRG_Pos
-// #define   MDR_SSP2_CLOCK_GATE_BRG_POS     MDR_RST_SSP__SSP2_BRG_Pos
-
 
  //----------------    UART Definitions  --------------------
  //  UART Block Clock enable
@@ -433,21 +427,24 @@ typedef enum {
  #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART2_CLK)
  
 
-// //----------------    TIMER Definitions  --------------------
-// //  UART Block Clock enable
-// #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+ //----------------    TIMER Definitions  --------------------
+ //  UART Block Clock enable
+ #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER4_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
 
-// #define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER__TIMER1_CLK_EN_Msk
-// #define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER__TIMER2_CLK_EN_Msk
-// #define   MDR_TIMER3_CLK_EN_MSK            MDR_RST_PER__TIMER3_CLK_EN_Msk
+ #define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER0_TIM1_CLK_EN_Msk
+ #define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER0_TIM2_CLK_EN_Msk
+ #define   MDR_TIMER3_CLK_EN_MSK            MDR_RST_PER0_TIM3_CLK_EN_Msk
+ #define   MDR_TIMER4_CLK_EN_MSK            MDR_RST_PER0_TIM4_CLK_EN_Msk
 
 
-// //  UART_ClockGate configs
-// #define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
-// #define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
-// #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
+ //  UART_ClockGate configs
+ #define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM1_CLK)
+ #define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM2_CLK)
+ #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM3_CLK)
+ #define   MDR_TIMER4_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM4_CLK)
 
 // #define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
 // #define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk

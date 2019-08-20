@@ -1,9 +1,9 @@
 #include <MDR_Timer.h>
 #include <MDRB_LEDs.h>
-#include <MDRB_LCD.h>
 
 #include <MDRB_Timer_PinSelect.h>
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
 
 
 //  ОПИСАНИЕ:
@@ -92,22 +92,8 @@ static const MDR_Timer_CfgCountETR  cfgETR = {
 
 static void Test_Init(void)
 {     
-  //  To LCD
-#ifndef LCD_IS_7SEG_DISPLAY
-  MDRB_LCD_Print("Count ETR", 3);
-  
-#elif defined (LCD_CONFLICT_TIM)
-  MDRB_LCD_Print(TEST_ID__COUNT_ETR);  
-  
-  #ifdef LCD_BLINKY_ENA  
-    MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
-    MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));
-    MDR_LCD_DeInit();
-  #endif  
-
-#else
-  MDRB_LCD_Print(TEST_ID__COUNT_ETR);
-#endif
+  //  LCD / UART_Dbg show TestName
+  MDR_ShowMess(MESS__COUNT_ETR);  
   
   MDRB_LED_Init(LED_SEL_CAP);
   MDRB_LED_Set (LED_SEL_CAP, 0);
@@ -123,7 +109,7 @@ static void Test_Init(void)
   MDR_TimerCh_InitPinGPIO(&ETR_TIM_PIN, MDR_PIN_FAST);
 
   // Start
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)   
   MDR_Timer_StartSync(PWM1_START_SEL_MSK | ETR_START_SEL_MSK);
 #else
   MDR_Timer_Start(ETR_TIMex);
@@ -134,7 +120,7 @@ static void Test_Init(void)
 static void Test_Finit(void)
 {
   //  Stop
-#ifndef SYNC_START_UNAVALABLE  
+#if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)    
   MDR_Timer_StopSync(PWM1_START_SEL_MSK | ETR_START_SEL_MSK);
 #else
   MDR_Timer_Stop(ETR_TIMex);
@@ -151,9 +137,7 @@ static void Test_Finit(void)
   
   LED_Uninitialize(); 
 
-#ifdef LCD_CONFLICT_LED
-  MDRB_LCD_CapturePins();
-#endif  
+  MDR_ShowRestore_IfConflLED(); 
 }
 
 static void Test_HandleIRQ_PWM(void)

@@ -462,7 +462,7 @@ typedef struct
 #define ADDR_TIMER1_BASE      0x40094000UL
 #define ADDR_TIMER2_BASE      0x40095000UL
 #define ADDR_TIMER3_BASE      0x40096000UL
-#define ADDR_TIMER4_BASE      0x40097000UL
+
 
 
 

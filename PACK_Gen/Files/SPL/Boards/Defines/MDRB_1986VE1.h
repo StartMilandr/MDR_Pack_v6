@@ -187,6 +187,8 @@
     #define MDRB_LCD_E_PORT           MDR_GPIO_C
     #define MDRB_LCD_E_PIN            PIN_PC2
 
+    #define MDRB_HAS_LCD
+
     //  Reset pin - jumper XP10
 
     //  Bus Commands

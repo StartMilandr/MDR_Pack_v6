@@ -1,9 +1,22 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_PER_Clock.h>
 #include <MDRB_Buttons.h>
-#include <MDRB_LCD.h>
 
 #include "test_Defs.h"
+#include "MDRB_ShowMess.h"
+
+#ifdef MDRB_HAS_LCD
+  #define USE_LCD   true
+  #ifdef LCD_IS_7SEG_DISPLAY
+    #define USE_UART_DBG    true
+  #else
+    #define USE_UART_DBG    false
+  #endif
+#else 
+  #define USE_LCD         false
+  #define USE_UART_DBG    true
+#endif  
+
 
 //  Некоторые тесты можно закомментировать для рассмотрения только интересующих
 //  Счет импульсов TIM_CLOCK или внешних, каскадное включение таймеров
@@ -69,10 +82,10 @@ int main(void)
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
   
-  //  Инициализация LCD дисплея и кнопок
+  //  Инициализация кнопок и вывода SHOW(LCD и/или UART_DBG)
   freqCPU_Hz = MDR_CPU_GetFreqHz(true);
-  MDRB_LCD_Init(freqCPU_Hz);
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
+  MDR_ShowInit(USE_LCD, USE_UART_DBG);
   
   //  Для 1986VE4,VE214,VE234 частота TIM_Clock формируется мультиплексорами
   //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer

@@ -147,6 +147,8 @@
     #define MDRB_LCD_E_PORT             MDR_GPIO_C
     #define MDRB_LCD_E_PIN              PIN_PC1       //  conflicts with LEDs!
     
+    #define MDRB_HAS_LCD
+    
     //  Bus Commands
     #define MDRB_LCD_BusSetOUT()        MDR_PORTA->OE |= 0x003F; \
                                         MDR_PORTF->OE |= 0x000C

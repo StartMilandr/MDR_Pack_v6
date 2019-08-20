@@ -132,28 +132,50 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clo
 
 
 //=====================   Timers Start and most usefull control ==================
+
+#ifndef MDR_CLK_LIKE_VE8
+  #define MDR_TIM_HAS_SYNC_START
+
+  //  Синхронный запуск возможен только не в ВЕ8-подобных МК
   #define TIM1_StartMsk     MDR_RST_TIM__TIM1_CLK_EN_Msk
   #define TIM2_StartMsk     MDR_RST_TIM__TIM2_CLK_EN_Msk  
-#ifdef TIMER3_EXIST
-  #define TIM3_StartMsk     MDR_RST_TIM__TIM3_CLK_EN_Msk
+
+  #ifdef TIMER3_EXIST
+    #define TIM3_StartMsk     MDR_RST_TIM__TIM3_CLK_EN_Msk
+    
+    #define _TIM_CLOCK_GATES_MASK   (TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk)
+  #else
+    #define _TIM_CLOCK_GATES_MASK   (TIM1_StartMsk | TIM2_StartMsk)
+  #endif
+
+  //  Одновременный запуск возможен только для 3-х таймеров!
+  __STATIC_INLINE void MDR_Timer_StartSync(uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK |=  (selTimers & _TIM_CLOCK_GATES_MASK);}
+  __STATIC_INLINE void MDR_Timer_StopSync (uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK &= ~(selTimers & _TIM_CLOCK_GATES_MASK);}
   
-  #define _TIM_CLOCK_GATES_MASK   (TIM1_StartMsk | TIM2_StartMsk | TIM3_StartMsk)
+  #ifdef TIMER4_EXIST
+    __STATIC_INLINE void MDR_Timer4_Start(void) {MDR_CLOCK->UART_CLOCK |= MDR_RST_UART__TIM4_CLK_EN_Msk;}
+    __STATIC_INLINE void MDR_Timer4_Stop (void) {MDR_CLOCK->UART_CLOCK &= ~MDR_RST_UART__TIM4_CLK_EN_Msk;}
+  #endif  
+
 #else
-  #define _TIM_CLOCK_GATES_MASK   (TIM1_StartMsk | TIM2_StartMsk)
+  #ifdef TIMER4_EXIST
+    __STATIC_INLINE void MDR_Timer4_Start(void) {MDR_CLOCK->TIM4_CLK |= MDR_PER_CLK_CLK_EN_Msk;}
+    __STATIC_INLINE void MDR_Timer4_Stop (void) {MDR_CLOCK->TIM4_CLK &= ~MDR_PER_CLK_CLK_EN_Msk;}
+  #endif    
 #endif
 
-//  Одновременный запуск возможен только для 3-х таймеров!
-__STATIC_INLINE void MDR_Timer_StartSync(uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK |=  (selTimers & _TIM_CLOCK_GATES_MASK);}
-__STATIC_INLINE void MDR_Timer_StopSync (uint32_t selTimers) {MDR_CLOCK->TIM_CLOCK &= ~(selTimers & _TIM_CLOCK_GATES_MASK);}
 
-#ifdef TIMER4_EXIST
-  __STATIC_INLINE void MDR_Timer4_Start(void) {MDR_CLOCK->UART_CLOCK |= MDR_RST_UART__TIM4_CLK_EN_Msk;}
-  __STATIC_INLINE void MDR_Timer4_Stop (void) {MDR_CLOCK->UART_CLOCK &= ~MDR_RST_UART__TIM4_CLK_EN_Msk;}
-#endif
 
-//  Запуст отдельного таймера
-__STATIC_INLINE void MDR_Timer_Start(const MDR_TIMER_TypeEx *TIMERex) {MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);}
-__STATIC_INLINE void MDR_Timer_Stop(const MDR_TIMER_TypeEx  *TIMERex) {MDR_PerClock_GateClose  (&TIMERex->CfgClock);}
+//  Запуск отдельного таймера
+__STATIC_INLINE 
+void MDR_Timer_Start(const MDR_TIMER_TypeEx *TIMERex) {MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);}
+
+__STATIC_INLINE 
+void MDR_Timer_Stop(const MDR_TIMER_TypeEx  *TIMERex) 
+{  
+  TIMERex->TIMERx->CNTRL &= ~MDR_TIMER_CNTRL_CNT_EN_Msk;
+  MDR_PerClock_GateClose  (&TIMERex->CfgClock);
+}
 
 //  Функции управления - использовать только после включения таймера - Start!
 //  Иначе, без Start не подана частота TIM_CLOCK, и биты WR_CMPL не сбрасываются совсем.

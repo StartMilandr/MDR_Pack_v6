@@ -8,8 +8,10 @@ const MDR_TIMER_TypeEx _MDR_TIMER1ex = {
   .CfgClock.ClockEna_Mask = MDR_TIMER1_CLK_EN_MSK,
   //  TimerClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_TIMER1_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8   
   .CfgClock.ClockGate_ClockOn_Msk = MDR_TIMER1_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_TIMER1_CLOCK_GATE_BRG_POS,
+#endif
   //  NVIC
   .TIMERx_IRQn = TIMER1_IRQn
 };
@@ -21,8 +23,10 @@ const MDR_TIMER_TypeEx _MDR_TIMER2ex = {
   .CfgClock.ClockEna_Mask = MDR_TIMER2_CLK_EN_MSK,
   //  TimerClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_TIMER2_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8   
   .CfgClock.ClockGate_ClockOn_Msk = MDR_TIMER2_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_TIMER2_CLOCK_GATE_BRG_POS,
+#endif
   //  NVIC
   .TIMERx_IRQn = TIMER2_IRQn
 };
@@ -35,8 +39,10 @@ const MDR_TIMER_TypeEx _MDR_TIMER3ex = {
   .CfgClock.ClockEna_Mask = MDR_TIMER3_CLK_EN_MSK,
   //  TimerClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_TIMER3_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8   
   .CfgClock.ClockGate_ClockOn_Msk = MDR_TIMER3_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_TIMER3_CLOCK_GATE_BRG_POS,
+#endif
   //  NVIC
   .TIMERx_IRQn = TIMER3_IRQn
 };
@@ -50,8 +56,10 @@ const MDR_TIMER_TypeEx _MDR_TIMER4ex = {
   .CfgClock.ClockEna_Mask = MDR_TIMER4_CLK_EN_MSK,
   //  TimerClock Gate On and BRG
   .CfgClock.ClockGate_Addr        = MDR_TIMER4_CLOCK_GATE_ADDR,
+#ifndef MDR_CLK_LIKE_VE8 
   .CfgClock.ClockGate_ClockOn_Msk = MDR_TIMER4_CLOCK_GATE_ENA_MSK,
   .CfgClock.ClockGate_BRG_Pos     = MDR_TIMER4_CLOCK_GATE_BRG_POS,
+#endif
   //  NVIC
   .TIMERx_IRQn = TIMER4_IRQn
 };
@@ -349,7 +357,11 @@ void MDR_TimerCh_InitPinGPIO(const MDR_Timer_CfgPinGPIO *pinCfg, MDR_PIN_PWR pin
 {
   MDR_PinDig_GroupPinCfg pinGroupCfg;
   
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
   MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinGroupCfg);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinGroupCfg);
+#endif
 
   MDR_GPIO_Enable(pinCfg->portGPIO);
   MDR_GPIO_InitDigPin(pinCfg->portGPIO, pinCfg->pinIndex, MDR_Pin_In, pinCfg->pinFunc, &pinGroupCfg);

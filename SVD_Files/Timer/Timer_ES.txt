@@ -1,4 +1,4 @@
-#Timers
+#TIMERs
 <!--TIMER1-->
 <peripheral>
   <name>MDR_TIMER1</name>

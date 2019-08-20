@@ -1,4 +1,4 @@
-#Timers
+#TIMERs
 <!--TIMER1-->
 <peripheral>
   <name>MDR_TIMER1</name>
@@ -6,7 +6,7 @@
   <description>TIMER Control</description>
   <groupName>TIMER</groupName>
   <!-- #TIMER1_ADDR -->
-  <baseAddress>0x4008A0000</baseAddress>
+  <baseAddress>0x4008A000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>

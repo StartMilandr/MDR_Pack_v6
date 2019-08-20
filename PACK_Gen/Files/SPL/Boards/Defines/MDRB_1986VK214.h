@@ -134,7 +134,9 @@
   #define MDRB_LCD_PORT_EX2         MDR_GPIO_C
   #define MDRB_LCD_PINs_EX2         (PIN_PC5 | PIN_PC6 | PIN_PC7)
 
+
   #define LCD_XT13468PSPA_DISPLAY
+  #define MDRB_HAS_LCD
   
 
 //  ---------------  UART1 Pin Definition ----------------

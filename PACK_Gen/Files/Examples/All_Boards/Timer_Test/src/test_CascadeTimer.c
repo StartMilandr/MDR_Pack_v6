@@ -60,13 +60,13 @@ static void Test_Init(void)
   //  Slow Counter
   MDR_Timer_AddCascadePeriod(MDR_TIMER3ex, TIM_BRG_LED, TIM_EventTIM2_CNT_ARR, TIM_CASCADE_PER, true);
 #endif  
-#ifdef  TIMER4_EXIST
+#ifdef  USE_TIMER4
   //  Slowest Counter
   MDR_Timer_AddCascadePeriod(MDR_TIMER4ex, TIM_BRG_LED, TIM_EventTIM3_CNT_ARR, TIM_CASCADE_PER, true);    
 #endif
 
 #if defined(MDR_TIM_HAS_SYNC_START) && !defined(SYNC_START_UNAVALABLE)
-  #ifdef  TIMER4_EXIST
+  #ifdef  USE_TIMER4
     MDR_Timer_Start(MDR_TIMER4ex);
   #endif 
   
@@ -78,7 +78,7 @@ static void Test_Init(void)
   #ifdef  USE_TIMER3  
     MDR_Timer_Start(MDR_TIMER3ex);
   #endif
-  #ifdef  TIMER4_EXIST
+  #ifdef  USE_TIMER4
     MDR_Timer_Start(MDR_TIMER4ex);
   #endif
 #endif
@@ -92,7 +92,7 @@ static void Test_Finit(void)
     MDR_Timer_Stop(MDR_TIMER4ex);
   #endif    
 #else
-  #ifdef  TIMER4_EXIST  
+  #ifdef  USE_TIMER4  
     MDR_Timer_Stop(MDR_TIMER4ex);
   #endif      
   #ifdef  USE_TIMER3  
@@ -107,7 +107,7 @@ static void Test_Finit(void)
 #ifdef  USE_TIMER3   
   MDR_Timer_DeInit(MDR_TIMER3ex);
 #endif    
-#ifdef  TIMER4_EXIST  
+#ifdef  USE_TIMER4  
   MDR_Timer_DeInit(MDR_TIMER4ex);
 #endif  
   
@@ -155,7 +155,7 @@ static void Test_HandleTim3IRQ(void)
 
 static void Test_HandleTim4IRQ(void)
 {
-#ifdef TIMER4_EXIST  
+#ifdef USE_TIMER4  
   if (MDR_TIMER4->STATUS & TIM_FL_CNT_ARR)
   {    
     MDR_Timer_ClearEvent(MDR_TIMER4, TIM_FL_CNT_ARR);  

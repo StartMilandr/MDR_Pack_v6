@@ -4759,7 +4759,7 @@
       <description>TIMER Control</description>
       <groupName>TIMER</groupName>
       <!-- #TIMER1_ADDR -->
-      <baseAddress>0x400940000</baseAddress>
+      <baseAddress>0x40094000</baseAddress>
       <size>32</size>
       <access>read-write</access>
       <addressBlock>
@@ -5651,6 +5651,10 @@
       <baseAddress>0x40096000</baseAddress>
     </peripheral>
     <!-- #MDR_TIMER4 -->
+    <peripheral derivedFrom="MDR_TIMER1">
+      <name>MDR_TIMER4</name>
+      <baseAddress>0x40097000</baseAddress>
+    </peripheral>
     <!-- #MDR_TIMER5 -->
     <!-- #MDR_TIMER6 -->
     <!-- #CAPs -->

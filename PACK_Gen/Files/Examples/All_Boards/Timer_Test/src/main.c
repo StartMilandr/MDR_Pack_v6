@@ -50,7 +50,7 @@ static  TestInterface *testStack[] = {
   &TI_Pulse,      // Simplest control to get pulses (PWM mode)
   &TI_PWM,
   &TI_PWM_DTG, 
-#ifndef NO_ETR_PIN  
+#ifndef NO_PWM1_ETR_PIN  
   &TI_PWM_ClearBRKETR,   
 #endif
   //  Режим захвата (CAP)
@@ -59,7 +59,7 @@ static  TestInterface *testStack[] = {
   &TI_CAP_Period,
   //  Режимы внешнего счета - импульсов на входе ETR и событий на каналах захвата
   &TI_PWM_CountCAP,
-#ifndef NO_ETR_PIN    
+#ifndef NO_CAP_ETR_PIN    
   &TI_PWM_CountETR,
 #endif
 };

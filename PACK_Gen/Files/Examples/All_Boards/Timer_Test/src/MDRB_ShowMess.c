@@ -2,7 +2,8 @@
 #include <MDR_RST_Clock.h>
 #include <MDRB_LCD.h>
 #include <MDRB_UART_Debug.h>
-  
+
+#include "test_Defs.h"
 #include "MDRB_ShowMess.h"
 
 #define MDR_ENA_LOG_TO_UART
@@ -69,7 +70,7 @@ bool MDR_ShowRestore_IfConflTim(void)
 
 bool MDR_ShowRestore_IfConflLED(void)
 {
-#if defined(MDRB_HAS_LCD) && defined(LCD_CONFLICT_TIM)  
+#if defined(MDRB_HAS_LCD) && defined(LCD_CONFLICT_LED)  
   MDRB_LCD_CapturePins();   
   return true; 
 #else
@@ -90,9 +91,9 @@ void MDR_ShowMess(MDR_SHOW_MessID messID)
   #ifdef LCD_CONFLICT_TIM  
     #ifdef LCD_BLINKY_ENA
       MDR_LCD_BlinkyStart(MDR_LCD_Blink_2Hz, MDR_Off);
+      MDR_LCD_DeInit();
     #endif
     MDR_Delay_ms(LCD_HIDE_DELAY, MDR_CPU_GetFreqHz(false));  
-    MDR_LCD_DeInit();
   #endif  
 #endif
 }
@@ -103,7 +104,10 @@ static void MDR_CUSTOM_ShowMessToStr(MDR_SHOW_MessID messID)
 {
 #if defined(MDRB_HAS_LCD) && !defined(LCD_IS_7SEG_DISPLAY)
   if (_useLCD)
+  {
     MDRB_LCD_ClearLine(5);
+    MDRB_LCD_ClearLine(7);
+  }
 #endif  
   
   switch (messID) {
@@ -126,7 +130,7 @@ static void MDR_CUSTOM_ShowMessToStr(MDR_SHOW_MessID messID)
       }       
     case MESS__PWM:
       { MDR_ShowMessStr("PWM simplest", 3);
-        MDR_ShowMessStr("and Sync Run", 3);
+        MDR_ShowMessStr("and Sync Run", 5);
         break;
       }       
     case MESS__PWM_DTG: 

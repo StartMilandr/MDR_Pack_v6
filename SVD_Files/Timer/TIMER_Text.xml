@@ -108,7 +108,7 @@
 
 
 #TIMER1_ADDR_ES
-<baseAddress>0x400940000</baseAddress>
+<baseAddress>0x40094000</baseAddress>
 
 #MDR_TIMER2_ES
 <peripheral derivedFrom="MDR_TIMER1">
@@ -120,4 +120,10 @@
 <peripheral derivedFrom="MDR_TIMER1">
   <name>MDR_TIMER3</name>
   <baseAddress>0x40096000</baseAddress>
+</peripheral>
+
+#MDR_TIMER4_ES
+<peripheral derivedFrom="MDR_TIMER1">
+  <name>MDR_TIMER4</name>
+  <baseAddress>0x40097000</baseAddress>
 </peripheral>

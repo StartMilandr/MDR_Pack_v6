@@ -1,4 +1,4 @@
-#include "MDRB_Timer_PinSelect.h"
+#include <MDRB_Timer_PinSelect.h>
 
 //======================  Выбор пинов ======================
 #if   defined(USE_BOARD_VE1)
@@ -264,5 +264,21 @@
   const MDR_Timer_CfgPinGPIO _pinTim1_ETR  = {MDR_GPIO_A, 7,  MDR_PIN_FUNC_7};
   const MDR_Timer_CfgPinGPIO _pinTim1_CH1  = {MDR_GPIO_A, 8,  MDR_PIN_FUNC_7};
   
+#elif defined(USE_BOARD_ESila)
+
+  const MDR_Timer_CfgPinGPIO _pinTim4_CH1  = {MDR_GPIO_C,  8,  MDR_PIN_FUNC_10};
+  const MDR_Timer_CfgPinGPIO _pinTim4_nCH1 = {MDR_GPIO_C,  9,  MDR_PIN_FUNC_10};
+  const MDR_Timer_CfgPinGPIO _pinTim4_CH2  = {MDR_GPIO_C, 10,  MDR_PIN_FUNC_10};
+  const MDR_Timer_CfgPinGPIO _pinTim4_nCH2 = {MDR_GPIO_C, 11,  MDR_PIN_FUNC_10};
+  const MDR_Timer_CfgPinGPIO _pinTim4_ETR  = {MDR_GPIO_C, 30,  MDR_PIN_FUNC_10};  
+  const MDR_Timer_CfgPinGPIO _pinTim4_BRK  = {MDR_GPIO_C, 31,  MDR_PIN_FUNC_10};  
+  
+  const MDR_Timer_CfgPinGPIO _pinTim2_CH2  = {MDR_GPIO_A, 18,  MDR_PIN_FUNC_10};
+  const MDR_Timer_CfgPinGPIO _pinTim2_nCH2 = {MDR_GPIO_A, 19,  MDR_PIN_FUNC_10};
+
+  const MDR_Timer_CfgPinGPIO _pinTim1_CH4  = {MDR_GPIO_C, 22,  MDR_PIN_FUNC_10}; 
+  const MDR_Timer_CfgPinGPIO _pinTim1_ETR  = {MDR_GPIO_C, 24,  MDR_PIN_FUNC_10};
+
+
 #endif
 

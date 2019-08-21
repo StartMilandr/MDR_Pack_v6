@@ -100,7 +100,8 @@ static void Test_Finit(void)
  
   LED_Uninitialize();
   
-  MDR_ShowRestore_IfConflLED();
+  if (!MDR_ShowRestore_IfConflTim())
+    MDR_ShowRestore_IfConflLED();
 }
 
 static void Test_Empty(void)

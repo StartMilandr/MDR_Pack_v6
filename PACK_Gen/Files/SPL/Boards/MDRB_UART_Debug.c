@@ -77,37 +77,62 @@
   static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func};  
     
 #endif
-   
+
+  
+#define _CFG_UART_DBG_DEF_EX(opt, irq)  { .cfgBase.WordLength    = MDR_UART_WordLen8,  \
+                                          .cfgBase.Parity        = UART_Parity_Off,    \
+                                          .cfgBase.useFIFO       = MDR_On,             \
+                                          .cfgBase.Options.Value = opt,                \
+                                          .pCfgIRQ     = irq,                          \
+                                          .pCfgDMA     = NULL,                         \
+                                          .pCfgIrDA    = NULL,                         \
+                                          . pCfgModem  = NULL                          \
+                                          }
+
+
+#define _CFG_UART_DBG_DEF       _CFG_UART_DBG_DEF_EX(0, NULL)  
+  
+  
+// Простейшая настройка UART для выводы сообщений наружу, RX выключен  
 void MDR_UART_DBG_Init(bool isCPUbyPLL)
 {
   MDR_UART_DBG_InitEx(UART_DEBUG_BAUD_DEF, isCPUbyPLL, false);
 }
 
-//  Настройки блока
-static MDR_UART_Cfg _cfgUART = {
-  //  Main Settings
-  .cfgBase.WordLength    = MDR_UART_WordLen8,
-  .cfgBase.Parity        = UART_Parity_Off,
-  .cfgBase.useFIFO       = MDR_On,
-  //  Some Options, инициализировать нулем если опции не нужны
-  .cfgBase.Options.Value = MDR_UART_OPT_DisRX,  
-  //  IRQ Disabled
-  .pCfgIRQ = NULL,
-  //  DMA Disabled
-  .pCfgDMA = NULL,
-  //  IrDA Disabled
-  .pCfgIrDA = NULL,
-  //  Modem Disabled
-  .pCfgModem  = NULL
-};
-
-
+// Простейшая настройка UART_DBG с опциональным разрешением RX
 void MDR_UART_DBG_InitEx(uint32_t baudRate, bool isCPUbyPLL, bool RX_Enable)
+{
+  MDR_UART_Cfg cfgUART = _CFG_UART_DBG_DEF;
+  if (!RX_Enable)
+    cfgUART.cfgBase.Options.Value = MDR_UART_OPT_DisRX;
+  
+  MDR_UART_DBG_InitCfg(&cfgUART, baudRate, isCPUbyPLL);
+}  
+
+//  Настройка UART_DBG с разрешением прерываний
+void MDR_UART_DBG_InitIrq(uint32_t baudRate, bool isCPUbyPLL, uint32_t selEvents, MDR_UART_EventFIFO levelFIFO)
+{ 
+  //  Конфигурация
+  MDR_UART_CfgIRQ cfgIRQ = { .SelEventIRQ.Value = selEvents,
+                             .Rx_FIFO_Event = levelFIFO,
+                             .Tx_FIFO_Event = levelFIFO
+                           };
+  MDR_UART_Cfg cfgUART = _CFG_UART_DBG_DEF_EX(0, &cfgIRQ);
+
+  //  Инициалиазация
+  MDR_UART_DBG_InitCfg(&cfgUART, baudRate, isCPUbyPLL);
+	//	Разрешение прерываний с приоритетом 0
+  MDR_UARTex_NVIC_EnableIRQ(UART_DBG, 0);                           
+}  
+
+//  Настройка UART_DBG с заданием конфигурации
+void MDR_UART_DBG_InitCfg(MDR_UART_Cfg *cfgUART, uint32_t baudRate, bool isCPUbyPLL)
 {
   uint32_t UART_ClockHz;
   MDR_UART_cfgBaud cfgBaud;
   MDR_UART_CfgPinsGPIO pinsGPIO;
 
+//--------    UART_Clock On -------------
 #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
   if (isCPUbyPLL)
     MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_PLLCPUo);
@@ -127,25 +152,18 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool isCPUbyPLL, bool RX_Enable)
   UNUSED(isCPUbyPLL);
   MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);
 #endif
-  
+//---------------------------------------
+
   //  Baud Rate
   UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
   
   //  Uart Init
-  if (!RX_Enable)
-    MDR_UARTex_InitByBaud(UART_DBG, &_cfgUART, &cfgBaud);
-  else
-  {
-    MDR_UART_Cfg cfgUART = _cfgUART;   
-    cfgUART.cfgBase.Options.Value = 0;
-    
-    MDR_UARTex_InitByBaud(UART_DBG, &cfgUART, &cfgBaud);
-  }
-
+  MDR_UARTex_InitByBaud(UART_DBG, cfgUART, &cfgBaud);
+  
   //  Init Pins
   pinsGPIO.pPinTX = &_pinTX_UART;
-  if (RX_Enable)
+  if ((cfgUART->cfgBase.Options.Value & MDR_UART_OPT_DisRX) == 0)  
     pinsGPIO.pPinRX = &_pinRX_UART;
   else
     pinsGPIO.pPinRX = NULL;
@@ -159,6 +177,7 @@ void MDR_UART_DBG_InitEx(uint32_t baudRate, bool isCPUbyPLL, bool RX_Enable)
   printf("BaudError: %f\n", baudError);
 #endif
 }
+
 
 void MDR_UART_DBG_Finit(void)
 {

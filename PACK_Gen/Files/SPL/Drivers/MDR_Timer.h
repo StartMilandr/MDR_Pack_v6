@@ -162,6 +162,12 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clo
     __STATIC_INLINE void MDR_Timer4_Start(void) {MDR_CLOCK->TIM4_CLK |= MDR_PER_CLK_CLK_EN_Msk;}
     __STATIC_INLINE void MDR_Timer4_Stop (void) {MDR_CLOCK->TIM4_CLK &= ~MDR_PER_CLK_CLK_EN_Msk;}
   #endif    
+  
+  //=====================   Выбор источника для TIM_Clock   ==================
+  __STATIC_INLINE 
+  void MDR_Timer_SetTimClockSrc(const MDR_TIMER_TypeEx *TIMERex, MDR_RST_ASYNC_IN_SEL clockSource) 
+                               { MDR_PerClock_SetAsyncSrc(&TIMERex->CfgClock, clockSource); }
+  
 #endif
 
 

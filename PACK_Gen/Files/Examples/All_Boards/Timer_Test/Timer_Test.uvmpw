@@ -59,7 +59,13 @@
 
   <project>
     <PathAndName>.\Timer_Test_ES\Timer_Test_ES.uvprojx</PathAndName>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>..\SSP_Test\SSP_TestVK014\SSP_TestVK014.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
 </ProjectWorkspace>

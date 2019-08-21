@@ -249,7 +249,7 @@
   const MDR_Timer_CfgPinGPIO _pinTim2_ETR  = {MDR_GPIO_C, 6,  MDR_PIN_MAIN};
   const MDR_Timer_CfgPinGPIO _pinTim2_BRK  = {MDR_GPIO_C, 7,  MDR_PIN_MAIN};
 
-#elif defined(USE_BOARD_VE8)
+#elif defined(USE_BOARD_VE8) || defined(USE_BOARD_VK014)
   
   const MDR_Timer_CfgPinGPIO _pinTim3_CH1  = {MDR_GPIO_A, 28,  MDR_PIN_FUNC_7};
   const MDR_Timer_CfgPinGPIO _pinTim3_nCH1 = {MDR_GPIO_A, 29,  MDR_PIN_FUNC_7};
@@ -278,7 +278,6 @@
 
   const MDR_Timer_CfgPinGPIO _pinTim1_CH4  = {MDR_GPIO_C, 22,  MDR_PIN_FUNC_10}; 
   const MDR_Timer_CfgPinGPIO _pinTim1_ETR  = {MDR_GPIO_C, 24,  MDR_PIN_FUNC_10};
-
 
 #endif
 

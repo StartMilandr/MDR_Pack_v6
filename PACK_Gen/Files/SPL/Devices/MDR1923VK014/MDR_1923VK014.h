@@ -251,7 +251,6 @@ typedef struct
 #define ADDR_PORTE_BASE       0x40084000UL                              /*!< GPIO PORT_E Base Address */
 
 
-
 #define ADDR_SSP1_BASE        0x40095000UL
 #define ADDR_SSP2_BASE        0x40096000UL
 #define ADDR_SSP3_BASE        0x40097000UL
@@ -413,29 +412,29 @@ typedef struct
  #define   MDR_UART2_CLOCK_GATE_ADDR     (&MDR_CLOCK->UART2_CLK)
 
 
-// //----------------    TIMER Definitions  --------------------
-// //  UART Block Clock enable
-// #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
-// #define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+ //----------------    TIMER Definitions  --------------------
+ //  UART Block Clock enable
+ #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER4_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER5_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_TIMER6_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
 
-// #define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER__TIMER1_CLK_EN_Msk
-// #define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER__TIMER2_CLK_EN_Msk
-// #define   MDR_TIMER3_CLK_EN_MSK            MDR_RST_PER__TIMER3_CLK_EN_Msk
+ #define   MDR_TIMER1_CLK_EN_MSK            MDR_RST_PER0_TIM1_CLK_EN_Msk
+ #define   MDR_TIMER2_CLK_EN_MSK            MDR_RST_PER0_TIM2_CLK_EN_Msk
+ #define   MDR_TIMER3_CLK_EN_MSK            MDR_RST_PER0_TIM3_CLK_EN_Msk
+ #define   MDR_TIMER4_CLK_EN_MSK            MDR_RST_PER0_TIM4_CLK_EN_Msk
+ #define   MDR_TIMER5_CLK_EN_MSK            MDR_RST_PER0_TIM5_CLK_EN_Msk
+ #define   MDR_TIMER6_CLK_EN_MSK            MDR_RST_PER0_TIM6_CLK_EN_Msk
 
-
-// //  UART_ClockGate configs
-// #define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
-// #define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
-// #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM_CLOCK)
-
-// #define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
-// #define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk
-// #define   MDR_TIMER3_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM3_CLK_EN_Msk
-
-// #define   MDR_TIMER1_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM1_BRG_Pos
-// #define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
-// #define   MDR_TIMER3_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM3_BRG_Pos
+ //  UART_ClockGate configs
+ #define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM1_CLK)
+ #define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM2_CLK)
+ #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM3_CLK)
+ #define   MDR_TIMER4_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM4_CLK)
+ #define   MDR_TIMER5_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM5_CLK)
+ #define   MDR_TIMER6_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM6_CLK)
 
 // //  Enable Count UpDown by external events
 // #define MDR_TIMER_Can_UpDown_ByExtEvents

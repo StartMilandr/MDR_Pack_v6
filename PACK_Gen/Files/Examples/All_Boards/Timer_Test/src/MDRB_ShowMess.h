@@ -32,6 +32,16 @@ typedef enum {
 void MDR_ShowMess(MDR_SHOW_MessID messID);
 
 
+//  ======  Получение команд от UART  ======
+typedef enum {
+  MDRB_ACT_NEXT_TEST,
+  MDRB_ACT_CHANGE_MODE,
+  MDRB_ACT_EXEC,
+  //  do not use - for count only
+  _MDRB_ACT_Count,
+} MDRB_Action;
+
+bool MDRB_NeedActon(MDRB_Action action);
 
 #endif  //MDRB_SHOW_MESS_H
 

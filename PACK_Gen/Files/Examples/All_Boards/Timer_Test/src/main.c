@@ -1,6 +1,7 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_PER_Clock.h>
 #include <MDRB_Buttons.h>
+#include <MDR_Timer.h>
 
 #include "test_Defs.h"
 #include "MDRB_ShowMess.h"
@@ -77,7 +78,12 @@ void TIMER4_IRQHandler(void);
 int main(void)
 {
   uint32_t freqCPU_Hz;
- 
+
+#ifdef USE_MDR1923VK014 
+  //  Задержка для 1923ВК014 для переключения в PC с программы UART загрузчика на Terminal.
+  MDR_Delay_ms(7000, HSI_FREQ_HZ);
+#endif
+  
   //  Максимальная скорость тактирования
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
@@ -94,7 +100,11 @@ int main(void)
   MDR_SetClock_Timer1(MDR_PER_PLLCPUo);
   MDR_SetClock_Timer2(MDR_PER_PLLCPUo);
 #elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);  
+#elif defined(MDR_CLK_LIKE_VE8)
+  MDR_Timer_SetTimClockSrc(PWM1_TIMex, MDR_RST_ASYNC_IN_MAX_CLK);
+  MDR_Timer_SetTimClockSrc(PWM2_TIMex, MDR_RST_ASYNC_IN_MAX_CLK);
+  MDR_Timer_SetTimClockSrc(CAP_TIMex, MDR_RST_ASYNC_IN_MAX_CLK);  
 #endif
    
   //  Активный тест
@@ -104,7 +114,7 @@ int main(void)
   while (1)
   {
     //  Смена теста
-    if (MDRB_BntClicked_Up(true))
+    if (MDRB_BntClicked_Up(true) || MDRB_NeedActon(MDRB_ACT_NEXT_TEST))
     {      
       //  Возврат к базовой кончигурации АЦП
       testStack[activeTest]->funcFinit();
@@ -118,13 +128,13 @@ int main(void)
     }
 
     //  Изменение режима теста
-    if (MDRB_BntClicked_Right(true))
+    if (MDRB_BntClicked_Right(true) || MDRB_NeedActon(MDRB_ACT_CHANGE_MODE))
     {
       testStack[activeTest]->funcChange();
     }    
     
     //  Запуск
-    if (MDRB_BntClicked_Down(true))
+    if (MDRB_BntClicked_Down(true)  || MDRB_NeedActon(MDRB_ACT_EXEC))
     {
       testStack[activeTest]->funcExec();
     }   
@@ -152,3 +162,5 @@ void TIMER4_IRQHandler(void)
 {
   testStack[activeTest]->funcHandlerTim4();
 }
+
+

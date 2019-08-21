@@ -186,6 +186,20 @@ typedef struct {
   
   #define USE_SECOND_CHANNEL  
 
+#elif defined (USE_BOARD_VK014)
+  // PWM1: PA28, PA29  ETR: PA27, BRK: PA10
+  #define PWM1_SEL_TIM3_CH1
+  // PWM1: PA30, PA31
+  #define PWM1_SEL_TIM3_CH2_EX  
+  // PWM2: PA26, PA25
+  #define PWM2_SEL_TIM4_CH2
+  // CAP:  PA8  ETR: PA7
+  #define CAP_SEL_TIM1_CH1
+  
+  #define USE_SECOND_CHANNEL 
+  
+  #define NO_PWM1_ETR_PIN
+
 #elif defined (USE_ESila)
   // PWM1: PC8, PC8  ETR: PC30, BRK: PC31
   #define PWM1_SEL_TIM4_CH2
@@ -201,7 +215,6 @@ typedef struct {
   //  Исключение теста с PWM1_ETR, BRK - пины заняты под кнопки -> зависает опрос кнопок в main.c
   //  (Можно закомментировать NO_PWM1_ETR_PIN и проверить что тест на самом деле проходит.)
   #define NO_PWM1_ETR_PIN
-
   
   #define LCD_CONFLICT_LED
 

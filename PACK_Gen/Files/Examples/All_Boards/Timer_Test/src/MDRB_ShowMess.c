@@ -19,6 +19,7 @@
 
 //  ====    User Defined messID to string output  ====
 static void MDR_CUSTOM_ShowMessToStr(MDR_SHOW_MessID messID);
+static void MDRB_UART_Dbg_Handler(void);
 
 
 void MDR_ShowInit(bool useLCD, bool useUartDbg)
@@ -36,7 +37,7 @@ void MDR_ShowInit(bool useLCD, bool useUartDbg)
 #ifdef MDR_ENA_LOG_TO_UART  
   _useUart = useUartDbg;  
   if (_useUart)
-    MDR_UART_DBG_Init(true);
+    MDR_UART_DBG_InitIrqRT(UART_DEBUG_BAUD_DEF, true);
 #else
   UNUSED(useUartDbg);  
 #endif
@@ -159,4 +160,43 @@ static void MDR_CUSTOM_ShowMessToStr(MDR_SHOW_MessID messID)
       }
     }      
 }
+
+//  =======   UART Process Commands ===========
+static bool doActCommand[_MDRB_ACT_Count] = {false, false, false};
+
+bool MDRB_NeedActon(MDRB_Action action)
+{
+  bool result = doActCommand[action];
+  if (result)
+    doActCommand[action] = false;
+  
+  return result;
+}
+
+__STATIC_INLINE void MDRB_UART_Dbg_Handler(void)
+{
+  uint16_t command;
+  while (MDR_UART_CanRead(UART_DBG->UARTx))
+  {
+    command = MDR_UART_ReadData(UART_DBG->UARTx);
+    switch (command & 0x00FF) {
+    case 'N': { doActCommand[MDRB_ACT_NEXT_TEST] = true; break; }
+    case 'C': { doActCommand[MDRB_ACT_CHANGE_MODE] = true; break; }
+    case 'E': { doActCommand[MDRB_ACT_EXEC] = true; break; }
+    }
+    //  Ack
+    printf("%c\n", (char)command);
+  }
+}
+
+void UART1_IRQHandler(void)
+{
+  MDRB_UART_Dbg_Handler();
+}
+
+void UART2_IRQHandler(void)
+{
+  MDRB_UART_Dbg_Handler();
+}  
+  
 

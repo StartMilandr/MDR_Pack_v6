@@ -928,6 +928,14 @@ __STATIC_INLINE void MDR_PerClock_GateOpenAsync(const MDR_PerClock_Cfg *pCfgCloc
     REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_RST_ASYNC_CLK_CLEAR_ALL, 
                                        (uint32_t)clockBRG | MDR_PER_CLK_CLK_EN_Msk | VAL2FLD_Pos(selClockSrc, MDR_RST_ASYNC_CLK_SELECT_Pos)); 
   }
+
+  //  Просто выбор частоты для асинхронного блока
+__STATIC_INLINE void MDR_PerClock_SetAsyncSrc(const MDR_PerClock_Cfg *pCfgClock, MDR_RST_ASYNC_IN_SEL selClockSrc) 
+  {  
+    REG32(pCfgClock->ClockGate_Addr) = MDR_MaskClrSet(REG32(pCfgClock->ClockGate_Addr), MDR_RST_ASYNC_CLK_SELECT_Msk, 
+                                                      VAL2FLD_Pos(selClockSrc, MDR_RST_ASYNC_CLK_SELECT_Pos)); 
+  }  
+
   
   //  Отключение частоты Uart_Clock, SSP_Clock, Timer_Clock, и т.д.
 __STATIC_INLINE void MDR_PerClock_GateClose(const MDR_PerClock_Cfg *pCfgClock) {REG32(pCfgClock->ClockGate_Addr) &= ~MDR_PER_CLK_CLK_EN_Msk;}

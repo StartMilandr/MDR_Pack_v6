@@ -1,0 +1,12 @@
+[FILES]
+f1=DMA_Ins.xml
+
+[TAGS]
+#DMA_Size=f1
+#DMA_Size_R=#DMA_Size_VEx
+#DMA_Addr=f1
+#DMA_Addr_R=#DMA_Addr_VEx
+
+[TAGS_New]
+#DMA_MUX=
+#DMA_MUX_R=

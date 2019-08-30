@@ -51,8 +51,25 @@ MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgPri(uint32_t chIndex, const MDR_DMA_Init_C
 MDR_DMA_ChCtrl  MDR_DMA_InitChannelCfgAlt(uint32_t chIndex, const MDR_DMA_Init_ChCfg *initChCfg);
 
 //  Разрешение прерываний от DMA
-                void MDR_DMA_EnableIRQ(uint32_t priority);
-__STATIC_INLINE void MDR_DMA_DisableIRQ(void) {NVIC_DisableIRQ(DMA_IRQn);}
+#ifndef MDR_DMA_IRQ_LIKE_VE8
+  __STATIC_INLINE void MDR_DMA_DisableIRQ(void) {NVIC_DisableIRQ(DMA_IRQn);}
+  __STATIC_INLINE void MDR_DMA_EnableIRQ(uint32_t priority)
+  {
+    NVIC_ClearPendingIRQ(DMA_IRQn);
+    NVIC_EnableIRQ(DMA_IRQn);
+    NVIC_SetPriority(DMA_IRQn, priority);
+  }
+#else
+  #define ADD_TO_IRQn_Type(irq, ival)  ((IRQn_Type)((uint32_t)(irq) + (ival)))
+  
+  __STATIC_INLINE void MDR_DMA_DisableIRQ(uint32_t chIndex) {NVIC_DisableIRQ( ADD_TO_IRQn_Type(DMA_DONE0_IRQn, chIndex) );}
+  __STATIC_INLINE void MDR_DMA_EnableIRQ(uint32_t chIndex, uint32_t priority)
+  {
+    NVIC_ClearPendingIRQ( ADD_TO_IRQn_Type(DMA_DONE0_IRQn, chIndex) );
+    NVIC_EnableIRQ( ADD_TO_IRQn_Type(DMA_DONE0_IRQn, chIndex) );
+    NVIC_SetPriority( ADD_TO_IRQn_Type(DMA_DONE0_IRQn, chIndex), priority);
+  }
+#endif
 
 
 //  -----------  Запуск работы канала и остановка ------------

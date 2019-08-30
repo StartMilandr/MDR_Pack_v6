@@ -196,7 +196,7 @@ typedef enum IRQn
 #include <MDR_I2C_defs.h>
 
 /*=========  DMA ========*/
-#include <MDR_DMA_defs.h>
+#include <MDR_DMA_VEx_defs.h>
 
 
 
@@ -264,7 +264,7 @@ typedef enum IRQn
 
 #define ADDR_POWER_BASE       0x40058000UL
 #define ADDR_I2C_BASE         0x40050000UL
-#define ADDR_DMA_BASE          0x40028000UL
+#define ADDR_DMA_BASE         0x40028000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 

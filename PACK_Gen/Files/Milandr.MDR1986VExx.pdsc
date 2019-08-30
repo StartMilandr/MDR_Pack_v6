@@ -1313,7 +1313,7 @@
       </files>
     </component>
     <!-- DMA Driver -->
-    <component Cclass="Drivers" Cgroup="DMA" Cversion="1.9" condition="CON_HAS_DMA">
+    <component Cclass="Drivers" Cgroup="DMA" Cversion="2.0" condition="CON_HAS_DMA">
       <description>DMA driver</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>

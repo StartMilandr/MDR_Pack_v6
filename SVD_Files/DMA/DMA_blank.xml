@@ -1,16 +1,15 @@
-#DMA
 <!-- DMA -->
 <peripheral>
   <name>MDR_DMA</name>
   <version>1.0</version>
   <description>DMA Controler</description>
   <groupName>DMA</groupName>
-  <baseAddress>0x40028000</baseAddress>
+  <!-- #DMA_Addr  -->
   <size>32</size>
   <access>read-write</access>
   <addressBlock>
     <offset>0</offset>
-    <size>0x50</size>
+    <!-- #DMA_Size  -->
     <usage>registers</usage>
   </addressBlock>
   <registers>
@@ -295,6 +294,7 @@
       <access>read-write</access>
       <modifiedWriteValues>oneToClear</modifiedWriteValues>
     </register>
+    <!-- #DMA_MUX -->
     <!-- Registers end-->
   </registers>
   <!-- peripheral end-->

@@ -1,0 +1,304 @@
+#DMA_Size_VEx
+<size>0x50</size>
+
+#DMA_Size_VE8
+<size>0xDFC</size>
+
+#DMA_Addr_VEx
+<baseAddress>0x40028000</baseAddress>
+
+#DMA_Addr_VE8ES
+<baseAddress>0xE0042000</baseAddress>
+
+#DMA_Addr_VK014
+<baseAddress>0x40006000</baseAddress>
+
+
+#DMA_MUX_VE8
+<register>
+  <name>CHMUX0</name>
+  <description>Periph select for DMA channels 0..3</description>
+  <addressOffset>0x00000050</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field>
+      <name>CH0_Sel</name>
+      <description>Periph Event for DMA_Channel</description>
+      <bitRange>[7:0]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>ETH1_Event0</name><description>Source Sel</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>ETH1_Event1</name><description>Source Sel</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>reserved_2</name><description>Source Sel</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>reserved_3</name><description>Source Sel</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>SPW1_RX</name><description>Source Sel</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>reserved_5</name><description>Source Sel</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>SPW1_TX</name><description>Source Sel</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>reserved_7</name><description>Source Sel</description><value>7</value></enumeratedValue>
+        <enumeratedValue><name>Tim1_Req</name><description>Source Sel</description><value>8</value></enumeratedValue>
+        <enumeratedValue><name>Tim2_Req</name><description>Source Sel</description><value>9</value></enumeratedValue>
+        <enumeratedValue><name>Tim3_Req</name><description>Source Sel</description><value>10</value></enumeratedValue>
+        <enumeratedValue><name>Tim4_Req</name><description>Source Sel</description><value>11</value></enumeratedValue>
+        <enumeratedValue><name>reserved_12</name><description>Source Sel</description><value>12</value></enumeratedValue>
+        <enumeratedValue><name>reserved_13</name><description>Source Sel</description><value>13</value></enumeratedValue>                
+        <enumeratedValue><name>Tim1_ReqCH1</name><description>Source Sel</description><value>14</value></enumeratedValue>
+        <enumeratedValue><name>Tim2_ReqCH1</name><description>Source Sel</description><value>15</value></enumeratedValue>
+        <enumeratedValue><name>Tim3_ReqCH1</name><description>Source Sel</description><value>16</value></enumeratedValue>
+        <enumeratedValue><name>Tim4_ReqCH1</name><description>Source Sel</description><value>17</value></enumeratedValue>
+        <enumeratedValue><name>reserved_18</name><description>Source Sel</description><value>18</value></enumeratedValue>
+        <enumeratedValue><name>reserved_19</name><description>Source Sel</description><value>19</value></enumeratedValue>                
+        <enumeratedValue><name>Tim1_ReqCH2</name><description>Source Sel</description><value>20</value></enumeratedValue>
+        <enumeratedValue><name>Tim2_ReqCH2</name><description>Source Sel</description><value>21</value></enumeratedValue>
+        <enumeratedValue><name>Tim3_ReqCH2</name><description>Source Sel</description><value>22</value></enumeratedValue>
+        <enumeratedValue><name>Tim4_ReqCH2</name><description>Source Sel</description><value>23</value></enumeratedValue>
+        <enumeratedValue><name>reserved_24</name><description>Source Sel</description><value>24</value></enumeratedValue>
+        <enumeratedValue><name>reserved_25</name><description>Source Sel</description><value>25</value></enumeratedValue>                
+        <enumeratedValue><name>Tim1_ReqCH3</name><description>Source Sel</description><value>26</value></enumeratedValue>
+        <enumeratedValue><name>Tim2_ReqCH3</name><description>Source Sel</description><value>27</value></enumeratedValue>
+        <enumeratedValue><name>Tim3_ReqCH3</name><description>Source Sel</description><value>28</value></enumeratedValue>
+        <enumeratedValue><name>Tim4_ReqCH3</name><description>Source Sel</description><value>29</value></enumeratedValue>
+        <enumeratedValue><name>reserved_30</name><description>Source Sel</description><value>30</value></enumeratedValue>
+        <enumeratedValue><name>reserved_31</name><description>Source Sel</description><value>31</value></enumeratedValue>                
+        <enumeratedValue><name>Tim1_ReqCH4</name><description>Source Sel</description><value>32</value></enumeratedValue>
+        <enumeratedValue><name>Tim2_ReqCH4</name><description>Source Sel</description><value>33</value></enumeratedValue>
+        <enumeratedValue><name>Tim3_ReqCH4</name><description>Source Sel</description><value>34</value></enumeratedValue>
+        <enumeratedValue><name>Tim4_ReqCH4</name><description>Source Sel</description><value>35</value></enumeratedValue>
+        <enumeratedValue><name>reserved_36</name><description>Source Sel</description><value>36</value></enumeratedValue>
+        <enumeratedValue><name>reserved_37</name><description>Source Sel</description><value>37</value></enumeratedValue>                
+        <enumeratedValue><name>SSP1_TX</name><description>Source Sel</description><value>38</value></enumeratedValue>
+        <enumeratedValue><name>reserved_39</name><description>Source Sel</description><value>39</value></enumeratedValue>
+        <enumeratedValue><name>reserved_40</name><description>Source Sel</description><value>40</value></enumeratedValue>                
+        <enumeratedValue><name>reserved_41</name><description>Source Sel</description><value>41</value></enumeratedValue>
+        <enumeratedValue><name>SSP1_RX</name><description>Source Sel</description><value>42</value></enumeratedValue>                
+        <enumeratedValue><name>reserved_43</name><description>Source Sel</description><value>43</value></enumeratedValue>
+        <enumeratedValue><name>reserved_44</name><description>Source Sel</description><value>44</value></enumeratedValue>                
+        <enumeratedValue><name>reserved_45</name><description>Source Sel</description><value>45</value></enumeratedValue>
+        <enumeratedValue><name>UART1_TX</name><description>Source Sel</description><value>46</value></enumeratedValue>
+        <enumeratedValue><name>UART2_TX</name><description>Source Sel</description><value>47</value></enumeratedValue>
+        <enumeratedValue><name>reserved_48</name><description>Source Sel</description><value>48</value></enumeratedValue>                
+        <enumeratedValue><name>reserved_49</name><description>Source Sel</description><value>49</value></enumeratedValue>
+        <enumeratedValue><name>UART1_RX</name><description>Source Sel</description><value>50</value></enumeratedValue>
+        <enumeratedValue><name>UART2_RX</name><description>Source Sel</description><value>51</value></enumeratedValue>
+        <enumeratedValue><name>reserved_52</name><description>Source Sel</description><value>52</value></enumeratedValue>                
+        <enumeratedValue><name>reserved_53</name><description>Source Sel</description><value>53</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq0</name><description>Source Sel</description><value>54</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq1</name><description>Source Sel</description><value>55</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq2</name><description>Source Sel</description><value>56</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq3</name><description>Source Sel</description><value>57</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq4</name><description>Source Sel</description><value>58</value></enumeratedValue>
+        <enumeratedValue><name>ADC1_SReq5</name><description>Source Sel</description><value>59</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq0</name><description>Source Sel</description><value>60</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq1</name><description>Source Sel</description><value>61</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq2</name><description>Source Sel</description><value>62</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq3</name><description>Source Sel</description><value>63</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq4</name><description>Source Sel</description><value>64</value></enumeratedValue>
+        <enumeratedValue><name>ADC2_SReq5</name><description>Source Sel</description><value>65</value></enumeratedValue>
+        <enumeratedValue><name>DAC1</name><description>Source Sel</description><value>66</value></enumeratedValue>
+        <enumeratedValue><name>DAC2</name><description>Source Sel</description><value>67</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH1_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH2_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH3_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX1</name>
+  <description>Periph select for DMA channels 4..7</description>
+  <addressOffset>0x00000054</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH4_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH5_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH6_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH7_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX2</name>
+  <description>Periph select for DMA channels 8..11</description>
+  <addressOffset>0x00000058</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH8_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH9_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH10_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH11_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX3</name>
+  <description>Periph select for DMA channels 12..15</description>
+  <addressOffset>0x0000005C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH12_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH13_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH14_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH15_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX4</name>
+  <description>Periph select for DMA channels 16..19</description>
+  <addressOffset>0x00000060</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH16_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH17_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH18_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH19_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX5</name>
+  <description>Periph select for DMA channels 20..23</description>
+  <addressOffset>0x00000064</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH20_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH21_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH22_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH23_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX6</name>
+  <description>Periph select for DMA channels 24..27</description>
+  <addressOffset>0x00000068</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH24_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH25_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH26_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH27_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX7</name>
+  <description>Periph select for DMA channels 28..31</description>
+  <addressOffset>0x0000006C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH28_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH29_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH30_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH31_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>

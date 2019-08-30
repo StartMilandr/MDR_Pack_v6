@@ -196,7 +196,7 @@ typedef enum IRQn
 #include <MDR_I2C_defs.h>
 
 /*=========  DMA ========*/
-#include <MDR_DMA_defs.h>
+#include <MDR_DMA_VEx_defs.h>
 
 /*@}*/ /* end of group MDR1901VC1_Peripherals */
 

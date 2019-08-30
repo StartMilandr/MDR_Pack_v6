@@ -181,7 +181,7 @@ typedef enum IRQn
 #include <MDR_CRC_VE4x_defs.h>
 
 /*=========  DMA ========*/
-#include <MDR_DMA_defs.h>
+#include <MDR_DMA_VEx_defs.h>
 
 
 

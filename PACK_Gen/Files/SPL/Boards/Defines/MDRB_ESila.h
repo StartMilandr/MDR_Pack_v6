@@ -7,7 +7,7 @@
 
 //===================================    Частота тактирования    ========================================
 
-#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_120MHz, MDRB_CPU_FREQ_SUPP_120MHz);
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_120MHz, MDRB_CPU_FREQ_SUPP_120MHz)
 
 //  MDR_JTAG_A_PORT   MDR_PORTA [pin0..pin4]
 //  MDR_JTAG_B_PORT   MDR_PORTB [pin5..pin9]

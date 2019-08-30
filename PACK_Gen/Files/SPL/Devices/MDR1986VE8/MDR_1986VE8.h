@@ -50,7 +50,7 @@ extern "C" {
 /* ================                                Interrupt Number Definition                                ================ */
 /* =========================================================================================================================== */
 
-typedef enum IRQn
+typedef enum
 {
 /******  Cortex-M4 Processor Exceptions Numbers ***************************************/
   NonMaskableInt_IRQn     = -14,    /*!< 2 Non Maskable Interrupt                     */
@@ -232,7 +232,8 @@ typedef enum {
 /*=========  TIMER ========*/
 #include <MDR_TimerVE13_defs.h>
 
-
+/*=========  DMA ========*/
+#include <MDR_DMA_VE8x_defs.h>
 
 
 
@@ -285,8 +286,6 @@ typedef enum {
 #define ADDR_PORTE_BASE       0x40084000UL                              /*!< GPIO PORT_E Base Address */
 
 
-
-
 #define ADDR_SSP1_BASE        0x40095000UL                              /*!< SSP Base Address      */
 
 #define ADDR_UART1_BASE       0x40099000UL
@@ -297,6 +296,7 @@ typedef enum {
 #define ADDR_TIMER3_BASE      0x4008C000UL
 #define ADDR_TIMER4_BASE      0x4008D000UL
 
+#define ADDR_DMA_BASE         0xE0042000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -369,6 +369,8 @@ typedef enum {
 #define MDR_TIMER4_CH2                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR2))
 #define MDR_TIMER4_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR3))
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
+
+#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -446,17 +448,76 @@ typedef enum {
  #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM3_CLK)
  #define   MDR_TIMER4_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM4_CLK)
 
-// #define   MDR_TIMER1_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM1_CLK_EN_Msk
-// #define   MDR_TIMER2_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM2_CLK_EN_Msk
-// #define   MDR_TIMER3_CLOCK_GATE_ENA_MSK    MDR_RST_TIM__TIM3_CLK_EN_Msk
-
-// #define   MDR_TIMER1_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM1_BRG_Pos
-// #define   MDR_TIMER2_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM2_BRG_Pos
-// #define   MDR_TIMER3_CLOCK_GATE_BRG_POS    MDR_RST_TIM__TIM3_BRG_Pos
-
 // //  Enable Count UpDown by external events
 // #define MDR_TIMER_Can_UpDown_ByExtEvents
 
+//----------------    DMA Definitions  --------------------
+#define MDR_DMA_IRQ_LIKE_VE8
+
+//  Block request
+#define  MDR_DMA_CH_REQ_SPW1_RX         4
+#define  MDR_DMA_CH_REQ_SPW1_TX         6
+#define  MDR_DMA_CH_REQ_SSP1_TX        38
+#define  MDR_DMA_CH_REQ_SSP1_RX        42
+#define  MDR_DMA_CH_REQ_UART1_TX       46
+#define  MDR_DMA_CH_REQ_UART2_TX       47
+#define  MDR_DMA_CH_REQ_UART1_RX       50
+#define  MDR_DMA_CH_REQ_UART2_RX       51
+#define  MDR_DMA_CH_REQ_ADC1_REQ5      59
+#define  MDR_DMA_CH_REQ_ADC2_REQ5      65
+#define  MDR_DMA_CH_REQ_DAC1           66
+#define  MDR_DMA_CH_REQ_DAC2           67
+
+//  Single request
+#define  MDR_DMA_CH_SREQ_ETH_EVENT0     0
+#define  MDR_DMA_CH_SREQ_ETH_EVENT1     1
+#define  MDR_DMA_CH_SREQ_SPW1_RX        4
+#define  MDR_DMA_CH_SREQ_SPW1_TX        6
+#define  MDR_DMA_CH_SREQ_TIM1           8
+#define  MDR_DMA_CH_SREQ_TIM2           9
+#define  MDR_DMA_CH_SREQ_TIM3          10
+#define  MDR_DMA_CH_SREQ_TIM4          11
+
+#define  MDR_DMA_CH_SREQ_TIM1_CH1      14
+#define  MDR_DMA_CH_SREQ_TIM2_CH1      15
+#define  MDR_DMA_CH_SREQ_TIM3_CH1      16
+#define  MDR_DMA_CH_SREQ_TIM4_CH1      17
+#define  MDR_DMA_CH_SREQ_TIM1_CH2      20
+#define  MDR_DMA_CH_SREQ_TIM2_CH2      21
+#define  MDR_DMA_CH_SREQ_TIM3_CH2      22
+#define  MDR_DMA_CH_SREQ_TIM4_CH2      23
+#define  MDR_DMA_CH_SREQ_TIM1_CH3      26
+#define  MDR_DMA_CH_SREQ_TIM2_CH3      27
+#define  MDR_DMA_CH_SREQ_TIM3_CH3      28
+#define  MDR_DMA_CH_SREQ_TIM4_CH3      29
+#define  MDR_DMA_CH_SREQ_TIM1_CH4      32
+#define  MDR_DMA_CH_SREQ_TIM2_CH4      33
+#define  MDR_DMA_CH_SREQ_TIM3_CH4      34
+#define  MDR_DMA_CH_SREQ_TIM4_CH4      35
+
+#define  MDR_DMA_CH_SREQ_SSP1_TX       38
+#define  MDR_DMA_CH_SREQ_SSP1_RX       42
+#define  MDR_DMA_CH_SREQ_UART1_TX      46
+#define  MDR_DMA_CH_SREQ_UART2_TX      47
+#define  MDR_DMA_CH_SREQ_UART1_RX      50
+#define  MDR_DMA_CH_SREQ_UART2_RX      51
+
+#define  MDR_DMA_CH_SREQ_ADC1_REQ0     54
+#define  MDR_DMA_CH_SREQ_ADC1_REQ1     55
+#define  MDR_DMA_CH_SREQ_ADC1_REQ2     56
+#define  MDR_DMA_CH_SREQ_ADC1_REQ3     57
+#define  MDR_DMA_CH_SREQ_ADC1_REQ4     58
+#define  MDR_DMA_CH_SREQ_ADC1_REQ5     59
+
+#define  MDR_DMA_CH_SREQ_ADC2_REQ0     60
+#define  MDR_DMA_CH_SREQ_ADC2_REQ1     61
+#define  MDR_DMA_CH_SREQ_ADC2_REQ2     62
+#define  MDR_DMA_CH_SREQ_ADC2_REQ3     63
+#define  MDR_DMA_CH_SREQ_ADC2_REQ4     64
+#define  MDR_DMA_CH_SREQ_ADC2_REQ5     65
+
+#define  MDR_DMA_CH_SREQ_DAC1          66
+#define  MDR_DMA_CH_SREQ_DAC2          67
 
 
 /** @} */ /* End of group MDR1986VE8 */

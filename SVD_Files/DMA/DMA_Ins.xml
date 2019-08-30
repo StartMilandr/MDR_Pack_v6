@@ -1,0 +1,233 @@
+#DMA_Size_VEx
+<size>0x50</size>
+
+#DMA_Size_VE8
+<size>0xDFC</size>
+
+#DMA_Addr_VEx
+<baseAddress>0x40028000</baseAddress>
+
+#DMA_Addr_VE8ES
+<baseAddress>0xE0042000</baseAddress>
+
+#DMA_Addr_VK014
+<baseAddress>0x40006000</baseAddress>
+
+#DMA_MUX_VE8
+<register>
+  <name>CHMUX0</name>
+  <description>Periph select for DMA channels 0..3</description>
+  <addressOffset>0x00000050</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field>
+      <name>CH0_Sel</name>
+      <description>Periph Event for DMA_Channel</description>
+      <bitRange>[7:0]</bitRange>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH1_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH2_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="CH0_Sel">
+      <name>CH3_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX1</name>
+  <description>Periph select for DMA channels 4..7</description>
+  <addressOffset>0x00000054</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH4_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH5_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH6_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH7_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX2</name>
+  <description>Periph select for DMA channels 8..11</description>
+  <addressOffset>0x00000058</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH8_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH9_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH10_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH11_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX3</name>
+  <description>Periph select for DMA channels 12..15</description>
+  <addressOffset>0x0000005C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH12_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH13_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH14_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH15_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX4</name>
+  <description>Periph select for DMA channels 16..19</description>
+  <addressOffset>0x00000060</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH16_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH17_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH18_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH19_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX5</name>
+  <description>Periph select for DMA channels 20..23</description>
+  <addressOffset>0x00000064</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH20_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH21_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH22_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH23_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX6</name>
+  <description>Periph select for DMA channels 24..27</description>
+  <addressOffset>0x00000068</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH24_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH25_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH26_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH27_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>
+<register>
+  <name>CHMUX7</name>
+  <description>Periph select for DMA channels 28..31</description>
+  <addressOffset>0x0000006C</addressOffset>
+  <size>32</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <fields>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH28_Sel</name>
+      <bitRange>[7:0]</bitRange>      
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH29_Sel</name>
+      <bitRange>[15:8]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH30_Sel</name>
+      <bitRange>[23:16]</bitRange>
+    </field>
+    <field derivedFrom="MDR_DMA.CHMUX0.CH0_Sel">
+      <name>CH31_Sel</name>
+      <bitRange>[31:24]</bitRange>
+    </field>
+  </fields>
+</register>

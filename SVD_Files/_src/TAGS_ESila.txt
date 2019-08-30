@@ -5,6 +5,7 @@ f3=../GPIO/GPIO_ESila.txt
 f4=../UART/UART_ESila.txt
 f5=../SSP/SSP_ESila.txt
 f6=../Timer/Timer_ES.txt
+f7=../DMA/DMA_VE8ES.xml
 
 [TAGS]
 #RST=f1
@@ -15,6 +16,8 @@ f6=../Timer/Timer_ES.txt
 #UARTs=f4
 #SSPs=f5
 #TIMERs=f6
+#DMA=f7
+
 
 [TAGS_New]
 #FTMODE=
@@ -60,8 +63,6 @@ f6=../Timer/Timer_ES.txt
 #I2C_R=
 #CORDIC=
 #CORDIC_R=
-#DMA=
-#DMA_R=
 #ICACHE=
 #ICACHE_R=
 #DCACHE=

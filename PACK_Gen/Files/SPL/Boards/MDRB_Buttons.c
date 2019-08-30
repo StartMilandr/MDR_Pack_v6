@@ -16,15 +16,16 @@
 #ifdef MDRB_HAS_NO_BUTTONS
   //==========================    Кнопок нет. Пустые функции, чтобы изежать проверок на наличие кнопок в проектах  ==============
   // Если подключить внешние кнопки и задефайнить в MDRB_... файле, то код соберется без исправлений.
-  void MDRB_Buttons_InitTick(uint32_t debounce_tick) {}
-  bool MDRB_IsKeyPushed(MDRB_Keys key, bool use_debounce) { return false; }
-  bool MDRB_IsKeyPushedEx(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSel, uint32_t debounceTicks) { return false;}
+  void MDRB_Buttons_InitTick(uint32_t debounce_tick) { UNUSED(debounce_tick);}
+  bool MDRB_IsKeyPushed(MDRB_Keys key, bool use_debounce) { UNUSED(key); UNUSED(use_debounce); return false; }
+  bool MDRB_IsKeyPushedEx(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSel, uint32_t debounceTicks) 
+  { UNUSED(GPIO_Port); UNUSED(pinSel); UNUSED(debounceTicks); return false;}
 
-  void MDRB_Buttons_ChangeDebounceTick(uint32_t debounce_tick) {}
+  void MDRB_Buttons_ChangeDebounceTick(uint32_t debounce_tick) {UNUSED(debounce_tick);}
 
   //  Вернет True если кнопка была нажата и отпущена, 
   //  Содержит бесконечный цикл ожидания отжатия кнопки!
-  bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce) { return false; }
+  bool MDRB_IsKeyClicked(MDRB_Keys key, bool use_debounce) { UNUSED(key); UNUSED(use_debounce); return false; }
 
 
 #else

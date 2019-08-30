@@ -227,76 +227,6 @@ typedef struct {
 
 #define MDR_DMA_CHANNELS_COUNT  32
 
-typedef struct {                                      /*!< (@ 0x40028000) MDR_DMA Structure                                          */  
-  union {
-    __IM  uint32_t              STATUS;               /*!< (@ 0x00000000) Status register                                            */
-    MDR_DMA_STATUS_Bits         STATUS_b; 
-  } ;  
-  union {
-    __OM  uint32_t              CFG;                  /*!< (@ 0x00000004) Config register                                            */
-    MDR_DMA_CFG_Bits            CFG_b;
-  } ;  
-  union {
-    __IOM uint32_t              CTRL_BASE_PTR;        /*!< (@ 0x00000008) Channel control data base pointer                          */
-    MDR_DMA_CTRL_BASE_PTR_Bits  CTRL_BASE_PTR_b;
-  } ; 
-  
-  __IM  uint32_t ALT_CTRL_BASE_PTR;                   /*!< (@ 0x0000000C) Channel alternate control data base pointer                */  
-  
-  union {
-    __IM  uint32_t              WAITONREQ_STATUS;     /*!< (@ 0x00000010) Channel wait on request status                             */
-    MDR_DMA_CHNL_RO_Bits        WAITONREQ_STATUS_b;
-  } ;  
-  union {
-    __OM  uint32_t              CHNL_SW_REQUEST;      /*!< (@ 0x00000014) Channel Software Request                                   */
-    MDR_DMA_CHNL_WO_Bits        CHNL_SW_REQUEST_b;
-  } ;  
-  union {
-    __IOM uint32_t              CHNL_USEBURST_SET;    /*!< (@ 0x00000018) Disable SREQ requests                                      */
-    MDR_DMA_CHNL_RW_Bits        CHNL_USEBURST_SET_b;
-  } ;
-  union {
-    __OM  uint32_t              CHNL_USEBURST_CLR;           /*!< (@ 0x0000001C) Enable SREQ requests                                       */
-    MDR_DMA_CHNL_WO_Bits        CHNL_USEBURST_CLR_b;
-  } ; 
-  union {
-    __IOM uint32_t              CHNL_REQ_MASK_SET;           /*!< (@ 0x00000020) Disable channel processing                                 */
-    MDR_DMA_CHNL_RW_Bits        CHNL_REQ_MASK_SET_b;
-  } ;
-  union {
-    __OM  uint32_t              CHNL_REQ_MASK_CLR;           /*!< (@ 0x00000024) Enable channel processing                                  */
-    MDR_DMA_CHNL_WO_Bits        CHNL_REQ_MASK_CLR_b;
-  } ;  
-  union {
-    __IOM uint32_t              CHNL_ENABLE_SET;             /*!< (@ 0x00000028) Start Channel                                              */
-    MDR_DMA_CHNL_RW_Bits        CHNL_ENABLE_SET_b;
-  } ;  
-  union {
-    __OM  uint32_t              CHNL_ENABLE_CLR;             /*!< (@ 0x0000002C) Stop Channel                                               */
-    MDR_DMA_CHNL_WO_Bits        CHNL_ENABLE_CLR_b;
-  } ;
-  union {
-    __IOM uint32_t              CHNL_PRI_ALT_SET;            /*!< (@ 0x00000030) Select Alter Structure                                     */
-    MDR_DMA_CHNL_RW_Bits        CHNL_PRI_ALT_SET_b;
-  } ;
-  union {
-    __OM  uint32_t              CHNL_PRI_ALT_CLR;            /*!< (@ 0x00000034) Select Primary Structure                                   */
-    MDR_DMA_CHNL_WO_Bits        CHNL_PRI_ALT_CLR_b;
-  } ;
-  union {
-    __IOM uint32_t              CHNL_PRIORITY_SET;            /*!< (@ 0x00000030) Select Alter Structure                                     */
-    MDR_DMA_CHNL_RW_Bits        CHNL_PRIORITY_SET_b;
-  } ;
-  union {
-    __OM  uint32_t              CHNL_PRIORITY_CLR;            /*!< (@ 0x00000034) Select Primary Structure                                   */
-    MDR_DMA_CHNL_WO_Bits        CHNL_PRIORITY_CLR_b;
-  } ;    
-  __IM  uint32_t  RESERVED[3];  
-  union {
-    __IOM uint32_t              ERR_CLR;                     /*!< (@ 0x0000004C) AHB-Lite bus error clear                                   */
-    MDR_DMA_CHNL_RW_Bits        ERR_CLR_b;
-  } ;
-} MDR_DMA_Type;                                 /*!< Size = 80 (0x50)                                                          */
 
 
 // ==========  Управляющая структура канала DMA ==========
@@ -308,7 +238,7 @@ typedef enum {
   DMA_MODE_MemScatterPri  = 4,
   DMA_MODE_MemScatterAlt  = 5,
   DMA_MODE_PerScatterPri  = 6,
-  DMA_MODE_PerScatterAlt  = 7,
+  DMA_MODE_PerScatterAlt  = 7,  
 } MDR_DMA_Mode;
 
 typedef enum {
@@ -322,7 +252,7 @@ typedef enum {
   DMA_Arbitr_128  = 7,
   DMA_Arbitr_256  = 8,
   DMA_Arbitr_512  = 9,
-  DMA_Arbitr_1024 = 10,
+  DMA_Arbitr_1024 = 10
 } MDR_DMA_Arbitr;
 
 typedef enum {
@@ -338,22 +268,45 @@ typedef enum {
   MDR_DMA_AddrIncOff  = 3,
 } MDR_DMA_AddrInc;
 
-typedef __PACKED_STRUCT {
-  MDR_DMA_Mode      Mode               : 3;
-  MDR_OnOff         UseBurst           : 1;
-  uint32_t          N_minus1           : 10;
-  MDR_DMA_Arbitr    ArbitrCount        : 4;
-  MDR_OnOff         SrcAHB_Privileged  : 1;
-  MDR_OnOff         SrcAHB_Bufferable  : 1;
-  MDR_OnOff         SrcAHB_Cachable    : 1;
-  MDR_OnOff         DestAHB_Privileged : 1;
-  MDR_OnOff         DestAHB_Bufferable : 1;
-  MDR_OnOff         DestAHB_Cachable   : 1; 
-  MDR_DMA_DataSize  Src_DataSize       : 2;
-  MDR_DMA_AddrInc   Src_AddrInc        : 2;
-  MDR_DMA_DataSize  Dest_DataSize      : 2;
-  MDR_DMA_AddrInc   Dest_AddrInc       : 2;
-} MDR_DMA_ChCtrlBits;
+#if defined ( __ICCARM__ ) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
+  typedef __PACKED_STRUCT {
+    MDR_DMA_Mode      Mode               : 3;
+    MDR_OnOff         UseBurst           : 1;
+    uint32_t          N_minus1           : 10;
+    MDR_DMA_Arbitr    ArbitrCount        : 4;
+    MDR_OnOff         SrcAHB_Privileged  : 1;
+    MDR_OnOff         SrcAHB_Bufferable  : 1;
+    MDR_OnOff         SrcAHB_Cachable    : 1;
+    MDR_OnOff         DestAHB_Privileged : 1;
+    MDR_OnOff         DestAHB_Bufferable : 1;
+    MDR_OnOff         DestAHB_Cachable   : 1; 
+    MDR_DMA_DataSize  Src_DataSize       : 2;
+    MDR_DMA_AddrInc   Src_AddrInc        : 2;
+    MDR_DMA_DataSize  Dest_DataSize      : 2;
+    MDR_DMA_AddrInc   Dest_AddrInc       : 2;
+  } MDR_DMA_ChCtrlBits;
+#else
+  typedef __PACKED_STRUCT {
+    MDR_DMA_Mode      Mode               : 3;
+    MDR_OnOff         UseBurst           : 1;
+    uint32_t          N_minus1           : 10;
+    
+//  CODE_WARNING!!! - Компилятор вставляет лишний бит, структура выходит за 32 бита
+    //MDR_DMA_Arbitr    ArbitrCount        : 4;
+    uint32_t          ArbitrCount        : 4;
+    
+    MDR_OnOff         SrcAHB_Privileged  : 1;
+    MDR_OnOff         SrcAHB_Bufferable  : 1;
+    MDR_OnOff         SrcAHB_Cachable    : 1;
+    MDR_OnOff         DestAHB_Privileged : 1;
+    MDR_OnOff         DestAHB_Bufferable : 1;
+    MDR_OnOff         DestAHB_Cachable   : 1; 
+    MDR_DMA_DataSize  Src_DataSize       : 2;
+    MDR_DMA_AddrInc   Src_AddrInc        : 2;
+    MDR_DMA_DataSize  Dest_DataSize      : 2;
+    MDR_DMA_AddrInc   Dest_AddrInc       : 2;
+  } MDR_DMA_ChCtrlBits;
+#endif
 
 #define MDR_DMA_ChCtrl_Mode_Pos             (0UL)
 #define MDR_DMA_ChCtrl_Mode_Msk             (0x7UL)
@@ -385,15 +338,15 @@ typedef __PACKED_STRUCT {
 #define MDR_DMA_ChCtrl_DestAddrInc_Msk      (0xC0000000UL)
 
 typedef union {
-  uint32_t           Value;
-  MDR_DMA_ChCtrlBits Fields;
+  __IOM uint32_t           Value;
+  __IOM MDR_DMA_ChCtrlBits Fields;
 } MDR_DMA_ChCtrl;
 
 typedef struct {
-  uint32_t        Src_EndAddr;                /*!< Specifies the DMA channel source end address */
-  uint32_t        Dest_EndAddr;               /*!< Specifies the DMA channel destination end address. */
-  MDR_DMA_ChCtrl  Control;                    /*!< Specifies the DMA channel control data configuration. */
-  uint32_t        _Unused;                    /*!< Specifies the DMA channel unused memory. */
+  __IOM uint32_t        Src_EndAddr;                /*!< Specifies the DMA channel source end address */
+  __IOM uint32_t        Dest_EndAddr;               /*!< Specifies the DMA channel destination end address. */
+  __IOM MDR_DMA_ChCtrl  Control;                    /*!< Specifies the DMA channel control data configuration. */
+  __IOM uint32_t        _Unused;                    /*!< Specifies the DMA channel unused memory. */
 } MDR_DMA_ChCfg;
 
 
@@ -423,13 +376,23 @@ typedef __PACKED_STRUCT {
   MDR_DMA_AddrInc   Dest_AddrInc       : 2;
 } MDR_DMA_CfgTransfBase;
 
+//typedef __PACKED_STRUCT {
+//  uint32_t    Mode               : 3;
+//  uint32_t    UseBurst           : 1;
+//  uint32_t                       : 10;
+//  uint32_t    ArbitrCount        : 4;
+//  uint32_t                       : 6;
+//  uint32_t    DataSize           : 2;
+//  uint32_t    Src_AddrInc        : 2;
+//  uint32_t                       : 2;
+//  uint32_t    Dest_AddrInc       : 2;
+//} MDR_DMA_CfgTransfBase;
 
 typedef struct {
   union {
   uint32_t              CfgValue;
   MDR_DMA_CfgTransfBase CfgFileds;
-  } ;  
-  
+  } ;    
   //  NULL for default
   MDR_DMA_ProtAHB       *Src_ProtAHB;
   MDR_DMA_ProtAHB       *Dest_ProtAHB;  

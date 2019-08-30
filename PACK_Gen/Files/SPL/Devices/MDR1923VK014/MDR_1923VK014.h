@@ -168,6 +168,10 @@ typedef enum IRQn
 /*=========  TIMER ========*/
 #include <MDR_TimerVE13_defs.h>
 
+/*=========  DMA ========*/
+#include <MDR_DMA_VE8x_defs.h>
+
+
 
 /*=========  FT Control ========*/
 #define MDR_FTCTRL_EVENT_COUNT  13
@@ -268,6 +272,7 @@ typedef struct
 #define ADDR_TIMER5_BASE      0x4008E000UL
 #define ADDR_TIMER6_BASE      0x4008F000UL
 
+#define ADDR_DMA_BASE         0x40006000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -354,6 +359,7 @@ typedef struct
 #define MDR_TIMER6_CH3                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER6->CCR3))
 #define MDR_TIMER6_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER6->CCR4))
 
+#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
 /* ================================================================================================================ */
 /* ================                                  SPL_Configs                                   ================ */
@@ -439,6 +445,7 @@ typedef struct
 // //  Enable Count UpDown by external events
 // #define MDR_TIMER_Can_UpDown_ByExtEvents
 
+//----------------    DMA Definitions  --------------------
 
 
 /** @} */ /* End of group MDR1923VK014 */

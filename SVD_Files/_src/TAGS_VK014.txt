@@ -5,6 +5,7 @@ f3=../GPIO/GPIO_VE8VK14.txt
 f4=../UART/UART_VK014.txt
 f5=../SSP/SSP_VK014.txt
 f6=../Timer/Timer_VK014.txt
+f7=../DMA/DMA_VE8ES.xml
 
 [TAGS]
 #RST=f1
@@ -15,6 +16,8 @@ f6=../Timer/Timer_VK014.txt
 #UARTs=f4
 #SSPs=f5
 #TIMERs=f6
+#DMA=f7
+
 
 [TAGS_New]
 #PWR=
@@ -25,8 +28,6 @@ f6=../Timer/Timer_VK014.txt
 #WDT_R=
 #EBC=
 #EBC_R=
-#DMA=
-#DMA_R=
 #RAMC=
 #RAMC_R=
 #RAMD=

@@ -21,7 +21,7 @@ static const MDR_DMA_ProtAHB _DMA_ProtAHB_Def = {
     #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
       static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC;
     #else
-      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)];
+      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
     #endif
     
   #elif defined ( __CC_ARM )
@@ -69,13 +69,10 @@ void DMA_ClearRegs(void)
 //  Инициализация DMA с пользовательским расположением управляющи структур каналов и привилегиями доступа
 void MDR_DMA_InitProtEx(const MDR_DMA_ChCfg *channelsCtrlTable,  MDR_DMA_ProtAHB chnlsTableAccess)
 {
-  //	Clock Enable
+#ifdef MDR_DMA_CLK_EN_ADDR
+  //	Clock Enable - В ВЕ8 тактируется всегда
   REG32(MDR_DMA_CLK_EN_ADDR) |= MDR_DMA_CLK_EN_MSK;
-
-//  ВЕ4, ВК234  
-//#ifdef MDR_DMA_CLKex_EN_MSK  
-//  REG32(MDR_DMA_CLKex_EN_ADDR) |= MDR_DMA_CLKex_EN_MSK;
-//#endif
+#endif
   
   //  Сброс регистров в состояне по умолчанию
   DMA_ClearRegs();
@@ -91,8 +88,10 @@ void MDR_DMA_DeInit(void)
   //  Сброс регистров в состояне по умолчанию
   DMA_ClearRegs();
   
-  //	Clock Disable
+#ifdef MDR_DMA_CLK_EN_ADDR  
+  //	Clock Disable - В ВЕ8 тактируется всегда
   REG32(MDR_DMA_CLK_EN_ADDR) &= ~MDR_DMA_CLK_EN_MSK;
+#endif
 }
 
 //==================   Вспомогательные структуры для настройки каналов ===================
@@ -119,13 +118,6 @@ static void DMA_Apply_ChCfg(MDR_DMA_ChCfg *DMA_chCfgRegs, const MDR_DMA_Init_ChC
   DMA_chCfgRegs->Src_EndAddr  = initChCfg->Src_EndAddr;
   DMA_chCfgRegs->Dest_EndAddr = initChCfg->Dest_EndAddr;  
   DMA_chCfgRegs->Control      = initChCfg->Control;
-}
-
-void MDR_DMA_EnableIRQ(uint32_t priority)
-{
-  NVIC_ClearPendingIRQ(DMA_IRQn);
-  NVIC_EnableIRQ(DMA_IRQn);
-  NVIC_SetPriority(DMA_IRQn, priority);
 }
 
 

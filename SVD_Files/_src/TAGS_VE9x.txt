@@ -10,7 +10,7 @@ f8=../UART/UART_VE19.txt
 f9=../Timer/Timer_VE9.txt
 f10=../Power/Power_VE9x.txt
 f11=../I2C/I2C_Vx.txt
-f12=../Uniq/DMA.xml
+f12=../DMA/DMA_VEx.xml
 
 [TAGS]
 #BKP=f1

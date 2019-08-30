@@ -186,7 +186,7 @@ typedef enum IRQn
 #include <MDR_PowerVx_defs.h>
 
 /*=========  DMA ========*/
-#include <MDR_DMA_defs.h>
+#include <MDR_DMA_VEx_defs.h>
 
 
 /*@}*/ /* end of group MDR1986VE1_Peripherals */

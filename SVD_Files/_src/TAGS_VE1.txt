@@ -9,7 +9,7 @@ f7=../WDT/WDT_VEx.txt
 f8=../UART/UART_VE19.txt
 f9=../Timer/Timer_VE13.txt
 f10=../Power/Power_Vx.txt
-f11=../Uniq/DMA.xml
+f11=../DMA/DMA_VEx.xml
 
 
 [TAGS]

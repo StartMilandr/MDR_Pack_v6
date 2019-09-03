@@ -59,12 +59,16 @@ typedef union {
 
 MDR_SSP_Status MDR_SSP_GetStatus(MDR_SSP_Type *SSPx);
 
+__STATIC_INLINE uint32_t MDR_SSP_GetStatusInt(MDR_SSP_Type *SSPx) { return SSPx->SR; }
+__STATIC_INLINE bool     MDR_SSP_GetStatusFlagSet(MDR_SSP_Type *SSPx, uint32_t flagSel) { return (SSPx->SR & flagSel) != 0; }
+
+
 //  Запись данных в FIFO_TX. Проверять флаги что FIFO_TX не полон и есть куда писать.
-__STATIC_INLINE bool MDR_SSP_CanWrite(MDR_SSP_Type *SSPx) {return (bool)MDR_SSP_GetStatus(SSPx).Flags.TX_NotFull;}
+__STATIC_INLINE bool MDR_SSP_CanWrite(MDR_SSP_Type *SSPx) {return MDR_SSP_GetStatusFlagSet(SSPx, MDR_SSP_SR_TX_NotFull); }
 __STATIC_INLINE void MDR_SSP_WriteData(MDR_SSP_Type *SSPx, uint16_t data) {SSPx->DR = data;}
 
 // Чтение из FIFO_RX. Проверять флаги, что данные в FIFO_RX есть. Пустое не читать.
-__STATIC_INLINE bool     MDR_SSP_CanRead (MDR_SSP_Type *SSPx) {return (bool)MDR_SSP_GetStatus(SSPx).Flags.RX_NotEmpty;}
+__STATIC_INLINE bool     MDR_SSP_CanRead (MDR_SSP_Type *SSPx) {return MDR_SSP_GetStatusFlagSet(SSPx, MDR_SSP_SR_RX_NotEmpty); }
 __STATIC_INLINE uint16_t MDR_SSP_ReadData(MDR_SSP_Type *SSPx) {return (uint16_t)SSPx->DR;}
 
 
@@ -206,11 +210,11 @@ __STATIC_INLINE void MDR_SSPex_ClearFIFO_TX(const MDR_SSP_TypeEx *exSSPx) {MDR_S
 __STATIC_INLINE MDR_SSP_Status MDR_SSPex_GetStatus(const MDR_SSP_TypeEx *exSSPx) {return MDR_SSP_GetStatus(exSSPx->SSPx);}
 
 //  Запись данных в FIFO_TX. Проверять флаги что FIFO_TX не полон и есть куда писать.
-__STATIC_INLINE bool MDR_SSPex_CanWrite (const MDR_SSP_TypeEx *exSSPx) {return MDR_SSP_GetStatus(exSSPx->SSPx).Flags.TX_NotFull == MDR_On;}
+__STATIC_INLINE bool MDR_SSPex_CanWrite (const MDR_SSP_TypeEx *exSSPx) {return MDR_SSP_CanWrite(exSSPx->SSPx); }
 __STATIC_INLINE void MDR_SSPex_WriteData(const MDR_SSP_TypeEx *exSSPx, uint16_t data) {exSSPx->SSPx->DR = data;}
 
 // Чтение из FIFO_RX. Проверять флаги, что данные в FIFO_RX есть. Пустое не читать.
-__STATIC_INLINE bool     MDR_SSPex_CanRead (const MDR_SSP_TypeEx *exSSPx) {return MDR_SSP_GetStatus(exSSPx->SSPx).Flags.RX_NotEmpty == MDR_On;}
+__STATIC_INLINE bool     MDR_SSPex_CanRead (const MDR_SSP_TypeEx *exSSPx) {return MDR_SSP_CanRead(exSSPx->SSPx); }
 __STATIC_INLINE uint16_t MDR_SSPex_ReadData(const MDR_SSP_TypeEx *exSSPx) {return (uint16_t)exSSPx->SSPx->DR;}
 
 

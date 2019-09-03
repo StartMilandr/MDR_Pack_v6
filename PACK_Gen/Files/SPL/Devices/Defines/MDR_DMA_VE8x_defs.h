@@ -258,6 +258,8 @@ typedef struct {                                      /*!< (@ 0x40028000) MDR_DM
 #define MDR_DMA_CHMUX7_CH31_Sel_Pos       (24UL)                    /*!< MDR_DMA CHMUX7: CH31_Sel (Bit 24)                     */
 #define MDR_DMA_CHMUX7_CH31_Sel_Msk       (0xff000000UL)            /*!< MDR_DMA CHMUX7: CH31_Sel (Bitfield-Mask: 0xff)        */
 
+#define MDR_DMA_CHMUX_CH_Sel_Offs         (8UL)
+#define MDR_DMA_CHMUX_CH_Sel_Msk          (0xffUL)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

@@ -16,22 +16,28 @@ static const MDR_DMA_ProtAHB _DMA_ProtAHB_Def = {
   //  Table align for 32 DMA channels
   #define DATA_ALIGN 1024
 
-  #if defined ( __ICCARM__ ) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
-    //  For IAR Compiler 
-    #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
-      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC;
-    #else
-      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
-    #endif
-    
-  #elif defined ( __CC_ARM )
-    //  For Keil Compiler
-    #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
-      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
-    #else
-      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
-    #endif
+  #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
+    static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
+  #else
+    static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
   #endif
+
+//  #if defined ( __ICCARM__ ) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
+//    //  For IAR Compiler 
+//    #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
+//      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
+//    #else
+//      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
+//    #endif
+//    
+//  #elif defined ( __CC_ARM )
+//    //  For Keil Compiler
+//    #ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
+//      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __RAM_EXEC __attribute__ ((aligned (DATA_ALIGN)));
+//    #else
+//      static MDR_DMA_ChCfg _DMA_CHNLS_CtrlTable[MDR_DMA_CHANNELS_COUNT * (1 + USE_DMA_ALTER_STRUCT)] __attribute__ ((aligned (DATA_ALIGN)));
+//    #endif
+//  #endif
   
   
   //  Функции Init сами включают тактирование!
@@ -341,6 +347,17 @@ void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t co
   while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
+//  Выбор мультиплексорами источников запросов к каналам DMA.
+#ifdef MDR_DMA_IRQ_LIKE_VE8
+  #define _DMA_CHANNELS_IN_MUX_REG  4
 
+  void MDR_DMA_SetChannelSource(uint32_t chIndex, uint32_t periphSource)
+  {
+    uint32_t muxInd = chIndex / _DMA_CHANNELS_IN_MUX_REG;
+    uint32_t muxChOffs  = (chIndex % _DMA_CHANNELS_IN_MUX_REG) * MDR_DMA_CHMUX_CH_Sel_Offs;
+    __IOM uint32_t* muxRegAddr = &(MDR_DMA->CHMUX0);
+    muxRegAddr[muxInd] = MDR_MaskClrSet(muxRegAddr[muxInd], MDR_DMA_CHMUX_CH_Sel_Msk << muxChOffs, periphSource << muxChOffs);    
+  }
+#endif
 
 

@@ -469,8 +469,8 @@ typedef enum {
 #define  MDR_DMA_CH_REQ_DAC2           67
 
 //  Single request
-#define  MDR_DMA_CH_SREQ_ETH_EVENT0     0
-#define  MDR_DMA_CH_SREQ_ETH_EVENT1     1
+#define  MDR_DMA_CH_SREQ_ETH_TX         0
+#define  MDR_DMA_CH_SREQ_ETH_RX         1
 #define  MDR_DMA_CH_SREQ_SPW1_RX        4
 #define  MDR_DMA_CH_SREQ_SPW1_TX        6
 #define  MDR_DMA_CH_SREQ_TIM1           8

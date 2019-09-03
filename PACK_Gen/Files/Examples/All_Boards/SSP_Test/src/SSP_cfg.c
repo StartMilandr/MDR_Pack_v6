@@ -69,7 +69,7 @@ char *Cfg_getActiveFrameName(void)
 //  Этот делитель можно инкрементировать по 2. По +1 нельзя - младший бит не значащий!
 #define DIV_INC_STEP     2
 //  Чтобы не листать скорость слишком далеко. При соединении RX-TX через резистор 100Ом, успешный обмен при делителе = 6
-#define DIV_MAX         30  
+#define DIV_MAX         64  
 
 void Cfg_NextDIV_PSR_2_254(void)
 {
@@ -361,10 +361,10 @@ uint8_t NextIndexSSP(void)
   //  см. MDRB_ESila.h
 
   //  SSP2 pins
-  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA24_Port, MDRB_SPI1_CLK_PA24_Ind, MDRB_SPI1_CLK_PA24_Func};
-  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA25_Port, MDRB_SPI1_FSS_PA25_Ind, MDRB_SPI1_FSS_PA25_Func};
-  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA26_Port,  MDRB_SPI1_RX_PA26_Ind,  MDRB_SPI1_RX_PA26_Func};
-  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA27_Port,  MDRB_SPI1_TX_PA27_Ind,   MDRB_SPI1_TX_PA27_Func};
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA24_Port, MDRB_SPI1_CLK_PA24_Ind, MDRB_SPI1_CLK_PA24_Func}; 
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA17_Port, MDRB_SPI1_FSS_PA17_Ind, MDRB_SPI1_FSS_PA17_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA18_Port,  MDRB_SPI1_RX_PA18_Ind,  MDRB_SPI1_RX_PA18_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA19_Port,  MDRB_SPI1_TX_PA19_Ind,  MDRB_SPI1_TX_PA19_Func};
   
   //  SSP4 pins
   static const MDR_SSP_CfgPinGPIO _pinCLK_SSP2 = {MDRB_SPI2_CLK_PB20_Port, MDRB_SPI2_CLK_PB20_Ind, MDRB_SPI2_CLK_PB20_Func};

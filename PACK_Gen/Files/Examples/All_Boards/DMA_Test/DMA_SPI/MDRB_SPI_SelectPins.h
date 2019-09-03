@@ -35,6 +35,19 @@
                                        
 #elif defined (USE_MDR1986VK234)
   extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1;
+                                        
+#elif defined (USE_MDR1986VE8)
+  extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1;
+
+#elif defined(USE_BOARD_ESila) 
+  extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1;
+  extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP2;  
+
+#elif defined(USE_BOARD_VK014)
+  extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1;
+  extern const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP2;  
+                                         
+  
 #endif
 
 

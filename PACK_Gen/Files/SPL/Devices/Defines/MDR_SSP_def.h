@@ -103,6 +103,13 @@ typedef struct {
       uint32_t              : 27;
 } MDR_SSP_StatusFlags;
 
+#define MDR_SSP_SR_TX_Empty              MDR_SSP_SR_TFE_Msk
+#define MDR_SSP_SR_TX_NotFull            MDR_SSP_SR_TNF_Msk
+#define MDR_SSP_SR_RX_NotEmpty           MDR_SSP_SR_RNE_Msk
+#define MDR_SSP_SR_RX_Full               MDR_SSP_SR_RFF_Msk
+#define MDR_SSP_SR_Busy                  MDR_SSP_SR_BSY_Msk
+
+
 /* =====================================  CPSR - Clock prescaller register  ================================================== */
 typedef struct {
       __IOM uint8_t  CPSDVSR    : 8;            /*!< [7..0] Clock Prescaller - ONLY EVEN NUMBER (bit0 - always set to 0)       */

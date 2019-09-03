@@ -183,4 +183,72 @@
                                        .pPinTX  = &_pinTX_SSP1,
                                        .pPinRX  = &_pinRX_SSP1,
                                        .pPinFSS = &_pinFSS_SSP1};
+                                       
+                                       
+#elif defined (USE_MDR1986VE8)
+  //  см. MDRB_1986VE8.h
+  //  SSP1
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA8_Port, MDRB_SPI1_CLK_PA8_Ind, MDRB_SPI1_CLK_PA8_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA9_Port, MDRB_SPI1_FSS_PA9_Ind, MDRB_SPI1_FSS_PA9_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA10_Port,  MDRB_SPI1_RX_PA10_Ind,  MDRB_SPI1_RX_PA10_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA7_Port,  MDRB_SPI1_TX_PA7_Ind,  MDRB_SPI1_TX_PA7_Func};
+
+  const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1 = 
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};                                       
+
+#elif defined(USE_BOARD_ESila)
+  //  см. MDRB_ESila.h
+
+  //  SSP2 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PA24_Port, MDRB_SPI1_CLK_PA24_Ind, MDRB_SPI1_CLK_PA24_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PA17_Port, MDRB_SPI1_FSS_PA17_Ind, MDRB_SPI1_FSS_PA17_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PA18_Port,  MDRB_SPI1_RX_PA18_Ind,  MDRB_SPI1_RX_PA18_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PA19_Port,  MDRB_SPI1_TX_PA19_Ind,  MDRB_SPI1_TX_PA19_Func};
+  
+  //  SSP4 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP2 = {MDRB_SPI2_CLK_PB20_Port, MDRB_SPI2_CLK_PB20_Ind, MDRB_SPI2_CLK_PB20_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP2 = {MDRB_SPI2_FSS_PB21_Port, MDRB_SPI2_FSS_PB21_Ind, MDRB_SPI2_FSS_PB21_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP2  = {MDRB_SPI2_RX_PB22_Port,  MDRB_SPI2_RX_PB22_Ind,  MDRB_SPI2_RX_PB22_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP2  = {MDRB_SPI2_TX_PB23_Port,  MDRB_SPI2_TX_PB23_Ind,  MDRB_SPI2_TX_PB23_Func};
+   
+  const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP2 =
+                                     { .pPinCLK = &_pinCLK_SSP2,
+                                       .pPinTX  = &_pinTX_SSP2,
+                                       .pPinRX  = &_pinRX_SSP2,
+                                       .pPinFSS = &_pinFSS_SSP2};  
+                                     
+  const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1 =
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};
+
+#elif defined(USE_BOARD_VK014)
+  //  SSP2 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP1 = {MDRB_SPI1_CLK_PD8_Port, MDRB_SPI1_CLK_PD8_Ind,  MDRB_SPI1_CLK_PD8_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP1 = {MDRB_SPI1_FSS_PD9_Port, MDRB_SPI1_FSS_PD9_Ind,  MDRB_SPI1_FSS_PD9_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP1  = {MDRB_SPI1_RX_PD10_Port, MDRB_SPI1_RX_PD10_Ind,  MDRB_SPI1_RX_PD10_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP1  = {MDRB_SPI1_TX_PD7_Port,  MDRB_SPI1_TX_PD7_Ind,   MDRB_SPI1_TX_PD7_Func};
+    
+  //  SSP4 pins
+  static const MDR_SSP_CfgPinGPIO _pinCLK_SSP2 = {MDRB_SPI2_CLK_PD12_Port, MDRB_SPI2_CLK_PD12_Ind, MDRB_SPI2_CLK_PD12_Func};
+  static const MDR_SSP_CfgPinGPIO _pinFSS_SSP2 = {MDRB_SPI2_FSS_PD13_Port, MDRB_SPI2_FSS_PD13_Ind, MDRB_SPI2_FSS_PD13_Func};
+  static const MDR_SSP_CfgPinGPIO _pinRX_SSP2  = {MDRB_SPI2_RX_PD14_Port,  MDRB_SPI2_RX_PD14_Ind,  MDRB_SPI2_RX_PD14_Func};
+  static const MDR_SSP_CfgPinGPIO _pinTX_SSP2  = {MDRB_SPI2_TX_PD11_Port,  MDRB_SPI2_TX_PD11_Ind,  MDRB_SPI2_TX_PD11_Func};
+    
+  const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP2 =
+                                     { .pPinCLK = &_pinCLK_SSP2,
+                                       .pPinTX  = &_pinTX_SSP2,
+                                       .pPinRX  = &_pinRX_SSP2,
+                                       .pPinFSS = &_pinFSS_SSP2};  
+                                     
+  const MDR_SSP_CfgPinsGPIO MDRB_PinsSSP1 =
+                                     { .pPinCLK = &_pinCLK_SSP1,
+                                       .pPinTX  = &_pinTX_SSP1,
+                                       .pPinRX  = &_pinRX_SSP1,
+                                       .pPinFSS = &_pinFSS_SSP1};
+                                       
 #endif

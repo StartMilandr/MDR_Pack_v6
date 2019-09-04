@@ -661,6 +661,7 @@ typedef struct
 // #define MDR_TIMER_Can_UpDown_ByExtEvents
 
 //----------------    DMA Definitions  --------------------
+#define MDR_DMA_CHMUX_LIKE_VE8
 #define MDR_DMA_IRQ_LIKE_VE8
 
 //  Block request

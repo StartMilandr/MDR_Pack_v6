@@ -8,6 +8,10 @@
 
 #include <MDRB_SPI_SelectPins.h>
 
+#ifdef USE_MDR1923VK014 
+  #include <MDRB_UART_Debug.h>
+#endif
+
 // ОПИСАНИЕ:
 //   По нажатию на кнопку UP(Key1) SPI_Master передает буфер в SPI_Slave.
 //   Подгрузка данных из массива DataTX в SPI_Master_FIFO происходит с помощью канала DMA - DMA_Chan_TX.
@@ -45,7 +49,7 @@
 
 //  ----------- Настройка каналов DMA  ----------
 #ifdef MDR_DMA_CH_REQ_SSP2_RX
-  #ifndef MDR_DMA_IRQ_LIKE_VE8
+  #ifndef MDR_DMA_CHMUX_LIKE_VE8
   // В обычных микроконтроллерах источники запросов к DMA жестко привязаны к номерам каналов DMA.
     #define DMA_Chan_TX            MDR_DMA_CH_SREQ_SSP1_TX
     #define DMA_Chan_RX            MDR_DMA_CH_SREQ_SSP2_RX
@@ -67,7 +71,7 @@
 #else
   #define SINGLE_SPI_MODE
 
-  #ifndef MDR_DMA_IRQ_LIKE_VE8
+  #ifndef MDR_DMA_CHMUX_LIKE_VE8
   // В обычных микроконтроллерах источники запросов к DMA жестко привязаны к номерам каналов DMA.
     #define DMA_Chan_TX            MDR_DMA_CH_SREQ_SSP1_TX
     #define DMA_Chan_RX            MDR_DMA_CH_SREQ_SSP1_RX
@@ -140,9 +144,12 @@ static bool DMA_CompletedTX;
 static bool DMA_CompletedRX;
 static bool DMA_DoCheckData = false;
 
+static bool doCommandStart = false;
+
 void ClearData(void);
 bool CheckData(void);
 void CyclicLedFlash(void);
+void UART1_IRQHandler(void);
 
 #ifndef MDR_DMA_IRQ_LIKE_VE8 
   void DMA_IRQHandler(void);
@@ -156,6 +163,11 @@ int main(void)
   uint32_t freqCPU_Hz;
   bool     firstStart = true;
 
+#ifdef USE_MDR1923VK014 
+  //  Задержка для 1923ВК014 для переключения в PC с программы UART загрузчика на Terminal.
+  MDR_Delay_ms(7000, HSI_FREQ_HZ);
+#endif  
+  
   //  Максимальная скорость тактирования
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
@@ -170,6 +182,11 @@ int main(void)
 #ifdef MDR_SSP_CLOCK_FROM_PER_CLOCK  
   MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
 #endif  
+
+#ifdef USE_MDR1923VK014 
+  // Запуск теста по символу 'U' от UART вместо кнопки Up, которой нет на плате.
+  MDR_UART_DBG_InitIrqRT(UART_DEBUG_BAUD_DEF, true);
+#endif
 
   //  Init  Master SPI
   MDR_SSPex_SetSSPClock_InpPLLCPU(SSP_MASTER, MDR_Div128P_div1);
@@ -194,23 +211,28 @@ int main(void)
   RestartCtrl_TX = MDR_DMA_InitTransfPri(DMA_Chan_TX, (uint32_t)DataTX, (uint32_t)&(SSP_MASTER->SSPx)->DR, DATA_LEN, &cfgDMA_TX);
   RestartCtrl_RX = MDR_DMA_InitTransfPri(DMA_Chan_RX, (uint32_t)&(SSP_SLAVE->SSPx)->DR, (uint32_t)DataRX,  DATA_LEN, &cfgDMA_RX);
   
-  //  Start IRQ and RX channed
+  //  Select PeriphEvents to DMA_Channels
+#ifdef MDR_DMA_CHMUX_LIKE_VE8  
+  MDR_DMA_SetChannelSource(DMA_Chan_TX, DMA_Chan_TX_Src);
+  MDR_DMA_SetChannelSource(DMA_Chan_RX, DMA_Chan_RX_Src);
+#endif
+
+  //  Enable IRQ
 #ifndef MDR_DMA_IRQ_LIKE_VE8  
   MDR_DMA_EnableIRQ(DMA_IRQ_PRIORITY);  
 #else  
-  MDR_DMA_SetChannelSource(DMA_Chan_TX, DMA_Chan_TX_Src);
-  MDR_DMA_SetChannelSource(DMA_Chan_RX, DMA_Chan_RX_Src);
-
   MDR_DMA_EnableIRQ(DMA_Chan_RX, DMA_IRQ_PRIORITY);
   MDR_DMA_EnableIRQ(DMA_Chan_TX, DMA_IRQ_PRIORITY);
 #endif
 
+  //  Start IRQ and RX channed
   MDR_DMA_StartChannel(DMA_Chan_RX, false, false, true);
 
   while (1)
   {
-    if (MDRB_BntClicked_Up(true))
+    if (MDRB_BntClicked_Up(true) || doCommandStart)
     {
+      doCommandStart = false;
       MDRB_LED_Set(LED_CYCLE | LED_ERR, 1);
       
       //  Restart new transfer
@@ -329,3 +351,17 @@ void CyclicLedFlash(void)
     MDRB_LED_Toggle(LED_CYCLE);
   }
 }
+
+#ifdef USE_MDR1923VK014 
+  void UART1_IRQHandler(void)
+  {
+    uint16_t command;
+    while (MDR_UART_CanRead(UART_DBG->UARTx))
+    {
+      command = MDR_UART_ReadData(UART_DBG->UARTx);
+      if ((command & 0x00FF) == 'U')
+        doCommandStart = true;
+    }
+  }
+#endif
+

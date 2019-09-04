@@ -139,7 +139,7 @@ void MDR_DMA_Copy16(uint32_t chIndex, uint16_t *src, uint16_t *dest, uint16_t co
 void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count);
 
 //  Выбор мультиплексорами источников запросов к каналам DMA.
-#ifdef MDR_DMA_IRQ_LIKE_VE8
+#ifdef MDR_DMA_CHMUX_LIKE_VE8
   void MDR_DMA_SetChannelSource(uint32_t chIndex, uint32_t periphSource);
 #endif
 

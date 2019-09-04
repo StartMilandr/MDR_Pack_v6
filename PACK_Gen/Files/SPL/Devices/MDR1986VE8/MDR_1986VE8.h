@@ -452,6 +452,7 @@ typedef enum {
 // #define MDR_TIMER_Can_UpDown_ByExtEvents
 
 //----------------    DMA Definitions  --------------------
+#define MDR_DMA_CHMUX_LIKE_VE8
 #define MDR_DMA_IRQ_LIKE_VE8
 
 //  Block request
@@ -473,11 +474,11 @@ typedef enum {
 #define  MDR_DMA_CH_SREQ_ETH_RX         1
 #define  MDR_DMA_CH_SREQ_SPW1_RX        4
 #define  MDR_DMA_CH_SREQ_SPW1_TX        6
+
 #define  MDR_DMA_CH_SREQ_TIM1           8
 #define  MDR_DMA_CH_SREQ_TIM2           9
 #define  MDR_DMA_CH_SREQ_TIM3          10
 #define  MDR_DMA_CH_SREQ_TIM4          11
-
 #define  MDR_DMA_CH_SREQ_TIM1_CH1      14
 #define  MDR_DMA_CH_SREQ_TIM2_CH1      15
 #define  MDR_DMA_CH_SREQ_TIM3_CH1      16

@@ -8,6 +8,14 @@
 
 #include <MDRB_UART_PinSelect.h>
 
+//  ОПИСАНИЕ:
+//    Таймер с периодом ~1сек генерит событие CNT==ARR, по которому возникает запрос к каналу DMA.
+//    Этот канал DMA копирует в UART на отправку число из массива DataTX, в котором лежат числа от 0 до 9.
+//    Когда цикл DMA заканчивается, возникает прерывание DMA об окончании цикла.
+//    В прерывании настраивается новый цикл DMA и переключается светодиод LED1.
+//    В итоге, во внешнюю программу терминал, подключенную по UART, непрерывно приходят цифры 0123456789, по одной цифре на период таймера.
+//    После выдачи всего цикла 0123456789 переключается светодиод LED1 на отладочной плате.
+
 
 #define LED_CYCLE       MDRB_LED_1
 
@@ -25,7 +33,15 @@
 #endif
 
 //  ----------- Настройка каналов DMA  ----------
-#define DMA_Chan_TX           MDR_DMA_CH_SREQ_TIM1
+#ifndef MDR_DMA_CHMUX_LIKE_VE8
+  #define DMA_Chan_TX           MDR_DMA_CH_SREQ_TIM1
+#else
+  // В ВЕ8, ВК014, ESila для каналов DMA 0..31
+  #define DMA_Chan_TX            0
+  // мультиплексором выбираются истоничники запросов
+  #define DMA_Chan_TX_Src       MDR_DMA_CH_SREQ_TIM1
+#endif
+
 #define UART_TX               MDR_UART1ex
 
 
@@ -68,7 +84,11 @@ static MDR_UART_Cfg CfgUART =
   .pCfgModem = NULL,
 };
   
-void DMA_IRQHandler(void);
+#ifndef MDR_DMA_IRQ_LIKE_VE8 
+  void DMA_IRQHandler(void);
+#else
+  void DMA_DONE0_IRQHandler(void);
+#endif
 
 
 //  ----------- Application  ----------
@@ -81,6 +101,11 @@ int main(void)
   uint32_t i;
   uint_tim timPeriod;
   uint16_t timPSG;
+
+#ifdef USE_MDR1923VK014 
+  //  Задержка для 1923ВК014 для переключения в PC с программы UART загрузчика на Terminal.
+  MDR_Delay_ms(7000, HSI_FREQ_HZ);
+#endif 
   
   //  Максимальная скорость тактирования
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
@@ -97,6 +122,7 @@ int main(void)
 #endif 
 
   //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
+  MDR_UARTex_SetUartClock_InpPLLCPU(UART_TX, MDR_Div128P_div1);
   MDR_UARTex_Init(UART_TX, &CfgUART, UART_BAUD_9600, freqCPU_Hz);  
   MDR_UART_InitPinsGPIO(&UART_TX_Pins, MDR_PIN_FAST);
 
@@ -107,8 +133,20 @@ int main(void)
   //  DMA
   MDR_DMA_Init();
   RestartCtrl_TX = MDR_DMA_InitTransfPri(DMA_Chan_TX, (uint32_t)DataTX, (uint32_t)&(UART_TX->UARTx)->DR, DATA_LEN, &cfgDMA_TX);
-  //  Start DMA_TX
+
+  //  Select PeriphEvents to DMA_Channels
+#ifdef MDR_DMA_CHMUX_LIKE_VE8  
+  MDR_DMA_SetChannelSource(DMA_Chan_TX, DMA_Chan_TX_Src);
+#endif
+
+  //  Enable IRQ
+#ifndef MDR_DMA_IRQ_LIKE_VE8  
   MDR_DMA_EnableIRQ(DMA_IRQ_PRIORITY);
+#else  
+  MDR_DMA_EnableIRQ(DMA_Chan_TX, DMA_IRQ_PRIORITY);
+#endif
+  
+  //  Start DMA_TX
   MDR_DMA_StartChannel(DMA_Chan_TX, false, false, true);
 
   //  Timer Period 1sec
@@ -122,14 +160,24 @@ int main(void)
   }
 }
 
-void DMA_IRQHandler(void)
-{ 
-  //  Перезапуск нового цикла DMA
-  MDR_DMA_RunNextCyclePri(DMA_Chan_TX, RestartCtrl_TX);
-  
-  // Индикация на светодиод
-  MDRB_LED_Toggle(LED_CYCLE);
-}
-
+#ifndef MDR_DMA_IRQ_LIKE_VE8 
+  void DMA_IRQHandler(void)
+  { 
+    //  Перезапуск нового цикла DMA
+    MDR_DMA_RunNextCyclePri(DMA_Chan_TX, RestartCtrl_TX);
+    
+    // Индикация на светодиод
+    MDRB_LED_Toggle(LED_CYCLE);
+  }
+#else
+  void DMA_DONE0_IRQHandler(void)
+  { 
+    //  Перезапуск нового цикла DMA
+    MDR_DMA_RunNextCyclePri(DMA_Chan_TX, RestartCtrl_TX);
+    
+    // Индикация на светодиод
+    MDRB_LED_Toggle(LED_CYCLE);
+  }
+#endif
 
 

@@ -56,6 +56,21 @@
   extern const MDR_UART_CfgPinGPIO _pinTX_UART2;
   extern const MDR_UART_CfgPinGPIO _pinRX_UART2;
 
+#elif defined(USE_BOARD_VE8)
+  //  см. MDRB_1986VE8.h  
+  extern const MDR_UART_CfgPinGPIO _pinTX_UART1;
+  extern const MDR_UART_CfgPinGPIO _pinRX_UART1;
+    
+#elif defined(USE_BOARD_VK014)
+  //  см. MDRB_1986VE8.h
+  extern const MDR_UART_CfgPinGPIO _pinTX_UART1;
+  extern const MDR_UART_CfgPinGPIO _pinRX_UART1;  
+  
+#elif defined(USE_BOARD_ESila)
+  //  см. MDRB_ESila.h
+  extern const MDR_UART_CfgPinGPIO _pinTX_UART1;
+  extern const MDR_UART_CfgPinGPIO _pinRX_UART1; 
+
 #endif
 
 

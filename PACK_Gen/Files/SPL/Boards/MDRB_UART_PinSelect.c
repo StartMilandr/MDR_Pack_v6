@@ -49,7 +49,21 @@
                                                                            
   const MDR_UART_CfgPinGPIO _pinTX_UART2 = {MDRB_UART2_TX_PC0_Port, MDRB_UART2_TX_PC0_Ind, MDRB_UART2_TX_PC0_Func};
   const MDR_UART_CfgPinGPIO _pinRX_UART2 = {MDRB_UART2_RX_PC1_Port, MDRB_UART2_RX_PC1_Ind, MDRB_UART2_RX_PC1_Func};
+
+#elif defined(USE_BOARD_VE8)
+  //  см. MDRB_1986VE8.h  
+  const MDR_UART_CfgPinGPIO _pinTX_UART1 = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
+  const MDR_UART_CfgPinGPIO _pinRX_UART1 = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};
     
+#elif defined(USE_BOARD_VK014)
+  //  см. MDRB_1986VE8.h
+  const MDR_UART_CfgPinGPIO _pinTX_UART1 = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
+  const MDR_UART_CfgPinGPIO _pinRX_UART1 = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};  
+  
+#elif defined(USE_BOARD_ESila)
+  //  см. MDRB_ESila.h
+  const MDR_UART_CfgPinGPIO _pinTX_UART1 = {MDRB_UART1_TX_PB1_Port, MDRB_UART1_TX_PB1_Ind, MDRB_UART1_TX_PB1_Func};
+  const MDR_UART_CfgPinGPIO _pinRX_UART1 = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func}; 
 
 #endif
 

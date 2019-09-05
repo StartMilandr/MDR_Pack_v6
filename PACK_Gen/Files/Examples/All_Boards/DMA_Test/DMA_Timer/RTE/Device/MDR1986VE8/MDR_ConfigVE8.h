@@ -1,40 +1,45 @@
-#ifndef MDR_CONFIG_VK014_H
-#define MDR_CONFIG_VK014_H
+#ifndef MDR_CONFIG_VE8_H
+#define MDR_CONFIG_VE8_H
 
-#include <MDR_1923VK014.h>
-  
+#include <MDR_1986VE8.h>
+
 
 //=============  Debug Uart printf settings  ==================
 #define UART_DEBUG_IND              1    
 #define UART_DEBUG_SHOW_WELLCOME    1
 #define UART_DEBUG_BAUD_DEF         9600
-
+  
 
 //================  Параметры источников частоты ================
 //  Internal Generators
 #define HSI_FREQ_HZ       8000000UL
 #define HSI_FREQ_TRIM     MDR_BKP_REG63_HSI_Trim_Def
 #define HSI_TIMEOUT       0x0600UL
+#define HSI_OTP_DELAY     MDR_OTP_Delay_le_20MHz84
 #define HSI_LOW_SRI       MDR_BKP_LDO_SRILow_lt10MHz
 
 #define LSI_FREQ_HZ       40000UL
 #define LSI_FREQ_TRIM     MDR_BKP_REG63_LSI_Trim_Def
 #define LSI_TIMEOUT       0x0600UL
-#define LSI_LOW_SRI       MDR_BKP_LDO_SRILow_lt200KHz
+#define LSI_OTP_DELAY     MDR_OTP_Delay_le_20MHz84
+#define LSI_LOW_SRI       MDR_BKP_LDO_SRILow_lt100KHz
 
 //  External Generators
-#define HSE0_FREQ_HZ      8000000UL
+#define HSE0_FREQ_HZ      10000000UL
 #define HSE0_TIMEOUT      0x8000UL
-#define HSE0_LOW_SRI      MDR_BKP_LDO_SRILow_lt40MHz
+#define HSE0_OTP_DELAY    MDR_OTP_Delay_le_20MHz84
+#define HSE0_LOW_SRI      MDR_BKP_LDO_SRILow_lt10MHz
 
 
-#define HSE1_FREQ_HZ      8000000UL
+#define HSE1_FREQ_HZ      10000000UL
 #define HSE1_TIMEOUT      0x8000UL
-#define HSE1_LOW_SRI      MDR_BKP_LDO_SRILow_lt40MHz
+#define HSE1_OTP_DELAY    MDR_OTP_Delay_le_20MHz84
+#define HSE1_LOW_SRI      MDR_BKP_LDO_SRILow_lt10MHz
 
 #define LSE_FREQ_HZ       32768UL
 #define LSE_TIMEOUT       0x8000UL
-#define LSE_LOW_SRI       MDR_BKP_LDO_SRILow_lt200KHz
+#define LSE_OTP_DELAY     MDR_OTP_Delay_le_20MHz84
+#define LSE_LOW_SRI       MDR_BKP_LDO_SRILow_lt100KHz
 
 //  PLL Ready Timeout
 #define PLL_TIMEOUT       0x8000UL
@@ -89,10 +94,9 @@
 //  Прерывание возникает раньше, чем обновляются регистры CCR и CCR1
 #define USE_TIM_CAP_FIX   1
 
-
 // =========================   POWER Bugfixes   ================================
 // Флаги событий не стираются с первого раза
 #define USE_PWR_CLR_FIX   1
 
 
-#endif  //  MDR_CONFIG_VK014_H
+#endif  //  MDR_CONFIG_VE8_H

@@ -355,6 +355,7 @@ void MDR_UART_ChangeEventIRQEx(MDR_UART_Type *UART, MDR_UART_EventFlags selEvent
 // Сброс запроса прерывания
 __STATIC_INLINE void MDR_UART_ClearEventsIRQ  (MDR_UART_Type *UART, uint32_t eventsMask) {UART->ICR = eventsMask;}
 __STATIC_INLINE void MDR_UART_ClearEventsIRQEx(MDR_UART_Type *UART, MDR_UART_EventFlags eventsSel) {UART->ICR = eventsSel.Value;}
+__STATIC_INLINE void MDR_UART_ClearEventsAll  (MDR_UART_Type *UART) {UART->ICR = MDR_UART_EVENT_ClearAll;}
 
 // Считывание флагов всех событий (RIS)
 MDR_UART_EventFlags  MDR_UART_GetEvents(MDR_UART_Type *UART);

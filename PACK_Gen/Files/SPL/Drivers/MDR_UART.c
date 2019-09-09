@@ -152,6 +152,9 @@ void MDR_UART_InitByBaud(MDR_UART_Type *UART, const MDR_UART_Cfg *cfg, const MDR
   MDR_UART_ToCfgRegs(cfg, cfgBaud, &pCfgRegs);
   
   MDR_UART_Init_ByCfgRegs(UART, &pCfgRegs);
+//  Использовалось при отладке в ВЕ8, не помогло.
+//  MDR_UART_ClearRxFIFO(UART);
+//  MDR_UART_ClearEventsAll(UART);  
 }  
 
 

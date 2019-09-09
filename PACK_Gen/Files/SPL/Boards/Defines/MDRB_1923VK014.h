@@ -8,6 +8,7 @@
 //===================================    Частота тактирования    ========================================
 
 #define MDRB_HAS_NO_LCD
+#define MDRB_HAS_NO_BUTTONS
 
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz)
 

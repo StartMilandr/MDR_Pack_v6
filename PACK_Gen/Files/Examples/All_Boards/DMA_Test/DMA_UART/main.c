@@ -183,8 +183,7 @@ int main(void)
   bool     firstStart = true;
 
 #ifdef USE_MDR1923VK014 
-  //  Задержка для 1923ВК014 для переключения в PC с программы UART загрузчика на Terminal.
-  MDR_Delay_ms(7000, HSI_FREQ_HZ);
+  MDR_Delay_ms(4000, HSI_FREQ_HZ);
 #endif   
   
   //  Максимальная скорость тактирования

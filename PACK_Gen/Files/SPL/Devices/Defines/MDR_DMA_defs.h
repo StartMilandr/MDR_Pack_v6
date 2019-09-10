@@ -364,29 +364,39 @@ typedef union {
 } MDR_DMA_ProtAHB;
 
 
-typedef __PACKED_STRUCT {
-  MDR_DMA_Mode      Mode               : 3;
-  MDR_OnOff         UseBurst           : 1;
-  uint32_t                             : 10;
-  MDR_DMA_Arbitr    ArbitrCount        : 4;
-  uint32_t                             : 6;
-  MDR_DMA_DataSize  DataSize           : 2;
-  MDR_DMA_AddrInc   Src_AddrInc        : 2;
-  uint32_t                             : 2;
-  MDR_DMA_AddrInc   Dest_AddrInc       : 2;
-} MDR_DMA_CfgTransfBase;
 
-//typedef __PACKED_STRUCT {
-//  uint32_t    Mode               : 3;
-//  uint32_t    UseBurst           : 1;
-//  uint32_t                       : 10;
-//  uint32_t    ArbitrCount        : 4;
-//  uint32_t                       : 6;
-//  uint32_t    DataSize           : 2;
-//  uint32_t    Src_AddrInc        : 2;
-//  uint32_t                       : 2;
-//  uint32_t    Dest_AddrInc       : 2;
-//} MDR_DMA_CfgTransfBase;
+#if defined ( __ICCARM__ ) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
+  typedef __PACKED_STRUCT {
+    MDR_DMA_Mode      Mode               : 3;
+    MDR_OnOff         UseBurst           : 1;
+    uint32_t                             : 10;
+    MDR_DMA_Arbitr    ArbitrCount        : 4;
+    uint32_t                             : 6;
+    MDR_DMA_DataSize  DataSize           : 2;
+    MDR_DMA_AddrInc   Src_AddrInc        : 2;
+    uint32_t                             : 2;
+    MDR_DMA_AddrInc   Dest_AddrInc       : 2;
+  } MDR_DMA_CfgTransfBase;
+#else
+  typedef __PACKED_STRUCT {
+    MDR_DMA_Mode      Mode               : 3;
+    MDR_OnOff         UseBurst           : 1;
+    uint32_t                             : 10;
+
+//  CODE_WARNING!!! - Компилятор вставляет лишний бит, структура выходит за 32 бита
+    //MDR_DMA_Arbitr    ArbitrCount        : 4;
+    uint32_t          ArbitrCount        : 4;    
+    
+    uint32_t                             : 6;
+    MDR_DMA_DataSize  DataSize           : 2;
+    MDR_DMA_AddrInc   Src_AddrInc        : 2;
+    uint32_t                             : 2;
+    MDR_DMA_AddrInc   Dest_AddrInc       : 2;
+  } MDR_DMA_CfgTransfBase;
+
+#endif
+
+
 
 typedef struct {
   union {

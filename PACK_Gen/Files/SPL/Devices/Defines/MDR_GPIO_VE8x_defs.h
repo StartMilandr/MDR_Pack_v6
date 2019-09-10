@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 
-#include "MDR_Types.h"
+#include <MDR_Types.h>
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -39,6 +39,7 @@ extern "C" {
 #define MDR_GPIO_HAS_SET_CLEAR
 #define MDR_GPIO_HAS_CfgIRQ
 #define MDR_GPIO_CFG_SET_CLEAR
+#define MDR_GPIO_LIKE_VE8
 
 /* ===================================================== reg  RXTX  ========================================================== */
 typedef struct {

@@ -43,6 +43,7 @@
 #ifndef MDR_DMA_CHMUX_LIKE_VE8
   #define DMA_Chan_TX           MDR_DMA_CH_SREQ_UART1_TX
   #define DMA_Chan_RX           MDR_DMA_CH_SREQ_UART2_RX
+   
 #else
   // В ВЕ8, ВК014, ESila для каналов DMA 0..31
   #define DMA_Chan_TX            0
@@ -51,10 +52,16 @@
   #define DMA_Chan_TX_Src           MDR_DMA_CH_SREQ_UART1_TX
   #define DMA_Chan_RX_Src           MDR_DMA_CH_SREQ_UART2_RX
   
-  //  В 1986ВЕ8Т, 1923ВК014, ЕСиле обнаружено. что при пустом FIFO_RX UART к каналу DMA стоит активный запрос.
-  //  Поэтому при включении канала DMA, этот канал сразу же копирует одно слово из UART->DR, хотя все флаги в UART показывают что данных для чтения нет.
-  //  При MDR_LIKE_VE8_BUG_AVOID в функции CheckData() не проверяется первое слово от DMA чтобы сравнить остальные, правильно переданные данные.  
-  #define MDR_LIKE_VE8_BUG_AVOID
+  //  В 1986ВЕ8Т, 1923ВК014, ЕСиле обнаружено, что в момент присвоения функции пину 
+  //  (например GPIO_Port->FUNC1_Set = cfgSet->FUNC_8_15; для _pinRX_UART2_PA10)
+  //  то UART_RX ловит переключение на этом пине и воспринимает его за слово, при этом защелкивается запрос к DMA.
+  //  Запрос к каналу DMA сбросить нельзя, поэтому когда доходит до инициализации и включения канала DMA, 
+  //  то DMA тут же осуществит передачу этого, якобы принятого слова.
+  //  Чтобы этого избежать, в данном проекте пин UART_RX настривается до того, как будет настраиваться сам блок UART.
+  //  В обычном случае лучше сначала настраивать периферийный блок, а затем подключать к нему пины, чтобы пины включались в определенное состояние, уже заданное блоком.
+  //  Для остальных МК данной необходимости не замечено.
+  
+  
   
 #endif
 
@@ -143,7 +150,8 @@ static MDR_UART_Cfg CfgUART =
 {
   .cfgBase.WordLength   = MDR_UART_WordLen8,
   .cfgBase.Parity  = UART_Parity_Off,
-  .cfgBase.useFIFO = MDR_Off, //MDR_On,
+  .cfgBase.useFIFO = MDR_On,
+  //.cfgBase.useFIFO = MDR_Off, - Так тоже работает.
   //  Some Options, инициализировать нулем если опции не нужны
   .cfgBase.Options.Value = 0,
   
@@ -183,7 +191,7 @@ int main(void)
   bool     firstStart = true;
 
 #ifdef USE_MDR1923VK014 
-  MDR_Delay_ms(4000, HSI_FREQ_HZ);
+  MDR_Delay_ms(2000, HSI_FREQ_HZ);
 #endif   
   
   //  Максимальная скорость тактирования
@@ -195,25 +203,22 @@ int main(void)
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
   MDRB_LED_Init(LED_CYCLE | LED_ERR);
 
-  //  Для 1986VE4,VE214,VE234 частота UART_Clock формируется мультиплексорами
-  //  В VE214 отдельный выбор частоты с делителем для каждого из блоков UART, SSP, Timer
-  //  В остальных МК UART_Clock формируется только из HCLK (равной CPU_Clock) - выбор источника не требуется
-#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-  MDR_SetClock_Uart1(MDR_PER_PLLCPUo);
-  MDR_SetClock_Uart2(MDR_PER_PLLCPUo);
-#elif defined (MDR_PER_CLK_LIKE_VE4)
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-#endif 
+#ifdef MDR_GPIO_LIKE_VE8  
+  //  FIX: Предварительное переключение пина на функцию UART_RX - см. заголовок.
+  MDR_UART_InitPinsGPIO(&UART_RX_Pins, MDR_PIN_FAST);
+#endif
 
   //  Подача UART_Clock
   MDR_UARTex_SetUartClock_InpPLLCPU(UART_TX, MDR_Div128P_div1);
   MDR_UARTex_SetUartClock_InpPLLCPU(UART_RX, MDR_Div128P_div1);
   //  Инициализация блока с высчитыванием cfgBaud по входным параметрам.
   MDR_UARTex_Init(UART_TX, &CfgUART, UART_BAUD_921600, freqCPU_Hz);  
-  MDR_UARTex_Init(UART_RX, &CfgUART, UART_BAUD_921600, freqCPU_Hz);
-  //  Настройка выводов GPIO
   MDR_UART_InitPinsGPIO(&UART_TX_Pins, MDR_PIN_FAST);
+  //  Настройка выводов GPIO
+  MDR_UARTex_Init(UART_RX, &CfgUART, UART_BAUD_921600, freqCPU_Hz);  
+#ifndef MDR_GPIO_LIKE_VE8    
   MDR_UART_InitPinsGPIO(&UART_RX_Pins, MDR_PIN_FAST);
+#endif
 
   //  UART Enable DMA call
   MDR_UART_TX_DMA_Enable(UART_TX->UARTx);  
@@ -229,7 +234,7 @@ int main(void)
   MDR_DMA_SetChannelSource(DMA_Chan_TX, DMA_Chan_TX_Src);
   MDR_DMA_SetChannelSource(DMA_Chan_RX, DMA_Chan_RX_Src);
 #endif  
-  
+
   //  Enable IRQ
 #ifndef MDR_DMA_IRQ_LIKE_VE8  
   MDR_DMA_EnableIRQ(DMA_IRQ_PRIORITY);
@@ -342,15 +347,9 @@ bool CheckData(void)
   uint32_t i;
   uint32_t cntErr = 0;
 
-#ifndef MDR_LIKE_VE8_BUG_AVOID
   for (i = 0; i < DATA_LEN; ++i)
     if (DataTX[i] != DataRX[i])
       ++cntErr;
-#else
-  for (i = 0; i < (DATA_LEN - 1); ++i)
-    if (DataTX[i] != DataRX[i + 1])
-      ++cntErr;    
-#endif    
     
   return cntErr == 0;
 }

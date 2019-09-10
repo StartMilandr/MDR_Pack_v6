@@ -80,7 +80,7 @@ void MDR_DMA_InitProtEx(const MDR_DMA_ChCfg *channelsCtrlTable,  MDR_DMA_ProtAHB
   REG32(MDR_DMA_CLK_EN_ADDR) |= MDR_DMA_CLK_EN_MSK;
 #endif
   
-  //  Сброс регистров в состояне по умолчанию
+  //  Сброс регистров в состояние по умолчанию
   DMA_ClearRegs();
   
   //  Основная конфигурация и включение блока DMA

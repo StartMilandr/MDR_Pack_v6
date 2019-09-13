@@ -35,6 +35,7 @@ extern "C" {
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
 #define MDR_HAS_OTP
+#define MDR_RST_VE8
 
 //---------------   MAX_Clock  ---------------
 typedef enum {

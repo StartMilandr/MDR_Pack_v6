@@ -3,7 +3,7 @@
 
 #include <MDR_Config.h>  
 
-#if defined (USE_MDR1986VE8)
+#if defined (USE_MDR1986VE8) || defined (USE_MDR1986VE81)
   //  PLL from 8MHz 
   //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
   #define  MDRB_PLL_8MHz_TO_36MHz     MDR_CPU_CFG_PLL(18, 1, MDR_PLL_DV_div2)
@@ -175,7 +175,7 @@
 #endif
 
 
-#if defined (USE_MDR1986VE8) ||  defined (USE_MDR1923VK014) || defined (USE_ESila)
+#if defined (USE_MDR1986VE8) || defined (USE_MDR1986VE81) ||  defined (USE_MDR1923VK014) || defined (USE_ESila)
   #define MDR_CLK_PLL_HSI_DEF(pllCfg, suppFreq)     {.freqTrim            = HSI_FREQ_TRIM,            \
                                                      .selDiv2             = false,                    \
                                                      .timeoutCycles_HSI   = HSI_TIMEOUT,              \

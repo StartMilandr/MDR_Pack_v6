@@ -67,7 +67,7 @@ bool MDR_CLK_ResetBlock(const MDR_CPU_CfgHSI *cfgHSI, uint32_t timeoutCycles, bo
   MDR_CLOCK->PLL2_CHKR.CLK_CHK2 = 0;
   MDR_CLOCK->PLL2_STAT = 0;
 
-#ifdef USE_MDR1986VE8
+#ifdef MDR_RST_VE8
   MDR_CLOCK->CAN1_CLK = 0;
   MDR_CLOCK->TIM1_CLK = 0; 
   MDR_CLOCK->TIM2_CLK = 0;
@@ -201,7 +201,7 @@ void MDR_PLLx_Enable(MDR_RST_PLL_Type *PLLx, MDR_PLL_IN_SEL inpSrc, const MDR_CL
 //==============================================================================
 
 //  Рассчет подстройка LDO от частоты
-#ifdef USE_MDR1986VE8
+#ifdef MDR_LDO_LIKE_VE8
   MDR_CLK_LDO_LowSRI    MDR_FreqCPU_ToLowSRI(uint32_t CPU_FregHz)
   {
     if      (CPU_FregHz >  100E+6) return MDR_BKP_LDO_SRILow_ge100MHz;

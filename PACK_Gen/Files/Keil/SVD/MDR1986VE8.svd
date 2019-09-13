@@ -1960,6 +1960,300 @@
     <!-- #WDT -->
     <!-- #EBC -->
     <!-- #OTP -->
+    <!--OTP-->
+    <peripheral>
+      <!-- #BLOCK_NAME -->  
+      <name>MDR_OTP</name>
+      <version>1.0</version>
+      <description>OTP Memory Control</description>
+      <groupName>OTP</groupName>
+      <baseAddress>0x40060000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x28</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- KEY -->
+        <register>
+          <name>KEY</name>
+          <description>Unlock block register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- CNTR -->
+        <register>
+          <name>CNTR</name>
+          <description>Control register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000003</resetValue>
+          <!-- #CNTR_MASK -->
+          <resetMask>0xFFFF007F</resetMask>
+          <fields>
+            <field>
+              <name>WAITCYCL</name>
+              <description>OTP Access Delay</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Forbiden</name><description>Forbiden value</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>20MHz83</name><description>Delay for clock up to 20.83 MHz</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>41MHz66</name><description>Delay for clock up to 41.66 MHz</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>62MHz5</name><description>Delay for clock up to 62.5 MHz</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>83MHz33</name><description>Delay for clock up to 83.33 MHz</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>100MHz</name><description>Delay for clock up to 100 MHz</description><value>5</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>REG_ACCESS</name>
+              <description>OTP Access Delay</description>
+              <bitRange>[4:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Bus access</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Access through registers</description><value>1</value></enumeratedValue>            
+              </enumeratedValues>
+            </field>
+            <!-- #ENBITS -->
+            <field>
+              <name>SE</name>
+              <description>OTP Read enable</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Hold data</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Read enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PE</name>
+              <description>OTP Programming enable</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Hold data</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Programming enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>WECC</name>
+              <description>ECC for write with WDATA</description>
+              <bitRange>[23:16]</bitRange>
+            </field>
+            <field>
+              <name>RECC</name>
+              <description>ECC after read with RDATA</description>
+              <bitRange>[31:24]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- ADR -->
+        <register>
+          <name>ADR</name>
+          <description>Access address</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- WDATA -->
+        <register>
+          <name>WDATA</name>
+          <description>Data to write</description>
+          <addressOffset>0x0000000C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- RDATA -->
+        <register>
+          <name>RDATA</name>
+          <description>Read out data</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- ECCCS -->
+        <register>
+          <name>ECCCS</name>
+          <description>Control-Status Register</description>
+          <addressOffset>0x00000014</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>SECC</name>
+              <description>SingleError flag</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>No Event detected</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Event detected</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="SECC">
+              <name>DECC</name>
+              <description>DoubleError flag</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field>
+              <name>SECC_IE</name>
+              <description>SingleError IRQ Enable</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="SECC_IE">
+              <name>DECC_IE</name>
+              <description>DoubleError IRQ Enable</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="SECC_IE">
+              <name>FIX_SECC</name>
+              <description>Log SE to ECCADR, ECCDATA, ECCECC</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="SECC_IE">
+              <name>FIX_DECC</name>
+              <description>Log DE to ECCADR, ECCDATA, ECCECC</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field>
+              <name>CLR_SECNT</name>
+              <description>Clear SE counter</description>
+              <bitRange>[6:6]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Clear</name><description>Action</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CLR_DECNT</name>
+              <description>Clear DE counter</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Inactive</name><description>No Action</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Clear</name><description>Action</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ECC_DECNT</name>
+              <description>DE Events Counter</description>
+              <bitRange>[15:8]</bitRange>
+            </field>
+            <field>
+              <name>ECC_SECNT</name>
+              <description>SE Events Counter</description>
+              <bitRange>[31:16]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- ECCADR -->
+        <register>
+          <name>ECCADR</name>
+          <description>Last error address without correction</description>
+          <addressOffset>0x00000018</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- ECCDATA -->
+        <register>
+          <name>ECCDATA</name>
+          <description>Last error data without correction</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- ECCECC -->
+        <register>
+          <name>ECCECC</name>
+          <description>Last error ECC without correction</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+        </register>
+        <!-- TEST_TUNING -->
+        <register>
+          <name>TEST_TUNING</name>
+          <description>Access Memory Tuning register</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <!-- #TUNE_MASK -->
+          <resetMask>0x000F0718</resetMask>
+          <fields>
+            <!-- #REPL -->
+            <field>
+              <name>TE</name>
+              <description>Select Test Mode</description>
+              <bitRange>[4:3]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Normal Operation</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Test_1</name><description>Test Mode 1</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Test_2</name><description>Test Mode 2</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Test_3</name><description>Test Mode 3</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TIME_TUNING</name>
+              <description>Timeouts to read bit</description>
+              <bitRange>[10:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Time_HardMax</name><description>Read Timeout</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Time_Hard2</name><description>Read Timeout</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Time_Hard1</name><description>Read Timeout</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Time_Norm</name><description>Read Timeout</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Time_Easy1</name><description>Read Timeout</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Time_Easy2</name><description>Read Timeout</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Time_Easy3</name><description>Read Timeout</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Time_EasyMax</name><description>Read Timeout</description><value>7</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>REPL_TUNING</name>
+              <description>Bit Hi_Level Read Resistance</description>
+              <bitRange>[19:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Repl_EasyMax</name><description>Read Resistance</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Easy1</name><description>Read Resistance</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Norm</name><description>Read Resistance</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard1</name><description>Read Resistance</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard2</name><description>Read Resistance</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard3</name><description>Read Resistance</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard4</name><description>Read Resistance</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard5</name><description>Read Resistance</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard6</name><description>Read Resistance</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard7</name><description>Read Resistance</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard8</name><description>Read Resistance</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard9</name><description>Read Resistance</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard10</name><description>Read Resistance</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard11</name><description>Read Resistance</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>Repl_Hard12</name><description>Read Resistance</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>Repl_HardMax</name><description>Read Resistance</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #RAMD -->
     <!-- #ROM -->
     <!-- #CACHE -->

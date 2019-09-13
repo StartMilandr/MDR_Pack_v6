@@ -1,4 +1,4 @@
-#include "MDR_EEPROM.h"
+#include <MDR_EEPROM.h>
 
 static void RAM_Delay(uint32_t delayLoops) __RAM_EXEC;
 static void MDR_EEPROM_Erase(uint32_t address, uint32_t IFREN_Mask, uint32_t MAS1_Mask, uint32_t delayEraseExit) __RAM_EXEC;

@@ -34,6 +34,8 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
+#define MDR_LDO_LIKE_VE8 
+
 //-------   Reg_61  ----------
 typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_LDO1_SRILow                                           */
   MDR_BKP_LDO_SRILow_lt30MHz  = 0,  /*!< ge10MHz : Extra_I about ~400uA                                            */

@@ -1,7 +1,7 @@
 #ifndef _MDR_RST_CLOCK_DefsVE8_H
 #define _MDR_RST_CLOCK_DefsVE8_H
 
-#include <MDR_1986VE8.h>
+#include <MDR_Config.h>
 
 //  Приведение имен к названию блока MDR_CLK_ххх
 //        Подстройка частоты генераторов HSI и LSI

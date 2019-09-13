@@ -213,15 +213,7 @@ typedef enum
 #include <MDR_GPIO_VE8x_defs.h>
 
 /*===============  OneTimeProgramm (OTP) memory ===============*/
-typedef enum {
-  MDR_OTP_Delay_Forbiden    = 0,
-  MDR_OTP_Delay_le_20MHz84  = 1,
-  MDR_OTP_Delay_le_41MHz66  = 2,
-  MDR_OTP_Delay_le_62MHz5   = 3,
-  MDR_OTP_Delay_le_83MHz33  = 4,
-  MDR_OTP_Delay_le_100MHz   = 5,
-} MDR_OTP_Delay;
-
+#include <MDR_OTP_VE8_defs.h>
 
 /*=========  SSP - Synchronous Serial Port ========*/
 #include <MDR_SSP_def16.h>
@@ -270,14 +262,13 @@ typedef enum {
   */
 
 /* Peripheral and SRAM base address */
-// #define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-// #define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
 #define ADDR_PERIPH_BASE      0x40000000UL                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
 
 #define ADDR_RST_CLOCK_BASE   0x40000000UL                              /*!< RST_CLOCK Base Address      */
 #define ADDR_BKP_BASE         0x40001000UL                              /*!< Backup and RTC Base Address */
+#define ADDR_OTP_BASE         0x40006000UL
 
 #define ADDR_PORTA_BASE       0x40080000UL                              /*!< GPIO PORT_A Base Address */
 #define ADDR_PORTB_BASE       0x40081000UL                              /*!< GPIO PORT_B Base Address */
@@ -329,6 +320,7 @@ typedef enum {
 #endif
 
 
+#define MDR_OTP                        ((MDR_OTP_Type       *) ADDR_OTP_BASE)
 #define MDR_BKP                        ((MDR_BKP_Type       *) ADDR_BKP_BASE)
 
 #define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
@@ -336,7 +328,6 @@ typedef enum {
 #define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
 #define MDR_PORTD                      ((MDR_PORT_Type 	    *) ADDR_PORTD_BASE)
 #define MDR_PORTE                      ((MDR_PORT_Type 	    *) ADDR_PORTE_BASE)
-
 
 
 #define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)

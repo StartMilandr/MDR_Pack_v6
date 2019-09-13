@@ -23,8 +23,8 @@
   #define USE_BOARD_VK214
 #elif defined (USE_MDR1986VK234)
   #define USE_BOARD_VK234   
-#elif defined (USE_MDR1986VE8)
-  #define USE_BOARD_VE8   
+#elif defined (USE_MDR1986VE8) || defined (USE_MDR1986VE81)
+  #define USE_BOARD_VE8
 #elif defined (USE_MDR1923VK014)
   #define USE_BOARD_VK014   
 #elif defined (USE_ESila)

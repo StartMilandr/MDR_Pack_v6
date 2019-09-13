@@ -7,11 +7,12 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.03" date="2019-08-07">
+    <release version="2.04" date="2019-09-11">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
       - 2.0x: Increment paused
+      - 2.04: 1986VE8T Added
     </release>
   </releases>
 
@@ -233,23 +234,21 @@
         <device Dname="MDR1923VK014" >
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1923VK014/MDR_1923VK014.h" define="USE_MDR1923VK014"/>
-          <!--debug      svd="Keil/SVD/MDR1923VK014.svd"/-->
           <memory     name="IROM1" access="rwx" start="0x00000000"  size="0x8000"    startup="1"   default="1"/>
           <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
           <!--algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/-->
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
 
-          <!--description>
-                (1986VK234 RUS)
+          <description>
+                (1986VK014 RUS)
                 Core:
-                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 36 MHz
-                 - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+                 - 32-bit ARM Cortex-M0 processor, running at frequencies of up to 50 MHz
                  - memory Protection Unit (MPU)
                  - 24-bit SysTick Timer
 
                 Memory:
-                 - 64 KBytes of Flash memory (ISP and IAP)
-                 - 16 KBytes of SRAM
+                 - 32 KBytes of SRAM (ISP and IAP)
+                 - 32 KBytes of SRAM
 
                 Supply and Clock rate:
                  - internal regulator for core voltage supply
@@ -266,35 +265,26 @@
                  - Sleep, Stop and Standby
                  - battery domain with RTC and backup registers
 
-                Analog features:
-                 - 12-bit ADC (8 channels)
-                 - 24-bit Sigma-Delta ADC (3 channels) conversion range: 0 to 3.6 V
-                 - temperature sensor
-
                 Peripheral features:
-                 - DMA controller (32 channel)
-                 - 2 Synch. 16-bit Timers (Input Capture, Output Compare, PWM)
+                 - DMA controller
+                 - 4 16-bit Timers (Input Capture, Output Compare, PWM)
                  - 2 * UART
-                 - 1 * SPI
-                 - 1 * I2C
-                 - LCD Controller
-                 - 47 GPIO pins
+                 - 6 * SPI
+                 - 160 GPIO pins
 
                 Debug mode:
                  - 1 SWD
           </description>
           <feature type="UART"  n="2"   name="UART Interface up to 2.25 Mbit/s"/>
-          <feature type="VCC"   n="3.0" m="3.6"/>
-          <feature type="ADC"   n="1"   m="12"/>
-          <feature type="SPI"   n="1"   name="SPI Interface"/>
-          <feature type="Timer" n="2"   m="16" name="General Purpose Timer"/-->
+          <feature type="SPI"   n="6"   name="SPI Interface"/>
+          <feature type="Timer" n="4"   m="16" name="General Purpose Timer"/>
         </device>      
 
       </subFamily>
 
       <subFamily DsubFamily="Cortex-M1">
         <!--Core description-->
-        <processor Dcore="Cortex-M1" DcoreVersion="r1p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="144000000"/>
+        <processor Dcore="Cortex-M1" DcoreVersion="r1p0" Dfpu="NO_FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="144000000"/>
         <memory     name="IROM1" access="rx"  start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
         <memory     name="IRAM1" access="rw"  start="0x20000000"  size="0x8000"     init   ="0"   default="1"/>
         <memory     name="IRAM2" access="rwx" start="0x20100000"  size="0x4000"     init   ="0"   default="1"/>
@@ -701,9 +691,8 @@
           <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
           <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE8.h" define="USE_MDR1986VE8"/>
           <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
-          <memory     name="IROM1" access="rx"  start="0x20006000"  size="0x2000"    startup="1"   default="1"/>
-          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x6000"    init   ="1"   default="1"/>
-          <!--algorithm  name="Flash\"           start="0x08000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/-->
+          <memory     name="IROM1" access="rx"  start="0x20000000"  size="0x2000"    startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20002000"  size="0x6000"    init   ="1"   default="1"/>
           <description>
             (1986BE8 RUS)
             Core:
@@ -714,6 +703,112 @@
 
             Memory:
              - 128 KBytes of OTP w\ECC(SEC-DEC)
+             - 32 KBytes of SRAM w\ECC(SEC-DEC)
+             - external system bus controller w\ECC(SEC-DEC)
+
+            Supply and Clock rate:
+             - internal regulator for core voltage supply
+             - built-in power control system
+             - internal battery domain
+             - internal 8 MHz RC clock generator with calibration
+             - internal 40 kHz RC clockgenerator with calibration
+             - 2x external oscillator 1 .. 30 MHz
+             - 3x on-board PLL for clock frequency
+
+            Low power consumption modes:
+             - Sleep, Stop and Standby
+             - battery domain with RTC and backup registers
+
+            Analog features:
+             - 2x 12-bit ADC (16 channels)
+             - 2x 12-bit DAC
+
+            Peripheral features:
+             - EthernetMAC 10/100
+             - EthernetPHY 10
+             - SpaceWire
+             - ARINC 429 
+             - MILSTD
+             - 1xCAN, 1xSSP, 1xUART, 1xDMA, 4xTimer
+             - RTC
+             - WDG
+             - 160x GPIO
+
+            Debug mode:
+             - 2x JTAG
+          </description>
+        </device>
+        <!--Core description-->
+        <device Dname="MDR1986VE8_OTP">
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
+          <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE8.h" define="USE_MDR1986VE8"/>
+          <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
+          <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x20000"   startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"    init   ="1"   default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VE8_OTP_HSE1_8MHz.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>          
+          <description>
+            (1986BE8 RUS)
+            Core:
+             - 32-bit ARM Cortex-M4 processor, running at frequencies of up to 60 MHz
+             - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+             - memory Protection Unit (MPU)
+             - 24-bit SysTick Timer
+
+            Memory:
+             - 128 KBytes of OTP w\ECC(SEC-DEC)
+             - 32 KBytes of SRAM w\ECC(SEC-DEC)
+             - external system bus controller w\ECC(SEC-DEC)
+
+            Supply and Clock rate:
+             - internal regulator for core voltage supply
+             - built-in power control system
+             - internal battery domain
+             - internal 8 MHz RC clock generator with calibration
+             - internal 40 kHz RC clockgenerator with calibration
+             - 2x external oscillator 1 .. 30 MHz
+             - 3x on-board PLL for clock frequency
+
+            Low power consumption modes:
+             - Sleep, Stop and Standby
+             - battery domain with RTC and backup registers
+
+            Analog features:
+             - 2x 12-bit ADC (16 channels)
+             - 2x 12-bit DAC
+
+            Peripheral features:
+             - EthernetMAC 10/100
+             - EthernetPHY 10
+             - SpaceWire
+             - ARINC 429 
+             - MILSTD
+             - 1xCAN, 1xSSP, 1xUART, 1xDMA, 4xTimer
+             - RTC
+             - WDG
+             - 160x GPIO
+
+            Debug mode:
+             - 2x JTAG
+          </description>
+        </device>        
+        <!--Core description-->
+        <device Dname="MDR1986VE81">
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
+          <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE81.h" define="USE_MDR1986VE81"/>
+          <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
+          <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x20000"   startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"    init   ="1"   default="1"/>
+          <algorithm  name="Keil/FLM/MDR1986VE81_OTPSRAM.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
+          <description>
+            (1986BE81 RUS)
+            Core:
+             - 32-bit ARM Cortex-M4 processor, running at frequencies of up to 60 MHz
+             - 1.25 DMIPS/MHz (Dhrystone 2.1) performance at 0 wait state memory access
+             - memory Protection Unit (MPU)
+             - 24-bit SysTick Timer
+
+            Memory:
+             - 128 KBytes of SRAM (OTP) w\ECC(SEC-DEC)
              - 32 KBytes of SRAM w\ECC(SEC-DEC)
              - external system bus controller w\ECC(SEC-DEC)
 
@@ -799,6 +894,8 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE81"/>
+      <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
     </condition>
@@ -827,6 +924,8 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
     </condition>
@@ -882,6 +981,8 @@
     <condition id="CON_MDR1986VE8">
       <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
     </condition>
     <condition id="CON_MDR1923VK014">
       <description>Cortex-M0 device</description>
@@ -914,12 +1015,16 @@
     <condition id="CON_MDR_VE8x">
       <description>32-bit Cortex devices 1986VE8 and 1923VK014</description>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
     </condition>
     <condition id="CON_MDR_VE8xES">
       <description>32-bit Cortex devices like VE8</description>
       <accept Dname="MDR_ESila"/>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
     </condition>    
     <condition id="CON_MDR_ESila">
@@ -939,6 +1044,8 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
       <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
     </condition>
     <condition id="CON_BRD_LCD">
@@ -1695,6 +1802,11 @@
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="DMA_UART.uvprojx"/></project>
     </example>
+    <example name="DMA_UART_RX" folder="Examples/All_Boards/DMA_Test/DMA_UART_RX" doc="ReadMe.md" version="2.0.0">
+      <description>UART send and receive throught DMA</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="DMA_UART_RX.uvprojx"/></project>
+    </example>    
     <example name="1636RR52_Test" folder="Examples/All_Boards/1636RR52_Test" doc="ReadMe.md" version="2.0.0">
       <description>1636RR52 flash memory IC operations test</description>
       <board name="All_Boards" vendor="Milandr"/>

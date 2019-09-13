@@ -1,0 +1,144 @@
+#BLOCK_NAME_OTP
+<name>MDR_OTP</name>
+<version>1.0</version>
+<description>OTP Memory Control</description>
+<groupName>OTP</groupName>
+<baseAddress>0x40060000</baseAddress>
+
+#BLOCK_NAME_SRAM
+<name>MDR_SRAM</name>
+<version>1.0</version>
+<description>OTP_SRAM Memory Control</description>
+<groupName>OTP_SRAM</groupName>
+<baseAddress>0x40060000</baseAddress>
+
+#CNTR_MASK_OTP
+<resetMask>0xFFFF007F</resetMask>
+
+#CNTR_MASK_SRAM
+<resetMask>0xFFFF7EBF</resetMask>
+
+#ENBITS_OTP
+<field>
+  <name>SE</name>
+  <description>OTP Read enable</description>
+  <bitRange>[5:5]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Hold data</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Read enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>PE</name>
+  <description>OTP Programming enable</description>
+  <bitRange>[6:6]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Hold data</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Programming enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#ENBITS_SRAM
+<field>
+  <name>CLK</name>
+  <description>Rise front to write or read</description>
+  <bitRange>[5:5]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Low</name><description>Logic 0</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>High</name><description>Logic 1</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>OE</name>
+  <description>OE for SRAM</description>
+  <bitRange>[7:7]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>ReadEna</name><description>Read Enable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Ivactive</name><description>Read Disable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>WE_x00</name>
+  <description>WE for SRAM addr section 0x00</description>
+  <bitRange>[9:9]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>WriteEna</name><description>Write Enable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Ivactive</name><description>Write Disable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field derivedFrom="WE_x00">
+  <name>WE_x04</name>
+  <description>WE for SRAM addr section 0x04</description>
+  <bitRange>[10:10]</bitRange>
+</field>
+<field derivedFrom="WE_x00">
+  <name>WE_x08</name>
+  <description>WE for SRAM addr section 0x08</description>
+  <bitRange>[11:11]</bitRange>
+</field>
+<field derivedFrom="WE_x00">
+  <name>WE_x0C</name>
+  <description>WE for SRAM addr section 0x0C</description>
+  <bitRange>[12:12]</bitRange>
+</field>
+<field derivedFrom="WE_x00">
+  <name>WE_ECC</name>
+  <description>WE for SRAM addr ECC</description>
+  <bitRange>[13:13]</bitRange>
+</field>
+<field>
+  <name>CEN</name>
+  <description>CE for SRAM</description>
+  <bitRange>[14:14]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Active</name><description>Memory selected</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Ivactive</name><description>Memory not selected</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#TUNE_MASK_OTP
+<resetMask>0x000F0718</resetMask>
+
+#TUNE_MASK_SRAM
+<resetMask>0x000F0733</resetMask>
+
+#REPL_OTP
+<field>
+  <name>TE</name>
+  <description>Select Test Mode</description>
+  <bitRange>[4:3]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Normal Operation</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Test_1</name><description>Test Mode 1</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>Test_2</name><description>Test Mode 2</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>Test_3</name><description>Test Mode 3</description><value>3</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+
+#REPL_SRAM
+<field>
+  <name>SRAM_TIMEOUT</name>
+  <description>Timeouts to read SRAM</description>
+  <bitRange>[2:0]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Time_HardMax</name><description>SRAM Read Timeout</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Time_Hard2</name><description>SRAM Read Timeout</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>Time_Norm</name><description>SRAM Read Timeout</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>Time_Easy1</name><description>SRAM Read Timeout</description><value>3</value></enumeratedValue>
+    <enumeratedValue><name>Time_Easy2</name><description>SRAM Read Timeout</description><value>4</value></enumeratedValue>
+    <enumeratedValue><name>Time_Easy3</name><description>SRAM Read Timeout</description><value>5</value></enumeratedValue>
+    <enumeratedValue><name>Time_Easy4</name><description>SRAM Read Timeout</description><value>6</value></enumeratedValue>
+    <enumeratedValue><name>Time_EasyMax</name><description>SRAM Read Timeout</description><value>7</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>TE</name>
+  <description>Select Test Mode</description>
+  <bitRange>[5:4]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Normal Operation</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Test_1</name><description>Test Mode 1</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>Test_2</name><description>Test Mode 2</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>Test_3</name><description>Test Mode 3</description><value>3</value></enumeratedValue>
+  </enumeratedValues>
+</field>

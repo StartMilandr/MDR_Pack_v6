@@ -5,7 +5,7 @@
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
 
-#if defined (USE_MDR1986VE8)
+#if defined (USE_MDR1986VE8) || defined (USE_MDR1986VE81)
   #include <MDR_RST_Clock_DefsVE8.h>
 #elif defined (USE_MDR1923VK014)
   #include <MDR_RST_Clock_DefsVK14.h>

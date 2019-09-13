@@ -6,6 +6,7 @@ f4=../UART/UART_VE8.txt
 f5=../SSP/SSP_VE8.txt
 f6=../Timer/Timer_VE8.txt
 f7=../DMA/DMA_VE8ES.xml
+f8=../OTP/OTP_VE8.txt
 
 [TAGS]
 #RST=f1
@@ -17,7 +18,7 @@ f7=../DMA/DMA_VE8ES.xml
 #SSPs=f5
 #TIMERs=f6
 #DMA=f7
-
+#OTP=f8
 
 [TAGS_New]
 #PWR=
@@ -28,8 +29,6 @@ f7=../DMA/DMA_VE8ES.xml
 #WDT_R=
 #EBC=
 #EBC_R=
-#OTP=
-#OTP_R=
 #RAMD=
 #RAMD_R=
 #ROM=

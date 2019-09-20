@@ -1024,11 +1024,11 @@
     </condition>
     <condition id="CON_MDR_VE8xES">
       <description>32-bit Cortex devices like VE8</description>
-      <accept Dname="MDR_ESila"/>
       <accept Dname="MDR1986VE8"/>
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
+      <accept Dname="MDR_ESila"/>
     </condition>    
     <condition id="CON_MDR_ESila">
       <description>32-bit Cortex devices ESila</description>
@@ -1050,6 +1050,7 @@
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR1923VK014"/>
     </condition>
     <condition id="CON_BRD_LCD">
       <description>Boards with LCD Display</description>
@@ -1261,7 +1262,7 @@
       </files>
     </component>
     <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_VE8xES">
-      <description>PORT driver for MDR1986VExx Series</description>
+      <description>PORT driver for MDR1986VE8x Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_GPIO.h" version="2.0.0"/>
@@ -1408,6 +1409,15 @@
         <file category="source"  name="SPL/Drivers/MDR_ADCUI_VK234.c"/>
       </files>
     </component>    
+    <!-- ADCUI Driver -->
+    <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VE4">
+      <description>ADCUI driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_ADCUI_VE4.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_ADCUI_VE4.c"/>
+      </files>
+    </component>     
 	  <!-- WWDG Driver -->
     <component Cclass="Drivers" Cgroup="WWDG" Cversion="2.0" condition="CON_MDR_ALL">
       <description>WWDG driver</description>

@@ -5,10 +5,6 @@
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
 
-//#include <MDR_EEPROM_defs.h>
-//#include <MDR_BKP_defs.h>
-
-
 //  Приведение имен к названию блока MDR_CLK_ххх
 //        Подстройка частоты генераторов HSI и LSI
 #define   MDR_CLK_HSI_TRIM       MDR_BKP_HSI_TRIM

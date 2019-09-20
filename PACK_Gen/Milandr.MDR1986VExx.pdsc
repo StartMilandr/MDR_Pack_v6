@@ -174,7 +174,7 @@
           <!--processor  Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="NO_FPU" Dmpu="NO_MPU" Dendian="Little-endian" Dclock="36000000"/-->
           <compile    header="SPL/Devices/MDR1986VK234/MDR_1986VK234.h" define="USE_MDR1986VK234"/>
           <debug      svd="Keil/SVD/MDR1986VK234.svd"/>
-          <memory     name="IROM1"  access="rx"  start="0x00000000"  size="0x10000"    startup="1"   default="1"/>
+          <memory     name="IROM1"  access="rx"  start="0x00000000"  size="0x20000"    startup="1"   default="1"/>
           <memory     name="IRAM1"  access="rwx" start="0x20000000"  size="0x4000"     init   ="0"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VKx_EEPROM.FLM" start="0x00000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>
           <!--book       name="doc/K1986VK234.pdf" title="1986VE4 Reference Manual"/-->
@@ -795,7 +795,7 @@
         <device Dname="MDR1986VE81">
           <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="64000000"/>
           <compile header="SPL/Devices/MDR1986VE8/MDR_1986VE81.h" define="USE_MDR1986VE81"/>
-          <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
+          <debug      svd="Keil/SVD/MDR1986VE81.svd"/>
           <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x20000"   startup="1"   default="1"/>
           <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"    init   ="1"   default="1"/>
           <algorithm  name="Keil/FLM/MDR1986VE81_OTPSRAM.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>
@@ -982,6 +982,9 @@
       <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE8"/>
       <accept Dname="MDR1986VE8_OTP"/>
+    </condition>
+    <condition id="CON_MDR1986VE81">
+      <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE81"/>
     </condition>
     <condition id="CON_MDR1923VK014">
@@ -1021,11 +1024,11 @@
     </condition>
     <condition id="CON_MDR_VE8xES">
       <description>32-bit Cortex devices like VE8</description>
-      <accept Dname="MDR_ESila"/>
       <accept Dname="MDR1986VE8"/>
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
+      <accept Dname="MDR_ESila"/>
     </condition>    
     <condition id="CON_MDR_ESila">
       <description>32-bit Cortex devices ESila</description>
@@ -1047,6 +1050,7 @@
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR1923VK014"/>
     </condition>
     <condition id="CON_BRD_LCD">
       <description>Boards with LCD Display</description>
@@ -1174,6 +1178,19 @@
         <file category="header"  name="SPL/Config/MDR_ConfigVE8.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1986VE81">
+      <description>System Startup for Cortex-M4F</description>
+      <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
+        <file category="include" name="SPL/Devices/Defines/"/>
+        <file category="include" name="SPL/Devices/MDR1986VE8/"/>
+        <file category="source"  name="SPL/Devices/MDR1986VE8/startup_MDR1986VE8.s" attr="config" condition="Startup ARM" version="2.0.0"/>
+        <file category="source"  name="SPL/Devices/MDR1986VE8/system_MDR1986VE8.c"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Devices/MDR1986VE8/system_MDR1986VE8.h"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigVE81.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
     <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR1923VK014">
       <description>System Startup for Cortex-M4F</description>
       <files>
@@ -1245,7 +1262,7 @@
       </files>
     </component>
     <component Cclass="Drivers" Cgroup="GPIO Port" Cversion="2.0" condition="CON_MDR_VE8xES">
-      <description>PORT driver for MDR1986VExx Series</description>
+      <description>PORT driver for MDR1986VE8x Series</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_GPIO.h" version="2.0.0"/>
@@ -1277,7 +1294,16 @@
         <file category="header"  name="SPL/Drivers/MDR_EEPROM.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_EEPROM_18MHz.c" version="2.0.0"/>
       </files>
-    </component> 
+    </component>
+    <!-- OTP -->
+    <component Cclass="Drivers" Cgroup="OTP_VE8x" Cversion="2.0" condition="CON_MDR_VE8x">
+      <description>OTP Memory Control</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_OTP_VE8x.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_OTP_VE8x.c" version="2.0.0"/>
+      </files>
+    </component>    
     <!-- BKP RTC -->
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_Base">
       <description>Backup and RTC</description>
@@ -1383,6 +1409,15 @@
         <file category="source"  name="SPL/Drivers/MDR_ADCUI_VK234.c"/>
       </files>
     </component>    
+    <!-- ADCUI Driver -->
+    <component Cclass="Drivers" Cgroup="ADCUI" Cversion="2.0" condition="CON_MDR1986VE4">
+      <description>ADCUI driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_ADCUI_VE4.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_ADCUI_VE4.c"/>
+      </files>
+    </component>     
 	  <!-- WWDG Driver -->
     <component Cclass="Drivers" Cgroup="WWDG" Cversion="2.0" condition="CON_MDR_ALL">
       <description>WWDG driver</description>

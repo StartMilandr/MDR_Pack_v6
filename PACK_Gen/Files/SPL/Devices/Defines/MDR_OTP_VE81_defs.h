@@ -58,30 +58,6 @@ typedef struct {
   __IOM uint32_t        RECC       : 8;            /*!< [31..24] ECC after read with RDATA                                        */  
 } MDR_OTP_CNTR_Bits;
 
-//#define MDR_OTP_CNTR_WAITCYCL_Pos        (0UL)                     /*!< MDR_SRAM CNTR: WAITCYCL (Bit 0)                       */
-//#define MDR_OTP_CNTR_WAITCYCL_Msk        (0xfUL)                   /*!< MDR_SRAM CNTR: WAITCYCL (Bitfield-Mask: 0x0f)         */
-//#define MDR_OTP_CNTR_REG_ACCESS_Pos      (4UL)                     /*!< MDR_SRAM CNTR: REG_ACCESS (Bit 4)                     */
-//#define MDR_OTP_CNTR_REG_ACCESS_Msk      (0x10UL)                  /*!< MDR_SRAM CNTR: REG_ACCESS (Bitfield-Mask: 0x01)       */
-//#define MDR_OTP_CNTR_CLK_Pos             (5UL)                     /*!< MDR_SRAM CNTR: CLK (Bit 5)                            */
-//#define MDR_OTP_CNTR_CLK_Msk             (0x20UL)                  /*!< MDR_SRAM CNTR: CLK (Bitfield-Mask: 0x01)              */
-//#define MDR_OTP_CNTR_OE_Pos              (7UL)                     /*!< MDR_SRAM CNTR: OE (Bit 7)                             */
-//#define MDR_OTP_CNTR_OE_Msk              (0x80UL)                  /*!< MDR_SRAM CNTR: OE (Bitfield-Mask: 0x01)               */
-//#define MDR_OTP_CNTR_WE_x00_Pos          (8UL)                     /*!< MDR_SRAM CNTR: WE_x00 (Bit 8)                         */
-//#define MDR_OTP_CNTR_WE_x00_Msk          (0x100UL)                 /*!< MDR_SRAM CNTR: WE_x00 (Bitfield-Mask: 0x01)           */
-//#define MDR_OTP_CNTR_WE_x04_Pos          (9UL)                     /*!< MDR_SRAM CNTR: WE_x04 (Bit 9)                         */
-//#define MDR_OTP_CNTR_WE_x04_Msk          (0x200UL)                 /*!< MDR_SRAM CNTR: WE_x04 (Bitfield-Mask: 0x01)           */
-//#define MDR_OTP_CNTR_WE_x08_Pos          (10UL)                    /*!< MDR_SRAM CNTR: WE_x08 (Bit 10)                        */
-//#define MDR_OTP_CNTR_WE_x08_Msk          (0x400UL)                 /*!< MDR_SRAM CNTR: WE_x08 (Bitfield-Mask: 0x01)           */
-//#define MDR_OTP_CNTR_WE_x0C_Pos          (11UL)                    /*!< MDR_SRAM CNTR: WE_x0C (Bit 11)                        */
-//#define MDR_OTP_CNTR_WE_x0C_Msk          (0x800UL)                 /*!< MDR_SRAM CNTR: WE_x0C (Bitfield-Mask: 0x01)           */
-//#define MDR_OTP_CNTR_WE_ECC_Pos          (12UL)                    /*!< MDR_SRAM CNTR: WE_ECC (Bit 12)                        */
-//#define MDR_OTP_CNTR_WE_ECC_Msk          (0x1000UL)                /*!< MDR_SRAM CNTR: WE_ECC (Bitfield-Mask: 0x01)           */
-//#define MDR_OTP_CNTR_WECC_Pos            (16UL)                    /*!< MDR_SRAM CNTR: WECC (Bit 16)                          */
-//#define MDR_OTP_CNTR_WECC_Msk            (0xff0000UL)              /*!< MDR_SRAM CNTR: WECC (Bitfield-Mask: 0xff)             */
-//#define MDR_OTP_CNTR_RECC_Pos            (24UL)                    /*!< MDR_SRAM CNTR: RECC (Bit 24)                          */
-//#define MDR_OTP_CNTR_RECC_Msk            (0xff000000UL)            /*!< MDR_SRAM CNTR: RECC (Bitfield-Mask: 0xff)             */
-
-
 #define MDR_OTP_CNTR_WAITCYCL_Pos        (0UL)                     /*!< MDR_SRAM CNTR: WAITCYCL (Bit 0)                       */
 #define MDR_OTP_CNTR_WAITCYCL_Msk        (0xfUL)                   /*!< MDR_SRAM CNTR: WAITCYCL (Bitfield-Mask: 0x0f)         */
 #define MDR_OTP_CNTR_REG_ACCESS_Pos      (4UL)                     /*!< MDR_SRAM CNTR: REG_ACCESS (Bit 4)                     */
@@ -156,14 +132,14 @@ typedef __PACKED_STRUCT {
 #define MDR_OTP_TUNING_SRAM_Time_EasyMax_Msk  ((uint32_t)MDR_OTP_TUNING_SRAM_Time_EasyMax << MDR_OTP_TUNING_SRAM_TIME_Pos)
 
 //  OTP_TIME values
-#define MDR_OTP_TUNING_OTP_Time_HardMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_HardMax  << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Hard2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard2    << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Hard1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard1    << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Norm_Msk      ((uint32_t)MDR_OTP_TUNING_OTP_Time_Norm     << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Easy1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy1    << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Easy2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy2    << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_Easy3_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy3    << MDR_OTP_TUNING_SRAM_TIME_Pos)
-#define MDR_OTP_TUNING_OTP_Time_EasyMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_EasyMax  << MDR_OTP_TUNING_SRAM_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_HardMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_HardMax  << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Hard2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard2    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Hard1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard1    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Norm_Msk      ((uint32_t)MDR_OTP_TUNING_OTP_Time_Norm     << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy1    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy2    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy3_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy3    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_EasyMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_EasyMax  << MDR_OTP_TUNING_OTP_TIME_Pos)
 
 //  OTP_REPL values
 #define MDR_OTP_TUNING_OTP_Repl_EasyMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Repl_EasyMax  << MDR_OTP_TUNING_OTP_REPL_Pos)

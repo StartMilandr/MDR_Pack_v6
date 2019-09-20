@@ -11,6 +11,7 @@ f9=../Timer/Timer_VE4.txt
 f10=../Power/Power_Vx.txt
 f11=../DMA/DMA_VEx.xml
 f12=../Uniq/CRC_VE4_VK234.xml
+f13=../Uniq/ADCUI_VE4.xml
 
 
 [TAGS]
@@ -29,6 +30,7 @@ f12=../Uniq/CRC_VE4_VK234.xml
 #PWR=f10
 #DMA=f11
 #CRC=f12
+#ADCUI=f13
 
 [TAGS_New]
 #USB=
@@ -44,5 +46,5 @@ f12=../Uniq/CRC_VE4_VK234.xml
 #EBC=
 #EBC_R=
 #ADCUI=
-#ADCUI_R=
+
 

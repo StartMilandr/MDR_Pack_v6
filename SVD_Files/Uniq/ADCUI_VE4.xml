@@ -1,0 +1,323 @@
+#ADCUI
+<peripheral>
+  <name>MDR_ADCUI</name>
+  <version>2.0</version>
+  <description>Energy Counter Block</description>
+  <groupName>ADCUI</groupName>
+  <baseAddress>0x40068000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <size>0x40</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- CTRL1 -->
+    <register>
+      <name>CTRL1</name>
+      <description>ADCUI Control1 Register</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0001FFFF</resetMask>
+      <fields>
+        <field>
+          <name>ADC1_EN</name>
+          <description>Channel enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="ADC1_EN"><name>ADC2_EN</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC3_EN</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC4_EN</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC5_EN</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC6_EN</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC7_EN</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="ADC1_EN"><name>ADC8_EN</name><bitRange>[7:7]</bitRange></field>
+        <field>
+          <name>REF_EX</name>
+          <description>Select VRef</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Internal</name><description>Internal 1.2V</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>External</name><description>External 1.2V from pin VR_1V</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CHP1_EN</name>
+          <description>Exclude constant component</description>
+          <bitRange>[9:9]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>ConstOn</name><description>With const level</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ConstOff</name><description>Exclute const level</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="CHP1_EN"><name>CHP2_EN</name><bitRange>[10:10]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP3_EN</name><bitRange>[11:11]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP4_EN</name><bitRange>[12:12]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP5_EN</name><bitRange>[13:13]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP6_EN</name><bitRange>[14:14]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP7_EN</name><bitRange>[15:15]</bitRange></field>        
+        <field derivedFrom="CHP1_EN"><name>CHP8_EN</name><bitRange>[16:16]</bitRange></field>
+      </fields>
+    </register>
+    <!-- ANGAIN -->
+    <register>
+      <name>ANGAIN</name>
+      <description>Analog Amplifier Control</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>ADC1_PGA</name>
+          <description>Gain Select</description>
+          <bitRange>[1:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>x1</name><description>Gain 0dB</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>x4</name><description>Gain 12dB</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>x2</name><description>Gain 6dB</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>x16</name><description>Gain 24dB</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="ADC1_PGA"><name>ADC2_PGA</name><bitRange>[3:2]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC3_PGA</name><bitRange>[5:4]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC4_PGA</name><bitRange>[7:6]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC5_PGA</name><bitRange>[9:8]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC6_PGA</name><bitRange>[11:10]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC7_PGA</name><bitRange>[13:12]</bitRange></field>
+        <field derivedFrom="ADC1_PGA"><name>ADC8_PGA</name><bitRange>[16:14]</bitRange></field>
+      </fields>
+    </register>
+    <!-- DIGGAIN -->
+    <register>
+      <name>DIGGAIN</name>
+      <description>Digital Amplifier Control</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x0000002A</resetValue>
+      <resetMask>0x0000002A</resetMask>
+    </register>  
+    <!-- DMAEN -->
+    <register>
+      <name>DMAEN</name>
+      <description>DMA Request Control</description>
+      <addressOffset>0x0000000C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>DMA1_EN</name>
+          <description>DMA Request Enable</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="DMA1_EN"><name>DMA2_EN</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA3_EN</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA4_EN</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA5_EN</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA6_EN</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA7_EN</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="DMA1_EN"><name>DMA8_EN</name><bitRange>[7:7]</bitRange></field>
+      </fields>
+    </register>
+    <!-- CTRL2 -->
+    <register>
+      <name>CTRL2</name>
+      <description>ADCUI Control2 Register</description>
+      <addressOffset>0x00000010</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x000003FF</resetMask>
+      <fields>
+        <field>
+          <name>SFF</name>
+          <description>Sinc Filter Fine correction</description>
+          <bitRange>[6:0]</bitRange>
+        </field>
+        <field>
+          <name>SFC</name>
+          <description>Sinc Filter Rough correction</description>
+          <bitRange>[9:7]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>cor_0</name><description>Correction</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>cor_1</name><description>Correction</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>cor_2</name><description>Correction</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>cor_3</name><description>Correction</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>cor_4</name><description>Correction</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>cor_5</name><description>Correction</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>cor_6</name><description>Correction</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>cor_7</name><description>Correction</description><value>7</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>Reset</name>
+          <description>Digital part reset</description>
+          <bitRange>[10:10]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Working</name><description>Working state</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>DigInReset</name><description>Digital control in reset</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>BF_bp</name>
+          <description>Avoid Vref buffer</description>
+          <bitRange>[11:11]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>BuffOn</name><description>Buffer used</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>ByPass</name><description>Buffer by pass</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>CHOP_Freq</name>
+          <description>Chopper frequency</description>
+          <bitRange>[13:12]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Invalid_0</name><description>Invalid value</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Invalid_1</name><description>Invalid value</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Invalid_2</name><description>Invalid value</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>Ok</name><description>Default value</description><value>3</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- INTEN -->
+    <register>
+      <name>INTEN</name>
+      <description>Irq Enable Control</description>
+      <addressOffset>0x00000014</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>NS1_EN</name>
+          <description>IRQ by ADC ready</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="NS1_EN"><name>NS2_EN</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS3_EN</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS4_EN</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS5_EN</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS6_EN</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS7_EN</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="NS1_EN"><name>NS8_EN</name><bitRange>[7:7]</bitRange></field>
+        <field>
+          <name>OV1_EN</name>
+          <description>IRQ by Override ready</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="OV1_EN"><name>OV2_EN</name><bitRange>[9:9]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV3_EN</name><bitRange>[10:10]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV4_EN</name><bitRange>[11:11]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV5_EN</name><bitRange>[12:12]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV6_EN</name><bitRange>[13:13]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV7_EN</name><bitRange>[14:14]</bitRange></field>
+        <field derivedFrom="OV1_EN"><name>OV8_EN</name><bitRange>[15:15]</bitRange></field>        
+      </fields>      
+    </register>
+    <!-- STAT -->
+    <register>
+      <name>STAT</name>
+      <description>Status Register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x0000FFFF</resetMask>
+      <fields>
+        <field>
+          <name>NS1</name>
+          <description>ADC ready event</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="NS1"><name>NS2</name><bitRange>[1:1]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS3</name><bitRange>[2:2]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS4</name><bitRange>[3:3]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS5</name><bitRange>[4:4]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS6</name><bitRange>[5:5]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS7</name><bitRange>[6:6]</bitRange></field>
+        <field derivedFrom="NS1"><name>NS8</name><bitRange>[7:7]</bitRange></field>
+        <field>
+          <name>OV1</name>
+          <description>FIFO Override event</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="OV1"><name>OV2</name><bitRange>[9:9]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV3</name><bitRange>[10:10]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV4</name><bitRange>[11:11]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV5</name><bitRange>[12:12]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV6</name><bitRange>[13:13]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV7</name><bitRange>[14:14]</bitRange></field>
+        <field derivedFrom="OV1"><name>OV8</name><bitRange>[15:15]</bitRange></field>        
+      </fields>      
+    </register>
+    <!-- ADCx_DAT -->
+    <register>
+      <dim>8</dim>
+      <dimIncrement>4</dimIncrement>
+      <dimIndex>1,2,3,4,5,6,7,8</dimIndex>
+      <name>ADC%s_DAT</name>
+      <description>ADC FIFO read</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>32</size>
+      <access>read-only</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00FFFFFF</resetMask>
+    </register>
+    <!-- TST -->
+    <register>
+      <name>TST</name>
+      <description>Test register</description>
+      <addressOffset>0x0000003C</addressOffset>
+      <size>32</size>
+      <access>read-write</access>
+      <resetValue>0x00000000</resetValue>
+      <resetMask>0x00000002</resetMask>
+      <fields>
+        <field>
+          <name>TST2</name>
+          <description>Vref to pin VR_1V</description>
+          <bitRange>[1:1]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Invalid</name><description>Invalid Value</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Connected</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>   
+      </fields>      
+    </register>
+    <!-- Registers end-->
+  </registers>
+  <!-- peripheral end-->
+</peripheral>

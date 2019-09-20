@@ -161,6 +161,9 @@ typedef enum IRQn
 /*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE4VKx_def.h"
 
+/*===============  ADCUI  ===================*/
+#include "MDR_ADCUI_VE4_defs.h"
+
 /*=========  SSP - Synchronous Serial Port ========*/
 #include "MDR_SSP_def16.h"
 
@@ -226,6 +229,7 @@ typedef enum IRQn
 #define ADDR_EEPROM_BASE      0x40018000UL                              /*!< EEPROM Controller           */
 #define ADDR_RST_CLOCK_BASE   0x40020000UL                              /*!< RST_CLOCK Base Address      */
 #define ADDR_ADC_BASE         0x40040000UL                              /*!< ADC SAR Base Address        */
+#define ADDR_ADCUI_BASE       0x40068000UL                              /*!< ADCUI Base Address          */
 #define ADDR_BKP_BASE         0x40060000UL                              /*!< Backup and RTC Base Address */
 
 #define ADDR_PORTA_BASE       0x40080000UL                              /*!< GPIO PORT_A Base Address */
@@ -266,14 +270,16 @@ typedef enum IRQn
 #define MDR_ADC                        ((MDR_ADC_Type       *) ADDR_ADC_BASE)
 #define MDR_ADC1                       ((MDR_ADCx_ItemType  *) ADDR_ADC_BASE)
 
-#define MDR_PORTA                      ((MDR_PORT_Type 	*) ADDR_PORTA_BASE)
-#define MDR_PORTB                      ((MDR_PORT_Type 	*) ADDR_PORTB_BASE)
-#define MDR_PORTC                      ((MDR_PORT_Type 	*) ADDR_PORTC_BASE)
+#define MDR_ADCUI                      ((MDR_ADCUI_Type     *) ADDR_ADCUI_BASE)
 
-#define MDR_SSP1                       ((MDR_SSP_Type *)   ADDR_SSP1_BASE)
+#define MDR_PORTA                      ((MDR_PORT_Type 	    *) ADDR_PORTA_BASE)
+#define MDR_PORTB                      ((MDR_PORT_Type 	    *) ADDR_PORTB_BASE)
+#define MDR_PORTC                      ((MDR_PORT_Type 	    *) ADDR_PORTC_BASE)
 
-#define MDR_WWDT                       ((MDR_WWDT_Type*)   ADDR_WWDT_BASE)
-#define MDR_IWDT                       ((MDR_IWDT_Type*)   ADDR_IWDT_BASE)
+#define MDR_SSP1                       ((MDR_SSP_Type       *) ADDR_SSP1_BASE)
+
+#define MDR_WWDT                       ((MDR_WWDT_Type      *) ADDR_WWDT_BASE)
+#define MDR_IWDT                       ((MDR_IWDT_Type      *) ADDR_IWDT_BASE)
 
 #define MDR_UART1                      ((MDR_UART_Type 	    *) ADDR_UART1_BASE)
 #define MDR_UART2                      ((MDR_UART_Type 	    *) ADDR_UART2_BASE)
@@ -355,6 +361,10 @@ typedef enum IRQn
 #define   MDR_ADC_CLK_LIKE_VE4
 //  ADC pins in Port_C and Port_B
 #define   MDR_ADC_IN_PORTS_CB
+
+//----------------    ADCUI Definitions  --------------------
+//  ADCUI clock by 
+#define   MDR_ADCUI_CLOCK_FROM_PER_CLOCK
 
 //----------------    PER CLOCK  --------------------
 #define   MDR_PER_CLOCK_LIKE_VE4
@@ -459,6 +469,7 @@ typedef enum IRQn
 #define  MDR_DMA_CH_SREQ_TIM2           11
 
 #define  MDR_DMA_CH_SREQ_ADC1           30
+
 
 
 /** @} */ /* End of group MDR1986VE4 */

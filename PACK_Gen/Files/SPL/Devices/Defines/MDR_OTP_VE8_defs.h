@@ -83,6 +83,35 @@ typedef struct {
 #define MDR_OTP_TUNING_OTP_REPL_Msk     (0xf0000UL)             /*!< MDR_OTP TEST_TUNING: REPL_TUNING (Bitfield-Mask: 0x0f) */
 
 
+//  OTP_TIME values
+#define MDR_OTP_TUNING_OTP_Time_HardMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_HardMax  << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Hard2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard2    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Hard1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Hard1    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Norm_Msk      ((uint32_t)MDR_OTP_TUNING_OTP_Time_Norm     << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy1    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy2    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_Easy3_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Time_Easy3    << MDR_OTP_TUNING_OTP_TIME_Pos)
+#define MDR_OTP_TUNING_OTP_Time_EasyMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Time_EasyMax  << MDR_OTP_TUNING_OTP_TIME_Pos)
+
+//  OTP_REPL values
+#define MDR_OTP_TUNING_OTP_Repl_EasyMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Repl_EasyMax  << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Easy1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Easy1    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Norm_Msk      ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Norm     << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard1_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard1    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard2_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard2    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard3_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard3    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard4_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard4    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard5_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard5    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard6_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard6    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard7_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard7    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard8_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard8    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard9_Msk     ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard9    << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard10_Msk    ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard10   << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard11_Msk    ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard11   << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_Hard12_Msk    ((uint32_t)MDR_OTP_TUNING_OTP_Repl_Hard12   << MDR_OTP_TUNING_OTP_REPL_Pos)
+#define MDR_OTP_TUNING_OTP_Repl_HardMax_Msk   ((uint32_t)MDR_OTP_TUNING_OTP_Repl_HardMax  << MDR_OTP_TUNING_OTP_REPL_Pos)
+
+
 /* ====================================== OTP Struct  =================================================== */
 
 typedef struct {                                /*!< (@ 0x40060000) MDR_SRAM Structure                                         */

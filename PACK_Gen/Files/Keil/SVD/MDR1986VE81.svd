@@ -2041,7 +2041,7 @@
             <field>
               <name>WE_x00</name>
               <description>WE for SRAM addr section 0x00</description>
-              <bitRange>[8:8]</bitRange>
+              <bitRange>[9:9]</bitRange>
               <enumeratedValues>
                 <enumeratedValue><name>WriteEna</name><description>Write Enable</description><value>0</value></enumeratedValue>
                 <enumeratedValue><name>Ivactive</name><description>Write Disable</description><value>1</value></enumeratedValue>
@@ -2050,22 +2050,31 @@
             <field derivedFrom="WE_x00">
               <name>WE_x04</name>
               <description>WE for SRAM addr section 0x04</description>
-              <bitRange>[9:9]</bitRange>
+              <bitRange>[10:10]</bitRange>
             </field>
             <field derivedFrom="WE_x00">
               <name>WE_x08</name>
               <description>WE for SRAM addr section 0x08</description>
-              <bitRange>[10:10]</bitRange>
+              <bitRange>[11:11]</bitRange>
             </field>
             <field derivedFrom="WE_x00">
               <name>WE_x0C</name>
               <description>WE for SRAM addr section 0x0C</description>
-              <bitRange>[11:11]</bitRange>
+              <bitRange>[12:12]</bitRange>
             </field>
             <field derivedFrom="WE_x00">
               <name>WE_ECC</name>
               <description>WE for SRAM addr ECC</description>
-              <bitRange>[12:12]</bitRange>
+              <bitRange>[13:13]</bitRange>
+            </field>
+            <field>
+              <name>CEN</name>
+              <description>CE for SRAM</description>
+              <bitRange>[14:14]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Active</name><description>Memory selected</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Ivactive</name><description>Memory not selected</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
             </field>
             <field>
               <name>WECC</name>

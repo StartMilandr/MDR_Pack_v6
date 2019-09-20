@@ -82,11 +82,13 @@ static const uint32_t _CPU_C1_FreqHz[] = {HSI_FREQ_HZ, HSI_FREQ_HZ >> 1, HSE_FRE
 
 uint32_t MDR_GetFreqHz_CPU_C1(void)
 {
-  return _CPU_C1_FreqHz[(uint32_t)MDR_CLOCK->CPU_CLOCK_b.CPU_C1_SEL];  
+  //return _CPU_C1_FreqHz[(uint32_t)MDR_CLOCK->CPU_CLOCK_b.CPU_C1_SEL];  
+  return _CPU_C1_FreqHz[ FLD2VAL(MDR_CLOCK->CPU_CLOCK, MDR_RST_CPU__C1_SEL) ];  
 }
 
 uint32_t MDR_GetFreqHz_PLLCPUo(void)
 {
-  return MDR_GetFreqHz_CPU_C1() * ((uint32_t)MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);  
+  //return MDR_GetFreqHz_CPU_C1() * ((uint32_t)MDR_CLOCK->PLL_CONTROL_b.PLL_CPU_MUL + 1);  
+  return MDR_GetFreqHz_CPU_C1() * (FLD2VAL(MDR_CLOCK->PLL_CONTROL, MDR_RST_PLL__CPU_MUL) + 1); 
 }
 

@@ -51,12 +51,15 @@ void ShowToLCD(uint32_t data);
 static MDR_ADCUI_PGA ADCUI_Gain = MDR_ADCUI_PGA_x1;
 static const uint32_t GainValues[4] = {1, 4, 2, 16};
 
+static bool isDivMax = false;
+
 int main(void)
 {   
   MDR_CLK_Enable_RST_BPK();
   
 #if CLOCK_BY_PLL  
-  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX; 
+  //MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;  MDR_CPU_CFG_PLL_HSE_RES_DEF  
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDR_CPU_CFG_PLL_HSE_DIV2_RES_DEF(MDR_x8, EEPROM_Delay_le36MHz, MDR_LOWRI_le40MHz);
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);  
 #else
   MDR_CPU_SetClock_HSE_def(MDR_CLK_Resonator, false);
@@ -75,12 +78,16 @@ int main(void)
   //  Инициализация ADCUI и запуск
   MDR_ADCUI_InitDefAndStart(MDR_ADCUI_ChanToSelCH(ADCUI_CH), true, true, false);
   
+  
+  printf("Gain: %d\n", GainValues[ADCUI_Gain]);
+  printf("SFF_SFC = 0\n");
+  
   //  Update LCD to show ADCUI last Value
   MDR_SysTimerStart_ms(LCD_UPDATE_PERIOD_MS, freqCPU_Hz);
   
   while(1)
   {
-    //  Start Measure and printf data
+    //  ----    Start Measure and printf data ---
     if (MDRB_BntClicked_Up(true))
     {
       //  Start collect data to ADCUI_DataBuff
@@ -103,15 +110,16 @@ int main(void)
       ShowToLCD(ADCUI_DataLast);
       doShowToLED = false;
     }
-
-
+    
+    //  ----------  UART Options -------------
     //  Send to Uart active Point
     if (MDRB_BntClicked_Right(true))
     {
-      printf("%d   0x%x\n", ADCUI_DataLast, ADCUI_DataLast);
+      //printf("%d   0x%x\n", ADCUI_DataLast, ADCUI_DataLast);
+      printf("%d\n", ADCUI_DataLast);
     }
     
-    //  Send to Uart active Point
+    //  Change Gain
     if (MDRB_BntClicked_Down(true))
     {
       if (ADCUI_Gain == MDR_ADCUI_PGA_x16)
@@ -121,7 +129,24 @@ int main(void)
       MDR_ADCUI_SetGain(ADCUI_CH, ADCUI_Gain);
       
       printf("Gain: %d\n", GainValues[ADCUI_Gain]);
-    }    
+    }
+    
+    //  Change SampleRate
+    if (MDRB_BntClicked_Left(true))
+    {
+      isDivMax = !isDivMax;
+      
+      if (isDivMax)
+      {
+        MDR_ADCUI->CTRL2 |= (MDR_ADCUI_CTRL2_SFC_Msk | MDR_ADCUI_CTRL2_SFF_Msk);
+        printf("SFF_SFC = 0x3FF\n");        
+      }
+      else
+      {
+        MDR_ADCUI->CTRL2 &= ~(MDR_ADCUI_CTRL2_SFC_Msk | MDR_ADCUI_CTRL2_SFF_Msk);
+        printf("SFF_SFC = 0\n");
+      }
+    }        
     
   }
 }

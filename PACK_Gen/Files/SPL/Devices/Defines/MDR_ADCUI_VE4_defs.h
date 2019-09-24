@@ -89,6 +89,8 @@ typedef struct {
 #define MDR_ADCUI_CTRL1_CHP8_EN_Pos       (16UL)                    /*!< MDR_ADCUI CTRL1: CHP8_EN (Bit 16)                     */
 #define MDR_ADCUI_CTRL1_CHP8_EN_Msk       (0x10000UL)               /*!< MDR_ADCUI CTRL1: CHP8_EN (Bitfield-Mask: 0x01)        */
 
+#define MDR_ADCUI_CTRL1_ADC_EN_ALL    0xFFUL
+
 /* ========================================================  ANGAIN  ========================================================= */
 typedef enum {                      /*!< MDR_ADCUI_ANGAIN_ADC1_PGA                                                 */
   MDR_ADCUI_PGA_x1         = 0,     /*!< x1 : Gain 0dB                                                             */
@@ -166,13 +168,24 @@ typedef struct {
 
 /* =========================================================  CTRL2  ========================================================= */
 
+typedef enum {
+  MDR_ADCUI_Decim1   = 0,
+  MDR_ADCUI_Decim2   = 1,
+  MDR_ADCUI_Decim4   = 2,
+  MDR_ADCUI_Decim8   = 3,
+  MDR_ADCUI_Decim16  = 4,
+  MDR_ADCUI_Decim32  = 5,
+  MDR_ADCUI_Decim64  = 6,
+  MDR_ADCUI_Decim128 = 7,
+} MDR_ADCUI_Decim;
+
 typedef struct {
-  __IOM uint32_t   SFF        : 7;            /*!< [6..0] Sinc Filter Fine correction                                        */
-  __IOM uint32_t   SFC        : 3;            /*!< [9..7] Sinc Filter Rough correction                                       */
-  __IOM MDR_OnOff  Reset      : 1;            /*!< [10..10] Digital part reset                                               */
-  __IOM MDR_OnOff  BF_bp      : 1;            /*!< [11..11] Avoid Vref buffer                                                */
-  __IOM uint32_t   CHOP_Freq  : 2;            /*!< [13..12] Chopper frequency                                                */
-  __IM  uint32_t              : 18;
+  __IOM uint32_t          SFF        : 7;            /*!< [6..0] Sinc Filter Fine correction                                        */
+  __IOM uint32_t          SFC        : 3;            /*!< [9..7] Sinc Filter Rough correction                                       */
+  __IOM MDR_OnOff         Reset      : 1;            /*!< [10..10] Digital part reset                                               */
+  __IOM MDR_OnOff         BF_bp      : 1;            /*!< [11..11] Avoid Vref buffer                                                */
+  __IOM uint32_t          CHOP_Freq  : 2;            /*!< [13..12] Chopper frequency                                                */
+  __IM  uint32_t                     : 18;
 } MDR_ADCUI_CTRL2_Bits;
 
 #define MDR_ADCUI_CTRL2_SFF_Pos           (0UL)                     /*!< MDR_ADCUI CTRL2: SFF (Bit 0)                          */
@@ -188,9 +201,7 @@ typedef struct {
 
 //  Только это значение можно задавать в CHOP_Freq!
 #define MDR_ADCUI_CTRL2_CHOP_Freq_CONST    MDR_ADCUI_CTRL2_CHOP_Freq_Msk
-#define MDR_ADCUI_CTRL2_SFF_DEF           (0 << MDR_ADCUI_CTRL2_SFF_Pos)
-#define MDR_ADCUI_CTRL2_SFR_DEF           (0 << MDR_ADCUI_CTRL2_SFC_Pos)
-#define MDR_ADCUI_CTRL2_DEF               (MDR_ADCUI_CTRL2_SFR_DEF | MDR_ADCUI_CTRL2_SFF_DEF | MDR_ADCUI_CTRL2_CHOP_Freq_CONST)
+
 
 /* ===================================================  INTEN, STATUS  ======================================================= */
 typedef struct {

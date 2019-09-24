@@ -33,7 +33,7 @@ void ADCUI_CH2_IRQHandler(void);
 void ADCUI_CH3_IRQHandler(void);
 
 //  Buff for datas from ADCUI
-#define DATA_BUFF_LEN   100
+#define DATA_BUFF_LEN   1000
 static int32_t ADCUI_DataBuff[DATA_BUFF_LEN];
 static uint32_t buffDataCnt = 0;
 //  Last Value ADCUI
@@ -51,7 +51,8 @@ void ShowToLCD(uint32_t data);
 static MDR_ADCUI_PGA ADCUI_Gain = MDR_ADCUI_PGA_x1;
 static const uint32_t GainValues[4] = {1, 4, 2, 16};
 
-static bool isDivMax = false;
+
+static MDR_ADCUI_Decim  decimSFC = MDR_ADCUI_Decim1;
 
 int main(void)
 {   
@@ -76,11 +77,11 @@ int main(void)
   //  Подача рабочей частоты на ADCUI - HSE
   MDR_ADCUI_SetClock_CPU_C1(MDR_Div256P_div1);
   //  Инициализация ADCUI и запуск
-  MDR_ADCUI_InitDefAndStart(MDR_ADCUI_ChanToSelCH(ADCUI_CH), true, true, false);
+  MDR_ADCUI_InitDefAndStart(MDR_ADCUI_ChanToSelCH(ADCUI_CH), true, true, false, decimSFC);
   
-  
+  //  Start Values
   printf("Gain: %d\n", GainValues[ADCUI_Gain]);
-  printf("SFF_SFC = 0\n");
+  printf("SFC = %d\n", decimSFC);
   
   //  Update LCD to show ADCUI last Value
   MDR_SysTimerStart_ms(LCD_UPDATE_PERIOD_MS, freqCPU_Hz);
@@ -134,18 +135,13 @@ int main(void)
     //  Change SampleRate
     if (MDRB_BntClicked_Left(true))
     {
-      isDivMax = !isDivMax;
-      
-      if (isDivMax)
-      {
-        MDR_ADCUI->CTRL2 |= (MDR_ADCUI_CTRL2_SFC_Msk | MDR_ADCUI_CTRL2_SFF_Msk);
-        printf("SFF_SFC = 0x3FF\n");        
-      }
+      if (decimSFC == MDR_ADCUI_Decim8)
+        decimSFC = MDR_ADCUI_Decim1;
       else
-      {
-        MDR_ADCUI->CTRL2 &= ~(MDR_ADCUI_CTRL2_SFC_Msk | MDR_ADCUI_CTRL2_SFF_Msk);
-        printf("SFF_SFC = 0\n");
-      }
+        ++decimSFC;
+              
+      MDR_ADCUI_ChangeDecim(decimSFC);      
+      printf("SFC = %d\n", decimSFC);
     }        
     
   }

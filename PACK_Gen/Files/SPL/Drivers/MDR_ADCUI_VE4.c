@@ -43,7 +43,7 @@ void MDR_ADCUI_DeInit(void)
 //  ВАРИАНТ1:
 //  Настройка и запуск ADCUI по умолчанию - без DMA и усилений, прерывания для всех каналов одинаково.
 //  Иначе использовать MDR_ADCUI_Init()
-static MDR_ADCUI_CfgRegs ToCfgRegs(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef)
+static MDR_ADCUI_CfgRegs ToCfgRegs(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef, MDR_ADCUI_Decim decimSamplRate)
 {
   MDR_ADCUI_CfgRegs cfgReg;
   
@@ -54,13 +54,12 @@ static MDR_ADCUI_CfgRegs ToCfgRegs(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnRead
     cfgReg.regCTRL1 = 0;
   
   //  CTRL2
+  cfgReg.regCTRL2 = VAL2FLD(decimSamplRate, MDR_ADCUI_CTRL2_SFC) | MDR_ADCUI_CTRL2_CHOP_Freq_CONST;
   if (useExternalVRef)
   {
     cfgReg.regCTRL1 |= MDR_ADCUI_CTRL1_REF_EX_Msk;  
-    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_DEF | MDR_ADCUI_CTRL2_BF_bp_Msk;
-  }
-  else
-    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_DEF;
+    cfgReg.regCTRL2 |= MDR_ADCUI_CTRL2_BF_bp_Msk;
+  };
   
   //  IRQ
   if (enaIrqOnReady)
@@ -74,15 +73,15 @@ static MDR_ADCUI_CfgRegs ToCfgRegs(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnRead
   return cfgReg;
 }
 
-void MDR_ADCUI_InitDef(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool SuppressDC, bool useExternalVRef)
+void MDR_ADCUI_InitDef(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool SuppressDC, bool useExternalVRef, MDR_ADCUI_Decim decimSamplRate)
 {
-  MDR_ADCUI_CfgRegs cfgReg = ToCfgRegs(chanSelect, enaIrqOnReady, SuppressDC, useExternalVRef);
+  MDR_ADCUI_CfgRegs cfgReg = ToCfgRegs(chanSelect, enaIrqOnReady, SuppressDC, useExternalVRef, decimSamplRate);
   MDR_ADCUI_InitByCfgRegs(&cfgReg);
 }
 
-void MDR_ADCUI_InitDefAndStart(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool SuppressDC, bool useExternalVRef)
+void MDR_ADCUI_InitDefAndStart(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool SuppressDC, bool useExternalVRef, MDR_ADCUI_Decim decimSamplRate)
 {
-  MDR_ADCUI_CfgRegs cfgReg = ToCfgRegs(chanSelect, enaIrqOnReady, SuppressDC, useExternalVRef);
+  MDR_ADCUI_CfgRegs cfgReg = ToCfgRegs(chanSelect, enaIrqOnReady, SuppressDC, useExternalVRef, decimSamplRate);
   cfgReg.regCTRL1 |= chanSelect.Value << MDR_ADCUI_CTRL1_ADC1_EN_Pos;
   MDR_ADCUI_InitByCfgRegs(&cfgReg);
 }
@@ -104,14 +103,13 @@ void MDR_ADCUI_Init(MDR_ADCUI_SelCH chanSelect, MDR_ADCUI_Cfg *Cfg, bool useExte
     cfgReg.regCTRL1 |= chanSelect.Value << MDR_ADCUI_CTRL1_ADC1_EN_Pos;
   
   //  CTRL2
+  cfgReg.regCTRL2 = VAL2FLD(Cfg->decimSamplRate, MDR_ADCUI_CTRL2_SFC) | MDR_ADCUI_CTRL2_CHOP_Freq_CONST;
   if (useExternalVRef)
   {
     cfgReg.regCTRL1 |= MDR_ADCUI_CTRL1_REF_EX_Msk;  
-    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_DEF | MDR_ADCUI_CTRL2_BF_bp_Msk;
-  }
-  else
-    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_DEF;
-  
+    cfgReg.regCTRL2 |= MDR_ADCUI_CTRL2_BF_bp_Msk;
+  };  
+    
   //  IRQ
   if (Cfg->enaIrqOnReady)
     cfgReg.regIRQ = chanSelect.Value << MDR_ADCUI_EVENT_NS1_Pos;
@@ -143,11 +141,11 @@ void MDR_ADCUI_InitEx(MDR_ADCUI_CfgFull *cfg, MDR_ADCUI_CfgEx *cfgEx)
                   | VAL2FLD_Pos(cfg->chSel_SuppressDC.Value, MDR_ADCUI_CTRL1_CHP1_EN_Pos);
   //  CTRL2
   if (cfgEx == NULL)
-    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_DEF;
+    cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_CHOP_Freq_CONST;
   else
     cfgReg.regCTRL2 = MDR_ADCUI_CTRL2_CHOP_Freq_CONST 
-                    | VAL2FLD(cfgEx->SFF, MDR_ADCUI_CTRL2_SFF)
-                    | VAL2FLD(cfgEx->SFC, MDR_ADCUI_CTRL2_SFC);
+                    | VAL2FLD(cfgEx->decimSamplRate_Fine, MDR_ADCUI_CTRL2_SFF)
+                    | VAL2FLD(cfgEx->decimSamplRate,      MDR_ADCUI_CTRL2_SFC);
   if (cfg->useExternalVRef)
   {
     cfgReg.regCTRL1 |= MDR_ADCUI_CTRL1_REF_EX_Msk;  
@@ -161,6 +159,14 @@ void MDR_ADCUI_InitEx(MDR_ADCUI_CfgFull *cfg, MDR_ADCUI_CfgEx *cfgEx)
   cfgReg.regDMA = VAL2FLD_Pos(cfg->chSel_EnaDMA.Value, MDR_ADCUI_DMAEN_DMA1_EN_Pos);
   //  Gain
   cfgReg.regGAIN = cfg->gains.Value; 
+}
+
+void MDR_ADCUI_ChangeDecim (MDR_ADCUI_Decim decim)
+{ 
+  uint32_t reg_Ctrl = MDR_ADCUI->CTRL1;
+  MDR_ADCUI->CTRL1 = reg_Ctrl & ~(MDR_ADCUI_CTRL1_ADC_EN_ALL);
+  MDR_ADCUI->CTRL2 = MDR_MaskClrSet(MDR_ADCUI->CTRL2, MDR_ADCUI_CTRL2_SFC_Msk, ((uint32_t)decim) << MDR_ADCUI_CTRL2_SFC_Pos); 
+  MDR_ADCUI->CTRL1 = reg_Ctrl;
 }
 
 

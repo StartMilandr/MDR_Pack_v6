@@ -12,18 +12,19 @@
 //  ВАРИАНТ1: (Простейшая)
 //  Настройка ADCUI по умолчанию - без DMA и усилений, 
 //  прерывание по готовности данных и подавление постоянной составляющей для всех каналов одинаково.
-void MDR_ADCUI_InitDef        (MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef);
-void MDR_ADCUI_InitDefAndStart(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef);
+void MDR_ADCUI_InitDef        (MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef, MDR_ADCUI_Decim decimSamplRate);
+void MDR_ADCUI_InitDefAndStart(MDR_ADCUI_SelCH chanSelect, bool enaIrqOnReady, bool suppressDC, bool useExternalVRef, MDR_ADCUI_Decim decimSamplRate);
 
 
 //  ВАРИАНТ2:
 //  Одинаковая настройка каналов, выбранных маской chanSelect
 //  doStart - запуск каналов после инициализации
 typedef struct {
-  bool suppressDC;
-  bool enaIrqOnReady;
-  bool enaIrqOnOver;
-  bool enaDMA;
+  bool            suppressDC;
+  bool            enaIrqOnReady;
+  bool            enaIrqOnOver;
+  bool            enaDMA;
+  MDR_ADCUI_Decim decimSamplRate;
 } MDR_ADCUI_Cfg;
 
 void MDR_ADCUI_Init(MDR_ADCUI_SelCH chanSelect, MDR_ADCUI_Cfg *Cfg, bool useExternalVRef, bool doStart);
@@ -46,6 +47,7 @@ typedef struct {
   MDR_ADCUI_SelCH   chSel_EnaDMA;
   MDR_ADCUI_GainCH  gains;
   MDR_OnOff         useExternalVRef;
+  MDR_ADCUI_Decim   decimSamplRate;
 } MDR_ADCUI_CfgFull;
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -57,8 +59,8 @@ typedef struct {
 //  и есть желание как-то повлиять на поведение.
 //  Для значений по умолчанию задавать в MDR_ADCUI_InitEx как NULL
 typedef struct {
-  uint8_t   SFF;            /*!< [6..0] Sinc Filter Fine correction  */
-  uint8_t   SFC;            /*!< [9..7] Sinc Filter Rough correction */
+  MDR_ADCUI_Decim   decimSamplRate;            /*!< [9..7] Sinc Filter Rough correction */  
+  uint8_t           decimSamplRate_Fine;       /*!< [6..0] Sinc Filter Fine correction  */
 } MDR_ADCUI_CfgEx;
 
 void MDR_ADCUI_InitEx(MDR_ADCUI_CfgFull *cfg, MDR_ADCUI_CfgEx *cfgEx);
@@ -132,6 +134,9 @@ __STATIC_INLINE int32_t MDR_ADCUI_ReadData(MDR_ADCUI_CH ch)
 //  Gain
 __STATIC_INLINE void MDR_ADCUI_SetGain (MDR_ADCUI_CH ch, MDR_ADCUI_PGA gain) 
 { MDR_ADCUI->ANGAIN = MDR_MaskClrSet(MDR_ADCUI->ANGAIN, MDR_ADCUI_ANGAIN_CH_CLR(ch), ((uint32_t)gain) << MDR_ADCUI_ANGAIN_CH_OFFS(ch)); }
+
+//  Decim
+void MDR_ADCUI_ChangeDecim (MDR_ADCUI_Decim decim);
 
 
 //  ----------    Вспомогательные функции ----------

@@ -24,7 +24,7 @@ Pack поддержки микроконтроллеров 1986ВК214 и 1986В
   * MDR_PinDig_PermRegs на MDR_PinDig_GroupPinCfg
   * MDR_GPIO_CfgRegs на MDR_GPIO_SetCfg
 
-## Мактроопределения
+## Макроопределения
 
     #define MDR_GPIO_Pin_Count      32
     #define MDR_GPIO_HAS_KEY

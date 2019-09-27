@@ -179,6 +179,8 @@ typedef enum {
   MDR_ADCUI_Decim128 = 7,
 } MDR_ADCUI_Decim;
 
+#define MDR_ADCUI_DecimMax  MDR_ADCUI_Decim128
+
 typedef struct {
   __IOM uint32_t          SFF        : 7;            /*!< [6..0] Sinc Filter Fine correction                                        */
   __IOM uint32_t          SFC        : 3;            /*!< [9..7] Sinc Filter Rough correction                                       */

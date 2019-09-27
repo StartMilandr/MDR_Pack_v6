@@ -135,7 +135,7 @@ int main(void)
     //  Change SampleRate
     if (MDRB_BntClicked_Left(true))
     {
-      if (decimSFC == MDR_ADCUI_Decim8)
+      if (decimSFC == MDR_ADCUI_DecimMax)
         decimSFC = MDR_ADCUI_Decim1;
       else
         ++decimSFC;

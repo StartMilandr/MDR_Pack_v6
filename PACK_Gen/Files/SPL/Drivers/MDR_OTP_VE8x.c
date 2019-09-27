@@ -47,7 +47,7 @@ unsigned int GetECC(uint32_t data,  uint32_t adr)
 }
 
 #ifdef USE_MDR1986VE81
-  void MDR_OTPSRAM_ProgWordWord(uint32_t addr, uint32_t data) 
+  void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
   {
     uint32_t ctrl = GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
     ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk; // MDR_OTP_CNTR_CEN_Msk
@@ -149,7 +149,7 @@ unsigned int GetECC(uint32_t data,  uint32_t adr)
     }
   }
 
-  void MDR_OTP_ProgWordWord(uint32_t addr, uint32_t data) 
+  void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
   {
     uint32_t i40, ib, it, ird;
     uint32_t rdData, rdECC;

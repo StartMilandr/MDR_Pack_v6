@@ -53,6 +53,10 @@
 
   <project>
     <PathAndName>.\VK014\LED_Flasher_VK014.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\VE81\LED_Flasher_VE81.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
   </project>
 

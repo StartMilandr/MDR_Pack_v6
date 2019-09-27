@@ -6,11 +6,11 @@
 
 #ifdef USE_MDR1986VE81
   //  Реализация от Vasili с форума - http://forum.milandr.ru/viewtopic.php?p=20531#p20531
-  void MDR_OTPSRAM_ProgWordWord(uint32_t addr, uint32_t value);
+  void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t value);
   
 #elif defined (USE_MDR1986VE8)
 
-  void MDR_OTP_ProgWordWord(uint32_t addr, uint32_t value);
+  void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t value);
 
 #endif
 

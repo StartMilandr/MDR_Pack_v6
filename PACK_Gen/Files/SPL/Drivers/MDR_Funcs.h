@@ -1,7 +1,11 @@
 #ifndef MDR_FUNCS_H
 #define MDR_FUNCS_H
 
+#include <MDR_Config.h>
 #include <MDR_Types.h>
+
+//=========    Макрос для подавления ворнингов от неиспользуемых параметров ==========
+#define UNUSED(x) (void)(x)
 
 //===================    Функция ожидания с таймаутом  ===================
 bool WaitCondition(uint32_t timeoutCycles, pBoolFunc_void checkFunc);
@@ -11,43 +15,87 @@ void MDR_WaitFlagSet  (uint32_t addr, uint32_t flag);
 void MDR_WaitFlagClear(uint32_t addr, uint32_t flag);
 
 
-//=========================    Задержки и времена =======================
-//  Задержка в количестве пустых циклов
-void MDR_Delay(uint32_t Ticks);
+//=========================    Преобразование времени в такты CPU и циклы MDR_Delay ====================
+#define _SEC_TO_CLOCK(Sec, freqCPU_Hz, SecUnit)    ((uint32_t)((double)(Sec) * (freqCPU_Hz) / SecUnit))
+  
+#define  S_TO_CLOCKS(Sec, freqCPU_Hz)             _SEC_TO_CLOCK(mSec, freqCPU_Hz, 1)
+#define MS_TO_CLOCKS(mSec, freqCPU_Hz)            _SEC_TO_CLOCK(mSec, freqCPU_Hz, 1000)
+#define US_TO_CLOCKS(uSec, freqCPU_Hz)            _SEC_TO_CLOCK(uSec, freqCPU_Hz, 1000000)
+#define NS_TO_CLOCKS(nSec, freqCPU_Hz)            _SEC_TO_CLOCK(nSec, freqCPU_Hz, 1000000000)
 
-#define MDR_DebugerProtectDelay()     MDR_Delay(2000000)
+//=========================    Преобразование времени в циклы MDR_Delay =================================
 
 //  Минимальное количество тактов на исполнение одного пустого цикла 
 //  (Зависит от настроек компилятора и самого компилятора)
-
-#if   defined (__CC_ARM)
-  // Измерено практическим путем для компилятора ARM V5.06 update4 (build 422)
-  #if (__OPTIMISE_LEVEL > 1 )
-    #define DELAY_LOOP_CYCLES                 4UL    // O2 и выше
+#ifndef DELAY_LOOP_CYCLES
+  #if   defined (__CC_ARM)
+    // Измерено практическим путем для компилятора ARM V5.06 update4 (build 422)
+    #if (__OPTIMISE_LEVEL > 1 )
+      #define DELAY_LOOP_CYCLES                 4UL    // O2 и выше
+    #else
+      #define DELAY_LOOP_CYCLES                 8UL
+    #endif
+  #elif (__ARMCC_VERSION >= 6010050)
+    // Измерено практическим путем для компилятора V6.6 (LVVM). Одинаково при любой оптимизации
+    #define DELAY_LOOP_CYCLES                   8UL
   #else
-    #define DELAY_LOOP_CYCLES                 8UL
+    // По умолчанию
+    #define DELAY_LOOP_CYCLES                   8UL
   #endif
-#elif (__ARMCC_VERSION >= 6010050)
-  // Измерено практическим путем для компилятора V6.6 (LVVM). Одинаково при любой оптимизации
-  #define DELAY_LOOP_CYCLES                   8UL
-#else
-  // По умолчанию
-  #define DELAY_LOOP_CYCLES                   8UL
 #endif
 
-//  Пересчет миллисекунд в такты CPU
-#define MS_TO_CLOCKS(mSec, CPU_FregHz)            ((uint32_t)((double)(mSec) * (CPU_FregHz) / 1000))
-#define US_TO_CLOCKS(uSec, CPU_FregHz)            ((uint32_t)((double)(uSec) * (CPU_FregHz) / 1000000))
-#define NS_TO_CLOCKS(nSec, CPU_FregHz)            ((uint32_t)((double)(uSec) * (CPU_FregHz) / 1000000000))
+//  CycPerLoop - количество тактов CPU на исполнение одного цикла
+#define _SEC_TO_DELAY_LOOPS(Sec, freqCPU_Hz, CycPerLoop, SecUnit)   ((uint32_t)((double)(Sec) * (freqCPU_Hz) / SecUnit / CycPerLoop))
 
-//  Пересчет миллисекунд в количество тактов от частоты тактирования
-#define  S_TO_DELAY_LOOPS(Sec, CPU_FregHz)      ((uint32_t)((double)(Sec)  * (CPU_FregHz) / DELAY_LOOP_CYCLES))
-#define MS_TO_DELAY_LOOPS(mSec, CPU_FregHz)     ((uint32_t)((double)(mSec) * (CPU_FregHz) / DELAY_LOOP_CYCLES / 1000 ))
-#define US_TO_DELAY_LOOPS(uSec, CPU_FregHz)     ((uint32_t)((double)(uSec) * (CPU_FregHz) / DELAY_LOOP_CYCLES / 1000000 ))
-#define NS_TO_DELAY_LOOPS(nSec, CPU_FregHz)     ((uint32_t)((double)(nSec) * (CPU_FregHz) / DELAY_LOOP_CYCLES / 1000000000 ))
- 
-#define MDR_Delay_ms(mSec, CPU_FregHz)          MDR_Delay(MS_TO_DELAY_LOOPS((mSec), (CPU_FregHz)))
-#define MDR_Delay_us(uSec, CPU_FregHz)          MDR_Delay(US_TO_DELAY_LOOPS((uSec), (CPU_FregHz)))
+#define  S_TO_DELAY_LOOPS_EX(Sec,  freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(Sec,  freqCPU_Hz, CycPerLoop, 1         )
+#define MS_TO_DELAY_LOOPS_EX(mSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(mSec, freqCPU_Hz, CycPerLoop, 1000      )
+#define US_TO_DELAY_LOOPS_EX(uSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(uSec, freqCPU_Hz, CycPerLoop, 1000000   )
+#define NS_TO_DELAY_LOOPS_EX(nSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(nSec, freqCPU_Hz, CycPerLoop, 1000000000)
+
+#define  S_TO_DELAY_LOOPS(Sec,  freqCPU_Hz)                    S_TO_DELAY_LOOPS_EX(Sec,  freqCPU_Hz, DELAY_LOOP_CYCLES)
+#define MS_TO_DELAY_LOOPS(mSec, freqCPU_Hz)                   MS_TO_DELAY_LOOPS_EX(mSec, freqCPU_Hz, DELAY_LOOP_CYCLES)
+#define US_TO_DELAY_LOOPS(uSec, freqCPU_Hz)                   US_TO_DELAY_LOOPS_EX(uSec, freqCPU_Hz, DELAY_LOOP_CYCLES)
+#define NS_TO_DELAY_LOOPS(nSec, freqCPU_Hz)                   NS_TO_DELAY_LOOPS_EX(nSec, freqCPU_Hz, DELAY_LOOP_CYCLES)
+
+
+//=========================    Варианты задержки =======================
+
+//  1: Задержка на СИ - Сильно зависит от опций компиляции
+void MDR_DelayC(volatile uint32_t Ticks);
+
+//  2: Задержка на ASM - Зависит от того из какой помяти выполняется - EEPROM или RAM
+#if defined (__CC_ARM)
+  __asm void MDR_DelayASM(uint32_t Ticks);
+#elif (__ARMCC_VERSION >= 6010050)
+  __attribute__((naked)) void MDR_DelayASM(uint32_t Ticks);
+#endif
+
+//  3: Задержка на DWT отладчика, есть только в Cortex-M3/M4. Самая точная!
+void MDR_DelayDWT_Init(void);
+void MDR_DelayDWT(uint32_t clockCountCPU);
+void MDR_DelayDWT_DeInit(void);
+
+
+//  MDR_ConfigVEx.h: Выбор текущего варианта MDR_Delay - задержка в DELAY_LOOPS
+#if defined (USE_MDR_DELAY_C)
+  #define MDR_Delay_Init    UNUSED(0)
+  #define MDR_Delay         MDR_DelayС
+#elif defined (USE_MDR_DELAY_DWT)
+  #define MDR_Delay_Init    MDR_DelayDWT_Init
+  #define MDR_Delay         MDR_DelayDWT
+#else
+  #define MDR_Delay_Init    UNUSED(0)
+  #define MDR_Delay         MDR_DelayASM
+#endif
+
+//  Функции задержки в единицах времени
+#define MDR_Delay_ms(mSec, freqCPU_Hz)    MDR_Delay(MS_TO_DELAY_LOOPS((mSec), (freqCPU_Hz)))
+#define MDR_Delay_us(uSec, freqCPU_Hz)    MDR_Delay(US_TO_DELAY_LOOPS((uSec), (freqCPU_Hz)))
+
+//  Задержка для начала Main, чтобы отладчик успевал перехватить управление, 
+//  пока не начал исполняться пользовательский код, который может поломать отладчик.
+#define MDR_DebugerProtectDelay()         MDR_Delay(2000000)
+
 
 //=====================    Псевдо-случайное значение ===================
 uint32_t MDR_ToPseudoRand(uint32_t value);
@@ -80,8 +128,6 @@ static __inline uint32_t MDR_MaskSet(uint32_t value, uint32_t maskSet)
   return (value | maskSet);
 }
 
-//================    Макрос для подавления ворнингов от неиспользуемых параметров =======================
-#define UNUSED(x) (void)(x)
 
 //================    Макрос количества элементов в массиве =======================
 

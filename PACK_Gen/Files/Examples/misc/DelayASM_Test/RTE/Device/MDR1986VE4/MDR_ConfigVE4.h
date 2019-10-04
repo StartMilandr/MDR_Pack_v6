@@ -64,12 +64,28 @@
 // Флаги событий не стираются с первого раза
 #define USE_PWR_CLR_FIX   1
 
-// =========================   MDR_Delay ===========================
-//  Функция MDR_Delay(ticks) реализована в MDR_Funcs.с на ассемблере, чтобы не было зависимости от опций оптимизации компилятора.
-//  Но исполнение этой функции из ОЗУ происходит в 2 раза быстрее чем из EEPROM. Если функцию MDR_Delay расположить в ОЗУ, то 
-//  необходимо выставить MDR_DELAY_FROM_RAM = 1, в противном случае используется рассчет задержки для EEPROM, т.е. MDR_DELAY_FROM_RAM = 0.
-#define MDR_DELAY_FROM_RAM  0
 
+// =========================   MDR_Delay ===========================
+//  Выбор реализации для MDR_Delay: 
+//    По умолчанию используется ассемблерный вариант, универсальный
+//    Вариант на Си сильно зависит от опций компилятора
+#define   USE_MDR_DELAY_ASM
+//#define   USE_MDR_DELAY_C
+
+//  Исполнение функции задержки из ОЗУ / EEPROM происходит за разное количество тактов CPU. 
+//  Данными параметрами можно уточнить сколько тактов CPU занимает один цикл задержки в MDR_Funcs, для повышения точности.
+#define DELAY_LOOP_CYCLES_ASM       8
+#define DELAY_LOOP_CYCLES_ASM_RAM   4
+#define DELAY_LOOP_CYCLES_C         14
+#define DELAY_LOOP_CYCLES_C_RAM     9
+
+#ifdef USE_MDR_DELAY_C
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_C
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_C_RAM
+#else
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_ASM
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_ASM_RAM
+#endif
 
 
 #endif  //  MDR_CONFIG_VE4_H

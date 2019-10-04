@@ -174,7 +174,7 @@ typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Stru
 /* ================                                          MDR_BKP                                          ================ */
 /* =========================================================================================================================== */
 typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Structure                                          */
-  __IOM uint32_t  REG[MDR_BKP_REG_XX_COUNT];    /*!< (@ 0x00000000) User backup registers                                      */
+  __IOM uint32_t  REG_User[MDR_BKP_REG_USER_COUNT];    /*!< (@ 0x00000000) User backup registers                                      */
   __IOM uint32_t  KEY;                          /*!< (@ 0x000000F0) Unlock BKP and RTC Registers                               */
   __IM  uint32_t  RESERVED[3];
   

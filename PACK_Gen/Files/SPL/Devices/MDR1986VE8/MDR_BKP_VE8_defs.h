@@ -55,9 +55,13 @@ typedef enum {                      /*!< MDR_BKP_REG_61_TMR0_LDO1_Trim          
   MDR_BKP_LDO_Trim_add_0v15  = 3,   /*!< add_0v15 : LD0 extra voltage +0.15V                                       */
   MDR_BKP_LDO_Trim_sub_0v01  = 4,   /*!< sub_0v01 : LD0 extra voltage -0.01V                                       */
   MDR_BKP_LDO_Trim_sub_0v05  = 5,   /*!< sub_0v05 : LD0 extra voltage -0.05V                                       */
-  MDR_BKP_LDO_Trim_sub_0v015 = 6,   /*!< sub_0v015 : LD0 extra voltage -0.10V                                      */
+  MDR_BKP_LDO_Trim_sub_0v10  = 6,   /*!< sub_0v015 : LD0 extra voltage -0.10V                                      */
   MDR_BKP_LDO_Trim_sub_0v15  = 7,   /*!< sub_0v15 : LD0 extra voltage -0.15V                                       */
 } MDR_BKP_LDO_Trim;
+
+#define MDR_BKP_LDO_Trim_Min    MDR_BKP_LDO_Trim_sub_0v15
+#define MDR_BKP_LDO_Trim_Max    MDR_BKP_LDO_Trim_add_0v15
+#define MDR_BKP_LDO_Trim_Def    MDR_BKP_LDO_Trim_add_0v01
 
 typedef struct {
       __IOM MDR_BKP_LDO_SRILow    LDO0_SRILow : 3;           /*!< [2..0] LDO Power adjustment                      */
@@ -112,6 +116,11 @@ typedef struct {
 #define MDR_BKP_REG61_LDO3_RDY_Pos  (31UL)                    /*!< MDR_BKP REG_61_TMR0: LDO3_RDY (Bit 31)                */
 #define MDR_BKP_REG61_LDO3_RDY_Msk  (0x80000000UL)            /*!< MDR_BKP REG_61_TMR0: LDO3_RDY (Bitfield-Mask: 0x01)   */
 
+#define MDR_BKP_REG61_LDO_TRIM_ClearAll   (MDR_BKP_REG61_LDO3_Trim_Msk | MDR_BKP_REG61_LDO2_Trim_Msk | MDR_BKP_REG61_LDO1_Trim_Msk | MDR_BKP_REG61_LDO0_Trim_Msk)
+#define MDR_BKP_REG61_LDO_TRIM_Mask(tr)   (((tr) << MDR_BKP_REG61_LDO0_SRILow_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO1_SRILow_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO2_SRILow_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO3_SRILow_Pos) )
 
 //-------   Reg_62  ----------
 typedef struct {
@@ -176,7 +185,7 @@ typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Stru
 /* ================                                          MDR_BKP                                          ================ */
 /* =========================================================================================================================== */
 typedef struct {                                /*!< (@ 0x40001000) MDR_BKP Structure                                          */
-  __IOM uint32_t  REG[MDR_BKP_REG_XX_COUNT];    /*!< (@ 0x00000000) User backup registers                                      */
+  __IOM uint32_t  REG_User[MDR_BKP_REG_USER_COUNT];    /*!< (@ 0x00000000) User backup registers                                      */
   __IOM uint32_t  KEY;                          /*!< (@ 0x000000F0) Unlock BKP and RTC Registers                               */
   __IM  uint32_t  _RESERVED[3];
   

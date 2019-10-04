@@ -16,7 +16,7 @@ const uint32_t H[12] = {
   0x0738C808
 };
 
-unsigned int GetECC(uint32_t data,  uint32_t adr)
+uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
 {
   uint32_t* ptr_H;
   int i1;   
@@ -43,14 +43,16 @@ unsigned int GetECC(uint32_t data,  uint32_t adr)
       ecc |= res;
    }
    while(i1);
-   return ecc;
+   return (uint8_t)ecc;
 }
 
 #ifdef USE_MDR1986VE81
+//=================================   1986VE81  SRAM ===============================
+  //  Реализация от того-же Vasili
   void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
   {
     uint32_t ctrl = GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
-    ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk; // MDR_OTP_CNTR_CEN_Msk
+    ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk;
 
     MDR_OTP->ADR = addr;
     MDR_OTP->WDATA = data;
@@ -60,246 +62,185 @@ unsigned int GetECC(uint32_t data,  uint32_t adr)
     ctrl &= ~(MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk);
     MDR_OTP->CNTR = ctrl;
   }
+
+
 #else  
 
-  //  Memory must be in ReadMode! CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
-  static void MDR_OTP_ProgWordOneCycle(uint32_t wrAddr, uint32_t wrData, uint32_t wrECC) 
+//=================================   1986VE8T  OTP ===============================
+
+  static MDR_OTP_ProgDelays _progDelays;
+
+  MDR_OTP_ProgDelays MDR_OTP_GetProgDelays(uint32_t freqCPU_Hz)
   {
-    uint32_t i40, ib, it, ird;
+    MDR_OTP_ProgDelays delays;
+
+    delays.delay_HV_PE = US_TO_DELAY_LOOPS(MDR_OTP_DELAY_US_HV_PE, freqCPU_Hz);
+    delays.delay_A_D = US_TO_DELAY_LOOPS(MDR_OTP_DELAY_US_A_D,   freqCPU_Hz);
+    delays.delay_Prog = US_TO_DELAY_LOOPS(MDR_OTP_DELAY_US_PROG,  freqCPU_Hz);
+    return delays;
+  }
+  
+  //  Подготовка к програамированию и финализация после его окончания - переключение DUcc
+  void MDR_OTP_ProgBegin(const MDR_OTP_ProgDelays *progDelays)  
+  { 
+    _progDelays = *progDelays;
+    
+    MDR_BKP_SetTrimLDO_Min();
+    MDR_Delay(_progDelays.delay_HV_PE);
+    //  Разрешение вывода последних ошибок в 
+    MDR_OTP->ECCCS |= MDR_OTP_ECCCS_FIX_DECC_Msk | MDR_OTP_ECCCS_FIX_SECC_Msk | MDR_OTP_ECCCS_CLR_SECNT_Msk | MDR_OTP_ECCCS_CLR_DECNT_Msk;
+    // Реплики затрудняющие чтение единицы
+	  MDR_OTP->TUNING = MDR_OTP_TUNING_OTP_Time_Hard1_Msk | MDR_OTP_TUNING_OTP_Repl_HardMax_Msk;
+  }
+
+  void MDR_OTP_ProgEnd(void) 
+  { 
+    MDR_BKP_SetTrimLDO_Def(); 
+    MDR_OTP->TUNING = MDR_OTP_TUNING_OTP_Time_Norm_Msk | MDR_OTP_TUNING_OTP_Repl_Norm_Msk;
+    MDR_Delay(_progDelays.delay_HV_PE);
+  }
+
+  #define WRITE_TRY_COUNT   30
+  #define READ_TRY_COUNT    5
+
+  static bool MDR_OTP_ProgCycle_DataBit(uint32_t wrAddr, uint32_t wrOneBitMask)
+  {
+    uint32_t i, j;
+    bool result;  
+
+    //  Try Write Bit up to 30 times
+    result = false;
+    for (i = 0; i < WRITE_TRY_COUNT; ++i)
+    {
+      //  Write Mode
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;	
+                                
+      MDR_OTP->ADR   = wrAddr;
+      MDR_Delay(_progDelays.delay_A_D);   // for (y=0;y<1000;y++) {}; // delay 1000 us
+      MDR_OTP->WDATA = wrOneBitMask; 
+      MDR_Delay(_progDelays.delay_Prog);  // for (y=0;y<5000;y++) {}; // delay 3000 us
+      MDR_OTP->WDATA = 0;
+      
+      //  Read Mode
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
+
+      for (j = 0; j < READ_TRY_COUNT; ++j)
+      {	
+        result = (MDR_OTP->RDATA & wrOneBitMask) == wrOneBitMask;
+        if (result) 
+          break;                  
+      }
+    }    
+    return result;
+  }
+  
+  static bool MDR_OTP_ProgCycle_ECCBit(uint32_t wrAddr, uint8_t wrOneBitMask)
+  {
+    uint32_t i, j;
+    bool result;  
+
+    //  Try Write Bit up to 30 times
+    for (i = 0; i < WRITE_TRY_COUNT; ++i)
+    {
+      //  Write Mode
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
+                                
+      MDR_OTP->ADR   = wrAddr;
+      MDR_Delay(_progDelays.delay_A_D);     // for (y=0;y<1000;y++) {}; // delay 1000 us
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk | ((uint32_t)wrOneBitMask  << MDR_OTP_CNTR_WECC_Pos);
+      MDR_Delay(_progDelays.delay_Prog);    // for (y=0;y<5000;y++) {}; // delay 3000 us
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
+      
+      //  Read Mode
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
+
+      for (j = 0; j < READ_TRY_COUNT; ++j)
+      {	
+        result = ((MDR_OTP->CNTR >> MDR_OTP_CNTR_RECC_Pos) & wrOneBitMask) == wrOneBitMask;
+        if(result) 
+          break;                  
+      }
+    }    
+    return result;
+  }  
+
+
+  //  Memory must be in ReadMode! CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
+  static bool MDR_OTP_ProgWordOneCycle(uint32_t wrAddr, uint32_t wrData, uint32_t wrECC) 
+  {
+    uint32_t i;
     uint32_t rdData, rdECC;
     uint32_t bitMsk;
-    bool bitReady;  
+    bool result = false;
 
-    //  Read Active Data and ECC
-    rdData = MDR_OTP->RDATA;
-    rdECC = (MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) >> MDR_OTP_CNTR_RECC_Pos;
+    //  Read Mode and Read Data
+		MDR_OTP->ADR = wrAddr;
+		//MDR_Delay(delay_1000us); //for (y=0;y<1000;y++) {}; // delay 1000 us      
+    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
     
     //  Select Data's bit '1' to write
-    for (ib = 0; ib < 32; ++ib)
+    rdData = MDR_OTP->RDATA;    
+    for (i = 0; i < 32; ++i)
     {
-      bitMsk = 1 << ib;
+      bitMsk = 1 << i;
+           
       if (((wrData ^ rdData) & bitMsk) != 0)
       {
-        //  Try Write Bit up to 30 times
-        bitReady = false;
-        for (it = 0; it < 30; ++it)
+        if ((wrData & bitMsk) == 0)
         {
-          //  Write Mode
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;	
-                                    
-          MDR_OTP->ADR   = wrAddr;
-         // for (y=0;y<1000;y++) {}; // delay 1000 us
-          MDR_OTP->WDATA = wrData & bitMsk; 
-         // for (y=0;y<5000;y++) {}; // delay 3000 us
-          MDR_OTP->WDATA = 0;
-          
-          //  Read Mode
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
-
-          for (ird = 0; ird < 5; ++ird)
-          {	
-            bitReady = (MDR_OTP->RDATA & bitMsk) == bitMsk;
-            if(bitReady) 
-              break;                  
-          }
-          
-          if(bitReady) 
-            break;
+          MDR_OTP_ProgCycle_DataBit(wrAddr, bitMsk);
+          rdData = MDR_OTP->RDATA;
         }
-      }      
-    }
-
-    //  Select Data's bit '1' to write
-    for (ib = 0; ib < 8; ++ib)
-    {
-      bitMsk = 1 << ib;
-      if (((wrECC ^ rdECC) & bitMsk) != 0)
-      {
-        //  Try Write Bit up to 30 times
-        bitReady = false;
-        for (it = 0; it < 30; ++it)
-        {
-          //  Write Mode
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
-                                    
-          MDR_OTP->ADR   = wrAddr;
-         // for (y=0;y<1000;y++) {}; // delay 1000 us
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk | ((wrECC & bitMsk) << MDR_OTP_CNTR_WECC_Pos);
-         // for (y=0;y<5000;y++) {}; // delay 3000 us
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
-          
-          //  Read Mode
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-          MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
-
-          for (ird = 0; ird < 5; ++ird)
-          {	
-            bitReady = ((MDR_OTP->CNTR >> MDR_OTP_CNTR_WECC_Pos) & bitMsk) == bitMsk;
-            if(bitReady) 
-              break;                  
-          }
-          
-          if(bitReady) 
-            break;
-        }
+        else
+          return result;  //  Return Data Fault
       }
     }
-  }
 
-  void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
-  {
-    uint32_t i40, ib, it, ird;
-    uint32_t rdData, rdECC;
-    uint32_t bitMsk;
-    bool bitReady;
-    uint32_t wrECC = GetECC(data, addr);// << MDR_OTP_CNTR_WECC_Pos;
-    //ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk; // MDR_OTP_CNTR_CEN_Msk    
-		
-	  MDR_OTP->TUNING = MDR_OTP_TUNING_OTP_Time_Hard1_Msk | MDR_OTP_TUNING_OTP_Repl_HardMax_Msk;		
-	
-	
-
-	//--------------------------------------------------------------------------------------------------------------------------------------------------
-		MDR_OTP->ADR = addr;
-		//for (y=0;y<1000;y++) {}; // delay 1000 us      
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
-//      
-//		readdataotp = OTP_CNTR->RDATA;
-//		readeccotp = (OTP_CNTR->CNTR & (0xFF000000))>>24;    
-//    rdData = MDR_OTP->RDATA;
-//    rdECC = (MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) >> MDR_OTP_CNTR_RECC_Pos;
-    
-    for (i40 = 0; i40 < 40; ++i40)
+    //  Select ECC bit '1' to write
+    rdECC = (MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) >> MDR_OTP_CNTR_RECC_Pos;
+    for (i = 0; i < 8; ++i)
     {
-
+      bitMsk = 1 << i;            
+      
+      if (((wrECC ^ rdECC) & bitMsk) != 0)
+      {
+        if ((wrECC & bitMsk) == 0)
+        {
+          MDR_OTP_ProgCycle_ECCBit(wrAddr, bitMsk);
+          rdECC = (MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) >> MDR_OTP_CNTR_RECC_Pos;
+        }
+        else
+          return result;  //  Return Data Fault
+      }      
     }
     
-//			//Light();
-//				for(cycl=0;cycl<40;cycl++){					
-//					//*********************************************************************************************************************************			
-//				for (i_w=0;i_w<32;i_w++)//32
-//				{
-//					
-//					DATAbit = DATA & (1<<i_w);
-//					readdataotp_bit = readdataotp & (1<<i_w);
-//				
-//							//-------------------------------------
-//							if(DATAbit!=readdataotp_bit)
-//							//-------------------------------------
-//							{	
-//								//Lightl();
-
-//								if(readdataotp_bit==(1<<i_w)) 
-//								{
-//									while(1);
-//								}
-//								
-//							
-//													for(i_p=0;i_p<30;i_p++){
-//														
-//														OTP_CNTR->CNTR = 0<<0 | 1<<4   | 0<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| 0<<16|  0<<24   ; // Enable REG access	
-//														
-//														OTP_CNTR->CNTR = 0<<0 | 1<<4   | 0<<5 | 1<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| 0<<16|  0<<24   ; // Enable REG access															
-//																											
-//														//......................wr........................
-//														OTP_CNTR->ADR     =	ADR;
-//														for (y=0;y<1000;y++) {}; // delay 1000 us
-//														OTP_CNTR->WDATA   = DATA & (1<<i_w); 
-//														for (y=0;y<5000;y++) {}; // delay 3000 us
-//														OTP_CNTR->WDATA   = 0; 
-//														//................................................			
-//														
-//														OTP_CNTR->CNTR = 0<<0 | 1<<4 | 0<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 | 0<<14 | 0<<16 | 0<<24 ; // Disable REG access	
-//															
-//														OTP_CNTR->CNTR = 0<<0 | 1<<4 | 1<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 | 0<<14 | 0<<16 | 0<<24 ; // Disable REG access
-
-//																	for (i_r=0;i_r<5;i_r++)	{	
-//																																									
-//																				//dat = OTP_CNTR->RDATA;
-//																		
-//																				zero_d = (OTP_CNTR->RDATA) & (1<<i_w);
-//																				
-//																				if(zero_d==DATAbit) break;
-
-//																				
-//																	}
-//														if(zero_d==DATAbit) break;									
-//														}//for
-//									
-//								}
-//				}
-//				//*********************************************************************************************************************************	
-//				
-//				
-//			// *********************Write ECC**********************
-//				for (i_w=0;i_w<8;i_w++)
-//				{
-//					
-//					SECCbit = SECC & (1<<i_w);
-//					
-//					readeccotp_bit = readeccotp & (1<<i_w);
-//					
-//					if(SECCbit!=readeccotp_bit)
-//					{
-//					//	Lighth();
-//					if(readeccotp_bit==(1<<i_w))
-//					{
-//						while(1);
-//					}						
-
-//					for(i_p=0;i_p<30;i_p++){
-
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4 | 0<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| 0<<16|  0<<24   ; // Enable REG access							
-//						
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4 | 0<<5 | 1<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| 0<<16|  0<<24   ; // Enable REG access	
-//									
-//						//......................wr........................			
-//						OTP_CNTR->ADR     =	ADR;
-//						for (y=0;y<1000;y++) {}; // delay 1000 us
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4   | 0<<5 | 1<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| (SECC & (1<<i_w))<<16|  0<<24   ; // Enable REG access
-//						for (y=0;y<5000;y++) {}; // delay 3000 us
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4   | 0<<5 | 1<<6 | 0<<7 | 0<<8 | 0<<9 |0<<14| 0 <<16 |  0<<24   ; // Enable REG access
-//						//................................................			
-//					
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4 | 0<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 | 0<<14 | 0<<16 | 0<<24 ; // Disable REG access				
-//						
-//						OTP_CNTR->CNTR = 0<<0 | 1<<4 | 1<<5 | 0<<6 | 0<<7 | 0<<8 | 0<<9 | 0<<14 | 0<<16 | 0<<24 ; // Disable REG access
-
-
-//																				for (i_r=0;i_r<5;i_r++)	{	
-//																					
-//																							zero_d = (OTP_CNTR->CNTR & (0xFF000000))>>24;
-//																												
-//																							zero_d_bit = zero_d & (1<<i_w);
-//																							
-//																							if(zero_d_bit==SECCbit) break;
-
-//																							
-//																				}		
-//							if(zero_d_bit==SECCbit) break;
-//							//if(i_p>12) Light();																	
-//							}//for
-//							
-//						}
-//							
-//				}
-//			}//for cycl	    
-//    
-    
-    
-//    uint32_t ctrl = GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
-//    ctrl |= MDR_OTP_CNTR_W AITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk; // MDR_OTP_CNTR_CEN_Msk
-
-//    MDR_OTP->ADR = addr;
-//    MDR_OTP->WDATA = data;
-//    MDR_OTP->CNTR = ctrl;
-//    ctrl |= MDR_OTP_CNTR_WE_ALL_Msk;
-//    MDR_OTP->CNTR = ctrl;
-//    ctrl &= ~(MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk);
-//    MDR_OTP->CNTR = ctrl;
+    result = true;
+    return result;
   }
+
+  bool MDR_OTP_ProgWordAndEccEx(uint32_t addr, uint32_t data, uint8_t ecc, uint32_t cycleCount) 
+  {
+    uint32_t i;
+    bool result = true;
+   
+    for (i = 0; i < cycleCount; ++i)
+    {
+      result = MDR_OTP_ProgWordOneCycle(addr, data, ecc);
+      if (result)
+        break;
+    } 
+    
+    return result;
+  }
+  
+  bool MDR_OTP_ProgWordEx(uint32_t addr, uint32_t data, uint32_t cycleCount)
+  {
+    uint32_t wrECC = MDR_GetECC(data, addr);		
+    return MDR_OTP_ProgWordAndEccEx(addr, data, wrECC, cycleCount);
+  }  
   
 #endif

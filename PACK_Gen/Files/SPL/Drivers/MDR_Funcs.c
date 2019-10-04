@@ -24,15 +24,73 @@ void MDR_WaitFlagClear(uint32_t addr, uint32_t flag)
 
 
 //=========================    Задержка =======================
-void MDR_Delay(uint32_t Ticks)
+//-----------------   Задержка на СИ-------------------
+//  Сильно зависит от опций компиляции
+void MDR_DelayC(volatile uint32_t Ticks)
 {
-  volatile uint32_t i = Ticks;
-  if (i)
-    while (--i);
-  
-  //for (; i > 0; i--);  // - Больше циклов, сильнее зависит от оптимизации
+  if (Ticks)
+    while(--Ticks);  
 }
 
+//-----------------   Задержка на ASM-------------------
+// Зависит от того из какой помяти выполняется - EEPROM или RAM
+#if   defined (__CC_ARM)
+
+__asm void MDR_DelayASM(uint32_t Ticks)
+{
+           CMP   r0,#0x00
+           BEQ   __Exit
+           NOP   
+__NextLoop SUBS  r0,r0,#1
+           BNE   __NextLoop
+__Exit BX  lr
+}
+
+#elif (__ARMCC_VERSION >= 6010050)
+__attribute__((naked)) void MDR_DelayASM(uint32_t Ticks)
+{
+  __asm(
+  "  CMP   r0,#0x00     ;\n"
+  "  BEQ   1f           ;\n"
+  "  NOP                ;\n"
+  "0:                   ;\n"
+  "  SUBS  r0,r0,#1     ;\n"
+  "  BNE   0b           ;\n"
+  "1:                   ;\n"
+  "  BX  lr             ;\n"
+  );
+}
+#endif
+
+
+//-----------------   Задержка на DWT отладчика  -------------------
+#define    regDWT_CYCCNT    *(volatile unsigned long *)0xE0001004
+#define    regDWT_CONTROL   *(volatile unsigned long *)0xE0001000
+#define    regSCB_DEMCR     *(volatile unsigned long *)0xE000EDFC
+  
+#define    _CoreDebug_DEMCR_TRCENA_Msk   0x01000000UL
+#define    _DWT_CTRL_CYCCNTENA_Msk       0x1UL
+
+void MDR_DelayDWT_Init(void)
+{
+  //разрешаем использовать счётчик
+  regSCB_DEMCR |= _CoreDebug_DEMCR_TRCENA_Msk;
+  //обнуляем значение счётного регистра
+	regDWT_CYCCNT  = 0;
+  //запускаем счётчик
+	regDWT_CONTROL |= _DWT_CTRL_CYCCNTENA_Msk; 
+}
+
+void MDR_DelayDWT(uint32_t clockCountCPU)
+{    
+  uint32_t t0 = regDWT_CYCCNT;
+  while ((regDWT_CYCCNT - t0) < (clockCountCPU));
+}
+
+void MDR_DelayDWT_DeInit(void)
+{
+	regDWT_CONTROL &= ~_DWT_CTRL_CYCCNTENA_Msk; 
+}
 
 //=====================    Псевдо-случайное значение ===================
 uint32_t MDR_ToPseudoRand(uint32_t value)

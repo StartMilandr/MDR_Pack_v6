@@ -1,7 +1,7 @@
 #ifndef _MDR_BKP_RTC_H
 #define _MDR_BKP_RTC_H
 
-#include "MDR_Config.h"
+#include <MDR_Config.h>
 
 typedef enum {
     MDR_BKP_REG0  = 0
@@ -32,12 +32,12 @@ __STATIC_INLINE void MDR_BKP_ClockOff(void)
 
 __STATIC_INLINE void MDR_BKP_SetReg(MDR_BKP_REGs bkpReg, uint32_t value)
 {
-  MDR_BKP->REG_xx[(uint32_t)bkpReg] = value;
+  MDR_BKP->REG_User[(uint32_t)bkpReg] = value;
 }
 
 __STATIC_INLINE uint32_t MDR_BKP_GetReg(MDR_BKP_REGs bkpReg)
 {
-  return MDR_BKP->REG_xx[(uint32_t)bkpReg];
+  return MDR_BKP->REG_User[(uint32_t)bkpReg];
 }
 
 #endif //_MDR_BKP_RTC_H

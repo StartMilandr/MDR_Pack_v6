@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 
-#include "MDR_BKP_defs.h"
+#include <MDR_BKP_defs.h>
 
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -76,7 +76,7 @@ typedef struct {
 
 /* =============================================  BRK and RTC Block  ========================================================= */
 typedef struct {                                /*!< (@ 0x400D8000) MDR_BKP Structure                                          */
-  __IOM uint32_t  REG_xx[MDR_BKP_REG_XX_COUNT];                     /*!< (@ 0x00000000) User backup registers                                      */
+  __IOM uint32_t  REG_User[MDR_BKP_REG_USER_COUNT];                     /*!< (@ 0x00000000) User backup registers                                      */
 
   union {
     __IOM uint32_t            REG_0E;           /*!< (@ 0x00000038) REG_OE Control register                                    */

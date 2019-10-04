@@ -34,7 +34,7 @@
   #define  MDRB_CPU_FREQ_SUPP_20MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_41MHz66, MDR_BKP_LDO_SRILow_lt30MHz)
 
 
-  //  Максимальная тастота PLL
+  //  Максимальная частота PLL
   #define  MDRB_PLL_8MHz_TO_MAX       MDRB_PLL_8MHz_TO_40MHz
   #define  MDRB_PLL_8MHz_FSUPP_MAX    MDRB_CPU_FREQ_SUPP_40MHz  
   

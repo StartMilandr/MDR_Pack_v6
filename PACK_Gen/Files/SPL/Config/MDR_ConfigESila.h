@@ -112,4 +112,33 @@
 #define USE_PWR_CLR_FIX   1
 
 
+// =========================   MDR_Delay ===========================
+//  Выбор реализации для MDR_Delay: 
+//    По умолчанию используется ассемблерный вариант, универсальный
+//    Вариант на Си сильно зависит от опций компилятора
+//    Вариант на DWT есть только в Cortex-M3/M4 и требует предварительное включение вызовом MDR_Delay_Init().
+#define   USE_MDR_DELAY_ASM
+//#define   USE_MDR_DELAY_C
+//#define   USE_MDR_DELAY_DWT
+
+//  Исполнение функции задержки из ОЗУ / EEPROM происходит за разное количество тактов CPU. 
+//  Данными параметрами можно уточнить сколько тактов CPU занимает один цикл задержки в MDR_Funcs, для повышения точности.
+#define DELAY_LOOP_CYCLES_ASM       9
+#define DELAY_LOOP_CYCLES_ASM_RAM   9
+#define DELAY_LOOP_CYCLES_C         14
+#define DELAY_LOOP_CYCLES_C_RAM     14
+#define DELAY_LOOP_CYCLES_DWT       1
+
+#ifdef USE_MDR_DELAY_C
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_C
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_C_RAM
+#elif defined USE_MDR_DELAY_DWT  
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_DWT
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_DWT
+#else
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_ASM
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_ASM_RAM
+#endif
+
+
 #endif  //  MDR_CONFIG_ESila_H

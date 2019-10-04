@@ -478,6 +478,35 @@ MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSIdiv2_def(bool fromLowerFreq)
 
 //  HSE
 __STATIC_INLINE 
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
+{
+  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_SRC_DEF(freqSource);   
+  return MDR_CPU_SetClock_HSE0(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+}
+
+__STATIC_INLINE 
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
+{
+  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_SRC_DEF(freqSource);   
+  return MDR_CPU_SetClock_HSE1(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+}
+
+__STATIC_INLINE 
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE0div2_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
+{
+  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_DIV2_SRC_DEF(freqSource);   
+  return MDR_CPU_SetClock_HSE0(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+}
+
+__STATIC_INLINE 
+MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE1div2_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
+{
+  MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_DIV2_SRC_DEF(freqSource);   
+  return MDR_CPU_SetClock_HSE1(&cfgHSE, HSE_TIMEOUT, fromLowerFreq);
+}
+
+
+__STATIC_INLINE 
 MDR_CPU_SetClockResult  MDR_CPU_SetClock_HSE_def(MDR_CLK_Source freqSource, bool fromLowerFreq) 
 {
   MDR_CPU_CfgHSE cfgHSE = MDR_CPU_CFG_HSE_SRC_DEF(freqSource);

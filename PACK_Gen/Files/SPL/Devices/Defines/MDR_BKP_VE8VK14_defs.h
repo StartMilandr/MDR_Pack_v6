@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "MDR_Types.h"
+#include <MDR_Types.h>
 
   
 /* ========================================  Start of section using anonymous unions  ======================================== */
@@ -33,7 +33,7 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-#define MDR_BKP_REG_XX_COUNT  60
+#define MDR_BKP_REG_USER_COUNT  60
 
 //-------   Reg_60  ----------
 typedef struct {

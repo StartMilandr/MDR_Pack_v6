@@ -5,30 +5,29 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// Не хватает этих определений при создании нового проекта - например MDR_OTP
-//  Узнать где потом подключаются CMSIS-кие!!!
-#ifndef __I
-  #ifdef __cplusplus
-    #define   __I     volatile             /*!< Defines 'read only' permissions */
-  #else
-    #define   __I     volatile const       /*!< Defines 'read only' permissions */
-  #endif
-#endif
-#ifndef __O
-  #define     __O     volatile             /*!< Defines 'write only' permissions */
-#endif
-#ifndef __IO
-  #define     __IO    volatile             /*!< Defines 'read / write' permissions */
-#endif
-#ifndef __IM                               /*! Defines 'read only' structure member permissions */
-  #define __IM   __I
-#endif
-#ifndef __OM                               /*! Defines 'write only' structure member permissions */
-  #define __OM   __O
-#endif
-#ifndef __IOM                              /*! Defines 'read / write' structure member permissions */
-  #define __IOM  __IO
-#endif
+// Определены в core_cmX.h, если не хватает подлючить MDR_Config.h раньше чем MDR_Type.h
+//#ifndef __I
+//  #ifdef __cplusplus
+//    #define   __I     volatile             /*!< Defines 'read only' permissions */
+//  #else
+//    #define   __I     volatile const       /*!< Defines 'read only' permissions */
+//  #endif
+//#endif
+//#ifndef __O
+//  #define     __O     volatile             /*!< Defines 'write only' permissions */
+//#endif
+//#ifndef __IO
+//  #define     __IO    volatile             /*!< Defines 'read / write' permissions */
+//#endif
+//#ifndef __IM                               /*! Defines 'read only' structure member permissions */
+//  #define __IM   __I
+//#endif
+//#ifndef __OM                               /*! Defines 'write only' structure member permissions */
+//  #define __OM   __O
+//#endif
+//#ifndef __IOM                              /*! Defines 'read / write' structure member permissions */
+//  #define __IOM  __IO
+//#endif
 
 
  //  Используемые типы функций

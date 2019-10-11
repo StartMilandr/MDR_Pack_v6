@@ -120,16 +120,15 @@ uint32_t MDR_ToPseudoRand(uint32_t value)
 
 //============    Log for debug ============
 #ifdef DEBUG_LOG_ENA
-  #define LOG_BUFF_Len  200
   // Объект лога. Можно завести несколько, чтобы логгировать в разные массивы.  
-  static uint32_t LogData1[LOG_BUFF_Len];
+  uint32_t MDR_LogData1[LOG_BUFF_Len];
 
   MDR_LogRec MDR_LogRec1 =
   {
-    LogData1,
-    LOG_BUFF_Len,
-    0,
-    0  
+    .pBuff    = MDR_LogData1,
+    .BuffLen  = LOG_BUFF_Len,
+    .IndWR    = 0,
+    .DataCnt  = 0  
   };
 
   void MDR_LOG_Clear(MDR_LogRec *pLogRec)

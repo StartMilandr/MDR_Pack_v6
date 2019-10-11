@@ -130,9 +130,13 @@ typedef enum {                                  /*!< MDR_BKP_REG_63_TMR1_LSI_Tri
   MDR_BKP_REG63_LSI_Trim_Min7    = 15,    /*!< Min7 : LSI Trim                                                           */
 } MDR_BKP_REG63_LSI_Trim;
 
-#define MDR_BKP_REG63_HSI_Trim_Min    0
-#define MDR_BKP_REG63_HSI_Trim_Def    32
-#define MDR_BKP_REG63_HSI_Trim_63     63
+#define MDR_BKP_REG63_HSI_Trim_Min_0      0
+#define MDR_BKP_REG63_HSI_Trim_Def_32    32
+#define MDR_BKP_REG63_HSI_Trim_Max_63    63
+
+#define MDR_BKP_REG63_HSI_Trim_Min        MDR_BKP_REG63_HSI_Trim_Min_0
+#define MDR_BKP_REG63_HSI_Trim_Def        MDR_BKP_REG63_HSI_Trim_Def_32
+#define MDR_BKP_REG63_HSI_Trim_Max        MDR_BKP_REG63_HSI_Trim_Max_63
 
 
 typedef enum {                  /*!< MDR_BKP_REG_64_TMR0_RTC_Sel                                               */

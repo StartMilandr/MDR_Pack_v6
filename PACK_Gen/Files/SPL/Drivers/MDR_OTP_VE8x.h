@@ -31,7 +31,7 @@ __STATIC_INLINE void MDR_OTP_Disable(void) { MDR_OTP->KEY = 0; }
   //                                             125ns      ~41,6ns - Период
     uint32_t delay_HV_PE;  //10000 us            80000      240000
     uint32_t delay_A_D;    //  300 us             2400        7200    
-    uint32_t delay_Prog;   // 3000 us            24000       72000
+    uint32_t delay_Prog;   // 3000 us            24000       75000
     
   //  НЕ ИСПОЛЬЗУЮТСЯ:
   //uint32_t delay_PE_D;   //  300 us             2400        7200   - т.к. (delay_PE_D == delay_A_D)
@@ -55,10 +55,12 @@ __STATIC_INLINE void MDR_OTP_Disable(void) { MDR_OTP->KEY = 0; }
   }
 
   //  Функции программирования, с рассчетом ЕСС внутри или от пользователя
+  //    true  - алгоритм отработал полностью
+  //    false - брак
   bool MDR_OTP_ProgWordAndEccEx(uint32_t addr, uint32_t data, uint8_t ecc, uint32_t cycleCount);
   bool MDR_OTP_ProgWordEx(uint32_t addr, uint32_t data, uint32_t cycleCount);
 
-//  Программирование слова - 1 цикл
+  //  Программирование слова - 1 цикл
   __STATIC_INLINE void MDR_OTP_ProgWord(uint32_t addr, uint32_t value)                    { MDR_OTP_ProgWordEx(addr, value, 1); }
   __STATIC_INLINE void MDR_OTP_ProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { MDR_OTP_ProgWordAndEccEx(addr, value, ecc, 1); }
   
@@ -66,6 +68,9 @@ __STATIC_INLINE void MDR_OTP_Disable(void) { MDR_OTP->KEY = 0; }
   #define  MDR_OTP_REPROG_CNT   40
   __STATIC_INLINE void MDR_OTP_RepProgWord(uint32_t addr, uint32_t value)                    { MDR_OTP_ProgWordEx(addr, value, MDR_OTP_REPROG_CNT); }
   __STATIC_INLINE void MDR_OTP_RepProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { MDR_OTP_ProgWordAndEccEx(addr, value, ecc, MDR_OTP_REPROG_CNT); }  
+
+  //  Регистровое чтение слова
+  uint32_t MDR_OTP_ReadWord(uint32_t addr);
 
 #endif
 

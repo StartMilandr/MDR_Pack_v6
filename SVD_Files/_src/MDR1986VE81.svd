@@ -1412,8 +1412,8 @@
               <description>LDO Enable</description>
               <bitRange>[6:6]</bitRange>
               <enumeratedValues>
-                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
-                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>1</value></enumeratedValue>
               </enumeratedValues>
             </field>
             <field>

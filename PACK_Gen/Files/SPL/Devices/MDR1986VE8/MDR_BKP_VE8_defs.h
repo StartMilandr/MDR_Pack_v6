@@ -117,10 +117,10 @@ typedef struct {
 #define MDR_BKP_REG61_LDO3_RDY_Msk  (0x80000000UL)            /*!< MDR_BKP REG_61_TMR0: LDO3_RDY (Bitfield-Mask: 0x01)   */
 
 #define MDR_BKP_REG61_LDO_TRIM_ClearAll   (MDR_BKP_REG61_LDO3_Trim_Msk | MDR_BKP_REG61_LDO2_Trim_Msk | MDR_BKP_REG61_LDO1_Trim_Msk | MDR_BKP_REG61_LDO0_Trim_Msk)
-#define MDR_BKP_REG61_LDO_TRIM_Mask(tr)   (((tr) << MDR_BKP_REG61_LDO0_SRILow_Pos) | \
-                                           ((tr) << MDR_BKP_REG61_LDO1_SRILow_Pos) | \
-                                           ((tr) << MDR_BKP_REG61_LDO2_SRILow_Pos) | \
-                                           ((tr) << MDR_BKP_REG61_LDO3_SRILow_Pos) )
+#define MDR_BKP_REG61_LDO_TRIM_Mask(tr)   (((tr) << MDR_BKP_REG61_LDO0_Trim_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO1_Trim_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO2_Trim_Pos) | \
+                                           ((tr) << MDR_BKP_REG61_LDO3_Trim_Pos) )
 
 //-------   Reg_62  ----------
 typedef struct {

@@ -78,14 +78,14 @@ void MDR_DelayDWT_DeInit(void);
 
 //  MDR_ConfigVEx.h: Выбор текущего варианта MDR_Delay - задержка в DELAY_LOOPS
 #if defined (USE_MDR_DELAY_C)
-  #define MDR_Delay_Init    UNUSED(0)
-  #define MDR_Delay         MDR_DelayС
+  #define MDR_Delay_Init()    UNUSED(0)
+  #define MDR_Delay()         MDR_DelayС
 #elif defined (USE_MDR_DELAY_DWT)
-  #define MDR_Delay_Init    MDR_DelayDWT_Init
-  #define MDR_Delay         MDR_DelayDWT
+  #define MDR_Delay_Init      MDR_DelayDWT_Init
+  #define MDR_Delay           MDR_DelayDWT
 #else
-  #define MDR_Delay_Init    UNUSED(0)
-  #define MDR_Delay         MDR_DelayASM
+  #define MDR_Delay_Init()    UNUSED(0)
+  #define MDR_Delay           MDR_DelayASM
 #endif
 
 //  Функции задержки в единицах времени
@@ -148,7 +148,12 @@ static __inline uint32_t MDR_MaskSet(uint32_t value, uint32_t maskSet)
   } MDR_LogRec;
 
   // Объект лога. Можно завести несколько, чтобы логгировать в разные массивы.
+#ifndef LOG_BUFF_Len
+  #define LOG_BUFF_Len  200
+#endif
+
   extern MDR_LogRec MDR_LogRec1;
+  extern uint32_t   MDR_LogData1[LOG_BUFF_Len];
 
   void MDR_LOG_Clear(MDR_LogRec *pLogRec);
   void MDR_LOG_Add(MDR_LogRec *pLogRec, uint32_t value);

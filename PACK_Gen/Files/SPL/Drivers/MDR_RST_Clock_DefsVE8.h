@@ -79,14 +79,17 @@ typedef enum {
     MDR_CLK_FreqSupport   freqSupp;
   } MDR_CPU_CfgHSI;
   
-  #define  MDR_CPU_CFG_HSI_DV_DEF(div2)     {.freqTrim                 = HSI_FREQ_TRIM,   \
-                                              .selDiv2                = div2,           \
-                                              .divMaxToCpu_0           = 0,               \
-                                              .freqSupp.delayAccessOTP = HSI_OTP_DELAY,   \
-                                              .freqSupp.lowSRI         = HSI_LOW_SRI}       
+  #define  MDR_CPU_CFG_HSI_DV_DEF(trim, div2)    {.freqTrim                = trim,            \
+                                                  .selDiv2                 = div2,            \
+                                                  .divMaxToCpu_0           = 0,               \
+                                                  .freqSupp.delayAccessOTP = HSI_OTP_DELAY,   \
+                                                  .freqSupp.lowSRI         = HSI_LOW_SRI}       
 
-  #define  MDR_CPU_CFG_HSI_DEF              MDR_CPU_CFG_HSI_DV_DEF(false)
-  #define  MDR_CPU_CFG_HSI_DIV2_DEF         MDR_CPU_CFG_HSI_DV_DEF(true)
+  #define  MDR_CPU_CFG_HSI_DEF                   MDR_CPU_CFG_HSI_DV_DEF(HSI_FREQ_TRIM, false)
+  #define  MDR_CPU_CFG_HSI_DIV2_DEF              MDR_CPU_CFG_HSI_DV_DEF(HSI_FREQ_TRIM, true)
+    
+  #define  MDR_CPU_CFG_HSI_TRIM_DEF(trim)        MDR_CPU_CFG_HSI_DV_DEF(trim, false)
+  #define  MDR_CPU_CFG_HSI_TRIM_DIV2_DEF(trim)   MDR_CPU_CFG_HSI_DV_DEF(trim, false)
     
                                               
   //  Парамеры, необходимые для переключения CPU на тактирование от HSE

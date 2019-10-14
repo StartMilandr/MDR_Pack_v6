@@ -1,5 +1,9 @@
 #include <MDR_RST_Clock_VE8x.h>
 
+#ifdef MDR_HAS_OTP
+  #include <MDR_OTP_VE8x.h>
+#endif
+
 //=================   Сброс блока и чтение текущей частоты CPU ==============
 //  Желательно обновить после смены частоты, тогда впоследствии можно вызывать без флага обновления
 uint32_t MDR_CPU_GetFreqHz(bool doUpdate)
@@ -257,11 +261,14 @@ void MDR_CLK_ApplyFreqSupport_LDO(MDR_CLK_LDO_LowSRI  lowSRI)
 
 #ifdef MDR_HAS_OTP
   //  Функция выставляет задержку для доступа к OTP
-  bool MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP)
+  void MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP)
   {
     if (delayAccessOTP != MDR_OTP_Delay_Forbiden)
     {
-      // Warning TODO: Add implementation, Run from RAM!!!
+      MDR_OTP_Enable();
+      MDR_OTP->CNTR = (uint32_t)delayAccessOTP & MDR_OTP_CNTR_WAITCYCL_Msk;
+      MDR_OTP_Disable();      
+      // Warning TODO: Add implementation, Run from RAM!!!      
     }
   }
 #endif

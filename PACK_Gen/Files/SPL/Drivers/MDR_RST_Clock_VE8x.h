@@ -234,7 +234,7 @@ void MDR_CLK_ApplyFreqSupport_LDO(MDR_CLK_LDO_LowSRI  lowSRI);
 
 #ifdef MDR_HAS_OTP
   //  Задержка доступа к ОТР памяти от частоты CPU -  Warning TODO: Add implementation, Run from RAM!!!
-  bool MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP);// __RAM_EXEC; 
+  void MDR_CLK_ApplyFreqSupport_OTP(MDR_CLK_Delay_OTP delayAccessOTP) __RAM_EXEC; 
 
 
   // Все сместе - Функция регулирует LDO под частоту тактирования и выставляет задержку для доступа к OTP

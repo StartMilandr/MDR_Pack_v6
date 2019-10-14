@@ -94,7 +94,7 @@ __STATIC_INLINE uint32_t MDR_BKP_GetReg(MDR_BKP_REGs bkpReg)
 __STATIC_INLINE void MDR_BKP_SetTrimLDO(MDR_BKP_LDO_Trim trimLDO)
 {
   uint32_t regValue = MDR_BKP->TMR0.REG_61;
-  regValue = regValue & (~MDR_BKP_REG61_LDO_TRIM_ClearAll) | MDR_BKP_REG61_LDO_TRIM_Mask((uint32_t) trimLDO);
+  regValue = (regValue & (~MDR_BKP_REG61_LDO_TRIM_ClearAll)) | MDR_BKP_REG61_LDO_TRIM_Mask((uint32_t) trimLDO);
   
   MDR_BKP->TMR0.REG_61 = regValue;
   MDR_BKP->TMR1.REG_61 = regValue;

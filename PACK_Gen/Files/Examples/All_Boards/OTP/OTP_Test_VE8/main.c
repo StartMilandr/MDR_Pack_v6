@@ -1,3 +1,4 @@
+#include <MDR_Config.h>
 #include <MDR_RST_Clock.h>
 #include <MDR_OTP_VE8x.h>
 #include <MDR_Funcs.h>
@@ -11,10 +12,6 @@
 #define OTP_PROG_WITH_HSE0_MAX_CLOCK  1
 #define OTP_PROG_WITH_HSI             0
 #define OTP_PROG_WITH_HSE1_GEN_24MHZ  0
-
-//  USE_READ_BY_REG  1 - Регистровое чтение не приводит к ошибкам по ECC
-//  USE_READ_BY_REG  0 - Прямое чтение приводит к ошибкам ECC, используется HardFault_Handler для выхода
-#define USE_READ_BY_REG  1
 
 
 #if OTP_PROG_WITH_HSI
@@ -44,8 +41,7 @@
 #define OTP_TEST_PROG_ADDR         (OTP_TEST_ADDR_END - (OTP_TEST_TEST_IND * 4))
 
 //  Значения записываемые/записанные в память в порядке OTP_TEST_TEST_IND
-#define OTP_TEST_PROG_DATA         0x9ABCDEF
-
+#define OTP_TEST_PROG_DATA         0x1234ABCD
 
 void OPT_WriteTestData(void);
 bool OPT_ReadAndCheck(void);
@@ -55,9 +51,6 @@ uint32_t RunIndex = 0;
 uint32_t freqCPU_Hz;
 uint32_t rdValue;
 bool     _ShowDelayCycles = false;
-
-//  Выход из исключения при чтении на следующую инструкцию.
-__asm void HardFault_Handler(void);
 
 
 int main(void)
@@ -146,14 +139,10 @@ void OPT_WriteTestData(void)
 
 bool OPT_ReadAndCheck(void)
 { 
-#if USE_READ_BY_REG
   MDR_OTP_Enable();
   rdValue = MDR_OTP_ReadWord(OTP_TEST_PROG_ADDR);
   MDR_OTP_Disable();
-#else  
-  rdValue = REG32(OTP_TEST_PROG_ADDR);
-#endif
-  
+ 
   return (rdValue == OTP_TEST_PROG_DATA);
 }
 
@@ -168,20 +157,4 @@ void LedCyclicToggle(void)
     cnt = 0;
   }
 }
-
-__asm void HardFault_Handler(void)
-{
-  //  Set Result = 1
-  MRS   R0, MSP
-  MOV   R1,#1
-  STR   R1,[R0]
-  //  Modify return address to next instruction
-  ADD   R0,#24
-  LDR   R1,[R0]
-  ADD   R1, #2
-  STR   R1,[R0]  
-  BX    LR
-  ALIGN
-}
-
 

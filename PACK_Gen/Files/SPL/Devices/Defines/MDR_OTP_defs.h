@@ -47,6 +47,8 @@ typedef enum {
   MDR_OTP_Delay_le_100MHz   = 5,
 } MDR_OTP_Delay;
 
+#define MDR_OTP_Delay_Min  MDR_OTP_Delay_le_20MHz84
+
 typedef struct {
   __IOM MDR_OnOff SECC       : 1;            /*!< [0..0] SingleError flag                                                   */
   __IOM MDR_OnOff DECC       : 1;            /*!< [1..1] DoubleError flag                                                   */

@@ -191,6 +191,7 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
     uint32_t rdData, rdECC;
     uint32_t bitMsk;
     bool result = true;
+    uint32_t tempCtrl = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
 
     //  Set Addr and ReadMode and Read Data
     MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
@@ -240,7 +241,7 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
       }      
     }
     
-    MDR_OTP->CNTR = 0;    
+    MDR_OTP->CNTR = tempCtrl;    
     return result;
   }
 
@@ -272,16 +273,18 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
 
   uint32_t MDR_OTP_ReadWord(uint32_t addr)
   {
+    uint32_t tempCtrl = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
+    
     //  Set Addr and ReadMode and Read Data
     MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
-		MDR_OTP->ADR = addr;
+		MDR_OTP->ADR  = addr;
 		//MDR_Delay(_progDelays.delay_A_SE); - 5ns (200MHz) too small
     MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
     uint32_t result = MDR_OTP->RDATA;  
     
     //  Read Mode Off
     MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
-    MDR_OTP->CNTR = 0;
+    MDR_OTP->CNTR = tempCtrl;
     
     return result;
   }

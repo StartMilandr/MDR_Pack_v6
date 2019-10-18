@@ -3,14 +3,14 @@
 <version>1.0</version>
 <description>OTP Memory Control</description>
 <groupName>OTP</groupName>
-<baseAddress>0x40060000</baseAddress>
+<baseAddress>0x40006000</baseAddress>
 
 #BLOCK_NAME_SRAM
 <name>MDR_SRAM</name>
 <version>1.0</version>
 <description>OTP_SRAM Memory Control</description>
 <groupName>OTP_SRAM</groupName>
-<baseAddress>0x40060000</baseAddress>
+<baseAddress>0x40006000</baseAddress>
 
 #CNTR_MASK_OTP
 <resetMask>0xFFFF007F</resetMask>

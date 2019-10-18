@@ -89,7 +89,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>0</SelectedForBatchBuild>
+          <SelectedForBatchBuild>1</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -388,9 +388,9 @@
               <FilePath>..\main_VE81.c</FilePath>
             </File>
             <File>
-              <FileName>FlashPrg_VE8.c</FileName>
+              <FileName>FlashPrg_VE81.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\src\FlashPrg_VE8.c</FilePath>
+              <FilePath>..\..\src\FlashPrg_VE81.c</FilePath>
             </File>
           </Files>
         </Group>

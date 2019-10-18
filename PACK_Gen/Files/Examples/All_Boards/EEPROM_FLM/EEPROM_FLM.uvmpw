@@ -9,12 +9,11 @@
 
   <project>
     <PathAndName>.\EEPROM_FLM_VE1\EEPROM_FLM_VE1.uvproj</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\EEPROM_FLM_VE9x\EEPROM_FLM_VE9x.uvproj</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -23,6 +22,36 @@
 
   <project>
     <PathAndName>.\EEPROM_FLM_VKx\EEPROM_FLM_VKx.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTPSRAM_VE81\OTPSRAM_FLM_VE81.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSI\OTP_FLM_VE8_HSI.uvproj</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSE1_Gen25MHz\OTP_FLM_VE8_HSE1_Gen25MHz.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSE0_Res10MHz\OTP_FLM_VE8_HSE0_Res10MHz.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSI_Delays\OTP_FLM_VE8_HSI_Delays.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSE1_Gen25MHz_Delays\OTP_FLM_VE8_HSE1_Gen25MHz_Delays.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\OTP_FLM_VE8\OTP_FLM_VE8_HSE0_Res10MHz_Delays\OTP_FLM_VE8_HSE0_Res10MHz_Delays.uvproj</PathAndName>
   </project>
 
 </ProjectWorkspace>

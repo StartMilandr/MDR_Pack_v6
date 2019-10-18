@@ -8,10 +8,13 @@
 #define MAIN_PAGES_COUNT    32
 #define INFO_PAGES_COUNT    1
 
-#ifdef USE_MDR1986VE9x
-  #define FLASH_ADDR_0      0x08000000
-#elif defined (USE_MDR1986VE1T)
-  #define FLASH_ADDR_0      0
+
+#if defined (USE_MDR1986VE4)
+  #define PAGE_SIZE          0x200
+  #define PAGE_COUNT         256
+#else
+  #define PAGE_SIZE          0x1000
+  #define PAGE_COUNT         32
 #endif
 
 

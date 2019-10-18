@@ -422,9 +422,9 @@
           <GroupName>Program Functions</GroupName>
           <Files>
             <File>
-              <FileName>FlashPrg_VE8.c</FileName>
+              <FileName>FlashPrg_VE81.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\FlashPrg_VE8.c</FilePath>
+              <FilePath>..\src\FlashPrg_VE81.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -865,9 +865,9 @@
           <GroupName>Program Functions</GroupName>
           <Files>
             <File>
-              <FileName>FlashPrg_VE8.c</FileName>
+              <FileName>FlashPrg_VE81.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\FlashPrg_VE8.c</FilePath>
+              <FilePath>..\src\FlashPrg_VE81.c</FilePath>
             </File>
           </Files>
         </Group>

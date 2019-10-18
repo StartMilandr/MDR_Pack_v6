@@ -94,24 +94,52 @@ typedef unsigned int uint32_t;
 #define IFREN_ERASE_MAIN              0UL
 #define IFREN_ERASE_MAIN_AND_INFO     MDR_EEPROM_CMD_BIT_IFREN
 
+
+#ifdef USE_MDR1986VE1
+  #define DELAY_LOOP_CYCLES_ASM_RAM   8
+#elif defined(USE_MDR1986VE9x) || defined(USE_MDR1901VC1)
+  #define DELAY_LOOP_CYCLES_ASM_RAM   9
+#elif defined (USE_MDR1986VE4)
+  #define DELAY_LOOP_CYCLES_ASM_RAM   4
+#endif
+
+//  CycPerLoop - количество тактов CPU на исполнение одного цикла
+#define _SEC_TO_DELAY_LOOPS(Sec, freqCPU_Hz, CycPerLoop, SecUnit)   ((uint32_t)((double)(Sec) * (freqCPU_Hz) / (SecUnit) / (CycPerLoop)))
+
+#define  S_TO_DELAY_LOOPS_EX(Sec,  freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(Sec,  freqCPU_Hz, CycPerLoop, 1         )
+#define MS_TO_DELAY_LOOPS_EX(mSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(mSec, freqCPU_Hz, CycPerLoop, 1000      )
+#define US_TO_DELAY_LOOPS_EX(uSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(uSec, freqCPU_Hz, CycPerLoop, 1000000   )
+#define NS_TO_DELAY_LOOPS_EX(nSec, freqCPU_Hz, CycPerLoop)    _SEC_TO_DELAY_LOOPS(nSec, freqCPU_Hz, CycPerLoop, 1000000000)
+
+
 //  HSI = 8MHz, 8 clocks = 1us
-//  Compiler min while cycle duration ~ 4 clocks
-#define delay_1us         2
-#define delay_5us         10
-#define delay_10us        20
-#define delay_40us        80
-#define delay_100us       200
-#define delay_40ms        80000
+#define CPU_CLK 8000000
+
+//  Inputs for RAM_Delay(delay_cycles)
+#define delay_1us         US_TO_DELAY_LOOPS_EX(1,     CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+#define delay_5us         US_TO_DELAY_LOOPS_EX(5,     CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+#define delay_10us        US_TO_DELAY_LOOPS_EX(10,    CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+#define delay_40us        US_TO_DELAY_LOOPS_EX(40,    CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+#define delay_100us       US_TO_DELAY_LOOPS_EX(100,   CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+#define delay_40ms        US_TO_DELAY_LOOPS_EX(40000, CPU_CLK, DELAY_LOOP_CYCLES_ASM_RAM)
+
+//#define delay_1us         2
+//#define delay_5us         10
+//#define delay_10us        20
+//#define delay_40us        80
+//#define delay_100us       200
+//#define delay_40ms        80000
 
 void      MDR_EEPROM_ErasePage (uint32_t address);
 void      MDR_EEPROM_EraseFull(void);
+
 
 #if defined (USE_MDR1986VE4)
   void      MDR_EEPROM_Write(uint32_t address, uint32_t data, uint32_t maskIFREN);
 #else
   void      MDR_EEPROM_Write(uint32_t address, uint32_t data);
 #endif
-uint32_t  MDR_EEPROM_Read (uint32_t address);
+uint32_t    MDR_EEPROM_Read (uint32_t address);
 
 
 

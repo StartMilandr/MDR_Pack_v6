@@ -47,6 +47,15 @@
  *    Return Value:   0 - OK,  1 - Failed
  */
 
+static void FlashBufferClear(void)
+{
+  uint32_t i;
+  volatile uint32_t d;
+
+  for (i = 0; i < 9; ++i)
+    d = REG32(FLASH_ADDR_0 + (i << 2));
+}
+
 int Init (unsigned long adr, unsigned long clk, unsigned long fnc) 
 {
   uint32_t regVal;
@@ -56,15 +65,22 @@ int Init (unsigned long adr, unsigned long clk, unsigned long fnc)
   regPER_CLOCK |= bClockOn_RST | bClockOn_BKP;
   
   //  Включение генератора HSI
-  regVal = regBKP_REG_0F & (~bHSI_TRIM_Msk);
-  regBKP_REG_0F = regVal | bHSI_ON | bHSI_Trim8MHz;
-  while ((regBKP_REG_0F & bHSI_RDY) == 0);
+  if ((regBKP_REG_0F & bHSI_RDY) == 0)
+  {
+    regVal = regBKP_REG_0F & (~bHSI_TRIM_Msk);
+    regBKP_REG_0F = regVal | bHSI_ON | bHSI_Trim8MHz;
+    while ((regBKP_REG_0F & bHSI_RDY) == 0);
+  }
   
   //  Тактирование от HSI
   regCPU_CLOCK = 0;
   
   //  Выключение тактирования остальных блоков - чтобы не мешали.
   regPER_CLOCK = bClockOn_RST | bClockOn_EEPROM;  
+  
+  //  Сброс предыдущей строки в буфере памяти, чтобы верификация шла с новыми данными!
+  if (fnc == 3)
+    FlashBufferClear();
   
   return (0);                                  // Finished without Errors
 }
@@ -78,17 +94,12 @@ int Init (unsigned long adr, unsigned long clk, unsigned long fnc)
 
 int UnInit (unsigned long fnc) 
 {
-  uint32_t addr;
-  volatile uint32_t d;  
+  volatile uint32_t d;
   
   regCMD = 0;
   regKEY = 0;
   regPER_CLOCK = bClockOn_RST;
-
-  //  Update page cache  
-  for (addr = FLASH_ADDR_0; addr < (PAGE_COUNT * PAGE_SIZE); addr += PAGE_SIZE)
-    d = REG32(addr);
- 
+  
   return (0);                                  // Finished without Errors
 }
 
@@ -165,8 +176,8 @@ int BlankCheck (unsigned long adr, unsigned long sz, unsigned char pat)
 #if FIX_DBL_READ    
     if (0xFFFFFFFF != value)
       value = ReadWord(adr + i);
-#endif
-    
+#endif    
+   
     if (0xFFFFFFFF != value)
       return 1;
   }
@@ -175,11 +186,11 @@ int BlankCheck (unsigned long adr, unsigned long sz, unsigned char pat)
 }
 
 /*
- *  Program Page in Flash Memory
- *    Parameter:      adr:  Page Start Address
- *                    sz:   Page Size
- *                    buf:  Page Data
- *    Return Value:   0 - OK,  1 - Failed
+ *  Verify Page in Flash Memory
+ *    Parameter:      adr:  Start Address
+ *                    sz:   Size in bytes
+ *                    buf:  Data to be verified
+ *    Return Value:   (adr+sz) - OK,  other number - Failed
  */
 
 unsigned long Verify (unsigned long adr, unsigned long sz, unsigned char *buf)

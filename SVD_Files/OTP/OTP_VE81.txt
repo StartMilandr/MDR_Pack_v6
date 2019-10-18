@@ -6,7 +6,7 @@
   <version>1.0</version>
   <description>OTP_SRAM Memory Control</description>
   <groupName>OTP_SRAM</groupName>
-  <baseAddress>0x40060000</baseAddress>
+  <baseAddress>0x40006000</baseAddress>
   <size>32</size>
   <access>read-write</access>
   <addressBlock>

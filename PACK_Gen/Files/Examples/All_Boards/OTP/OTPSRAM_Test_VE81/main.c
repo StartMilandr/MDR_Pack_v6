@@ -110,7 +110,7 @@ void OPT_WriteTestData(void)
   
   MDR_OTP_Enable();
   for (i = 0; i < OTP_TEST_WRITE_COUNT; ++i)
-   MDR_OTPSRAM_ProgWordWord(OPT_TEST_START_ADDR + (i << 2), i + RunIndex);  
+    MDR_OTPSRAM_ProgWord(OPT_TEST_START_ADDR + (i << 2), i + RunIndex);  
   MDR_OTP_Disable();
 }
 
@@ -156,7 +156,7 @@ void HardFault_Handler(void)
   {
     // Парируем ошибку для прерывания зацикливания вызова HardFault_Handler
     MDR_OTP_Enable();
-    MDR_OTPSRAM_ProgWordWord(OPT_TEST_FAULT_ADDR, 0); 
+    MDR_OTPSRAM_ProgWord(OPT_TEST_FAULT_ADDR, 0); 
     MDR_OTP_Disable();
     
     MDRB_LED_Set(LED_CYCLE | LED_OK | LED_ERR, 0);

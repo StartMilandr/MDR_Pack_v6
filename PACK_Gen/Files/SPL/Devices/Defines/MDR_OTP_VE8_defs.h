@@ -74,6 +74,7 @@ typedef struct {
   __IOM MDR_OTP_TUNING_OTP_Time   OTP_TIME  : 3;           /*!< [10..8] Timeouts to read bit                              */
   __IM  uint32_t                            : 5;
   __IOM MDR_OTP_TUNING_OTP_Repl   OTP_REPL  : 4;           /*!< [19..16] Bit Hi_Level Read Resistance                     */
+  __IM  uint32_t                            : 12;
 } MDR_OTP_TUNING_Bits;
 
 #define MDR_OTP_TUNING_TE_Pos           (3UL)                   /*!< MDR_OTP TEST_TUNING: TE (Bit 3)                       */

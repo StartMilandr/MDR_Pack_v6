@@ -14,17 +14,17 @@
   #define  MDRB_CPU_FREQ_SUPP_LE_100MHz  MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_83MHz33, MDR_BKP_LDO_SRILow_ge100MHz)
 
 
-////  ------- Частоты PLL для источника 8MHz ---------  
-//  //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
-//  #define  MDRB_PLL_8MHz_TO_36MHz     MDR_CPU_CFG_PLL(18, 1, MDR_PLL_DV_div2)
-//  #define  MDRB_PLL_8MHz_TO_38MHz     MDR_CPU_CFG_PLL(19, 1, MDR_PLL_DV_div2)
-//  #define  MDRB_PLL_8MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 2, MDR_PLL_DV_div2)
+//  ------- Частоты PLL для источника 8MHz ---------  
+  //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
+  #define  MDRB_PLL_8MHz_TO_36MHz     MDR_CPU_CFG_PLL(18, 1, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_38MHz     MDR_CPU_CFG_PLL(19, 1, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 2, MDR_PLL_DV_div2)
   #define  MDRB_PLL_8MHz_TO_40MHz     MDR_CPU_CFG_PLL(10, 0, MDR_PLL_DV_div2)
-//  //  Дробные
-//  #define  MDRB_PLL_8MHz_TO_37MHz5    MDR_CPU_CFG_PLL(75, 7, MDR_PLL_DV_div2)
-//  #define  MDRB_PLL_8MHz_TO_37MHz6    MDR_CPU_CFG_PLL(47, 4, MDR_PLL_DV_div2)
-//  #define  MDRB_PLL_8MHz_TO_38MHz4    MDR_CPU_CFG_PLL(48, 4, MDR_PLL_DV_div2)
-//  #define  MDRB_PLL_8MHz_TO_39MHz2    MDR_CPU_CFG_PLL(49, 4, MDR_PLL_DV_div2)
+  //  Дробные
+  #define  MDRB_PLL_8MHz_TO_37MHz5    MDR_CPU_CFG_PLL(75, 7, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_37MHz6    MDR_CPU_CFG_PLL(47, 4, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_38MHz4    MDR_CPU_CFG_PLL(48, 4, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_39MHz2    MDR_CPU_CFG_PLL(49, 4, MDR_PLL_DV_div2)
 
 //  ------- Частоты PLL для источника 10MHz ---------
   //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
@@ -48,6 +48,7 @@
 
     // ------- Настройки зависящие от частоты -------
     #define  MDRB_CPU_FREQ_SUPP_40MHz    MDRB_CPU_FREQ_SUPP_LE_41MHz
+    #define  MDRB_CPU_FREQ_SUPP_20MHz    MDRB_CPU_FREQ_SUPP_LE_20MHz
     #define  MDRB_CPU_FREQ_SUPP_75MHz    MDRB_CPU_FREQ_SUPP_LE_83MHz
 
     //  Максимальная частота PLL
@@ -60,6 +61,7 @@
   #else
     //  По еррата PLL только до 40МГц - настройки под 60МГц
     #define  MDRB_CPU_FREQ_SUPP_40MHz    MDRB_CPU_FREQ_SUPP_LE_62MHz
+    #define  MDRB_CPU_FREQ_SUPP_20MHz    MDRB_CPU_FREQ_SUPP_LE_41MHz
     
     //  Максимальная частота PLL
     #define  MDRB_PLL_10MHz_TO_MAX       MDRB_PLL_10MHz_TO_40MHz

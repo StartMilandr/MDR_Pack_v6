@@ -2445,12 +2445,13 @@
   <RTE>
     <apis>
       <api Capiversion="1.0.0" Cclass="Board Support" Cgroup="Buttons" exclusive="0">
-        <package name="MDK-Middleware" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="7.4.0"/>
+        <package name="MDK-Middleware" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="7.8.0"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>
           <targetInfo name="VE8"/>
           <targetInfo name="VE91"/>
+          <targetInfo name="VK014"/>
         </targetInfos>
       </api>
       <api Capiversion="1.0.0" Cclass="Board Support" Cgroup="LED" exclusive="0">
@@ -2466,16 +2467,17 @@
     </apis>
     <components>
       <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_BUTTONS">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>
           <targetInfo name="VE8"/>
           <targetInfo name="VE91"/>
+          <targetInfo name="VK014"/>
         </targetInfos>
       </component>
       <component Cclass="Board Support" Cgroup="DisplayLCD" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_LCD">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>
@@ -2483,7 +2485,7 @@
         </targetInfos>
       </component>
       <component Cclass="Board Support" Cgroup="LED" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>
@@ -2493,44 +2495,44 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_ESila">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1923VK014">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VK014"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE1">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE1"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE8">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE8"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE9x">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE91"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE1"/>
           <targetInfo name="VE91"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_VE8xES">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE8"/>
@@ -2538,27 +2540,27 @@
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE1"/>
           <targetInfo name="VE91"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ESila">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_VE8x">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="VE8"/>
           <targetInfo name="VK014"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="SysTimer" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>
@@ -2568,7 +2570,7 @@
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="UseFuncs" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.0x"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.04"/>
         <targetInfos>
           <targetInfo name="ESila"/>
           <targetInfo name="VE1"/>

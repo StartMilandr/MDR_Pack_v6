@@ -4,6 +4,7 @@
 #include <MDR_Config.h>
 #include <MDR_Funcs.h>
 #include <stdint.h>
+#include <MDR_BKP_RTC_VE8x.h>
 
 //  Рассчет ЕСС, Реализация от Vasili с форума - http://forum.milandr.ru/viewtopic.php?p=20531#p20531
 uint8_t MDR_GetECC(uint32_t data,  uint32_t adr);
@@ -19,7 +20,7 @@ __STATIC_INLINE void MDR_OTP_Disable(void) { MDR_OTP->KEY = 0; }
   
 #elif defined (USE_MDR1986VE8)
 
-  #include <MDR_BKP_RTC_VE8x.h>
+//  #include <MDR_BKP_RTC_VE8x.h>
 
   #define MDR_OTP_DELAY_US_HV_PE   10000
   #define MDR_OTP_DELAY_US_A_D       300
@@ -61,16 +62,20 @@ __STATIC_INLINE void MDR_OTP_Disable(void) { MDR_OTP->KEY = 0; }
   bool MDR_OTP_ProgWordEx(uint32_t addr, uint32_t data, uint32_t cycleCount);
 
   //  Программирование слова - 1 цикл
-  __STATIC_INLINE void MDR_OTP_ProgWord(uint32_t addr, uint32_t value)                    { MDR_OTP_ProgWordEx(addr, value, 1); }
-  __STATIC_INLINE void MDR_OTP_ProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { MDR_OTP_ProgWordAndEccEx(addr, value, ecc, 1); }
+  __STATIC_INLINE bool MDR_OTP_ProgWord(uint32_t addr, uint32_t value)                    { return MDR_OTP_ProgWordEx(addr, value, 1); }
+  __STATIC_INLINE bool MDR_OTP_ProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { return MDR_OTP_ProgWordAndEccEx(addr, value, ecc, 1); }
   
   //  Допрограммирование слова - 40 циклов
   #define  MDR_OTP_REPROG_CNT   40
-  __STATIC_INLINE void MDR_OTP_RepProgWord(uint32_t addr, uint32_t value)                    { MDR_OTP_ProgWordEx(addr, value, MDR_OTP_REPROG_CNT); }
-  __STATIC_INLINE void MDR_OTP_RepProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { MDR_OTP_ProgWordAndEccEx(addr, value, ecc, MDR_OTP_REPROG_CNT); }  
+  __STATIC_INLINE bool MDR_OTP_RepProgWord(uint32_t addr, uint32_t value)                    { return MDR_OTP_ProgWordEx(addr, value, MDR_OTP_REPROG_CNT); }
+  __STATIC_INLINE bool MDR_OTP_RepProgWordAndEcc(uint32_t addr, uint32_t value, uint8_t ecc) { return MDR_OTP_ProgWordAndEccEx(addr, value, ecc, MDR_OTP_REPROG_CNT); }  
 
   //  Регистровое чтение слова
   uint32_t MDR_OTP_ReadWord(uint32_t addr);
+  //  Региcтровое чтение слова и ECC
+  uint32_t MDR_OTP_ReadWordAndEcc(uint32_t addr, uint8_t *rdECC);
+  //  Региcтровая проверка что слово и ЕСС нулевые
+  bool MDR_OTP_CheckWordEmpty(uint32_t addr);
 
 #endif
 

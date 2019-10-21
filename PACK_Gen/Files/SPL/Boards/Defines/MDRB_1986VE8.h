@@ -9,7 +9,7 @@
 
 #define MDRB_HAS_NO_LCD
 
-#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_8MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz)
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_MAX, MDRB_PLL_10MHz_FSUPP_MAX)
 
 
 //  Переопределение пинов для удобства поиска конфликтов

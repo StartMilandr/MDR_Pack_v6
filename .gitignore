@@ -6,3 +6,15 @@ PACK_Gen/Files/Examples/SPL_Build/
 *.exe
 *.dll
 PACK_Gen/Milandr.MDR1986VExx.2.04.pack
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE1/Listings/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE1/Objects/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE4/Listings/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE4/Objects/flashprg_ve4.crf
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE4/Objects/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE8/Listings/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE8/Objects/flashprg_ve8_delays.crf
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE8/Objects/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE81/Listings/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE81/Objects/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE9x/Listings/
+PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE9x/Objects/

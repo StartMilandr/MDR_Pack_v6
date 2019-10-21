@@ -161,7 +161,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;4&gt;..\main_VE81.c</Filename>
+          <Filename>..\main_VE81.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\FLM_Test_VE81\../main_VE81.c\123</Expression>
         </Bp>
@@ -177,7 +177,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>&lt;4&gt;..\main_VE81.c</Filename>
+          <Filename>..\main_VE81.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\FLM_Test_VE81\../main_VE81.c\88</Expression>
         </Bp>

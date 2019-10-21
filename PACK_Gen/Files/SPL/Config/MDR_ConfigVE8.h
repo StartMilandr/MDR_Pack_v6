@@ -3,6 +3,14 @@
 
 #include <MDR_1986VE8.h>
 
+//=============  Ревизия кристалла  ==================
+//#define MDR_VE8_REV3
+
+//=============  ERRATA  ==================
+#ifdef MDR_VE8_REV3
+  //  Большой джиттер PLL -> выход PLL только до 40МГц
+  #define MDR_VE8_ERRATA_0051_Fixed
+#endif
 
 //=============  Debug Uart printf settings  ==================
 #define UART_DEBUG_IND              1    

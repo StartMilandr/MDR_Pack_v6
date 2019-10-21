@@ -64,6 +64,7 @@ typedef struct {
 #define MDR_OTP_CNTR_RECC_Pos             (24UL)                    /*!< MDR_OTP CNTR: RECC (Bit 24)                           */
 #define MDR_OTP_CNTR_RECC_Msk             (0xff000000UL)            /*!< MDR_OTP CNTR: RECC (Bitfield-Mask: 0xff)              */
 
+#define MDR_OTP_CNTR_WAITCYL_MIN          1UL
 
 //-----------------------------  TEST_TUNING   ---------------------------------
 typedef struct {

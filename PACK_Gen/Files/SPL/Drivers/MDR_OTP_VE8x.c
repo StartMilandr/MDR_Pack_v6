@@ -51,7 +51,7 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
   //  Реализация от того-же Vasili
   void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
   {
-    uint32_t ctrl = GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
+    uint32_t ctrl = MDR_GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
     ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk;
 
     MDR_OTP->ADR = addr;
@@ -113,8 +113,8 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
     for (i = 0; i < WRITE_TRY_COUNT; ++i)
     {
       //  Prog Mode On
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;	
                                 
       MDR_OTP->ADR   = wrAddr;
       MDR_Delay(_progDelays.delay_A_D);
@@ -123,11 +123,11 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
       MDR_OTP->WDATA = 0;
 
       //  Prog Off
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;	
       MDR_Delay(_progDelays.delay_A_D);
       
       //  Read Mode On
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;	
       result = true;
       for (j = 0; j < READ_TRY_COUNT; ++j)
       {	
@@ -152,21 +152,21 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
     for (i = 0; i < WRITE_TRY_COUNT; ++i)
     {
       //  Prog Mode On
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;	
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;	
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
                                 
       MDR_OTP->ADR   = wrAddr;
       MDR_Delay(_progDelays.delay_A_D);
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk | ((uint32_t)wrOneBitMask  << MDR_OTP_CNTR_WECC_Pos);
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk | ((uint32_t)wrOneBitMask  << MDR_OTP_CNTR_WECC_Pos);
       MDR_Delay(_progDelays.delay_Prog);
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_PE_Msk;
       
       //  Prog Mode Off
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;
       MDR_Delay(_progDelays.delay_A_D);
       
       //  Read Mode On
-      MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
+      MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;
       
       result = true;
       for (j = 0; j < READ_TRY_COUNT; ++j)
@@ -179,7 +179,7 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
         break;
     }    
     //  Read Mode Off
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;
     return result;
   }  
 
@@ -194,10 +194,10 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
     uint32_t tempCtrl = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
 
     //  Set Addr and ReadMode and Read Data
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk;
 		MDR_OTP->ADR = wrAddr;
 		//MDR_Delay(_progDelays.delay_A_SE); - 5ns (200MHz) too small
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
+    MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
     rdData = MDR_OTP->RDATA;
     
     //  ----  WRITE DATA BITS '1' -----
@@ -273,20 +273,58 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
 
   uint32_t MDR_OTP_ReadWord(uint32_t addr)
   {
-    uint32_t tempCtrl = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
+    uint32_t waitCycle = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
     
     //  Set Addr and ReadMode and Read Data
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
 		MDR_OTP->ADR  = addr;
 		//MDR_Delay(_progDelays.delay_A_SE); - 5ns (200MHz) too small
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
     uint32_t result = MDR_OTP->RDATA;  
     
     //  Read Mode Off
-    MDR_OTP->CNTR = MDR_OTP_CNTR_REG_ACCESS_Msk;
-    MDR_OTP->CNTR = tempCtrl;
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = waitCycle;
     
     return result;
   }
+
+  uint32_t MDR_OTP_ReadWordAndEcc(uint32_t addr, uint8_t *rdECC)
+  {
+    uint32_t waitCycle = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
+    
+    //  Set Addr and ReadMode and Read Data
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
+		MDR_OTP->ADR  = addr;
+		//MDR_Delay(_progDelays.delay_A_SE); - 5ns (200MHz) too small
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
+    uint32_t result = MDR_OTP->RDATA;
+    *rdECC = (MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) >> MDR_OTP_CNTR_RECC_Pos;
+    
+    //  Read Mode Off
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = waitCycle;
+    
+    return result;
+  }
+  
+  bool MDR_OTP_CheckWordEmpty(uint32_t addr)
+  {
+    uint32_t waitCycle = MDR_OTP->CNTR & MDR_OTP_CNTR_WAITCYCL_Msk;
+    
+    //  Set Addr and ReadMode and Read Data
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
+		MDR_OTP->ADR  = addr;
+		//MDR_Delay(_progDelays.delay_A_SE); - 5ns (200MHz) too small
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk | MDR_OTP_CNTR_SE_Msk;   
+    bool result = (MDR_OTP->RDATA == 0);
+    result &= ((MDR_OTP->CNTR & MDR_OTP_CNTR_RECC_Msk) == 0UL);
+    
+    //  Read Mode Off
+    MDR_OTP->CNTR = waitCycle | MDR_OTP_CNTR_REG_ACCESS_Msk;
+    MDR_OTP->CNTR = waitCycle;
+    
+    return result;
+  }  
   
 #endif

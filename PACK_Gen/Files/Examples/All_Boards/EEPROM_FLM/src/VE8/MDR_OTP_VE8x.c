@@ -51,7 +51,7 @@ uint8_t MDR_GetECC(uint32_t data,  uint32_t adr)
   //  Реализация от того-же Vasili
   void MDR_OTPSRAM_ProgWord(uint32_t addr, uint32_t data) 
   {
-    uint32_t ctrl = GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
+    uint32_t ctrl = MDR_GetECC(data, addr) << MDR_OTP_CNTR_WECC_Pos;
     ctrl |= MDR_OTP_CNTR_WAITCYCL_SRAM_Min | MDR_OTP_CNTR_CLK_Msk | MDR_OTP_CNTR_REG_ACCESS_Msk;
 
     MDR_OTP->ADR = addr;

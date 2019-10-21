@@ -4,45 +4,75 @@
 #include <MDR_Config.h>  
 
 #if defined (USE_MDR1986VE8) || defined (USE_MDR1986VE81)
-  //  PLL from 8MHz 
-  //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
-  #define  MDRB_PLL_8MHz_TO_36MHz     MDR_CPU_CFG_PLL(18, 1, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_38MHz     MDR_CPU_CFG_PLL(19, 1, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 2, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_40MHz     MDR_CPU_CFG_PLL(10, 0, MDR_PLL_DV_div2)
-  //  Дробные
-  #define  MDRB_PLL_8MHz_TO_37MHz5    MDR_CPU_CFG_PLL(75, 7, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_37MHz6    MDR_CPU_CFG_PLL(47, 4, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_38MHz4    MDR_CPU_CFG_PLL(48, 4, MDR_PLL_DV_div2)
-  #define  MDRB_PLL_8MHz_TO_39MHz2    MDR_CPU_CFG_PLL(49, 4, MDR_PLL_DV_div2)
 
-  //  PLL from 10MHz 
+//  ----------- Задержки доступа в памяти и питания от частоты  -----------
+  //  Ядро не быстрее 64МГц, периферия до 100МГц
+  #define  MDRB_CPU_FREQ_SUPP_LE_20MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_20MHz84, MDR_BKP_LDO_SRILow_lt30MHz)
+  #define  MDRB_CPU_FREQ_SUPP_LE_41MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_41MHz66, MDR_BKP_LDO_SRILow_lt50MHz)
+  #define  MDRB_CPU_FREQ_SUPP_LE_62MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_62MHz5,  MDR_BKP_LDO_SRILow_lt100MHz)
+  #define  MDRB_CPU_FREQ_SUPP_LE_83MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_83MHz33, MDR_BKP_LDO_SRILow_lt100MHz)
+  #define  MDRB_CPU_FREQ_SUPP_LE_100MHz  MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_83MHz33, MDR_BKP_LDO_SRILow_ge100MHz)
+
+
+////  ------- Частоты PLL для источника 8MHz ---------  
+//  //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
+//  #define  MDRB_PLL_8MHz_TO_36MHz     MDR_CPU_CFG_PLL(18, 1, MDR_PLL_DV_div2)
+//  #define  MDRB_PLL_8MHz_TO_38MHz     MDR_CPU_CFG_PLL(19, 1, MDR_PLL_DV_div2)
+//  #define  MDRB_PLL_8MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 2, MDR_PLL_DV_div2)
+  #define  MDRB_PLL_8MHz_TO_40MHz     MDR_CPU_CFG_PLL(10, 0, MDR_PLL_DV_div2)
+//  //  Дробные
+//  #define  MDRB_PLL_8MHz_TO_37MHz5    MDR_CPU_CFG_PLL(75, 7, MDR_PLL_DV_div2)
+//  #define  MDRB_PLL_8MHz_TO_37MHz6    MDR_CPU_CFG_PLL(47, 4, MDR_PLL_DV_div2)
+//  #define  MDRB_PLL_8MHz_TO_38MHz4    MDR_CPU_CFG_PLL(48, 4, MDR_PLL_DV_div2)
+//  #define  MDRB_PLL_8MHz_TO_39MHz2    MDR_CPU_CFG_PLL(49, 4, MDR_PLL_DV_div2)
+
+//  ------- Частоты PLL для источника 10MHz ---------
   //  Удовлетворяют FInt = F*N/(Q+1) в диапазоне [75MHz .. 150MHz]
   #define  MDRB_PLL_10MHz_TO_37MHz     MDR_CPU_CFG_PLL(37, 4, MDR_PLL_DV_div2)
   #define  MDRB_PLL_10MHz_TO_38MHz     MDR_CPU_CFG_PLL(38, 4, MDR_PLL_DV_div2)
   #define  MDRB_PLL_10MHz_TO_39MHz     MDR_CPU_CFG_PLL(39, 4, MDR_PLL_DV_div2)
   #define  MDRB_PLL_10MHz_TO_40MHz     MDR_CPU_CFG_PLL(8,  0, MDR_PLL_DV_div2)
-  
-  #define  MDRB_PLL_10MHz_TO_80MHz     MDR_CPU_CFG_PLL(16,  1, MDR_PLL_DV_div1)
-  
   //  Дробные
   #define  MDRB_PLL_10MHz_TO_37MHz5    MDR_CPU_CFG_PLL(15, 1, MDR_PLL_DV_div2)
   
+  //  ERRATA 0051 - большой джиттер PLL
+  #if defined(MDR_VE8_ERRATA_0051_Fixed) || defined(MDR_VE81_ERRATA_0051_Fixed)
+    //  Устранена ошибка большого джиттера PLL
+    #define  MDRB_PLL_10MHz_TO_45MHz     MDR_CPU_CFG_PLL( 9, 0, MDR_PLL_DV_div2)
+    #define  MDRB_PLL_10MHz_TO_50MHz     MDR_CPU_CFG_PLL(10, 0, MDR_PLL_DV_div2)
+    #define  MDRB_PLL_10MHz_TO_55MHz     MDR_CPU_CFG_PLL(11, 0, MDR_PLL_DV_div2)
+    #define  MDRB_PLL_10MHz_TO_60MHz     MDR_CPU_CFG_PLL(12, 0, MDR_PLL_DV_div2)  
+    #define  MDRB_PLL_10MHz_TO_65MHz     MDR_CPU_CFG_PLL(13, 0, MDR_PLL_DV_div2)  
+    #define  MDRB_PLL_10MHz_TO_70MHz     MDR_CPU_CFG_PLL(14, 0, MDR_PLL_DV_div2)  
+    #define  MDRB_PLL_10MHz_TO_75MHz     MDR_CPU_CFG_PLL(15, 0, MDR_PLL_DV_div2)  
 
-  //  Настройки зависящие от частоты
-  #define  MDRB_CPU_FREQ_SUPP_40MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_62MHz5,  MDR_BKP_LDO_SRILow_lt50MHz)
-  #define  MDRB_CPU_FREQ_SUPP_20MHz   MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_41MHz66, MDR_BKP_LDO_SRILow_lt30MHz)
+    // ------- Настройки зависящие от частоты -------
+    #define  MDRB_CPU_FREQ_SUPP_40MHz    MDRB_CPU_FREQ_SUPP_LE_41MHz
+    #define  MDRB_CPU_FREQ_SUPP_75MHz    MDRB_CPU_FREQ_SUPP_LE_83MHz
+
+    //  Максимальная частота PLL
+    #define  MDRB_PLL_10MHz_TO_MAX       MDRB_PLL_10MHz_TO_75MHz
+    #define  MDRB_PLL_10MHz_FSUPP_MAX    MDRB_CPU_FREQ_SUPP_75MHz  
+    
+    #define  MDRB_PLL_10MHz_TO_MIN       MDRB_PLL_10MHz_TO_37MHz
+    #define  MDRB_PLL_10MHz_FSUPP_MIN    MDRB_CPU_FREQ_SUPP_40MHz
+
+  #else
+    //  По еррата PLL только до 40МГц - настройки под 60МГц
+    #define  MDRB_CPU_FREQ_SUPP_40MHz    MDRB_CPU_FREQ_SUPP_LE_62MHz
+    
+    //  Максимальная частота PLL
+    #define  MDRB_PLL_10MHz_TO_MAX       MDRB_PLL_10MHz_TO_40MHz
+    #define  MDRB_PLL_10MHz_FSUPP_MAX    MDRB_CPU_FREQ_SUPP_40MHz  
+    
+    #define  MDRB_PLL_10MHz_TO_MIN       MDRB_PLL_10MHz_TO_37MHz5
+    #define  MDRB_PLL_10MHz_FSUPP_MIN    MDRB_CPU_FREQ_SUPP_40MHz   
+  #endif
+
+  #define  MDRB_CPU_FREQ_SUPP_MIN      MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_20MHz84, MDR_BKP_LDO_SRILow_lt100KHz)  
+  #define  MDRB_CPU_FREQ_SUPP_MAX      MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_83MHz33, MDR_BKP_LDO_SRILow_lt100MHz)      
 
 
-  //  Максимальная частота PLL
-  #define  MDRB_PLL_8MHz_TO_MAX       MDRB_PLL_8MHz_TO_40MHz
-  #define  MDRB_PLL_8MHz_FSUPP_MAX    MDRB_CPU_FREQ_SUPP_40MHz  
-  
-  #define  MDRB_PLL_8MHz_TO_MIN       MDRB_PLL_8MHz_TO_37MHz5
-  #define  MDRB_PLL_8MHz_FSUPP_MIN    MDRB_CPU_FREQ_SUPP_40MHz
-
-  #define  MDRB_CPU_FREQ_SUPP_MIN     MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_20MHz84, MDR_BKP_LDO_SRILow_lt100KHz)  
-  #define  MDRB_CPU_FREQ_SUPP_MAX     MDR_CPU_FREQ_SUPP(MDR_OTP_Delay_le_83MHz33, MDR_BKP_LDO_SRILow_lt100MHz)  
 
 
 #elif defined (USE_MDR1923VK014)

@@ -141,7 +141,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;1&gt;..\src\main.c</Filename>
+          <Filename>C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Examples\1986VK214\src\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -157,7 +157,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;7&gt;..\src\test_EEPROM_BuffWRRD_CM0.c</Filename>
+          <Filename>C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Examples\All_Boards\ADC_Test\src\test_EEPROM_BuffWRRD_CM0.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -173,7 +173,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>&lt;7&gt;..\src\test_EEPROM_BuffWRRD_CM0.c</Filename>
+          <Filename>C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Examples\All_Boards\ADC_Test\src\test_EEPROM_BuffWRRD_CM0.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>

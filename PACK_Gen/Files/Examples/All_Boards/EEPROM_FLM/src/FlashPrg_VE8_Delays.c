@@ -38,7 +38,7 @@
 
 //==================  OTP  ===============
 #define OTP_START_ADDR       0x01000000UL
-#define OTP_LAST_ADDR       (0x01020000UL - 4UL)
+#define OTP_INFO_ADDR        0x0101FFC0UL
 
 
 uint32_t HandlersTable[4] __attribute__((aligned(128)));
@@ -119,6 +119,7 @@ int Init (unsigned long adr, unsigned long clk, unsigned long fnc)
 #endif
 
   MDR_OTP_Enable();
+  MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN;
   if (fnc == PROG_MODE)
   {
     _delaysOTP = MDR_OTP_GetProgDelays(CPU_CLOCK_HZ);

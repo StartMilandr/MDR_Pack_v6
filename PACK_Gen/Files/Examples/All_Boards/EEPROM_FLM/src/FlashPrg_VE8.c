@@ -35,7 +35,7 @@
 
 //==================  OTP  ===============
 #define OTP_START_ADDR       0x01000000UL
-#define OTP_LAST_ADDR       (0x01020000UL - 4UL)
+#define OTP_INFO_ADDR        0x0101FFC0UL
 
 
 uint32_t HandlersTable[4] __attribute__((aligned(128)));
@@ -105,6 +105,7 @@ int Init (unsigned long adr, unsigned long clk, unsigned long fnc)
 #endif
 
   MDR_OTP_Enable();
+  MDR_OTP->CNTR = MDR_OTP_CNTR_WAITCYL_MIN;
   if (fnc == PROG_MODE)
     MDR_OTP_ProgBegin_ByClockCPU_Hz(CPU_CLOCK_HZ);  
 	
@@ -123,13 +124,13 @@ uint32_t _OTP_Prog_NextAddr = 0;
 int UnInit (unsigned long fnc) 
 {
   //  Программирование 8-ми последующих слов нулями
-  if (fnc == PROG_MODE)
+  if ((fnc == PROG_MODE) && (_OTP_Prog_NextAddr > OTP_START_ADDR))
   {
     uint32_t i;
     //  Программирование
     for (i = 0; i < 32; i += 4)
     {
-      if ((_OTP_Prog_NextAddr + i) < OTP_LAST_ADDR)
+      if ((_OTP_Prog_NextAddr + i) < OTP_INFO_ADDR)
       {
         if (!MDR_OTP_ProgWord(_OTP_Prog_NextAddr + i, NOP_DOUBLE))
           break;
@@ -140,10 +141,10 @@ int UnInit (unsigned long fnc)
     
 #ifndef PASS_REP_PROG    
     //  До-Программирование 8 слов
-    for (i = 0; i < 8; ++i)    
+    for (i = 0; i < 32; i += 4)
     {
-      if ((_OTP_Prog_NextAddr + i) < OTP_LAST_ADDR)
-      {  
+      if ((_OTP_Prog_NextAddr + i) < OTP_INFO_ADDR)
+      {
         if (!MDR_OTP_RepProgWord(_OTP_Prog_NextAddr + i, NOP_DOUBLE))
           break;
       }
@@ -273,11 +274,12 @@ unsigned long Verify (unsigned long adr, unsigned long sz, unsigned char *buf)
   //  Конечные 8 слов
   if ((adr + sz) == _OTP_Prog_NextAddr)
     for (i = 0; i < 32; i += 4)
-      if (ReadWord(_OTP_Prog_NextAddr + i) != NOP_DOUBLE) 
-      {
-        result = _OTP_Prog_NextAddr + i;
-        break;
-      }
+      if ((_OTP_Prog_NextAddr + i) < OTP_INFO_ADDR)
+        if (ReadWord(_OTP_Prog_NextAddr + i) != NOP_DOUBLE) 
+        {
+          result = _OTP_Prog_NextAddr + i;
+          break;
+        }
  
  return result;
 }

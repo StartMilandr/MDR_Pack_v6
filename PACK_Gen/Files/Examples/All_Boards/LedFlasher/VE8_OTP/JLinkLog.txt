@@ -1,0 +1,40 @@
+T0C94 11612:056 SEGGER J-Link V6.46 Log File (0000ms, 13886ms total)
+T0C94 11612:056 DLL Compiled: May 23 2019 17:49:56 (0000ms, 13886ms total)
+T0C94 11612:056 Logging started @ 2019-10-23 13:31 (0000ms, 13886ms total)
+T0C94 11612:056 JLINK_SetWarnOutHandler(...) (0000ms, 13886ms total)
+T0C94 11612:056 JLINK_OpenEx(...)
+Firmware: J-Link V10 compiled Oct  8 2019 14:57:57
+Hardware: V10.10
+S/N: 50109140
+Feature(s): GDB
+TELNET listener socket opened on port 19021Device "CORTEX-M4" selected.WEBSRV 
+Starting webserver (0024ms, 13910ms total)
+T0C94 11612:056 WEBSRV Webserver running on local port 19080 (0025ms, 13911ms total)
+T0C94 11612:056   returns O.K. (0025ms, 13911ms total)
+T0C94 11612:081 JLINK_GetEmuCaps()  returns 0xB9FF7BBF (0000ms, 13911ms total)
+T0C94 11612:081 JLINK_TIF_GetAvailable(...) (0000ms, 13911ms total)
+T0C94 11612:081 JLINK_SetErrorOutHandler(...) (0000ms, 13911ms total)
+T0C94 11612:081 JLINK_ExecCommand("ProjectFile = "C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Examples\All_Boards\LedFlasher\VE8_OTP\JLinkSettings.ini"", ...). Device "CORTEX-M4" selected.  returns 0x00 (0001ms, 13912ms total)
+T0C94 11612:082 JLINK_ExecCommand("Device = MDR1986VE8_OTP", ...). Device "CORTEX-M4" selected.  returns 0x00 (0001ms, 13913ms total)
+T0C94 11612:083 JLINK_ExecCommand("DisableConnectionTimeout", ...).   returns 0x01 (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetHardwareVersion()  returns 0x18A88 (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetDLLVersion()  returns 64600 (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetFirmwareString(...) (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetDLLVersion()  returns 64600 (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetCompileDateTime() (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetFirmwareString(...) (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_GetHardwareVersion()  returns 0x18A88 (0000ms, 13913ms total)
+T0C94 11612:083 JLINK_TIF_Select(JLINKARM_TIF_SWD)  returns 0x00 (0001ms, 13914ms total)
+T0C94 11612:084 JLINK_SetSpeed(2000) (0000ms, 13914ms total)
+T0C94 11612:084 JLINK_SetResetType(JLINKARM_RESET_TYPE_ADI)  returns JLINKARM_RESET_TYPE_NORMAL (0000ms, 13914ms total)
+T0C94 11612:084 JLINK_Reset() >0x10B TIF>Found SW-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF>Scanning AP map to find all available APs >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>AP[2]: Stopped AP scan as end of AP map has been reached
+AP[0]: AHB-AP (IDR: 0x24770011)AP[1]: AHB-AP (IDR: 0x24770011)Iterating through AP map to find AHB-AP to use >0x42 TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF> >0x42 TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>AP[0]: Core foundAP[0]: AHB-AP ROM base: 0xE00FF000 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>
+CPUID register: 0x410FC241. Implementer code: 0x41 (ARM)Found Cortex-M4 r0p1, Little endian. -- Max. mem block: 0x00004738 -- CPU_ReadMem(4 bytes @ 0xE000EDF0) -- CPU_WriteMem(4 bytes @ 0xE000EDF0) -- CPU_ReadMem(4 bytes @ 0xE0002000)FPUnit: 6 code (BP) slots and 2 literal slots -- CPU_ReadMem(4 bytes @ 0xE000EDFC) -- CPU_WriteMem(4 bytes @ 0xE000EDFC) -- CPU_ReadMem(4 bytes @ 0xE0001000) -- CPU_WriteMem(4 bytes @ 0xE0001000) -- CPU_ReadMem(4 bytes @ 0xE000ED88) -- CPU_WriteMem(4 bytes @ 0xE000ED88)
+ -- CPU_ReadMem(4 bytes @ 0xE000ED88) -- CPU_WriteMem(4 bytes @ 0xE000ED88)CoreSight components:ROMTbl[0] @ E00FF000 -- CPU_ReadMem(16 bytes @ 0xE00FF000) -- CPU_ReadMem(16 bytes @ 0xE000EFF0) -- CPU_ReadMem(16 bytes @ 0xE000EFE0)ROMTbl[0][0]: E000E000, CID: B105E00D, PID: 000BB00C SCS-M7 -- CPU_ReadMem(16 bytes @ 0xE0001FF0) -- CPU_ReadMem(16 bytes @ 0xE0001FE0)ROMTbl[0][1]: E0001000, CID: B105E00D, PID: 003BB002 DWT -- CPU_ReadMem(16 bytes @ 0xE0002FF0) -- CPU_ReadMem(16 bytes @ 0xE0002FE0)
+ROMTbl[0][2]: E0002000, CID: B105E00D, PID: 002BB003 FPB -- CPU_ReadMem(16 bytes @ 0xE0000FF0) -- CPU_ReadMem(16 bytes @ 0xE0000FE0)ROMTbl[0][3]: E0000000, CID: B105E00D, PID: 003BB001 ITM -- CPU_ReadMem(16 bytes @ 0xE00FF010) -- CPU_ReadMem(16 bytes @ 0xE0040FF0) -- CPU_ReadMem(16 bytes @ 0xE0040FE0)ROMTbl[0][4]: E0040000, CID: B105900D, PID: 000BB9A1 TPIU -- CPU_ReadMem(16 bytes @ 0xE0041FF0) -- CPU_ReadMem(16 bytes @ 0xE0041FE0)ROMTbl[0][5]: E0041000, CID: B105900D, PID: 000BB925 ETM -- CPU is running
+ -- CPU_WriteMem(4 bytes @ 0xE000EDF0) -- CPU is running -- CPU_WriteMem(4 bytes @ 0xE000EDFC)Reset: Halt core after reset via DEMCR.VC_CORERESET.Reset: Reset device via reset pin -- CPU_WriteMem(4 bytes @ 0xE000EDFC) -- CPU_ReadMem(4 bytes @ 0xE000EDF0) -- CPU_WriteMem(4 bytes @ 0xE0002000) -- CPU_ReadMem(4 bytes @ 0xE000EDFC) -- CPU_ReadMem(4 bytes @ 0xE0001000) (0256ms, 14170ms total)
+T0C94 11612:340 JLINK_GetId() >0x0D TIF> >0x21 TIF>  returns 0x2BA01477 (0000ms, 14170ms total)
+T0C94 11612:341 JLINK_GetFirmwareString(...) (0000ms, 14170ms total)
+T0C94 11629:473 JLINK_Close() -- CPU_ReadMem(4 bytes @ 0xE0001000) -- CPU_WriteMem(4 bytes @ 0xE0001004) >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> (0014ms, 14184ms total)
+T0C94 11629:473  (0014ms, 14184ms total)
+T0C94 11629:473 Closed (0014ms, 14184ms total)

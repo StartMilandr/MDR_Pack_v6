@@ -2059,11 +2059,13 @@
       <version>1.0</version>
       <description>DMA Controler</description>
       <groupName>DMA</groupName>
+      <!-- #DMA_Addr  -->
       <baseAddress>0x40028000</baseAddress>
       <size>32</size>
       <access>read-write</access>
       <addressBlock>
         <offset>0</offset>
+        <!-- #DMA_Size  -->
         <size>0x50</size>
         <usage>registers</usage>
       </addressBlock>
@@ -2349,6 +2351,7 @@
           <access>read-write</access>
           <modifiedWriteValues>oneToClear</modifiedWriteValues>
         </register>
+        <!-- #DMA_MUX -->
         <!-- Registers end-->
       </registers>
       <!-- peripheral end-->

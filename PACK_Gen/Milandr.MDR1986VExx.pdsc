@@ -745,7 +745,7 @@
           <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
           <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x20000"   startup="1"   default="1"/>
           <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"    init   ="1"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VE8_OTP_HSE1_8MHz.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>          
+          <algorithm  name="Keil/FLM/MDR1986VE8_OTP_HSE1_25MHz.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>          
           <description>
             (1986BE8 RUS)
             Core:

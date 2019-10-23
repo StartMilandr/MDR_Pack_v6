@@ -6,7 +6,11 @@ Phase1: Read PDSC files
 
 Phase2: Static Data & Dependencies check
 
+*** ERROR M323: C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Milandr.MDR1986VExx.pdsc (Line 748) 
+  File/Path not found: 'C:\CODE\PACK\MDR_Pack\PACK_Gen\Files\Keil\FLM\MDR1986VE8_OTP_HSE1_8MHz.FLM'
+
+
 Phase3: RTE Model based Data & Dependencies check
 
-Found 0 Error(s) and 0 Warning(s).
+Found 1 Error(s) and 0 Warning(s).
 

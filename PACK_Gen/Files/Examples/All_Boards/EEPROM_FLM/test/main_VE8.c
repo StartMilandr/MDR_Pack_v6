@@ -10,9 +10,9 @@
 //  Итого байт для одного теста - 56 байт
 #define OTP_WRITE_BLOCK            (PAGE_SIZE + OTP_TAIL_SIZE + OTP_EMPTY_GAP)
 
-#define OTP_ADDR_NEXT_BUSY_ADDR    0x01020000
+#define OTP_ADDR_NEXT_BUSY_ADDR    0x0101FC00UL
 
-#define TEST_INDEX                 6
+#define TEST_INDEX                 1
 #define OTP_ADDR_0                 OTP_ADDR_NEXT_BUSY_ADDR - (OTP_WRITE_BLOCK * TEST_INDEX)
 
 //----------  FLM Defs  -----------------

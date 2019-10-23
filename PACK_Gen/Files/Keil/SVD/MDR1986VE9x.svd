@@ -1589,11 +1589,13 @@
       <version>1.0</version>
       <description>DMA Controler</description>
       <groupName>DMA</groupName>
+      <!-- #DMA_Addr  -->
       <baseAddress>0x40028000</baseAddress>
       <size>32</size>
       <access>read-write</access>
       <addressBlock>
         <offset>0</offset>
+        <!-- #DMA_Size  -->
         <size>0x50</size>
         <usage>registers</usage>
       </addressBlock>
@@ -1879,6 +1881,7 @@
           <access>read-write</access>
           <modifiedWriteValues>oneToClear</modifiedWriteValues>
         </register>
+        <!-- #DMA_MUX -->
         <!-- Registers end-->
       </registers>
       <!-- peripheral end-->
@@ -2859,22 +2862,49 @@
           <fields>
             <!-- #ADC2_CFG_VE9x_start -->
             <field derivedFrom="MDR_ADC.ADC1_Cfg.ADON">
+              <name>ADON</name>
+              <description>Enable ADC</description>
+              <bitRange>[0:0]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.GO">
+              <name>GO</name>
+              <description>Start single ADC mesurement</description>
+              <bitRange>[1:1]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.CLKS">
+              <name>CLKS</name>
+              <description>Select Clock</description>
+              <bitRange>[2:2]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.SAMPLE">
+              <name>SAMPLE</name>
+              <description>Single or Continuous measurement</description>
+              <bitRange>[3:3]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.CHS">
+              <name>CHS</name>
+              <description>Active channel select</description>
+              <bitRange>[8:4]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.CHCH">
+              <name>CHCH</name>
+              <description>Channel switching enable</description>
+              <bitRange>[9:9]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.RGNC">
+              <name>RGNC</name>
+              <description>Signal limiters enable</description>
+              <bitRange>[10:10]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.M_REF">
+              <name>M_REF</name>
+              <description>Signal amplitude reference</description>
+              <bitRange>[11:11]</bitRange>
             </field>
             <field derivedFrom="MDR_ADC.ADC1_Cfg.DIV_CLK">
+              <name>DIV_CLK</name>
+              <description>Divider for CPU_Clock usage</description>
+              <bitRange>[15:12]</bitRange>
             </field>
             <field>
               <name>ADC1_OP</name>

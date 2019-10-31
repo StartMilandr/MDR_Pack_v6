@@ -21,3 +21,8 @@ PACK_Gen/Files/Examples/All_Boards/EEPROM_FLM/test/FLM_Test_VE9x/Objects/
 PACK_Gen/Milandr.MDR1986VExx.2.04.1.pack
 PACK_Gen/Files/Examples/All_Boards/SSP_Test/SSP_TestVE8/Objects/
 PACK_Gen/Files/Examples/All_Boards/SSP_Test/SSP_TestVE8/Listings/
+PACK_Gen/Files/Examples/All_Boards/DMA_Test/DMA_ADC_PingPong/Objects/
+PACK_Gen/Files/Examples/All_Boards/LedFlasher/VE8_OTP/Objects/
+PACK_Gen/Files/Examples/All_Boards/LedFlasher/VE8_OTP/Listings/
+PACK_Gen/Files/Examples/All_Boards/DMA_Test/DMA_ADC_PingPong/Listings/
+*.scvd

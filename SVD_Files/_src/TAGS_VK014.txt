@@ -6,6 +6,7 @@ f4=../UART/UART_VK014.txt
 f5=../SSP/SSP_VK014.txt
 f6=../Timer/Timer_VK014.txt
 f7=../DMA/DMA_VE8ES.xml
+f8=../CAN/TAGS_VK014.txt
 
 [TAGS]
 #RST=f1
@@ -17,6 +18,7 @@ f7=../DMA/DMA_VE8ES.xml
 #SSPs=f5
 #TIMERs=f6
 #DMA=f7
+#CANs=f8
 
 
 [TAGS_New]
@@ -42,8 +44,6 @@ f7=../DMA/DMA_VE8ES.xml
 #CACHE_R=
 #SPWs=
 #SPWs_R=
-#CANs=
-#CANs_R=
 #SSPs_R=
 #CRC=
 #CRC_R=

@@ -26,3 +26,5 @@ PACK_Gen/Files/Examples/All_Boards/LedFlasher/VE8_OTP/Objects/
 PACK_Gen/Files/Examples/All_Boards/LedFlasher/VE8_OTP/Listings/
 PACK_Gen/Files/Examples/All_Boards/DMA_Test/DMA_ADC_PingPong/Listings/
 *.scvd
+PACK_Gen/Files/Examples/All_Boards/OTP/OTP_Test_VE8/Objects/
+PACK_Gen/Files/Examples/All_Boards/OTP/OTP_Test_VE8/Listings/

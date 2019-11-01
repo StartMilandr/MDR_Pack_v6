@@ -7,6 +7,7 @@ f5=../SSP/SSP_VE8.txt
 f6=../Timer/Timer_VE8.txt
 f7=../DMA/DMA_VE8ES.xml
 f8=../OTP/OTP_VE81.txt
+f9=../CAN/CAN_VE8.txt
 
 [TAGS]
 #RST=f1
@@ -19,6 +20,7 @@ f8=../OTP/OTP_VE81.txt
 #TIMERs=f6
 #DMA=f7
 #OTP=f8
+#CANs=f9
 
 [TAGS_New]
 #PWR=
@@ -37,8 +39,6 @@ f8=../OTP/OTP_VE81.txt
 #CACHE_R=
 #SPWs=
 #SPWs_R=
-#CANs=
-#CANs_R=
 #ARINKs=
 #ARINKs_R=
 #MILs=

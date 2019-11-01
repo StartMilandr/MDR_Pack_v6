@@ -1,0 +1,26 @@
+#CAN1_ADDR_VEx
+<baseAddress>0x40000000</baseAddress>
+
+#CAN1_ADDR_VE8VK
+<baseAddress>0x40090000</baseAddress>
+
+#CAN1_ADDR_ES
+<baseAddress>0x4008B000</baseAddress>
+
+#MDR_CAN2_VEx
+<peripheral derivedFrom="MDR_CAN1">
+  <name>MDR_CAN2</name>
+  <baseAddress>0x40008000</baseAddress>
+</peripheral>
+
+#MDR_CAN2_VK014
+<peripheral derivedFrom="MDR_CAN1">
+  <name>MDR_CAN2</name>
+  <baseAddress>0x40091000</baseAddress>
+</peripheral>
+
+#MDR_CAN2_ES
+<peripheral derivedFrom="MDR_CAN1">
+  <name>MDR_CAN2</name>
+  <baseAddress>0x4008C000</baseAddress>
+</peripheral>

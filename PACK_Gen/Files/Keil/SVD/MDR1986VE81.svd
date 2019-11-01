@@ -1412,8 +1412,8 @@
               <description>LDO Enable</description>
               <bitRange>[6:6]</bitRange>
               <enumeratedValues>
-                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
-                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>1</value></enumeratedValue>
               </enumeratedValues>
             </field>
             <field>
@@ -1967,7 +1967,7 @@
       <version>1.0</version>
       <description>OTP_SRAM Memory Control</description>
       <groupName>OTP_SRAM</groupName>
-      <baseAddress>0x40060000</baseAddress>
+      <baseAddress>0x40006000</baseAddress>
       <size>32</size>
       <access>read-write</access>
       <addressBlock>
@@ -4166,6 +4166,672 @@
     <!-- #MDR_TIMER5 -->
     <!-- #MDR_TIMER6 -->
     <!-- #CANs -->
+    <!--CAN-->
+    <peripheral>
+    <name>MDR_CAN1</name>
+    <version>1.0</version>
+    <description>CAN Control</description>
+    <groupName>CAN</groupName>
+      <!-- #CAN1_ADDR -->
+      <baseAddress>0x40090000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0x600</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- CONTROL -->
+        <register>
+          <name>CONTROL</name>
+          <description>Control register</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000001F</resetMask>
+          <fields>
+            <field>
+              <name>CAN_EN</name>
+              <description>Enable CAN</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="CAN_EN">
+              <name>ROM</name>
+              <description>Read Only Mode</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="CAN_EN">
+              <name>STM</name>
+              <description>Self Test Mode</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="CAN_EN">
+              <name>SAP</name>
+              <description>Send Ack for Own Packets</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="CAN_EN">
+              <name>ROP</name>
+              <description>Receive Own Packets</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- STATUS -->
+        <register>
+          <name>STATUS</name>
+          <description>STATUS register</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFF1FFF</resetMask>
+          <fields>
+            <field>
+              <name>RX_Ready</name>
+              <description>Some Buff Data received</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Event Inactive</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Event Active</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>TX_Ready</name>
+              <description>Some buff has data to send</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_Over</name>
+              <description>TEC o REC exceeds ERROR_MAX</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_Bit</name>
+              <description>Error while TX some bit</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_StuffBit</name>
+              <description>Error in Staff Bit</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_CRC</name>
+              <description>CRC Error</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_FRAME</name>
+              <description>Wrong Frame structure</description>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ERR_ACK</name>
+              <description>Acknowledge error</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>ID_Lover</name>
+              <description>Arbitrage failure</description>
+              <bitRange>[8:8]</bitRange>
+            </field>
+            <field>
+              <name>ERR_Status</name>
+              <description>Eror status</description>
+              <bitRange>[10:9]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Active</name><description>Active mode</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Passive</name><description>Pasiive error mode</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>BusOff</name><description>Bus Disable</description><value>2</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>RX_ERR_CNT8</name>
+              <description>REC > 255, BusOff</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field derivedFrom="RX_Ready">
+              <name>TX_ERR_CNT8</name>
+              <description>TEC > 255, BusOff</description>
+              <bitRange>[12:12]</bitRange>
+            </field>
+            <field>
+              <name>RX_ERR_CNT</name>
+              <description>Rx Error Counter</description>
+              <bitRange>[23:16]</bitRange>
+            </field>
+            <field>
+              <name>TX_ERR_CNT</name>
+              <description>Tx Error Counter</description>
+              <bitRange>[31:24]</bitRange>
+            </field>         
+          </fields>
+        </register>
+        <!-- BITTMNG -->
+        <register>
+          <name>BITTMNG</name>
+          <description>Bit Timing register</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0FFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>BRP</name>
+              <description>Boud Rate Prescaler to TQ</description>
+              <bitRange>[15:0]</bitRange>
+            </field>
+            <field>
+              <name>PSEG</name>
+              <description>Propagation time in TQ</description>
+              <bitRange>[18:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1TQ</name><description>Delay</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2TQ</name><description>Delay</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>3TQ</name><description>Delay</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>4TQ</name><description>Delay</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>5TQ</name><description>Delay</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>6TQ</name><description>Delay</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>7TQ</name><description>Delay</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>8TQ</name><description>Delay</description><value>7</value></enumeratedValue>
+              </enumeratedValues>          
+            </field>
+            <field derivedFrom="PSEG">
+              <name>SEG1</name>
+              <description>Delay before line sampling</description>
+              <bitRange>[21:19]</bitRange>
+            </field>
+            <field derivedFrom="PSEG">
+              <name>SEG2</name>
+              <description>Delay after line sampling</description>
+              <bitRange>[24:22]</bitRange>
+            </field>
+            <field>
+              <name>SJW</name>
+              <description>Sync phase deviation</description>
+              <bitRange>[26:25]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>1TQ</name><description>Delay</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>2TQ</name><description>Delay</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>3TQ</name><description>Delay</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>4TQ</name><description>Delay</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SB</name>
+              <description>Line Sampling Count</description>
+              <bitRange>[27:27]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Single</name><description>Single sampling</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Triple</name><description>Triple sampling</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>        
+        <!-- INT_EN -->
+        <register>
+          <name>INT_EN</name>
+          <description>IRQ Enable</description>
+          <addressOffset>0x00000010</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0000001F</resetMask>
+          <fields>
+            <field>
+              <name>GLB_IntEn</name>
+              <description>IRQ Enable Global</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Disabled</name><description>Disable IRQ</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Enabled</name><description>Enable IRQ</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="GLB_IntEn">
+              <name>RX_IntEn</name>
+              <description>Enable IRQ on RX</description>
+              <bitRange>[1:1]</bitRange>
+            </field>
+            <field derivedFrom="GLB_IntEn">
+              <name>TX_IntEn</name>
+              <description>Enable IRQ on TX</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="GLB_IntEn">
+              <name>ERR_IntEn</name>
+              <description>Enable IRQ on Error</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="GLB_IntEn">
+              <name>ErrOV_IntEn</name>
+              <description>Enable IRQ of Error Over</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- OVER -->
+        <register>
+          <name>OVER</name>
+          <description>ERROR_MAX level</description>
+          <addressOffset>0x0000001C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>ERROR_MAX</name>
+              <description>Level of TEC or REC errors to OverIRQ</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- RX_ID -->
+        <register>
+          <name>RX_ID</name>
+          <description>Last Received ID</description>
+          <addressOffset>0x00000020</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x0FFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>EID</name>
+              <description>Extended frame ID</description>
+              <bitRange>[17:0]</bitRange>
+            </field>
+            <field>
+              <name>SID</name>
+              <description>Standard frame ID</description>
+              <bitRange>[28:18]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- RX_DLC -->
+        <register>
+          <name>RX_DLC</name>
+          <description>Last Received ControlField</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x00001F0F</resetMask>
+          <fields>
+            <field>
+              <name>DLC</name>
+              <description>Data Length Code</description>
+              <bitRange>[3:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>NoData</name><description>Normal Operation</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_1</name><description>Byte Count</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_2</name><description>Byte Count</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_3</name><description>Byte Count</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_4</name><description>Byte Count</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_5</name><description>Byte Count</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_6</name><description>Byte Count</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_7</name><description>Byte Count</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>Bytes_8</name><description>Byte Count</description><value>8</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RTR</name>
+              <description>Remote transmission Request</description>
+              <bitRange>[8:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="RTR">
+              <name>R1</name>
+              <description>Reserved bit R1</description>
+              <bitRange>[9:9]</bitRange>
+            </field>
+            <field derivedFrom="RTR">
+              <name>R0</name>
+              <description>Reserved bit R0</description>
+              <bitRange>[10:10]</bitRange>
+            </field>
+            <field derivedFrom="RTR">
+              <name>SRR</name>
+              <description>Substitute Remote Request</description>
+              <bitRange>[11:11]</bitRange>
+            </field>
+            <field>
+              <name>IDE</name>
+              <description>Frame format</description>
+              <bitRange>[12:12]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Standard</name><description>Standard frame</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Extended</name><description>Extended frame</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>        
+          </fields>
+        </register>    
+        <!-- RX_DATAL -->
+        <register>
+          <name>RX_DATAL</name>
+          <description>Received Byte[0]..Byte[3]</description>
+          <addressOffset>0x00000028</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>DB0</name>
+              <description>Byte 0</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+            <field>
+              <name>DB1</name>
+              <description>Byte 1</description>
+              <bitRange>[15:8]</bitRange>
+            </field>
+            <field>
+              <name>DB2</name>
+              <description>Byte 2</description>
+              <bitRange>[23:16]</bitRange>
+            </field>
+            <field>
+              <name>DB3</name>
+              <description>Byte 3</description>
+              <bitRange>[31:24]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- RX_DATAH -->
+        <register>
+          <name>RX_DATAH</name>
+          <description>Received Byte[4]..Byte[7]</description>
+          <addressOffset>0x0000002C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>DB4</name>
+              <description>Byte 0</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+            <field>
+              <name>DB5</name>
+              <description>Byte 1</description>
+              <bitRange>[15:8]</bitRange>
+            </field>
+            <field>
+              <name>DB6</name>
+              <description>Byte 2</description>
+              <bitRange>[23:16]</bitRange>
+            </field>
+            <field>
+              <name>DB7</name>
+              <description>Byte 3</description>
+              <bitRange>[31:24]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- TXID -->
+        <register derivedFrom="RX_ID">
+          <name>TX_ID</name>
+          <description>Last Sent ID</description>
+          <addressOffset>0x00000030</addressOffset>
+        </register>
+        <!-- TXDLC -->
+        <register derivedFrom="RX_DLC">
+          <name>TX_DLC</name>
+          <description>Last Sent ControlField</description>
+          <addressOffset>0x00000034</addressOffset>
+        </register>
+        <!-- TX_DATAL -->
+        <register derivedFrom="RX_DATAL">
+          <name>TX_DATAL</name>
+          <description>Last Sent Byte[4]..Byte[7]</description>
+          <addressOffset>0x00000038</addressOffset>
+        </register>    
+        <!-- TX_DATAH -->
+        <register derivedFrom="RX_DATAH">
+          <name>TX_DATAH</name>
+          <description>Last Sent Byte[4]..Byte[7]</description>
+          <addressOffset>0x0000003C</addressOffset>
+        </register>
+        <!-- BUF_CON -->
+        <register>
+          <dim>32</dim>
+          <dimIncrement>4</dimIncrement>
+          <dimIndex>0-31</dimIndex>
+          <name>BUF_CON%s</name>
+          <description>Buffer control</description>
+          <addressOffset>0x00000040</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x000000FF</resetMask>
+          <fields>
+            <field>
+              <name>EN</name>
+              <description>Buffer enable</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RX_TX</name>
+              <description>Buffer Direction</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>TX</name><description>Output buffer</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RX</name><description>Input buffer</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field derivedFrom="EN">
+              <name>OVER_EN</name>
+              <description>Overwrite enable</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <field derivedFrom="EN">
+              <name>RTR_EN</name>
+              <description>RTR ACK enable</description>
+              <bitRange>[3:3]</bitRange>
+            </field>
+            <field derivedFrom="EN">
+              <name>PRIOR_OFF</name>
+              <description>Send priority Off</description>
+              <bitRange>[4:4]</bitRange>
+            </field>
+            <field derivedFrom="EN">
+              <name>TX_REQ</name>
+              <description>Request to send</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <field derivedFrom="EN">
+              <name>RX_FULL</name>
+              <description>Has new data</description>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <field derivedFrom="EN">
+              <name>OVER_WR</name>
+              <description>Data overwritten</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <!-- INT_RX -->
+        <register>
+          <name>INT_RX</name>
+          <description>Enable Buffs' RX IRQ</description>
+          <addressOffset>0x000000C0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>RX_IRQ_En%s</name>
+              <description>Enable Buffs' RX IRQ</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>IRQ Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>IRQ Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- RX -->
+        <register>
+          <name>RX</name>
+          <description>Buffs' RX_FIFO Full</description>
+          <addressOffset>0x000000C4</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>RX_FULL%s</name>
+              <description>Buffs' RX_FIFO Full</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Empty</name><description>No Data</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Full</name><description>Has Data</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- INT_TX -->
+        <register>
+          <name>INT_TX</name>
+          <description>Enable Buffs' TX IRQ</description>
+          <addressOffset>0x000000C8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>TX_IRQ_En%s</name>
+              <description>Enable Buffs' TX IRQ</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>IRQ Disabled</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>IRQ Enabled</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <!-- TX -->
+        <register>
+          <name>TX</name>
+          <description>TX_nReq buffs' state</description>
+          <addressOffset>0x000000CC</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <dim>32</dim>
+              <dimIncrement>1</dimIncrement>
+              <dimIndex>0-31</dimIndex>
+              <name>TX_nReq%s</name>
+              <description>TX_nReq buffs' state</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Active</name><description>Tx_Req is active</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Off</name><description>No req</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <cluster>
+          <dim>32</dim>
+          <dimIncrement>16</dimIncrement>
+          <dimIndex>0-31</dimIndex>
+          <name>BUF%s</name>
+          <description>TX or RX buffer control</description>
+          <addressOffset>0x00000200</addressOffset>
+          <!-- ID -->
+          <register derivedFrom="MDR_CAN1.RX_ID">
+            <name>ID</name>
+            <description>packet ID</description>
+            <addressOffset>0x00000000</addressOffset>
+          </register>
+          <!-- DLC -->
+          <register derivedFrom="MDR_CAN1.RX_DLC">
+            <name>DLC</name>
+            <description>ControlField</description>
+            <addressOffset>0x00000004</addressOffset>
+          </register>
+          <!-- DATAL -->
+          <register derivedFrom="MDR_CAN1.RX_DATAL">
+            <name>DATAL</name>
+            <description>Byte[4]..Byte[7]</description>
+            <addressOffset>0x00000008</addressOffset>
+          </register>    
+          <!-- DATAH -->
+          <register derivedFrom="MDR_CAN1.RX_DATAH">
+            <name>DATAH</name>
+            <description>[4]..Byte[7]</description>
+            <addressOffset>0x0000000C</addressOffset>
+          </register>
+        </cluster>
+        <cluster>
+          <dim>32</dim>
+          <dimIncrement>8</dimIncrement>
+          <dimIndex>0-31</dimIndex>
+          <name>FILTER%s</name>
+          <description>Buffer Receive Filters</description>
+          <addressOffset>0x00000500</addressOffset>
+          <!-- MASK -->
+          <register>
+            <name>MASK</name>
+            <description>MASK for receiver ID</description>
+            <addressOffset>0x00000000</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0xFFFFFFFF</resetMask>
+          </register>
+          <!-- DLC -->
+          <register>
+            <name>FILTER</name>
+            <description>FILTER for receiver ID</description>
+            <addressOffset>0x00000004</addressOffset>
+            <size>32</size>
+            <access>read-write</access>
+            <resetValue>0x00000000</resetValue>
+            <resetMask>0xFFFFFFFF</resetMask>
+          </register>
+        </cluster>
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
+    <!-- #MDR_CAN2 -->
     <!-- #SSPs  -->
     <!-- SSP1 -->
     <peripheral>

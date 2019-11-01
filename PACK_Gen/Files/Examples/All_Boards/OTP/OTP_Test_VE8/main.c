@@ -11,7 +11,7 @@
 //  Работает так-же на максимальной частоте
 #define OTP_PROG_WITH_HSE0_MAX_CLOCK  1
 #define OTP_PROG_WITH_HSI             0
-#define OTP_PROG_WITH_HSE1_GEN_24MHZ  0
+#define OTP_PROG_WITH_HSE1_GEN_25MHZ  0
 
 
 #if OTP_PROG_WITH_HSI
@@ -20,7 +20,7 @@
 #elif OTP_PROG_WITH_HSE0_MAX_CLOCK
   //  40MHz
   #define LED_CYCLICK_PERIOD  25000
-#elif OTP_PROG_WITH_HSE1_GEN_24MHZ  
+#elif OTP_PROG_WITH_HSE1_GEN_25MHZ  
   //  24MHz
   #define LED_CYCLICK_PERIOD  15000
 #endif
@@ -73,7 +73,7 @@ int main(void)
   MDR_CPU_CfgHSI cfgHSI = MDR_CPU_CFG_HSI_TRIM_DEF(MDR_BKP_REG63_HSI_Trim_Def_32 + MY_CHIP_HSI_TRIM_SHIFT);
   MDR_CPU_SetClock_HSI(&cfgHSI, HSI_TIMEOUT, false);
   
-#elif OTP_PROG_WITH_HSE1_GEN_24MHZ
+#elif OTP_PROG_WITH_HSE1_GEN_25MHZ
   MDR_CPU_SetClock_HSE1_def(MDR_CLK_Generator, true);
   
 #endif

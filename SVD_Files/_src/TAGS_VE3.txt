@@ -10,6 +10,7 @@ f8=../UART/UART_VE3.txt
 f9=../Timer/Timer_VE13.txt
 f10=../Power/Power_Vx.txt
 f11=../DMA/DMA_VEx.xml
+f12=../CAN/CAN_VE139x.txt
 
 [TAGS]
 #BKP=f1
@@ -26,6 +27,7 @@ f11=../DMA/DMA_VEx.xml
 #TIMERs=f9
 #PWR=f10
 #DMA=f11
+#CANs=f12
 
 [TAGS_New]
 #USB=
@@ -48,8 +50,6 @@ f11=../DMA/DMA_VEx.xml
 #KEY_R=
 #ETHERNETs=
 #ETHERNETs_R=
-#CANs=
-#CANs_R=
 #MILs=
 #MILs_R=
 #ARINKs=

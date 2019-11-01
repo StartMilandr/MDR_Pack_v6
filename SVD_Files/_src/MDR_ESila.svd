@@ -4031,7 +4031,7 @@
               <bitRange>[7:7]</bitRange>
             </field>
             <field derivedFrom="RX_Ready">
-              <name>ID_Lover</name>
+              <name>ID_Lower</name>
               <description>Arbitrage failure</description>
               <bitRange>[8:8]</bitRange>
             </field>

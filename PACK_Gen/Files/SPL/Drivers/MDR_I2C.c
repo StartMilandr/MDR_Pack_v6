@@ -374,3 +374,15 @@ void MDR_I2C_IRQ_HandlerProcess(void)
   }
 }
 
+//  Чтение данных по внутреннему адресу устройства (часто используется)
+bool MDR_I2C_ReadAddrData(uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData)
+{  
+  //  Выбор регистра
+  if (MDR_I2C_TransferWrite(addr, 1, &rdAddr) == 1)
+  {
+    //  Чтение регистра
+    return (MDR_I2C_TransferRead(addr, rdCount, rdData) == rdCount);
+  }
+  else
+    return false;
+}

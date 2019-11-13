@@ -6,7 +6,7 @@ f4=../UART/UART_VK014.txt
 f5=../SSP/SSP_VK014.txt
 f6=../Timer/Timer_VK014.txt
 f7=../DMA/DMA_VE8ES.xml
-f8=../CAN/TAGS_VK014.txt
+f8=../CAN/CAN_VK014.txt
 
 [TAGS]
 #RST=f1

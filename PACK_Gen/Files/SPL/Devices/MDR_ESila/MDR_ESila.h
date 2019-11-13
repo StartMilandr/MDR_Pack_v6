@@ -395,6 +395,8 @@ typedef struct
 /*=========  DMA ========*/
 #include <MDR_DMA_VE8x_defs.h>
 
+/*=========  CAN ========*/
+#include <MDR_CAN_defs.h>
 
 /*@}*/ /* end of group ESila_Peripherals */
 
@@ -466,6 +468,9 @@ typedef struct
 #define ADDR_TIMER4_BASE      0x40097000UL
 
 #define ADDR_DMA_BASE         0xE0042000UL
+#define ADDR_CAN1_BASE        0x4008B000UL
+#define ADDR_CAN2_BASE        0x4008C000UL
+
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -545,6 +550,9 @@ typedef struct
 #define MDR_COMP4                      ((MDR_COMP_Type *) ADDR_COMP4_BASE)
 
 #define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+
+#define MDR_CAN1                       ((MDR_CAN_Type*) ADDR_CAN1_BASE)
+#define MDR_CAN2                       ((MDR_CAN_Type*) ADDR_CAN2_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

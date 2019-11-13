@@ -1,8 +1,8 @@
 #ifndef _MDRB_UART_DEBUG_H
 #define _MDRB_UART_DEBUG_H
 
-#include <MDR_UART.h>
 #include <MDRB_BoardSelect.h>
+#include <MDR_UART.h>
 
 extern const MDR_UART_TypeEx * UART_DBG;
 

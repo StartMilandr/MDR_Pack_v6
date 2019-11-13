@@ -106,5 +106,12 @@ bool MDR_I2C_IRQ_GetCompleted(bool *success) ;
   #pragma clang diagnostic pop  
 #endif
 
+
+
+//  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
+bool MDR_I2C_ReadAddrData(uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData);
+  
+
+
 #endif // MDR_I2C_H
 

@@ -198,6 +198,8 @@ typedef enum IRQn
 /*=========  DMA ========*/
 #include <MDR_DMA_VEx_defs.h>
 
+/*=========  CAN ========*/
+#include <MDR_CAN_defs.h>
 
 
 /*@}*/ /* end of group MDR1986VE9x_Peripherals */
@@ -232,22 +234,22 @@ typedef enum IRQn
   */
 
 /* Peripheral and SRAM base address */
-#define ADDR_FLASH_BASE       (0x00000000UL)                              /*!< (FLASH     ) Base Address */
-#define ADDR_SRAM_BASE        (0x20000000UL)                              /*!< (SRAM      ) Base Address */
-#define ADDR_PERIPH_BASE      (0x40000000UL)                              /*!< (Peripheral) Base Address */
+#define ADDR_FLASH_BASE       0x00000000UL                              /*!< (FLASH     ) Base Address */
+#define ADDR_SRAM_BASE        0x20000000UL                              /*!< (SRAM      ) Base Address */
+#define ADDR_PERIPH_BASE      0x40000000UL                              /*!< (Peripheral) Base Address */
 
 /* Peripheral memory map */
-#define ADDR_EEPROM_BASE      (0x40018000UL)                              /*!< EEPROM Controller           */
-#define ADDR_RST_CLOCK_BASE   (0x40020000UL)                              /*!< RST_CLOCK Base Address      */
-#define ADDR_ADC_BASE         (0x40088000UL)                              /*!< ADC SAR Base Address        */
-#define ADDR_BKP_BASE         (0x400D8000UL)                              /*!< Backup and RTC Base Address */
+#define ADDR_EEPROM_BASE      0x40018000UL                              /*!< EEPROM Controller           */
+#define ADDR_RST_CLOCK_BASE   0x40020000UL                              /*!< RST_CLOCK Base Address      */
+#define ADDR_ADC_BASE         0x40088000UL                              /*!< ADC SAR Base Address        */
+#define ADDR_BKP_BASE         0x400D8000UL                              /*!< Backup and RTC Base Address */
 
-#define ADDR_PORTA_BASE       (0x400A8000UL)                              /*!< GPIO PORT_A Base Address */
-#define ADDR_PORTB_BASE       (0x400B0000UL)                              /*!< GPIO PORT_B Base Address */
-#define ADDR_PORTC_BASE       (0x400B8000UL)                              /*!< GPIO PORT_C Base Address */
-#define ADDR_PORTD_BASE       (0x400C0000UL)                              /*!< GPIO PORT_D Base Address */
-#define ADDR_PORTE_BASE       (0x400C8000UL)                              /*!< GPIO PORT_E Base Address */
-#define ADDR_PORTF_BASE       (0x400E8000UL)                              /*!< GPIO PORT_F Base Address */
+#define ADDR_PORTA_BASE       0x400A8000UL                              /*!< GPIO PORT_A Base Address */
+#define ADDR_PORTB_BASE       0x400B0000UL                              /*!< GPIO PORT_B Base Address */
+#define ADDR_PORTC_BASE       0x400B8000UL                              /*!< GPIO PORT_C Base Address */
+#define ADDR_PORTD_BASE       0x400C0000UL                              /*!< GPIO PORT_D Base Address */
+#define ADDR_PORTE_BASE       0x400C8000UL                              /*!< GPIO PORT_E Base Address */
+#define ADDR_PORTF_BASE       0x400E8000UL                              /*!< GPIO PORT_F Base Address */
 
 #define ADDR_SSP1_BASE        0x40040000UL                              /*!< SSP Base Address      */
 #define ADDR_SSP2_BASE        0x400A0000UL
@@ -265,6 +267,9 @@ typedef enum IRQn
 #define ADDR_POWER_BASE       0x40058000UL
 #define ADDR_I2C_BASE         0x40050000UL
 #define ADDR_DMA_BASE         0x40028000UL
+
+#define ADDR_CAN1_BASE        0x40000000UL
+#define ADDR_CAN2_BASE        0x40008000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -341,9 +346,13 @@ typedef enum IRQn
   #define MDR_TIMER3_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER3->CCR4))
 #endif
 
-#define MDR_POWER                      ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
-#define MDR_I2C                        ((MDR_I2C_Type       *)  ADDR_I2C_BASE)
-#define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+#define MDR_POWER                        ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
+#define MDR_I2C                          ((MDR_I2C_Type       *)  ADDR_I2C_BASE)
+#define MDR_DMA                          ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+
+#define MDR_CAN1                         ((MDR_CAN1_Type      *)  ADDR_CAN1_BASE)
+#define MDR_CAN2                         ((MDR_CAN1_Type      *)  ADDR_CAN2_BASE)
+
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

@@ -171,6 +171,8 @@ typedef enum IRQn
 /*=========  DMA ========*/
 #include <MDR_DMA_VE8x_defs.h>
 
+/*=========  CAN ========*/
+#include <MDR_CAN_defs.h>
 
 
 /*=========  FT Control ========*/
@@ -274,6 +276,10 @@ typedef struct
 
 #define ADDR_DMA_BASE         0x40006000UL
 
+#define ADDR_CAN1_BASE        0x40090000UL
+#define ADDR_CAN2_BASE        0x40091000UL
+
+
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
 
@@ -360,6 +366,8 @@ typedef struct
 #define MDR_TIMER6_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER6->CCR4))
 
 #define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+#define MDR_CAN1                       ((MDR_CAN1_Type      *)  ADDR_CAN1_BASE)
+#define MDR_CAN2                       ((MDR_CAN1_Type      *)  ADDR_CAN2_BASE)
 
 /* ================================================================================================================ */
 /* ================                                  SPL_Configs                                   ================ */

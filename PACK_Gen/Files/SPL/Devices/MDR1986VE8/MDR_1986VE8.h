@@ -227,7 +227,8 @@ typedef enum
 /*=========  DMA ========*/
 #include <MDR_DMA_VE8x_defs.h>
 
-
+/*=========  CAN ========*/
+#include <MDR_CAN_defs.h>
 
 
 /*@}*/ /* end of group MDR1986VE8_Peripherals */
@@ -288,6 +289,7 @@ typedef enum
 #define ADDR_TIMER4_BASE      0x4008D000UL
 
 #define ADDR_DMA_BASE         0xE0042000UL
+#define ADDR_CAN1_BASE        0x40090000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -362,6 +364,7 @@ typedef enum
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
 
 #define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
+#define MDR_CAN1                       ((MDR_CAN_Type       *)  ADDR_CAN1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

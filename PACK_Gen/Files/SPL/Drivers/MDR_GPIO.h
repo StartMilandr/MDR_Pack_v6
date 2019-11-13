@@ -140,7 +140,7 @@ __STATIC_INLINE     bool MDR_Port_GetMaskClr(MDR_PORT_Type *GPIO_Port, uint32_t 
   #else
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX = portData & (~JTAG_PINS(GPIO_Port));}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX |  pinSelect) & (~JTAG_PINS(GPIO_Port));}
-    __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX & ~pinSelect) & (~JTAG_PINS(GPIO_Port));}
+    __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX & ~(pinSelect || JTAG_PINS(GPIO_Port)));}
     __STATIC_INLINE     void MDR_Port_TogglePins(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX = (GPIO_Port->RXTX ^  pinSelect) & (~JTAG_PINS(GPIO_Port));}
   #endif  
 #else 

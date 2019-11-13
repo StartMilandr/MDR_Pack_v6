@@ -1,9 +1,7 @@
-#ifndef MDRD_BOARDSELECT_H
+﻿#ifndef MDRD_BOARDSELECT_H
 #define MDRD_BOARDSELECT_H
 
 //===============   Выбор демоплаты для проекта ==========
-
-
 //  Здесь будут выбираться ревизии отладочных плат
 #if   defined (USE_MDR1986VE1)
   #define USE_BOARD_VE1
@@ -14,11 +12,7 @@
 #elif defined (USE_MDR1986VE91)
   #define USE_BOARD_VE91
 #elif defined (USE_MDR1986VE92)
-  #ifdef USE_BASIS
-    #define USE_BOARD_BASIS
-  #else
-    #def ine USE_BOARD_VE92
-  #endif
+  #define USE_BOARD_VE92
 #elif defined (USE_MDR1986VE93)
   #define USE_BOARD_VE93
 #elif defined (USE_MDR1986VE94)
@@ -41,16 +35,10 @@
 
 
 //===============   Подключение определений ресурсов для демоплат ==========
-
-
 #if defined ( USE_BOARD_VE91 )  || defined ( USE_BOARD_VE94 )
 
   #include "MDRB_1986VE91.h"
    
-#elif defined (USE_BOARD_BASIS)
-
-  #include <MDRB_Basis_v2.h>
-
 #elif defined ( USE_BOARD_VE92 )
 
   #include "MDRB_1986VE92.h"
@@ -99,7 +87,7 @@
 
   #include "MDRB_ESila.h"      
 
-#endif
 
+#endif
 
 #endif  //  MDRD_BOARDSELECT_H

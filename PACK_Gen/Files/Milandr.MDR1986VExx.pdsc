@@ -7,12 +7,13 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.04" date="2019-09-11">
+    <release version="2.05" date="2019-09-11">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
       - 2.0x: Increment paused
       - 2.04: 1986VE8T Added
+      - 2.05: Pack paused
     </release>
   </releases>
 
@@ -745,7 +746,7 @@
           <debug      svd="Keil/SVD/MDR1986VE8.svd"/>
           <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x20000"   startup="1"   default="1"/>
           <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x8000"    init   ="1"   default="1"/>
-          <algorithm  name="Keil/FLM/MDR1986VE8_OTP_HSE1_25MHz.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x4000" default="1"/>          
+          <algorithm  name="Keil/FLM/MDR1986VE8_OTP_HSE1_25MHz.FLM"  start="0x01000000"  size="0x20000" RAMstart="0x20000000" RAMsize="0x8000" default="1"/>          
           <description>
             (1986BE8 RUS)
             Core:

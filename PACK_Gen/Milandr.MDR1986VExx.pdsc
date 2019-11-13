@@ -7,12 +7,13 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.04" date="2019-09-11">
+    <release version="2.05" date="2019-09-11">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
       - 2.0x: Increment paused
       - 2.04: 1986VE8T Added
+      - 2.05: Pack paused
     </release>
   </releases>
 

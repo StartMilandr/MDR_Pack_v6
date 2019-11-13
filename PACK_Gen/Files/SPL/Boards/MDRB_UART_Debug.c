@@ -27,6 +27,13 @@
   static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART2_TX_PF1_Port, MDRB_UART2_TX_PF1_Ind, MDRB_UART2_TX_PF1_Func};
   static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART2_RX_PF0_Port, MDRB_UART2_RX_PF0_Ind, MDRB_UART2_RX_PF0_Func};
   
+#elif defined(USE_BOARD_BASIS)
+  //  см. MDRB_Basis_v2.h
+  const MDR_UART_TypeEx * UART_DBG = MDR_UART2ex;
+
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART2_TX_PD1_Port, MDRB_UART2_TX_PD1_Ind, MDRB_UART2_TX_PD1_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART2_RX_PD0_Port, MDRB_UART2_RX_PD0_Ind, MDRB_UART2_RX_PD0_Func};  
+  
 #elif defined(USE_BOARD_VE92)
   //  см. MDRB_1986VE92.h
   const MDR_UART_TypeEx * UART_DBG = MDR_UART2ex;

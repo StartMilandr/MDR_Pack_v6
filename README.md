@@ -1,33 +1,16 @@
 ﻿# MDR_Pack_v6
 
-Pack поддержки микроконтроллеров 1986ВК214 и 1986ВК234 для Keil. Поддерживаются так-же микроконтроллеры 1986ВЕ1, 1986ВЕ3, 1986ВЕ9х, 1901ВЦ1, 1986ВЕ4, но только на уровне периферийных блоков существующих в 1986ВК2х4.
+(Проект приостановлен не неопределенное время всвязи со сменой рабочей деятельности)
 
-Изначально Pack ориентировался на компилятор Keil v6, но эта цель временно отложена. Компилятор v6 планируется проверить при добавлении поддержки для 1986ВЕ8, 1923ВК014 и электросилы (ESila).
+Pack поддержки микроконтроллеров 1986ВК214 и 1986ВК234 для Keil. Поддерживаются так-же микроконтроллеры 1986ВЕ1, 1986ВЕ3, 1986ВЕ9х, 1901ВЦ1, 1986ВЕ4, но только на уровне периферийных блоков существующих в 1986ВК2х4. Добавлены некоторые специфичные драйвера для 1986ВЕ8, 1923ВК014, "Электросила"
 
-Ветка Pack_VK214 - Сохранен вариант Pack для 1986ВК214 и 1986ВК234.
-Ветка Master - Внесение поддержки 1986ВЕ8, 1923ВК014, ESila в общий Pack.
+Ветка Pack_VK214 - Сохранен начальный вариант Pack для 1986ВК214 и 1986ВК234 (не рекомендуется к использованию, развиваться не будет).
+Ветка Master - Внесение поддержки для 1986ВЕ8, 1923ВК014, ESila.
 
-## Migrate to master from VK214
+Начало описания - https://startmilandr.ru/doku.php/prog:pack_v6
 
-Переименованы типы
-  * MDR_CLK_DIV_256 на MDR_Div256P, соответственно MDR_CLK_div1 на MDR_Div256P_div1 и т.д.
-  * MDR_BRG_DIV_128 на MDR_Div128P, соответственно MDR_BRG_div1 на MDR_Div128P_div1 и т.д.
-  * MDR_PSC_DIV_8   на MDR_Div8P, соответственно MDR_PSC_div1 на MDR_Div8P_div1 и т.д.
+## Сборка инсталлятора *.pack
 
-Функции:
-  * MaskClrSet на MDR_MaskClrSet
-  * MDR_GPIO_ClockOn на MDR_GPIO_Enable
-  * MDR_Port_InitDigPermRegs на MDR_Port_InitDigGroupPinCfg
-    * MDR_Port_InitDigGroupPinCfg(MDR_PIN_PullPush на MDR_Port_InitDigGroupPinCfg(MDR_Off
-
-Структуры:
-  * MDR_PinDig_PermRegs на MDR_PinDig_GroupPinCfg
-  * MDR_GPIO_CfgRegs на MDR_GPIO_SetCfg
-
-## Макроопределения
-
-    #define MDR_GPIO_Pin_Count      32
-    #define MDR_GPIO_HAS_KEY
-    #define MDR_GPIO_HAS_SET_CLEAR
-    #define MDR_GPIO_HAS_CfgIRQ
-    #define MDR_GPIO_CFG_SET_CLEAR
+  * Скачать репозиторий
+  * В MDR_Pack\PACK_Gen запустить gen_pack.bat появится Milandr.MDR1986VExx.2.хх.pack
+  * Дабкликом ххх.pack установится в Keil

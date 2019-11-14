@@ -34,7 +34,7 @@ const SFP_Info_Item  InfoItems[SFP_INFO_CNT] = {
 };
 
 
-static const uint8_t SFP_toMUX[I2C_ADDR_MUX] = {SFP_MUX_X1_1, SFP_MUX_X1_2, SFP_MUX_X8_1, SFP_MUX_X8_2};
+static const uint8_t SFP_toMUX[SFP_COUNT] = {SFP_MUX_X1_1, SFP_MUX_X1_2, SFP_MUX_X8_1, SFP_MUX_X8_2};
   
 bool SFP_MuxSetActive(uint8_t selSFP) 
 { 

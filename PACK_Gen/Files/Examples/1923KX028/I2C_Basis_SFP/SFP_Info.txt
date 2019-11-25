@@ -1,0 +1,62 @@
+Wellcome to UART DebugOut!
+BaudRate: 9600
+BaudError: 0.000000
+
+========  Connected SFP_X1_1 ========
+A 0_       ID: 3
+A 1_     IDex: 4
+A 2_     CONN: 1
+A 3_    TRANS: 0 ff ff ff ff ff ff ff
+A11_      ENC: 3
+A12_  BITRATE: 1
+A13_    RES_1: 0
+A14_   LEN9KM: 14
+A15_    LEN9M: c8
+A16_   LEN50M: 0
+A17_ LEN62,5M: 0
+A18_   COPPER: 0
+A19_    RES_2: 0
+A20_VEND_NAME: 4f ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A36_    RES_3: 0
+A37_ VEND_OUI: 0 ff ff
+A40_  VEND_PN: 53 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A56_ VEND_REV: 31 ff ff ff
+A60_    RES_4: 5 ff ff
+A63_  CC_BASE: da
+A64_  OPTIONS: 0 ff
+A66_   BR_MAX: 0
+A67_   BR_MIN: 0
+A68_  VEND_SN: 53 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A84_DATA_CODE: 30 ff ff ff ff ff ff ff
+A92_    RES_5: 0 ff ff
+A95_   CC_EXT: 80
+
+========  Connected SFP_X1_2 ========
+A 0_       ID: 3
+A 1_     IDex: 4
+A 2_     CONN: 7
+A 3_    TRANS: 0 ff ff ff ff ff ff ff
+A11_      ENC: 1
+A12_  BITRATE: d
+A13_    RES_1: 0
+A14_   LEN9KM: 0
+A15_    LEN9M: 0
+A16_   LEN50M: c8
+A17_ LEN62,5M: c8
+A18_   COPPER: 0
+A19_    RES_2: 0
+A20_VEND_NAME: 4f ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A36_    RES_3: 0
+A37_ VEND_OUI: 0 ff ff
+A40_  VEND_PN: 53 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A56_ VEND_REV: 0 ff ff ff
+A60_    RES_4: 5 ff ff
+A63_  CC_BASE: 9c
+A64_  OPTIONS: 0 ff
+A66_   BR_MAX: 0
+A67_   BR_MIN: 0
+A68_  VEND_SN: 53 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+A84_DATA_CODE: 31 ff ff ff ff ff ff ff
+A92_    RES_5: 0 ff ff
+A95_   CC_EXT: 70
+

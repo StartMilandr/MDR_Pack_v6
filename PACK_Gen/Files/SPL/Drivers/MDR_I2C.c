@@ -232,7 +232,7 @@ uint32_t MDR_I2C_TransferRead (uint8_t addr_7bit, uint32_t count, uint8_t *pData
   {
     for (i = 0; i < count; ++i)
     {
-      if (MDR_I2C_ReadByte(&pData[i], i == 0))
+      if (MDR_I2C_ReadByte(&pData[i], i == (count - 1)))
         ++readCount;
       else
         break;

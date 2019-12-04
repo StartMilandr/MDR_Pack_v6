@@ -191,6 +191,8 @@ typedef enum IRQn
 /*=========  CAN ========*/
 #include <MDR_CAN_defs.h>
 
+/*=========  Ethernet ========*/
+#include <MDR_ETH_VE1VE3_defs.h>
 
 /*@}*/ /* end of group MDR1986VE1_Peripherals */
 
@@ -262,6 +264,8 @@ typedef enum IRQn
 
 #define ADDR_CAN1_BASE        0x40000000UL
 #define ADDR_CAN2_BASE        0x40008000UL
+
+#define ADDR_ETH1_BASE        0x30000000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -356,6 +360,7 @@ typedef enum IRQn
 #define MDR_CAN1                         ((MDR_CAN1_Type      *)  ADDR_CAN1_BASE)
 #define MDR_CAN2                         ((MDR_CAN1_Type      *)  ADDR_CAN2_BASE)
 
+#define MDR_ETH1                         ((MDR_ETH_Type       *)  ADDR_ETH1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

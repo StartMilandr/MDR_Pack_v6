@@ -230,6 +230,8 @@ typedef enum
 /*=========  CAN ========*/
 #include <MDR_CAN_defs.h>
 
+/*=========  Ethernet ========*/
+#include <MDR_ETH_VE8_defs.h>
 
 /*@}*/ /* end of group MDR1986VE8_Peripherals */
 
@@ -290,6 +292,8 @@ typedef enum
 
 #define ADDR_DMA_BASE         0xE0042000UL
 #define ADDR_CAN1_BASE        0x40090000UL
+
+#define ADDR_ETH1_BASE        0x21008000UL
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -365,6 +369,8 @@ typedef enum
 
 #define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 #define MDR_CAN1                       ((MDR_CAN_Type       *)  ADDR_CAN1_BASE)
+
+#define MDR_ETH1                       ((MDR_ETH_Type       *)  ADDR_ETH1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

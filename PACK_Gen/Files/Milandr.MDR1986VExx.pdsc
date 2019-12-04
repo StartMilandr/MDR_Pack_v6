@@ -1064,6 +1064,15 @@
       <accept Dname="MDR1901VC1"/>
       <accept Dname="MDR_ESila"/>
     </condition>
+    <condition id="CON_MDR_Ethernet">
+      <description>Devices with Ethernet Block</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
+      <accept Dname="MDR_ESila"/>
+    </condition> 
 
     <!--condition id="CON_MDR_CM0VK">
       <description>All 32-bit Cortex devices</description>
@@ -1488,6 +1497,14 @@
       <files>
         <file category="header"  name="SPL/Drivers/MDR_1636RR52.h"/>
         <file category="source"  name="SPL/Drivers/MDR_1636RR52.c"/>
+      </files>
+    </component> 
+    <!-- Ethernet Driver -->
+    <component Cclass="Drivers" Cgroup="Ethernet" Cversion="2.0" condition="CON_MDR_Ethernet">
+      <description>Ethernet driver</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_Ethernet.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_Ethernet.c"/>
       </files>
     </component> 
 

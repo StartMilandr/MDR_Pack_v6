@@ -398,6 +398,10 @@ typedef struct
 /*=========  CAN ========*/
 #include <MDR_CAN_defs.h>
 
+/*=========  Ethernet ========*/
+#include <MDR_ETH_ES_defs.h>
+
+
 /*@}*/ /* end of group ESila_Peripherals */
 
 
@@ -471,6 +475,7 @@ typedef struct
 #define ADDR_CAN1_BASE        0x4008B000UL
 #define ADDR_CAN2_BASE        0x4008C000UL
 
+#define ADDR_ETH1_BASE        0x21008000UL
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -544,15 +549,17 @@ typedef struct
 #define MDR_TIMER4_CH4                 ((MDR_TIMER_CH_Type 	*) (&MDR_TIMER4->CCR4))
 
 
-#define MDR_COMP1                      ((MDR_COMP_Type *) ADDR_COMP1_BASE)
-#define MDR_COMP2                      ((MDR_COMP_Type *) ADDR_COMP2_BASE)
-#define MDR_COMP3                      ((MDR_COMP_Type *) ADDR_COMP3_BASE)
-#define MDR_COMP4                      ((MDR_COMP_Type *) ADDR_COMP4_BASE)
+#define MDR_COMP1                      ((MDR_COMP_Type      *) ADDR_COMP1_BASE)
+#define MDR_COMP2                      ((MDR_COMP_Type      *) ADDR_COMP2_BASE)
+#define MDR_COMP3                      ((MDR_COMP_Type      *) ADDR_COMP3_BASE)
+#define MDR_COMP4                      ((MDR_COMP_Type      *) ADDR_COMP4_BASE)
 
 #define MDR_DMA                        ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
-#define MDR_CAN1                       ((MDR_CAN_Type*) ADDR_CAN1_BASE)
-#define MDR_CAN2                       ((MDR_CAN_Type*) ADDR_CAN2_BASE)
+#define MDR_CAN1                       ((MDR_CAN_Type       *) ADDR_CAN1_BASE)
+#define MDR_CAN2                       ((MDR_CAN_Type       *) ADDR_CAN2_BASE)
+
+#define MDR_ETH1                       ((MDR_ETH_Type       *) ADDR_ETH1_BASE)
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

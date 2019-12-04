@@ -51,6 +51,7 @@
     <!-- #DMA -->
     <!-- #ICACHE -->
     <!-- #DCACHE -->
+    <!-- #ETHERNETs -->
 
     <!-- peripherals end-->
   </peripherals>

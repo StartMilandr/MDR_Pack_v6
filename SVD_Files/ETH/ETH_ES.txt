@@ -1,0 +1,689 @@
+#ETHERNETs
+<peripheral>
+<name>MDR_ETH1</name>
+<version>1.0</version>
+<description>Ethernet Control</description>
+<groupName>Ethernet</groupName>
+  <!-- #ETH1_ADDR -->
+  <baseAddress>0x21000000</baseAddress>
+  <size>16</size>
+  <access>read-write</access>
+  <addressBlock>
+    <offset>0</offset>
+    <!-- #ETH1_SIZE -->
+    <size>0x36</size>
+    <usage>registers</usage>
+  </addressBlock>
+  <registers>
+    <!-- Delimeter -->
+    <register>
+      <name>DELIMETER</name>
+      <description>Slit EthMem to FIFO_Rx and FIFO_Tx</description>
+      <addressOffset>0x00000000</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x1000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- MAC_LO -->
+    <register>
+      <name>MAC_L</name>
+      <description>MAC low bits</description>
+      <addressOffset>0x00000002</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0012</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- MAC_MID -->
+    <register>
+      <name>MAC_M</name>
+      <description>MAC middle bits</description>
+      <addressOffset>0x00000004</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x3456</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- MAC_HI -->
+    <register>
+      <name>MAC_H</name>
+      <description>MAC high bits</description>
+      <addressOffset>0x00000006</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x78AB</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- HASH0 -->
+    <register>
+      <name>HASH0</name>
+      <description>HASH of MAC to filter multycast</description>
+      <addressOffset>0x00000008</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- HASH1 -->
+    <register derivedFrom="HASH0">
+      <name>HASH1</name>
+      <description>HASH of MAC to filter multycast</description>
+      <addressOffset>0x0000000A</addressOffset>
+    </register>
+    <!-- HASH2 -->
+    <register derivedFrom="HASH0">
+      <name>HASH2</name>
+      <description>HASH of MAC to filter multycast</description>
+      <addressOffset>0x0000000C</addressOffset>
+    </register>
+    <!-- HASH3 -->
+    <register derivedFrom="HASH0">
+      <name>HASH3</name>
+      <description>HASH of MAC to filter multycast</description>
+      <addressOffset>0x0000000E</addressOffset>
+    </register>
+    <!-- IPG -->
+    <register>
+      <name>IPG</name>
+      <description>Inter Packet Gap</description>
+      <addressOffset>0x000000010</addressOffset>
+      <resetValue>0x0060</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- PSC -->
+    <register>
+      <name>PSC</name>
+      <description>Prescaller of ETH_Clock to get TimeStep</description>
+      <addressOffset>0x000000012</addressOffset>
+      <resetValue>0x0031</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- BAG -->
+    <register>
+      <name>BAG</name>
+      <description>Frame Send Period in DetermMode</description>
+      <addressOffset>0x000000014</addressOffset>
+      <resetValue>0x0063</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- JitterWND -->
+    <register>
+      <name>JitterWnd</name>
+      <description>BAG's Jitter to start transfer</description>
+      <addressOffset>0x000000016</addressOffset>
+      <resetValue>0x0004</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- R_Cfg -->
+    <register>
+      <name>R_CFG</name>
+      <description>RX Config Register</description>
+      <addressOffset>0x00000018</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0507</resetValue>
+      <resetMask>0xB7FF</resetMask>
+      <fields>
+        <field>
+          <name>MCA_En</name>
+          <description>Accept Multycast frames</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>BCA_En</name>
+          <description>Accept Broadcast frames</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>UCA_En</name>
+          <description>Accept Unicast frames</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>AC_En</name>
+          <description>Accept Any MAC</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>EF_En</name>
+          <description>Accept frames with errors</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>CF_En</name>
+          <description>Accept Control frames</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>LF_En</name>
+          <description>Accept Long frames</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="MCA_En">
+          <name>SF_En</name>
+          <description>Accept Short frames</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field>
+          <name>EVNT_MODE</name>
+          <description>Select signal EVNT1 events</description>
+          <bitRange>[10:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FIFO_Empty</name><description>FIFO is empty</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_AEmpty</name><description>FIFO is 1/32 full</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_Half</name><description>FIFO is 1/2 full</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_AFull</name><description>FIFO is 31/32 full</description><value>3</value></enumeratedValue>            
+            <enumeratedValue><name>FIFO_Full</name><description>FIFO Full</description><value>4</value></enumeratedValue>            
+            <enumeratedValue><name>Received</name><description>Frame received</description><value>5</value></enumeratedValue>            
+            <enumeratedValue><name>Saved</name><description>Frame saved to buff</description><value>6</value></enumeratedValue>            
+            <enumeratedValue><name>Fault</name><description>Frame in wrong</description><value>7</value></enumeratedValue>            
+          </enumeratedValues>
+        </field>
+        <field>
+          <name>MSB_1st</name>
+          <description>Bit order</description>
+          <bitRange>[12:12]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>LSB</name><description>Low bit forward</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>MSB</name><description>High bit forward</description><value>1</value></enumeratedValue>
+          </enumeratedValues>         
+        </field>
+        <field>
+          <name>BE</name>
+          <description>Byte order</description>
+          <bitRange>[13:13]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>LittleEndian</name><description>Little Endian</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>BigEndian</name><description>Big Endian</description><value>1</value></enumeratedValue>
+          </enumeratedValues>         
+        </field>        
+        <field derivedFrom="MCA_En">
+          <name>EN</name>
+          <description>Enable Receiver</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- X_Cfg -->
+    <register>
+      <name>X_CFG</name>
+      <description>TX Config Register</description>
+      <addressOffset>0x0000001A</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x01FA</resetValue>
+      <resetMask>0xB7FF</resetMask>
+      <fields>
+        <field>
+          <name>RtryCnt</name>
+          <description>Try send count</description>
+          <bitRange>[3:0]</bitRange>
+        </field>
+        <field>
+          <name>IPG_En</name>
+          <description>IPG enable</description>
+          <bitRange>[4:4]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="IPG_En">
+          <name>CRC_En</name>
+          <description>Add CRC to frame</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="IPG_En">
+          <name>PRE_En</name>
+          <description>Add Preamble to frame</description>
+          <bitRange>[6:6]</bitRange>
+        </field>        
+        <field derivedFrom="IPG_En">
+          <name>PAD_En</name>
+          <description>Fill with PAD to minimum length</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field>
+          <name>EVNT_MODE</name>
+          <description>Select signal EVNT1 events</description>
+          <bitRange>[10:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FIFO_Empty</name><description>FIFO is empty</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_AEmpty</name><description>FIFO is 1/32 full</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_Half</name><description>FIFO is 1/2 full</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FIFO_AFull</name><description>FIFO is 31/32 full</description><value>3</value></enumeratedValue>            
+            <enumeratedValue><name>FIFO_Full</name><description>FIFO Full</description><value>4</value></enumeratedValue>            
+            <enumeratedValue><name>Sent</name><description>Frame sent</description><value>5</value></enumeratedValue>            
+            <enumeratedValue><name>Read</name><description>Frame read from buff</description><value>6</value></enumeratedValue>            
+            <enumeratedValue><name>TryStarted</name><description>Start sending</description><value>7</value></enumeratedValue>            
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="MDR_ETH1.R_CFG.MSB_1st">
+          <name>MSB_1st</name>
+          <description>Bit order</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="MDR_ETH1.R_CFG.BE">
+          <name>BE</name>
+          <description>Byte order</description>
+          <bitRange>[13:13]</bitRange>
+        </field>     
+        <field derivedFrom="IPG_En">
+          <name>EN</name>
+          <description>Enable Transmitter</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- G_CfgL -->
+    <register>
+      <name>G_CFGL</name>
+      <description>Global Config Register1</description>
+      <addressOffset>0x0000001C</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x4880</resetValue>
+      <resetMask>0xFFFF</resetMask>
+      <fields>
+        <field>
+          <name>ColWnd</name>
+          <description>Collision window in bits mul 4</description>
+          <bitRange>[7:0]</bitRange>
+        </field>
+        <field>
+          <name>Pause_En</name>
+          <description>Accept Pause frame</description>
+          <bitRange>[8:8]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="Pause_En">
+          <name>DTRM_En</name>
+          <description>DetermMode</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="Pause_En">
+          <name>HD_En</name>
+          <description>Enable Half duples</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="Pause_En">
+          <name>EXT_En</name>
+          <description>Fill frame to slot time</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field>
+          <name>BUFF_Mode</name>
+          <description>Buffer control</description>
+          <bitRange>[13:12]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Linear</name><description>User PTR Control</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>AutoPTR</name><description>Auto PTR Control</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>FIFO</name><description>FIFO Buff Control</description><value>2</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="Pause_En">
+          <name>IFR_CLR_En</name>
+          <description>Clear IFR status on Read</description>
+          <bitRange>[14:14]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- G_CfgH -->
+    <register>
+      <name>G_CFGH</name>
+      <description>Global Config Register2</description>
+      <addressOffset>0x0000001E</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x3000</resetValue>
+      <resetMask>0xF007</resetMask>
+      <fields>
+        <field>
+          <name>XRST</name>
+          <description>Reset Transmitter</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="XRST">
+          <name>RRST</name>
+          <description>Reset Receiver</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="XRST">
+          <name>DLB</name>
+          <description>Dig Loopback</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="XRST">
+          <name>DBG_RF_EN</name>
+          <description>Enable Auto PTR_RX</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="XRST">
+          <name>DBG_TF_EN</name>
+          <description>Enable Auto PTR_TX</description>
+          <bitRange>[13:13]</bitRange>
+        </field>
+        <field>
+          <name>RUN_Mode</name>
+          <description>Work mode</description>
+          <bitRange>[15:14]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FreeRun</name><description>Work mode</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Halt</name><description>Debug Halt mode</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>Stop</name><description>Debug Stop mode</description><value>2</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+      </fields>
+    </register>
+    <!-- IMR -->
+    <register>
+      <name>IMR</name>
+      <description>IRQ Mask Register</description>
+      <addressOffset>0x00000020</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xBFFF</resetMask>
+      <fields>
+        <field>
+          <name>RF_OK</name>
+          <description>Received OK</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>MISSED_F</name>
+          <description>Not enough space in buff RX</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>OVF</name>
+          <description>Buff RX overflow</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>SMB_Err</name>
+          <description>Receiving error</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>CRC_Err</name>
+          <description>CRC error</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>CF</name>
+          <description>Control frame received</description>
+          <bitRange>[5:5]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>LF</name>
+          <description>Long frame received</description>
+          <bitRange>[6:6]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>SF</name>
+          <description>Short frame received</description>
+          <bitRange>[7:7]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>XF_Ok</name>
+          <description>Sent successful</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>XF_Err</name>
+          <description>Error on sending</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>UNDEF</name>
+          <description>Tx buff empty</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>LC</name>
+          <description>Late Collision</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>CRC_Lost</name>
+          <description>Carrier sense lost</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>MDIO_INT</name>
+          <description>IRQ from MDIO</description>
+          <bitRange>[14:14]</bitRange>
+        </field>
+        <field derivedFrom="RF_OK">
+          <name>MDIO_RDY</name>
+          <description>MDIO transfer completed</description>
+          <bitRange>[15:15]</bitRange>
+        </field>
+        </fields>
+    </register>
+    <!-- IFR -->
+    <register derivedFrom="IMR">
+      <name>IFR</name>
+      <description>IRQ flag register</description>
+      <addressOffset>0x00000022</addressOffset>
+    </register>
+    <!-- MDIO_CTRL -->
+    <register>
+      <name>MDIO_CTRL</name>
+      <description>MDIO Control Register</description>
+      <addressOffset>0x00000024</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+      <fields>
+        <field>
+          <name>REG_Addr</name>
+          <description>PHY_Reg address  address at MDIO Bus</description>
+          <bitRange>[4:0]</bitRange>
+        </field>
+        <field>
+          <name>DIV</name>
+          <description>ETH_CLK to MDIO bitrate</description>
+          <bitRange>[7:5]</bitRange>
+        </field>
+        <field>
+          <name>PHY_Addr</name>
+          <description>PHY address at MDIO Bus</description>
+          <bitRange>[12:8]</bitRange>
+        </field>
+        <field>
+          <name>OP</name>
+          <description>Operation RD or WR</description>
+          <bitRange>[13:13]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>RD</name><description>MDIO Read</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>WR</name><description>MDIO Write</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>PRE_En</name>
+          <description>Send preamble of 0xFFFF_FFFF</description>
+          <bitRange>[14:14]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>No preamble</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Send preamble</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+        <field>
+          <name>CTRL_RDY</name>
+          <description>Command and Status flag</description>
+          <bitRange>[15:15]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Busy</name><description>No preamble</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>Start_Compl</name><description>WR_Start and RD_completed</description><value>1</value></enumeratedValue>
+          </enumeratedValues>          
+        </field>
+      </fields>
+    </register>
+    <!-- MDIO_DATA -->
+    <register>
+      <name>MDIO_DATA</name>
+      <description>MDIO Data</description>
+      <addressOffset>0x000000026</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- R_HEAD -->
+    <register>
+      <name>R_HEAD</name>
+      <description>PTR to start of received data</description>
+      <addressOffset>0x000000028</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>    
+    <!-- X_TAIL -->
+    <register>
+      <name>X_TAIL</name>
+      <description>PTR to write data</description>
+      <addressOffset>0x00000002A</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- R_TAIL -->
+    <register>
+      <name>R_TAIL</name>
+      <description>PTR to end of received data</description>
+      <addressOffset>0x00000002C</addressOffset>
+      <size>16</size>
+      <access>read-only</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- X_HEAD -->
+    <register>
+      <name>X_HEAD</name>
+      <description>PTR to start of data to send</description>
+      <addressOffset>0x00000002E</addressOffset>
+      <size>16</size>
+      <access>read-only</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- STAT -->
+    <register>
+      <name>STAT</name>
+      <description>Status Register</description>
+      <addressOffset>0x00000030</addressOffset>
+      <size>16</size>
+      <access>read-write</access>
+      <resetValue>0x0303</resetValue>
+      <resetMask>0x1FFF</resetMask>
+      <fields>
+        <field>
+          <name>RX_Empty</name>
+          <description>RX_FIFO empty</description>
+          <bitRange>[0:0]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>Off</name><description>No event</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>On</name><description>Event</description><value>1</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>RX_AEmpty</name>
+          <description>RX_FIFO is 1/32 full</description>
+          <bitRange>[1:1]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>RX_Hald</name>
+          <description>RX_FIFO is 1/2 full</description>
+          <bitRange>[2:2]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>RX_AFull</name>
+          <description>RX_FIFO is 31/32 full</description>
+          <bitRange>[3:3]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>RX_Full</name>
+          <description>RX_FIFO is full</description>
+          <bitRange>[4:4]</bitRange>
+        </field>
+        <field>
+          <name>RX_Count</name>
+          <description>Frames in FIFO</description>
+          <bitRange>[7:5]</bitRange>
+          <enumeratedValues>
+            <enumeratedValue><name>FramesRD_0</name><description>Frames to read</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_1</name><description>Frames to read</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_2</name><description>Frames to read</description><value>2</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_3</name><description>Frames to read</description><value>3</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_4</name><description>Frames to read</description><value>4</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_5</name><description>Frames to read</description><value>5</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_6</name><description>Frames to read</description><value>6</value></enumeratedValue>
+            <enumeratedValue><name>FramesRD_7</name><description>Frames to read</description><value>7</value></enumeratedValue>
+          </enumeratedValues>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>TX_Empty</name>
+          <description>TX_FIFO is Empty</description>
+          <bitRange>[8:8]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>TX_AEmpty</name>
+          <description>TX_FIFO is 1/32 full</description>
+          <bitRange>[9:9]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>TX_Hald</name>
+          <description>TX_FIFO is 1/2 full</description>
+          <bitRange>[10:10]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>TX_AFull</name>
+          <description>TX_FIFO is 31/32 full</description>
+          <bitRange>[11:11]</bitRange>
+        </field>
+        <field derivedFrom="RX_Empty">
+          <name>TX_Full</name>
+          <description>TX_FIFO is full</description>
+          <bitRange>[12:12]</bitRange>
+        </field>
+      </fields>
+    </register>
+    <!-- #RCOUNTER -->
+    <register>
+      <name>RCOUNTER</name>
+      <description>Frame Received in Total</description>
+      <addressOffset>0x000000032</addressOffset>
+      <size>16</size>
+      <access>read-only</access>
+      <resetValue>0x0000</resetValue>
+      <resetMask>0xFFFF</resetMask>
+    </register>
+    <!-- #PHY_CTRL -->
+    <!-- #PHY_STAT -->
+    <!-- #PHY_CTRLA -->
+  </registers>  
+  <!-- peripheral end-->
+</peripheral>
+<!-- #ETH2 -->
+

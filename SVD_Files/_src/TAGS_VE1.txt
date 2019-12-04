@@ -11,7 +11,7 @@ f9=../Timer/Timer_VE13.txt
 f10=../Power/Power_Vx.txt
 f11=../DMA/DMA_VEx.xml
 f12=../CAN/CAN_VE139x.txt
-
+f13=../ETH/ETH_VE1.txt
 
 [TAGS]
 #BKP=f1
@@ -29,6 +29,7 @@ f12=../CAN/CAN_VE139x.txt
 #PWR=f10
 #DMA=f11
 #CANs=f12
+#ETHERNETs=f13
 
 [TAGS_New]
 #USB=
@@ -43,8 +44,6 @@ f12=../CAN/CAN_VE139x.txt
 #COMP_R=
 #EBC=
 #EBC_R=
-#ETHERNET=
-#ETHERNET_R=
 #MILs=
 #MILs_R=
 #ARINKs=

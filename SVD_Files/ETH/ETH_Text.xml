@@ -1,0 +1,386 @@
+#ETH1_ADDR_VE13
+<baseAddress>0x30000000</baseAddress>
+
+#ETH1_ADDR_VE8ES
+<baseAddress>0x21000000</baseAddress>
+
+#ETH1_SIZE_VE13
+<size>0x38</size>
+
+#ETH1_SIZE_VE8
+<size>0x3A</size>
+
+#ETH1_SIZE_ES
+<size>0x36</size>
+
+#RCOUNTER_VE8ES
+<register>
+  <name>RCOUNTER</name>
+  <description>Frame Received in Total</description>
+  <addressOffset>0x000000032</addressOffset>
+  <size>16</size>
+  <access>read-only</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0xFFFF</resetMask>
+</register>
+
+#PHY_CTRL_VE13
+<register>
+  <name>PHY_CONTROL</name>
+  <description>PHY Control Register</description>
+  <addressOffset>0x00000034</addressOffset>
+  <size>16</size>
+  <access>read-write</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0xFF8F</resetMask>
+  <fields>
+    <field>
+      <name>nRST</name>
+      <description>PHY Reset</description>
+      <bitRange>[0:0]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Reset</name><description>Reset State</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Work</name><description>Work State</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>MODE</name>
+      <description>Config mode</description>
+      <bitRange>[3:1]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>10BaseT_HD</name><description>10BaseT Half Duplex</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>10BaseT_FD</name><description>10BaseT Full Duplex</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>100BaseT_HD</name><description>100BaseT Half Duplex</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>100BaseT_FD</name><description>100BaseT Full Duplex</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>100BaseT_HDA</name><description>10BaseT HD with Autonegotiation</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>Repeater</name><description>Repeater mode</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>LowPower</name><description>Low Power mode</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>Auto</name><description>10BaseT Half Duplex</description><value>7</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>FX_En</name>
+      <description>100BaseFx enable</description>
+      <bitRange>[7:7]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>SFP Off</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>SFP On</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>MDI</name>
+      <description>MII Line MDI</description>
+      <bitRange>[8:8]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>H</name><description>High level</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>L</name><description>Low level</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>MDIO_SEL</name>
+      <description>MDIO select control</description>
+      <bitRange>[9:9]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>byMAC</name><description>Controlled by MAC</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Manual</name><description>Manual Control</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field derivedFrom="MDI">
+      <name>MDC</name>
+      <description>MII Line MDC</description>
+      <bitRange>[10:10]</bitRange>
+    </field>
+    <field>
+      <name>PHY_ADDR</name>
+      <description>Phy Address</description>
+      <bitRange>[15:11]</bitRange>
+    </field>    
+  </fields>
+</register>
+
+
+#PHY_STAT_VE13
+<register>
+  <name>PHY_STATYS</name>
+  <description>PHY Status Register</description>
+  <addressOffset>0x00000036</addressOffset>
+  <size>16</size>
+  <access>read-write</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0x07FF</resetMask>
+  <fields>
+    <field>
+      <name>LED0</name>
+      <description>Bitrate Indicator</description>
+      <bitRange>[0:0]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>100MBit</name><description>100MBit Indicator</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>10MBit</name><description>10MBit Indicator</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>LED1</name>
+      <description>Link Indicator</description>
+      <bitRange>[1:1]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>NoLink</name><description>No Link Indicator</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Link</name><description>Link Indicator</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>    
+    <field>
+      <name>LED2</name>
+      <description>CRS Indicator</description>
+      <bitRange>[2:2]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>NoSRC</name><description>No CRS Indicator</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>CRS</name><description>CRS Indicator</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>    
+    <field>
+      <name>LED3</name>
+      <description>Duplex Indicator</description>
+      <bitRange>[3:3]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>FullDuplex</name><description>Full Duplex Indicator</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>HalfDuplex</name><description>Half Duplex Indicator</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>READY</name>
+      <description>PHY Ready</description>
+      <bitRange>[4:4]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>NotReady</name><description>Phy not ready</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Ready</name><description>Phy ready</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>CRS</name>
+      <description>Transferring flag</description>
+      <bitRange>[5:5]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Inactive flag</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Active flag</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field derivedFrom="CRS">
+      <name>COL1</name>
+      <description>Collision flag</description>
+      <bitRange>[6:6]</bitRange>
+    </field>
+    <field derivedFrom="CRS">
+      <name>COL2</name>
+      <description>Collision flag</description>
+      <bitRange>[7:7]</bitRange>
+    </field>
+    <field derivedFrom="CRS">
+      <name>FX_VALUE</name>
+      <description>Optic transferring</description>
+      <bitRange>[8:8]</bitRange>
+    </field>
+    <field>
+      <name>MDO</name>
+      <description>MII Line MDO</description>
+      <bitRange>[9:9]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>H</name><description>High level</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>L</name><description>Low level</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field derivedFrom="CRS">
+      <name>MDINT</name>
+      <description>IRQ req from PHY</description>
+      <bitRange>[10:10]</bitRange>
+    </field> 
+  </fields>
+</register>
+
+
+#PHY_CTRL_VE8
+<register>
+  <name>PHY_CONTROL</name>
+  <description>PHY Control Register</description>
+  <addressOffset>0x00000034</addressOffset>
+  <size>16</size>
+  <access>read-write</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0xCFFF</resetMask>
+  <fields>
+    <field>
+      <name>LB</name>
+      <description>Analog LoopBack</description>
+      <bitRange>[0:0]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>Disabled</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Enabled</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field derivedFrom="LB">
+      <name>DLB</name>
+      <description>Digital LoopBack</description>
+      <bitRange>[1:1]</bitRange>
+    </field>
+    <field>
+      <name>Duplex</name>
+      <description>Digital LoopBack</description>
+      <bitRange>[2:2]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Full</name><description>Full Duplex</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Half</name><description>Half Duplex</description><value>1</value></enumeratedValue>
+      </enumeratedValues>      
+    </field>
+    <field>
+      <name>DIR</name>
+      <description>Bit Order</description>
+      <bitRange>[4:4]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Standard</name><description>Standard bits direction</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Inverted</name><description>Inverted bits direction</description><value>1</value></enumeratedValue>
+      </enumeratedValues>      
+    </field>
+    <field>
+      <name>BASE_2</name>
+      <description>Cable seelct</description>
+      <bitRange>[5:5]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>TwinPair</name><description>Twin Pair cable</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Coaxial</name><description>Coaxial cable</description><value>1</value></enumeratedValue>
+      </enumeratedValues>      
+    </field>
+    <field>
+      <name>LINK_Period</name>
+      <description>Link period</description>
+      <bitRange>[11:6]</bitRange>
+    </field>
+    <field derivedFrom="LB">
+      <name>EXT_En</name>
+      <description>External PHY enable</description>
+      <bitRange>[14:14]</bitRange>
+    </field>
+    <field>
+      <name>RST</name>
+      <description>PHY Reset</description>
+      <bitRange>[15:15]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Reset</name><description>Reset State</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Work</name><description>Work State</description><value>1</value></enumeratedValue>
+      </enumeratedValues>     
+    </field>
+  </fields>
+</register>
+
+
+#PHY_STAT_VE8
+<register>
+  <name>PHY_STATYS</name>
+  <description>PHY Status Register</description>
+  <addressOffset>0x00000036</addressOffset>
+  <size>16</size>
+  <access>read-write</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0x3F00</resetMask>
+  <fields>
+    <field>
+      <name>LED_LINK</name>
+      <description>Link Indicator</description>
+      <bitRange>[8:8]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Off</name><description>No Event</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>On</name><description>Event</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>    
+    <field derivedFrom="LED_LINK">
+      <name>LED_COL</name>
+      <description>Collision Indicator</description>
+      <bitRange>[9:9]</bitRange>
+    </field>
+    <field derivedFrom="LED_LINK">
+      <name>INT_LOSS</name>
+      <description>Link Lost</description>
+      <bitRange>[10:10]</bitRange>
+    </field>
+    <field derivedFrom="LED_LINK">
+      <name>INT_POL</name>
+      <description>Link Pulse inverted</description>
+      <bitRange>[11:11]</bitRange>
+    </field>        
+    <field derivedFrom="LED_LINK">
+      <name>INT_JAB</name>
+      <description>Long frame received</description>
+      <bitRange>[12:12]</bitRange>
+    </field>        
+    <field derivedFrom="LED_LINK">
+      <name>INT_JAM</name>
+      <description>JAM signal received</description>
+      <bitRange>[13:13]</bitRange>
+    </field>        
+  </fields>
+</register>
+
+
+#PHY_CTRLA_VE8
+<register>
+  <name>PHY_CONTORL_A</name>
+  <description>PHY Control Extra Register</description>
+  <addressOffset>0x00000038</addressOffset>
+  <size>16</size>
+  <access>read-write</access>
+  <resetValue>0x0000</resetValue>
+  <resetMask>0xCFFF</resetMask>
+  <fields>
+    <field>
+      <name>SELR</name>
+      <description>Select U_Ref source</description>
+      <bitRange>[0:0]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Internal</name><description>EXTR pin in Z-state</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>External</name><description>Use external R on EXTR pin</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>    
+    <field>
+      <name>TRIM</name>
+      <description>Trin internal U_Ref</description>
+      <bitRange>[3:1]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Uref_1v25</name><description>Internal Uref Trim</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v23</name><description>Internal Uref Trim</description><value>1</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v22</name><description>Internal Uref Trim</description><value>2</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v20</name><description>Internal Uref Trim</description><value>3</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v19</name><description>Internal Uref Trim</description><value>4</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v17</name><description>Internal Uref Trim</description><value>5</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v16</name><description>Internal Uref Trim</description><value>6</value></enumeratedValue>
+        <enumeratedValue><name>Uref_1v15</name><description>Internal Uref Trim</description><value>7</value></enumeratedValue>
+      </enumeratedValues>
+    </field>    
+    <field>
+      <name>TRIMR</name>
+      <description>Select I_Ref</description>
+      <bitRange>[11:4]</bitRange>
+    </field>
+    <field>
+      <name>ISRC</name>
+      <description>I source select</description>
+      <bitRange>[14:14]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>U_le4V</name><description>for Ucc less than 4V</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>U_gt4V</name><description>for Ucc greater than 4V</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>
+    <field>
+      <name>PHY_En</name>
+      <description>PHY Enable</description>
+      <bitRange>[15:15]</bitRange>
+      <enumeratedValues>
+        <enumeratedValue><name>Disable</name><description>PHY Disabled</description><value>0</value></enumeratedValue>
+        <enumeratedValue><name>Enable</name><description>PHY Enabled</description><value>1</value></enumeratedValue>
+      </enumeratedValues>
+    </field>       
+  </fields>
+</register>
+
+#ETH2
+<peripheral derivedFrom="MDR_ETH1">
+  <name>MDR_ETH2</name>
+  <baseAddress>0x34000000</baseAddress>
+  <description>Ethernet Control</description>
+</peripheral>

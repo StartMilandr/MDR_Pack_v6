@@ -7,6 +7,7 @@ f5=../SSP/SSP_ESila.txt
 f6=../Timer/Timer_ES.txt
 f7=../DMA/DMA_VE8ES.xml
 f8=../CAN/CAN_ES.txt
+f9=../ETH/ETH_ES.txt
 
 [TAGS]
 #RST=f1
@@ -19,6 +20,7 @@ f8=../CAN/CAN_ES.txt
 #TIMERs=f6
 #DMA=f7
 #CANs=f8
+#ETHERNETs=f9
 
 [TAGS_New]
 #FTMODE=

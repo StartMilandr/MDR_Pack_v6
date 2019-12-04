@@ -2,7 +2,7 @@
 CMSIS-SVD SVD Consistency Checker / Header File Generator V3.3.18
 Copyright (C) 2010 - 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
 
-Arguments: "../_src/MDR1986VE81.svd" -o "out" -b "out/logVE81.txt" --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr 
+Arguments: "../_src/MDR1986VE81.svd" -x "M347" -o "out" -b "out/logVE81.txt" --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr 
 
 *** INFO M356: ../_src/MDR1986VE81.svd
   No Interrupt definitions found.

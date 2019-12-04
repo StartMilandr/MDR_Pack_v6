@@ -33,3 +33,9 @@ call "../RST_VE8x/Run.bat
 
 cd C:\CODE\PACK\__SVD\Exe
 call "../BKP/Run_ESila.bat"
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../CAN/Run.bat"
+
+cd C:\CODE\PACK\__SVD\Exe
+call "../ETH/Run.bat"

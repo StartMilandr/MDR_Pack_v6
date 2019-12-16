@@ -272,7 +272,7 @@
 
 #PHY_STAT_VE8
 <register>
-  <name>PHY_STATYS</name>
+  <name>PHY_STATUS</name>
   <description>PHY Status Register</description>
   <addressOffset>0x00000036</addressOffset>
   <size>16</size>

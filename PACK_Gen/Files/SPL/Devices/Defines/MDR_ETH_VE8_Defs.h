@@ -98,21 +98,21 @@ typedef struct {
   __IOM MDR_OnOff     INT_JAM    : 1;            /*!< [13..13] JAM signal received                                              */
 } MDR_ETH_PHY_STATUS_Bits;
 
-#define MDR_ETH_PHY_STATUS_LED_LINK_Pos  (8UL)                     /*!< MDR_ETH1 PHY_STATYS: LED_LINK (Bit 8)                 */
-#define MDR_ETH_PHY_STATUS_LED_LINK_Msk  (0x100UL)                 /*!< MDR_ETH1 PHY_STATYS: LED_LINK (Bitfield-Mask: 0x01)   */
-#define MDR_ETH_PHY_STATUS_LED_COL_Pos   (9UL)                     /*!< MDR_ETH1 PHY_STATYS: LED_COL (Bit 9)                  */
-#define MDR_ETH_PHY_STATUS_LED_COL_Msk   (0x200UL)                 /*!< MDR_ETH1 PHY_STATYS: LED_COL (Bitfield-Mask: 0x01)    */
-#define MDR_ETH_PHY_STATUS_INT_LOSS_Pos  (10UL)                    /*!< MDR_ETH1 PHY_STATYS: INT_LOSS (Bit 10)                */
-#define MDR_ETH_PHY_STATUS_INT_LOSS_Msk  (0x400UL)                 /*!< MDR_ETH1 PHY_STATYS: INT_LOSS (Bitfield-Mask: 0x01)   */
-#define MDR_ETH_PHY_STATUS_INT_POL_Pos   (11UL)                    /*!< MDR_ETH1 PHY_STATYS: INT_POL (Bit 11)                 */
-#define MDR_ETH_PHY_STATUS_INT_POL_Msk   (0x800UL)                 /*!< MDR_ETH1 PHY_STATYS: INT_POL (Bitfield-Mask: 0x01)    */
-#define MDR_ETH_PHY_STATUS_INT_JAB_Pos   (12UL)                    /*!< MDR_ETH1 PHY_STATYS: INT_JAB (Bit 12)                 */
-#define MDR_ETH_PHY_STATUS_INT_JAB_Msk   (0x1000UL)                /*!< MDR_ETH1 PHY_STATYS: INT_JAB (Bitfield-Mask: 0x01)    */
-#define MDR_ETH_PHY_STATUS_INT_JAM_Pos   (13UL)                    /*!< MDR_ETH1 PHY_STATYS: INT_JAM (Bit 13)                 */
-#define MDR_ETH_PHY_STATUS_INT_JAM_Msk   (0x2000UL)                /*!< MDR_ETH1 PHY_STATYS: INT_JAM (Bitfield-Mask: 0x01)    */
+#define MDR_ETH_PHY_STATUS_LED_LINK_Pos  (8UL)                     /*!< MDR_ETH1 PHY_STATUS: LED_LINK (Bit 8)                 */
+#define MDR_ETH_PHY_STATUS_LED_LINK_Msk  (0x100UL)                 /*!< MDR_ETH1 PHY_STATUS: LED_LINK (Bitfield-Mask: 0x01)   */
+#define MDR_ETH_PHY_STATUS_LED_COL_Pos   (9UL)                     /*!< MDR_ETH1 PHY_STATUS: LED_COL (Bit 9)                  */
+#define MDR_ETH_PHY_STATUS_LED_COL_Msk   (0x200UL)                 /*!< MDR_ETH1 PHY_STATUS: LED_COL (Bitfield-Mask: 0x01)    */
+#define MDR_ETH_PHY_STATUS_INT_LOSS_Pos  (10UL)                    /*!< MDR_ETH1 PHY_STATUS: INT_LOSS (Bit 10)                */
+#define MDR_ETH_PHY_STATUS_INT_LOSS_Msk  (0x400UL)                 /*!< MDR_ETH1 PHY_STATUS: INT_LOSS (Bitfield-Mask: 0x01)   */
+#define MDR_ETH_PHY_STATUS_INT_POL_Pos   (11UL)                    /*!< MDR_ETH1 PHY_STATUS: INT_POL (Bit 11)                 */
+#define MDR_ETH_PHY_STATUS_INT_POL_Msk   (0x800UL)                 /*!< MDR_ETH1 PHY_STATUS: INT_POL (Bitfield-Mask: 0x01)    */
+#define MDR_ETH_PHY_STATUS_INT_JAB_Pos   (12UL)                    /*!< MDR_ETH1 PHY_STATUS: INT_JAB (Bit 12)                 */
+#define MDR_ETH_PHY_STATUS_INT_JAB_Msk   (0x1000UL)                /*!< MDR_ETH1 PHY_STATUS: INT_JAB (Bitfield-Mask: 0x01)    */
+#define MDR_ETH_PHY_STATUS_INT_JAM_Pos   (13UL)                    /*!< MDR_ETH1 PHY_STATUS: INT_JAM (Bit 13)                 */
+#define MDR_ETH_PHY_STATUS_INT_JAM_Msk   (0x2000UL)                /*!< MDR_ETH1 PHY_STATUS: INT_JAM (Bitfield-Mask: 0x01)    */
 
 
-/* ====================================================  PHY_CONTORL_A  ===================================================== */
+/* ====================================================  PHY_CONTROL_A  ===================================================== */
 typedef enum {                                  /*!< MDR_ETH1_PHY_CONTORL_A_SELR                                               */
   MDR_ETH_PHY_CTRLA_SELR_Internal = 0,          /*!< Internal : EXTR pin in Z-state                                            */
   MDR_ETH_PHY_CTRLA_SELR_External = 1,          /*!< External : Use external R on EXTR pin                                     */

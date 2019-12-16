@@ -501,6 +501,26 @@ typedef enum IRQn
 #define  MDR_DMA_CH_REQ_TIM3           12
 #define  MDR_DMA_CH_REQ_TIM4           13
 
+#define  MDR_DMA_CH_REQ_SOFT1           14
+#define  MDR_DMA_CH_REQ_SOFT2           15
+#define  MDR_DMA_CH_REQ_SOFT3           16
+#define  MDR_DMA_CH_REQ_SOFT4           17
+#define  MDR_DMA_CH_REQ_SOFT5           18
+#define  MDR_DMA_CH_REQ_SOFT6           19
+#define  MDR_DMA_CH_REQ_SOFT7           20
+#define  MDR_DMA_CH_REQ_SOFT8           21
+#define  MDR_DMA_CH_REQ_SOFT9           22
+#define  MDR_DMA_CH_REQ_SOFT10          23
+#define  MDR_DMA_CH_REQ_SOFT11          24
+#define  MDR_DMA_CH_REQ_SOFT12          25
+#define  MDR_DMA_CH_REQ_SOFT13          26
+#define  MDR_DMA_CH_REQ_SOFT14          27
+#define  MDR_DMA_CH_REQ_SOFT15          28
+#define  MDR_DMA_CH_REQ_SOFT16          29
+#define  MDR_DMA_CH_REQ_SOFT17          30
+#define  MDR_DMA_CH_REQ_SOFT18          31
+
+
 //  Single request
 #define  MDR_DMA_CH_SREQ_UART1_TX       0
 #define  MDR_DMA_CH_SREQ_UART1_RX       1

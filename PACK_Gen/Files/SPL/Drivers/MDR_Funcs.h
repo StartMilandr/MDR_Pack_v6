@@ -4,6 +4,12 @@
 #include <MDR_Config.h>
 #include <MDR_Types.h>
 
+//=========    BiteOrder and BitOrder ==========
+#define REV_BYTES32(x)  __REV(x)
+#define REV_BYTES16(x)  __REVSH(x)
+#define REV_BITS32(x)   __RBIT(x)
+
+
 //=========    Макрос для подавления ворнингов от неиспользуемых параметров ==========
 #define UNUSED(x) (void)(x)
 
@@ -105,6 +111,8 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 //  Доступ к регистрам по адресу
 #define REG32(x)   (*((volatile uint32_t *)(x)))
 #define REG32_C(x) (*((const volatile uint32_t *)(x)))
+
+#define MEM32    REG32
 
 //  Доступ к полям в слове
 #define FLD2VAL(value, field)      _FLD2VAL(field, value)

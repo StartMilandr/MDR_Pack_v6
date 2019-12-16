@@ -77,33 +77,51 @@ typedef struct {
 } MDR_ETH_RCfg_Bits;
 
 
-#define MDR_ETH_R_CFG_MCA_En_Pos         (0UL)                     /*!< MDR_ETH1 R_CFG: MCA_En (Bit 0)                        */
-#define MDR_ETH_R_CFG_MCA_En_Msk         (0x1UL)                   /*!< MDR_ETH1 R_CFG: MCA_En (Bitfield-Mask: 0x01)          */
-#define MDR_ETH_R_CFG_BCA_En_Pos         (1UL)                     /*!< MDR_ETH1 R_CFG: BCA_En (Bit 1)                        */
-#define MDR_ETH_R_CFG_BCA_En_Msk         (0x2UL)                   /*!< MDR_ETH1 R_CFG: BCA_En (Bitfield-Mask: 0x01)          */
-#define MDR_ETH_R_CFG_UCA_En_Pos         (2UL)                     /*!< MDR_ETH1 R_CFG: UCA_En (Bit 2)                        */
-#define MDR_ETH_R_CFG_UCA_En_Msk         (0x4UL)                   /*!< MDR_ETH1 R_CFG: UCA_En (Bitfield-Mask: 0x01)          */
-#define MDR_ETH_R_CFG_AC_En_Pos          (3UL)                     /*!< MDR_ETH1 R_CFG: AC_En (Bit 3)                         */
-#define MDR_ETH_R_CFG_AC_En_Msk          (0x8UL)                   /*!< MDR_ETH1 R_CFG: AC_En (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_R_CFG_EF_En_Pos          (4UL)                     /*!< MDR_ETH1 R_CFG: EF_En (Bit 4)                         */
-#define MDR_ETH_R_CFG_EF_En_Msk          (0x10UL)                  /*!< MDR_ETH1 R_CFG: EF_En (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_R_CFG_CF_En_Pos          (5UL)                     /*!< MDR_ETH1 R_CFG: CF_En (Bit 5)                         */
-#define MDR_ETH_R_CFG_CF_En_Msk          (0x20UL)                  /*!< MDR_ETH1 R_CFG: CF_En (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_R_CFG_LF_En_Pos          (6UL)                     /*!< MDR_ETH1 R_CFG: LF_En (Bit 6)                         */
-#define MDR_ETH_R_CFG_LF_En_Msk          (0x40UL)                  /*!< MDR_ETH1 R_CFG: LF_En (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_R_CFG_SF_En_Pos          (7UL)                     /*!< MDR_ETH1 R_CFG: SF_En (Bit 7)                         */
-#define MDR_ETH_R_CFG_SF_En_Msk          (0x80UL)                  /*!< MDR_ETH1 R_CFG: SF_En (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_R_CFG_EVNT_MODE_Pos      (8UL)                     /*!< MDR_ETH1 R_CFG: EVNT_MODE (Bit 8)                     */
-#define MDR_ETH_R_CFG_EVNT_MODE_Msk      (0x700UL)                 /*!< MDR_ETH1 R_CFG: EVNT_MODE (Bitfield-Mask: 0x07)       */
-#define MDR_ETH_R_CFG_MSB_1st_Pos        (12UL)                    /*!< MDR_ETH1 R_CFG: MSB_1st (Bit 12)                      */
-#define MDR_ETH_R_CFG_MSB_1st_Msk        (0x1000UL)                /*!< MDR_ETH1 R_CFG: MSB_1st (Bitfield-Mask: 0x01)         */
-#define MDR_ETH_R_CFG_BE_Pos             (13UL)                    /*!< MDR_ETH1 R_CFG: BE (Bit 13)                           */
-#define MDR_ETH_R_CFG_BE_Msk             (0x2000UL)                /*!< MDR_ETH1 R_CFG: BE (Bitfield-Mask: 0x01)              */
-#define MDR_ETH_R_CFG_EN_Pos             (15UL)                    /*!< MDR_ETH1 R_CFG: EN (Bit 15)                           */
-#define MDR_ETH_R_CFG_EN_Msk             (0x8000UL)                /*!< MDR_ETH1 R_CFG: EN (Bitfield-Mask: 0x01)              */
+#define MDR_ETH_RCFG_MCA_En_Pos         (0UL)                     /*!< MDR_ETH1 R_CFG: MCA_En (Bit 0)                        */
+#define MDR_ETH_RCFG_MCA_En_Msk         (0x1UL)                   /*!< MDR_ETH1 R_CFG: MCA_En (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_RCFG_BCA_En_Pos         (1UL)                     /*!< MDR_ETH1 R_CFG: BCA_En (Bit 1)                        */
+#define MDR_ETH_RCFG_BCA_En_Msk         (0x2UL)                   /*!< MDR_ETH1 R_CFG: BCA_En (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_RCFG_UCA_En_Pos         (2UL)                     /*!< MDR_ETH1 R_CFG: UCA_En (Bit 2)                        */
+#define MDR_ETH_RCFG_UCA_En_Msk         (0x4UL)                   /*!< MDR_ETH1 R_CFG: UCA_En (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_RCFG_AC_En_Pos          (3UL)                     /*!< MDR_ETH1 R_CFG: AC_En (Bit 3)                         */
+#define MDR_ETH_RCFG_AC_En_Msk          (0x8UL)                   /*!< MDR_ETH1 R_CFG: AC_En (Bitfield-Mask: 0x01)           */
+#define MDR_ETH_RCFG_EF_En_Pos          (4UL)                     /*!< MDR_ETH1 R_CFG: EF_En (Bit 4)                         */
+#define MDR_ETH_RCFG_EF_En_Msk          (0x10UL)                  /*!< MDR_ETH1 R_CFG: EF_En (Bitfield-Mask: 0x01)           */
+#define MDR_ETH_RCFG_CF_En_Pos          (5UL)                     /*!< MDR_ETH1 R_CFG: CF_En (Bit 5)                         */
+#define MDR_ETH_RCFG_CF_En_Msk          (0x20UL)                  /*!< MDR_ETH1 R_CFG: CF_En (Bitfield-Mask: 0x01)           */
+#define MDR_ETH_RCFG_LF_En_Pos          (6UL)                     /*!< MDR_ETH1 R_CFG: LF_En (Bit 6)                         */
+#define MDR_ETH_RCFG_LF_En_Msk          (0x40UL)                  /*!< MDR_ETH1 R_CFG: LF_En (Bitfield-Mask: 0x01)           */
+#define MDR_ETH_RCFG_SF_En_Pos          (7UL)                     /*!< MDR_ETH1 R_CFG: SF_En (Bit 7)                         */
+#define MDR_ETH_RCFG_SF_En_Msk          (0x80UL)                  /*!< MDR_ETH1 R_CFG: SF_En (Bitfield-Mask: 0x01)           */
+#define MDR_ETH_RCFG_EVNT_MODE_Pos      (8UL)                     /*!< MDR_ETH1 R_CFG: EVNT_MODE (Bit 8)                     */
+#define MDR_ETH_RCFG_EVNT_MODE_Msk      (0x700UL)                 /*!< MDR_ETH1 R_CFG: EVNT_MODE (Bitfield-Mask: 0x07)       */
+#define MDR_ETH_RCFG_MSB_1st_Pos        (12UL)                    /*!< MDR_ETH1 R_CFG: MSB_1st (Bit 12)                      */
+#define MDR_ETH_RCFG_MSB_1st_Msk        (0x1000UL)                /*!< MDR_ETH1 R_CFG: MSB_1st (Bitfield-Mask: 0x01)         */
+#define MDR_ETH_RCFG_BE_Pos             (13UL)                    /*!< MDR_ETH1 R_CFG: BE (Bit 13)                           */
+#define MDR_ETH_RCFG_BE_Msk             (0x2000UL)                /*!< MDR_ETH1 R_CFG: BE (Bitfield-Mask: 0x01)              */
+#define MDR_ETH_RCFG_EN_Pos             (15UL)                    /*!< MDR_ETH1 R_CFG: EN (Bit 15)                           */
+#define MDR_ETH_RCFG_EN_Msk             (0x8000UL)                /*!< MDR_ETH1 R_CFG: EN (Bitfield-Mask: 0x01)              */
 
 
 /* =========================================================  X_CFG  ========================================================= */
+typedef enum {                                  /*!< MDR_ETH1_X_CFG_EVNT_MODE                                                  */
+  MDR_ETH_XCFG_Rtry_Off  = 0,
+  MDR_ETH_XCFG_Rtry_1  = 1,
+  MDR_ETH_XCFG_Rtry_2  = 2,
+  MDR_ETH_XCFG_Rtry_3  = 3,
+  MDR_ETH_XCFG_Rtry_4  = 4,
+  MDR_ETH_XCFG_Rtry_5  = 5,
+  MDR_ETH_XCFG_Rtry_6  = 6,
+  MDR_ETH_XCFG_Rtry_7  = 7,
+  MDR_ETH_XCFG_Rtry_8  = 8,
+  MDR_ETH_XCFG_Rtry_9  = 9,
+  MDR_ETH_XCFG_Rtry_10  = 10,
+  MDR_ETH_XCFG_Rtry_11  = 11,
+  MDR_ETH_XCFG_Rtry_12  = 12,
+  MDR_ETH_XCFG_Rtry_13  = 13,
+  MDR_ETH_XCFG_Rtry_14  = 14,
+  MDR_ETH_XCFG_Rtry_15  = 15,
+} MDR_ETH_XCFG_RTry;
 
 typedef enum {                                  /*!< MDR_ETH1_X_CFG_EVNT_MODE                                                  */
   MDR_ETH_XCFG_EVENT_FIFO_Empty  = 0,     /*!< FIFO_Empty : FIFO is empty                                                */
@@ -117,7 +135,7 @@ typedef enum {                                  /*!< MDR_ETH1_X_CFG_EVNT_MODE   
 } MDR_ETH_XCFG_EVENT;
 
 typedef struct {
-  __IOM uint16_t            RtryCnt    : 4;            /*!< [3..0] Try send count                                                     */
+  __IOM MDR_ETH_XCFG_RTry   RtryCnt    : 4;            /*!< [3..0] Try send count                                                     */
   __IOM MDR_OnOff           IPG_En     : 1;            /*!< [4..4] IPG enable                                                         */
   __IOM MDR_OnOff           CRC_En     : 1;            /*!< [5..5] Add CRC to frame                                                   */
   __IOM MDR_OnOff           PRE_En     : 1;            /*!< [6..6] Add Preamble to frame                                              */
@@ -153,10 +171,10 @@ typedef struct {
 /* ========================================================  G_CFGL  ========================================================= */
 
 typedef enum {                                             /*!< MDR_ETH1_G_CFGL_BUFF_Mode                                                 */
-  MDR_ETH_GCFGL_BuffMode_Linear     = 0,                   /*!< Linear : User PTR Control                                                 */
-  MDR_ETH_GCFGL_BuffMode_AutoPTR    = 1,                   /*!< AutoPTR : Auto PTR Control                                                */
-  MDR_ETH_GCFGL_BuffMode_FIFO       = 2,                   /*!< FIFO : FIFO Buff Control                                                  */
-} MDR_ETH_GCFGL_BuffMode;
+  MDR_ETH_BuffMode_Linear     = 0,                   /*!< Linear : User PTR Control                                                 */
+  MDR_ETH_BuffMode_AutoPTR    = 1,                   /*!< AutoPTR : Auto PTR Control                                                */
+  MDR_ETH_BuffMode_FIFO       = 2,                   /*!< FIFO : FIFO Buff Control                                                  */
+} MDR_ETH_BuffMode;
 
 typedef struct {
   __IOM uint16_t                ColWnd     : 8;            /*!< [7..0] Collision window in bits mul 4                                     */
@@ -164,7 +182,7 @@ typedef struct {
   __IOM MDR_OnOff               DTRM_En    : 1;            /*!< [9..9] DetermMode                                                         */
   __IOM MDR_OnOff               HD_En      : 1;            /*!< [10..10] Enable Half duplex                                               */
   __IOM MDR_OnOff               EXT_En     : 1;            /*!< [11..11] Fill frame to slot time                                          */
-  __IOM MDR_ETH_GCFGL_BuffMode  BUFF_Mode  : 2;            /*!< [13..12] Buffer control                                                   */
+  __IOM MDR_ETH_BuffMode        BUFF_Mode  : 2;            /*!< [13..12] Buffer control                                                   */
   __IOM MDR_OnOff               IFR_CLR_En : 1;            /*!< [14..14] Clear IFR status on Read                                         */
 } MDR_ETH_GCfgL_Bits;
 
@@ -230,7 +248,7 @@ typedef struct {
   __IOM MDR_OnOff XF_Err     : 1;            /*!< [9..9] Error on sending                                                   */
   __IOM MDR_OnOff UNDEF      : 1;            /*!< [10..10] Tx buff empty                                                    */
   __IOM MDR_OnOff LC         : 1;            /*!< [11..11] Late Collision                                                   */
-  __IOM MDR_OnOff CRC_Lost   : 1;            /*!< [12..12] Carrier sense lost                                               */
+  __IOM MDR_OnOff CRS_Lost   : 1;            /*!< [12..12] Carrier sense lost                                               */
   __IM  uint16_t             : 1;
   __IOM MDR_OnOff MDIO_INT   : 1;            /*!< [14..14] IRQ from MDIO                                                    */
   __IOM MDR_OnOff MDIO_RDY   : 1;            /*!< [15..15] MDIO transfer completed                                          */
@@ -260,13 +278,14 @@ typedef struct {
 #define MDR_ETH_EVENT_UNDEF_Msk            (0x400UL)                 /*!< MDR_ETH1 IMR: UNDEF (Bitfield-Mask: 0x01)             */
 #define MDR_ETH_EVENT_LC_Pos               (11UL)                    /*!< MDR_ETH1 IMR: LC (Bit 11)                             */
 #define MDR_ETH_EVENT_LC_Msk               (0x800UL)                 /*!< MDR_ETH1 IMR: LC (Bitfield-Mask: 0x01)                */
-#define MDR_ETH_EVENT_CRC_Lost_Pos         (12UL)                    /*!< MDR_ETH1 IMR: CRC_Lost (Bit 12)                       */
-#define MDR_ETH_EVENT_CRC_Lost_Msk         (0x1000UL)                /*!< MDR_ETH1 IMR: CRC_Lost (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_EVENT_CRS_Lost_Pos         (12UL)                    /*!< MDR_ETH1 IMR: CRC_Lost (Bit 12)                       */
+#define MDR_ETH_EVENT_CRS_Lost_Msk         (0x1000UL)                /*!< MDR_ETH1 IMR: CRC_Lost (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_EVENT_MDIO_INT_Pos         (14UL)                    /*!< MDR_ETH1 IMR: MDIO_INT (Bit 14)                       */
 #define MDR_ETH_EVENT_MDIO_INT_Msk         (0x4000UL)                /*!< MDR_ETH1 IMR: MDIO_INT (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_EVENT_MDIO_RDY_Pos         (15UL)                    /*!< MDR_ETH1 IMR: MDIO_RDY (Bit 15)                       */
 #define MDR_ETH_EVENT_MDIO_RDY_Msk         (0x8000UL)                /*!< MDR_ETH1 IMR: MDIO_RDY (Bitfield-Mask: 0x01)          */
 
+#define MDR_ETH_EVENT_CLEAR_ALL             0xDFFF
 
 /* =======================================================  MDIO_CTRL  ======================================================= */
 typedef enum {                                  /*!< MDR_ETH1_MDIO_CTRL_OP                                                     */
@@ -337,8 +356,61 @@ typedef struct {
 #define MDR_ETH_STAT_TX_Full_Msk         (0x1000UL)                /*!< MDR_ETH1 STAT: TX_Full (Bitfield-Mask: 0x01)          */
 
 
+/* ======================================  Registers set to configure MAC block  ============================================= */
+//  Registers to configure MAC block
+typedef struct {
+  uint16_t  DELIMETER;
+  uint16_t  MAC_L;    
+  uint16_t  MAC_M;    
+  uint16_t  MAC_H;    
+  uint16_t  HASH0;    
+  uint16_t  HASH1;    
+  uint16_t  HASH2;    
+  uint16_t  HASH3;    
+  uint16_t  IPG;      
+  uint16_t  PSC;      
+  uint16_t  BAG;      
+  uint16_t  JitterWnd;
+  uint16_t  R_CFG;    
+  uint16_t  X_CFG;    
+  uint16_t  G_CFGL;   
+  uint16_t  G_CFGH;   
+  uint16_t  IMR;      
+  uint16_t  MDIO_CTRL;
+} MDR_ETH_MAC_CfgRegs;
 
 
+/* ==================================================  BUFF Frame RX_STATUS ================================================== */
+
+typedef struct{
+	uint16_t Length			    : 16;     // The number of bytes in the packet including header and CRC.
+	uint32_t IsPauseFrame   : 1;			// A sign package PAUSE.
+	uint32_t IsContorlFrame	: 1;			// A sign Management Pack (filtering by MAC and special tags in the field length - 13.14 - octets).
+	uint32_t IsLongFrame		: 1;			// A sign excess packet length 1518 octets.
+	uint32_t IsShortFrame		: 1;			// A sign of lack of packet length 64 octets.
+	uint32_t IsErrLength	  : 1;			// A sign mismatch between the actual length and the length specified in the length field - 13.14 octets.
+	uint32_t IsErr8Bits   	: 1;			// A sign bit of the packet is not a multiple of 8.
+	uint32_t IsErrCRC		    : 1;			// A sign mismatch packet CRC.
+	uint32_t IsErrNibbles		: 1;			// A sign of the presence in the packet error nibbles.
+	uint32_t IsFrameMCA			: 1;			// A sign group package (MAC matches HASH).
+	uint32_t IsFrameBCA			: 1;			// A sign of the broadcast packet (MAC = FF:FF:FF:FF:FF:FF)
+	uint32_t IsFrameUCA			: 1;			// A sign individual package (MAC corresponds to the set).
+} MDR_ETH_FrameStatusRX_Bits;
+
+/**
+ * @brief The state of the packet reception	Unioun definition
+ */
+typedef union {
+	uint32_t                   Status;
+	MDR_ETH_FrameStatusRX_Bits Fields;
+} MDR_ETH_FrameStatusRX;
+
+#define MDR_ETH_BUF_FIFO_RX_OFFS    0
+#define MDR_ETH_BUF_FIFO_TX_OFFS    4
+
+//  Control Words in TX buffer
+#define MDR_ETH_BUFF_TX_LEN_SIZE     4
+#define MDR_ETH_BUFF_TX_STATUS_SIZE   4
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

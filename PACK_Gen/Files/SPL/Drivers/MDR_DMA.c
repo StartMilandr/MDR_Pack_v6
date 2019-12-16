@@ -347,6 +347,58 @@ void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t co
   while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
+
+#define _DMA_CtrlCopy32_FromNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+                         | _DMA_CH_ProtAHB_Def_Msk )
+
+
+void MDR_DMA_Copy32_FromNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+{
+  MDR_DMA_ChCfg chCfg;
+  
+  chCfg.Src_EndAddr  = (uint32_t)src;
+  chCfg.Dest_EndAddr = (uint32_t)dest + (uint32_t)((count - 1) << 2);
+  chCfg.Control.Value = VAL2FLD(count - 1, MDR_DMA_ChCtrl_N_minus1) | _DMA_CtrlCopy32_FromNoInc;
+  
+  MDR_DMA_CtrlTablePri(chIndex) = chCfg;
+  MDR_DMA_StartChannelSoft(chIndex, MDR_On, true);  
+  
+  while (!MDR_DMA_CopyGetCompleted(chIndex));
+}
+
+#define _DMA_CtrlCopy32_ToNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+                         | _DMA_CH_ProtAHB_Def_Msk )
+
+
+void MDR_DMA_Copy32_ToNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+{
+  MDR_DMA_ChCfg chCfg;
+  
+  chCfg.Src_EndAddr  = (uint32_t)src  + (uint32_t)((count - 1) << 2);
+  chCfg.Dest_EndAddr = (uint32_t)dest;
+  chCfg.Control.Value = VAL2FLD(count - 1, MDR_DMA_ChCtrl_N_minus1) | _DMA_CtrlCopy32_ToNoInc;
+  
+  MDR_DMA_CtrlTablePri(chIndex) = chCfg;
+  MDR_DMA_StartChannelSoft(chIndex, MDR_On, true); 
+  
+  while (!MDR_DMA_CopyGetCompleted(chIndex));
+}
+
+
+
+
+
+
 //  Выбор мультиплексорами источников запросов к каналам DMA.
 #ifdef MDR_DMA_CHMUX_LIKE_VE8
   #define _DMA_CHANNELS_IN_MUX_REG  4

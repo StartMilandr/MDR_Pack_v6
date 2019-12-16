@@ -209,7 +209,11 @@ typedef struct {                                          /*!< (@ 0x30000000) MD
   } ;
 } MDR_ETH_Type;                                /*!< Size = 56 (0x38)                                                          */
 
-
+//  BuffAddr = addrOf(MDR_ETH_Type) + MDR_ETH_BUFF_OFFSET
+#define MDR_ETH_TO_BUFF_OFFSET   0x08000000UL
+//  BuffLen = 8KB
+#define MDR_ETH_BUF_LEN          0x2000
+//#define MDR_ETH_BUF_LEN32       (0x2000 >> 2)
 
 /* =========================================  End of section using anonymous unions  ========================================= */
 #if defined (__CC_ARM)

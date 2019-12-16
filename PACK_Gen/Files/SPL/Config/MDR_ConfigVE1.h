@@ -40,6 +40,7 @@
 #define PLL_TIMEOUT         0x0600UL
 
 //  External Generator for Ethernet PHY
+#define HSE2_IS_RESONATOR    1
 #define HSE2_FREQ_HZ         25000000UL
 #define HSE2_TIMEOUT_CYCLES  0x0600UL
 
@@ -85,6 +86,18 @@
   #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_ASM
   #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_ASM_RAM
 #endif
+
+
+// =========================   ETHERNET ===========================
+//  Выбор режима работы буферов Ethernet (Только один!)
+#define MDR_ETH_BUFF_LIN        0
+#define MDR_ETH_BUFF_AUTO_PTR   0
+#define MDR_ETH_BUFF_FIFO       1
+
+#define MDR_ETH_BUFF_LEN_TX     1514
+
+#define MDR_ETH_DMA_CHANNEL_RX  MDR_DMA_CH_REQ_SOFT1
+#define MDR_ETH_DMA_CHANNEL_TX  MDR_DMA_CH_REQ_SOFT2
 
 
 #endif  //  MDR_CONFIG_VE1_H

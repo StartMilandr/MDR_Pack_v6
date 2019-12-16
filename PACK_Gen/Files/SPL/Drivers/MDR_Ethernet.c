@@ -293,3 +293,75 @@ bool MDR_ETH_TrySendFrame(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX)
   return result;
 }
 
+
+bool MDR_ETH_ReadMDIO(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t *value)
+{
+	volatile uint32_t timeout = MDR_ETH_MDIO_TIMEOUT;
+
+  //  Run transfer
+	MDR_Eth->MDIO_CTRL = MDR_MaskClrSet(MDR_Eth->MDIO_CTRL,
+            //  Clear
+            MDR_ETH_MDIO_CTRL_REG_Addr_Msk |  MDR_ETH_MDIO_CTRL_PHY_Addr_Msk | MDR_ETH_MDIO_CTRL_OP_Msk | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk,
+            //  OR
+            VAL2FLD_Pos(addrPHY,                 MDR_ETH_MDIO_CTRL_PHY_Addr_Pos) 
+          | VAL2FLD_Pos(addrRegInPHY,            MDR_ETH_MDIO_CTRL_REG_Addr_Pos) 
+          | VAL2FLD_Pos(MDR_ETH_MDIO_CTRL_OP_RD, MDR_ETH_MDIO_CTRL_OP_Pos)
+          | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk 
+          );
+  
+  //  Wait Completed
+	while (timeout)
+  {
+		timeout--;
+    if (MDR_Eth->MDIO_CTRL & MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk)
+    {
+      *value = (uint16_t)MDR_Eth->MDIO_DATA;
+      return true;
+    }
+  }
+  return false;
+}
+
+bool MDR_ETH_WriteMDIO(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t value)
+{
+	volatile uint32_t timeout = MDR_ETH_MDIO_TIMEOUT;
+
+  //  Run transfer
+	MDR_Eth->MDIO_CTRL = MDR_MaskClrSet(MDR_Eth->MDIO_CTRL,
+            //  Clear
+            MDR_ETH_MDIO_CTRL_REG_Addr_Msk |  MDR_ETH_MDIO_CTRL_PHY_Addr_Msk | MDR_ETH_MDIO_CTRL_OP_Msk | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk,
+            //  OR
+            VAL2FLD_Pos(addrPHY,                 MDR_ETH_MDIO_CTRL_PHY_Addr_Pos) 
+          | VAL2FLD_Pos(addrRegInPHY,            MDR_ETH_MDIO_CTRL_REG_Addr_Pos) 
+          | VAL2FLD_Pos(MDR_ETH_MDIO_CTRL_OP_RD, MDR_ETH_MDIO_CTRL_OP_Pos)
+          | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk 
+          );  
+
+  //  Wait Completed
+	while (timeout)
+  {
+		timeout--;
+    if (MDR_Eth->MDIO_CTRL & MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool MDR_ETH_MDIO_GetMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask)
+{
+  uint16_t regValue;
+  
+  if (MDR_ETH_ReadMDIO(MDR_Eth, addrPHY, addrRegPHY, &regValue))
+    return (regValue & setMask) == setMask;
+  
+  return false;
+}
+
+void MDR_ETH_MDIO_WaitMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask)
+{ 
+  while (!MDR_ETH_MDIO_GetMaskSet(MDR_Eth, addrPHY, addrRegPHY, setMask)) {
+  };  
+}
+

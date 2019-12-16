@@ -4444,8 +4444,8 @@
               <description>Operation RD or WR</description>
               <bitRange>[13:13]</bitRange>
               <enumeratedValues>
-                <enumeratedValue><name>RD</name><description>MDIO Read</description><value>0</value></enumeratedValue>
-                <enumeratedValue><name>WR</name><description>MDIO Write</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>WR</name><description>MDIO Write</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>RD</name><description>MDIO Read</description><value>1</value></enumeratedValue>            
               </enumeratedValues>          
             </field>
             <field>
@@ -4543,7 +4543,7 @@
               <bitRange>[1:1]</bitRange>
             </field>
             <field derivedFrom="RX_Empty">
-              <name>RX_Hald</name>
+              <name>RX_Half</name>
               <description>RX_FIFO is 1/2 full</description>
               <bitRange>[2:2]</bitRange>
             </field>
@@ -4583,7 +4583,7 @@
               <bitRange>[9:9]</bitRange>
             </field>
             <field derivedFrom="RX_Empty">
-              <name>TX_Hald</name>
+              <name>TX_Half</name>
               <description>TX_FIFO is 1/2 full</description>
               <bitRange>[10:10]</bitRange>
             </field>

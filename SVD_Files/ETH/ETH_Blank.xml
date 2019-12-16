@@ -511,8 +511,8 @@
           <description>Operation RD or WR</description>
           <bitRange>[13:13]</bitRange>
           <enumeratedValues>
-            <enumeratedValue><name>RD</name><description>MDIO Read</description><value>0</value></enumeratedValue>
-            <enumeratedValue><name>WR</name><description>MDIO Write</description><value>1</value></enumeratedValue>
+            <enumeratedValue><name>WR</name><description>MDIO Write</description><value>0</value></enumeratedValue>
+            <enumeratedValue><name>RD</name><description>MDIO Read</description><value>1</value></enumeratedValue>            
           </enumeratedValues>          
         </field>
         <field>

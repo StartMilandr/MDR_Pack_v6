@@ -58,17 +58,6 @@ __STATIC_INLINE void  MDR_ETH_WriteFrame_Auto(MDR_ETH_Type *MDR_Eth, MDR_ETH_Fra
 void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX);
 
   
-//void MDR_ETH_SendFrameByPTR(MDR_ETH_Type *MDR_Eth, uint32_t frameLen, uint8_t *frame, bool doSetTxTail);  
-//  
-//__STATIC_INLINE void  MDR_ETH_WriteFrame_Lin(MDR_ETH_Type *MDR_Eth, uint32_t frameLen, uint8_t *frame)
-//  { MDR_ETH_SendFrameByPTR(MDR_Eth, frameLen, frame, true); }
-
-//__STATIC_INLINE void  MDR_ETH_WriteFrame_Auto(MDR_ETH_Type *MDR_Eth, uint32_t frameLen, uint8_t *frame)
-//  { MDR_ETH_SendFrameByPTR(MDR_Eth, frameLen, frame, false); }
-
-//void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, uint32_t frameLen, uint8_t *frame);
-  
-  
 //  ----------    Send / Receive Select    ----------
 #if MDR_ETH_BUFF_LIN
   #define MDR_ETH_SendFrame   MDR_ETH_WriteFrame_Lin
@@ -140,6 +129,36 @@ __STATIC_INLINE void MDR_ETH_NVIC_Disable(MDR_ETH_Type *MDR_Eth, uint32_t priori
     NVIC_DisableIRQ(ETH1_IRQn);
   }
 }
+
+
+//  ----------    MDIO PHY Control    ----------
+bool MDR_ETH_ReadMDIO (MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t *value);
+bool MDR_ETH_WriteMDIO(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t value);  
+
+bool MDR_ETH_MDIO_GetMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
+void MDR_ETH_MDIO_WaitMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
+
+__STATIC_INLINE bool MDR_ETH_GetAutonegCompleted(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)  
+{ 
+  return MDR_ETH_MDIO_GetMaskSet(MDR_Eth, addrPHY, MDR_ETH_PHY_R1, MDR_ETH_PHY_R1_AutonegReady_Msk);
+}
+
+__STATIC_INLINE bool MDR_ETH_GetLinkUp(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)  
+{ 
+  return MDR_ETH_MDIO_GetMaskSet(MDR_Eth, addrPHY, MDR_ETH_PHY_R1, MDR_ETH_PHY_R1_Link_Msk);
+}
+
+__STATIC_INLINE void MDR_ETH_WaitAutonegCompleted(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)
+{ 
+  MDR_ETH_MDIO_WaitMaskSet(MDR_Eth, addrPHY, MDR_ETH_PHY_R1, MDR_ETH_PHY_R1_AutonegReady_Msk);
+}  
+
+__STATIC_INLINE void MDR_ETH_WaitLinkUp(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)
+{ 
+  MDR_ETH_MDIO_WaitMaskSet(MDR_Eth, addrPHY, MDR_ETH_PHY_R1, MDR_ETH_PHY_R1_Link_Msk);
+}  
+
+
 
 #endif // MDR_ETHERNET_H
 

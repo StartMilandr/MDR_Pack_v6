@@ -289,8 +289,8 @@ typedef struct {
 
 /* =======================================================  MDIO_CTRL  ======================================================= */
 typedef enum {                                  /*!< MDR_ETH1_MDIO_CTRL_OP                                                     */
-  MDR_ETH_MDIO_CTRL_OP_RD             = 0,      /*!< RD : MDIO Read                                                            */
-  MDR_ETH_MDIO_CTRL_OP_WR             = 1,      /*!< WR : MDIO Write                                                           */
+  MDR_ETH_MDIO_CTRL_OP_WR             = 0,      /*!< WR : MDIO Write                                                           */  
+  MDR_ETH_MDIO_CTRL_OP_RD             = 1,      /*!< RD : MDIO Read                                                            */
 } MDR_ETH_MDIO_CTRL_OP;
 
 typedef struct {

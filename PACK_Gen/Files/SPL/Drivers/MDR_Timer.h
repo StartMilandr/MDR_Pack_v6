@@ -76,6 +76,7 @@ extern const MDR_TIMER_TypeEx    _MDR_TIMER2ex;
 //=====================   Управление прерываниями   ==================
 __STATIC_INLINE void     MDR_Timer_ClearEvent(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->STATUS = ~eventFlags;}
 __STATIC_INLINE uint32_t MDR_Timer_GetStatus(MDR_TIMER_Type *TIMERx) {return TIMERx->STATUS;}
+__STATIC_INLINE bool     MDR_Timer_IsEventsSet(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {return (TIMERx->STATUS & eventFlags) == eventFlags;}
 
 __STATIC_INLINE void MDR_Timer_EnableEventIQR (MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->IE |= eventFlags;}
 __STATIC_INLINE void MDR_Timer_DisableEventIQR(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->IE &= ~eventFlags;}

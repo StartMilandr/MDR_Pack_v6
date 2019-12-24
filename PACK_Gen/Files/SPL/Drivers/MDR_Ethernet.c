@@ -54,6 +54,8 @@ void MDR_Eth_Init(MDR_ETH_Type *MDR_Eth, const MDR_ETH_InitCfg *cfg)
 //	MDR_Eth->R_HEAD			= MDR_Eth->R_TAIL;
 //	MDR_Eth->X_TAIL			= MDR_Eth->X_HEAD;
 
+  MDR_Eth->MDIO_CTRL = cfgRegs->MDIO_CTRL;
+
   MDR_Eth->G_CFGH = cfgRegs->G_CFGH;
   MDR_Eth->G_CFGL = cfgRegs->G_CFGL;
   MDR_Eth->R_CFG  = cfgRegs->R_CFG;
@@ -138,56 +140,6 @@ MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrameByPTR(MDR_ETH_Type *MDR_Eth, uint8_t *fr
   return result;
 }
 
-
-//MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrameByPTR(MDR_ETH_Type *MDR_Eth, uint8_t *frame, bool doSetRxHead)
-//{
-//  //  Get BuffPTR
-//  uint32_t buffStartAddr = ((uint32_t)MDR_Eth) + MDR_ETH_TO_BUFF_OFFSET;  
-//  uint32_t rdHead  = MDR_Eth->R_HEAD;
-//  uint32_t *pBuff32 = (uint32_t *)(buffStartAddr + rdHead);
-//  //  Buff Length
-//  uint32_t delim = MDR_Eth->DELIMETER;    
-//  uint32_t buffSise32 = delim >> 2;
-//  
-//  //  Read Receive Status Word and get Frame_Length
-//  MDR_ETH_FrameStatusRX result;
-//  result.Status = *pBuff32++;
-//  uint32_t frameLen32 = (result.Fields.Length + 3) >> 2;
-
-//  //  Read Cycle vars
-//  uint32_t i;
-//  uint32_t *pFrame32 = (uint32_t *)frame;
-//  
-//  if ((rdHead + (frameLen32 << 2)) < delim)
-//  {
-//    for (i = 0; i < frameLen32; ++i)
-//      *pFrame32++ = *pBuff32++;
-//  }
-//  else
-//  {
-//    uint32_t cnt;
-//    cnt = buffSise32 - (rdHead >> 2) - 1;
-//    for (i = 0; i < cnt; ++i)
-//      *pFrame32++ = *pBuff32++;
-//    
-//    pBuff32 = (uint32_t *)(buffStartAddr);
-//    cnt = frameLen32 - cnt;
-//    for (i = 0; i < cnt; ++i)
-//      *pFrame32++ = *pBuff32++;
-//  }
-//  
-//  if  (doSetRxHead)
-//  {
-//    rdHead = (uint32_t)pBuff32 - buffStartAddr;
-//    if (rdHead < delim)
-//      MDR_Eth->R_HEAD = rdHead;
-//    else
-//      MDR_Eth->R_HEAD = 0;
-//  }
-
-//  MDR_ETH_DecCountRx(MDR_Eth);
-//  return result;
-//}
 
 void MDR_ETH_SendFrameByPTR(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, bool doSetTxTail)
 {

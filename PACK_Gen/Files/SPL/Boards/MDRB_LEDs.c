@@ -1,5 +1,6 @@
 #include "MDRB_LEDs.h"
 
+//  ===============   Boards LED Control  ============
 void MDRB_LED_Init(uint32_t LEDs_Sel)
 {	
   // Clock Enable	
@@ -126,3 +127,30 @@ uint32_t MDRB_LED_NumToSel(uint32_t num)
     
   return LEDs_Sel;
 }
+
+
+#ifdef USE_BOARD_VE1 
+  //  ===============   Ethernet Boards LED Control  ============
+  void MDRB_LED_ETH1_Init(uint32_t LEDs_Sel)
+  {	
+    // Clock Enable	
+    MDR_GPIO_Enable(MDRB_LED_ETH1_GPIO);
+    
+    // Pins Init
+    MDR_GPIO_Init_PortOUT(MDRB_LED_ETH1_GPIO, LEDs_Sel & MDRB_LED_ETH1_PinAll, MDR_PIN_SLOW);
+  }
+
+  void MDRB_LED_ETH1_Set(uint32_t LEDs_Sel, bool isOn)
+  {
+    if (isOn)
+      MDR_GPIO_SetPins(MDRB_LED_ETH1_GPIO, LEDs_Sel);
+    else
+      MDR_GPIO_ClearPins(MDRB_LED_ETH1_GPIO, LEDs_Sel);
+  }
+
+  void MDRB_LED_ETH1_Toggle(uint32_t LEDs_Sel)
+  {
+    MDR_GPIO_TogglePins(MDRB_LED_ETH1_GPIO, LEDs_Sel);
+  }	
+#endif
+

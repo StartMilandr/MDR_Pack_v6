@@ -48,8 +48,8 @@
     #define PIN_PB11    MDR_Pin_11  //                    T2_nCH2
     #define PIN_PB12    MDR_Pin_12  //                    T1_nCH3
     #define PIN_PB13    MDR_Pin_13  //                    T2_nCH3
-    #define PIN_PB14    MDR_Pin_14  //                    T1_nCH4
-    #define PIN_PB15    MDR_Pin_15  //                    T2_nCH4
+    #define PIN_PB14    MDR_Pin_14  //  LED_ETH_Yellow    T1_nCH4
+    #define PIN_PB15    MDR_Pin_15  //  LED_ETH_Green     T2_nCH4
 
 
     #define PIN_PC0     MDR_Pin_0   //          LCD_RW
@@ -157,6 +157,14 @@
     #define MDRB_LED_GPIO           MDR_GPIO_D
     #define MDRB_LED_PinAll        (MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4  \
                                   | MDRB_LED_5 | MDRB_LED_6 | MDRB_LED_7 | MDRB_LED_8)
+
+
+//  ----------    Ethernet LEDs Definition ------------- 
+    #define MDRB_LED_ETH1_YELLOW     PIN_PB14    // VD6
+    #define MDRB_LED_ETH1_GREEN      PIN_PB15    // VD7
+  
+    #define MDRB_LED_ETH1_GPIO       MDR_GPIO_B
+    #define MDRB_LED_ETH1_PinAll     (MDRB_LED_ETH1_YELLOW | MDRB_LED_ETH1_GREEN)
 
 
 //  ----------    LCD Definition -------------

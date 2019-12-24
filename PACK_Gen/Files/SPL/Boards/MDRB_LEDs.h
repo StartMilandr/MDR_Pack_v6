@@ -25,5 +25,11 @@ uint32_t 	LED_GetCount (void);
 void 			LED_Toggle (uint32_t index);
  
 
+#ifdef USE_BOARD_VE1 
+  //  ===============   Ethernet Boards LED Control  ============
+  void MDRB_LED_ETH1_Init(uint32_t LEDs_Sel);
+  void MDRB_LED_ETH1_Set(uint32_t LEDs_Sel, bool isOn);
+  void MDRB_LED_ETH1_Toggle(uint32_t LEDs_Sel);
+#endif
 
 #endif //_MDRB_LEDS_H

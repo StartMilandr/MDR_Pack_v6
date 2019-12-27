@@ -1,0 +1,23 @@
+LWIP-MIB DEFINITIONS ::= BEGIN
+-- Top-level infrastructure of the LWIP-SNMP projects enterprise MIB tree
+-- Title: LWIP TOP LEVEL MIB
+-- Version : 1.0
+-- Revision History:
+-- *************************************************************************
+-- 27/12/2019 - v1.0 Create base functionality
+-- Thanks to https://www.ibm.com/developerworks/ru/library/snmp_essentials_02/index.html
+ 
+IMPORTS
+    MODULE-IDENTITY, enterprises FROM SNMPv2-SMI;
+ 
+lwip MODULE-IDENTITY
+    LAST-UPDATED    "201912270000Z"
+    ORGANIZATION    "LWIP"
+    CONTACT-INFO    
+     "email:    info@LWIP.com"
+    DESCRIPTION     "Top-level MIB .1.3.6.1.4.1.26381"
+    REVISION        "201912270000Z"
+    DESCRIPTION     "First draft"
+::= { enterprises 26381 }
+ 
+END

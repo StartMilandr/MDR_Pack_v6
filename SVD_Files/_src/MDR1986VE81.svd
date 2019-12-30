@@ -1959,6 +1959,537 @@
     <!-- #FTMODE -->
     <!-- #WDT -->
     <!-- #EBC -->
+    <!-- EBC -->
+    <peripheral>
+      <name>MDR_ExtBus</name>
+      <version>1.0</version>
+      <description>External Bus Controler</description>
+      <groupName>Bus Controller</groupName>
+      <baseAddress>0x40005000</baseAddress>
+      <size>32</size>
+      <access>read-write</access>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0xA0</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <!-- KEY -->
+        <register>
+          <name>KEY</name>
+          <description>Unlock Block registers</description>
+          <addressOffset>0x00000000</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000003</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- CNTR_REGN0 -->
+        <register>
+          <name>CNTR_Regn0</name>
+          <description>Region_0 (0x1000_0000) Control</description>
+          <addressOffset>0x00000004</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFEFFFFFF</resetMask>
+          <fields>
+            <!-- #CTRL_REG_VE8 -->      
+            <!--En-->
+            <field>
+              <name>EN</name>
+              <description>Region enable</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--ECC_EN-->
+            <field derivedFrom="EN">
+              <name>ECC_EN</name>
+              <description>ECC Enable</description>
+              <bitRange>[1:1]</bitRange>
+            </field>     
+            <!--ECC_MODE-->
+            <field>
+              <name>ECC_MODE</name>
+              <description>ECC Mode</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Parallel</name><description>ECC and data in the same addresses</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Sequential</name><description>ECC in separate address subregion</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--RDY_Wait-->
+            <field derivedFrom="EN">
+              <name>RDY_WAIT</name>
+              <description>Wait for READY signal</description>
+              <bitRange>[3:3]</bitRange>
+            </field> 
+            <!--Mode-->
+            <field>
+              <name>MODE</name>
+              <description>Data bus width</description>
+              <bitRange>[5:4]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>DataBus_32</name><description>32-bit data bus width</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>DataBus_16</name><description>16-bit data bus width</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>DataBus_8</name><description>8-bit data bus width</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>DataBus_64</name><description>64-bit data bus width</description><value>3</value></enumeratedValue>
+              </enumeratedValues>
+            </field> 
+            <!--ROM-->
+            <field derivedFrom="EN">
+              <name>ROM</name>
+              <description>Read Only bus</description>
+              <bitRange>[6:6]</bitRange>
+            </field> 
+            <!--CPOL-->
+            <field>
+              <name>CPOL</name>
+              <description>Clock at Active phase</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>Rise</name><description>Rise front</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>Fall</name><description>Fall front</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field> 
+            <!--WS_ACTIVE-->
+            <field>
+              <name>WS_ACTIVE</name>
+              <description>Active phase duration</description>
+              <bitRange>[15:8]</bitRange>
+            </field> 
+            <!--WS_ACTIVE-->
+            <field>
+              <name>WS_SETUP</name>
+              <description>Setup phase duration</description>
+              <bitRange>[19:16]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>HCLK_1</name><description>Phase Duration</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_2</name><description>Phase Duration</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_3</name><description>Phase Duration</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_4</name><description>Phase Duration</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_5</name><description>Phase Duration</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_6</name><description>Phase Duration</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_7</name><description>Phase Duration</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_8</name><description>Phase Duration</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_9</name><description>Phase Duration</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_10</name><description>Phase Duration</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_11</name><description>Phase Duration</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_12</name><description>Phase Duration</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_13</name><description>Phase Duration</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_14</name><description>Phase Duration</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_15</name><description>Phase Duration</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>HCLK_16</name><description>Phase Duration</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--WS_HOLD-->
+            <field derivedFrom="WS_SETUP">
+              <name>WS_HOLD</name>
+              <description>Hold phase duration</description>
+              <bitRange>[23:20]</bitRange>
+            </field>
+            <!--Cachable-->
+            <field derivedFrom="EN">
+              <name>CACHABLE</name>
+              <description>Read Only bus</description>
+              <bitRange>[25:25]</bitRange>
+            </field> 
+            <!--Read32-->
+            <field derivedFrom="EN">
+              <name>READ_32</name>
+              <description>Operate with 32-bit values</description>
+              <bitRange>[26:26]</bitRange>
+            </field> 
+            <!--OCLK_En-->
+            <field derivedFrom="EN">
+              <name>OCLK_EN</name>
+              <description>Enable OCLK output signal</description>
+              <bitRange>[27:27]</bitRange>
+            </field>
+            <!--WS_ACTIVE-->
+            <field>
+              <name>OCLK_DIV</name>
+              <description>OCLK Prescaller</description>
+              <bitRange>[31:28]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue><name>DIV_1</name><description>OCLK Prescaller</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>DIV_2</name><description>OCLK Prescaller</description><value>1</value></enumeratedValue>
+                <enumeratedValue><name>DIV_3</name><description>OCLK Prescaller</description><value>2</value></enumeratedValue>
+                <enumeratedValue><name>DIV_4</name><description>OCLK Prescaller</description><value>3</value></enumeratedValue>
+                <enumeratedValue><name>DIV_5</name><description>OCLK Prescaller</description><value>4</value></enumeratedValue>
+                <enumeratedValue><name>DIV_6</name><description>OCLK Prescaller</description><value>5</value></enumeratedValue>
+                <enumeratedValue><name>DIV_7</name><description>OCLK Prescaller</description><value>6</value></enumeratedValue>
+                <enumeratedValue><name>DIV_8</name><description>OCLK Prescaller</description><value>7</value></enumeratedValue>
+                <enumeratedValue><name>DIV_9</name><description>OCLK Prescaller</description><value>8</value></enumeratedValue>
+                <enumeratedValue><name>DIV_10</name><description>OCLK Prescaller</description><value>9</value></enumeratedValue>
+                <enumeratedValue><name>DIV_11</name><description>OCLK Prescaller</description><value>10</value></enumeratedValue>
+                <enumeratedValue><name>DIV_12</name><description>OCLK Prescaller</description><value>11</value></enumeratedValue>
+                <enumeratedValue><name>DIV_13</name><description>OCLK Prescaller</description><value>12</value></enumeratedValue>
+                <enumeratedValue><name>DIV_14</name><description>OCLK Prescaller</description><value>13</value></enumeratedValue>
+                <enumeratedValue><name>DIV_15</name><description>OCLK Prescaller</description><value>14</value></enumeratedValue>
+                <enumeratedValue><name>DIV_16</name><description>OCLK Prescaller</description><value>15</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>  
+        <!-- CNTR_REGN1 -->
+        <register>
+          <name>CNTR_Regn1</name>
+          <description>Region_1 (0x1800_0000) Control</description>
+          <addressOffset>0x00000008</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0x6FFFFFF</resetMask>
+          <fields>
+          <!-- #CTRL_REG_VE8 --> 
+          <!--En-->
+          <field>
+            <name>EN</name>
+            <description>Region enable</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+              <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!--ECC_EN-->
+          <field derivedFrom="EN">
+            <name>ECC_EN</name>
+            <description>ECC Enable</description>
+            <bitRange>[1:1]</bitRange>
+          </field>     
+          <!--ECC_MODE-->
+          <field>
+            <name>ECC_MODE</name>
+            <description>ECC Mode</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue><name>Parallel</name><description>ECC and data in the same addresses</description><value>0</value></enumeratedValue>
+              <enumeratedValue><name>Sequential</name><description>ECC in separate address subregion</description><value>1</value></enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!--RDY_Wait-->
+          <field derivedFrom="EN">
+            <name>RDY_WAIT</name>
+            <description>Wait for READY signal</description>
+            <bitRange>[3:3]</bitRange>
+          </field> 
+          <!--Mode-->
+          <field>
+            <name>MODE</name>
+            <description>Data bus width</description>
+            <bitRange>[5:4]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue><name>DataBus_32</name><description>32-bit data bus width</description><value>0</value></enumeratedValue>
+              <enumeratedValue><name>DataBus_16</name><description>16-bit data bus width</description><value>1</value></enumeratedValue>
+              <enumeratedValue><name>DataBus_8</name><description>8-bit data bus width</description><value>2</value></enumeratedValue>
+              <enumeratedValue><name>DataBus_64</name><description>64-bit data bus width</description><value>3</value></enumeratedValue>
+            </enumeratedValues>
+          </field> 
+          <!--ROM-->
+          <field derivedFrom="EN">
+            <name>ROM</name>
+            <description>Read Only bus</description>
+            <bitRange>[6:6]</bitRange>
+          </field> 
+          <!--CPOL-->
+          <field>
+            <name>CPOL</name>
+            <description>Clock at Active phase</description>
+            <bitRange>[7:7]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue><name>Rise</name><description>Rise front</description><value>0</value></enumeratedValue>
+              <enumeratedValue><name>Fall</name><description>Fall front</description><value>1</value></enumeratedValue>
+            </enumeratedValues>
+          </field> 
+          <!--WS_ACTIVE-->
+          <field>
+            <name>WS_ACTIVE</name>
+            <description>Active phase duration</description>
+            <bitRange>[15:8]</bitRange>
+          </field> 
+          <!--WS_ACTIVE-->
+          <field>
+            <name>WS_SETUP</name>
+            <description>Setup phase duration</description>
+            <bitRange>[19:16]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue><name>HCLK_1</name><description>Phase Duration</description><value>0</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_2</name><description>Phase Duration</description><value>1</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_3</name><description>Phase Duration</description><value>2</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_4</name><description>Phase Duration</description><value>3</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_5</name><description>Phase Duration</description><value>4</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_6</name><description>Phase Duration</description><value>5</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_7</name><description>Phase Duration</description><value>6</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_8</name><description>Phase Duration</description><value>7</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_9</name><description>Phase Duration</description><value>8</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_10</name><description>Phase Duration</description><value>9</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_11</name><description>Phase Duration</description><value>10</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_12</name><description>Phase Duration</description><value>11</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_13</name><description>Phase Duration</description><value>12</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_14</name><description>Phase Duration</description><value>13</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_15</name><description>Phase Duration</description><value>14</value></enumeratedValue>
+              <enumeratedValue><name>HCLK_16</name><description>Phase Duration</description><value>15</value></enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!--WS_HOLD-->
+          <field derivedFrom="WS_SETUP">
+            <name>WS_HOLD</name>
+            <description>Hold phase duration</description>
+            <bitRange>[23:20]</bitRange>
+          </field>
+          <!--Cachable-->
+          <field derivedFrom="EN">
+            <name>CACHABLE</name>
+            <description>Read Only bus</description>
+            <bitRange>[25:25]</bitRange>
+          </field> 
+          <!--Read32-->
+          <field derivedFrom="EN">
+            <name>READ_32</name>
+            <description>Operate with 32-bit values</description>
+            <bitRange>[26:26]</bitRange>
+          </field> 
+          </fields>
+        </register>
+        <!-- CNTR_REGIONS -->
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn2</name>
+          <description>Region_2 (0x5000_0000) Control</description>
+          <addressOffset>0x0000000C</addressOffset>
+        </register>
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn3</name>
+          <description>Region_3 (0x5800_0000) Control</description>
+          <addressOffset>0x00000010</addressOffset>
+        </register>
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn4</name>
+          <description>Region_4 (0x6000_0000) Control</description>
+          <addressOffset>0x00000014</addressOffset>
+        </register>
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn5</name>
+          <description>Region_5 (0x6800_0000) Control</description>
+          <addressOffset>0x00000018</addressOffset>
+        </register>
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn6</name>
+          <description>Region_6 (0x7000_0000) Control</description>
+          <addressOffset>0x0000001C</addressOffset>
+        </register>
+        <register derivedFrom="CNTR_Regn1">
+          <name>CNTR_Regn7</name>
+          <description>Region_7 (0x8000_0000) Control</description>
+          <addressOffset>0x00000020</addressOffset>
+        </register>
+        <!-- CNTR_ECCBASE -->
+        <register>
+          <name>ECC_Base0</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000024</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>      
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base1</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000028</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base2</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x0000002C</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base3</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000030</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base4</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000034</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base5</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000038</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base6</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x0000003C</addressOffset>
+        </register>
+        <register derivedFrom="ECC_Base0">
+          <name>ECC_Base7</name>
+          <description>Base address for sequential ECC</description>
+          <addressOffset>0x00000040</addressOffset>
+        </register>
+        <!-- ECC_CS0 -->
+        <register>
+          <name>ECC_CS0</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000044</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <!--SECC-->
+            <field>
+              <name>SECC</name>
+              <description>Signle error detected</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+                <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <!--DECC-->
+            <field derivedFrom="SECC">
+              <name>DECC</name>
+              <description>Double error detected</description>
+              <bitRange>[1:1]</bitRange>
+            </field>     
+            <!--SECC_IE-->
+            <field derivedFrom="SECC">
+              <name>SECC_IE</name>
+              <description>Single error IRQ enable</description>
+              <bitRange>[2:2]</bitRange>
+            </field>
+            <!--DECC_IE-->
+            <field derivedFrom="SECC">
+              <name>DECC_IE</name>
+              <description>Double error IRQ enable</description>
+              <bitRange>[3:3]</bitRange>
+            </field> 
+            <!--FIX_SECC-->
+            <field derivedFrom="SECC">
+              <name>FIX_SECC</name>
+              <description>Log Single Error to regs</description>
+              <bitRange>[4:4]</bitRange>
+            </field> 
+            <!--FIX_DECC-->
+            <field derivedFrom="SECC">
+              <name>FIX_DECC</name>
+              <description>Log Double Error to regs</description>
+              <bitRange>[5:5]</bitRange>
+            </field>
+            <!--CLR_SECC_CNT-->
+            <field derivedFrom="SECC">
+              <name>CLR_SECC_CNT</name>
+              <description>Clear Sigle error counter</description>
+              <bitRange>[6:6]</bitRange>
+            </field>
+            <!--CLR_DECC_CNT-->
+            <field derivedFrom="SECC">
+              <name>CLR_DECC_CNT</name>
+              <description>Clear Double error counter</description>
+              <bitRange>[7:7]</bitRange>
+            </field>
+            <!--DECC_CNT-->
+            <field>
+              <name>DECC_CNT</name>
+              <description>Double error counter</description>
+              <bitRange>[15:8]</bitRange>
+            </field>
+            <!--SECC_CNT-->
+            <field>
+              <name>SECC_CNT</name>
+              <description>Single error counter</description>
+              <bitRange>[31:16]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS1</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000048</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS2</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x0000004C</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS3</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000050</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS4</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000054</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS5</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000058</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS6</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x0000005C</addressOffset>
+        </register>
+        <register derivedFrom="ECC_CS0">
+          <name>ECC_CS7</name>
+          <description>ECC region Control and Status</description>
+          <addressOffset>0x00000060</addressOffset>
+        </register>
+        <!-- ECC_ADR -->
+        <register>
+          <name>ECC_ADR</name>
+          <description>Last ECC error address</description>
+          <addressOffset>0x00000094</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- ECC_DATA -->
+        <register>
+          <name>ECC_DATA</name>
+          <description>Last ECC error Data</description>
+          <addressOffset>0x00000098</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+        </register>
+        <!-- ECC_ECC -->
+        <register>
+          <name>ECC_ECC</name>
+          <description>Last ECC error ECC</description>
+          <addressOffset>0x0000009C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <resetMask>0xFFFFFFFF</resetMask>
+          <fields>
+            <field>
+              <name>ECC</name>
+              <description>Last wrong ECC</description>
+              <bitRange>[7:0]</bitRange>
+              <access>read-write</access>
+            </field>
+          </fields>  
+        </register>    
+        <!-- Registers end-->
+      </registers>
+      <!-- peripheral end-->
+    </peripheral>
     <!-- #OTP -->
     <!--OTP-->
     <peripheral>

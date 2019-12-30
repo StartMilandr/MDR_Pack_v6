@@ -2,7 +2,19 @@
 CMSIS-SVD SVD Consistency Checker / Header File Generator V3.3.18
 Copyright (C) 2010 - 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
 
-Arguments: "../_src/MDR1986VE8.svd" -x "M347" -o "out" -b "out/logVE8.txt" --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr 
+Arguments: "../_src/MDR1986VE8.svd" -o "out" -b "out/logVE8.txt" --generate=header --fields=struct --fields=enum --fields=macro --generate=sfr 
+
+*** INFO M347: ../_src/MDR1986VE8.svd (Line 7297) 
+  Field 'RtryCnt' (width < 6Bit) without any <enumeratedValue> found.
+
+*** INFO M347: ../_src/MDR1986VE8.svd (Line 7572) 
+  Field 'REG_Addr' (width < 6Bit) without any <enumeratedValue> found.
+
+*** INFO M347: ../_src/MDR1986VE8.svd (Line 7577) 
+  Field 'DIV' (width < 6Bit) without any <enumeratedValue> found.
+
+*** INFO M347: ../_src/MDR1986VE8.svd (Line 7582) 
+  Field 'PHY_Addr' (width < 6Bit) without any <enumeratedValue> found.
 
 *** INFO M356: ../_src/MDR1986VE8.svd
   No Interrupt definitions found.

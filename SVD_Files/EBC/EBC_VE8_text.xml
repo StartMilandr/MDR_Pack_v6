@@ -1,0 +1,112 @@
+#CTRL_REG_VE8
+<!--En-->
+<field>
+  <name>EN</name>
+  <description>Region enable</description>
+  <bitRange>[0:0]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <enumeratedValue><name>Off</name><description>Disable</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>On</name><description>Enable</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<!--ECC_EN-->
+<field derivedFrom="EN">
+  <name>ECC_EN</name>
+  <description>ECC Enable</description>
+  <bitRange>[1:1]</bitRange>
+</field>     
+<!--ECC_MODE-->
+<field>
+  <name>ECC_MODE</name>
+  <description>ECC Mode</description>
+  <bitRange>[2:2]</bitRange>
+  <access>read-write</access>
+  <enumeratedValues>
+    <enumeratedValue><name>Parallel</name><description>ECC and data in the same addresses</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Sequential</name><description>ECC in separate address subregion</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<!--RDY_Wait-->
+<field derivedFrom="EN">
+  <name>RDY_WAIT</name>
+  <description>Wait for READY signal</description>
+  <bitRange>[3:3]</bitRange>
+</field> 
+<!--Mode-->
+<field>
+  <name>MODE</name>
+  <description>Data bus width</description>
+  <bitRange>[5:4]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>DataBus_32</name><description>32-bit data bus width</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>DataBus_16</name><description>16-bit data bus width</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>DataBus_8</name><description>8-bit data bus width</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>DataBus_64</name><description>64-bit data bus width</description><value>3</value></enumeratedValue>
+  </enumeratedValues>
+</field> 
+<!--ROM-->
+<field derivedFrom="EN">
+  <name>ROM</name>
+  <description>Read Only bus</description>
+  <bitRange>[6:6]</bitRange>
+</field> 
+<!--CPOL-->
+<field>
+  <name>CPOL</name>
+  <description>Clock at Active phase</description>
+  <bitRange>[7:7]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>Rise</name><description>Rise front</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>Fall</name><description>Fall front</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field> 
+<!--WS_ACTIVE-->
+<field>
+  <name>WS_ACTIVE</name>
+  <description>Active phase duration</description>
+  <bitRange>[15:8]</bitRange>
+</field> 
+<!--WS_ACTIVE-->
+<field>
+  <name>WS_SETUP</name>
+  <description>Setup phase duration</description>
+  <bitRange>[19:16]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>HCLK_1</name><description>Phase Duration</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_2</name><description>Phase Duration</description><value>1</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_3</name><description>Phase Duration</description><value>2</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_4</name><description>Phase Duration</description><value>3</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_5</name><description>Phase Duration</description><value>4</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_6</name><description>Phase Duration</description><value>5</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_7</name><description>Phase Duration</description><value>6</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_8</name><description>Phase Duration</description><value>7</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_9</name><description>Phase Duration</description><value>8</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_10</name><description>Phase Duration</description><value>9</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_11</name><description>Phase Duration</description><value>10</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_12</name><description>Phase Duration</description><value>11</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_13</name><description>Phase Duration</description><value>12</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_14</name><description>Phase Duration</description><value>13</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_15</name><description>Phase Duration</description><value>14</value></enumeratedValue>
+    <enumeratedValue><name>HCLK_16</name><description>Phase Duration</description><value>15</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<!--WS_HOLD-->
+<field derivedFrom="WS_SETUP">
+  <name>WS_HOLD</name>
+  <description>Hold phase duration</description>
+  <bitRange>[23:20]</bitRange>
+</field>
+<!--Cachable-->
+<field derivedFrom="EN">
+  <name>CACHABLE</name>
+  <description>Read Only bus</description>
+  <bitRange>[25:25]</bitRange>
+</field> 
+<!--Read32-->
+<field derivedFrom="EN">
+  <name>READ_32</name>
+  <description>Operate with 32-bit values</description>
+  <bitRange>[26:26]</bitRange>
+</field> 
+

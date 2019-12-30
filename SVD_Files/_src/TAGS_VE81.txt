@@ -9,6 +9,7 @@ f7=../DMA/DMA_VE8ES.xml
 f8=../OTP/OTP_VE81.txt
 f9=../CAN/CAN_VE8.txt
 f10=../ETH/ETH_VE8.txt
+f11=../EBC/EBC_VE8.txt
 
 [TAGS]
 #RST=f1
@@ -23,6 +24,7 @@ f10=../ETH/ETH_VE8.txt
 #OTP=f8
 #CANs=f9
 #ETHERNETs=f10
+#EBC=f11
 
 [TAGS_New]
 #PWR=
@@ -31,8 +33,6 @@ f10=../ETH/ETH_VE8.txt
 #FTMODE_R=
 #WDT=
 #WDT_R=
-#EBC=
-#EBC_R=
 #RAMD=
 #RAMD_R=
 #ROM=

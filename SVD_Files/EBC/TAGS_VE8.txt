@@ -1,0 +1,7 @@
+[FILES]
+f1=EBC_VE8_text.xml
+
+[TAGS]
+#CTRL_REG_VE8=f1
+
+[TAGS_New]

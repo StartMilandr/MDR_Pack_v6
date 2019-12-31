@@ -233,6 +233,9 @@ typedef enum
 /*=========  Ethernet ========*/
 #include <MDR_ETH_VE8_defs.h>
 
+/*=========  ExtBus ========*/
+#include <MDR_EBC_VE8_defs.h>
+
 /*@}*/ /* end of group MDR1986VE8_Peripherals */
 
 
@@ -294,6 +297,10 @@ typedef enum
 #define ADDR_CAN1_BASE        0x40090000UL
 
 #define ADDR_ETH1_BASE        0x21008000UL
+
+#define ADDR_EBC_BASE         0x40005000UL
+
+
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -371,6 +378,18 @@ typedef enum
 #define MDR_CAN1                       ((MDR_CAN_Type       *)  ADDR_CAN1_BASE)
 
 #define MDR_ETH1                       ((MDR_ETH_Type       *)  ADDR_ETH1_BASE)
+
+#define MDR_EBC                        ((MDR_EBC_Type       *)  ADDR_EBC_BASE)
+#define MDR_EBC_RGN0_EX                ((MDR_EBC_RGN0_Type 	*) (&MDR_EBC->CNTR_RGN0))
+#define MDR_EBC_RGN0                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN0))
+#define MDR_EBC_RGN1                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN1))
+#define MDR_EBC_RGN2                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN2))
+#define MDR_EBC_RGN3                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN3))
+#define MDR_EBC_RGN4                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN4))
+#define MDR_EBC_RGN5                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN5))
+#define MDR_EBC_RGN6                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN6))
+#define MDR_EBC_RGN7                   ((MDR_EBC_RGN_Type 	*) (&MDR_EBC->CNTR_RGN7))
+#define MDR_EBC_ECC_ERR             ((MDR_EBC_ECC_ERR_Type 	*) (&MDR_EBC->ECC_ADR))
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */
@@ -519,6 +538,26 @@ typedef enum
 
 #define  MDR_DMA_CH_SREQ_DAC1          66
 #define  MDR_DMA_CH_SREQ_DAC2          67
+
+//----------------    EBC Definitions  --------------------
+#define MDR_EBC_RGN0_START_ADDR       0x10000000
+#define MDR_EBC_RGN1_START_ADDR       0x18000000
+#define MDR_EBC_RGN2_START_ADDR       0x50000000
+#define MDR_EBC_RGN3_START_ADDR       0x58000000
+#define MDR_EBC_RGN4_START_ADDR       0x60000000
+#define MDR_EBC_RGN5_START_ADDR       0x68000000
+#define MDR_EBC_RGN6_START_ADDR       0x70000000
+#define MDR_EBC_RGN7_START_ADDR       0x80000000
+
+#define MDR_EBC_RGN0_LEN              0x08000000
+#define MDR_EBC_RGN1_LEN              0x08000000
+#define MDR_EBC_RGN2_LEN              0x08000000
+#define MDR_EBC_RGN3_LEN              0x08000000
+#define MDR_EBC_RGN4_LEN              0x08000000
+#define MDR_EBC_RGN5_LEN              0x08000000
+#define MDR_EBC_RGN6_LEN              0x10000000
+#define MDR_EBC_RGN7_LEN              0x60000000
+
 
 
 /** @} */ /* End of group MDR1986VE8 */

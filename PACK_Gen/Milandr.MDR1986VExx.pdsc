@@ -1072,6 +1072,12 @@
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
+    </condition>
+    <condition id="CON_MDR_EBC_VE8">
+      <description>Devices with Ethernet Block</description>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
     </condition> 
 
     <!--condition id="CON_MDR_CM0VK">
@@ -1508,7 +1514,16 @@
         <file category="header"  name="SPL/Drivers/MDR_Ethernet_Cfg1.h" attr="config" version="2.0.0"/>
       </files>
     </component> 
-
+    <!-- External BUS -->
+    <component Cclass="Drivers" Cgroup="ExtBus" Cversion="2.0" condition="CON_MDR_EBC_VE8">
+      <description>External Bus driver</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_EBC.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_EBC.c"/>
+        <file category="header"  name="SPL/Drivers/MDR_EBC_VE8_Cfg0.h" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_EBC_VE8_Cfg1.h" attr="config" version="2.0.0"/>
+      </files>
+    </component> 
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
       <description>LED flasher control</description>
@@ -1602,7 +1617,7 @@
       </files>
     </component>
     <component Cclass="Board Support" Cgroup="SSP_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>UART pins definitions</description>
+      <description>SSP pins definitions</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
@@ -1613,13 +1628,23 @@
       </files>
     </component>    
     <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>UART pins definitions</description>
+      <description>Timer pins definitions</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
         <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
         <file category="include" name="SPL/Boards/"               version="2.0.0"/>      
         <file category="header"  name="SPL/Boards/MDRB_Timer_PinSelect.h" version="2.0.0"/>
         <file category="source"  name="SPL/Boards/MDRB_Timer_PinSelect.c" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Board Support" Cgroup="ExtBus" Cversion="2.0" condition="CON_MDR_EBC_VE8">
+      <description>External Bus</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/"      version="2.0.0"/>
+        <file category="include" name="SPL/Boards/Defines/"       version="2.0.0"/>
+        <file category="include" name="SPL/Boards/"               version="2.0.0"/>      
+        <file category="header"  name="SPL/Boards/MDRB_EBC.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Boards/MDRB_EBC.c" version="2.0.0"/>
       </files>
     </component>
 

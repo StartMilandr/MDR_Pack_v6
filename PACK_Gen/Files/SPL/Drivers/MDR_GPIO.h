@@ -377,6 +377,8 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
 
   #define MDR_GPIO_InitDig(GP, Sel, IO, F, pPerm)     MDR_Port_InitDig((GP)->PORTx, (Sel), (IO), (F), (pPerm))
   #define MDR_GPIO_InitDigPin(GP, Ind, IO, F, pPerm)  MDR_Port_InitDigPin((GP)->PORTx, (Ind), (IO), (F), (pPerm))
+  
+  #define MDR_GPIO_InitDigFunc(GP, Sel, Pull, F, pPerm)     MDR_Port_InitDigFunc((GP)->PORTx, (Sel), (Pull), (F), (pPerm)) 
 
   #define MDR_GPIO_ToCfgRegs                    MDR_Port_ToCfgRegs
   #define MDR_GPIO_MaskClear                    MDR_Port_MaskClear

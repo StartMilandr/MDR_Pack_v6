@@ -475,7 +475,7 @@ typedef struct
 #define ADDR_CAN1_BASE        0x4008B000UL
 #define ADDR_CAN2_BASE        0x4008C000UL
 
-#define ADDR_ETH1_BASE        0x21008000UL
+#define ADDR_ETH1_BASE        0x21000000UL
 
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
@@ -875,11 +875,11 @@ typedef struct
 #define  MDR_DMA_CH_SREQ_FULL_ADC00    MDR_DMA_CH_REQ_FULL_ADC00 
 
 
+//  Ethernet
+#define MDR_ETH_CLK_EN_REG    ETH_CLK
+#define MDR_ETH_CLK_EN_MASK   MDR_RST_ASYNC_CLK_CLK_EN_Msk
 
-
-
-
-
+#define MDR_ETH_HAS_MII_RMII
 
 
 /** @} */ /* End of group ESila */

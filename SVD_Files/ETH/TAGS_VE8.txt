@@ -18,3 +18,5 @@ f1=ETH_Text.xml
 [TAGS_New]
 #ETH2=
 #ETH2_R=
+#ESILA_RMII=
+#ESILA_RMII_R

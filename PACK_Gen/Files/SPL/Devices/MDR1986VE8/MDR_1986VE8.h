@@ -475,6 +475,9 @@ typedef enum
 #define MDR_DMA_IRQ_LIKE_VE8
 
 //  Block request
+#define  MDR_DMA_CH_REQ_SOFT1           0
+#define  MDR_DMA_CH_REQ_SOFT2           1
+
 #define  MDR_DMA_CH_REQ_SPW1_RX         4
 #define  MDR_DMA_CH_REQ_SPW1_TX         6
 #define  MDR_DMA_CH_REQ_SSP1_TX        38
@@ -558,6 +561,9 @@ typedef enum
 #define MDR_EBC_RGN6_LEN              0x10000000
 #define MDR_EBC_RGN7_LEN              0x60000000
 
+//  Ethernet
+#define MDR_ETH_CLK_EN_REG    ETH_CLK
+#define MDR_ETH_CLK_EN_MASK   MDR_RST_ASYNC_CLK_CLK_EN_Msk
 
 
 /** @} */ /* End of group MDR1986VE8 */

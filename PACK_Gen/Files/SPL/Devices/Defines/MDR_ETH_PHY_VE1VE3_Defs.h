@@ -34,33 +34,7 @@ extern "C" {
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
-/* ======================================================  Internal PHY Registers  ====================================================== */
-
-//  Register R1 - RO status
-#define MDR_ETH_PHY_R1                        1
-
-#define MDR_ETH_PHY_R1_ExtEna_Pos             0
-#define MDR_ETH_PHY_R1_ExtEna_Msk            (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
-#define MDR_ETH_PHY_R1_Jabber_Pos             1
-#define MDR_ETH_PHY_R1_Jabber_Msk            (1 << MDR_ETH_PHY_R1_Jabber_Pos)
-#define MDR_ETH_PHY_R1_Link_Pos               2
-#define MDR_ETH_PHY_R1_Link_Msk              (1 << MDR_ETH_PHY_R1_Link_Pos)
-#define MDR_ETH_PHY_R1_OptAutoneg_Pos         3
-#define MDR_ETH_PHY_R1_OptAutoneg_Msk        (1 << MDR_ETH_PHY_R1_OptAutoneg_Pos)
-#define MDR_ETH_PHY_R1_RemoteFault_Pos        4
-#define MDR_ETH_PHY_R1_RemoteFault_Msk       (1 << MDR_ETH_PHY_R1_RemoteFault_Pos)
-#define MDR_ETH_PHY_R1_AutonegReady_Pos       5
-#define MDR_ETH_PHY_R1_AutonegReady_Msk      (1 << MDR_ETH_PHY_R1_AutonegReady_Pos)
-#define MDR_ETH_PHY_R1_Opt10BaseHD_Pos        11
-#define MDR_ETH_PHY_R1_Opt10BaseHD_Msk       ( 1 << MDR_ETH_PHY_R1_Opt10BaseHD_Pos)
-#define MDR_ETH_PHY_R1_Opt10BaseFD_Pos        12
-#define MDR_ETH_PHY_R1_Opt10BaseFD_Msk       ( 1 << MDR_ETH_PHY_R1_Opt10BaseFD_Pos)
-#define MDR_ETH_PHY_R1_Opt100BaseHD_Pos       13
-#define MDR_ETH_PHY_R1_Opt100BaseHD_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseHD_Pos)
-#define MDR_ETH_PHY_R1_Opt100BaseFD_Pos       14
-#define MDR_ETH_PHY_R1_Opt100BaseFD_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseFD_Pos)
-#define MDR_ETH_PHY_R1_Opt100BaseT4_Pos       16
-#define MDR_ETH_PHY_R1_Opt100BaseT4_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseT4_Pos)
+/* =============================================  Specific Internal PHY Registers  =========================================== */
 
 //  Register R4 - Autonegotiation 
 #define MDR_ETH_PHY_R4                        4
@@ -68,15 +42,15 @@ extern "C" {
 #define MDR_ETH_PHY_R4_10BaseHD_Ena_Pos        5
 #define MDR_ETH_PHY_R4_10BaseHD_Ena_Msk       (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
 #define MDR_ETH_PHY_R4_10BaseFD_Ena_Pos        6
-#define MDR_ETH_PHY_R4_10BaseFD_Ena_Msk       (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_10BaseFD_Ena_Msk       (1 << MDR_ETH_PHY_R4_10BaseFD_Ena_Pos)
 #define MDR_ETH_PHY_R4_100BaseHD_Ena_Pos       7
-#define MDR_ETH_PHY_R4_100BaseHD_Ena_Msk      (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_100BaseHD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseHD_Ena_Pos)
 #define MDR_ETH_PHY_R4_100BaseFD_Ena_Pos       8
-#define MDR_ETH_PHY_R4_100BaseFD_Ena_Msk      (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_100BaseFD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseFD_Ena_Pos)
 #define MDR_ETH_PHY_R4_100BaseT4_Ena_Pos       9
-#define MDR_ETH_PHY_R4_100BaseT4_Ena_Msk      (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_100BaseT4_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseT4_Ena_Pos)
 
-
+#define MDR_ETH_PHY_R4_SEL_100Mbps      (MDR_ETH_PHY_R4_100BaseHD_Ena_Msk | MDR_ETH_PHY_R4_100BaseFD_Ena_Msk | MDR_ETH_PHY_R4_100BaseT4_Ena_Msk)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

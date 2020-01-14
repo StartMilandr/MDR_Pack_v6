@@ -384,3 +384,24 @@
   <baseAddress>0x34000000</baseAddress>
   <description>Ethernet Control</description>
 </peripheral>
+
+#ESILA_RMII
+<field>
+  <name>MII_RMII</name>
+  <description>Interface to ExtPHY</description>
+  <bitRange>[3:3]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>MII</name><description>MII to external PHY</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>RMII</name><description>RMII to external PHY</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+<field>
+  <name>RMII_SPEED</name>
+  <description>RMII or MII Speed</description>
+  <bitRange>[4:4]</bitRange>
+  <enumeratedValues>
+    <enumeratedValue><name>10Mbps</name><description>10Mbps rate</description><value>0</value></enumeratedValue>
+    <enumeratedValue><name>100Mpbs</name><description>100Mbps rate</description><value>1</value></enumeratedValue>
+  </enumeratedValues>
+</field>
+

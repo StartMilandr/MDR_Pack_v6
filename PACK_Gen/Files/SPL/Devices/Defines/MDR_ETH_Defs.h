@@ -202,37 +202,6 @@ typedef struct {
 #define MDR_ETH_GCFGL_IFR_CLR_En_Msk    (0x4000UL)                /*!< MDR_ETH1 G_CFGL: IFR_CLR_En (Bitfield-Mask: 0x01)     */
 
 
-/* ========================================================  G_CFGH  ========================================================= */
-typedef enum {                                  /*!< MDR_ETH1_G_CFGH_RUN_Mode                                                  */
-  MDR_ETH_GCFGH_RunMode_FreeRun     = 0,     /*!< FreeRun : Work mode                                                       */
-  MDR_ETH_GCFGH_RunMode_Halt        = 1,     /*!< Halt : Debug Halt mode                                                    */
-  MDR_ETH_GCFGH_RunMode_Stop        = 2,     /*!< Stop : Debug Stop mode                                                    */
-} MDR_ETH_GCFGH_RunMode;
-
-typedef struct {
-  __IOM MDR_OnOff             XRST       : 1;            /*!< [0..0] Reset Transmitter                                                  */
-  __IOM MDR_OnOff             RRST       : 1;            /*!< [1..1] Reset Receiver                                                     */
-  __IOM MDR_OnOff             DLB        : 1;            /*!< [2..2] Dig Loopback                                                       */
-  __IM  uint16_t                         : 9;
-  __IOM MDR_OnOff             DBG_RF_EN  : 1;            /*!< [12..12] Enable Auto PTR_RX                                               */
-  __IOM MDR_OnOff             DBG_TF_EN  : 1;            /*!< [13..13] Enable Auto PTR_TX                                               */
-  __IOM MDR_ETH_GCFGH_RunMode RUN_Mode   : 2;            /*!< [15..14] Work mode                                                        */
-} MDR_ETH_GCfgH_Bits;
-
-#define MDR_ETH_GCFGH_XRST_Pos          (0UL)                     /*!< MDR_ETH1 G_CFGH: XRST (Bit 0)                         */
-#define MDR_ETH_GCFGH_XRST_Msk          (0x1UL)                   /*!< MDR_ETH1 G_CFGH: XRST (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_GCFGH_RRST_Pos          (1UL)                     /*!< MDR_ETH1 G_CFGH: RRST (Bit 1)                         */
-#define MDR_ETH_GCFGH_RRST_Msk          (0x2UL)                   /*!< MDR_ETH1 G_CFGH: RRST (Bitfield-Mask: 0x01)           */
-#define MDR_ETH_GCFGH_DLB_Pos           (2UL)                     /*!< MDR_ETH1 G_CFGH: DLB (Bit 2)                          */
-#define MDR_ETH_GCFGH_DLB_Msk           (0x4UL)                   /*!< MDR_ETH1 G_CFGH: DLB (Bitfield-Mask: 0x01)            */
-#define MDR_ETH_GCFGH_DBG_RF_EN_Pos     (12UL)                    /*!< MDR_ETH1 G_CFGH: DBG_RF_EN (Bit 12)                   */
-#define MDR_ETH_GCFGH_DBG_RF_EN_Msk     (0x1000UL)                /*!< MDR_ETH1 G_CFGH: DBG_RF_EN (Bitfield-Mask: 0x01)      */
-#define MDR_ETH_GCFGH_DBG_TF_EN_Pos     (13UL)                    /*!< MDR_ETH1 G_CFGH: DBG_TF_EN (Bit 13)                   */
-#define MDR_ETH_GCFGH_DBG_TF_EN_Msk     (0x2000UL)                /*!< MDR_ETH1 G_CFGH: DBG_TF_EN (Bitfield-Mask: 0x01)      */
-#define MDR_ETH_GCFGH_RUN_Mode_Pos      (14UL)                    /*!< MDR_ETH1 G_CFGH: RUN_Mode (Bit 14)                    */
-#define MDR_ETH_GCFGH_RUN_Mode_Msk      (0xc000UL)                /*!< MDR_ETH1 G_CFGH: RUN_Mode (Bitfield-Mask: 0x03)       */
-
-
 /* ==========================================================  IMR/IFR  ========================================================== */
 
 typedef struct {
@@ -315,6 +284,20 @@ typedef struct {
 #define MDR_ETH_MDIO_CTRL_CTRL_RDY_Pos   (15UL)                    /*!< MDR_ETH1 MDIO_CTRL: CTRL_RDY (Bit 15)                 */
 #define MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk   (0x8000UL)                /*!< MDR_ETH1 MDIO_CTRL: CTRL_RDY (Bitfield-Mask: 0x01)    */
 
+
+//  F_MDC < 2.5MHz (400ns)
+//  F_MDC = ETH_CLK_MHz / ((clkDiv + 1) * 16) < 2.5MHz
+//          ETH_CLK_MHz  < 2.5MHz * 16 * (clkDiv + 1)
+//            ETH_CLK_MHz  <  40 (clkDiv = 0)
+//            ETH_CLK_MHz  <  80 (clkDiv = 1)
+//            ETH_CLK_MHz  < 120 (clkDiv = 2)
+//            ETH_CLK_MHz  < 160 (clkDiv = 3)
+#define MDC_DIV_le40MHz      0
+#define MDC_DIV_le80MHz      1
+#define MDC_DIV_le120MHz     2
+#define MDC_DIV_le160MHz     3
+#define MDC_DIV_le200MHz     4
+#define MDC_DIV_le240MHz     5
 
 /* =========================================================  STAT  ========================================================== */
 typedef struct {
@@ -411,6 +394,57 @@ typedef union {
 //  Control Words in TX buffer
 #define MDR_ETH_BUFF_TX_LEN_SIZE     4
 #define MDR_ETH_BUFF_TX_STATUS_SIZE   4
+
+
+/* ================================================  Standard Internal PHY Registers  ============================================== */
+//  Register R0 - RW Base Control
+#define MDR_ETH_PHY_R0                        0
+
+#define MDR_ETH_PHY_R0_FULL_DUPLEX_Pos         8
+#define MDR_ETH_PHY_R0_FULL_DUPLEX_Msk        (1 << MDR_ETH_PHY_R0_FULL_DUPLEX_Pos)
+#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Pos     9
+#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk    (1 << MDR_ETH_PHY_R0_RESTART_AUTONEG_Pos)
+#define MDR_ETH_PHY_R0_ISOL_Pos                10
+#define MDR_ETH_PHY_R0_ISOL_Msk               (1 << MDR_ETH_PHY_R0_ISOL_Pos)
+#define MDR_ETH_PHY_R0_PWR_DOWN_Pos            11
+#define MDR_ETH_PHY_R0_PWR_DOWN_Msk           (1 << MDR_ETH_PHY_R0_ISOL_Pos)
+#define MDR_ETH_PHY_R0_AUTONEG_ENA_Pos         12
+#define MDR_ETH_PHY_R0_AUTONEG_ENA_Msk        (1 << MDR_ETH_PHY_R0_AUTONEG_ENA_Pos)
+#define MDR_ETH_PHY_R0_100Mbps_Pos             13
+#define MDR_ETH_PHY_R0_100Mbps_Msk            (1 << MDR_ETH_PHY_R0_100Mbps_Pos)
+#define MDR_ETH_PHY_R0_Loopback_Pos            14
+#define MDR_ETH_PHY_R0_Loopback_Msk           (1 << MDR_ETH_PHY_R0_Loopback_Pos)
+#define MDR_ETH_PHY_R0_RESET_Pos               15
+#define MDR_ETH_PHY_R0_RESET_Msk              (1 << MDR_ETH_PHY_R0_RESET_Pos)
+
+#define MDR_ETH_PHY_R0_Reserved_Msk           0x00FF
+
+
+//  Register R1 - RO Base Status
+#define MDR_ETH_PHY_R1                        1
+
+#define MDR_ETH_PHY_R1_ExtEna_Pos             0
+#define MDR_ETH_PHY_R1_ExtEna_Msk            (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R1_Jabber_Pos             1
+#define MDR_ETH_PHY_R1_Jabber_Msk            (1 << MDR_ETH_PHY_R1_Jabber_Pos)
+#define MDR_ETH_PHY_R1_Link_Pos               2
+#define MDR_ETH_PHY_R1_Link_Msk              (1 << MDR_ETH_PHY_R1_Link_Pos)
+#define MDR_ETH_PHY_R1_OptAutoneg_Pos         3
+#define MDR_ETH_PHY_R1_OptAutoneg_Msk        (1 << MDR_ETH_PHY_R1_OptAutoneg_Pos)
+#define MDR_ETH_PHY_R1_RemoteFault_Pos        4
+#define MDR_ETH_PHY_R1_RemoteFault_Msk       (1 << MDR_ETH_PHY_R1_RemoteFault_Pos)
+#define MDR_ETH_PHY_R1_AutonegReady_Pos       5
+#define MDR_ETH_PHY_R1_AutonegReady_Msk      (1 << MDR_ETH_PHY_R1_AutonegReady_Pos)
+#define MDR_ETH_PHY_R1_Opt10BaseHD_Pos        11
+#define MDR_ETH_PHY_R1_Opt10BaseHD_Msk       ( 1 << MDR_ETH_PHY_R1_Opt10BaseHD_Pos)
+#define MDR_ETH_PHY_R1_Opt10BaseFD_Pos        12
+#define MDR_ETH_PHY_R1_Opt10BaseFD_Msk       ( 1 << MDR_ETH_PHY_R1_Opt10BaseFD_Pos)
+#define MDR_ETH_PHY_R1_Opt100BaseHD_Pos       13
+#define MDR_ETH_PHY_R1_Opt100BaseHD_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseHD_Pos)
+#define MDR_ETH_PHY_R1_Opt100BaseFD_Pos       14
+#define MDR_ETH_PHY_R1_Opt100BaseFD_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseFD_Pos)
+#define MDR_ETH_PHY_R1_Opt100BaseT4_Pos       16
+#define MDR_ETH_PHY_R1_Opt100BaseT4_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseT4_Pos)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

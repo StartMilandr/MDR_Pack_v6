@@ -556,6 +556,14 @@ typedef enum IRQn
 #define  MDR_DMA_CH_SREQ_TIM4_CH4       29
 #define  MDR_DMA_CH_SREQ_ADC1           30
 
+
+//  Ethernet
+#define MDR_ETH_CLK_EN_REG    ETH_CLOCK
+#define MDR_ETH_CLK_EN_MASK   (MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk)
+
+
+
+
 /** @} */ /* End of group MDR1986VE1 */
 
 /** @} */ /* End of group Milandr */

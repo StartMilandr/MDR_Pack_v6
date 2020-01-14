@@ -4,13 +4,23 @@
 #include <MDR_Config.h>
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
-
-#include <MDR_ETH_VE1VE3_defs.h>
+#include <MDR_RST_Clock.h>
 
 //  ----------    Clock Init Functions    ----------
-void MDR_Eth_SetClockHSE2(void);
+#ifdef MDR_EXIST_HSE2
+  void MDR_Eth_SetClockHSE2(void);
+  
+#elif defined(MDR_CLK_LIKE_VE8)
+	//	VE8, VK014, ESila
+  __STATIC_INLINE void  MDR_Eth_SetClock(MDR_Div128P divForEthClock, MDR_RST_ASYNC_IN_SEL clockSource)
+  {
+    MDR_CLOCK->ETH_CLK = MDR_MaskClrSet(MDR_CLOCK->ETH_CLK, MDR_RST_ASYNC_CLK_CLEAR_ALL, 
+      (uint32_t)divForEthClock | MDR_PER_CLK_CLK_EN_Msk | VAL2FLD_Pos(clockSource, MDR_RST_ASYNC_CLK_SELECT_Pos));
+  } 
+#endif
 
-__STATIC_INLINE void MDR_Eth_ClockOff(void) { MDR_CLOCK->ETH_CLOCK &= ~(MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk); }
+__STATIC_INLINE void MDR_Eth_ClockOff(void) { MDR_CLOCK->MDR_ETH_CLK_EN_REG &= ~MDR_ETH_CLK_EN_MASK; }
+
 
 //  ----------    Ethernet Init Functions    ----------
 typedef struct {
@@ -18,9 +28,22 @@ typedef struct {
   const uint16_t              phyCfgReg;  
 } MDR_ETH_InitCfg;
 
+//  Инициализация блоков MAC и внутреннего PHY (там где он есть)
 void MDR_Eth_Init(MDR_ETH_Type *MDR_Eth, const MDR_ETH_InitCfg *cfg);
 void MDR_Eth_Start(MDR_ETH_Type *MDR_Eth);
 void MDR_Eth_Stop (MDR_ETH_Type *MDR_Eth);
+
+//  Инициализация раздельно MAC and PHY:
+//    Инициализация внешнего PHY
+void MDR_EthExtPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY, uint16_t phyCfgReg);
+//    Инициализация блока MAC
+void MDR_Eth_InitMAC(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MAC_CfgRegs  *cfgRegs);
+
+#ifdef MDR_HAS_ETH_PHY
+  //    Инициализация встроенного PHY
+  void MDR_EthIntPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg);
+#endif
+
 
 //  ----------    Read Frame Functions    ----------
 uint32_t MDR_ETH_GetBuffFreeSizefRX(MDR_ETH_Type *MDR_Eth);
@@ -136,7 +159,11 @@ bool MDR_ETH_ReadMDIO (MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrReg
 bool MDR_ETH_WriteMDIO(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t value);  
 
 bool MDR_ETH_MDIO_GetMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
+bool MDR_ETH_MDIO_GetMaskClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
 void MDR_ETH_MDIO_WaitMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
+
+bool MDR_ETH_MDIO_MaskSetClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t clrMask, uint16_t setMask);
+
 
 __STATIC_INLINE bool MDR_ETH_GetAutonegCompleted(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)  
 { 
@@ -158,6 +185,30 @@ __STATIC_INLINE void MDR_ETH_WaitLinkUp(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)
   MDR_ETH_MDIO_WaitMaskSet(MDR_Eth, addrPHY, MDR_ETH_PHY_R1, MDR_ETH_PHY_R1_Link_Msk);
 }  
 
+__STATIC_INLINE void MDR_EthPHY_AutoNegRestart(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY) 
+{ 
+  MDR_ETH_MDIO_MaskSetClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, 0, MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk); 
+}
+
+
+#ifdef MDR_HAS_ETH_PHY
+  //    Принудительная установка скорости 10Mbps
+  bool MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth);
+
+  #define ETH_INT_PHY_ADDR(eth)   FLD2VAL(eth->PHY_CTRL, MDR_ETH_PHY_CTRL_PHY_ADDR)
+
+  __STATIC_INLINE void MDR_EthIntPHY_AutoNegRestart(MDR_ETH_Type *MDR_Eth) 
+  { 
+    MDR_ETH_MDIO_MaskSetClear(MDR_Eth, ETH_INT_PHY_ADDR(MDR_Eth), MDR_ETH_PHY_R0, 0, MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk); 
+  }
+
+  //  Настройка на обмен 10Mbps
+  __STATIC_INLINE void MDR_EthIntPHY_AutoNegT010Mbps(MDR_ETH_Type *MDR_Eth) 
+  {
+    MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_Eth);
+    MDR_EthIntPHY_AutoNegRestart(MDR_Eth);
+  }
+#endif
 
 
 #endif // MDR_ETHERNET_H

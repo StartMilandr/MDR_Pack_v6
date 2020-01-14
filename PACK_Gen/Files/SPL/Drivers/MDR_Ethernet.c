@@ -3,36 +3,74 @@
 #include <MDR_DMA.h>
 #include <MDR_RST_Clock.h>
 
-void MDR_Eth_SetClockHSE2(void)
-{
-#if  HSE2_IS_RESONATOR
-  MDR_HSE2_EnableAndWaitReady(MDR_CLK_Resonator, HSE2_TIMEOUT_CYCLES);
-#else
-  MDR_HSE2_EnableAndWaitReady(MDR_CLK_Generator, HSE2_TIMEOUT_CYCLES);
+#ifdef MDR_EXIST_HSE2
+  void MDR_Eth_SetClockHSE2(void)
+  {
+    #if  HSE2_IS_RESONATOR
+      MDR_HSE2_EnableAndWaitReady(MDR_CLK_Resonator, HSE2_TIMEOUT_CYCLES);
+    #else
+      MDR_HSE2_EnableAndWaitReady(MDR_CLK_Generator, HSE2_TIMEOUT_CYCLES);
+    #endif
+    
+    MDR_CLOCK->ETH_CLOCK = MDR_MaskClrSet(MDR_CLOCK->ETH_CLOCK,
+        MDR_RST_ETH__PHY_BRG_Msk    | MDR_RST_ETH__ETH_BRG_Msk 
+      | MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk | MDR_RST_ETH__PHY_CLK_SEL_Msk
+     ,  MDR_ETH_CLK_EN_MASK) 
+      | VAL2FLD_Pos(MDR_PHY_HSE2, MDR_RST_ETH__PHY_CLK_SEL_Pos);      
+  }
 #endif
+
+#ifdef MDR_HAS_ETH_PHY
+  static void MDR_EthIntPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg)
+  {
+    MDR_Eth->PHY_CTRL = phyCfgReg;
+    while ((MDR_Eth->PHY_STATUS & MDR_ETH_PHY_STATUS_READY_Msk) == 0);    
+    
+    MDR_Eth->PHY_CTRL |= MDR_ETH_PHY_CTRL_nRST_Msk;
+  }
   
-  MDR_CLOCK->ETH_CLOCK = MDR_MaskClrSet(MDR_CLOCK->ETH_CLOCK,
-      MDR_RST_ETH__PHY_BRG_Msk    | MDR_RST_ETH__ETH_BRG_Msk 
-    | MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk | MDR_RST_ETH__PHY_CLK_SEL_Msk
-   ,  MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk) 
-    | VAL2FLD_Pos(MDR_PHY_HSE2, MDR_RST_ETH__PHY_CLK_SEL_Pos);  
-}
+  bool MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth)
+  {
+    uint8_t addrPHY = ETH_INT_PHY_ADDR(MDR_Eth);
+    
+    if (MDR_ETH_MDIO_MaskSetClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps, 0))
+      return MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps);       
+    
+    return false;
+  }
+#endif
 
-void MDR_EthPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg)
+void MDR_EthExtPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY, uint16_t phyCfgReg)
 {
-  MDR_Eth->PHY_CTRL = phyCfgReg;
-	while ((MDR_Eth->PHY_STATUS & MDR_ETH_PHY_STATUS_READY_Msk) == 0);    
+  //  Reset PHY
+  MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, MDR_ETH_PHY_R0_RESET_Msk);
+  //  Wait Ready
+  while (!MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, MDR_ETH_PHY_R0_RESET_Msk)) {}
+    
+  //  SetConfigs
+  MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, phyCfgReg);      
 }
-
 
 void MDR_Eth_Init(MDR_ETH_Type *MDR_Eth, const MDR_ETH_InitCfg *cfg)
 {
-  //  Wait PHY Ready
-  MDR_EthPHY_EnaAndWaitReady(MDR_Eth, cfg->phyCfgReg);
+#ifdef MDR_HAS_ETH_PHY  
+//  Встроенный PHY
+  MDR_EthIntPHY_EnaAndWaitReady(MDR_Eth, cfg->phyCfgReg);
+#else 
+//  Внешний PHY  
+  // Настройки MDIO для работы с PHY
+  MDR_Eth->MDIO_CTRL = cfg->cfgRegsMAC->MDIO_CTRL;  
   
-  //  Apply cfg to Ethernet Registers
-  const MDR_ETH_MAC_CfgRegs  *cfgRegs = cfg->cfgRegsMAC;
+  uint8_t phyAddr = cfg->phyCfgReg & MDR_ETH_PHY_R0_Reserved_Msk;  
+  MDR_EthExtPHY_EnaAndWaitReady(MDR_Eth, phyAddr, cfg->phyCfgReg & (~MDR_ETH_PHY_R0_Reserved_Msk));
+#endif
+   
+  MDR_Eth_InitMAC(MDR_Eth, cfg->cfgRegsMAC);
+}
   
+void MDR_Eth_InitMAC(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MAC_CfgRegs  *cfgRegs)  
+{  
+  //  Apply cfg to Ethernet Registers  
   MDR_Eth->MAC_L = cfgRegs->MAC_L;
   MDR_Eth->MAC_M = cfgRegs->MAC_M;
   MDR_Eth->MAC_H = cfgRegs->MAC_H;
@@ -51,8 +89,8 @@ void MDR_Eth_Init(MDR_ETH_Type *MDR_Eth, const MDR_ETH_InitCfg *cfg)
 //	MDR_Eth->IFR	= MDR_ETH_EVENT_CLEAR_ALL;
 
 	MDR_Eth->DELIMETER 	= cfgRegs->DELIMETER;
-//	MDR_Eth->R_HEAD			= MDR_Eth->R_TAIL;
-//	MDR_Eth->X_TAIL			= MDR_Eth->X_HEAD;
+	MDR_Eth->R_HEAD			= MDR_Eth->R_TAIL;
+	MDR_Eth->X_TAIL			= MDR_Eth->X_HEAD;
 
   MDR_Eth->MDIO_CTRL = cfgRegs->MDIO_CTRL;
 
@@ -77,7 +115,8 @@ void MDR_Eth_Start(MDR_ETH_Type *MDR_Eth)
   MDR_ETH_ClearBuffTX(MDR_Eth);
   
   //  Phy Enable
-  MDR_Eth->PHY_CTRL |= MDR_ETH_PHY_CTRL_nRST_Msk;
+//  Перенесмено в MDR_EthIntPHY_EnaAndWaitReady()
+//  MDR_Eth->PHY_CTRL |= MDR_ETH_PHY_CTRL_nRST_Msk;
  
   //  Enable RX and TX
   MDR_ETH_ResetRXTX_Off(MDR_Eth);
@@ -279,13 +318,13 @@ bool MDR_ETH_WriteMDIO(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrReg
 	volatile uint32_t timeout = MDR_ETH_MDIO_TIMEOUT;
 
   //  Run transfer
+  MDR_Eth->MDIO_DATA = value;
 	MDR_Eth->MDIO_CTRL = MDR_MaskClrSet(MDR_Eth->MDIO_CTRL,
             //  Clear
             MDR_ETH_MDIO_CTRL_REG_Addr_Msk |  MDR_ETH_MDIO_CTRL_PHY_Addr_Msk | MDR_ETH_MDIO_CTRL_OP_Msk | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk,
             //  OR
             VAL2FLD_Pos(addrPHY,                 MDR_ETH_MDIO_CTRL_PHY_Addr_Pos) 
           | VAL2FLD_Pos(addrRegInPHY,            MDR_ETH_MDIO_CTRL_REG_Addr_Pos) 
-          | VAL2FLD_Pos(MDR_ETH_MDIO_CTRL_OP_RD, MDR_ETH_MDIO_CTRL_OP_Pos)
           | MDR_ETH_MDIO_CTRL_CTRL_RDY_Msk 
           );  
 
@@ -311,9 +350,33 @@ bool MDR_ETH_MDIO_GetMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t a
   return false;
 }
 
+bool MDR_ETH_MDIO_GetMaskClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask)
+{
+  uint16_t regValue;
+  
+  if (MDR_ETH_ReadMDIO(MDR_Eth, addrPHY, addrRegPHY, &regValue))
+    return (regValue & setMask) == 0;
+  
+  return false;
+}
+
+
 void MDR_ETH_MDIO_WaitMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask)
 { 
-  while (!MDR_ETH_MDIO_GetMaskSet(MDR_Eth, addrPHY, addrRegPHY, setMask)) {
-  };  
+  while (!MDR_ETH_MDIO_GetMaskSet(MDR_Eth, addrPHY, addrRegPHY, setMask)) { }
+}
+
+bool MDR_ETH_MDIO_MaskSetClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t clrMask, uint16_t setMask)
+{
+  uint16_t value;
+    
+  if (MDR_ETH_ReadMDIO(MDR_Eth, addrPHY, addrRegPHY, &value))
+  {
+    value &= ~clrMask;
+    value |= setMask;
+    return MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, addrRegPHY, value);
+  }
+  else
+    return false;
 }
 

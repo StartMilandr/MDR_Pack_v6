@@ -2,9 +2,12 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_Ethernet.h>
 #include <MDR_Ethernet_FrameDefs.h>
-#include "MDR_Ethernet_Cfg1.h"
 #include <MDRB_LEDs.h>
+#include <MDR_Funcs.h>
 #include <string.h>
+
+#include "MDR_Ethernet_Cfg1.h"
+#include "MDRB_ETH_ExtPHY_MII.h"
 
 //  ОПИСАНИЕ:
 /*
@@ -30,7 +33,7 @@
 uint16_t myMAC[] = {ETHCFG1_MAC_L, ETHCFG1_MAC_M, ETHCFG1_MAC_H};
 
 uint8_t         inpFrame[MAX_ETH_FRAME_LEN] __attribute__((section("EXECUTABLE_MEMORY_SECTION"))) __attribute__ ((aligned (4)));
-MDR_ETH_FrameTX outFrame __attribute__((section("EXECUTABLE_MEMORY_SECTION"))) __attribute__ ((aligned (4)));
+MDR_ETH_FrameTX outFrame                    __attribute__((section("EXECUTABLE_MEMORY_SECTION"))) __attribute__ ((aligned (4)));
 
 void Eth_Send_Echo(MDR_ETH_FrameStatusRX statusRX, uint8_t *InpFrame);
 void ETH1_IRQHandler(void);
@@ -42,34 +45,69 @@ int main(void)
 {
   uint32_t cnt = 0;
   
+//   ---  НАСТРОЙКА тактирования  ---  
+#ifdef USE_MDR1986VE1
   //  Максимальная скорость тактирования
   MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
   MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
+  uint32_t freqCPU_Hz = MDR_CPU_GetFreqHz(true);
   
-  //  Инициализация кнопок
-  MDRB_LED_Init(LED_CYCLE | LED_TRANSF);  
+  //  Internal PHY, HSE2 8MHz * 16 = 128MHz  
+  MDR_ETH_MAC_CfgRegs  cfgRegs = MDR_ETH_MAC_INIT_DEF(128, MDC_DIV_le160MHz); 
+  MDR_Eth_SetClockHSE2();
   
-  //  Инициализация Ethernet - все настройки в MDR_Ethernet_Cfg1
-  MDR_ETH_MAC_CfgRegs  cfgRegs = MDR_ETH_MAC_INIT_DEF(144, 10);
+#elif defined(USE_ESila) 
+  // 50MHz для RMII
+  // Настройка с MDRB_PLL_8MHz_TO_50MHz дает менее точное выставление частоты (~51МГц), при ней не работает обмен с PC.
+  // При множителе PLL_N= 24 частота более равна 50МГц (но с джиттером), при такой частоте с PC обмен работает:
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDR_CLK_PLL_HSE_RES_DEF(MDR_CPU_CFG_PLL(24, 0, MDR_PLL_DV_div4), MDRB_CPU_FREQ_SUPP_50MHz);      
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
+  uint32_t freqCPU_Hz = MDR_CPU_GetFreqHz(true);
+  
+  //  External PHY LAN8742A
+  MDR_ETH_MAC_CfgRegs  cfgRegs = MDR_ETH_MAC_INIT_DEF(50, MDC_DIV_le80MHz); 
+  MDR_Eth_SetClock(MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
+  
+  //  Инициализация пинов RMII
+  MDR_ETH_ExtPHY_InitPinsMII();
+  MDR_ETH_ExtPHY_Reset(MS_TO_CLOCKS(100, freqCPU_Hz));  //  Reset 100 ms
+  
+#elif defined(USE_MDR1986VE8)
+  MDR_CPU_PLL_CfgHSE cfgPLL_HSE = MDRB_CLK_PLL_HSE_RES_MAX;
+  MDR_CPU_SetClock_PLL_HSE(&cfgPLL_HSE, true);
+  uint32_t freqCPU_Hz = MDR_CPU_GetFreqHz(true);
+
+
+  //  External PHY LAN8742A, 10MHz * 4 = 40MHz  
+  MDR_ETH_MAC_CfgRegs  cfgRegs = MDR_ETH_MAC_INIT_DEF(40, MDC_DIV_le40MHz); 
+  MDR_Eth_SetClock(MDR_Div128P_div1, MDR_RST_ASYNC_IN_HSE0);  
+#endif
+
+//  ---  НАСТРОЙКА ETHERNET  ---  
   MDR_ETH_InitCfg      initCfg = {
     .cfgRegsMAC = &cfgRegs,
-    .phyCfgReg = MDR_REG_PHY_CTRL
-  };
-
-  MDR_Eth_SetClockHSE2();
+    .phyCfgReg  = MDR_REG_PHY_CTRL
+  };  
   MDR_Eth_Init(MDR_Eth, &initCfg);
   MDR_Eth_Start(MDR_Eth);
   
 #if ETHCFG1_IRQ_ON_RECEIVE_OK
   MDR_ETH_NVIC_Enable(MDR_Eth, 0);
 #endif  
-
+  
   //  Wait autonegotiation or PC connection
-  if (ETHCFG1_PHY_MODE == MDR_ETH_PHY_CTRL_MODE_Auto)
+  if (ETHCFG1_PHY_AUTONEG_EN)
+  {
     MDR_ETH_WaitAutonegCompleted(MDR_Eth, ETHCFG1_PHY_ADDR);
+  }
   else  
     MDR_ETH_WaitLinkUp(MDR_Eth, ETHCFG1_PHY_ADDR);
-   
+  
+//  ---  ПРОЧЕЕ - светодиоды   ---  
+  MDRB_LED_Init(LED_CYCLE | LED_TRANSF);  
+  
+  
+  
   while (1)
   {
     //  Проверка приема по Ethernet

@@ -7,13 +7,13 @@ Arguments: "../_src/MDR1986VE81.svd" -o "out" -b "out/logVE81.txt" --generate=he
 *** INFO M347: ../_src/MDR1986VE81.svd (Line 7350) 
   Field 'RtryCnt' (width < 6Bit) without any <enumeratedValue> found.
 
-*** INFO M347: ../_src/MDR1986VE81.svd (Line 7625) 
+*** INFO M347: ../_src/MDR1986VE81.svd (Line 7626) 
   Field 'REG_Addr' (width < 6Bit) without any <enumeratedValue> found.
 
-*** INFO M347: ../_src/MDR1986VE81.svd (Line 7630) 
+*** INFO M347: ../_src/MDR1986VE81.svd (Line 7631) 
   Field 'DIV' (width < 6Bit) without any <enumeratedValue> found.
 
-*** INFO M347: ../_src/MDR1986VE81.svd (Line 7635) 
+*** INFO M347: ../_src/MDR1986VE81.svd (Line 7636) 
   Field 'PHY_Addr' (width < 6Bit) without any <enumeratedValue> found.
 
 *** INFO M356: ../_src/MDR1986VE81.svd

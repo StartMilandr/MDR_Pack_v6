@@ -7,7 +7,7 @@
 
 
 //  Settings
-#define  ETHCFG1_DELIMETER                     0x1000
+#define  ETHCFG1_DELIMETER                     MDR_ETH_BUF_DELIM_DEF
 
 #define  ETHCFG1_MAC_L                         0x3412
 #define  ETHCFG1_MAC_M                         0x7856
@@ -75,6 +75,32 @@
 #define  ETHCFG1_BAG_US                        0x63
 #define  ETHCFG1_JitterWnd_US                  0x04
 
+//  PHY Settings
+#define ETHCFG1_PHY_EXTERNAL                   0
+
+#if ETHCFG1_PHY_EXTERNAL 
+  #define ETHCFG1_PHY_ADDR                     0x00
+  
+  #define ETHCFG1_PHY_OPTIC_MODE               0
+  #define ETHCFG1_PHY_100Mbps                  1
+  #define ETHCFG1_PHY_LOOPBACK                 0
+  #define ETHCFG1_PHY_AUTONEG_EN               1
+  #define ETHCFG1_PHY_FULL_DUPLEX              1
+  
+  #ifdef MDR_ETH_HAS_MII_RMII
+    #define ETHCFG1_PHY_ESILA_RMII               1
+    #define ETHCFG1_PHY_ESILA_RMII_100Mbps       1
+  #endif  
+    
+#else
+  #define ETHCFG1_PHY_ADDR                     0x1C
+
+  #define ETHCFG1_PHY_OPTIC_MODE               0
+  #define ETHCFG1_PHY_MODE                     MDR_ETH_PHY_CTRL_MODE_Auto
+
+  #define ETHCFG1_PHY_AUTONEG_EN              (ETHCFG1_PHY_MODE == MDR_ETH_PHY_CTRL_MODE_Auto)
+#endif
+
 
 //  Not recomended to change (Default Values):
 #define  ETHCFG1_RX_BIG_ENDIAN                 0
@@ -85,14 +111,6 @@
 #define  ETHCFG1_RX_PTR_EN                     1
 #define  ETHCFG1_TX_PTR_EN                     1
 #define  ETHCFG1_RUN_MODE                      MDR_ETH_GCFGH_RunMode_FreeRun
-
-//  PHY Settings
-#define ETHCFG1_PHY_ADDR                       0x1C
-#define ETHCFG1_PHY_EXTERNAL                   0
-#define ETHCFG1_PHY_OPTIC_MODE                 0
-#define ETHCFG1_PHY_MODE                       MDR_ETH_PHY_CTRL_MODE_Auto
-//#define ETHCFG1_PHY_MODE                       MDR_ETH_PHY_CTRL_MODE_100BaseT_FD
-
 
 
 //====================    Private (Options to Registers' Values)  ============
@@ -288,12 +306,31 @@
   #define  ETHCFG1_GCFGH_PTR_X_EN     0
 #endif
 
+
+#ifdef MDR_ETH_HAS_MII_RMII
+  #if ETHCFG1_PHY_ESILA_RMII
+    #define  ETHCFG1_PHY_ESILA_RMII_Msk             MDR_ETH_GCFGH_RMII_Msk
+  #else  
+    #define  ETHCFG1_PHY_ESILA_RMII_Msk             0
+  #endif
+  #if ETHCFG1_PHY_ESILA_RMII_100Mbps
+    #define  ETHCFG1_PHY_ESILA_RMII_100Mbps_Msk     MDR_ETH_GCFGH_RMII100_Msk
+  #else  
+    #define  ETHCFG1_PHY_ESILA_RMII_100Mbps_Msk     0
+  #endif  
+
+#else
+  #define ETHCFG1_PHY_ESILA_RMII_Msk               0
+  #define ETHCFG1_PHY_ESILA_RMII_100Mbps_Msk       0
+#endif  
+
 #define ETHCFG1_REG_GCFGH     ETHCFG1_GCFGH_XRST      \
                            |  ETHCFG1_GCFGH_RRST      \
                            |  ETHCFG1_GCFGH_LB        \
                            |  ETHCFG1_GCFGH_PTR_R_EN  \
                            |  ETHCFG1_GCFGH_PTR_X_EN  \
-                           |((ETHCFG1_RUN_MODE << MDR_ETH_GCFGH_RUN_Mode_Pos) & MDR_ETH_GCFGH_RUN_Mode_Msk)
+                           |((ETHCFG1_RUN_MODE << MDR_ETH_GCFGH_RUN_Mode_Pos) & MDR_ETH_GCFGH_RUN_Mode_Msk) \
+                           | ETHCFG1_PHY_ESILA_RMII_Msk | ETHCFG1_PHY_ESILA_RMII_100Mbps_Msk
 
 
 //  ----------  MDIO_CTRL Register Masks by Options  ------------
@@ -408,15 +445,51 @@
                           
 
 //  ----------  PHY Settings  ------------
-#if ETHCFG1_PHY_OPTIC_MODE
-  #define  ETHCFG1_PHY_MSK_OPTIC            MDR_ETH_PHY_CTRL_FX_En_Msk
-#else  
-  #define  ETHCFG1_PHY_MSK_OPTIC            0
-#endif
+#if ETHCFG1_PHY_EXTERNAL 
+  #define ETHCFG1_PHY_ADDR                     0x00
+  
+  
+  #if   ETHCFG1_PHY_OPTIC_MODE
+    #define ETHCFG1_PHY_OPTIC_MODE_Msk        MDR_ETH_PHY_R0_ISOL_Msk
+  #else
+    #define ETHCFG1_PHY_OPTIC_MODE_Msk        0
+  #endif
+  #if   ETHCFG1_PHY_100Mbps
+    #define ETHCFG1_PHY_100Mbps_Msk           MDR_ETH_PHY_R0_100Mbps_Msk
+  #else
+    #define ETHCFG1_PHY_100Mbps_Msk           0
+  #endif
+  #if   ETHCFG1_PHY_LOOPBACK
+    #define ETHCFG1_PHY_LOOPBACK_Msk         MDR_ETH_PHY_R0_Loopback_Msk
+  #else
+    #define ETHCFG1_PHY_LOOPBACK_Msk          0
+  #endif
+  #if   ETHCFG1_PHY_AUTONEG_EN
+    #define ETHCFG1_PHY_AUTONEG_EN_Msk        MDR_ETH_PHY_R0_AUTONEG_ENA_Msk
+  #else
+    #define ETHCFG1_PHY_AUTONEG_EN_Msk        0
+  #endif
+  #if   ETHCFG1_PHY_FULL_DUPLEX
+    #define ETHCFG1_PHY_FULL_DUPLEX_Msk       MDR_ETH_PHY_R0_FULL_DUPLEX_Msk
+  #else
+    #define ETHCFG1_PHY_FULL_DUPLEX_Msk       0
+  #endif
 
-#define MDR_REG_PHY_CTRL            ((ETHCFG1_PHY_ADDR << MDR_ETH_PHY_CTRL_PHY_ADDR_Pos) & MDR_ETH_PHY_CTRL_PHY_ADDR_Msk)  \
-                                  | ((ETHCFG1_PHY_MODE << MDR_ETH_PHY_CTRL_MODE_Pos)     & MDR_ETH_PHY_CTRL_MODE_Msk)  \
-                                  |  ETHCFG1_PHY_MSK_OPTIC                
+  #define MDR_REG_PHY_CTRL      (ETHCFG1_PHY_OPTIC_MODE_Msk | ETHCFG1_PHY_100Mbps_Msk | ETHCFG1_PHY_LOOPBACK_Msk | \
+                                 ETHCFG1_PHY_AUTONEG_EN_Msk | ETHCFG1_PHY_FULL_DUPLEX_Msk | \
+                                 ETHCFG1_PHY_ADDR)
+
+#else
+  #if ETHCFG1_PHY_OPTIC_MODE
+    #define  ETHCFG1_PHY_MSK_OPTIC            MDR_ETH_PHY_CTRL_FX_En_Msk
+  #else  
+    #define  ETHCFG1_PHY_MSK_OPTIC            0
+  #endif
+
+  #define MDR_REG_PHY_CTRL            ((ETHCFG1_PHY_ADDR << MDR_ETH_PHY_CTRL_PHY_ADDR_Pos) & MDR_ETH_PHY_CTRL_PHY_ADDR_Msk)  \
+                                    | ((ETHCFG1_PHY_MODE << MDR_ETH_PHY_CTRL_MODE_Pos)     & MDR_ETH_PHY_CTRL_MODE_Msk)  \
+                                    |   ETHCFG1_PHY_MSK_OPTIC  
+#endif
 
 
 //==========================    Init Macros =======================

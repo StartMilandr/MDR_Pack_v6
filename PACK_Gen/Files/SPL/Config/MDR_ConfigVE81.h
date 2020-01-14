@@ -129,5 +129,18 @@
 #endif
 
 
+// =========================   ETHERNET ===========================
+//  Выбор режима работы буферов Ethernet (Только один!)
+#define MDR_ETH_BUFF_LIN        0
+#define MDR_ETH_BUFF_AUTO_PTR   0
+#define MDR_ETH_BUFF_FIFO       1
+
+#define MDR_ETH_BUFF_LEN_TX     1514
+#define MDR_ETH_MDIO_TIMEOUT    0x0004FFFFUL
+
+#define MDR_ETH_DMA_CHANNEL_RX  MDR_DMA_CH_REQ_SOFT1
+#define MDR_ETH_DMA_CHANNEL_TX  MDR_DMA_CH_REQ_SOFT2
+
+
 
 #endif  //  MDR_CONFIG_VE8_H

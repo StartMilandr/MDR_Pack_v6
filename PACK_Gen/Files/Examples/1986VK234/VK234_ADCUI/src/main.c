@@ -36,7 +36,7 @@ int main(void)
   MDRB_Buttons_Init(BTN_DEBOUNCE_MS, freqCPU_Hz);
   
   // Clock from HSE
-  MDR_ADC_SetClock_CPU_C1(MDR_Div256P_div1);
+  MDR_ADCUI_SetClock_CPU_C1(MDR_Div256P_div16);
    
   //  Активный тест
   activeTest = 0;  

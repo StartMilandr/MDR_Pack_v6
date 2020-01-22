@@ -4295,6 +4295,7 @@
               <description>Dig Loopback</description>
               <bitRange>[2:2]</bitRange>
             </field>
+            <!-- #ESILA_RMII -->
             <field derivedFrom="XRST">
               <name>DBG_RF_EN</name>
               <description>Enable Auto PTR_RX</description>

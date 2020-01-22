@@ -803,15 +803,15 @@
             </field>
             <!-- ADC_CLOCK.ADC_C3_SEL -->
             <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
-              <name>ADC_C3_SEL</name>
-              <description>ADC_C1 mux output freq devider, [/1, /2, /4 .. /256]</description>
+              <name>ADCIU_C3_SEL</name>
+              <description>ADCIU_C1 mux output freq devider, [/1, /2, /4 .. /256]</description>
               <bitRange>[7:4]</bitRange>
               <access>read-write</access>
             </field>
             <!-- ADC_CLOCK.ADCIU_C3_SEL -->
             <field derivedFrom="MDR_RST_CLOCK.CPU_CLOCK.CPU_C3_SEL">
-              <name>ADCIU_C3_SEL</name>
-              <description>ADCIU_C1 mux output freq devider, [/1, /2, /4 .. /256]</description>
+              <name>ADC_C3_SEL</name>
+              <description>ADC_C1 mux output freq devider, [/1, /2, /4 .. /256]</description>
               <bitRange>[11:8]</bitRange>
               <access>read-write</access>
             </field>

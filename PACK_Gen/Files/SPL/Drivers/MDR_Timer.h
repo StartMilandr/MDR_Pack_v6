@@ -25,6 +25,7 @@
 
 //  Вспомогательная функция для рассчета параметров периода таймера - period, PSG
 bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint_tim *period, uint16_t *PSG);
+bool MDR_Timer_CalcPeriodAndPSG_F(float timDesiredHz, float timClockHz, uint_tim *period, uint16_t *PSG);
 
 
 //=====================   TimerEx Definitions ============

@@ -191,24 +191,55 @@ __STATIC_INLINE void MDR_EthPHY_AutoNegRestart(MDR_ETH_Type *MDR_Eth, const uint
 }
 
 
-#ifdef MDR_HAS_ETH_PHY
-  //    Принудительная установка скорости 10Mbps
-  bool MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth);
+//    Принудительная установка скорости 10Mbps
+bool MDR_EthPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY);
 
+__STATIC_INLINE 
+void MDR_EthPHY_AutoNegTo10Mbps(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY) 
+{
+  MDR_EthPHY_AutoNegDisable100Mbps(MDR_Eth, addrPHY);
+  MDR_EthPHY_AutoNegRestart(MDR_Eth, addrPHY);
+}
+
+  
+#ifdef MDR_HAS_ETH_PHY
+  
   #define ETH_INT_PHY_ADDR(eth)   FLD2VAL(eth->PHY_CTRL, MDR_ETH_PHY_CTRL_PHY_ADDR)
 
   __STATIC_INLINE void MDR_EthIntPHY_AutoNegRestart(MDR_ETH_Type *MDR_Eth) 
-  { 
-    MDR_ETH_MDIO_MaskSetClear(MDR_Eth, ETH_INT_PHY_ADDR(MDR_Eth), MDR_ETH_PHY_R0, 0, MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk); 
-  }
+  { MDR_EthPHY_AutoNegRestart(MDR_Eth, ETH_INT_PHY_ADDR(MDR_Eth)); }
+
+  __STATIC_INLINE bool MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth)
+  { return MDR_EthPHY_AutoNegDisable100Mbps(MDR_Eth, ETH_INT_PHY_ADDR(MDR_Eth)); }
 
   //  Настройка на обмен 10Mbps
-  __STATIC_INLINE void MDR_EthIntPHY_AutoNegT010Mbps(MDR_ETH_Type *MDR_Eth) 
-  {
-    MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_Eth);
-    MDR_EthIntPHY_AutoNegRestart(MDR_Eth);
-  }
+  __STATIC_INLINE void MDR_EthIntPHY_AutoNegTo10Mbps(MDR_ETH_Type *MDR_Eth) 
+  { MDR_EthPHY_AutoNegTo10Mbps(MDR_Eth, ETH_INT_PHY_ADDR(MDR_Eth)); }
 #endif
+
+
+//===================     MDIO Managable Device Registers Access (MMD)  ==========
+typedef struct {
+  uint16_t addrPHY;
+  uint16_t regMMD_Ctrl;
+  uint16_t regMMD_Data;
+  uint16_t devad;
+} MDR_ETH_MDIO_CfgMMD;
+
+bool MDR_ETH_MDIO_WriteRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD, uint16_t value);
+bool MDR_ETH_MDIO_ReadRegMMD (MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD, uint16_t *value);
+
+
+//  Привязка к одному регистру MMD, для последующего быстрого циклического это регистра (для отладки)
+void MDR_ETH_MDIO_BindRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD);
+
+__STATIC_INLINE bool MDR_ETH_MDIO_ReWriteRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t value)
+{ return MDR_ETH_WriteMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Data, value); }
+
+__STATIC_INLINE bool MDR_ETH_MDIO_ReReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t *value)
+{ return MDR_ETH_ReadMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Data, value);   }
+
+
 
 
 #endif // MDR_ETHERNET_H

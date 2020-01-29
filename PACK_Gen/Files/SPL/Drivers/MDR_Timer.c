@@ -614,3 +614,25 @@ bool MDR_Timer_CalcPeriodAndPSG(uint32_t timDesiredHz, uint32_t timClockHz, uint
   return true;
 }
 
+bool MDR_Timer_CalcPeriodAndPSG_F(float timDesiredHz, float timClockHz, uint_tim *period, uint16_t *PSG)
+{
+  uint32_t clockPeriod = (uint32_t)(timClockHz / timDesiredHz);
+  uint32_t clkDiv;
+  
+  if (clockPeriod < TIM_MAX_VALUE)
+  {
+    *PSG = 0;
+    *period = (uint_tim)clockPeriod;
+  }
+  else
+  {
+    clkDiv = clockPeriod / TIM_MAX_VALUE + 1;
+    if ((clkDiv > 0xFFFFUL) || (clkDiv == 0x0UL))
+      return false;
+    
+    *period = (uint_tim)(clockPeriod / clkDiv);
+    *PSG = (uint16_t)(clkDiv - 1);
+  }
+  
+  return true;
+}

@@ -76,6 +76,13 @@
   static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PE15_Port, MDRB_UART1_TX_PE15_Ind, MDRB_UART1_TX_PE15_Func};
   static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PE16_Port, MDRB_UART1_RX_PE16_Ind, MDRB_UART1_RX_PE16_Func};  
   
+#elif defined(USE_MLDR_155)
+  //  см. MDRB_ESila.h
+  const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
+
+  static const MDR_UART_CfgPinGPIO _pinTX_UART = {MDRB_UART1_TX_PB1_Port, MDRB_UART1_TX_PB1_Ind, MDRB_UART1_TX_PB1_Func};
+  static const MDR_UART_CfgPinGPIO _pinRX_UART = {MDRB_UART1_RX_PB0_Port, MDRB_UART1_RX_PB0_Ind, MDRB_UART1_RX_PB0_Func};    
+  
 #elif defined(USE_BOARD_ESila)
   //  см. MDRB_ESila.h
   const MDR_UART_TypeEx * UART_DBG = MDR_UART1ex;
@@ -132,37 +139,62 @@ void MDR_UART_DBG_InitIrq(uint32_t baudRate, bool isCPUbyPLL, uint32_t selEvents
   MDR_UARTex_NVIC_EnableIRQ(UART_DBG, 0);                           
 }  
 
+void MDR_UART_DBG_InitByClockIrq(uint32_t baudRate, uint32_t UART_ClockHz, uint32_t selEvents, MDR_UART_EventFIFO levelFIFO)
+{
+  //  Конфигурация
+  MDR_UART_CfgIRQ cfgIRQ = { .SelEventIRQ.Value = selEvents,
+                             .Rx_FIFO_Event = levelFIFO,
+                             .Tx_FIFO_Event = levelFIFO
+                           };
+  MDR_UART_Cfg cfgUART = _CFG_UART_DBG_DEF_EX(0, &cfgIRQ);
+
+  //  Инициалиазация
+  MDR_UART_DBG_InitByClock(&cfgUART, baudRate, UART_ClockHz);
+	//	Разрешение прерываний с приоритетом 0
+  MDR_UARTex_NVIC_EnableIRQ(UART_DBG, 0);
+}
+
+void MDR_UART_DBG_SetClockCPU(bool isCPUbyPLL)
+{
+  #ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
+    if (isCPUbyPLL)
+      MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_PLLCPUo);
+    else
+      MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_CPU_C1);
+    
+  #elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
+    UNUSED(isCPUbyPLL);  
+    MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
+    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);  
+    
+  #elif defined (MDR_CLK_LIKE_VE8)  
+    UNUSED(isCPUbyPLL);  
+    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
+    
+  #else
+    UNUSED(isCPUbyPLL);
+    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);
+  #endif
+}
+
 //  Настройка UART_DBG с заданием конфигурации
 void MDR_UART_DBG_InitCfg(MDR_UART_Cfg *cfgUART, uint32_t baudRate, bool isCPUbyPLL)
 {
-  uint32_t UART_ClockHz;
-  MDR_UART_cfgBaud cfgBaud;
-  MDR_UART_CfgPinsGPIO pinsGPIO;
-
-//--------    UART_Clock On -------------
-#ifdef MDR_PER_CLOCK_SELF_TIM_UART_SSP  
-  if (isCPUbyPLL)
-    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_PLLCPUo);
-  else
-    MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_PER_CPU_C1);
+  //  Set UartClock
+  MDR_UART_DBG_SetClockCPU(isCPUbyPLL);
   
-#elif defined (MDR_TIM_CLOCK_FROM_PER_CLOCK)
-  UNUSED(isCPUbyPLL);  
-  MDR_SetClock_UartTimSSP(MDR_PER_PLLCPUo);
-  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);  
-  
-#elif defined (MDR_CLK_LIKE_VE8)  
-  UNUSED(isCPUbyPLL);  
-  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1, MDR_RST_ASYNC_IN_MAX_CLK);
-  
-#else
-  UNUSED(isCPUbyPLL);
-  MDR_UARTex_SetUartClock(UART_DBG, MDR_Div128P_div1);
-#endif
-//---------------------------------------
-
   //  Baud Rate
-  UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
+  uint32_t UART_ClockHz = MDR_UARTex_GetUartClockHz(UART_DBG, true);  
+  MDR_UART_DBG_InitByClock(cfgUART, baudRate, UART_ClockHz);
+}
+
+//  Настройка UART_DBG с заданием конфигурации
+void MDR_UART_DBG_InitByClock(MDR_UART_Cfg *cfgUART, uint32_t baudRate, uint32_t UART_ClockHz)
+{ 
+  MDR_UART_cfgBaud     cfgBaud;
+  MDR_UART_CfgPinsGPIO pinsGPIO;
+  
+  //  Calc cfgBaud Rate
   MDR_UART_CalcBaudRate(&cfgBaud, baudRate, UART_ClockHz);
   
   //  Uart Init
@@ -184,7 +216,6 @@ void MDR_UART_DBG_InitCfg(MDR_UART_Cfg *cfgUART, uint32_t baudRate, bool isCPUby
   printf("BaudError: %f\n", baudError);
 #endif
 }
-
 
 void MDR_UART_DBG_Finit(void)
 {

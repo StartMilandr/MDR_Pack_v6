@@ -319,8 +319,8 @@ typedef struct {
 #define MDR_ETH_STAT_RX_Empty_Msk        (0x1UL)                   /*!< MDR_ETH1 STAT: RX_Empty (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_AEmpty_Pos       (1UL)                     /*!< MDR_ETH1 STAT: RX_AEmpty (Bit 1)                      */
 #define MDR_ETH_STAT_RX_AEmpty_Msk       (0x2UL)                   /*!< MDR_ETH1 STAT: RX_AEmpty (Bitfield-Mask: 0x01)        */
-#define MDR_ETH_STAT_RX_Hald_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Hald (Bit 2)                        */
-#define MDR_ETH_STAT_RX_Hald_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Hald (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_STAT_RX_Halt_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Hald (Bit 2)                        */
+#define MDR_ETH_STAT_RX_Halt_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Hald (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_STAT_RX_AFull_Pos        (3UL)                     /*!< MDR_ETH1 STAT: RX_AFull (Bit 3)                       */
 #define MDR_ETH_STAT_RX_AFull_Msk        (0x8UL)                   /*!< MDR_ETH1 STAT: RX_AFull (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_Full_Pos         (4UL)                     /*!< MDR_ETH1 STAT: RX_Full (Bit 4)                        */
@@ -445,6 +445,23 @@ typedef union {
 #define MDR_ETH_PHY_R1_Opt100BaseFD_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseFD_Pos)
 #define MDR_ETH_PHY_R1_Opt100BaseT4_Pos       16
 #define MDR_ETH_PHY_R1_Opt100BaseT4_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseT4_Pos)
+
+
+//  Register R4 - Autonegotiation 
+#define MDR_ETH_PHY_R4                        4
+
+#define MDR_ETH_PHY_R4_10BaseHD_Ena_Pos        5
+#define MDR_ETH_PHY_R4_10BaseHD_Ena_Msk       (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_10BaseFD_Ena_Pos        6
+#define MDR_ETH_PHY_R4_10BaseFD_Ena_Msk       (1 << MDR_ETH_PHY_R4_10BaseFD_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseHD_Ena_Pos       7
+#define MDR_ETH_PHY_R4_100BaseHD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseHD_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseFD_Ena_Pos       8
+#define MDR_ETH_PHY_R4_100BaseFD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseFD_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseT4_Ena_Pos       9
+#define MDR_ETH_PHY_R4_100BaseT4_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseT4_Ena_Pos)
+
+#define MDR_ETH_PHY_R4_SEL_100Mbps      (MDR_ETH_PHY_R4_100BaseHD_Ena_Msk | MDR_ETH_PHY_R4_100BaseFD_Ena_Msk | MDR_ETH_PHY_R4_100BaseT4_Ena_Msk)
 
 
 /* =========================================  End of section using anonymous unions  ========================================= */

@@ -20,6 +20,14 @@
   }
 #endif
 
+bool MDR_EthPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth, uint8_t addrPHY)
+{ 
+  if (MDR_ETH_MDIO_MaskSetClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps, 0))
+    return MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps);       
+  
+  return false;
+}
+
 #ifdef MDR_HAS_ETH_PHY
   static void MDR_EthIntPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg)
   {
@@ -27,45 +35,40 @@
     while ((MDR_Eth->PHY_STATUS & MDR_ETH_PHY_STATUS_READY_Msk) == 0);    
     
     MDR_Eth->PHY_CTRL |= MDR_ETH_PHY_CTRL_nRST_Msk;
-  }
-  
-  bool MDR_EthIntPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth)
-  {
-    uint8_t addrPHY = ETH_INT_PHY_ADDR(MDR_Eth);
-    
-    if (MDR_ETH_MDIO_MaskSetClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps, 0))
-      return MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R4, MDR_ETH_PHY_R4_SEL_100Mbps);       
-    
-    return false;
-  }
+  }  
 #endif
 
 void MDR_EthExtPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint8_t addrPHY, uint16_t phyCfgReg)
 {
-  //  Reset PHY
-  MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, MDR_ETH_PHY_R0_RESET_Msk);
-  //  Wait Ready
-  while (!MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, MDR_ETH_PHY_R0_RESET_Msk)) {}
-    
-  //  SetConfigs
-  MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, phyCfgReg);      
+  uint16_t regVal;
+  
+  if (MDR_ETH_ReadMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, &regVal))
+  {
+    //  Reset PHY
+    MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, regVal | MDR_ETH_PHY_R0_RESET_Msk);
+    MDR_Delay(MS_TO_CLOCKS(50, 50E+6));
+    //  Wait Ready
+    while (!MDR_ETH_MDIO_GetMaskClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, MDR_ETH_PHY_R0_RESET_Msk)) {}
+      
+    //  SetConfigs
+    MDR_ETH_WriteMDIO(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, (regVal & MDR_ETH_PHY_R0_Reserved_Msk) | phyCfgReg);      
+  }
 }
 
 void MDR_Eth_Init(MDR_ETH_Type *MDR_Eth, const MDR_ETH_InitCfg *cfg)
 {
 #ifdef MDR_HAS_ETH_PHY  
-//  Встроенный PHY
+  //  Встроенный PHY
   MDR_EthIntPHY_EnaAndWaitReady(MDR_Eth, cfg->phyCfgReg);
-#else 
-//  Внешний PHY  
-  // Настройки MDIO для работы с PHY
-  MDR_Eth->MDIO_CTRL = cfg->cfgRegsMAC->MDIO_CTRL;  
-  
-  uint8_t phyAddr = cfg->phyCfgReg & MDR_ETH_PHY_R0_Reserved_Msk;  
-  MDR_EthExtPHY_EnaAndWaitReady(MDR_Eth, phyAddr, cfg->phyCfgReg & (~MDR_ETH_PHY_R0_Reserved_Msk));
 #endif
    
   MDR_Eth_InitMAC(MDR_Eth, cfg->cfgRegsMAC);
+
+#ifndef MDR_HAS_ETH_PHY    
+  //  Внешний PHY
+  uint8_t phyAddr = cfg->phyCfgReg & MDR_ETH_PHY_R0_Reserved_Msk;  
+  MDR_EthExtPHY_EnaAndWaitReady(MDR_Eth, phyAddr, cfg->phyCfgReg & (~MDR_ETH_PHY_R0_Reserved_Msk));
+#endif
 }
   
 void MDR_Eth_InitMAC(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MAC_CfgRegs  *cfgRegs)  
@@ -380,3 +383,32 @@ bool MDR_ETH_MDIO_MaskSetClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t
     return false;
 }
 
+
+//===================     MDIO Managable Device Registers Access (MMD)  ==========
+#define MDIO_MMD_CTRL_FUNC_ADDR      0
+#define MDIO_MMD_CTRL_FUNC_DATA      0x4000
+#define MDIO_MMD_CTRL_DEVAD_Msk      0x001F
+
+
+void MDR_ETH_MDIO_BindRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD)
+{
+  addrMMD = addrMMD & MDIO_MMD_CTRL_DEVAD_Msk;
+  //  Write Addr
+  MDR_ETH_WriteMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Ctrl, MDIO_MMD_CTRL_FUNC_ADDR | cfgMMD->devad);
+  MDR_ETH_WriteMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Data, addrMMD);
+
+  //  Bind MMD_Register to MII_Register
+  MDR_ETH_WriteMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Ctrl, MDIO_MMD_CTRL_FUNC_DATA | cfgMMD->devad);     
+}
+
+bool MDR_ETH_MDIO_WriteRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD, uint16_t value)
+{
+  MDR_ETH_MDIO_BindRegMMD(MDR_Eth, cfgMMD, addrMMD);
+  return MDR_ETH_MDIO_ReWriteRegMMD(MDR_Eth, cfgMMD, value);
+}
+
+bool MDR_ETH_MDIO_ReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *cfgMMD, uint16_t addrMMD, uint16_t *value)
+{
+  MDR_ETH_MDIO_BindRegMMD(MDR_Eth, cfgMMD, addrMMD);
+  return MDR_ETH_MDIO_ReReadRegMMD(MDR_Eth, cfgMMD, value);  
+}

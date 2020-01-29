@@ -199,7 +199,9 @@ typedef enum {
   MDR_Pin_PullOff   = MDR_Pin_In,      //  Pull Off
   MDR_Pin_PullUp    = MDR_Pin_In_PU,   //  PullUp
   MDR_Pin_PullDown  = MDR_Pin_In_PD,   //  PullDown
-} MDR_Pin_FuncPull;
+} MDR_Pin_InPull;
+
+#define MDR_Pin_FuncPull  MDR_Pin_InPull
 
 typedef struct {
   MDR_OnOff       DigMode;      //  ANALOG
@@ -258,8 +260,13 @@ void MDR_Port_ToPinCfg(MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinD
 void MDR_Port_Init_PortOUT   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_PIN_PWR pinPWR);
 void MDR_Port_InitPin_PortOUT(MDR_PORT_Type *GPIO_Port, uint32_t pinInd,    MDR_PIN_PWR pinPWR);
 
-void MDR_Port_Init_PortIN   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect);
-void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd);
+void MDR_Port_Init_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_InPull pinPull);
+void MDR_Port_InitPin_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_InPull pinPull);
+
+__STATIC_INLINE 
+void MDR_Port_Init_PortIN   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) { MDR_Port_Init_PortIN_Pull(GPIO_Port, pinSelect, MDR_Pin_PullOff); }
+__STATIC_INLINE 
+void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd) { MDR_Port_InitPin_PortIN_Pull(GPIO_Port, pinInd, MDR_Pin_PullOff); }
 
 
 // =============================== ВАРИАНТ НАСТРОЙКИ 2+ (Дополнение) ========================
@@ -404,6 +411,9 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
 
   #define MDR_GPIO_Init_PortIN(GP, Sel)           MDR_Port_Init_PortIN   ((GP)->PORTx, (Sel))
   #define MDR_GPIO_InitPin_PortIN(GP, Ind)        MDR_Port_InitPin_PortIN((GP)->PORTx, (Ind))
+
+  #define MDR_GPIO_Init_PortIN_Pull(GP, Sel, pull)      MDR_Port_Init_PortIN_Pull   ((GP)->PORTx, (Sel), (pull))
+  #define MDR_GPIO_InitPin_PortIN_Pull(GP, Ind, pull)   MDR_Port_InitPin_PortIN_Pull((GP)->PORTx, (Ind), (pull))
 
 
 //===================================

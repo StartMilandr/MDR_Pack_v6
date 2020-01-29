@@ -36,5 +36,12 @@ void MDR_UART_DBG_ChangeRate(uint32_t baudRate);
 bool MDR_UART_DBG_TrySend(char data);
 
 
+//  Подача CPU_Clock на UART_Clock 
+void MDR_UART_DBG_SetClockCPU(bool isCPUbyPLL);
+//  Настройка по UART_ClockHz
+void MDR_UART_DBG_InitByClock(MDR_UART_Cfg *cfgUART, uint32_t baudRate, uint32_t UART_ClockHz);
+//  Тоже самое с прерываниями
+void MDR_UART_DBG_InitByClockIrq(uint32_t baudRate, uint32_t UART_ClockHz, uint32_t selEvents, MDR_UART_EventFIFO levelFIFO);
+
 #endif  //_MDRB_UART_DEBUG_H
 

@@ -87,8 +87,8 @@ void MDR_Port_Reset(MDR_PORT_Type *GPIO_Port)
 #define CLR_FUNC     MDR_GPIO_FUNC__Pin_Msk
 #define CLR_PD      (MDR_GPIO_PD_Driver__Pin_Msk | MDR_GPIO_PD_Schmitt__Pin_Msk)
 
-#define SET_OR_CLEAR(cfg, valSet, outReg, mask)     if ((cfg) == valSet) (outReg) =  (mask); else (outReg) &= ~(mask)
-#define SET_OR_CLEAR_HI(cfg, valSet, outReg, mask)  if ((cfg) == valSet) (outReg) = ((mask) << 16); else (outReg) &= ~((mask) << 16)
+#define SET_OR_CLEAR(cfg, valSet, outReg, mask)     if ((cfg) == valSet) (outReg) |=  (mask); else (outReg) &= ~(mask)
+#define SET_OR_CLEAR_HI(cfg, valSet, outReg, mask)  if ((cfg) == valSet) (outReg) |= ((mask) << 16); else (outReg) &= ~((mask) << 16)
 
 void MDR_Port_Init(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_GPIO_PinCfg *pinCfg)
 {
@@ -445,7 +445,7 @@ void MDR_Port_InitPin_PortOUT(MDR_PORT_Type *GPIO_Port, uint32_t pinInd,    MDR_
   MDR_Port_InitDigPinPort(GPIO_Port, pinInd, MDR_Pin_Out, &groupPinCfg);  
 }
 
-void MDR_Port_Init_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+void MDR_Port_Init_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_InPull pinPull)
 {
   MDR_PinDig_GroupPinCfg groupPinCfg = {
     .DigMode   = MDR_On,
@@ -454,10 +454,10 @@ void MDR_Port_Init_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
     .InpFilterEn  = MDR_Off,
     .InpSchmEn    = MDR_Off}; 
     
-  MDR_Port_InitDigPort(GPIO_Port, pinSelect, MDR_Pin_In, &groupPinCfg);  
+  MDR_Port_InitDigPort(GPIO_Port, pinSelect, (MDR_Pin_IO)pinPull, &groupPinCfg);  
 }
 
-void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd)
+void MDR_Port_InitPin_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_InPull pinPull)
 {
   MDR_PinDig_GroupPinCfg groupPinCfg = {
     .DigMode   = MDR_On,
@@ -466,6 +466,6 @@ void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd)
     .InpFilterEn  = MDR_Off,
     .InpSchmEn    = MDR_Off};  
   
-  MDR_Port_InitDigPinPort(GPIO_Port, pinInd, MDR_Pin_In, &groupPinCfg);    
+  MDR_Port_InitDigPinPort(GPIO_Port, pinInd, (MDR_Pin_IO)pinPull, &groupPinCfg);    
 }
 

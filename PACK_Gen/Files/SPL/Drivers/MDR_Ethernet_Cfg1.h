@@ -31,7 +31,7 @@
 
 //  Transmitter Options
 #define  ETHCFG1_TX_ADD_PAD_FOR_SHORT          1
-#define  ETHCFG1_TX_TRY_SEND_COUNT             MDR_ETH_XCFG_Rtry_Off
+#define  ETHCFG1_TX_TRY_SEND_COUNT             MDR_ETH_XCFG_Rtry_10
 #define  ETHCFG1_TX_EVENT_MODE                 MDR_ETH_XCFG_EVENT_FIFO_Half
 
 //  Global Options
@@ -232,6 +232,7 @@
                             |   ETHCFG1_TX_MSK_PREAMBLE    \
                             |   ETHCFG1_TX_MSK_ENDIAN      \
                             |   ETHCFG1_TX_MSK_MSB         \
+                            |   ETHCFG1_TX_TRY_SEND_COUNT  \
                             | ((ETHCFG1_TX_EVENT_MODE << MDR_ETH_XCFG_EVNT_MODE_Pos) & MDR_ETH_XCFG_EVNT_MODE_Msk)
                           
 

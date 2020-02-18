@@ -3,8 +3,37 @@
 
 #include <stdint.h>
 
+/* ========================================  Start of section using anonymous unions  ======================================== */
+#if defined (__CC_ARM)
+  #pragma push
+  #pragma anon_unions
+#elif defined (__ICCARM__)
+  #pragma language=extended
+#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wc11-extensions"
+  #pragma clang diagnostic ignored "-Wreserved-id-macro"
+  #pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+  #pragma clang diagnostic ignored "-Wnested-anon-types"
+#elif defined (__GNUC__)
+  /* anonymous unions are enabled by default */
+#elif defined (__TMS470__)
+  /* anonymous unions are enabled by default */
+#elif defined (__TASKING__)
+  #pragma warning 586
+#elif defined (__CSMC__)
+  /* anonymous unions are enabled by default */
+#else
+  #warning Not supported compiler type
+#endif
+/* ========================================  Start of section using anonymous unions  ======================================== */
+
+
+
 //  From here, thanks a lot!!!
 //  http://we.easyelectronics.ru/electro-and-pc/podklyuchenie-mikrokontrollera-k-lokalnoy-seti-tcp-klient.html
+
+
 
 /*
  * BE conversion, HostToNex, NetToHost
@@ -25,6 +54,11 @@
  
 #define ETH_TYPE_ARP		  htons(0x0806)
 #define ETH_TYPE_IP			  htons(0x0800)
+#define ETH_TYPE_VLAN     htons(0x8100)
+#define ETH_TYPE_VLAND    htons(0x9100)
+#define ETH_TYPE_ETHERCAT htons(0x88A4)
+#define ETH_TYPE_HSR      htons(0x892F)
+#define ETH_TYPE_PRP_SUP  htons(0x88FB)
 
 typedef struct eth_frame {
 	uint8_t  to_addr[6];
@@ -32,6 +66,73 @@ typedef struct eth_frame {
 	uint16_t type;
 	uint8_t  payload[];
 } eth_frame_t;
+
+__STATIC_INLINE bool IsFrameTypeEQ(eth_frame_t *frame, uint16_t etherType)
+{
+  return frame->type == etherType;
+}
+
+#define IsFrameARP(frm)       IsFrameTypeEQ(frm, ETH_TYPE_ARP)
+#define IsFrameUP(frm)        IsFrameTypeEQ(frm, ETH_TYPE_IP)
+#define IsFrameVLAN(frm)      IsFrameTypeEQ(frm, ETH_TYPE_VLAN)
+#define IsFrameVLAND(frm)     IsFrameTypeEQ(frm, ETH_TYPE_VLAND)
+#define IsFrameEtherCAT(frm)  IsFrameTypeEQ(frm, ETH_TYPE_ETHERCAT)
+#define IsFrameHSR(frm)       IsFrameTypeEQ(frm, ETH_TYPE_HSR)
+#define IsFrameSuperPRP(frm)  IsFrameTypeEQ(frm, ETH_TYPE_PRP_SUP)
+
+/*
+ * Ethernet TAG
+ */
+
+typedef struct eth_frame_tag {
+	uint8_t  to_addr[6];
+	uint8_t  from_addr[6];
+	uint16_t TPID;    //  Tag protocol ID
+  uint16_t TCID;    //  Tag control ID
+  uint16_t type;
+	uint8_t  payload[];
+} eth_frame_tag_t;
+
+
+__STATIC_INLINE bool IsTagFrameTypeEQ(eth_frame_tag_t *frame, uint16_t etherType)
+{
+  return frame->type == etherType;
+}
+
+#define IsTagFrameARP(frm)       IsTagFrameTypeEQ(frm, ETH_TYPE_ARP)
+#define IsTagFrameUP(frm)        IsTagFrameTypeEQ(frm, ETH_TYPE_IP)
+#define IsTagFrameVLAN(frm)      IsTagFrameTypeEQ(frm, ETH_TYPE_VLAN)
+#define IsTagFrameVLAND(frm)     IsTagFrameTypeEQ(frm, ETH_TYPE_VLAND)
+#define IsTagFrameEtherCAT(frm)  IsTagFrameTypeEQ(frm, ETH_TYPE_ETHERCAT)
+#define IsTagFrameHSR(frm)       IsTagFrameTypeEQ(frm, ETH_TYPE_HSR)
+#define IsTagFrameSuperPRP(frm)  IsTagFrameTypeEQ(frm, ETH_TYPE_PRP_SUP)
+
+
+/*
+ * Ethernet TAG - VLAN
+ */
+
+typedef struct {
+    uint16_t               prio: 3;
+    uint16_t               cti:  1;
+    uint16_t               lanID;
+} eth_VLAN_tag_bits_t;
+
+typedef struct eth_VLAN_tag {
+  uint16_t              TPID;
+  union { 
+    uint16_t            TCID;
+    eth_VLAN_tag_bits_t TCID_b;
+  } ;  
+} eth_VLAN_tag_t;  
+
+typedef struct eth_frame_VLAN_tag {
+	uint8_t         to_addr[6];
+	uint8_t         from_addr[6];
+  eth_VLAN_tag_t  tagVLAN;
+  uint16_t        type;
+	uint8_t         payload[];
+} eth_frame_LVAN_t;
 
 /*
  * ARP
@@ -179,6 +280,27 @@ typedef enum dhcp_status_code {
 	DHCP_WAITING_OFFER,
 	DHCP_WAITING_ACK
 } dhcp_status_code_t;
+
+
+/* =========================================  End of section using anonymous unions  ========================================= */
+#if defined (__CC_ARM)
+  #pragma pop
+#elif defined (__ICCARM__)
+  /* leave anonymous unions enabled */
+#elif (__ARMCC_VERSION >= 6010050)
+  #pragma clang diagnostic pop
+#elif defined (__GNUC__)
+  /* anonymous unions are enabled by default */
+#elif defined (__TMS470__)
+  /* anonymous unions are enabled by default */
+#elif defined (__TASKING__)
+  #pragma warning restore
+#elif defined (__CSMC__)
+  /* anonymous unions are enabled by default */
+#endif
+/* =========================================  End of section using anonymous unions  ========================================= */
+
+
 
 #endif // MDR_ETHERNET_FRAME_DEFS_H
 

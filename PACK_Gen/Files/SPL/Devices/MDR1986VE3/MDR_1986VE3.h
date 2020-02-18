@@ -172,6 +172,7 @@ typedef enum IRQn
 #include "MDR_GPIO_defs.h"
 
 #define MDR_PORT_Type  MDR_PORT_Type__Ext
+#define MDR_GPIO_HAS_SET_CLEAR
 
 /*===============  ADC SAR ===================*/
 #include "MDR_ADC_VE1VE3_def.h"

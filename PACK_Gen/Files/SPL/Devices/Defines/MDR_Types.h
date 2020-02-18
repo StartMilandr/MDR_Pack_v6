@@ -32,6 +32,7 @@
 
  //  Используемые типы функций
 typedef void (*pVoidFunc_void)(void);
+typedef void (*pVoidFunc_U32)(uint32_t);
 typedef bool (*pBoolFunc_U32)(uint32_t);
 typedef bool (*pBoolFunc_void)(void);
 

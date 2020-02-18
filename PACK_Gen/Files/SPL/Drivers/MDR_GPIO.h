@@ -145,6 +145,14 @@ __STATIC_INLINE     bool MDR_Port_GetMaskClr(MDR_PORT_Type *GPIO_Port, uint32_t 
   #endif  
 #else 
   #if defined(MDR_GPIO_HAS_SET_CLEAR)
+    //  Rename VE1 reg names to VE8 style names
+    #ifndef RXTX_Set
+      #define RXTX_Set  SETTX
+    #endif
+    #ifndef RXTX_Clr
+      #define RXTX_Clr  CLRTX
+    #endif
+
     __STATIC_INLINE     void MDR_Port_Set       (MDR_PORT_Type *GPIO_Port, uint32_t portData)  {GPIO_Port->RXTX     = portData;}
     __STATIC_INLINE     void MDR_Port_SetPins   (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Set = pinSelect;}
     __STATIC_INLINE     void MDR_Port_ClearPins (MDR_PORT_Type *GPIO_Port, uint32_t pinSelect) {GPIO_Port->RXTX_Clr = pinSelect;}
@@ -440,6 +448,18 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
   
 //  Для совместимости со старыми названиями
 #define MDR_PinDig_PermRegs         MDR_PinDig_GroupPinCfg  
-  
-                                     
+
+//===================== Структуры для назначения пинов (унифицированный аналог MDR_SSP_CfgPinGPIO из MDR_SSP.h и аналогичных) ===============
+typedef struct {
+  const MDR_GPIO_Port *portGPIO;
+  uint32_t       selPins;
+  MDR_PIN_FUNC   pinFunc;
+} MDR_GPIO_CfgPinFunc;
+
+
+typedef struct {
+  const MDR_GPIO_Port *portGPIO;
+  uint32_t       selPins;
+} MDR_GPIO_CfgPinPort;
+
 #endif //  _MDR_GPIO_H

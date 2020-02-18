@@ -185,6 +185,19 @@ void MDR_Timer_Stop(const MDR_TIMER_TypeEx  *TIMERex)
   MDR_PerClock_GateClose  (&TIMERex->CfgClock);
 }
 
+//  Приостановка
+__STATIC_INLINE 
+void MDR_Timer_PauseOn(const MDR_TIMER_TypeEx  *TIMERex) 
+{  
+  MDR_PerClock_GateClose  (&TIMERex->CfgClock);
+}
+
+__STATIC_INLINE 
+void MDR_Timer_PauseOff(const MDR_TIMER_TypeEx  *TIMERex) 
+{  
+  MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);;
+}
+
 //  Функции управления - использовать только после включения таймера - Start!
 //  Иначе, без Start не подана частота TIM_CLOCK, и биты WR_CMPL не сбрасываются совсем.
 //  Сбросятся только при подаче TIM_CLOCK, при Start.

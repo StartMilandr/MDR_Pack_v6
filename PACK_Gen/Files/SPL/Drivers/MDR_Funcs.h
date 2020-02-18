@@ -24,7 +24,7 @@ void MDR_WaitFlagClear(uint32_t addr, uint32_t flag);
 //=========================    Преобразование времени в такты CPU и циклы MDR_Delay ====================
 #define _SEC_TO_CLOCK(Sec, freqCPU_Hz, SecUnit)    ((uint32_t)((double)(Sec) * (freqCPU_Hz) / SecUnit))
   
-#define  S_TO_CLOCKS(Sec, freqCPU_Hz)             _SEC_TO_CLOCK(mSec, freqCPU_Hz, 1)
+#define  S_TO_CLOCKS(Sec, freqCPU_Hz)             _SEC_TO_CLOCK(Sec, freqCPU_Hz, 1)
 #define MS_TO_CLOCKS(mSec, freqCPU_Hz)            _SEC_TO_CLOCK(mSec, freqCPU_Hz, 1000)
 #define US_TO_CLOCKS(uSec, freqCPU_Hz)            _SEC_TO_CLOCK(uSec, freqCPU_Hz, 1000000)
 #define NS_TO_CLOCKS(nSec, freqCPU_Hz)            _SEC_TO_CLOCK(nSec, freqCPU_Hz, 1000000000)
@@ -63,8 +63,11 @@ void MDR_WaitFlagClear(uint32_t addr, uint32_t flag);
 #define US_TO_DELAY_LOOPS(uSec, freqCPU_Hz)                   US_TO_DELAY_LOOPS_EX(uSec, freqCPU_Hz, DELAY_LOOP_CYCLES)
 #define NS_TO_DELAY_LOOPS(nSec, freqCPU_Hz)                   NS_TO_DELAY_LOOPS_EX(nSec, freqCPU_Hz, DELAY_LOOP_CYCLES)
 
+#define CLOCKS_TO_DELAY_LOOPS(clock)                          ((uint32_t)((double)(clock) / DELAY_LOOP_CYCLES))
 
 //=========================    Варианты задержки =======================
+//  Тип функции для ссылки на реализацию
+#define pWaitTicksFunc    pVoidFunc_U32
 
 //  1: Задержка на СИ - Сильно зависит от опций компиляции
 void MDR_DelayC(volatile uint32_t Ticks);

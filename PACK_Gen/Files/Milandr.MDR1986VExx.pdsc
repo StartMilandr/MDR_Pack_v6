@@ -1524,6 +1524,23 @@
         <file category="header"  name="SPL/Drivers/MDR_EBC_VE8_Cfg1.h" attr="config" version="2.0.0"/>
       </files>
     </component> 
+    <!-- GTAG -->
+    <component Cclass="Drivers" Cgroup="JTAG" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>JTAG software control</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_JTAG_GPIO.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_JTAG_GPIO.c"/>
+        <file category="header"  name="SPL/Drivers/MDR_JTAG_Config.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
+    <!-- 5576RC1U -->
+    <component Cclass="IC Drivers" Cgroup="ISP_5576RC1U" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>5576RC1U In-System Configuration</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_ISC_5576RC1U.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_ISC_5576RC1U.c"/>
+      </files>
+    </component>
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
       <description>LED flasher control</description>

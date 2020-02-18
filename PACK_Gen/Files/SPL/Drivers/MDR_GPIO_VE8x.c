@@ -418,24 +418,24 @@ void MDR_Port_InitPin_PortOUT(MDR_PORT_Type *GPIO_Port, uint32_t pinInd,    MDR_
   MDR_Port_InitDigPinPort(GPIO_Port, pinInd, MDR_Pin_Out, &groupPinCfg);  
 }
 
-void MDR_Port_Init_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+void MDR_Port_Init_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_InPull pinPull)
 {
   MDR_PinDig_GroupPinCfg groupPinCfg = {
     .DigMode   = MDR_On,
     .OpenDrain = MDR_Off,
     .Power     = MDR_PIN_PWR_OFF};
   
-  MDR_Port_InitDigPort(GPIO_Port, pinSelect, MDR_Pin_In, &groupPinCfg);  
+  MDR_Port_InitDigPort(GPIO_Port, pinSelect, (MDR_Pin_IO)pinPull, &groupPinCfg);  
 }
 
-void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd)
+void MDR_Port_InitPin_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_InPull pinPull)
 {
   MDR_PinDig_GroupPinCfg groupPinCfg = {
     .DigMode   = MDR_On,
     .OpenDrain = MDR_Off,
     .Power     = MDR_PIN_PWR_OFF};
   
-  MDR_Port_InitDigPinPort(GPIO_Port, pinInd, MDR_Pin_In, &groupPinCfg);    
+  MDR_Port_InitDigPinPort(GPIO_Port, pinInd, (MDR_Pin_IO)pinPull, &groupPinCfg);    
 }
 
 

@@ -91,13 +91,13 @@ void MDR_JTAG_ResetTarget(uint32_t reselTicks)
 #define Get_TDO     MDR_Port_Get(_PORT_TDO) & _PIN_TDO
 
 #if JTAG_REMOVE_DELAYS
-  #define WIDTH_DELAY    //_funcWaitTicks(_widthTCK_Ticks)
+  #define WIDTH_DELAY
 #else
   #define WIDTH_DELAY    _funcWaitTicks(_widthTCK_Ticks)
 #endif
 
 static inline void MDR_JTAG_MOVE_TMS_0(void)
-{
+{    
   //Set_TCK_0;    //  Line already in Low
   WIDTH_DELAY; 
   Set_TCK_1;
@@ -234,7 +234,7 @@ void MDR_JTAG_ShiftReadIDR_ToExit1(uint32_t bitCnt, uint32_t *data)
       *data |= (1 << i);
   } 
   if (MDR_JTAG_ReadLastBit_TDO_ToExit1())
-    *data |= bitCnt - 1;
+    *data |= (1 << (bitCnt - 1));
 }
 
 void MDR_JTAG_ShiftWriteIDR_ToExit1(uint32_t bitCnt, uint32_t data)

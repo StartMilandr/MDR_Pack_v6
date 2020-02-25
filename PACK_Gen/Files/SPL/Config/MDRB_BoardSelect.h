@@ -17,7 +17,7 @@
   #ifdef USE_BASIS
     #define USE_BOARD_BASIS
   #else
-    #def ine USE_BOARD_VE92
+    #define USE_BOARD_VE92
   #endif
 #elif defined (USE_MDR1986VE93)
   #define USE_BOARD_VE93
@@ -33,6 +33,8 @@
   #define USE_BOARD_VE8
 #elif defined (USE_MDR1923VK014)
   #define USE_BOARD_VK014   
+#elif defined (USE_MLDR_155)
+  #define USE_BOARD_MLDR155     
 #elif defined (USE_ESila)
   #define USE_BOARD_ESila   
 
@@ -94,6 +96,10 @@
 #elif defined ( USE_BOARD_VK014 ) 
 
   #include "MDRB_1923VK014.h"    
+  
+#elif defined ( USE_BOARD_MLDR155 ) 
+
+  #include "MDRB_MLDR155.h"  
   
 #elif defined ( USE_BOARD_ESila ) 
 

@@ -146,10 +146,8 @@ __STATIC_INLINE     bool MDR_Port_GetMaskClr(MDR_PORT_Type *GPIO_Port, uint32_t 
 #else 
   #if defined(MDR_GPIO_HAS_SET_CLEAR)
     //  Rename VE1 reg names to VE8 style names
-    #ifndef RXTX_Set
+    #ifndef MDR_GPIO_LIKE_VE8
       #define RXTX_Set  SETTX
-    #endif
-    #ifndef RXTX_Clr
       #define RXTX_Clr  CLRTX
     #endif
 

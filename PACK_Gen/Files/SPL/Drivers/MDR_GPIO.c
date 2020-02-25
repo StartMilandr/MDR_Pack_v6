@@ -250,7 +250,7 @@ void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO p
   MDR_Port_ReadRegs(GPIO_Port, &tmpRegs);
 
   pinSelect = 1 << pinInd;
-  tmpRegs.RXTX   &= pinSelect;  
+  tmpRegs.RXTX   &= ~pinSelect;  
   tmpRegs.ANALOG |= pinSelect;  
   
   SET_OR_CLEAR   (regOutEn,     MDR_On,  tmpRegs.OE,   pinSelect);  

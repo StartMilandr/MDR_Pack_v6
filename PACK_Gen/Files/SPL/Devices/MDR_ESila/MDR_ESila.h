@@ -119,6 +119,10 @@ typedef enum IRQn
   PORTC_IRQn         	    = 85,
   PORTD_IRQn         	    = 86,
 
+#ifdef USE_MLDR_155
+  ETH3_IRQn     	        = 87,
+  ETH2_IRQn     	        = 88,
+#endif
   ETH1_IRQn     	        = 89,
   CAN1_IRQn         	    = 90,
   CAN2_IRQn         	    = 91,
@@ -476,7 +480,10 @@ typedef struct
 #define ADDR_CAN2_BASE        0x4008C000UL
 
 #define ADDR_ETH1_BASE        0x21000000UL
-
+#ifdef USE_MLDR_155
+  #define ADDR_ETH2_BASE        0x21020000UL
+  #define ADDR_ETH3_BASE        0x21040000UL
+#endif
 
 /** @} */ /* End of group Device_Peripheral_peripheralAddr */
 
@@ -560,6 +567,11 @@ typedef struct
 #define MDR_CAN2                       ((MDR_CAN_Type       *) ADDR_CAN2_BASE)
 
 #define MDR_ETH1                       ((MDR_ETH_Type       *) ADDR_ETH1_BASE)
+
+#ifdef USE_MLDR_155
+  #define MDR_ETH2                       ((MDR_ETH_Type       *) ADDR_ETH2_BASE)
+  #define MDR_ETH3                       ((MDR_ETH_Type       *) ADDR_ETH3_BASE)
+#endif
 
 /* =========================================================================================================================== */
 /* ================                                  SPL_Configs                                   ================ */

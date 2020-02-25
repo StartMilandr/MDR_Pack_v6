@@ -319,8 +319,8 @@ typedef struct {
 #define MDR_ETH_STAT_RX_Empty_Msk        (0x1UL)                   /*!< MDR_ETH1 STAT: RX_Empty (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_AEmpty_Pos       (1UL)                     /*!< MDR_ETH1 STAT: RX_AEmpty (Bit 1)                      */
 #define MDR_ETH_STAT_RX_AEmpty_Msk       (0x2UL)                   /*!< MDR_ETH1 STAT: RX_AEmpty (Bitfield-Mask: 0x01)        */
-#define MDR_ETH_STAT_RX_Halt_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Hald (Bit 2)                        */
-#define MDR_ETH_STAT_RX_Halt_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Hald (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_STAT_RX_Halt_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Halt (Bit 2)                        */
+#define MDR_ETH_STAT_RX_Halt_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Halt (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_STAT_RX_AFull_Pos        (3UL)                     /*!< MDR_ETH1 STAT: RX_AFull (Bit 3)                       */
 #define MDR_ETH_STAT_RX_AFull_Msk        (0x8UL)                   /*!< MDR_ETH1 STAT: RX_AFull (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_Full_Pos         (4UL)                     /*!< MDR_ETH1 STAT: RX_Full (Bit 4)                        */

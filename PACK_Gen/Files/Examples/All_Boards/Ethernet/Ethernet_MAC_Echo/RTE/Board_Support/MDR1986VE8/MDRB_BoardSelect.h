@@ -17,7 +17,7 @@
   #ifdef USE_BASIS
     #define USE_BOARD_BASIS
   #else
-    #def ine USE_BOARD_VE92
+    #define USE_BOARD_VE92
   #endif
 #elif defined (USE_MDR1986VE93)
   #define USE_BOARD_VE93

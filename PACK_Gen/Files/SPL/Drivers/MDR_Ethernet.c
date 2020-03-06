@@ -412,3 +412,15 @@ bool MDR_ETH_MDIO_ReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *c
   MDR_ETH_MDIO_BindRegMMD(MDR_Eth, cfgMMD, addrMMD);
   return MDR_ETH_MDIO_ReReadRegMMD(MDR_Eth, cfgMMD, value);  
 }
+
+//===================   Misc Utils   =========================
+bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2)
+{
+  uint32_t *Mac1 = (uint32_t *)MAC1;
+  uint32_t *Mac2 = (uint32_t *)MAC2;
+  if (Mac1[0] != Mac2[0])
+    return false;
+  if ((Mac1[1] ^ Mac2[1]) & 0xFFFFUL)
+    return false;
+  return true;
+}

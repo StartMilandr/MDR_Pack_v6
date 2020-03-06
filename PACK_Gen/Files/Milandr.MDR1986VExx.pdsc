@@ -1541,6 +1541,14 @@
         <file category="source"  name="SPL/Drivers/MDR_ISC_5576RC1U.c"/>
       </files>
     </component>
+    <!-- 5101NA015 -->
+    <component Cclass="IC Drivers" Cgroup="5101NA015" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>DAC 5101NA015 control</description>
+      <files>
+        <file category="header"  name="SPL/Drivers/MDR_5101NA015.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_5101NA015.c"/>
+      </files>
+    </component>
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
       <description>LED flasher control</description>

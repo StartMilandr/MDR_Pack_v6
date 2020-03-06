@@ -397,6 +397,21 @@ void MDR_SSP_InitPinsGPIO(const MDR_SSP_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
   }    
 #endif
 
+
+//===================   Вспомогательные функции ==========================
+//  BitRate:                  // BitRate = SSP_Clock / (PSR * (1 + SCR))
+//    DivSCR_0_255;           // 0 - 255, Serial Clock Rate
+//    DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
+
+void MDR_SPI_ChangeRate(MDR_SSP_Type *SSPx, uint8_t divSCR_0_255, uint8_t divPSR_2_254)
+{
+  SSPx->CR1 &= ~MDR_SSP_CR1_SSE_Msk;  
   
+  SSPx->CR0 = MDR_MaskClrSet(SSPx->CR0, MDR_SSP_CR0_SCR_Msk, divSCR_0_255 << MDR_SSP_CR0_SCR_Pos);
+  SSPx->CPSR = divPSR_2_254;
+  
+  SSPx->CR1 |= MDR_SSP_CR1_SSE_Msk;  
+}
+
 
 

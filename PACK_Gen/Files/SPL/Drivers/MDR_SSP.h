@@ -271,6 +271,17 @@ __STATIC_INLINE void MDR_SSPex_ChangeRate(const MDR_SSP_TypeEx *exSSPx, uint8_t 
 __STATIC_INLINE void MDR_SSPex_ChangeFrameFormat(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_FrameFormat newFrameFormat) {MDR_SSP_ChangeFrameFormat(exSSPx->SSPx, newFrameFormat);}
 
 
+
+//===================   Вспомогательные функции ==========================
+//  BitRate:                  // BitRate = SSP_Clock / (PSR * (1 + SCR))
+//    DivSCR_0_255;           // 0 - 255, Serial Clock Rate
+//    DivPSR_2_254;           // 2 - 254, EVEN ONLY! Clock prescaller
+//  Убедиться что SPI не передает (Busy)
+void MDR_SPI_ChangeRate(MDR_SSP_Type *SSPx, uint8_t divSCR_0_255, uint8_t divPSR_2_254);
+
+
+
+
 //===================   SSP GPIO pins Init ==========================
 //  Функция инициализации выводов GPIO в функции SSP
 typedef struct {

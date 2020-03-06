@@ -240,6 +240,8 @@ __STATIC_INLINE bool MDR_ETH_MDIO_ReReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_
 { return MDR_ETH_ReadMDIO(MDR_Eth, cfgMMD->addrPHY, cfgMMD->regMMD_Data, value);   }
 
 
+//===================   Misc Utils   =========================
+bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2);
 
 
 #endif // MDR_ETHERNET_H

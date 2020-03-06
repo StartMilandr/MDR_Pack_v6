@@ -2,6 +2,8 @@
 #define MDR_ETHERNET_FRAME_DEFS_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <cmsis_armcc.h>
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
 #if defined (__CC_ARM)
@@ -28,7 +30,11 @@
 #endif
 /* ========================================  Start of section using anonymous unions  ======================================== */
 
+#define MDR_ETH_FRAME_LEN_MAX         1518
+#define MDR_ETH_VLAN_TAG_LEN_MAX      4
+#define MDR_ETH_FRAME_VLAN_LEN_MAX    (MDR_ETH_FRAME_LEN_MAX + MDR_ETH_VLAN_TAG_LEN_MAX)
 
+#define MDR_ETH_MAC_LEN               6
 
 //  From here, thanks a lot!!!
 //  http://we.easyelectronics.ru/electro-and-pc/podklyuchenie-mikrokontrollera-k-lokalnoy-seti-tcp-klient.html
@@ -60,20 +66,20 @@
 #define ETH_TYPE_HSR      htons(0x892F)
 #define ETH_TYPE_PRP_SUP  htons(0x88FB)
 
-typedef struct eth_frame {
+typedef __PACKED_STRUCT eth_frame {
 	uint8_t  to_addr[6];
 	uint8_t  from_addr[6];
 	uint16_t type;
 	uint8_t  payload[];
 } eth_frame_t;
 
-__STATIC_INLINE bool IsFrameTypeEQ(eth_frame_t *frame, uint16_t etherType)
+__STATIC_INLINE bool IsFrameTypeEQ(const eth_frame_t *frame, uint16_t etherType)
 {
   return frame->type == etherType;
 }
 
 #define IsFrameARP(frm)       IsFrameTypeEQ(frm, ETH_TYPE_ARP)
-#define IsFrameUP(frm)        IsFrameTypeEQ(frm, ETH_TYPE_IP)
+#define IsFrameIP(frm)        IsFrameTypeEQ(frm, ETH_TYPE_IP)
 #define IsFrameVLAN(frm)      IsFrameTypeEQ(frm, ETH_TYPE_VLAN)
 #define IsFrameVLAND(frm)     IsFrameTypeEQ(frm, ETH_TYPE_VLAND)
 #define IsFrameEtherCAT(frm)  IsFrameTypeEQ(frm, ETH_TYPE_ETHERCAT)
@@ -84,7 +90,7 @@ __STATIC_INLINE bool IsFrameTypeEQ(eth_frame_t *frame, uint16_t etherType)
  * Ethernet TAG
  */
 
-typedef struct eth_frame_tag {
+typedef __PACKED_STRUCT eth_frame_tag {
 	uint8_t  to_addr[6];
 	uint8_t  from_addr[6];
 	uint16_t TPID;    //  Tag protocol ID
@@ -93,14 +99,13 @@ typedef struct eth_frame_tag {
 	uint8_t  payload[];
 } eth_frame_tag_t;
 
-
-__STATIC_INLINE bool IsTagFrameTypeEQ(eth_frame_tag_t *frame, uint16_t etherType)
+__STATIC_INLINE bool IsTagFrameTypeEQ(const eth_frame_tag_t *frame, uint16_t etherType)
 {
   return frame->type == etherType;
 }
 
 #define IsTagFrameARP(frm)       IsTagFrameTypeEQ(frm, ETH_TYPE_ARP)
-#define IsTagFrameUP(frm)        IsTagFrameTypeEQ(frm, ETH_TYPE_IP)
+#define IsTagFrameIP(frm)        IsTagFrameTypeEQ(frm, ETH_TYPE_IP)
 #define IsTagFrameVLAN(frm)      IsTagFrameTypeEQ(frm, ETH_TYPE_VLAN)
 #define IsTagFrameVLAND(frm)     IsTagFrameTypeEQ(frm, ETH_TYPE_VLAND)
 #define IsTagFrameEtherCAT(frm)  IsTagFrameTypeEQ(frm, ETH_TYPE_ETHERCAT)
@@ -112,27 +117,34 @@ __STATIC_INLINE bool IsTagFrameTypeEQ(eth_frame_tag_t *frame, uint16_t etherType
  * Ethernet TAG - VLAN
  */
 
-typedef struct {
-    uint16_t               prio: 3;
-    uint16_t               cti:  1;
-    uint16_t               lanID;
-} eth_VLAN_tag_bits_t;
-
-typedef struct eth_VLAN_tag {
-  uint16_t              TPID;
-  union { 
-    uint16_t            TCID;
-    eth_VLAN_tag_bits_t TCID_b;
-  } ;  
+typedef __PACKED_STRUCT eth_VLAN_tag {
+  uint16_t            TPID;
+  uint16_t            TCID;
 } eth_VLAN_tag_t;  
 
-typedef struct eth_frame_VLAN_tag {
+typedef __PACKED_STRUCT eth_frame_VLAN_tag {
 	uint8_t         to_addr[6];
 	uint8_t         from_addr[6];
   eth_VLAN_tag_t  tagVLAN;
   uint16_t        type;
 	uint8_t         payload[];
 } eth_frame_LVAN_t;
+
+
+__STATIC_INLINE bool IsFrameTypeEQ_VLAN(const eth_frame_LVAN_t *frame, uint16_t etherType)
+{
+  return frame->type == etherType;
+}
+
+#define IsFrameARP_VLAN(frm)       IsFrameTypeEQ_VLAN(frm, ETH_TYPE_ARP)
+#define IsFrameIP_VLAN(frm)        IsFrameTypeEQ_VLAN(frm, ETH_TYPE_IP)
+#define IsFrameVLAN_VLAN(frm)      IsFrameTypeEQ_VLAN(frm, ETH_TYPE_VLAN)
+#define IsFrameVLAND_VLAN(frm)     IsFrameTypeEQ_VLAN(frm, ETH_TYPE_VLAND)
+#define IsFrameEtherCAT_VLAN(frm)  IsFrameTypeEQ_VLAN(frm, ETH_TYPE_ETHERCAT)
+#define IsFrameHSR_VLAN(frm)       IsFrameTypeEQ_VLAN(frm, ETH_TYPE_HSR)
+#define IsFrameSuperPRP_VLAN(frm)  IsFrameTypeEQ_VLAN(frm, ETH_TYPE_PRP_SUP)
+
+
 
 /*
  * ARP

@@ -6,6 +6,13 @@
 
 #include <MDR_CAN.h>
 
+
+
+// !!! ДРАЙВЕР CAN И ПРИМЕР НЕ РАБОЧИЕ, ЕЩЕ НИ РАЗУ НЕ ЗАПУСКАЛСЯ И НЕ ОТЛАЖИВАЛСЯ !!!
+
+
+
+
 #define HSE_PLL_40MHz     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz) 
 #define BTN_DEBOUNCE_MS   20
 
@@ -34,7 +41,7 @@
 #define DATA2_TX_BufInd       8
 #define DATA_ANY_TX_BufInd    9
 #define RTR1_TX_BufInd        10
-#define RTRcust_TX_BufInd     11
+//#define RTRcust_TX_BufInd     11
 
 
 //  Настройки для буферов передающих-принимающих команды 
@@ -86,7 +93,7 @@ static MDR_CAN_BufType *bufDataTX1;
 static MDR_CAN_BufType *bufDataTX2;
 static MDR_CAN_BufType *bufDataAnyTX;
 static MDR_CAN_BufType *bufDataTX_RTR1;
-static MDR_CAN_BufType *bufDataTX_RTRcust;
+//static MDR_CAN_BufType *bufDataTX_RTRcust;
 
 
 typedef struct {
@@ -183,7 +190,7 @@ int main(void)
   };
     
   //  Init CAN with Clock
-  MDR_CANex_InitDef(CANex_TST, &canTimeCfg);    
+  MDR_CAN_InitDef(CAN_TST, &canTimeCfg);    
   
   //----------    Настройка Буферов CAN -------------
   //  Command TX->RX buffers
@@ -221,16 +228,16 @@ int main(void)
     .answerCfg.isExtended = RTR1_FRAME_EXT,
     .answerCfg.lowPrioity = false
   };  
-  bufDataRX_RTR1 = MDR_CAN_BuffInitAnswerRTR(CAN_TST, RTR1_RX_BufInd, &cfgRTR, &bufData); 
-  bufDataTX_RTR1 = MDR_CAN_BuffInitTX_RTR(CAN_TST, RTR1_TX_BufInd, RTR1_ID, &cfgRTR.answerCfg);
+  bufDataRX_RTR1 = MDR_CAN_BuffInit_AnswerRTR(CAN_TST, RTR1_RX_BufInd, &cfgRTR, &bufData); 
+  bufDataTX_RTR1 = MDR_CAN_BuffInit_RequestRTR(CAN_TST, RTR1_TX_BufInd, RTR1_ID, cfgRTR.answerCfg.isExtended, true);
   
   //  RTR1_RX Answer buffer
   cfgRTR.answerCfg.dataCount  = RTR2_DATA_CNT;
   cfgRTR.answerCfg.isExtended = RTR2_FRAME_EXT;
-  bufDataRX_RTR2 = MDR_CAN_BuffInitAnswerRTR(CAN_TST, RTR2_RX_BufInd, &cfgRTR, &bufData);
+  bufDataRX_RTR2 = MDR_CAN_BuffInit_AnswerRTR(CAN_TST, RTR2_RX_BufInd, &cfgRTR, &bufData);
 
   //  RTR for send any request
-  bufDataTX_RTRcust = MDR_CAN_BuffInitTX_RTR_Custom(CAN_TST, RTRcust_TX_BufInd);
+//  bufDataTX_RTRcust = MDR_CAN_BuffInitTX_RTR_Custom(CAN_TST, RTRcust_TX_BufInd);
   
   while (1)
   {

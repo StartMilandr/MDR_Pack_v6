@@ -449,7 +449,7 @@ typedef enum
  
 
  //----------------    TIMER Definitions  --------------------
- //  UART Block Clock enable
+ //  Timer Block Clock enable
  #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
  #define   MDR_TIMER2_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
  #define   MDR_TIMER3_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
@@ -461,7 +461,7 @@ typedef enum
  #define   MDR_TIMER4_CLK_EN_MSK            MDR_RST_PER0_TIM4_CLK_EN_Msk
 
 
- //  UART_ClockGate configs
+ //  Timer_ClockGate configs
  #define   MDR_TIMER1_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM1_CLK)
  #define   MDR_TIMER2_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM2_CLK)
  #define   MDR_TIMER3_CLOCK_GATE_ADDR     (&MDR_CLOCK->TIM3_CLK)
@@ -469,6 +469,16 @@ typedef enum
 
 // //  Enable Count UpDown by external events
 // #define MDR_TIMER_Can_UpDown_ByExtEvents
+
+
+ //----------------    CAN Definitions  --------------------
+ //  CAN1 Block Clock enable
+ #define   MDR_CAN1_CLK_EN_ADDR         (&MDR_CLOCK->PER0_CLK)
+ #define   MDR_CAN1_CLK_EN_MSK            MDR_RST_PER0_CAN1_CLK_EN_Msk
+
+ //  CAN1_ClockGate configs
+ #define   MDR_CAN1_CLOCK_GATE_ADDR     (&MDR_CLOCK->CAN1_CLK)
+
 
 //----------------    DMA Definitions  --------------------
 #define MDR_DMA_CHMUX_LIKE_VE8

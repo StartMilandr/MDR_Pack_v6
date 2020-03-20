@@ -250,6 +250,10 @@ typedef struct {
 #define MDR_CAN_DLC_IDE_Msk           (0x1000UL)                /*!< MDR_CAN1 RX_DLC: IDE (Bitfield-Mask: 0x01)            */
 
 
+#define MDR_CAN_DLC_STD_SEL      (MDR_CAN_DLC_R1_Msk | MDR_CAN_DLC_SRR_Msk)
+#define MDR_CAN_DLC_EXT_SEL      (MDR_CAN_DLC_R1_Msk | MDR_CAN_DLC_SRR_Msk | MDR_CAN_DLC_IDE_Msk)
+
+
 /* ======================================================= RX_DATAL, TX_DATAL  ======================================================== */
 
 typedef struct {
@@ -311,8 +315,8 @@ typedef union { //MDR_CAN_BUF_COUNT
 
 #define MDR_CAN_BUF_CON_EN_Pos           (0UL)                     /*!< MDR_CAN1 BUF_CON: EN (Bit 0)                          */
 #define MDR_CAN_BUF_CON_EN_Msk           (0x1UL)                   /*!< MDR_CAN1 BUF_CON: EN (Bitfield-Mask: 0x01)            */
-#define MDR_CAN_BUF_CON_RX_TX_Pos        (1UL)                     /*!< MDR_CAN1 BUF_CON: RX_TX (Bit 1)                       */
-#define MDR_CAN_BUF_CON_RX_TX_Msk        (0x2UL)                   /*!< MDR_CAN1 BUF_CON: RX_TX (Bitfield-Mask: 0x01)         */
+#define MDR_CAN_BUF_CON_RX_Pos           (1UL)                     /*!< MDR_CAN1 BUF_CON: RX_TX (Bit 1)                       */
+#define MDR_CAN_BUF_CON_RX_Msk           (0x2UL)                   /*!< MDR_CAN1 BUF_CON: RX_TX (Bitfield-Mask: 0x01)         */
 #define MDR_CAN_BUF_CON_OVER_EN_Pos      (2UL)                     /*!< MDR_CAN1 BUF_CON: OVER_EN (Bit 2)                     */
 #define MDR_CAN_BUF_CON_OVER_EN_Msk      (0x4UL)                   /*!< MDR_CAN1 BUF_CON: OVER_EN (Bitfield-Mask: 0x01)       */
 #define MDR_CAN_BUF_CON_RTR_EN_Pos       (3UL)                     /*!< MDR_CAN1 BUF_CON: RTR_EN (Bit 3)                      */
@@ -326,6 +330,7 @@ typedef union { //MDR_CAN_BUF_COUNT
 #define MDR_CAN_BUF_CON_OVER_WR_Pos      (7UL)                     /*!< MDR_CAN1 BUF_CON: OVER_WR (Bit 7)                     */
 #define MDR_CAN_BUF_CON_OVER_WR_Msk      (0x80UL)                  /*!< MDR_CAN1 BUF_CON: OVER_WR (Bitfield-Mask: 0x01)       */
 
+#define MDR_CAN_BUF_CON_TX_Msk           (0x0UL)
 
 /* ==============================================  INT_RX, RX, INT_TX, TX,  ==================================================== */
 typedef struct {

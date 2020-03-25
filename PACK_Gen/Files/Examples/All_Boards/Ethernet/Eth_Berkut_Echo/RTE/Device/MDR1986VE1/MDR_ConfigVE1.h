@@ -1,7 +1,7 @@
-#ifndef MDR_CONFIG_VE3_H
-#define MDR_CONFIG_VE3_H
+#ifndef MDR_CONFIG_VE1_H
+#define MDR_CONFIG_VE1_H
 
-#include <MDR_1986VE3.h>
+#include <MDR_1986VE1.h>
 
 //=============  Debug Uart printf settings  ==================
 #define UART_DEBUG_IND              1    
@@ -37,12 +37,12 @@
 
 
 //  PLL Ready Timeout
-#define PLL_TIMEOUT       0x0600UL
+#define PLL_TIMEOUT         0x0600UL
 
 //  External Generator for Ethernet PHY
 #define HSE2_IS_RESONATOR    1
 #define HSE2_FREQ_HZ         25000000UL
-#define HSE2_TIMEOUT_CYCLES  2400
+#define HSE2_TIMEOUT_CYCLES  0x0600UL
 
 
 // =========================   DMA   ================================
@@ -54,7 +54,7 @@
 
 // =========================   Timer Bugfixes   ================================
 //  Прерывание возникает раньше, чем обновляются регистры CCR и CCR1
-#define USE_TIM_CAP_FIX   0
+#define USE_TIM_CAP_FIX   1
 
 
 // =========================   POWER Bugfixes   ================================
@@ -101,4 +101,4 @@
 #define MDR_ETH_DMA_CHANNEL_TX  MDR_DMA_CH_REQ_SOFT2
 
 
-#endif  //  MDR_CONFIG_VE3_H
+#endif  //  MDR_CONFIG_VE1_H

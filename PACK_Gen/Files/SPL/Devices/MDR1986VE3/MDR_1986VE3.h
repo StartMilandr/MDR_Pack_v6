@@ -540,6 +540,15 @@ typedef enum IRQn
 #define  MDR_DMA_CH_REQ_TIM2           11
 #define  MDR_DMA_CH_REQ_TIM3           12
 #define  MDR_DMA_CH_REQ_TIM4           13
+#define  MDR_DMA_CH_REQ_SOFT1          14
+#define  MDR_DMA_CH_REQ_SOFT2          15
+#define  MDR_DMA_CH_REQ_SOFT3          16
+#define  MDR_DMA_CH_REQ_SOFT4          17
+#define  MDR_DMA_CH_REQ_SOFT5          18
+#define  MDR_DMA_CH_REQ_SOFT6          19
+#define  MDR_DMA_CH_REQ_SOFT7          20
+#define  MDR_DMA_CH_REQ_SOFT8          21
+#define  MDR_DMA_CH_REQ_SOFT9          22
 #define  MDR_DMA_CH_REQ_SSP4_RX        23
 #define  MDR_DMA_CH_REQ_UART3_TX       24
 #define  MDR_DMA_CH_REQ_UART3_RX       25
@@ -583,6 +592,9 @@ typedef enum IRQn
 #define  MDR_DMA_CH_SREQ_ADC1           30
 
 
+//  Ethernet
+#define MDR_ETH_CLK_EN_REG    ETH_CLOCK
+#define MDR_ETH_CLK_EN_MASK   (MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk)
 
 
 /** @} */ /* End of group MDR1986VE3 */

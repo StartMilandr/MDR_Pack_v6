@@ -7,7 +7,7 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.05" date="2019-09-11">
+    <release version="2.05" date="2020-04-14">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
@@ -1016,6 +1016,30 @@
       <accept Dname="MDR1986VK214"/>
       <accept Dname="MDR1986VK234"/>
     </condition>
+    <condition id="CON_MDR_CM0CM1">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+      <accept Dname="MDR1923VK014"/>
+    </condition>
+    <condition id="CON_MDR_CM3">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE91"/>
+      <accept Dname="MDR1986VE92"/>
+      <accept Dname="MDR1986VE93"/>
+      <accept Dname="MDR1986VE94"/>
+      <accept Dname="MDR1901VC1"/>
+    </condition>
+    <condition id="CON_MDR_CM4">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
+      <accept Dname="MDR_ESila"/>
+    </condition>
     <condition id="CON_MDR_VE8x">
       <description>32-bit Cortex devices 1986VE8 and 1923VK014</description>
       <accept Dname="MDR1986VE8"/>
@@ -1673,6 +1697,126 @@
       </files>
     </component>
 
+    <!--FreeRTOS-->    
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>FreeRTOS minimal sources, static allocation</description>
+      <files>
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>
+        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_1.c"  version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>FreeRTOS minimal sources, heap_4 is preferred</description>
+      <files>
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>
+        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_2.c"  version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>FreeRTOS minimal sources, standard malloc</description>
+      <files>
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>
+        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_3.c"  version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>FreeRTOS minimal sources, avoid fragmentation</description>
+      <files>
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>
+        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_4.c"  version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>FreeRTOS minimal sources, avoid fragmentation, span the heap</description>
+      <files>
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>
+        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_5.c"  version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>Event Groups</description>
+      <files>
+        <file category="source"  name="ThirdParty/FreeRTOS/event_groups.c" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Steam buffers" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>Steam buffers</description>
+      <files>
+        <file category="source"  name="ThirdParty/FreeRTOS/stream_buffer.c" version="10.3.1"/>
+      </files>
+    </component>
+    <component Cclass="FreeRTOS" Cgroup="Timers" Cversion="10.3.1" condition="CON_MDR_ALL">
+      <description>Software Timers</description>
+      <files>
+        <file category="source"  name="ThirdParty/FreeRTOS/timers.c" version="10.3.1"/>
+      </files>
+    </component>
+
   </components>
 
   <examples>
@@ -1915,6 +2059,11 @@
       <description>1636RR52 flash memory IC operations test</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="1636RR52_Test.uvprojx"/></project>
+    </example>
+    <example name="FreeRTOS_Leds" folder="Examples/All_Boards/FreeRTOS/FreeRTOS_Leds" doc="ReadMe.md" version="2.0.0">
+      <description>Test FreeRTOS port by LED threads</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="FreeRTOS_Leds.uvprojx"/></project>
     </example>
 
     <example name="VK214_ADCUI" folder="Examples/1986VK214/VK214_ADCUI" doc="ReadMe.md" version="2.0.0">

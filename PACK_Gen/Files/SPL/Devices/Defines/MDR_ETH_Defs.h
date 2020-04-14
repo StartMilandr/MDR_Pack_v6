@@ -365,7 +365,7 @@ typedef struct {
 
 /* ==================================================  BUFF Frame RX_STATUS ================================================== */
 
-typedef struct{
+typedef __PACKED_STRUCT{
 	uint16_t Length			    : 16;     // The number of bytes in the packet including header and CRC.
 	uint32_t IsPauseFrame   : 1;			// A sign package PAUSE.
 	uint32_t IsContorlFrame	: 1;			// A sign Management Pack (filtering by MAC and special tags in the field length - 13.14 - octets).
@@ -383,10 +383,21 @@ typedef struct{
 /**
  * @brief The state of the packet reception	Unioun definition
  */
-typedef union {
-	uint32_t                   Status;
-	MDR_ETH_FrameStatusRX_Bits Fields;
-} MDR_ETH_FrameStatusRX;
+
+/* ========================================  Start of section using anonymous unions  ======================================== */
+
+#if defined (__CC_ARM)
+	typedef __packed union  {
+		uint32_t                   Status;
+		MDR_ETH_FrameStatusRX_Bits Fields;
+	} MDR_ETH_FrameStatusRX;
+#else
+	typedef union  {
+		uint32_t                   Status;
+		MDR_ETH_FrameStatusRX_Bits Fields;
+	} MDR_ETH_FrameStatusRX;
+#endif
+
 
 #define MDR_ETH_BUF_FIFO_RX_OFFS    0
 #define MDR_ETH_BUF_FIFO_TX_OFFS    4

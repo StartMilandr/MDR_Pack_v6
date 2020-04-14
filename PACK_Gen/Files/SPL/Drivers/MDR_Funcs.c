@@ -48,7 +48,7 @@ __Exit BX  lr
 
 #elif (__ARMCC_VERSION >= 6010050)
 __attribute__((naked)) void MDR_DelayASM(uint32_t Ticks)
-{
+{	
   __asm(
   "  CMP   r0,#0x00     ;\n"
   "  BEQ   1f           ;\n"
@@ -148,4 +148,32 @@ uint32_t MDR_ToPseudoRand(uint32_t value)
     if (pLogRec->IndWR >= pLogRec->BuffLen)
       pLogRec->IndWR = 0;
   }
+#endif
+
+
+
+#if defined(__CORE_CM3_H_GENERIC) || defined(__CORE_CM4_H_GENERIC)
+	//============    Переход на новое ПО (новую прошивку) (реализация от Professor Chaos)============
+	// https://forum.milandr.ru/viewtopic.php?p=25799#p25799
+
+	// Имя типа для указателя на функцию обработки исключения
+	typedef void(*pHandler)(void);
+
+	// Переход в новый проект по его адресу в памяти
+	void RunNewApp_CortexM3M4(uint32_t newAppAddr){
+		// тип структуры "головы" таблицы векторов исключений
+		struct VTableHeader_st {
+			volatile uint32_t  MSPinitVal;
+			volatile pHandler  ResetHandler_p;
+		};
+		// Создание и инициализация указателя на таблицу векторов нового проекта
+		const struct VTableHeader_st *const NewVTable_p = (const struct VTableHeader_st *)newAppAddr;
+
+		// Назначаем новый адрес таблицы векторов прерываний - в область её размещения в новом проекте
+		SCB->VTOR = newAppAddr;
+		// Помещаем в MSP начальное значение MSP нового проекта
+		__set_MSP(NewVTable_p->MSPinitVal);
+		// Переход в ResetHandler() нового проекта по указателю на него
+		NewVTable_p->ResetHandler_p();
+	}
 #endif

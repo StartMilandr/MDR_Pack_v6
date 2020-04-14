@@ -3,6 +3,7 @@
 #include <MDR_DMA.h>
 #include <MDR_RST_Clock.h>
 
+
 #ifdef MDR_EXIST_HSE2
   void MDR_Eth_SetClockHSE2(void)
   {
@@ -29,7 +30,7 @@ bool MDR_EthPHY_AutoNegDisable100Mbps(MDR_ETH_Type *MDR_Eth, uint8_t addrPHY)
 }
 
 #ifdef MDR_HAS_ETH_PHY
-  static void MDR_EthIntPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg)
+  void MDR_EthIntPHY_EnaAndWaitReady(MDR_ETH_Type *MDR_Eth, const uint16_t phyCfgReg)
   {
     MDR_Eth->PHY_CTRL = phyCfgReg;
     while ((MDR_Eth->PHY_STATUS & MDR_ETH_PHY_STATUS_READY_Msk) == 0);    
@@ -279,6 +280,14 @@ bool MDR_ETH_TryReadFrame(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameSt
   return result;
 }
 
+bool MDR_ETH_TryReadFrameF(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX)
+{
+  bool result = MDR_ETH_HasFrameToRead(MDR_Eth);
+  if (result)
+    MDR_ETH_ReadFrameF(MDR_Eth, frameRX);
+  return result;
+}
+
 bool MDR_ETH_TrySendFrame(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX)
 {
   bool result = MDR_ETH_GetBuffFreeSizeTX(MDR_Eth) > (frameTX->frameLen + MDR_ETH_BUFF_TX_LEN_SIZE + MDR_ETH_BUFF_TX_STATUS_SIZE);
@@ -413,8 +422,9 @@ bool MDR_ETH_MDIO_ReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MDIO_CfgMMD *c
   return MDR_ETH_MDIO_ReReadRegMMD(MDR_Eth, cfgMMD, value);  
 }
 
+
 //===================   Misc Utils   =========================
-bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2)
+bool MDR_ETH_IsSameMACs32(const uint8_t *MAC1, const uint8_t *MAC2)
 {
   uint32_t *Mac1 = (uint32_t *)MAC1;
   uint32_t *Mac2 = (uint32_t *)MAC2;
@@ -424,3 +434,54 @@ bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2)
     return false;
   return true;
 }
+
+bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2)
+{
+  uint16_t *Mac1 = (uint16_t *)MAC1;
+  uint16_t *Mac2 = (uint16_t *)MAC2;
+  return ((Mac1[0] ^ Mac2[0]) | (Mac1[1] ^ Mac2[1]) | (Mac1[2] ^ Mac2[2])) == 0;
+}
+
+void MDR_ETH_SwapMACs(uint8_t *payload)
+{	
+	uint16_t *buff = (void *)payload;
+	uint16_t tmp;
+	
+	uint32_t i;
+	for (i = 0; i < 3; ++i)
+	{
+		tmp = buff[i];
+		buff[i] = buff[i + 3];
+		buff[i + 3] = tmp;
+	}
+}
+
+MDR_ETH_FrameTX* MDR_ETH_FrameRx_ToEchoTx(MDR_ETH_FrameRX *frameRX)
+{
+  MDR_ETH_SwapMACs(frameRX->frame);
+	
+	MDR_ETH_FrameTX*	frameTx = (MDR_ETH_FrameTX*)frameRX;	
+  frameTx->frameLen =	frameRX->statusRX.Fields.Length - ETH_CRC_SIZE;
+	return frameTx;
+}
+
+
+void MDR_ETH_Debug_FillTestFrameTX(MDR_ETH_FrameTX* frameTX, uint16_t frameLen, uint8_t* srcMAC, uint8_t* destMAC)
+{ 
+  eth_frame_t *outFrm      = (void *)frameTX->frame;
+  uint8_t     *outPayload  = (void *)outFrm->payload;
+  
+  uint16_t echoPayloadLen   = frameLen - MDR_ETH_HEADER_LEN;
+      
+  //  Fill Output Frame
+	MDR_ETH_CopyMAC(outFrm->to_addr, destMAC);
+	MDR_ETH_CopyMAC(outFrm->from_addr, srcMAC);
+  outFrm->type = REV_BYTES16(echoPayloadLen);
+	
+	uint16_t i;
+  for (i = 1; i < (echoPayloadLen); ++i)
+    outPayload[i] = i;
+  
+  frameTX->frameLen = echoPayloadLen + MDR_ETH_HEADER_LEN;
+}
+

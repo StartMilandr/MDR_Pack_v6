@@ -5,6 +5,7 @@
 #include <MDR_Types.h>
 #include <MDR_Funcs.h>
 #include <MDR_RST_Clock.h>
+#include <MDR_Ethernet_FrameDefs.h>
 
 //  ----------    Clock Init Functions    ----------
 #ifdef MDR_EXIST_HSE2
@@ -48,23 +49,50 @@ void MDR_Eth_InitMAC(MDR_ETH_Type *MDR_Eth, const MDR_ETH_MAC_CfgRegs  *cfgRegs)
 //  ----------    Read Frame Functions    ----------
 uint32_t MDR_ETH_GetBuffFreeSizefRX(MDR_ETH_Type *MDR_Eth);
 
+//  Проверка что есть фрейм для чтения
 __STATIC_INLINE bool  MDR_ETH_HasFrameToRead(MDR_ETH_Type *MDR_Eth) { return MDR_Eth->R_HEAD != MDR_Eth->R_TAIL; }
 
+//  общая функция вычитывания фрейма из буфера Ethernet по указателям - линейный режим и AutoPTR
 MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrameByPTR(MDR_ETH_Type *MDR_Eth, uint8_t *frame, bool doSetRxHead);
 
+//  Линейный режим чтения
 __STATIC_INLINE MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_Lin(MDR_ETH_Type *MDR_Eth, uint8_t *frame)
   { return MDR_ETH_ReadFrameByPTR(MDR_Eth, frame, true); }
 
+//  Режим чтения с автоматическими указателями AutoPTR
 __STATIC_INLINE MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_Auto(MDR_ETH_Type *MDR_Eth, uint8_t *frame)
   { return MDR_ETH_ReadFrameByPTR(MDR_Eth, frame, false); }
   
+//  Режим чтения через FIFO, используется DMA
 MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_FIFO(MDR_ETH_Type *MDR_Eth, uint8_t *frame);  
+
+	
+	
+//	--- Вариант вычитывания фрейма в структуру MDR_ETH_FrameRX (для совместимости с MDR_ETH_FrameTX) ---
+typedef __PACKED_STRUCT {
+  MDR_ETH_FrameStatusRX statusRX;
+  uint8_t  							frame[MDR_ETH_BUFF_LEN_RX];
+	uint32_t 							reserved;  //  Reserved for TX status
+} MDR_ETH_FrameRX;
   
+
+//  Линейный режим чтения
+__STATIC_INLINE void MDR_ETH_ReadFrame_LinF(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX)
+  { frameRX->statusRX = MDR_ETH_ReadFrameByPTR(MDR_Eth, frameRX->frame, true); }
+
+//  Режим чтения с автоматическими указателями AutoPTR
+__STATIC_INLINE void MDR_ETH_ReadFrame_AutoF(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX)
+  { frameRX->statusRX = MDR_ETH_ReadFrameByPTR(MDR_Eth, frameRX->frame, false); }
+  
+//  Режим чтения через FIFO, используется DMA
+__STATIC_INLINE void MDR_ETH_ReadFrame_FIFOF(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX)
+	{ frameRX->statusRX = MDR_ETH_ReadFrame_FIFO(MDR_Eth, frameRX->frame); }
+
   
 //  ----------    Send Frame Functions    ----------
 uint32_t MDR_ETH_GetBuffFreeSizeTX(MDR_ETH_Type *MDR_Eth);
 
-typedef __packed struct {
+typedef __PACKED_STRUCT {
   uint32_t frameLen;
   uint8_t  frame[MDR_ETH_BUFF_LEN_TX];
   uint32_t sendStatus;  //  Reserved for TX status
@@ -85,12 +113,15 @@ void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX);
 #if MDR_ETH_BUFF_LIN
   #define MDR_ETH_SendFrame   MDR_ETH_WriteFrame_Lin
   #define MDR_ETH_ReadFrame   MDR_ETH_ReadFrame_Lin
+	#define MDR_ETH_ReadFrameF  MDR_ETH_ReadFrame_LinF
 #elif MDR_ETH_BUFF_AUTO_PTR
   #define MDR_ETH_SendFrame   MDR_ETH_WriteFrame_Auto
   #define MDR_ETH_ReadFrame   MDR_ETH_ReadFrame_Auto
+	#define MDR_ETH_ReadFrameF  MDR_ETH_ReadFrame_AutoF
 #elif MDR_ETH_BUFF_FIFO
   #define MDR_ETH_SendFrame   MDR_ETH_WriteFrame_FIFO
   #define MDR_ETH_ReadFrame   MDR_ETH_ReadFrame_FIFO
+	#define MDR_ETH_ReadFrameF  MDR_ETH_ReadFrame_FIFOF
 #else  
   Select Ethernet Buffer mode in MDR_Config.h!
 #endif  
@@ -98,6 +129,7 @@ void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX);
 bool MDR_ETH_TryReadFrame(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameStatusRX *status);
 bool MDR_ETH_TrySendFrame(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX);
 
+bool MDR_ETH_TryReadFrameF(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX);
   
 
 //  ----------    Misc Control Functions    ----------
@@ -136,6 +168,9 @@ __STATIC_INLINE void MDR_ETH_DecCountRx(MDR_ETH_Type *MDR_Eth) { MDR_Eth->STAT	-
 __STATIC_INLINE void MDR_ETH_ClearEvent(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IFR	|= selEvents; }
 __STATIC_INLINE void MDR_ETH_ClearEventsAll(MDR_ETH_Type *MDR_Eth) { MDR_Eth->IFR	= MDR_ETH_EVENT_CLEAR_ALL; }  
 
+__STATIC_INLINE bool MDR_ETH_IsEventReceivedOk(MDR_ETH_Type *MDR_Eth) { return (MDR_Eth->IFR & MDR_ETH_EVENT_ReceivedOK) != 0; }
+
+
 __STATIC_INLINE void MDR_ETH_NVIC_Enable(MDR_ETH_Type *MDR_Eth, uint32_t priority)
 {
   if (MDR_Eth == MDR_ETH1)
@@ -143,6 +178,13 @@ __STATIC_INLINE void MDR_ETH_NVIC_Enable(MDR_ETH_Type *MDR_Eth, uint32_t priorit
     NVIC_SetPriority(ETH1_IRQn, priority);
     NVIC_EnableIRQ(ETH1_IRQn);
   }
+#ifdef MDR_ETH2	
+	else
+	{
+    NVIC_SetPriority(ETH2_IRQn, priority);
+    NVIC_EnableIRQ(ETH2_IRQn);
+  }		
+#endif
 }
 
 __STATIC_INLINE void MDR_ETH_NVIC_Disable(MDR_ETH_Type *MDR_Eth, uint32_t priority)
@@ -241,8 +283,51 @@ __STATIC_INLINE bool MDR_ETH_MDIO_ReReadRegMMD(MDR_ETH_Type *MDR_Eth, const MDR_
 
 
 //===================   Misc Utils   =========================
+//	Проверка что МАС адреса одинаковы - с выровненным доступом.
 bool MDR_ETH_IsSameMACs(const uint8_t *MAC1, const uint8_t *MAC2);
+//  Тоже самое, наверное быстрее, но с невыровненным доступом - не подходит для ядер младше Cortex-M3!!!
+bool MDR_ETH_IsSameMACs32(const uint8_t *MAC1, const uint8_t *MAC2);
 
+//	Обмен МАС адресов фрейма
+void MDR_ETH_SwapMACs(uint8_t *payload);
+
+// Модификация входного фрейма в эхо фрейм для отправки (меняются только МАС).
+MDR_ETH_FrameTX* MDR_ETH_FrameRx_ToEchoTx(MDR_ETH_FrameRX *frameRX);
+
+//	Отправка echo фрейма
+__STATIC_INLINE bool MDR_ETH_SendEcho(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameRX *frameRX)
+{
+  MDR_ETH_FrameTX *frameTX = MDR_ETH_FrameRx_ToEchoTx(frameRX);	
+	return MDR_ETH_TrySendFrame(MDR_Eth, frameTX);
+}
+
+//  Копирование МАС адреса
+__STATIC_INLINE void MDR_ETH_CopyMAC(uint8_t *destMem, const uint8_t *fromMem)
+{
+  uint16_t *dest = (uint16_t *)destMem;
+  uint16_t *from = (uint16_t *)fromMem;
+  dest[0] = from[0];
+	dest[1] = from[1];
+	dest[2] = from[2];
+}
+
+//	Функция формирования простейшего фрейма для быстрой проверки соединения. Для тестовых целей.
+void MDR_ETH_Debug_FillTestFrameTX(MDR_ETH_FrameTX* frameTX, uint16_t frameLen, uint8_t* srcMAC, uint8_t* destMAC);
+
+//	Отправка тестового фрейма заданной длины
+__STATIC_INLINE bool MDR_ETH_Debug_SendTestFrame(MDR_ETH_Type *MDR_Eth, uint16_t frameLen, uint8_t* srcMAC, uint8_t* destMAC)
+{
+  MDR_ETH_FrameTX frameTX;	
+	MDR_ETH_Debug_FillTestFrameTX(&frameTX, frameLen, destMAC, srcMAC);
+	return MDR_ETH_TrySendFrame(MDR_Eth, &frameTX);
+}
+
+//	Отправка тестового фрейма
+__STATIC_INLINE bool MDR_ETH_Debug_SendTestFrameBroadcast(MDR_ETH_Type *MDR_Eth, uint16_t frameLen, uint8_t* srcMAC)
+{
+	uint8_t broadcastMAC[MDR_ETH_MAC_LEN] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+  return MDR_ETH_Debug_SendTestFrame(MDR_Eth, frameLen, srcMAC, broadcastMAC);
+}
 
 #endif // MDR_ETHERNET_H
 

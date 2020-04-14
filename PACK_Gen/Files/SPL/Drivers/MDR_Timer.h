@@ -225,7 +225,7 @@ typedef struct {
 
 //  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
 typedef struct {
-  MDR_Div128P   clockBRG;             //  BRG for TimClock  
+  MDR_Div128P       clockBRG;             //  BRG for TimClock  
   uint_tim          period;               //  Timer Period - ARR
   uint_tim          startValue;           //  Start Value - CNT
   MDR_OnOff         periodUpdateImmediately;

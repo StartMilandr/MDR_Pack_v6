@@ -87,4 +87,20 @@
 #endif
 
 
+//===========================  FreeRTOS (for FreeRTOSConfig.h)  ===========================
+//  Выбор таймера для отсчета configTICK_RATE_HZ, по умолчанию - системный таймер SysTimer
+#define configOVERRIDE_DEFAULT_TICK_CONFIGURATION     0 
+
+#if configOVERRIDE_DEFAULT_TICK_CONFIGURATION != 0
+  // Выбор аппаратного таймера для FreeRTOS (вместо SysTimer который в ВЕ1 и ВЕ3 имеет ошибку в errata)
+  #define MDR_FREE_RTOS_TIMER                MDR_TIMER1ex
+  #define MDR_FREE_RTOS_TIMER_HANDLER        TIMER1_IRQHandler
+  
+  // Подстройка отсчетов времени при configUSE_TICKLESS_IDLE = 1
+  // !!! Значение неправильное (взято наглаз по скорости мигания светодиода), перемерить осциллографом и поменять!!!
+  // см функцию - vPortSuppressTicksAndSleep() файл FreeRTOS/port.c
+  #define MDR_FREE_RTOS_TIMER_MISSED_FACTOR  445
+#endif
+
+
 #endif  //  MDR_CONFIG_VK214_H

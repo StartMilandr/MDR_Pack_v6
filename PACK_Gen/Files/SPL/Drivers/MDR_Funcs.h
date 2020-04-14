@@ -145,6 +145,14 @@ static __inline uint32_t MDR_MaskSet(uint32_t value, uint32_t maskSet)
 #define ARR_LEN(arr)  sizeof(arr)/sizeof(arr[0])
 
 
+//============    Переход на новое ПО (новую прошивку) (реализация от Professor Chaos)============
+// https://forum.milandr.ru/viewtopic.php?p=25799#p25799
+#if defined(__CORE_CM3_H_GENERIC) || defined(__CORE_CM4_H_GENERIC)
+	// Переход в новый проект по его адресу в памяти
+	void RunNewApp_CortexM3M4(uint32_t newAppAddr);
+#endif
+
+
 //=========================    Log for debug ===========================
 //#define DEBUG_LOG_ENA   // Для активации можно добавить в настройки проекта, закладка C/C++ поле define: DEBUG_LOG_ENA
 
@@ -177,6 +185,7 @@ static __inline uint32_t MDR_MaskSet(uint32_t value, uint32_t maskSet)
 
   #define MDR_LOG_Clear()
   #define MDR_LOG_Add()
+	#define MDR_LOG_Add_def(value)
 #endif
 
 

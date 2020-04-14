@@ -3,12 +3,14 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <cmsis_armcc.h>
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
 #if defined (__CC_ARM)
   #pragma push
   #pragma anon_unions
+	
+	#include <cmsis_armcc.h>	
+	
 #elif defined (__ICCARM__)
   #pragma language=extended
 #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -17,6 +19,9 @@
   #pragma clang diagnostic ignored "-Wreserved-id-macro"
   #pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
   #pragma clang diagnostic ignored "-Wnested-anon-types"
+	
+	#include <cmsis_armclang.h>	
+	
 #elif defined (__GNUC__)
   /* anonymous unions are enabled by default */
 #elif defined (__TMS470__)
@@ -34,7 +39,6 @@
 #define MDR_ETH_VLAN_TAG_LEN_MAX      4
 #define MDR_ETH_FRAME_VLAN_LEN_MAX    (MDR_ETH_FRAME_LEN_MAX + MDR_ETH_VLAN_TAG_LEN_MAX)
 
-#define MDR_ETH_MAC_LEN               6
 
 //  From here, thanks a lot!!!
 //  http://we.easyelectronics.ru/electro-and-pc/podklyuchenie-mikrokontrollera-k-lokalnoy-seti-tcp-klient.html
@@ -72,6 +76,12 @@ typedef __PACKED_STRUCT eth_frame {
 	uint16_t type;
 	uint8_t  payload[];
 } eth_frame_t;
+
+
+#define MDR_ETH_MAC_LEN               6
+#define MDR_ETH_HEADER_LEN						(MDR_ETH_MAC_LEN * 2 + sizeof(uint16_t))
+#define MDR_ETH_CRC_LEN               4
+#define MDR_ETH_TYPE_LEN              2
 
 __STATIC_INLINE bool IsFrameTypeEQ(const eth_frame_t *frame, uint16_t etherType)
 {

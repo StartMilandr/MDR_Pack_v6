@@ -594,7 +594,7 @@ typedef enum IRQn
 
 //  Ethernet
 #define MDR_ETH_CLK_EN_REG    ETH_CLOCK
-#define MDR_ETH_CLK_EN_MASK   (MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk)
+#define MDR_ETH_CLK_EN_MASK  (MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk | MDR_RST_ETH__ETH2_CLK_EN_Msk)
 
 
 /** @} */ /* End of group MDR1986VE3 */

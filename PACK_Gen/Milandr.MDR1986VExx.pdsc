@@ -948,6 +948,13 @@
       <description>Support types and funcs</description>
       <require Cclass="Drivers" Cgroup="UseFuncs"/>
     </condition>
+    
+    <condition id="Startup ARM">
+      <description>Startup assembler file for ARMCC</description>
+      <require Tcompiler="ARMCC"/>
+    </condition>
+
+    <!--CM0 devices-->
     <condition id="CON_MDR1986VE4">
       <description>Cortex-M0 MDR1986VE4 device</description>
       <accept Dname="MDR1986VE4"/>
@@ -960,6 +967,18 @@
       <description>Cortex-M0 MDR1986VK234 device</description>
       <accept Dname="MDR1986VK234"/>
     </condition>
+    <condition id="CON_MDR1923VK014">
+      <description>Cortex-M0 MDR1923VK014 device</description>
+      <accept Dname="MDR1923VK014"/>
+    </condition>
+    <condition id="CON_MDR_CM0">
+      <description>Cortex-M0 devices</description>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+      <accept Dname="MDR1923VK014"/>
+    </condition>
+    <!--CM1 devices-->
     <condition id="CON_MDR1986VE1">
       <description>Cortex-M1 MDR1986VE1 device</description>
       <accept Dname="MDR1986VE1"/>
@@ -968,6 +987,28 @@
       <description>Cortex-M1 MDR1986VE3 device</description>
       <accept Dname="MDR1986VE3"/>
     </condition>
+    <condition id="CON_MDR_CM1">
+      <description>Cortex-M1 devices</description>
+      <accept Dname="MDR1986VE1"/>
+      <accept Dname="MDR1986VE3"/>
+    </condition>
+    <!--CM0 and CM1 devices-->
+    <condition id="CON_MDR_CM0CM1">
+      <description>Cortex-M0 and M1 devices</description>
+      <accept condition="CON_MDR_CM0"/>
+      <accept condition="CON_MDR_CM1"/>
+    </condition>
+    <condition id="CON_MDR_CM0CM1_AC5">
+      <description>Cortex-M0 with ARM Compiler V5</description>
+      <require Tcompiler="ARMCC" Toptions="AC5"/>
+      <accept condition="CON_MDR_CM0CM1"/>
+    </condition>
+    <condition id="CON_MDR_CM0CM1_AC6">
+      <description>Cortex-M0 with ARM Compiler V6</description>
+      <require Tcompiler="ARMCC" Toptions="AC6"/>
+      <require condition="CON_MDR_CM0CM1"/>
+    </condition>
+    <!--CM3 devices-->
     <condition id="CON_MDR1986VE9x">
       <description>Cortex-M3 MDR1986VE9x device</description>
       <accept Dname="MDR1986VE91"/>
@@ -979,6 +1020,22 @@
       <description>Cortex-M3 device with DSP Core</description>
       <accept Dname="MDR1901VC1"/>
     </condition>
+    <condition id="CON_MDR_CM3">
+      <description>Cortex-M3 devices</description>
+      <accept condition="CON_MDR1986VE9x"/>
+      <accept condition="CON_MDR1901VC1"/>
+    </condition>
+    <condition id="CON_MDR_CM3_AC5">
+      <description>Cortex-M3 with ARM Compiler V5</description>
+      <require Tcompiler="ARMCC" Toptions="AC5"/>
+      <accept condition="CON_MDR_CM3"/>
+    </condition>
+    <condition id="CON_MDR_CM3_AC6">
+      <description>Cortex-M3 with ARM Compiler V6</description>
+      <require Tcompiler="ARMCC" Toptions="AC6"/>
+      <require condition="CON_MDR_CM3"/>
+    </condition>
+    <!--CM4 devices-->
     <condition id="CON_MDR1986VE8">
       <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE8"/>
@@ -987,19 +1044,30 @@
     <condition id="CON_MDR1986VE81">
       <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE81"/>
-    </condition>
-    <condition id="CON_MDR1923VK014">
-      <description>Cortex-M0 device</description>
-      <accept Dname="MDR1923VK014"/>
-    </condition>
+    </condition>    
     <condition id="CON_ESila">
       <description>Cortex-M4F device</description>
       <accept Dname="MDR_ESila"/>
     </condition>
-    <condition id="Startup ARM">
-      <description>Startup assembler file for ARMCC</description>
-      <require Tcompiler="ARMCC"/>
+    <condition id="CON_MDR_CM4">
+      <description>All 32-bit Cortex devices</description>
+      <accept Dname="MDR1986VE8"/>
+      <accept Dname="MDR1986VE8_OTP"/>
+      <accept Dname="MDR1986VE81"/>
+      <accept Dname="MDR_ESila"/>
     </condition>
+    <condition id="CON_MDR_CM4_AC5">
+      <description>Cortex-M4 with ARM Compiler V5</description>
+      <require Tcompiler="ARMCC" Toptions="AC5"/>
+      <accept condition="CON_MDR_CM4"/>
+    </condition>
+    <condition id="CON_MDR_CM4_AC6">
+      <description>Cortex-M4 with ARM Compiler V6</description>
+      <require Tcompiler="ARMCC" Toptions="AC6"/>
+      <require condition="CON_MDR_CM4"/>
+    </condition>
+
+    <!--Mixes-->
     <condition id="CON_MDR_CM1CM3">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE1"/>
@@ -1009,36 +1077,6 @@
       <accept Dname="MDR1986VE93"/>
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
-    </condition>
-    <condition id="CON_MDR_CM0">
-      <description>All 32-bit Cortex devices</description>
-      <accept Dname="MDR1986VE4"/>
-      <accept Dname="MDR1986VK214"/>
-      <accept Dname="MDR1986VK234"/>
-    </condition>
-    <condition id="CON_MDR_CM0CM1">
-      <description>All 32-bit Cortex devices</description>
-      <accept Dname="MDR1986VE1"/>
-      <accept Dname="MDR1986VE3"/>
-      <accept Dname="MDR1986VE4"/>
-      <accept Dname="MDR1986VK214"/>
-      <accept Dname="MDR1986VK234"/>
-      <accept Dname="MDR1923VK014"/>
-    </condition>
-    <condition id="CON_MDR_CM3">
-      <description>All 32-bit Cortex devices</description>
-      <accept Dname="MDR1986VE91"/>
-      <accept Dname="MDR1986VE92"/>
-      <accept Dname="MDR1986VE93"/>
-      <accept Dname="MDR1986VE94"/>
-      <accept Dname="MDR1901VC1"/>
-    </condition>
-    <condition id="CON_MDR_CM4">
-      <description>All 32-bit Cortex devices</description>
-      <accept Dname="MDR1986VE8"/>
-      <accept Dname="MDR1986VE8_OTP"/>
-      <accept Dname="MDR1986VE81"/>
-      <accept Dname="MDR_ESila"/>
     </condition>
     <condition id="CON_MDR_VE8x">
       <description>32-bit Cortex devices 1986VE8 and 1923VK014</description>
@@ -1701,101 +1739,141 @@
     <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, static allocation</description>
       <files>
-        <file category="doc" name="https://www.freertos.org/a00111.html"/>
-        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/" version="10.3.1"/>
+
+        <file category="source" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/port.c" version="10.3.1"/>
+
+        <file category="include" name="ThirdParty/FreeRTOS/portable/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"  version="10.3.1"/>      
         <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
-        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_1.c"  version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
         <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_1.c"  version="10.3.1"/>
       </files>
     </component>
     <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, heap_4 is preferred</description>
       <files>
-        <file category="doc" name="https://www.freertos.org/a00111.html"/>
-        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/" version="10.3.1"/>
+
+        <file category="source" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/port.c" version="10.3.1"/>
+
+        <file category="include" name="ThirdParty/FreeRTOS/portable/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"  version="10.3.1"/>      
         <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
-        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_2.c"  version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
         <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_2.c"  version="10.3.1"/>
       </files>
     </component>
     <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, standard malloc</description>
       <files>
-        <file category="doc" name="https://www.freertos.org/a00111.html"/>
-        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/" version="10.3.1"/>
+
+        <file category="source" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/port.c" version="10.3.1"/>
+
+        <file category="include" name="ThirdParty/FreeRTOS/portable/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"  version="10.3.1"/>      
         <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
-        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_3.c"  version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
         <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_3.c"  version="10.3.1"/>
       </files>
     </component>
     <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation</description>
       <files>
-        <file category="doc" name="https://www.freertos.org/a00111.html"/>
-        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/" version="10.3.1"/>
+
+        <file category="source" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/port.c" version="10.3.1"/>
+
+        <file category="include" name="ThirdParty/FreeRTOS/portable/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"  version="10.3.1"/>      
         <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
-        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_4.c"  version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
         <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_4.c"  version="10.3.1"/>
       </files>
     </component>
     <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation, span the heap</description>
       <files>
-        <file category="doc" name="https://www.freertos.org/a00111.html"/>
-        <file category="include" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
-        <file category="include" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/portable/RVDS/" version="10.3.1"/>
-        <file category="include" name="ThirdParty/FreeRTOS/include/"                version="10.3.1"/>      
+        <file category="doc" name="https://www.freertos.org/a00111.html"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/" version="10.3.1"/>        
+        <file category="include" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/" version="10.3.1"/>
+        <file category="include" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/" version="10.3.1"/>
+
+        <file category="source" condition="CON_MDR_CM0CM1_AC5" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC5"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM0CM1_AC6" name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM0/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM3_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM3/port.c" version="10.3.1"/>
+        <file category="source" condition="CON_MDR_CM4_AC6"    name="ThirdParty/FreeRTOS/portable/GCC/ARM_CM4F/port.c" version="10.3.1"/>
+
+        <file category="include" name="ThirdParty/FreeRTOS/portable/" version="10.3.1"/>
+        <file category="include" name="ThirdParty/FreeRTOS/include/"  version="10.3.1"/>      
         <file category="source"  name="ThirdParty/FreeRTOS/tasks.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/list.c"  version="10.3.1"/>
         <file category="source"  name="ThirdParty/FreeRTOS/queue.c" version="10.3.1"/>
-        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_5.c"  version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM0CM1" name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM0/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM3"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM3/port.c" version="10.3.1"/>
-        <file category="source" condition="CON_MDR_CM4"    name="ThirdParty/FreeRTOS/portable/RVDS/ARM_CM4F/port.c" version="10.3.1"/>
         <file category="header"  name="ThirdParty/FreeRTOS/FreeRTOSConfig.h" attr="config" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_5.c"  version="10.3.1"/>
       </files>
     </component>
     <component Cclass="FreeRTOS" Cgroup="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">

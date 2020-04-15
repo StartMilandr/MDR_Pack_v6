@@ -351,6 +351,12 @@ void xPortPendSVHandler( void )
 }
 /*-----------------------------------------------------------*/
 
+// --- StarMilandr modified begin ----
+#if (configOVERRIDE_DEFAULT_TICK_CONFIGURATION == 0)
+// --- StarMilandr modified end ----
+
+
+/*-----------------------------------------------------------*/
 void xPortSysTickHandler( void )
 {
 uint32_t ulPreviousMask;
@@ -557,4 +563,9 @@ __attribute__(( weak )) void vPortSetupTimerInterrupt( void )
 		}
 	}
 
-#endif /* configUSE_TICKLESS_IDLE */
+#endif /* #if configUSE_TICKLESS_IDLE */
+
+#else
+    #include "port_timer_mdr.h"
+#endif /* configOVERRIDE_DEFAULT_TICK_CONFIGURATION */  
+

@@ -71,7 +71,16 @@ void vPortSetupTimerInterrupt( void )
   #define portTIMER_CLR_CNT_ZERO    MDR_FREE_RTOS_TIMER->TIMERx->STATUS = 0
   #define portTIMER_IS_CNT_ZERO   ( MDR_FREE_RTOS_TIMER->TIMERx->STATUS & MDR_TIM_EVENT_CNT_ZERO_Msk ) != 0
          
-    
+
+  #if   defined (__CC_ARM)
+    #define portDSB  __dsb( portSY_FULL_READ_WRITE )
+    #define portISB  __isb( portSY_FULL_READ_WRITE )
+
+  #elif (__ARMCC_VERSION >= 6010050)
+    #define portDSB  __asm volatile( "dsb" );
+    #define portISB  __asm volatile( "isb" );
+  #endif
+
   void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
   {
   uint32_t ulReloadValue, ulCompleteTickPeriods, ulCompletedSysTickDecrements;
@@ -103,8 +112,8 @@ void vPortSetupTimerInterrupt( void )
     /* Enter a critical section but don't use the taskENTER_CRITICAL()
     method as that will mask interrupts that should exit sleep mode. */
     __disable_irq();
-    __dsb( portSY_FULL_READ_WRITE );
-    __isb( portSY_FULL_READ_WRITE );
+    portDSB; //__dsb( portSY_FULL_READ_WRITE );
+    portISB; //__isb( portSY_FULL_READ_WRITE );
 
     /* If a context switch is pending or a task is waiting for the scheduler
     to be unsuspended then abandon the low power entry. */
@@ -151,9 +160,9 @@ void vPortSetupTimerInterrupt( void )
       configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
       if( xModifiableIdleTime > 0 )
       {
-        __dsb( portSY_FULL_READ_WRITE );
+        portDSB; //__dsb( portSY_FULL_READ_WRITE );
         __wfi();
-        __isb( portSY_FULL_READ_WRITE );
+        portISB; //__isb( portSY_FULL_READ_WRITE );
       }
       configPOST_SLEEP_PROCESSING( xExpectedIdleTime );
 
@@ -161,16 +170,16 @@ void vPortSetupTimerInterrupt( void )
       out of sleep mode to execute immediately. see comments above
       __disable_interrupt() call above. */
       __enable_irq();
-      __dsb( portSY_FULL_READ_WRITE );
-      __isb( portSY_FULL_READ_WRITE );
+      portDSB; //__dsb( portSY_FULL_READ_WRITE );
+      portISB; //__isb( portSY_FULL_READ_WRITE );
 
       /* Disable interrupts again because the clock is about to be stopped
       and interrupts that execute while the clock is stopped will increase
       any slippage between the time maintained by the RTOS and calendar
       time. */
       __disable_irq();
-      __dsb( portSY_FULL_READ_WRITE );
-      __isb( portSY_FULL_READ_WRITE );
+      portDSB; //__dsb( portSY_FULL_READ_WRITE );
+      portISB; //__isb( portSY_FULL_READ_WRITE );
 
       /* Disable the SysTick clock without reading the
       portNVIC_SYSTICK_CTRL_REG register to ensure the

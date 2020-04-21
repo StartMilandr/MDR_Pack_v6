@@ -399,7 +399,7 @@
           <GroupName>::Drivers</GroupName>
         </Group>
         <Group>
-          <GroupName>::ThirdPart</GroupName>
+          <GroupName>::HSR_PRP</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -796,7 +796,7 @@
           <GroupName>::Drivers</GroupName>
         </Group>
         <Group>
-          <GroupName>::ThirdPart</GroupName>
+          <GroupName>::HSR_PRP</GroupName>
         </Group>
       </Groups>
     </Target>
@@ -898,7 +898,7 @@
           <targetInfo name="VE3"/>
         </targetInfos>
       </component>
-      <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP">
+      <component Cclass="HSR_PRP" Cgroup="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP">
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
         <targetInfos>
           <targetInfo name="MLDR155"/>
@@ -1004,20 +1004,32 @@
         </targetInfos>
       </file>
       <file attr="config" category="header" name="ThirdParty\HSRPRP\MDR_HSRPRP_Config.h" version="1.0.0">
-        <instance index="0">RTE\ThirdPart\MDR1986VE3\MDR_HSRPRP_Config.h</instance>
-        <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
+        <instance index="0">RTE\HSR_PRP\MDR1986VE3\MDR_HSRPRP_Config.h</instance>
+        <component Cclass="HSR_PRP" Cgroup="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
         <targetInfos>
           <targetInfo name="VE3"/>
         </targetInfos>
       </file>
       <file attr="config" category="header" name="ThirdParty\HSRPRP\MDR_HSRPRP_Config.h" version="1.0.0">
-        <instance index="0">RTE\ThirdPart\MDR_MLDR155\MDR_HSRPRP_Config.h</instance>
-        <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
+        <instance index="0">RTE\HSR_PRP\MDR_MLDR155\MDR_HSRPRP_Config.h</instance>
+        <component Cclass="HSR_PRP" Cgroup="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
         <targetInfos>
           <targetInfo name="MLDR155"/>
         </targetInfos>
+      </file>
+      <file attr="config" category="header" name="ThirdParty\HSRPRP\MDR_HSRPRP_Config.h" version="1.0.0">
+        <instance index="0" removed="1">RTE\ThirdPart\MDR1986VE3\MDR_HSRPRP_Config.h</instance>
+        <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="header" name="ThirdParty\HSRPRP\MDR_HSRPRP_Config.h" version="1.0.0">
+        <instance index="0" removed="1">RTE\ThirdPart\MDR_MLDR155\MDR_HSRPRP_Config.h</instance>
+        <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cvendor="Milandr" Cversion="1.0.0" condition="CON_ETH_HSRPRP"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <targetInfos/>
       </file>
     </files>
   </RTE>

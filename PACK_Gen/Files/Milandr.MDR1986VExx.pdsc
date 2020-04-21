@@ -1780,7 +1780,7 @@
     </component>
 
     <!--FreeRTOS-->    
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, static allocation</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1808,7 +1808,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_1.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, heap_4 is preferred</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1836,7 +1836,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_2.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, standard malloc</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1864,7 +1864,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_3.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1892,7 +1892,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_4.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation, span the heap</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1920,26 +1920,26 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_5.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Event Groups</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/event_groups.c" version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Steam buffers" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Steam buffers" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Steam buffers</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/stream_buffer.c" version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Timers" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="FreeRTOS" Cgroup="Timers" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Software Timers</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/timers.c" version="10.3.1"/>
       </files>
     </component>
     <!--HSR Ethernet-->
-    <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cversion="1.0.0" condition="CON_ETH_HSRPRP">
+    <component Cclass="HSR_PRP" Cgroup="HSR" Cversion="1.0.0" condition="CON_ETH_HSRPRP">
       <description>High-availability Seamless Redundancy (HSR)</description>
       <files>
         <file category="include" name="ThirdParty/HSRPRP/" version="10.3.1"/>

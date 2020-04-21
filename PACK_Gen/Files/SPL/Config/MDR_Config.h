@@ -27,6 +27,8 @@
   #include <MDR_ConfigVK014.h>    
 #elif defined (USE_ESila)
   #include <MDR_ConfigESila.h>
+#elif defined (USE_MLDR155)
+  #include <MDR_ConfigMLDR155.h>  
 #endif
 
 

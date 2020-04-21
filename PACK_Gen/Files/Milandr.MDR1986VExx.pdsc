@@ -877,6 +877,18 @@
                  - dedicated PLL for USB clock frequency
           </description>
         </device>
+        <!-- MDR_MLDR155 -->
+        <device Dname="MDR_MLDR155" >
+          <processor  Dcore="Cortex-M4" DcoreVersion="r0p1" Dfpu="FPU" Dmpu="MPU" Dendian="Little-endian" Dclock="160000000"/>
+          <compile    header="SPL/Devices/MDR_MLDR155/MDR_MLDR155.h" define="USE_MLDR155"/>
+          <debug      svd="Keil/SVD/MDR_MLDR155.svd"/>
+          <memory     name="IROM1" access="rx"  start="0x01000000"  size="0x100000"   startup="1"   default="1"/>
+          <memory     name="IRAM1" access="rwx" start="0x20000000"  size="0x20000"    init   ="0"   default="1"/>
+          <algorithm  name="Keil/FLM/MLDR124_LOCK.FLM" start="0x01000000"  size="0x100000" RAMstart="0x20000000" RAMsize="0xF000" default="1"/>
+          <description>
+            ESila enhanced microcontroller
+          </description>
+        </device>
       </subFamily>
     </family>
   </devices>
@@ -899,6 +911,7 @@
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_MLDR155"/>
     </condition>
     <condition id="CON_MDR_Base">
       <description>All 32-bit Cortex devices</description>
@@ -929,6 +942,7 @@
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_MLDR155"/>
     </condition>
     <condition id="CON_HAS_I2C">
       <description>Devices with I2C</description>
@@ -1045,16 +1059,13 @@
       <description>Cortex-M4F device</description>
       <accept Dname="MDR1986VE81"/>
     </condition>    
-    <condition id="CON_ESila">
-      <description>Cortex-M4F device</description>
-      <accept Dname="MDR_ESila"/>
-    </condition>
     <condition id="CON_MDR_CM4">
       <description>All 32-bit Cortex devices</description>
       <accept Dname="MDR1986VE8"/>
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_MLDR155"/>
     </condition>
     <condition id="CON_MDR_CM4_AC5">
       <description>Cortex-M4 with ARM Compiler V5</description>
@@ -1092,11 +1103,16 @@
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR1923VK014"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_MLDR155"/>      
     </condition>    
     <condition id="CON_MDR_ESila">
       <description>32-bit Cortex devices ESila</description>
-      <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_ESila"/>      
     </condition>    
+    <condition id="CON_MDR_MLDR155">
+      <description>32-bit Cortex devices ESila</description>
+      <accept Dname="MDR_MLDR155"/>      
+    </condition> 
     <condition id="CON_BRD_BUTTONS">
       <description>Boards with buttons</description>
       <accept Dname="MDR1986VE1"/>
@@ -1114,6 +1130,7 @@
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
       <accept Dname="MDR1923VK014"/>
+      <accept Dname="MDR_MLDR155"/>
     </condition>
     <condition id="CON_BRD_LCD">
       <description>Boards with LCD Display</description>
@@ -1134,6 +1151,12 @@
       <accept Dname="MDR1986VE8_OTP"/>
       <accept Dname="MDR1986VE81"/>
       <accept Dname="MDR_ESila"/>
+      <accept Dname="MDR_MLDR155"/>
+    </condition>
+    <condition id="CON_ETH_HSRPRP">
+      <description>Devices with more then two Ethernet Block</description>
+      <accept Dname="MDR1986VE3"/>
+      <accept Dname="MDR_MLDR155"/>
     </condition>
     <condition id="CON_MDR_EBC_VE8">
       <description>Devices with Ethernet Block</description>
@@ -1282,7 +1305,7 @@
         <file category="header"  name="SPL/Config/MDR_ConfigVK014.h" attr="config" version="2.0.0"/>
       </files>
     </component>
-    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_ESila">
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR_ESila">
       <description>System Startup for Cortex-M4F</description>
       <files>
         <file category="include" name="Keil/CMSIS_Core/"/>
@@ -1295,6 +1318,19 @@
         <file category="header"  name="SPL/Config/MDR_ConfigESila.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="Device" Cgroup="Startup" Cversion="2.0" condition="CON_MDR_MLDR155">
+      <description>System Startup for Cortex-M4F</description>
+      <files>
+        <file category="include" name="Keil/CMSIS_Core/"/>
+        <file category="include" name="SPL/Config/"/>
+        <file category="include" name="SPL/Devices/Defines/"/>
+        <file category="include" name="SPL/Devices/MDR_MLDR155/"/>
+        <file category="source"  name="SPL/Devices/MDR_MLDR155/startup_MLDR155.s" attr="config" condition="Startup ARM" version="2.0.0"/>
+        <file category="source"  name="SPL/Devices/MDR_MLDR155/system_MLDR155.c"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Devices/MDR_MLDR155/system_MLDR155.h"  attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDR_ConfigMLDR155.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>    
 
     <!-- RST_CLOCK Driver -->
     <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_Base">
@@ -1314,6 +1350,14 @@
       </files>
     </component>
     <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_ESila">
+      <description>CPU Clock driver for ESila</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_RST_Clock.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_RST_Clock_ESila.c" version="2.0.0"/>
+      </files>
+    </component>
+    <component Cclass="Drivers" Cgroup="RST Clock" Cversion="2.0" condition="CON_MDR_MLDR155">
       <description>CPU Clock driver for ESila</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1736,7 +1780,7 @@
     </component>
 
     <!--FreeRTOS-->    
-    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_1" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, static allocation</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1764,7 +1808,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_1.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_2" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, heap_4 is preferred</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1792,7 +1836,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_2.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_3" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, standard malloc</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1820,7 +1864,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_3.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_4" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1848,7 +1892,7 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_4.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Core" Cvariant="heap_5" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>FreeRTOS minimal sources, avoid fragmentation, span the heap</description>
       <files>
         <file category="doc" name="https://www.freertos.org/a00111.html"/>        
@@ -1876,22 +1920,40 @@
         <file category="source"  name="ThirdParty/FreeRTOS/portable/MemMang/heap_5.c"  version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Event Groups" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Event Groups</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/event_groups.c" version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Steam buffers" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Steam buffers" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Steam buffers</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/stream_buffer.c" version="10.3.1"/>
       </files>
     </component>
-    <component Cclass="FreeRTOS" Cgroup="Timers" Cversion="10.3.1" condition="CON_MDR_ALL">
+    <component Cclass="ThirdPart" Cgroup="FreeRTOS" Csub="Timers" Cversion="10.3.1" condition="CON_MDR_ALL">
       <description>Software Timers</description>
       <files>
         <file category="source"  name="ThirdParty/FreeRTOS/timers.c" version="10.3.1"/>
+      </files>
+    </component>
+    <!--HSR Ethernet-->
+    <component Cclass="ThirdPart" Cgroup="Industrial Ethernet" Csub="HSR" Cversion="1.0.0" condition="CON_ETH_HSRPRP">
+      <description>High-availability Seamless Redundancy (HSR)</description>
+      <files>
+        <file category="include" name="ThirdParty/HSRPRP/" version="10.3.1"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSR.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Core.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_DuplicateTables.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Error.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Frames.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_NodeTable.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_ProxyTable.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_RX.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_TX.c" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Time.c" version="1.0.0"/>
+        <file category="header"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Config.h" attr="config" version="1.0.0"/>
       </files>
     </component>
 

@@ -13,6 +13,11 @@
 #define  ETHCFG1_MAC_M                         0x7856
 #define  ETHCFG1_MAC_H                         0xBC9A
 
+#define  ETHCFG1_MAC_INIT_BYTES_ARR						{(uint8_t) ETHCFG1_MAC_L, (uint8_t)(ETHCFG1_MAC_L >> 8), \
+																							 (uint8_t) ETHCFG1_MAC_M, (uint8_t)(ETHCFG1_MAC_M >> 8), \
+																							 (uint8_t) ETHCFG1_MAC_H, (uint8_t)(ETHCFG1_MAC_H >> 8)}
+
+
 #define  ETHCFG1_MAC_FLT_HASH0                 0x0000
 #define  ETHCFG1_MAC_FLT_HASH1                 0x0000
 #define  ETHCFG1_MAC_FLT_HASH2                 0x0000

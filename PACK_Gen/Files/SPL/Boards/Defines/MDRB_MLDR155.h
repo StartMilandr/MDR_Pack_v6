@@ -4,6 +4,8 @@
 #ifdef USE_BOARD_MLDR155 
 
 //#include <MDR_CPU_ClockSelect.h>
+    #define MDR_MLDR155_FPGA_CPU_HZ     50E+6
+    #define MDR_RST_ASYNC_IN_FPGA       MDR_RST_ASYNC_IN_HSI
 
 //  КНОПКА DOWN переключает сразу несколько бит в регистре - ломает подключенный PHY3!
 

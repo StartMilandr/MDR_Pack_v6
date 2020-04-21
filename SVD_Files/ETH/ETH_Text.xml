@@ -385,6 +385,18 @@
   <description>Ethernet Control</description>
 </peripheral>
 
+#ETH_MLDR155
+<peripheral derivedFrom="MDR_ETH1">
+  <name>MDR_ETH2</name>
+  <baseAddress>0x21020000</baseAddress>
+  <description>Ethernet Control</description>
+</peripheral>
+<peripheral derivedFrom="MDR_ETH1">
+  <name>MDR_ETH3</name>
+  <baseAddress>0x21040000</baseAddress>
+  <description>Ethernet Control</description>
+</peripheral>
+
 #ESILA_RMII
 <field>
   <name>MII_RMII</name>

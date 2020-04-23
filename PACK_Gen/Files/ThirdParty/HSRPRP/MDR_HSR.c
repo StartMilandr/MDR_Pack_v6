@@ -87,7 +87,7 @@ bool MDR_HSR_IsMultyDestination(MDR_HSR_NodeCfg *cfgNode, MDR_HSRPRP_FrameItem *
 	  //Host is not only destination, Multicast/VLAN is ok
 	//	todo
 	
-	return false;
+	//return false;
 }
 
 
@@ -128,6 +128,16 @@ static inline bool MDR_HSR_PortB_NoDuplicateSent(MDR_HSRPRP_FrameItem *frameItem
 {
   return !MDR_HSRPRP_Dupl_HasItem(frameItem, &lreDuplTable_PortB);
 }
+
+static inline bool MDR_HSR_Interlink_NoDuplicateSent(MDR_HSRPRP_FrameItem *frameItem)
+{
+#if MDR_HSR_REDBOX_EN  
+  return !MDR_HSRPRP_Dupl_HasItem(frameItem, &lreDuplTable_Interlink);
+#else
+  return false;
+#endif
+}
+
 
 
 static inline bool MDR_HSR_PortsAB_HasNoDuplicate(MDR_HSRPRP_FrameItem *frameItem)
@@ -252,8 +262,11 @@ MDR_LOG_Add_def(frameItem->_frmIndex);
 }
 
 
-//  ---------------  RedBox forwarding from Interlink -----------------
+//==================================================================
+//=========================   RedBox   =============================
+//==================================================================
 
+//  ---------------  RedBox forwarding from Interlink -----------------
 
 static bool MDR_HSRPRP_ProxyHasMAC(MDR_HSRPRP_FrameItem *frameItem)
 {
@@ -265,21 +278,21 @@ static bool MDR_HSRPRP_ProxyHasMAC(MDR_HSRPRP_FrameItem *frameItem)
 //  MDR_HSR_AddProxyNode(frameItem);
 //}
 
-bool MDR_HSR_RedBox_IsDestination(const MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
+bool MDR_HSR_RedBox_IsDestination(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
 {
 	return MDR_ETH_IsSameMACs(cfgRedBox->nodeCfg.hostMAC, frameItem->framePtrs.pHeader->destMAC);
 }
 
-bool MDR_HSR_RedBox_IsMultyDestination(const MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
+bool MDR_HSR_RedBox_IsMultyDestination(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
 {
-
+  return MDR_HSR_IsMultyDestination(&cfgRedBox->nodeCfg, frameItem);
 }
 
 
 
 void MDR_HSR_RedBox_ForwardFromInterlink(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
 {    
-  //  Superframe from external HSR Ring
+  //  MY: Superframe from external HSR Ring
   if ((frameItem->framePtrs.frameType == MDR_HSRPRP_FrameSupHSR) && (cfgRedBox->forwMode == MDR_HSR_RedBox_HSR_HSR))
   {
     MDR_HSR_AddProxyNodeOrUpdate(frameItem);
@@ -323,7 +336,7 @@ void MDR_HSR_RedBox_ForwardFromInterlink(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPR
       }
       
 //    If the frame is to be injected into the ring (RedBox is not only destination, Multicast/VLAN is ok)
-      if (!isHostDestination)
+      if (!isHostDestination || isMultyDestination)
       {  
 //      If this is not the first occurrence of the frame
 //        discard the frame (already sent over that port)
@@ -456,12 +469,7 @@ void MDR_HSR_RedBox_ForwardFromInterlink(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPR
 
 
 
-//  ---------------  RedBox forwarding from Interlink -----------------
-
-bool MDR_HSR_Interlink_NoDuplicateSent(MDR_HSRPRP_FrameItem *frameItem)
-{
-}
-
+//  ---------------  RedBox forwarding from PortA or B -----------------
 
 void MDR_HSR_RedBox_ForwardFromPortAB(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem)
 { 
@@ -655,11 +663,16 @@ void MDR_HSR_RedBox_ForwardFromHost(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_Fra
       frameItem->forwTasks.tagModifInterlink = MDR_HSRPRP_Tag_AddHSR;
       frameItem->forwTasks.selForwPort = MDR_HSRPRP_ForwInterlink;
     }
+    
+    //duplicate the frame, enqueue it for sending into both HSR ports
+    frameItem->forwTasks.tagModifPortAB = MDR_HSRPRP_Tag_AddHSR;
+    frameItem->forwTasks.selForwPort = MDR_HSRPRP_ForwPortA | MDR_HSRPRP_ForwPortB;
   }
   
-//duplicate the frame, enqueue it for sending into both HSR ports
-  frameItem->forwTasks.tagModifPortAB = MDR_HSRPRP_Tag_AddHSR;
-  frameItem->forwTasks.selForwPort = MDR_HSRPRP_ForwPortA | MDR_HSRPRP_ForwPortB;
+  if (frameItem->forwTasks.selForwPort == 0)
+    MDR_HSRPRP_FreeFrameItem(frameItem);      //  Drop Frame
+  else
+    frameItem->status = MDR_HSRPRP_WaitForward;   
 }
 
 

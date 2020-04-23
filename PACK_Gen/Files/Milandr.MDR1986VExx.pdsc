@@ -1949,11 +1949,11 @@
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Error.c" version="1.0.0"/>
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Frames.c" version="1.0.0"/>
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_NodeTable.c" version="1.0.0"/>
-        <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_ProxyTable.c" version="1.0.0"/>
+        <!--file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_ProxyTable.c" version="1.0.0"/-->
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_RX.c" version="1.0.0"/>
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_TX.c" version="1.0.0"/>
         <file category="source"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Time.c" version="1.0.0"/>
-        <file category="header"  name="ThirdParty/HSRPRP/MDR_HSRPRP_Config.h" attr="config" version="1.0.0"/>
+        <file category="header"  name="ThirdParty/HSRPRP/HSRPRP_Config/MDR_HSRPRP_Config.h" attr="config" version="1.0.0"/>
       </files>
     </component>
 

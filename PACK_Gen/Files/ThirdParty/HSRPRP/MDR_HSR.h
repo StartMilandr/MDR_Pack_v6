@@ -30,16 +30,20 @@ typedef struct {
 } MDR_HSR_NodeCfg;
 
 
-//
+//  Назначает пересылку от Host в PortA и PortB
 void MDR_HSR_DANH_ForwardFromHost  (MDR_HSR_NodeCfg *cfgNode, MDR_HSRPRP_FrameItem *frameItem);
+
+//  Назначает пересылку полученного фрейма в PortA, в PortB или в Host если для него нет дубликата
+//    в таблицах дубликатов для данных портов.
+//  Запись в таблицу дубликатов происходит при отправке - MDR_HSRPRP_ProcessForwardingEx(), после модификации фрейма
+//  В Host передаются фреймы с МАС адресом Хоста или прошедшие фильтр на мультикастинг
+//  Запись в таблице дубликатов удаляется при устаревании, 
+//    либо по факту приходу дубликата - при опции DUPLICATE_TABLE_FREE_ITEM_ON_DUPL_RX
 void MDR_HSR_DANH_ForwardFromPortAB(MDR_HSR_NodeCfg *cfgNode, MDR_HSRPRP_FrameItem *frameItem);
 
+//  Функция проверяет откуда пришел фрейм и вызывает MDR_HSR_DANH_ForwardFromHost() или MDR_HSR_DANH_ForwardFromPortAB()
 void MDR_HSR_DANH_AssignForwardTasks(MDR_HSR_NodeCfg *cfgNode, MDR_HSRPRP_FrameItem *frameItem);
 
-//typedef enum {
-//  MDR_HSR_LanA = 0,
-//  MDR_HSR_LanB,
-//} MDR_HSR_LanID;
 
 typedef struct {
   MDR_HSR_NodeCfg            nodeCfg;
@@ -48,10 +52,22 @@ typedef struct {
 	MDR_HSRPRP_LAN_ID					 lanID;
 } MDR_HSR_RedBoxCfg;
 
+//  Пересылает фреймы от Хоста в PortA и PortB, в определенных режимах в Interlink
+//  ProxyTable не используется.
 void MDR_HSR_RedBox_ForwardFromHost			(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem);
+
+//  Пересылает фреймы полученные из PortA и PortB.
+//  В сеть Interlink фрейм передается если есть адрес назначения в ProxyTable
+//  Дубликаты отбрасываются
 void MDR_HSR_RedBox_ForwardFromPortAB   (MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem);
+
+//  Пересылает фреймы из сети Interlink в PortA, PortB, Host.
+//  Обновляет ProxyTable адресами устройств в сети Interlink, записи стареют по времени.
 void MDR_HSR_RedBox_ForwardFromInterlink(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem);
 
+//  Вызывает функции MDR_HSR_RedBox_ForwardFromHost() / MDR_HSR_RedBox_ForwardFromPortAB() / MDR_HSR_RedBox_ForwardFromInterlink()
+//  В зависимостри от того, откуда пришел фрейм.
 void MDR_HSR_Redbox_AssignForwardTasks(MDR_HSR_RedBoxCfg *cfgRedBox, MDR_HSRPRP_FrameItem *frameItem);
+
 
 #endif  //  _MDR_HSR_H

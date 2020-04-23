@@ -24,7 +24,7 @@ extern MDR_HSRPRP_DuplTable  lreDuplTable_PortB;
 extern MDR_HSRPRP_DuplTable  lreDuplTable_HOST;
 
 #if MDR_HSR_REDBOX_EN
-	extern MDR_HSRPRP_DuplTable  hsrDuplTable_Interlink;
+	extern MDR_HSRPRP_DuplTable  lreDuplTable_Interlink;
 #endif
 
 

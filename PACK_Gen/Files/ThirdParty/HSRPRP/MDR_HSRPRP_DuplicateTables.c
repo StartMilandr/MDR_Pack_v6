@@ -11,7 +11,7 @@ MDR_HSRPRP_DuplTable  lreDuplTable_HOST  = {.itemsCount = DUPLICATE_TABLE_LEN_HO
 
 #if MDR_HSR_REDBOX_EN
 	static MDR_HSRPRP_DuplItem lreDuplItems_Interlink[DUPLICATE_TABLE_LEN_INTERLINK];
-	MDR_HSRPRP_DuplTable  lreDuplTable_Interlink  = {.itemsCount = DUPLICATE_TABLE_LEN_INTERLINK, .duplItems =	lreDuplItems_Interlink};
+	MDR_HSRPRP_DuplTable       lreDuplTable_Interlink  = {.itemsCount = DUPLICATE_TABLE_LEN_INTERLINK, .duplItems =	lreDuplItems_Interlink};
 #endif
 
 

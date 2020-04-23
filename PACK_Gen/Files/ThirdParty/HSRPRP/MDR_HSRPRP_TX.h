@@ -14,6 +14,13 @@
 typedef void(*pHostReceiveItem_CallBack)(MDR_HSRPRP_FrameItem *frameItem);
 typedef void(*pHostReceiveFrame_CallBack)(MDR_ETH_FrameRX *frameRX);
 
+
+//  Функцию пересылки вызывать сразу после MDR_HSR_Redbox_AssignForwardTasks(),
+//  чтобы они последовательно друг за другом обрабатывали один и тот же фрейм.
+//  Это необходимо, чтобы таблица дубликатов была актуальна
+//  (таблица обновляется при пересылке, а проверяется в MDR_HSR_Redbox_AssignForwardTasks() ).
+//  Иначе MDR_HSR_Redbox_AssignForwardTasks() может назначить на обработку два дубликата,
+//  поскольку записи в таблице дубликатов без вызова MDR_HSRPRP_ProcessForwardingEx() для первого фрейма еще не будет.
 void MDR_HSRPRP_ProcessForwardingEx(MDR_HSR_NodeCfg *cfgNode, 
 																		MDR_HSRPRP_FrameItem *frameItem, 
 																		pHostReceiveFrame_CallBack procHostReceiveFrame,
@@ -28,7 +35,11 @@ __STATIC_INLINE void MDR_HSRPRP_ProcessForwardingRaw(MDR_HSR_NodeCfg *cfgNode, M
   MDR_HSRPRP_ProcessForwardingEx(cfgNode, frameItem, NULL, procHostReceiveItem);
 }
 
-bool MDR_HSR_SendSuperFrame(MDR_HSR_NodeCfg *cfgNode);
+#if MDR_HSR_REDBOX_EN
+  bool MDR_HSR_SendSuperFrame(MDR_HSR_RedBoxCfg *cfgRedBox);
+#else
+  bool MDR_HSR_SendSuperFrame(MDR_HSR_NodeCfg *cfgNode);
+#endif
 
 
 #endif  // _MDR_HSRPRP_TX_H

@@ -105,7 +105,7 @@ MDR_LOG_Add_def(LOG_ADD_DUPL_B);
 MDR_LOG_Add_def(frameItem->_frmIndex);					
 			
       MDR_ETH_TrySendFrame(ETH_PortB, pFrameTX);
-			MDR_HSRPRP_Dupl_AddItem(frameItem, &lreDuplTable_PortB);			
+			MDR_HSRPRP_Dupl_AddItem(frameItem, &lreDuplTable_PortB);
 		}
   }
 
@@ -114,16 +114,13 @@ MDR_LOG_Add_def(frameItem->_frmIndex);
   bool forwToInterlink = (frameItem->forwTasks.selForwPort & MDR_HSRPRP_ForwInterlink) != 0;
   if (forwToInterlink)
   {
-    forwToInterlink = !MDR_HSRPRP_CheckAlreadySend(frameItem, MDR_HSRPRP_Interlink);
-    if (forwToInterlink)
+    if (activeTagModif != frameItem->forwTasks.tagModifInterlink)
     {
-      if (activeTagModif != frameItem->forwTasks.tagModifInterlink)
-      {
-        activeTagModif = frameItem->forwTasks.tagModifInterlink;
-        _ModifyHandlers[activeTagModif](cfgNode, frameItem, pFrameTX);    
-      }      
-      MDR_ETH_TrySendFrame(ETH_PortInterlink, pFrameTX);  
-    }
+      activeTagModif = frameItem->forwTasks.tagModifInterlink;
+      _ModifyHandlers[activeTagModif](cfgNode, frameItem, pFrameTX);    
+    }      
+    MDR_ETH_TrySendFrame(ETH_PortInterlink, pFrameTX);  
+    MDR_HSRPRP_Dupl_AddItem(frameItem, &lreDuplTable_Interlink);			
   }
 #endif
   
@@ -241,7 +238,40 @@ MDR_HSR_NodeCfg * _suHeaderOwner = NULL;
 
 
 #if MDR_HSR_REDBOX_EN
-
+  bool MDR_HSR_SendSuperFrame(MDR_HSR_RedBoxCfg *cfgRedBox)
+  {
+    MDR_HSR_NodeCfg *cfgNode = &cfgRedBox->nodeCfg;
+    //	Capture global _suHeader by cfgNode as MDR_HSR_SupHeader_DANH_t	
+		if (_suHeaderOwner != cfgNode)
+		{
+			_suHeaderOwner = cfgNode;
+			
+			MDR_ETH_CopyMAC((uint8_t *)&_suHeader.nodeMAC,   (uint8_t *)cfgNode->hostMAC);
+			MDR_ETH_CopyMAC((uint8_t *)&_suHeader.DANP_MAC,  (uint8_t *)cfgNode->hostMAC);
+      MDR_ETH_CopyMAC((uint8_t *)&_suHeader.RedBoxMAC, (uint8_t *)cfgNode->hostMAC);
+      ((MDR_HSR_SupHeader_DANH_t *)&_suHeader)->TLV2 = htons(MDR_HSR_SupHdr_TLV2_RedBox);
+			//((MDR_HSR_SupHeader_DANH_t *)&_suHeader)->TLV3 = MDR_HSR_SupHdr_TLV3;
+			
+			_suHeader.tagHSR.etherType = ETH_TYPE_HSR;
+			_suHeader.tagHSR.lanID_LSDUSize = htons(FILL_LanID_LSDUSize(cfgNode->lanID, MDR_HSR_SUPER_DANH_LSDU_LEN));
+		}
+		
+		//	Update HSR tags
+		cfgNode->seqNum++;
+		cfgNode->seqNumSup++;		
+		_suHeader.tagHSR.seqNum = htons(cfgNode->seqNum);
+		_suHeader.supSeqNum = htons(cfgNode->seqNumSup);		
+		cfgNode->doCheckSupRx = true;
+		
+		//	Copy to FrameTx
+		memcpy(_frameTX.frame, &_suHeader, MDR_HSR_SUPER_DANH_FRAME_LEN);  
+		_frameTX.frameLen = MDR_HSR_SUPER_DANH_FRAME_LEN;
+		
+		bool okTx = MDR_ETH_TrySendFrame(ETH_PortA, &_frameTX);
+		if (okTx)
+			okTx = MDR_ETH_TrySendFrame(ETH_PortB, &_frameTX);
+		return okTx;  
+  }
 #else
 	bool MDR_HSR_SendSuperFrame(MDR_HSR_NodeCfg *cfgNode)
 	{	
@@ -252,7 +282,7 @@ MDR_HSR_NodeCfg * _suHeaderOwner = NULL;
 			
 			MDR_ETH_CopyMAC((uint8_t *)&_suHeader.nodeMAC,  (uint8_t *)cfgNode->hostMAC);
 			MDR_ETH_CopyMAC((uint8_t *)&_suHeader.DANP_MAC, (uint8_t *)cfgNode->hostMAC);
-			((MDR_HSR_SupHeader_DANH_t *)&_suHeader)->TLV3 = MDR_HSR_SupHdr_TLV3;
+			//((MDR_HSR_SupHeader_DANH_t *)&_suHeader)->TLV3 = MDR_HSR_SupHdr_TLV3;
 			
 			_suHeader.tagHSR.etherType = ETH_TYPE_HSR;
 			_suHeader.tagHSR.lanID_LSDUSize = htons(FILL_LanID_LSDUSize(cfgNode->lanID, MDR_HSR_SUPER_DANH_LSDU_LEN));

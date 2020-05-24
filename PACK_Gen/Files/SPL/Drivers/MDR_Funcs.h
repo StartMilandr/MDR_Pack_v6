@@ -8,7 +8,12 @@
 #define REV_BYTES32(x)  __REV(x)
 #define REV_BYTES16(x)  __REVSH(x)
 #define REV_BITS32(x)   __RBIT(x)
+#define BIT_SEL_TO_IND(x)  __CLZ(__RBIT(tmp))
 
+#define htons(a)			REV_BYTES16(a)
+#define ntohs(a)			REV_BYTES16(a)
+#define htonl(a)			REV_BYTES32(a)
+#define ntohl(a)			REV_BYTES32(a)
 
 //=========    Макрос для подавления ворнингов от неиспользуемых параметров ==========
 #define UNUSED(x) (void)(x)

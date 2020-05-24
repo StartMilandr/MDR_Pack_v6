@@ -62,6 +62,9 @@ MDR_SSP_Status MDR_SSP_GetStatus(MDR_SSP_Type *SSPx);
 __STATIC_INLINE uint32_t MDR_SSP_GetStatusInt(MDR_SSP_Type *SSPx) { return SSPx->SR; }
 __STATIC_INLINE bool     MDR_SSP_GetStatusFlagSet(MDR_SSP_Type *SSPx, uint32_t flagSel) { return (SSPx->SR & flagSel) != 0; }
 
+__STATIC_INLINE bool MDR_SSP_IsEmptyFIFO_TX(MDR_SSP_Type *SSPx) {return MDR_SSP_GetStatusFlagSet(SSPx, MDR_SSP_SR_TX_Empty); }
+__STATIC_INLINE bool MDR_SSP_IsBusy(MDR_SSP_Type *SSPx) {return MDR_SSP_GetStatusFlagSet(SSPx, MDR_SSP_SR_Busy); }
+
 
 //  Запись данных в FIFO_TX. Проверять флаги что FIFO_TX не полон и есть куда писать.
 __STATIC_INLINE bool MDR_SSP_CanWrite(MDR_SSP_Type *SSPx) {return MDR_SSP_GetStatusFlagSet(SSPx, MDR_SSP_SR_TX_NotFull); }
@@ -280,6 +283,14 @@ __STATIC_INLINE void MDR_SSPex_ChangeFrameFormat(const MDR_SSP_TypeEx *exSSPx, M
 void MDR_SPI_ChangeRate(MDR_SSP_Type *SSPx, uint8_t divSCR_0_255, uint8_t divPSR_2_254);
 
 
+//  Вспогательная структура, исползуется в драйверах микросхем, например 5600ВВ3Т
+typedef union {
+   uint16_t Rates;
+   struct {                    // BitRate = SSP_Clock / (PSR * (1 + SCR))
+   uint8_t  divSCR_0_255;      // 0 - 255, Serial Clock Rate
+   uint8_t  divPSR_2_254;      // 2 - 254, EVEN ONLY! Clock prescaller
+   };
+} MDR_SSP_Rates;
 
 
 //===================   SSP GPIO pins Init ==========================

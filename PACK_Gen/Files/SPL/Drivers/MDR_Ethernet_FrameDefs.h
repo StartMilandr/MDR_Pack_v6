@@ -49,12 +49,14 @@
  * BE conversion, HostToNex, NetToHost
  */
 
-#define htons(a)			((((a)>>8)&0xff)|(((a)<<8)&0xff00))
-#define ntohs(a)			htons(a)
+#ifndef htons
+  #define htons(a)			((((a)>>8)&0xff)|(((a)<<8)&0xff00))
+  #define ntohs(a)			htons(a)
 
-#define htonl(a)			( (((a)>>24)&0xff) | (((a)>>8)&0xff00) |\
-                      (((a)<<8)&0xff0000) | (((a)<<24)&0xff000000) )
-#define ntohl(a)			htonl(a)
+  #define htonl(a)			( (((a)>>24)&0xff) | (((a)>>8)&0xff00) |\
+                        (((a)<<8)&0xff0000) | (((a)<<24)&0xff000000) )
+  #define ntohl(a)			htonl(a)
+#endif
 
 #define ETH_CRC_SIZE      4
 

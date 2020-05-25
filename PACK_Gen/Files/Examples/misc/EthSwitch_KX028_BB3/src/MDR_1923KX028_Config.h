@@ -125,4 +125,25 @@
 #define CFG_TSU_INC_PER_1NS     0x14
 
 
+// =================  HGPI Configs  ===============
+//  Retry count for LMEM buffers
+#define CFG_HGPI_RX_LMEM_BUF_RETR_COUNT   0x200
+//  LMEM first buffer header size value
+#define CFG_HGPI_LMEM_BUF1_HRD_SIZE       0x30
+//  LMEM buffer size value as 128 bytes
+#define CFG_HGPI_LMEM_BUF_SIZE            0x80
+//  LMEM header size from second buffer onwards for each buffer in chain.
+#define CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE  0x10
+//  Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
+#define CFG_HGPI_TX_FIFO_START_THRES      0x178
+//  Initial number of bytes read from received pointer in LMEM, to check for action fields.
+#define CFG_GPI_DTX_ASEQ_CNT              0x40
+
+// =================  HIF Configs  ===============
+//  TX/RX - BDP read poll counter / BDP write poll counter.
+#define CFG_HIF_TX_POLL_RD_CNT    0x40
+#define CFG_HIF_TX_POLL_WR_CNT    0x40
+#define CFG_HIF_RX_POLL_RD_CNT    0x40
+#define CFG_HIF_RX_POLL_WR_CNT    0x40
+
 #endif  //MDR_1923KX028_CONFIG_H_

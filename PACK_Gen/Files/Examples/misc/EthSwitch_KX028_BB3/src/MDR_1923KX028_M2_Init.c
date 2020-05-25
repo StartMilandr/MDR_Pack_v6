@@ -31,6 +31,49 @@ void MDR_KX028_InitEMAC(MDR_KX028_EMAC_e emac, uint32_t netCfgReg)
 
 
 
+void MDR_KX028_InitHGPI(void)
+{
+  // LMEM buffer enable / Retry count for LMEM buffers
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_RX_CONFIG,         AXI_GPI_RX_CONFIG_FILL(1, CFG_HGPI_RX_LMEM_BUF_RETR_COUNT));     //{ 0x00650008, 0x02000001 },
+  // LMEM first buffer header size value
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_HDR_SIZE,          AXI_GPI_HDR_SIZE_FILL(CFG_HGPI_LMEM_BUF1_HRD_SIZE));             //{ 0x0065000C, 0x00000030 },	
+  // LMEM buffer size value as 128 bytes
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_BUF_SIZE,          AXI_GPI_BUF_SIZE_FILL(CFG_HGPI_LMEM_BUF_SIZE));                  //{ 0x00650010, 0x00000080 },	
+  // Address of BMU1, where buffer should be allocated
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_ALLOC_ADDR,   CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_ALLOC_CTRL);       //{ 0x00650014, 0xC0100030 },	//BMU_1
+  // Address of BMU1, where buffer should be freed.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);        //{ 0x00650018, 0xC0100034 },	//BMU_1
+  // Address of Class HW INQ register where packet from peripherals are sent to.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CLASS_ADDR,        CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);  //{ 0x00650024, 0xC0620010 },	//CLASS_HW_1 CLASS_INQ_PKTPTR    
+  
+  //  - from driver? VASSA -!
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DDR_DATA_OFFSET,   0x00000100);         //{ 0x00650034, 0x00000100 },	//___Q no in spec  
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010);         //{ 0x00650038, 0x00000010 },	//___Q no in spec
+  
+  // LMEM header size from second buffer onwards for each buffer in chain.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE);  //{ 0x00650060, 0x00000010 },  
+  // Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_TMLF_TX,  CFG_HGPI_TX_FIFO_START_THRES);                      //{ 0x0065004C, 0x00000178 },
+  // Initial number of bytes read from received pointer in LMEM, to check for action fields.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DTX_ASEQ, CFG_GPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },
+}
+
+
+void MDR_KX028_InitHIF(void)
+{
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_TX_POLL_CTRL,  AXI_HIF_TXRX_POLL_CTRL_FILL(CFG_HIF_TX_POLL_RD_CNT, CFG_HIF_TX_POLL_WR_CNT)); //{ 0x00640004, 0x00400040 },
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_RX_POLL_CTRL,  AXI_HIF_TXRX_POLL_CTRL_FILL(CFG_HIF_RX_POLL_RD_CNT, CFG_HIF_RX_POLL_WR_CNT)); //{ 0x00640008, 0x00400040 },
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_MISC,                      0x5CC50001);	//{ 0x0064000C, 0x5CC50001 },	//___Q in spec value 0x0000_0001
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_TIMEOUT_REG,               0xC92C3BCD);	//{ 0x00640010, 0xC92C3BCD },	//___Q no in spec    
+//{ AXI_HIF1_BASE_ADDR + AXI_HIF_RX_QUEUE_MAP_CH_NO_ADDR, 0x00000000 }, //{ 0x006400CC, 0x00000000 },	//___Q in spec value 0x3210_3210
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_RX_QUEUE_MAP_CH_NO_ADDR,   0x32103210);	//{ 0x006400CC, 0x32103210 },	//___Q in spec value 0x3210_3210    
+//{ AXI_HIF1_BASE_ADDR + AXI_HIF_DMA_BURST_SIZE_ADDR,     0x00000000 }, //{ 0x006400C8, 0x00000000 },    
+//{ AXI_HIF1_BASE_ADDR + AXI_HIF_DMA_BURST_SIZE_ADDR,     0x1 },        //{ 0x006400C8, 0x1 },
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_CH0_BASE_ADDR + AXI_HIF_CH_LTC_MAX_PKT_ADDR, 0x00000004);	  //{ 0x006401E4, 0x00000004 },	//___Q no in spec
+}
+
+
+
 //const uint32_t MDR_KX028_AxiAddrEGPI[KX028_EMAC_NUMS] =
 //{
 //    AXI_EGPI1_BASE_ADDR,

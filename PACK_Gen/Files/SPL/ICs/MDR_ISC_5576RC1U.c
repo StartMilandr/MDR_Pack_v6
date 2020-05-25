@@ -150,3 +150,11 @@ void MDR_5576RC1U_SentInitConfig(void)
   MDR_JTAG_SendCyclesTCK(1);
 }
 
+//  --------------- for debug --------------------------
+#define MDR_JTAG_IR__5576RC1U_PROG_AA55   0x62
+
+void MDR_5576RC1U_ProgDebud_AA55(void)
+{
+  MDR_JTAG_WriteIR(MDR_JTAG_INSTR_BIT_LEN, MDR_JTAG_IR__5576RC1U_PROG_AA55);
+  MDR_JTAG_SendCyclesTCK(1);
+}

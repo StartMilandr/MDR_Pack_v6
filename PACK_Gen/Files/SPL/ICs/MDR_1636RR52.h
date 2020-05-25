@@ -82,6 +82,7 @@ void MDR_RR52_CS_SetInactive(const MDR_1636RR52_Obj *objRR52);
 //  ==================    Функции работы с 1636РР52   ===========================
 #define MDR_1636RR52_SectSize    0x10000UL //65K
 #define MDR_1636RR52_SectCount   2
+#define MDR_1636RR52_LEN         (MDR_1636RR52_SectCount * MDR_1636RR52_SectSize)
 
 typedef enum {
   RR52_Sector1 = 0,
@@ -186,6 +187,12 @@ void MDR_RR52_ReadArray       (const MDR_1636RR52_Obj *objRR52, uint32_t addr, u
 
 void MDR_RR52_Reset           (const MDR_1636RR52_Obj *objRR52);
 
+
+//  Cyclic Read
+void      MDR_RR52_ReadNext15Hz_Open(const MDR_1636RR52_Obj *objRR52, uint32_t addr);
+void      MDR_RR52_ReadNext_Open(const MDR_1636RR52_Obj *objRR52, uint32_t addr);
+uint16_t  MDR_RR52_ReadNext(const MDR_1636RR52_Obj *objRR52);
+void      MDR_RR52_ReadNext_Close(const MDR_1636RR52_Obj *objRR52);
 
 
 

@@ -168,7 +168,13 @@ __STATIC_INLINE void MDR_ETH_DecCountRx(MDR_ETH_Type *MDR_Eth) { MDR_Eth->STAT	-
 __STATIC_INLINE void MDR_ETH_ClearEvent(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IFR	|= selEvents; }
 __STATIC_INLINE void MDR_ETH_ClearEventsAll(MDR_ETH_Type *MDR_Eth) { MDR_Eth->IFR	= MDR_ETH_EVENT_CLEAR_ALL; }  
 
-__STATIC_INLINE bool MDR_ETH_IsEventReceivedOk(MDR_ETH_Type *MDR_Eth) { return (MDR_Eth->IFR & MDR_ETH_EVENT_ReceivedOK) != 0; }
+__STATIC_INLINE void MDR_ETH_EnableEventIRQ (MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IMR	|= selEvents; }
+__STATIC_INLINE void MDR_ETH_DisableEventIRQ(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IMR	&= ~selEvents; }
+
+__STATIC_INLINE bool MDR_ETH_GetEventSet(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { return MDR_Eth->IFR & selEvents == selEvents; }
+
+__STATIC_INLINE bool MDR_ETH_IsEventReceivedOk(MDR_ETH_Type *MDR_Eth) { return MDR_ETH_GetEventSet(MDR_Eth, MDR_ETH_EVENT_ReceivedOK); }
+__STATIC_INLINE void MDR_ETH_ClearEventReceivedOk(MDR_ETH_Type *MDR_Eth) { MDR_ETH_ClearEvent(MDR_Eth, MDR_ETH_EVENT_ReceivedOK); }
 
 
 __STATIC_INLINE void MDR_ETH_NVIC_Enable(MDR_ETH_Type *MDR_Eth, uint32_t priority)

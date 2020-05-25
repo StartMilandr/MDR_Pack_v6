@@ -1624,7 +1624,7 @@
     </component>
 
     <!-- 1636RR52 Driver -->
-    <component Cclass="Drivers" Cgroup="1636RR52" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="IC Drivers" Cgroup="1636RR52" Cversion="2.0" condition="CON_MDR_ALL">
       <description>1636RR52 flash memory SPI driver</description>
       <files>
         <file category="header"  name="SPL/ICs/MDR_1636RR52.h"/>

@@ -335,4 +335,28 @@ void MDR_RR52_ReadArray(const MDR_1636RR52_Obj *objRR52, uint32_t addr, uint32_t
   MDR_RR52_CS_SetInactive(objRR52);    
 }
 
+//  Cyclic Read
+void MDR_RR52_ReadNext15Hz_Open(const MDR_1636RR52_Obj *objRR52, uint32_t addr)
+{
+  MDR_RR52_CS_SetActive(objRR52);  
+  MDR_SSP_MasterTransfer(objRR52->SSPx, MDR_RR52_CMD__READ_ARRAY_15MHz);
+  MDR_RR52_SendAddr(objRR52->SSPx, addr);
+}
+
+void MDR_RR52_ReadNext_Open(const MDR_1636RR52_Obj *objRR52, uint32_t addr)
+{
+  MDR_RR52_CS_SetActive(objRR52);  
+  MDR_SSP_MasterTransfer(objRR52->SSPx, MDR_RR52_CMD__READ_ARRAY);
+  MDR_RR52_SendAddr(objRR52->SSPx, addr);
+}
+
+uint16_t MDR_RR52_ReadNext(const MDR_1636RR52_Obj *objRR52)
+{
+ return MDR_SSP_MasterTransfer(objRR52->SSPx, 0);
+}
+
+void MDR_RR52_ReadNext_Close(const MDR_1636RR52_Obj *objRR52)
+{
+  MDR_RR52_CS_SetInactive(objRR52);  
+}
 

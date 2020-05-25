@@ -282,15 +282,22 @@ __STATIC_INLINE void MDR_SSPex_ChangeFrameFormat(const MDR_SSP_TypeEx *exSSPx, M
 //  Убедиться что SPI не передает (Busy)
 void MDR_SPI_ChangeRate(MDR_SSP_Type *SSPx, uint8_t divSCR_0_255, uint8_t divPSR_2_254);
 
-
-//  Вспогательная структура, исползуется в драйверах микросхем, например 5600ВВ3Т
-typedef union {
-   uint16_t Rates;
-   struct {                    // BitRate = SSP_Clock / (PSR * (1 + SCR))
-   uint8_t  divSCR_0_255;      // 0 - 255, Serial Clock Rate
-   uint8_t  divPSR_2_254;      // 2 - 254, EVEN ONLY! Clock prescaller
-   };
-} MDR_SSP_Rates;
+// using anonymous
+#if defined (__CC_ARM)
+  #pragma push
+  #pragma anon_unions
+#endif
+  //  Вспогательная структура, исползуется в драйверах микросхем, например 5600ВВ3Т
+  typedef union {
+     uint16_t Rates;
+     struct {                    // BitRate = SSP_Clock / (PSR * (1 + SCR))
+     uint8_t  divSCR_0_255;      // 0 - 255, Serial Clock Rate
+     uint8_t  divPSR_2_254;      // 2 - 254, EVEN ONLY! Clock prescaller
+     };
+  } MDR_SSP_Rates;
+#if defined (__CC_ARM)
+  #pragma pop
+#endif
 
 
 //===================   SSP GPIO pins Init ==========================

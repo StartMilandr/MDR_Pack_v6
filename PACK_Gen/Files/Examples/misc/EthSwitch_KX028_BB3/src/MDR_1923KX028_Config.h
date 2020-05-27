@@ -1,13 +1,6 @@
 #ifndef  MDR_1923KX028_CONFIG_H_
 #define  MDR_1923KX028_CONFIG_H_
 
-//  Таймаут ожидании окончания операции, в количествах чтения регистра статуса
-#define KX028_TABLES_WAIT_CYCLES_MAX  100
-
-//  Table Processing
-#define KX028_AGING_HASH_CNT_PER_ITERATION    MDR_KX028_MAC_TABLE_LEN
-#define KX028_DYN_MAC_PACKETS_PER_ITERATION   10
-
 //  Redefine Functions
 #define MDR_KX028_DelayMs(x)
 #define MDR_KX028_CRITSECT_ENTER
@@ -18,9 +11,9 @@
 #define KX028_PORTS_FALLBACK_ID   AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_DEF
 #define KX028_PORTS_TAG_ID        0x8100
 
-#define KX028_PORTS_SHUTDOWN           0                         //     0x00000001
-#define KX028_PORTS_AFT                KX028_FRM_ACC_ANY_TAGGING //     0x000000F0
-#define KX028_PORTS_BLOCKSTATE         KX028_STP_ACC_FORWARDING  //     0x00000F00
+#define KX028_PORTS_SHUTDOWN           0                              //     0x00000001
+#define KX028_PORTS_AFT                KX028_PortAcc_AnyTagging       //     0x000000F0
+#define KX028_PORTS_BLOCKSTATE         KX028_PortBlkState_Forwarding  //     0x00000F00
 #define KX028_PORTS_DEF_CFI            0                         //     0x00001000
 #define KX028_PORTS_DEF_PRI            0                         //     0x0000E000
 #define KX028_PORTS_DEF_TC             0                         //     0x00070000
@@ -30,6 +23,8 @@
 
 
 #define MDR_KX028_DEBUG     1
+
+#define KX028_SOFT_RESET_DELAY_MS     1000
 
 
 // =================  BMU Configs  ===============
@@ -121,23 +116,52 @@
                                         | AXI_EMAC_NETCFG_SGMII_Mks
 
 
+//  Enable Stacked VLAN Processing mode. Otherwise write 0
+#define CFG_EMAC_GEM_VLAN_EN            AXI_EMAC_GEM_VLAN_EN_Msk
+
 // =================  TSU Configs  ===============
 #define CFG_TSU_INC_PER_1NS     0x14
 
 
 // =================  HGPI Configs  ===============
+#define CFG_HGPI_LMEM_BUF_EN                1
 //  Retry count for LMEM buffers
-#define CFG_HGPI_RX_LMEM_BUF_RETR_COUNT   0x200
+#define CFG_HGPI_RX_LMEM_BUF_RETR_COUNT     0x200
 //  LMEM first buffer header size value
-#define CFG_HGPI_LMEM_BUF1_HRD_SIZE       0x30
+#define CFG_HGPI_LMEM_BUF1_HRD_SIZE         0x30
+//  DDR first buffer header size value
+#define CFG_HGPI_DDR_BUF1_HRD_SIZE          0
 //  LMEM buffer size value as 128 bytes
-#define CFG_HGPI_LMEM_BUF_SIZE            0x80
+#define CFG_HGPI_LMEM_BUF_SIZE              0x80
+//  DDR buffer size value as 128 bytes
+#define CFG_HGPI_DDR_BUF_SIZE               0
 //  LMEM header size from second buffer onwards for each buffer in chain.
-#define CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE  0x10
+#define CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE    0x10
 //  Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
-#define CFG_HGPI_TX_FIFO_START_THRES      0x178
+#define CFG_HGPI_TX_FIFO_START_THRES        0x178
 //  Initial number of bytes read from received pointer in LMEM, to check for action fields.
-#define CFG_GPI_DTX_ASEQ_CNT              0x40
+#define CFG_GPI_DTX_ASEQ_CNT                0x40
+
+// =================  EGPI/ETGPI Configs  ===============
+#define CFG_EGPI_LMEM_BUF_EN                1
+#define CFG_EGPI_RX_LMEM_BUF_RETR_COUNT     CFG_HGPI_RX_LMEM_BUF_RETR_COUNT
+#define CFG_EGPI_LMEM_BUF1_HRD_SIZE         CFG_HGPI_LMEM_BUF1_HRD_SIZE
+#define CFG_EGPI_DDR_BUF1_HRD_SIZE          CFG_HGPI_DDR_BUF1_HRD_SIZE
+#define CFG_EGPI_LMEM_BUF_SIZE              CFG_HGPI_LMEM_BUF_SIZE
+#define CFG_EGPI_DDR_BUF_SIZE               CFG_HGPI_DDR_BUF_SIZE
+#define CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE    CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE
+#define CFG_EGPI_TX_FIFO_START_THRES        CFG_HGPI_TX_FIFO_START_THRES
+#define CFG_EGPI_DTX_ASEQ_LEN               0x0050UL
+
+#define CFG_ETGPI_LMEM_BUF_EN               1
+#define CFG_ETGPI_RX_LMEM_BUF_RETR_COUNT    CFG_EGPI_RX_LMEM_BUF_RETR_COUNT
+#define CFG_ETGPI_LMEM_BUF1_HRD_SIZE        CFG_EGPI_LMEM_BUF1_HRD_SIZE
+#define CFG_ETGPI_DDR_BUF1_HRD_SIZE         0x0100UL
+#define CFG_ETGPI_LMEM_BUF_SIZE             CFG_EGPI_LMEM_BUF_SIZE
+#define CFG_ETGPI_DDR_BUF_SIZE              0x0800UL 
+#define CFG_ETGPI_LMEM_BUF_HDR_CHAIN_SIZE   CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE
+#define CFG_ETGPI_TX_FIFO_START_THRES       0x00BCUL
+#define CFG_ETGPI_DTX_ASEQ_LEN              0x0050UL
 
 // =================  HIF Configs  ===============
 //  TX/RX - BDP read poll counter / BDP write poll counter.
@@ -145,5 +169,61 @@
 #define CFG_HIF_TX_POLL_WR_CNT    0x40
 #define CFG_HIF_RX_POLL_RD_CNT    0x40
 #define CFG_HIF_RX_POLL_WR_CNT    0x40
+
+
+// =================  Class HW Configs  ===============
+
+#define CFG_BUF_WATERMARK_AFULL   40
+
+
+// Punt port map. Only one bit should be set(hif1 = 4 or hif2 = 8) - TODO?
+#define CFG_HW1_PUNT_PORT         16
+// Q number from TC value or cos (1:  NPU, 0: not NPU)
+#define CFG_HW1_Q_NUM_SEL         1
+// Disables the punt
+#define CFG_HW1_PUNT_DIS          1
+// Q number for egress time-stamp report
+#define CFG_HW1_Q_ETGS_COS        1
+// flood supression.setting a bit would make the respective cos value to flood when the action==ACT_COS_DISCARD; 
+// if the value is zero and action==ACT_COS_DISCARD then the packet will be discarded
+#define CFG_HW1_DISCARD_COS       1
+// setting 1 will use tmu inq full
+#define CFG_HW1_USE_TMU_INQ       1
+
+//  Class HW2
+#define CFG_HW2_PUNT_PORT         CFG_HW1_PUNT_PORT
+#define CFG_HW2_Q_NUM_SEL         CFG_HW1_Q_NUM_SEL
+#define CFG_HW2_PUNT_DIS          CFG_HW1_PUNT_DIS
+#define CFG_HW2_Q_ETGS_COS        CFG_HW1_Q_ETGS_COS
+#define CFG_HW2_DISCARD_COS       CFG_HW1_DISCARD_COS
+#define CFG_HW2_USE_TMU_INQ       CFG_HW1_USE_TMU_INQ
+
+//  TMU
+#define CFG_TMU_PHY_TDQ_CTRL      AXI_TMU_PHY_TDQ_EN_ALL
+#define CFG_TMU_CNTX_ACCESS_MODE  AXI_TMU_CNTX_ACCESS_CTRL_INDIRECT
+
+
+//  ====================  Slow SPI Access ===========
+#define CFG_NEW_PACKET_IN_LMEM_REG_ADDR     AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF
+
+//  TX/RX path enable, Management port enable, External TSU timer enable - 0x0080001C
+#define CFG_EMAC1_ENA_CTRL      AXI_EMAC_NETCTRL_RX_EN_Msk | AXI_EMAC_NETCTRL_TX_EN_Msk | AXI_EMAC_NETCTRL_MANAG_EN_Msk | AXI_EMAC_NETCTRL_TSU_EN_Msk
+#define CFG_EMAC2_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC3_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC4_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC5_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC6_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC7_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC8_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC9_ENA_CTRL      CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC10_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC11_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC12_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC13_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC14_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC15_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#define CFG_EMAC16_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+
+
 
 #endif  //MDR_1923KX028_CONFIG_H_

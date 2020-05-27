@@ -36,16 +36,16 @@ static void Write_InitHW_Table( MDR_KX028_AddrData_t *initItem )
 static inline void MDR_KX028_InitEMAC(uint32_t i)
 {
 //  EMAC 
-    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x028 ), 0x00010200 );       // enable interrupts at: pcs_autoneg_compete, pcs_link_change
-    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x8A0 ), 0x000000B0 );
+    MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[i] + AXI_EMAC_IER , 0x00010200 );       // enable interrupts at: pcs_autoneg_compete, pcs_link_change
+    MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[i] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk );
 
 //  next 2 string is new in 1.1 version of firmware
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x210 ), 0x00008020 );       //EMAC support full duplex via SGMII, next page support
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x21C ), 0x00002001 );       //EMAC has not next page
            
 //  MDR_KX028_WriteAXI( ( emac[i] + 0x004 ), 0x09230C18 );                        // 1G, SGMII mode, rcv jumbo frames, reject error packets...
-    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x004 ), 0x083F0C12 );       // 1G, SGMII mode, jumbo frames disable, 1536 bytes frame disable, reject error packets...      
-    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x1DC ), 0x00000014 );
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + AXI_EMAC_NETCFG),      0x083F0C12 );       // 1G, SGMII mode, jumbo frames disable, 1536 bytes frame disable, reject error packets...      
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + AXI_EMAC_TSU_TIM_INC), 0x00000014 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x0C8 ), 0xFFFFFFFF );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x0CC ), 0x0000FFFF );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEMAC[i] + 0x088 ), 0x00000000 );
@@ -57,28 +57,16 @@ static inline void MDR_KX028_InitEMAC(uint32_t i)
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x008 ), 0x02000001 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x00C ), 0x00000030 );       //___Q in spec value 0x30
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x010 ), 0x00000080 );       //___Q in spec value 0x80
-//        if( i < 8 )
-//        {
-        MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x014 ), 0xC0100030 );
-        MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x018 ), 0xC0100034 );
-        MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x024 ), 0xC0620010 );
-//        }
-//        else
-//        {
-//            MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x014 ), 0xC0700030 );
-//            MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x018 ), 0xC0700034 );
-//            MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x024 ), 0xC0770010 );   
-//        }
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x014 ), 0xC0100030 );
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x018 ), 0xC0100034 );
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x024 ), 0xC0620010 );
     //MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x034 ), 0x00000100 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x038 ), 0x00000010 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x060 ), 0x00000010 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x04C ), 0x00000178 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x050 ), 0x00000050 );
-//        if( i < 8 ){
-        MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x148 ), 0xC0700034 );
-//        }else{
-//            MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x148 ), 0xC0100034 );
-//        }
+    MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x148 ), 0xC0700034 );
+    
     // ETGPI
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x008 ), 0x02000001 );
     MDR_KX028_WriteAXI( ( MDR_KX028_AxiAddrEGPI[i] + 0x00C ), 0x01000030 );       //___Q in spec value 0x30
@@ -98,19 +86,19 @@ static inline void MDR_KX028_InitEMAC(uint32_t i)
 static uint32_t addrClass[2] = {AXI_CLASS_HW1_BASE_ADDR, AXI_CLASS_HW2_BASE_ADDR};
 
 
-typedef enum {
-    KX028_FRM_ACC_ANY_TAGGING = 0,   // allow both tagged and untagged frames
-    KX028_FRM_ACC_TAGGED_ONLY,       // allow only tagged frames
-    KX028_FRM_ACC_UNTAGGED_ONLY,     // allow only untagged frames
-} MDR_KX028_PortAcceptFrm_t;
+//typedef enum {
+//    KX028_FRM_ACC_ANY_TAGGING = 0,   // allow both tagged and untagged frames
+//    KX028_FRM_ACC_TAGGED_ONLY,       // allow only tagged frames
+//    KX028_FRM_ACC_UNTAGGED_ONLY,     // allow only untagged frames
+//} MDR_KX028_PortAcceptFrm_t;
 
 
-// STP blocking state
-typedef enum {
-    KX028_STP_ACC_FORWARDING = 0,    // ok to learn SA and forward traffic
-    KX028_STP_ACC_BLOCKED,           // do not learn SA; do not forward frames
-    KX028_STP_ACC_LEARN_ONLY,        // ok to learn SA, but do not forward frames
-} MDR_KX028_PortAcceptSTP_t;
+//// STP blocking state
+//typedef enum {
+//    KX028_STP_ACC_FORWARDING = 0,    // ok to learn SA and forward traffic
+//    KX028_STP_ACC_BLOCKED,           // do not learn SA; do not forward frames
+//    KX028_STP_ACC_LEARN_ONLY,        // ok to learn SA, but do not forward frames
+//} MDR_KX028_PortAcceptSTP_t;
 
 void MDR_KX028_PortsInit( void )
 {
@@ -264,7 +252,7 @@ void MDR_KX028_Mode2_Init( uint32_t waitCyclesMax )
 //    param.tlsp_mode = 0;
 //      
 //    pcm_tlite_shaper_config( &param, 0 );
-    MDR_KX028_WriteAXI( AXI_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
+    MDR_KX028_WriteAXI( CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
     MDR_KX028_WriteAXI( ( AXI_HGPI_BASE_ADDR + 4 ), 3 );
 //    
 //    /* Enable shaper, scheduler of HOST interface in TMU */

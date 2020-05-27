@@ -19,7 +19,7 @@
 *MAC4:RSVD[31:28]+VALIDBITS[27:24]+COLPTR[23:8]+ PORTNO[7:4] + FIELDVALIDS[3:0]*
 *=============================================================================*/
 
-static void MDR_KX028_MAC_DeleteTableItem(MDR_KX028_MAC_TableItem_t *tableItem)
+static void MDR_KX028_MAC_DeleteTableItem(MDR_KX028_MAC_TableItem_t *tableItem, uint32_t waitCyclesMax)
 {
   uint8_t mac[6];
   uint16_t vlanid;
@@ -33,21 +33,21 @@ static void MDR_KX028_MAC_DeleteTableItem(MDR_KX028_MAC_TableItem_t *tableItem)
   vlanid = ( tableItem->regMAC2 >> 16 ) & 0xFFFF;
 
 // taskENTER_CRITICAL();
-  MDR_KX028_MAC_TableDel(mac, vlanid, KX028_TABLES_WAIT_CYCLES_MAX);
+  MDR_KX028_MAC_TableDel(mac, vlanid, waitCyclesMax);
 // taskEXIT_CRITICAL();            
 }
 
-static inline void MDR_KX028_MAC_ReadTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry)
+static inline void MDR_KX028_MAC_ReadTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry, uint32_t waitCyclesMax)
 {
 // taskENTER_CRITICAL();
-  MDR_KX028_MAC_TableRead(tableItem, entry, KX028_TABLES_WAIT_CYCLES_MAX);
+  MDR_KX028_MAC_TableRead(tableItem, entry, waitCyclesMax);
 // taskEXIT_CRITICAL();  
 }
 
-static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry)
+static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry, uint32_t waitCyclesMax)
 {
 // taskENTER_CRITICAL();
-  MDR_KX028_MAC_TableWrite(tableItem, entry, KX028_TABLES_WAIT_CYCLES_MAX);
+  MDR_KX028_MAC_TableWrite(tableItem, entry, waitCyclesMax);
 // taskEXIT_CRITICAL();  
 }
 
@@ -58,7 +58,7 @@ static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tabl
 
 
 
-void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax)
+void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax, uint32_t waitCyclesMax)
 {
     uint32_t hashidx, coll_ptr;
     MDR_KX028_MAC_TableItem_t tableItem;
@@ -70,7 +70,7 @@ void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax)
     {
         coll_ptr = 0;
         entry = hashBase + hashidx;
-        MDR_KX028_MAC_ReadTableItem(&tableItem, entry);
+        MDR_KX028_MAC_ReadTableItem(&tableItem, entry, waitCyclesMax);
 
         if (IS_ITEM_VALID(tableItem))
         {
@@ -78,27 +78,27 @@ void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax)
             coll_ptr = ( tableItem.regMAC4 >> 8 ) & 0xFFFF;
 
           if (IS_ITEM_FRESH(tableItem))
-            MDR_KX028_MAC_DeleteTableItem(&tableItem);              // FRESH bit set, so delete entry
+            MDR_KX028_MAC_DeleteTableItem(&tableItem, waitCyclesMax);              // FRESH bit set, so delete entry
           else if (IS_ITEM_NOT_STATIC(tableItem))
           {
             tableItem.regMAC3 |= AXI_HASH_REG3_ENTRY_FRESH_FLAG;    // Set FRESH bit, if entry isn't static
-            MDR_KX028_MAC_WriteTableItem(&tableItem, entry);
+            MDR_KX028_MAC_WriteTableItem(&tableItem, entry, waitCyclesMax);
           }
         }
 
         // Process collision space entries
         while( coll_ptr )
         {
-          MDR_KX028_MAC_ReadTableItem(&tableItem, coll_ptr);
+          MDR_KX028_MAC_ReadTableItem(&tableItem, coll_ptr, waitCyclesMax);
 
           if (IS_ITEM_VALID(tableItem))
           { 
             if (IS_ITEM_FRESH(tableItem))
-              MDR_KX028_MAC_DeleteTableItem(&tableItem);              // FRESH bit set, so delete entry
+              MDR_KX028_MAC_DeleteTableItem(&tableItem, waitCyclesMax);              // FRESH bit set, so delete entry
             else if (IS_ITEM_NOT_STATIC(tableItem))
             {
               tableItem.regMAC3 |= AXI_HASH_REG3_ENTRY_FRESH_FLAG;    // Set FRESH bit, if entry isn't static
-              MDR_KX028_MAC_WriteTableItem(&tableItem, coll_ptr);
+              MDR_KX028_MAC_WriteTableItem(&tableItem, coll_ptr, waitCyclesMax);
             }
             
             if (IS_ITEM_HAS_COLLISION(tableItem))
@@ -157,7 +157,7 @@ static inline uint32_t PortGetAddrStruct1_HW1(uint32_t portInd)
 }
   
 
-bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry )
+bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint32_t waitCyclesMax )
 {  
   uint32_t vlan_id, fwd_action, action_port;
   MDR_KX028_MAC_Entry_t entryMAC;
@@ -186,7 +186,7 @@ bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry )
   src_mac = (uint8_t *)(&frmInfo->destMAC) + 2;
   
   //printf( "src mac %02X:%02X:%02X:%02X:%02X:%02X\n", src_mac[0], src_mac[1], src_mac[2], src_mac[3], src_mac[4], src_mac[5] );
-  entryMAC = MDR_KX028_MAC_TableSearch( src_mac, vlan_id, KX028_TABLES_WAIT_CYCLES_MAX);
+  entryMAC = MDR_KX028_MAC_TableSearch( src_mac, vlan_id, waitCyclesMax);
 
   actionEntry.value = 0;    
   if( entryMAC.value == -1 )  // Search fail
@@ -196,7 +196,7 @@ bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry )
       actionEntry.value |= MDR_KX028_MAC_ENTRY_STATIC_MSK;  // Static entry     
     actionEntry.value |= ( 1 << frmInfo->ctrl_b.portNum ) & MDR_KX028_MAC_ENTRY_FWD_PORT_LIST_MSK;
     
-    entryVLAN = MDR_KX028_VLAN_TableSearch(vlan_id, KX028_TABLES_WAIT_CYCLES_MAX);
+    entryVLAN = MDR_KX028_VLAN_TableSearch(vlan_id, waitCyclesMax);
     if( entryVLAN.value == -1 ){
       //printf( "Search in vlan fail\n" );
       fwd_action = MDR_KX028_ReadAXI( AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_GLOBAL_CFG1 );
@@ -207,7 +207,7 @@ bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry )
     
     actionEntry.value = (actionEntry.value & ~MDR_KX028_MAC_ENTRY_FWD_ACT_MSK) | (fwd_action << MDR_KX028_MAC_ENTRY_FWD_ACT_POS);
     
-    result = MDR_KX028_MAC_TableAdd( src_mac, vlan_id, actionEntry, KX028_TABLES_WAIT_CYCLES_MAX);
+    result = MDR_KX028_MAC_TableAdd( src_mac, vlan_id, actionEntry, waitCyclesMax);
 //    if (!result)
 //      //printf( "Add to mac fail!\n" );    
   }
@@ -247,7 +247,7 @@ bool fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry )
       default:
         break;
     }
-    result = MDR_KX028_MAC_TableUpdate( src_mac, vlan_id, actionEntry, KX028_TABLES_WAIT_CYCLES_MAX);
+    result = MDR_KX028_MAC_TableUpdate( src_mac, vlan_id, actionEntry, waitCyclesMax);
 //    if( result.value == -1 )
 //      printf( "Add to mac fail!\n" );
     
@@ -289,7 +289,7 @@ static void free_buffers_of_packets( uint32_t start_packet_pointer, int32_t pck_
   } ;
 }
 
-static void MDR_KX028_ProcessFrame(uint32_t frameAddr)
+static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax)
 {   
     MDR_KX028_FrameInfo frmInfo;
       
@@ -324,7 +324,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr)
           case KX028_FRAME_PUNT_SA_MISS:
           case KX028_FRAME_PUNT_SA_RELEARN:
           case KX028_FRAME_PUNT_SA_IS_ACTIVE:
-            fp_switch_host_learn( &frmInfo, 0 );
+            fp_switch_host_learn( &frmInfo, 0, waitCyclesMax);
             break;
           
           default:
@@ -336,7 +336,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr)
     // Free BMU buffers
     free_buffers_of_packets(frameAddr, frmInfo.size);
     // Free polling register
-    MDR_KX028_WriteAXI(AXI_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
+    MDR_KX028_WriteAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
     // Reset HGPI
     MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + 4, 3 );
     
@@ -345,16 +345,16 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr)
 
 
 //  Return processed frames count
-uint32_t MDR_KX028_M2_ProcessFramesLearing(uint32_t framesToProcessMax)
+uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_t waitCyclesMax)
 {
   uint32_t i = 0;
   uint32_t pck_pointer = 0;
   
   for (i = 0; i < framesToProcessMax; i++)
   {
-    pck_pointer = MDR_KX028_ReadAXI(AXI_NEW_PACKET_IN_LMEM_REG_ADDR);   
+    pck_pointer = MDR_KX028_ReadAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR);   
     if (pck_pointer)
-      MDR_KX028_ProcessFrame(pck_pointer);
+      MDR_KX028_ProcessFrame(pck_pointer, waitCyclesMax);
     else
       break;  
   }

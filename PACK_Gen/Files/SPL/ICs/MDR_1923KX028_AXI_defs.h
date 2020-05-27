@@ -51,7 +51,7 @@ typedef enum {
     //- bmu_revision 31:24 R Read Only register that indicates the Revision of the Block
   #define AXI_BMU_CTRL                0x04 
     #define AXI_BMU_CTRL_EN_Msk             0x0001UL
-    #define AXI_BMU_CTRL_Reset_Msk          0x0002UL
+    #define AXI_BMU_CTRL_RESET_Msk          0x0002UL
     //  Reset = 2'b01
     //- csr_bmu_en 0 R/W BMU Enable. This signal needs to be set to enable the BMU module
     //- csr_bmu_sw_rst 1 R/W BMU Reset. This signal is used to initiate soft reset of the BMU. This is a self clear signal. Software should
@@ -226,14 +226,11 @@ typedef enum {
 #define AXI_LMEM7_END_OFFSET                     0x5FFFFF
 
   //  Адрес с которого читается указатель на входной фрейм по шине AXI
-  #define AXI_NEW_PACKET_IN_LMEM_REG_ADDR	     0x0043FFA0UL
-  //  Значение PTR записывается в регистр, внутренняя адресация отличачается от AXI
-  //#define AXI_NEW_PACKET_IN_LMEM_REG_PTR	    (CBUS_BASE_ADDR | AXI_NEW_PACKET_IN_LMEM_REG_ADDR)
+  #define AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF	   0x0043FFA0UL
 
-
-  //  Маска адреса считанного из AXI_NEW_PACKET_IN_LMEM_REG_ADDR
+  //  Маска адреса считанного из AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF
   #define KX028_FRAME_PTR_ADDR_MSK               0xFFFFFF80
-  //  Смещения относительно адреса считанного из AXI_NEW_PACKET_IN_LMEM_REG_ADDR
+  //  Смещения относительно адреса считанного из AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF
   #define KX028_FRAME_SIZE_ADDR_OFFS            0x10
     #define KX028_FRAME_SIZE_MSK                  0xFFFF
 
@@ -416,11 +413,20 @@ typedef enum {
     //  1-->hw_en for tdq_sch_shaper,
     //  3:2:--> for enabling the schedulers;
     //  4-->allw_tdq_prog(Read only)
+    #define AXI_TMU_PHY_TDQ_SHAPER_CLK_EN_Msk   0x0001UL
+    #define AXI_TMU_PHY_TDQ_SHAPER_HW_EN_Msk    0x0002UL
+    #define AXI_TMU_PHY_TDQ_SCHDLR_EN_Msk       0x000CUL
+    
+    #define AXI_TMU_PHY_TDQ_EN_ALL              0x000FUL
+
+    
   #define AXI_TMU_CNTX_ACCESS_CTRL    0x2F0 
     //  Reset = 1'b0
     //- csr_cntx_access_ctrl 0 R/W controlls the direct/indirect access to context memory, 
     //  0 --> indirect,
     //  1 --> direct. SW should only use indirect access
+    #define AXI_TMU_CNTX_ACCESS_CTRL_INDIRECT   0
+    #define AXI_TMU_CNTX_ACCESS_CTRL_DIRECT     1
   #define AXI_TMU_CNTX_ADDR           0x2F4 
     //  Reset = 20'b0
     //- csr_cntx_ind_addr 15:0 R/W write the context memory address to this register.
@@ -532,6 +538,9 @@ typedef enum {
     //  Reset = 2'b01
     //- csr_class_en 0 R/W Classifier Enable bit
     //- csr_class_hw_swrst 1 R/W Classifier Software reset
+    #define AXI_CLASS_TX_CTRL_EN_Msk         0x0001UL
+    #define AXI_CLASS_TX_CTRL_RESET_Msk      0x0002UL
+    
   #define AXI_CLASS_INQ_PKTPTR        0x10 
     //  Reset = 32'h0
     //- csr_inq_pktptr 31:0 R/W PHY Ports (Etherent) writes packet pointer to this address. 
@@ -1374,16 +1383,16 @@ typedef enum {
     //  Reset = 29'h0
     //- csr_port0_tpid 15:0 R/W Port 0 tpid
     //- csr_port0_fallback_bd_id 28:16 R/W Port 0 fallback bd id
-    #define AXI_CLASS_STRUC1_PORT_TPID_POS               0
-    #define AXI_CLASS_STRUC1_PORT_TPID_MASK              0x0000FFFF
-    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_POS      16
-    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_MASK     0x1FFF0000
+    #define AXI_CLASS_STRUC1_PORT_TPID_Pos               0
+    #define AXI_CLASS_STRUC1_PORT_TPID_Msk               0x0000FFFF
+    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_Pos      16
+    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_Msk      0x1FFF0000
        #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_DEF        0x1 // iports fallback bd id
       
-    #define AXI_CLASS_STRUC1_FILL(fallback, tag) ( \
-          (( (fallback) << AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_POS ) & AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_MASK ) \
-        | (( (tag)      << AXI_CLASS_STRUC1_PORT_TPID_POS )          & AXI_CLASS_STRUC1_PORT_TPID_MASK ) )
-    
+    #define AXI_CLASS_STRUC1_FILL(fallback, tag)   _VAL2FLD(AXI_CLASS_STRUC1_PORT_TPID, tag) \
+                                                 | _VAL2FLD(AXI_CLASS_STRUC1_PORT_FALLBACK_BDID, fallback)
+                                                 
+        
   #define AXI_CLASS_PORT0_STRUC2          0x470 
   #define AXI_CLASS_PORT1_STRUC2          0x478
   #define AXI_CLASS_PORT2_STRUC2          0x480
@@ -1407,10 +1416,20 @@ typedef enum {
     //  0: any tagging 
     //  1: tagged only 
     //  2: untagged only
+      typedef enum {
+        KX028_PortAcc_AnyTagging = 0,
+        KX028_PortAcc_TaggedOnly,
+        KX028_PortAcc_UntaggedOnly,
+      } MDR_KX028_PortAcceptTag_e;    
     //- csr_port0_blockstate 11:8 R/W 
     //  0: forward, 
     //  1: blocked 
     //  2: Learnonly
+      typedef enum {
+        KX028_PortBlkState_Forwarding = 0,    // ok to learn SA and forward traffic
+        KX028_PortBlkState_Blocked,           // do not learn SA; do not forward frames
+        KX028_PortBlkState_LearnOnly,         // ok to learn SA, but do not forward frames
+      } MDR_KX028_PortAcceptSTP_t;
     //- csr_port0_def_cfi 12 R/W Def CFI value
     //- csr_port0_def_pri 15:13 R/W Def prio field.
     //- csr_port0_def_tc 18:16 R/W def tc field
@@ -1437,18 +1456,17 @@ typedef enum {
       #define AXI_CLASS_STRUC2_PORT_VID_PREFIX_Msk              0x00100000
       #define AXI_CLASS_STRUC2_PORT_UNTAG_FROM_BTABLE_Msk       0x00200000
       
-      #define AXI_CLASS_STRUC2_FILL(shdwn, aft, blst, cfi, pri, tc, trst, vid, untg) ( \
-            (( (shdwn)<< AXI_CLASS_STRUC2_PORT_SHUTDOWN_Pos          ) & AXI_CLASS_STRUC2_PORT_SHUTDOWN_Msk ) \
-          | (( (aft)  << AXI_CLASS_STRUC2_PORT_AFT_Pos               ) & AXI_CLASS_STRUC2_PORT_AFT_Msk ) \
-          | (( (blst) << AXI_CLASS_STRUC2_PORT_BLOCKSTATE_Pos        ) & AXI_CLASS_STRUC2_PORT_BLOCKSTATE_Msk ) \
-          | (( (cfi)  << AXI_CLASS_STRUC2_PORT_DEF_CFI_Pos           ) & AXI_CLASS_STRUC2_PORT_DEF_CFI_Msk ) \
-          | (( (pri)  << AXI_CLASS_STRUC2_PORT_DEF_PRI_Pos           ) & AXI_CLASS_STRUC2_PORT_DEF_PRI_Msk ) \
-          | (( (tc)   << AXI_CLASS_STRUC2_PORT_DEF_TC_Pos            ) & AXI_CLASS_STRUC2_PORT_DEF_TC_Msk ) \
-          | (( (trst) << AXI_CLASS_STRUC2_PORT_TRUSTED_Pos           ) & AXI_CLASS_STRUC2_PORT_TRUSTED_Msk ) \
-          | (( (vid)  << AXI_CLASS_STRUC2_PORT_VID_PREFIX_Pos        ) & AXI_CLASS_STRUC2_PORT_VID_PREFIX_Msk ) \
-          | (( (untg) << AXI_CLASS_STRUC2_PORT_UNTAG_FROM_BTABLE_Pos ) & AXI_CLASS_STRUC2_PORT_UNTAG_FROM_BTABLE_Msk ))
-    
-    
+      #define AXI_CLASS_STRUC2_FILL(shdwn, aft, blst, cfi, pri, tc, trst, vid, untg)  \
+              _VAL2FLD(AXI_CLASS_STRUC2_PORT_SHUTDOWN,    shdwn) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_AFT,         aft) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_BLOCKSTATE,  blst) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_DEF_CFI,     cfi) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_DEF_PRI,     pri) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_DEF_TC,      tc) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_TRUSTED,     trst) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_VID_PREFIX,  vid) \
+            | _VAL2FLD(AXI_CLASS_STRUC2_PORT_UNTAG_FROM_BTABLE, untg)  
+
     
   #define AXI_CLASS_GLOBAL_CFG              0x4ac 
     //  Reset = 32'h0
@@ -1537,10 +1555,36 @@ typedef enum {
     //- csr_egts_cos 19:16 R/W Q number for egress time-stamp report
     //- csr_discard_cos_n 31:24 R/W flood supression.
     //  setting a bit would make the respective cos value to flood when the action==ACT_COS_DISCARD; 
-    //  if the value is zero and action==ACT_COS_DISCARD then the packet will be discarded
+    //  if the value is zero and action==ACT_COS_DISCARD then the packet will be discarded    
+    #define AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Pos  0
+    #define AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Msk  0x000FUL
+        #define AXI_CLASS_NPU_CTRL_HIF1_Msk         0x0004UL
+        #define AXI_CLASS_NPU_CTRL_HIF2_Msk         0x0008UL
+    #define AXI_CLASS_NPU_CTRL_QOS_NPU_Pos        12
+    #define AXI_CLASS_NPU_CTRL_QOS_NPU_Msk        0x1000UL
+    #define AXI_CLASS_NPU_CTRL_PUNT_DIS_Pos       13
+    #define AXI_CLASS_NPU_CTRL_PUNT_DIS_Msk       0x2000UL
+    #define AXI_CLASS_NPU_CTRL_EGTS_COS_Pos       16
+    #define AXI_CLASS_NPU_CTRL_EGTS_COS_Msk       0x000F0000UL
+    #define AXI_CLASS_NPU_CTRL_DISC_COSN_Pos      24
+    #define AXI_CLASS_NPU_CTRL_DISC_COSN_Msk      0x0100000UL
+
+    #define AXI_CLASS_NPU_CTRL_FILL(puntPortInd, qos, puntdis, etgs, floodon)     \
+                              ((1UL << puntPortInd) & AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Msk) \
+                              | _VAL2FLD(AXI_CLASS_NPU_CTRL_QOS_NPU, qos) \
+                              | _VAL2FLD(AXI_CLASS_NPU_CTRL_PUNT_DIS, puntdis) \
+                              | _VAL2FLD(AXI_CLASS_NPU_CTRL_EGTS_COS, etgs) \
+                              | _VAL2FLD(AXI_CLASS_NPU_CTRL_DISC_COSN, floodon)
+
+    
   #define AXI_CLASS_NPU_CTRL1               0x7f0 
     //  Reset = 12'h200
-    //- csr_punt_port_map_msb 11:0 R/W Punt port map;only one bit should be set. This is upper 12 bits of port map  
+    //- csr_punt_port_map_msb 11:0 R/W Punt port map;only one bit should be set. This is upper 12 bits of port map      
+    #define AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Pos  0
+    #define AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Msk  0x0FFFUL
+    
+    #define AXI_CLASS_NPU_CTRL1_FILL(puntPortInd)   (((1UL << puntPortInd) >> 12) & AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Msk)
+    
   #define AXI_CLASS_UNMANAGED_PORTMAP       0x500 
     //  Reset = 24'h03
     //- csr_unmanaged_portmap 19:0 R/W Unmanaged(no software) mode def. port map.
@@ -1723,6 +1767,8 @@ typedef enum {
   //- sys_generic_control 31:0 R/W This programmable control register bits goes as output ports(sys_generic_control) to the WSP. 
   //  Bit 31 is used for software configuration done. 
   //  Bit 30 is used for system soft reset
+  #define AXI_WSP_SYS_GENERIC_CONTROL_SOFT_RESET_Msk      0x40000000UL
+  #define AXI_WSP_SYS_GENERIC_CONTROL_SORT_CFG_DONE_Msk   0x80000000UL
 #define AXI_WSP_SYS_GENERIC_STATUS      0x24 
   //  Reset = 32'h0 
   //- sys_generic_status 31:0 R This register shows the 32bit ports(sys_generic_status) to the WSP
@@ -1809,6 +1855,13 @@ typedef enum {
     //  control word if the previous descriptor fetched was disabled
     //- csr_rx_bdp_poll_cntr2 31:16 R/W Number of cycles that HIF RX BDP block would wait before writing updated bd back to
     //  system memory when number of bd's are less than treshold value.
+    #define AXI_HIF_TXRX_POLL_CTRL_RD_Pos   0
+    #define AXI_HIF_TXRX_POLL_CTRL_RD_Msk   0xFFFFUL
+    #define AXI_HIF_TXRX_POLL_CTRL_WR_Pos   16
+    #define AXI_HIF_TXRX_POLL_CTRL_WR_Msk   0xFFFF0000UL       
+
+  #define AXI_HIF_TXRX_POLL_CTRL_FILL(cntRD, cnrWR)  _VAL2FLD(AXI_HIF_TXRX_POLL_CTRL_RD, cntRD) | _VAL2FLD(AXI_HIF_TXRX_POLL_CTRL_WR, cnrWR)
+
   #define AXI_HIF_MISC                    0x0c 
     //  Reset = 32'h1
     //- csr_seq_num_check_en 0 R/W Sequence number check enable/disable. 
@@ -1825,6 +1878,8 @@ typedef enum {
     //- csr_hif_timeout_en 5 R/W HIF timeout enable for BDP fetch/update, Data write/read. 
     //- csr_bd_start_seq_num 31:16 R/W this will be initial seq number for the BD.All the channels should get BD's starting from this sequence number.
     //  it is common across all channels.
+    
+    
   #define AXI_HIF_TIMEOUT_REG             0x10 
     //  Reset = 32'hffffffff
     //- csr_hif_timeout_val 31:0 R/W Need to program Max value for hif to timeout,when timeout enable is set
@@ -2293,8 +2348,8 @@ typedef enum {
   //  Else they are driven by bits[5:4] of emac control register.
   //  Input emac1_pps_in is synchronized to tsu clock and pulse is generated from that. PPS_IN has to be asserted atleast for one clock duration of tsu_clk.
   //  In case of PPS mode bit not set, The tsu_incr_ctrl bit from the tsu_control_reg will be connected to emac1_tsu_incr_ctrl bits.
-  #define AXI_EMAC_CTRL_PORTS_DIS_Msk   0x00B0UL
-
+  #define AXI_EMAC_CTRL_PORT_DIS_Msk    0x00B0UL
+  
   //  Register description from here:  https://github.com/torvalds/linux/blob/master/drivers/net/ethernet/cadence/macb.h
   #define AXI_EMAC_NETCTRL		      0x0000 
     // Network Control
@@ -2306,8 +2361,8 @@ typedef enum {
     #define AXI_EMAC_NETCTRL_RX_EN_Msk		    0x0004
     #define AXI_EMAC_NETCTRL_TX_EN_Pos		    3         /* Transmit enable */
     #define AXI_EMAC_NETCTRL_TX_EN_Msk		    0x0008
-    #define AXI_EMAC_NETCTRL_MPE_Pos		      4         /* Management port enable */
-    #define AXI_EMAC_NETCTRL_MPE_Msk		      0x0010
+    #define AXI_EMAC_NETCTRL_MANAG_EN_Pos		  4         /* Management port enable */
+    #define AXI_EMAC_NETCTRL_MANAG_EN_Msk		  0x0010
     #define AXI_EMAC_NETCTRL_CLRSTAT_Pos	    5         /* Clear stats regs */
     #define AXI_EMAC_NETCTRL_CLRSTAT_Msk	    0x0020
     #define AXI_EMAC_NETCTRL_INCSTAT_Pos	    6         /* Incremental stats regs */
@@ -2326,8 +2381,10 @@ typedef enum {
     #define AXI_EMAC_NETCTRL_TX_PAUSEZQ_Msk	  0x1000
     //#define AXI_EMAC_NETCTRL_SRTSM_Pos	    15     // -???
     //#define AXI_EMAC_NETCTRL_SRTSM_Msk	    0x8000 // -???
+    #define AXI_EMAC_NETCTRL_TSU_EN_Pos       23        // External TSU timer enable
+    #define AXI_EMAC_NETCTRL_TSU_EN_Msk	      0x00800000UL
     #define AXI_EMAC_NETCTRL_OSSMODE_EN_Pos   24        /* Enable One Step Synchro Mode */
-    #define AXI_EMAC_NETCTRL_OSSMODE_EN_Msk	  0x1000000
+    #define AXI_EMAC_NETCTRL_OSSMODE_EN_Msk	  0x01000000UL
 
 
   #define AXI_EMAC_NETCFG		      0x0004 
@@ -2426,7 +2483,21 @@ typedef enum {
   #define AXI_EMAC_MAN		        0x0034 /* PHY Maintenance */  
   // ... other regs from link
   
+  //  MAC_GEM
+  //  Programming the lower 32bit DA address register to accept all packets
+  #define AXI_EMAC_GEM_DA_ADDR_LO  0x0088
+  //  Programming the upper 32bit DA address register to accept all packets.
+  #define AXI_EMAC_GEM_DA_ADDR_HI  0x008C
+  //  Programming the lower 32bit DA address mask register to accept all packets.
+  #define AXI_EMAC_GEM_DA_MASK_L0  0x00C8
+  //  Programming the upper 16bit DA address mask register to accept all packets.
+  #define AXI_EMAC_GEM_DA_MASK_Hi  0x00CC
+  //  Enable Stacked VLAN Processing mode.
+  #define AXI_EMAC_GEM_VLAN        0x00C0
+    #define AXI_EMAC_GEM_VLAN_EN_Pos  31
+    #define AXI_EMAC_GEM_VLAN_EN_Msk  0x80000000UL
   
+  //  MAC_TSU
   #define AXI_EMAC_TSU_TIM_INC    0x01DC
 
 //  ------------    HGPI1 - Host общий интерфейс пакетов Хоста (GigabitPacketInterface)-------
@@ -2478,6 +2549,9 @@ typedef enum {
   //- csr_gpi_en 0 R/W GPI Enable. This signal needs to be set to enable the gpi module
   //- csr_gpi_swrst 1 R/W GPI Reset. This signal is used to initiate soft reset of the gpi. 
   //  This is a self clear signal. Software should only set this register and should not attempt to clear it.
+  #define AXI_GPI_CTRL_EN_Mks       0x0001UL
+  #define AXI_GPI_CTRL_RESET_Mks    0x0002UL
+  
 #define AXI_GPI_RX_CONFIG         0x08 
   //  Reset = 26'h200_0001
   //- csr_lmem_buf_en 0 R/W Enable for LMEM buffer. If this bit is set, the hardware fetches the LMEM for the first buffer.
@@ -2488,16 +2562,40 @@ typedef enum {
   //  For NPU DDR buffers are not enabled. 
   //- csr_alloc_retry_cycles 25:16 R/W This register has the number of system clock cycles, the state machine has to wait before
   //  retrying incase the buffers are full at the buffer manager.
-#define AXI_GPI_HDR_SIZE         0x0c 
+  #define AXI_GPI_RX_CONFIG_LMEM_BUFF_EN_Pos    0x0
+  #define AXI_GPI_RX_CONFIG_LMEM_BUFF_EN_Msk    0x0001UL  
+  #define AXI_GPI_RX_CONFIG_LMEM_RETR_CNT_Pos   16UL
+  #define AXI_GPI_RX_CONFIG_LMEM_RETR_CNT_Msk   0xFFFF0000UL
+  
+  #define AXI_GPI_RX_CONFIG_FILL(en, cnt)     _VAL2FLD(AXI_GPI_RX_CONFIG_LMEM_BUFF_EN, en) \
+                                            | _VAL2FLD(AXI_GPI_RX_CONFIG_LMEM_RETR_CNT, cnt)
+  
+#define AXI_GPI_HDR_SIZE            0x0c 
   //  Reset = 26'h100_0030
   //- csr_lmem_hdr_size 7:0 R/W LMEM Header Size. Data in the LMEM is written from this offset. 
   //  The first location of LMEM is written with the subsequent buffer address if it exists. This location is a 32 bit aligned address.
   //- csr_ddr_hdr_size 25:16 R/W DDR Header Size. Data in the DDR is written from this offset. 
   //  The subsequent buffer address if it exists is written before the offset. Not applicable for NPU.
+  #define AXI_GPI_HDR_SIZE_LMEM_HDR_SIZE_Pos     0
+  #define AXI_GPI_HDR_SIZE_LMEM_HDR_SIZE_Msk     0x00FFUL
+  #define AXI_GPI_HDR_SIZE_DDR_HDR_SIZE_Pos      16
+  #define AXI_GPI_HDR_SIZE_DDR_HDR_SIZE_Msk      0x01FF0000UL
+  
+  #define AXI_GPI_HDR_SIZE_FILL(lmemHdrSize, ddrHdrSize)    _VAL2FLD(AXI_GPI_HDR_SIZE_LMEM_HDR_SIZE, lmemHdrSize) \
+                                                          | _VAL2FLD(AXI_GPI_HDR_SIZE_DDR_HDR_SIZE, ddrHdrSize)
+  
 #define AXI_GPI_BUF_SIZE            0x10 
   //  Reset = 32'h800_0080
   //- csr_lmem_bufsize 15:0 R/W Buffer size of an LMEM buffer
   //- csr_ddr_bufsize 31:16 R/W Buffer size of an DDR buffer. Not applicable for NPU.
+  #define AXI_GPI_BUF_SIZE_LMEM_BUFF_SIZE_Pos   0
+  #define AXI_GPI_BUF_SIZE_LMEM_BUFF_SIZE_Msk   0xFFFFUL
+  #define AXI_GPI_BUF_SIZE_DDR_BUFF_SIZE_Pos    16
+  #define AXI_GPI_BUF_SIZE_DDR_BUFF_SIZE_Msk    0xFFFFUL
+  
+  #define AXI_GPI_BUF_SIZE_FILL(lmemBufSize, ddrBufSize)   _VAL2FLD(AXI_GPI_BUF_SIZE_LMEM_BUFF_SIZE, lmemBufSize) \
+                                                         | _VAL2FLD(AXI_GPI_BUF_SIZE_DDR_BUFF_SIZE, ddrBufSize)
+
 #define AXI_GPI_LMEM_ALLOC_ADDR     0x14 
   //  Reset = 32'h0
   //- csr_lmem_bm_alloc_addr 31:0 R/W Address Location within the BMU to fetch an LMEM buffer
@@ -2523,7 +2621,7 @@ typedef enum {
   //  handshake with the QoS/TM block to indicate its ability to take a new packet
 #define AXI_GPI_INQ_PKTPTR          0x30 
   //  Reset = 32'h0
-  //- csr_inq_pktptr 31:0 R/W Packet pointer of the next packet to send. Sent by the QoS/TM block
+  //- csr_inq_pktptr 31:0 R/W Packet pointer of the next packet to send. Sent by the QoS/TM block  
 #define AXI_GPI_DDR_DATA_OFFSET     0x34 
   //  Reset = 10'h100
   //- csr_ddr_data_offset 9:0 R/W CSR DDR data offset. Not applicable for NPU.
@@ -2532,7 +2630,7 @@ typedef enum {
   //- csr_lmem_data_offset 7:0 R/W CSR LMEM data offset. Not applicable for NPU
 #define AXI_GPI_TMLF_TX             0x4C 
   //  Reset = 16'h178
-  //- csr_gpi_tmlf_txthres 15:0 R/W Threshold number of TMLF words (64bit size) to be in the TMLF FIFO before transmission starts.
+  //- csr_gpi_tmlf_txthres 15:0 R/W Threshold number of TMLF words (64bit size) to be in the TMLF FIFO before transmission starts.  
 #define AXI_GPI_DTX_ASEQ            0X50 
   //  Reset = 8'h50
   //- csr_gpi_dtx_aseq_len 7:0 R/W Length of action sequence.
@@ -2549,6 +2647,7 @@ typedef enum {
 #define AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET    0x60 
   //  Reset = 16'h10
   //- csr_lmem_sec_buf_data_offset 15:0 R/W Buffer offset used for second and subsequent buffers of LMEM
+  
 #define AXI_GPI_DDR_SEC_BUF_DATA_OFFSET     0x64 
   //  Reset = 16'h0
   //- csr_ddr_sec_buf_data_offset 15:0 R/W Buffer offset used for second and subsequent buffers of DMEM. Not applicable for NPU.

@@ -177,7 +177,7 @@ void MDR_KX028_Mode2_Init( uint32_t waitCyclesMax )
     MDR_KX028_WriteAXI( AXI_BMU2_BASE_ADDR + 0x04, 0x3 );
     
     MDR_KX028_WriteAXI( ( AXI_WSP_GLOBAL_BASE_ADDR + 0x20 ), ( 1 << 30 ) );
-    MDR_KX028_DelayMs(1000); //    vTaskDelay( 1000 );
+    //MDR_KX028_DelayMs(1000); //    vTaskDelay( 1000 );
     MDR_KX028_WriteAXI( ( AXI_WSP_GLOBAL_BASE_ADDR + 0x20 ), 0 );
 
     Write_InitHW_Table(&sw_hwreg_settings[0]);
@@ -265,7 +265,8 @@ void MDR_KX028_Mode2_Init( uint32_t waitCyclesMax )
     MDR_KX028_MAC_TableInit(waitCyclesMax);
     MDR_KX028_VLAN_TableInit(waitCyclesMax);
     
-    action_entry.value = MDR_KX028_FILL_VLAN_ENTRY(MDR_KX028_FWD_PORT_LIST_MASK, 0, ACT_FORWARD, ACT_FORWARD, ACT_FORWARD, ACT_FORWARD, ACT_FORWARD);      
+    action_entry.value = MDR_KX028_FILL_VLAN_ENTRY(MDR_KX028_FWD_PORT_LIST_MASK, 0, 
+      KX028_ACT_FORWARD, KX028_ACT_FORWARD, KX028_ACT_FORWARD, KX028_ACT_FORWARD, KX028_ACT_FORWARD);      
     MDR_KX028_VLAN_TableAdd( 1, action_entry, waitCyclesMax);
     
     Write_InitHW_Table( &sw_hwreg_enable_emac_1_to_16[0] );

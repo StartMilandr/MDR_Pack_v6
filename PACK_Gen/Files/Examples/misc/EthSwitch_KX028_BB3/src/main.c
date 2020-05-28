@@ -87,6 +87,10 @@ static void Mode2_Process(void)
   }
 }
 
+void DelayMs(uint32_t delayMs)
+{
+
+}
 
 static void ModeM2_InitKX028(void)
 {
@@ -99,7 +103,7 @@ static void ModeM2_InitKX028(void)
   for (emac = KX028_EMAC5; emac < KX028_EMAC_NUMS; ++emac)
     MDR_KX028_InitEMAC_None(emac);
   
-  MDR_KX028_InitBMU_GPI_TMU_CLASS();
+  MDR_KX028_InitBMU_GPI_TMU_CLASS(DelayMs);
   MDR_KX028_EnableBlocks();
 }
 

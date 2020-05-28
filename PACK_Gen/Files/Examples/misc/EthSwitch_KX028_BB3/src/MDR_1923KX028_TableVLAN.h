@@ -41,15 +41,6 @@ typedef struct {
 #define MDR_KX028_VLAN_ENTRY_MCAST_MISS_ACT_MASK             0x000E000000000000       // 49 - 51
 #define MDR_KX028_VLAN_ENTRY_MSTP_ACT_MASK                   0x0070000000000000       // 52 - 54
 
-typedef enum {
-    ACT_FORWARD = 0,      // Normal forward, use forward_list of MAC entry
-    ACT_FLOOD,            // Flood to all ports in bridge domain, use forward list of BD entry
-    ACT_PUNT,             // Punt packet to host
-    ACT_DISCARD,          // Discard this frame
-    ACT_OVERRIDE,         // The action field is taken from vlan entry in case of vlan search success, if vlan search fails, it is taken from fallback bd entry
-    ACT_FWD_MASK,         // Forward list is ANDed with vlan table forward list
-    ACT_COS_DISCARD       // Packets matching with configured  cos values will be forwarded, remaining will be discarded. Added for AVB support.
-} MDR_KX028_Action;
 
 
 #define MDR_KX028_FILL_VLAN_ENTRY(fpl, utl, uha, mha, uma, mma, mstp)   ((( uint64_t )(fpl) & MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK) \

@@ -34,6 +34,18 @@ typedef enum {
 //  CBUS_BASE_ADDR - расширитель адреса на шине, необходим при записи адресов в регистры.
 #define CBUS_BASE_ADDR    0xC0000000UL
 
+
+typedef enum {
+    KX028_ACT_FORWARD = 0,      // Normal forward, use forward_list of MAC entry
+    KX028_ACT_FLOOD,            // Flood to all ports in bridge domain, use forward list of BD entry
+    KX028_ACT_PUNT,             // Punt packet to host
+    KX028_ACT_DISCARD,          // Discard this frame
+    KX028_ACT_OVERRIDE,         // The action field is taken from vlan entry in case of vlan search success, if vlan search fails, it is taken from fallback bd entry
+    KX028_ACT_FWD_MASK,         // Forward list is ANDed with vlan table forward list
+    KX028_ACT_COS_DISCARD       // Packets matching with configured  cos values will be forwarded, remaining will be discarded. Added for AVB support.
+} MDR_KX028_ACTION_e;
+
+
 // ======================== Адресное пространство ведомого AXI  ========================
 //  CSR - ControlStatusRegister
 
@@ -1146,7 +1158,7 @@ typedef enum {
   #define AXI_CLASS_DOS_ICMPV4_MAX_PKTLEN     0x28c 
     //  Reset = 32'h4000
     //- csr_dos_icmpv4_max_pktlen 31:0 R/W icmp packets max packet lenght, initialized to 16k. It can go upto 64k.
-  #define AXI_CLASS_ING_AFULL_THRES           0x290 
+  #define AXI_CLASS_INQ_AFULL_THRES           0x290 
     //  Reset = 16'h3f6
     //- csr_inq_afull_thres 15:0 R/W Class inq fifo is almost full threshold
   #define AXI_CLASS_DMEM_BRS_OFFSET           0x294 
@@ -1473,10 +1485,23 @@ typedef enum {
     //- csr_glb_l2_special_punt_enable 0 R/W l2 special punt enable for all ports
     //- csr_glb_fallback_bd_entry 31:1 R/W global fall back bd entry, 
     //  16 bit default forward list for bd entry(vlan table)
+    #define AXI_CLASS_GLOBAL_CFG_SPEC_PUNT_EN_ALL_Pos   0
+    #define AXI_CLASS_GLOBAL_CFG_SPEC_PUNT_EN_ALL_Msk   0x0001UL
+    #define AXI_CLASS_GLOBAL_CFG_BALLBACK_BR_ENTR_Pos   1
+    #define AXI_CLASS_GLOBAL_CFG_BALLBACK_BR_ENTR_Msk   0xFFFFFFFEUL
+    
+    #define AXI_CLASS_GLOBAL_CFG_FILL(en, flbackentr) _VAL2FLD(AXI_CLASS_GLOBAL_CFG_SPEC_PUNT_EN_ALL,    en) \
+                                                    | _VAL2FLD(AXI_CLASS_GLOBAL_CFG_BALLBACK_BR_ENTR,    flbackentr)
+    
   #define AXI_CLASS_GLOBAL_CFG1             0x7e8 
     //  Reset = 24'h0
     //- csr_glb_fallback_bd_entry1 23:0 R/W global fall back bd entry msb. 
     //  First 31 bits are stored in GLOBAL_CFG and remaning bits of vlan action entry need to be configured.    
+    #define AXI_CLASS_GLOBAL_CFG1_BALLBACK_BR_ENTR_Pos   0
+    #define AXI_CLASS_GLOBAL_CFG1_BALLBACK_BR_ENTR_Msk   0x00FFFFFFUL
+
+    #define AXI_CLASS_GLOBAL_CFG1_FILL(flbackentr)  _VAL2FLD(AXI_CLASS_GLOBAL_CFG_SPEC_PUNT_EN_ALL, flbackentr >> 31)
+    //  Field in entry - used for learning VLAN
     #define AXI_CLASS_CFG1_FRW_ACK_Pos  10
     #define AXI_CLASS_CFG1_FRW_ACK_Msk   7
 
@@ -1508,6 +1533,31 @@ typedef enum {
     //- csr_punt_sa_is_actv_cos 19:16 R/W COS value for punt operation of SA is Active
     //- csr_punt_snp_upr_cos 23:20 R/W COS value for punt operation of SNOOP upper
     //- csr_punt_req_cos 27:24 R/W COS value for punt operation for PUNT requested
+    #define AXI_CLASS_PUNT_COS_MGMT_Pos         0
+    #define AXI_CLASS_PUNT_COS_MGMT_Msk         0x0000000FUL
+    #define AXI_CLASS_PUNT_COS_L2_Pos           4
+    #define AXI_CLASS_PUNT_COS_L2_Msk           0x000000F0UL
+    #define AXI_CLASS_PUNT_COS_SA_MISS_Pos      8
+    #define AXI_CLASS_PUNT_COS_SA_MISS_Msk      0x00000F00UL
+    #define AXI_CLASS_PUNT_COS_SA_RELEARN_Pos   12
+    #define AXI_CLASS_PUNT_COS_SA_RELEARN_Msk   0x0000F000UL
+    #define AXI_CLASS_PUNT_COS_SA_ACTIVE_Pos    16
+    #define AXI_CLASS_PUNT_COS_SA_ACTIVE_Msk    0x000F0000UL
+    #define AXI_CLASS_PUNT_COS_SNOOP_Pos        20
+    #define AXI_CLASS_PUNT_COS_SNOOP_Msk        0x00F00000UL
+    #define AXI_CLASS_PUNT_COS_REQ_Pos         24
+    #define AXI_CLASS_PUNT_COS_REQ_Msk        0x0F000000UL
+    
+    #define AXI_CLASS_PUNT_COS_FILL(mgm, l2, mis, rel, act, snoop, req) \
+                  _VAL2FLD(AXI_CLASS_PUNT_COS_MGMT,       mgm) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_L2,         l2) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_SA_MISS,    mis) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_SA_RELEARN, rel) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_SA_ACTIVE,  act) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_SNOOP,      snoop) \
+                | _VAL2FLD(AXI_CLASS_PUNT_COS_REQ,        req)
+    
+    
   #define AXI_CLASS_PORT_TCP_CHKSUM_OFFLOAD 0x4c4 
     //  Reset = 20'h0
     //- csr_port_tcp_chksum_offload 19:0 R/W tcp checksum offload bit. Each bit corresponds to each port.
@@ -1878,7 +1928,30 @@ typedef enum {
     //- csr_hif_timeout_en 5 R/W HIF timeout enable for BDP fetch/update, Data write/read. 
     //- csr_bd_start_seq_num 31:16 R/W this will be initial seq number for the BD.All the channels should get BD's starting from this sequence number.
     //  it is common across all channels.
-    
+    #define AXI_HIF_MISC_SEQ_CHK_EN_Pos       0
+    #define AXI_HIF_MISC_SEQ_CHK_EN_Msk       0x0001UL    
+    #define AXI_HIF_MISC_BDPRD_WRDONE1_Pos    1
+    #define AXI_HIF_MISC_BDPRD_WRDONE1_Msk    0x0002UL
+    #define AXI_HIF_MISC_BDPRD_WRDONE2_Pos    2
+    #define AXI_HIF_MISC_BDPRD_WRDONE2_Msk    0x0004UL
+    #define AXI_HIF_MISC_BDPRD_WRDONE3_Pos    3
+    #define AXI_HIF_MISC_BDPRD_WRDONE3_Msk    0x0008UL
+    #define AXI_HIF_MISC_BDPRD_WRDONE4_Pos    4
+    #define AXI_HIF_MISC_BDPRD_WRDONE4_Msk    0x0010UL    
+    #define AXI_HIF_MISC_TIMEOUT_EN_Pos       5
+    #define AXI_HIF_MISC_TIMEOUT_EN_Msk       0x0020UL        
+    #define AXI_HIF_MISC_SEQ_START_NUM_Pos    16
+    #define AXI_HIF_MISC_SEQ_START_NUM_Msk    0xFFFF0000UL
+
+    #define AXI_HIF_MISC_FILL_EX(en, dn1, dn2, dn3, dn4, time, st)   _VAL2FLD(AXI_HIF_MISC_SEQ_CHK_EN, en) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_BDPRD_WRDONE1, dn1) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_BDPRD_WRDONE2, dn2) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_BDPRD_WRDONE3, dn3) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_BDPRD_WRDONE4, dn4) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_TIMEOUT_EN, time) \
+                                                      | _VAL2FLD(AXI_HIF_MISC_SEQ_START_NUM, st) \
+
+    #define AXI_HIF_MISC_FILL(en, dn, time, st)     AXI_HIF_MISC_FILL_EX(en, dn, dn, dn, dn, time, st)
     
   #define AXI_HIF_TIMEOUT_REG             0x10 
     //  Reset = 32'hffffffff
@@ -2108,6 +2181,11 @@ typedef enum {
     //  01- 256-byte, 
     //  10- 512byte, 
     //  11- 1024byte.
+    #define AXI_HIF_DMA_BURST_128Bytes      0
+    #define AXI_HIF_DMA_BURST_256Bytes      1
+    #define AXI_HIF_DMA_BURST_512Bytes      2
+    #define AXI_HIF_DMA_BURST_1024Bytes     3
+    
   #define AXI_HIF_RX_QUEUE_MAP_CH_NO_ADDR   0xcc 
     //  Reset = 32'h76543210
     //- csr_hif_rx_queue_map_ch_no 31:0 R/W TMU queue mapping to HIF RX channels. 
@@ -2118,7 +2196,33 @@ typedef enum {
     //  [19:16]- inidcates RX ch number mapped to TMU Queue 4, 
     //  [23:20]-indicates RX ch number mapped to TMU Queue5, 
     //  [27:24]- indicates RX ch number mapped to TMU Queue6, 
-    //  [31:28]-indicates RX vch number mapped to TMU Queue 7
+    //  [31:28]-indicates RX ch number mapped to TMU Queue 7
+    #define AXI_HIF_RX_CH_TO_TMU_QUE1_Pos   0
+    #define AXI_HIF_RX_CH_TO_TMU_QUE1_Msk   0x0000000FUL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE2_Pos   4
+    #define AXI_HIF_RX_CH_TO_TMU_QUE2_Msk   0x000000F0UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE3_Pos   8
+    #define AXI_HIF_RX_CH_TO_TMU_QUE3_Msk   0x00000F00UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE4_Pos   12
+    #define AXI_HIF_RX_CH_TO_TMU_QUE4_Msk   0x0000F000UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE5_Pos   16
+    #define AXI_HIF_RX_CH_TO_TMU_QUE5_Msk   0x000F0000UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE6_Pos   20
+    #define AXI_HIF_RX_CH_TO_TMU_QUE6_Msk   0x00F00000UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE7_Pos   24
+    #define AXI_HIF_RX_CH_TO_TMU_QUE7_Msk   0x0F000000UL
+    #define AXI_HIF_RX_CH_TO_TMU_QUE8_Pos   28
+    #define AXI_HIF_RX_CH_TO_TMU_QUE8_Msk   0xF0000000UL
+    
+    #define AXI_HIF_RX_QUEUE_MAP_CH_FILL(q1, q2, q3, q4, q5, q6, q7, q8)  _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE1, q1) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE2, q2) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE3, q3) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE4, q4) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE5, q5) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE6, q6) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE7, q7) \
+                                                                        | _VAL2FLD(AXI_HIF_RX_CH_TO_TMU_QUE8, q8)
+   
   #define AXI_HIF_LTC_PKT_CTRL_ADDR         0xd0 
     //  Reset = 1'h0
     //- csr_hif_tx_ltc_pkt_flow_en 0 R/W HIF TX packet flow through Launch time control(LTC) module flow enable. 
@@ -2296,7 +2400,7 @@ typedef enum {
     #define AXI_HIF_CH_RX_PKT_CNT1                0x0e0
       //  Reset = 32'h0
       //- dxr_csr_rx_app_data_pkt_cnt_ch0 31:0 R This register field contains number of data packets recievedfrom app for rx
-    #define AXI_HIF_CH_LTC_MAX_PKT_ADDR           0x0e4
+    #define AXI_HIF_CH_LTC_MAX_PKT                0x0e4
       //  Reset = 8'h4
       //- csr_hif_tx_ltc_max_pkt_cnt_ch0 7:0 R/W Maximum no of packets accpeted by HIF TX for this channel when LTC pkt flow bit is enabled.
 

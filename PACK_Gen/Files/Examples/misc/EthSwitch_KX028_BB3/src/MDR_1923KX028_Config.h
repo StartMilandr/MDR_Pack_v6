@@ -1,8 +1,17 @@
 #ifndef  MDR_1923KX028_CONFIG_H_
 #define  MDR_1923KX028_CONFIG_H_
 
+#include <stdint.h>
+
+//  Прототип функция задержки, (передается в функции работы с базисом, для реализации задержки).
+//  В случае RTOS можно использовать Sleep
+typedef void (*MDR_KX028_DelayMs)(uint32_t);
+
+//  Задержки, используемые внутри функций базиса, подставляются в функцию типа MDR_KX028_DelayMs
+#define MDR_KX028_RESET_DLEAY_MS    100
+
 //  Redefine Functions
-#define MDR_KX028_DelayMs(x)
+//#define MDR_KX028_DelayMs(x)
 #define MDR_KX028_CRITSECT_ENTER
 #define MDR_KX028_CRITSECT_LEAVE
 
@@ -125,8 +134,8 @@
 
 // =================  HGPI Configs  ===============
 #define CFG_HGPI_LMEM_BUF_EN                1
-//  Retry count for LMEM buffers
-#define CFG_HGPI_RX_LMEM_BUF_RETR_COUNT     0x200
+//  Number of system clock cycles, the state machine has to wait before retrying incase the buffers are full at the buffer manager.
+#define CFG_HGPI_RX_LMEM_BUF_RETR_WAIT_CLK  0x200
 //  LMEM first buffer header size value
 #define CFG_HGPI_LMEM_BUF1_HRD_SIZE         0x30
 //  DDR first buffer header size value
@@ -144,7 +153,7 @@
 
 // =================  EGPI/ETGPI Configs  ===============
 #define CFG_EGPI_LMEM_BUF_EN                1
-#define CFG_EGPI_RX_LMEM_BUF_RETR_COUNT     CFG_HGPI_RX_LMEM_BUF_RETR_COUNT
+#define CFG_EGPI_RX_LMEM_BUF_RETR_WAIT_CLK  CFG_HGPI_RX_LMEM_BUF_RETR_WAIT_CLK
 #define CFG_EGPI_LMEM_BUF1_HRD_SIZE         CFG_HGPI_LMEM_BUF1_HRD_SIZE
 #define CFG_EGPI_DDR_BUF1_HRD_SIZE          CFG_HGPI_DDR_BUF1_HRD_SIZE
 #define CFG_EGPI_LMEM_BUF_SIZE              CFG_HGPI_LMEM_BUF_SIZE
@@ -154,7 +163,7 @@
 #define CFG_EGPI_DTX_ASEQ_LEN               0x0050UL
 
 #define CFG_ETGPI_LMEM_BUF_EN               1
-#define CFG_ETGPI_RX_LMEM_BUF_RETR_COUNT    CFG_EGPI_RX_LMEM_BUF_RETR_COUNT
+#define CFG_ETGPI_RX_LMEM_BUF_RETR_WAIT_CLK CFG_HGPI_RX_LMEM_BUF_RETR_WAIT_CLK
 #define CFG_ETGPI_LMEM_BUF1_HRD_SIZE        CFG_EGPI_LMEM_BUF1_HRD_SIZE
 #define CFG_ETGPI_DDR_BUF1_HRD_SIZE         0x0100UL
 #define CFG_ETGPI_LMEM_BUF_SIZE             CFG_EGPI_LMEM_BUF_SIZE
@@ -169,6 +178,92 @@
 #define CFG_HIF_TX_POLL_WR_CNT    0x40
 #define CFG_HIF_RX_POLL_RD_CNT    0x40
 #define CFG_HIF_RX_POLL_WR_CNT    0x40
+
+//  Sequence number check enable
+#define CFG_HIF_SEQ_CHECK_EN        1
+
+//  Initial sequence number to be programmed, default – 0
+  //  #define CFG_HIF_SEQ_START_NUM    0          // specification VASSA   
+#define CFG_HIF_SEQ_START_NUM       0x5CC5        // from driver
+
+//  timeout enable for BDP fetch/update, Data write/read.
+#define CFG_HIF_BDP_TIMEOUT_EN      0
+#define CFG_HIF_BDP_TIMEOUT         0xC92C3BCD
+
+//  Default reg values
+#define CFG_HIF_MISK_BDPRD_WRDONE   0
+
+// Based on the requirement need to map the TMU queue 0-7 to any of the HIF Channels
+#define CFG_HIF_RX1_TO_TMU_QUE      0
+#define CFG_HIF_RX2_TO_TMU_QUE      1
+#define CFG_HIF_RX3_TO_TMU_QUE      2
+#define CFG_HIF_RX4_TO_TMU_QUE      3
+#define CFG_HIF_RX5_TO_TMU_QUE      4
+#define CFG_HIF_RX6_TO_TMU_QUE      5
+#define CFG_HIF_RX7_TO_TMU_QUE      6
+#define CFG_HIF_RX8_TO_TMU_QUE      7
+
+#define CFG_HIF_DMA_BURST_Bytes     AXI_HIF_DMA_BURST_128Bytes
+
+// Maximum no of packets accpeted by HIF TX for this channel when LTC pkt flow bit is enabled.
+#define CFG_HIF_CH_LTC_MAX_PKT      4
+
+
+//==================    CLASS_HW  Configs  ======================
+//----------- Class HW1 -------------
+//  LMEM first buffer header size value. (Data in the LMEM is written from this offset. The first location of LMEM is however written with the subsequent buffer address if it exists.) - 48
+#define CFG_CLASS1_LMEM_HDR_SIZE          0x0030
+
+//  Snoop MCAST address mask (lower 32bit and upper 16bit)
+#define CFG_CLASS1_SNOOP_MCAST_MASK_LO    0xFFFFFFFFUL
+#define CFG_CLASS1_SNOOP_MCAST_MASK_HI    0x0000FFFFUL
+//  SPL multicast address of PTP packets to punt to host control channel. (lower 32bit and upper 16bit)
+#define CFG_CLASS1_SNOOP_MCAST_ADDR_LO    0xC200000EUL
+#define CFG_CLASS1_SNOOP_MCAST_ADDR_HI    0x00000180UL
+
+//  special punt enable for all ports
+#define CFG_CLASS1_SPEC_PUNT_ALL_EN       1
+// global fall back bd entry (31 bits in CFG and 24 bits in CFG1 registers)
+#define CFG_CLASS1_GL_FALLBACK_ENTRY      0
+
+//  Processor peripherals base address
+#define CFG_CLASS1_PER_BASE_ADDR          0x00C2UL
+
+// COS value for punt operation of Management packet
+#define CFG_CLASS1_PUNT_COS_MGMT          KX028_ACT_FORWARD
+// COS value for punt operation of L2 Special
+#define CFG_CLASS1_PUNT_COS_L2            KX028_ACT_FORWARD
+// COS value for punt operation of SA Miss
+#define CFG_CLASS1_PUNT_COS_SA_MISS       KX028_ACT_FORWARD
+// COS value for punt operation of SA Relearn
+#define CFG_CLASS1_PUNT_COS_SA_RELEARN    KX028_ACT_FORWARD
+// COS value for punt operation of SA is Active
+#define CFG_CLASS1_PUNT_COS_SA_ACTIVE     KX028_ACT_FORWARD
+// COS value for punt operation of SNOOP upper
+#define CFG_CLASS1_PUNT_COS_SNOOP         KX028_ACT_FORWARD
+// COS value for punt operation for PUNT requested
+#define CFG_CLASS1_PUNT_COS_REQ           KX028_ACT_FORWARD
+
+//----------- Class HW2 -------------
+#define CFG_CLASS2_LMEM_HDR_SIZE          CFG_CLASS1_LMEM_HDR_SIZE
+
+#define CFG_CLASS2_SNOOP_MCAST_MASK_LO    CFG_CLASS1_SNOOP_MCAST_MASK_LO
+#define CFG_CLASS2_SNOOP_MCAST_MASK_HI    CFG_CLASS1_SNOOP_MCAST_MASK_HI
+#define CFG_CLASS2_SNOOP_MCAST_ADDR_LO    CFG_CLASS1_SNOOP_MCAST_ADDR_LO
+#define CFG_CLASS2_SNOOP_MCAST_ADDR_HI    CFG_CLASS1_SNOOP_MCAST_ADDR_HI
+
+
+#define CFG_CLASS2_SPEC_PUNT_ALL_EN       1
+#define CFG_CLASS2_GL_FALLBACK_ENTRY      0
+#define CFG_CLASS2_PER_BASE_ADDR          CFG_CLASS1_PER_BASE_ADDR
+
+#define CFG_CLASS2_PUNT_COS_MGMT          KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_L2            KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_SA_MISS       KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_SA_RELEARN    KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_SA_ACTIVE     KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_SNOOP         KX028_ACT_FORWARD
+#define CFG_CLASS2_PUNT_COS_REQ           KX028_ACT_FORWARD
 
 
 // =================  Class HW Configs  ===============

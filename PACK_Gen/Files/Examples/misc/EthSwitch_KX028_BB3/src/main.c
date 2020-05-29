@@ -29,6 +29,8 @@
 #define AGE_TIMER                 MDR_TIMER2ex
 
 
+#define PORTS_VLAN_FALLBACK         1UL
+
 
 static void ModeM2_InitKX028(void);
 static void Mode2_Process(void);
@@ -100,8 +102,13 @@ static void ModeM2_InitKX028(void)
   //MDR_KX028_InitEMAC_SGMII_FD_1G_def(KX028_EMAC4); - TODO
   
   MDR_KX028_EMAC_e emac;
-  for (emac = KX028_EMAC5; emac < KX028_EMAC_NUMS; ++emac)
+  for (emac = KX028_EMAC4; emac < KX028_EMAC_NUMS; ++emac)
     MDR_KX028_InitEMAC_None(emac);
+  
+  for (emac = KX028_EMAC4; emac < KX028_EMAC_NUMS; ++emac)
+  {
+    MDR_KX028_InitPortStruct(emac, KX028_PORTS_STRUC1_DEF(PORTS_VLAN_FALLBACK), KX028_PORTS_STRUC2_DEF);
+  }  
   
   MDR_KX028_InitBMU_GPI_TMU_CLASS(DelayMs);
   MDR_KX028_EnableBlocks();

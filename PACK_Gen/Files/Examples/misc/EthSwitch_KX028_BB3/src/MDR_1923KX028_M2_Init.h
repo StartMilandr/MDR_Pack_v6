@@ -48,7 +48,7 @@ __STATIC_INLINE void MDR_KX028_InitEMAC_None(MDR_KX028_EMAC_e emac)
 
 void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac);  // TODO -?
 
-void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac); // TODO -?
+void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 );
 void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac);
 void MDR_KX028_InitETGPI(MDR_KX028_EMAC_e emac);
 

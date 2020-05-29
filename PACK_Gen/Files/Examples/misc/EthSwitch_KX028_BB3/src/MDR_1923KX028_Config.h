@@ -3,11 +3,11 @@
 
 #include <stdint.h>
 
-//  Прототип функция задержки, (передается в функции работы с базисом, для реализации задержки).
-//  В случае RTOS можно использовать Sleep
+//  РџСЂРѕС‚РѕС‚РёРї С„СѓРЅРєС†РёСЏ Р·Р°РґРµСЂР¶РєРё, (РїРµСЂРµРґР°РµС‚СЃСЏ РІ С„СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ Р±Р°Р·РёСЃРѕРј, РґР»СЏ СЂРµР°Р»РёР·Р°С†РёРё Р·Р°РґРµСЂР¶РєРё).
+//  Р’ СЃР»СѓС‡Р°Рµ RTOS РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Sleep
 typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
-//  Задержки, используемые внутри функций базиса, подставляются в функцию типа MDR_KX028_DelayMs
+//  Р—Р°РґРµСЂР¶РєРё, РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ РІРЅСѓС‚СЂРё С„СѓРЅРєС†РёР№ Р±Р°Р·РёСЃР°, РїРѕРґСЃС‚Р°РІР»СЏСЋС‚СЃСЏ РІ С„СѓРЅРєС†РёСЋ С‚РёРїР° MDR_KX028_DelayMs
 #define MDR_KX028_RESET_DLEAY_MS    100
 
 //  Redefine Functions
@@ -17,23 +17,32 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 //  Port Init Settings
-#define KX028_PORTS_FALLBACK_ID   AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_DEF
-#define KX028_PORTS_TAG_ID        0x8100
+#define KX028_PORTS_VLAN_TAG            0x8100UL
+#define KX028_PORTS_STRUC1_DEF(vlanFallback)       AXI_CLASS_STRUC1_FILL( vlanFallback, KX028_PORTS_VLAN_TAG )
 
-#define KX028_PORTS_SHUTDOWN           0                              //     0x00000001
-#define KX028_PORTS_AFT                KX028_PortAcc_AnyTagging       //     0x000000F0
-#define KX028_PORTS_BLOCKSTATE         KX028_PortBlkState_Forwarding  //     0x00000F00
-#define KX028_PORTS_DEF_CFI            0                         //     0x00001000
-#define KX028_PORTS_DEF_PRI            0                         //     0x0000E000
-#define KX028_PORTS_DEF_TC             0                         //     0x00070000
-#define KX028_PORTS_TRUSTED            0                         //     0x00080000
-#define KX028_PORTS_VID_PREFIX         0                         //     0x00100000
-#define KX028_PORTS_UNTAG_FROM_BTABLE  0                         //     0x00200000
+#define KX028_PORTS_SHUTDOWN            0                              // 0x00000001
+#define KX028_PORTS_AFT                 KX028_PortAcc_AnyTagging       // 0x000000F0
+#define KX028_PORTS_BLOCKSTATE          KX028_PortBlkState_Forwarding  // 0x00000F00
+#define KX028_PORTS_DEF_CFI             0                              // 0x00001000
+#define KX028_PORTS_DEF_PRI             0                              // 0x0000E000
+#define KX028_PORTS_DEF_TC              0                              // 0x00070000
+#define KX028_PORTS_TRUSTED             0                              // 0x00080000
+#define KX028_PORTS_VID_PREFIX          0                              // 0x00100000
+#define KX028_PORTS_UNTAG_FROM_BTABLE   0                              // 0x00200000
 
+#define KX028_PORTS_STRUC2_DEF         AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN, \
+                                                   KX028_PORTS_AFT,                 \
+                                                   KX028_PORTS_BLOCKSTATE, \
+                                                   KX028_PORTS_DEF_CFI, \
+                                                   KX028_PORTS_DEF_PRI, \
+                                                   KX028_PORTS_DEF_TC,  \
+                                                   KX028_PORTS_TRUSTED, \
+                                                   KX028_PORTS_VID_PREFIX,  \
+                                                   KX028_PORTS_UNTAG_FROM_BTABLE)
 
 #define MDR_KX028_DEBUG     1
 
-#define KX028_SOFT_RESET_DELAY_MS     1000
+#define KX028_SOFT_RESET_DELAY_MS     100
 
 
 // =================  BMU Configs  ===============
@@ -182,7 +191,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 //  Sequence number check enable
 #define CFG_HIF_SEQ_CHECK_EN        1
 
-//  Initial sequence number to be programmed, default – 0
+//  Initial sequence number to be programmed, default вЂ“ 0
   //  #define CFG_HIF_SEQ_START_NUM    0          // specification VASSA   
 #define CFG_HIF_SEQ_START_NUM       0x5CC5        // from driver
 

@@ -40,10 +40,13 @@ void MDR_KX028_InitBMU2(MDR_KX028_DelayMs DelayFunc)
 
 void MDR_KX028_InitEMAC(MDR_KX028_EMAC_e emac, uint32_t netCfgReg)
 {
+  //  Disable EMAC ports
   MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk);
+  //  Network configuration
   MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG, netCfgReg);
 }  
 
+//  from Demo-Board MAC Init
 void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
 {
 //  EMAC 
@@ -64,27 +67,15 @@ void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_Hi, 0x0000FFFF );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN,       CFG_EMAC_GEM_VLAN_EN);
 
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + 0x048, 9000 );             // ������������ ������ jumbo ������  
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + 0x048, 9000 );             // Jumbo
 }  
   
-void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac)
-{
-  //  Port Struct
-    uint32_t portCfgStruct1 = AXI_CLASS_STRUC1_FILL(KX028_PORTS_FALLBACK_ID, KX028_PORTS_TAG_ID);
-    uint32_t portCfgStruct2 = AXI_CLASS_STRUC2_FILL(  KX028_PORTS_SHUTDOWN, 
-                                                      KX028_PORTS_AFT,
-                                                      KX028_PORTS_BLOCKSTATE, 
-                                                      KX028_PORTS_DEF_CFI, 
-                                                      KX028_PORTS_DEF_PRI, 
-                                                      KX028_PORTS_DEF_TC,
-                                                      KX028_PORTS_TRUSTED, 
-                                                      KX028_PORTS_VID_PREFIX, 
-                                                      KX028_PORTS_UNTAG_FROM_BTABLE);  
-  
-  MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct1[emac], portCfgStruct1);                
-  MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct1[emac], portCfgStruct2);  
-  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], portCfgStruct1);                
-  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], portCfgStruct2);    
+void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 )
+{ 
+  MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct1);                
+  MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct2);  
+  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct1);                
+  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct2);    
 }
 
 void MDR_KX028_InitHGPI(void)
@@ -291,7 +282,33 @@ void MDR_KX028_InitTMU(void)
   // 18 - Controls the direct/indirect access to context memory. 0 - indirect, 1 - direct  
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ACCESS_CTRL, CFG_TMU_CNTX_ACCESS_MODE); //{ 0x006002F0, 0x00000000 }, //INDIRECT ACCESS
   
-  //  CONTEXT MEMORY INITIALISATION -? TODO -?
+  //  CONTEXT MEMORY INITIALISATION
+  uint32_t queInd;
+  MDR_KX028_EMAC_e emac;
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; emac++)
+    for (queInd = 0; queInd < AXI_PHY_QUEUE_COUNT; queInd++ )
+    {
+      // 19 - Select Queue
+      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(emac, queInd));
+      
+      // 20 - Resetting current queue pointer.
+      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR ), 0x00000000 );
+      // 21 - AXI_MU_CURQ_PKT_CNT
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_MU_CURQ_PKT_CNT,      0x00000000 );
+      // 22 - Resetting current queue drop count value.
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DROP_CNT,    0x00000000 );
+      // 23 - Resetting current queue transmitted packet count value.
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_TRANS_CNT,   0x00000000 );
+      // 24 - Resetting current queue status value (not selecting any drop algorithm).
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_QSTAT,       0x00000000 );
+      // 25 - Resetting HW probability table0 values.
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_HW_PROB_CFG_TBL0, 0x00000000 );
+      // 26 - Resetting HW probability table1 values.
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_HW_PROB_CFG_TBL1, 0x00000000 );
+      // ? - TODO-?
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DEBUG,       0x00000000 );                                //___Q no in spec
+    }  
+  
   
   // 27..43
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY0_TDQ_CTRL,  CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002A0, 0x0000000F },	//TMU PHY0 TDQ

@@ -275,6 +275,8 @@ typedef enum {
 #define AXI_TMU_BASE_ADDR                        0x600000
 #define AXI_TMU_END_OFFSET                       0x60FFFF
 
+#define AXI_PHY_QUEUE_COUNT   8
+
 
   #define AXI_TMU_VERSION             0x00
     //  Reset = 32'h10011
@@ -307,6 +309,14 @@ typedef enum {
     //  For example to configure hardware drop probablity table of a particular queue of a
     //  particular phy, first step should be to write phy_num and queue_num to this register and then whatever is written to
     //  CFG0-CFG3 will be written in probablity table of that queue for configured phy
+    #define AXI_PHY_QUEUE_SEL_QUE_Pos    0
+    #define AXI_PHY_QUEUE_SEL_QUE_Msk    0x0007UL
+    #define AXI_PHY_QUEUE_SEL_PHY_Pos    8
+    #define AXI_PHY_QUEUE_SEL_PHY_Msk    0x0F00UL
+    
+    #define AXI_PHY_QUEUE_SEL_FILL(phy, que)   _VAL2FLD(AXI_PHY_QUEUE_SEL_PHY, phy) \
+                                             | _VAL2FLD(AXI_PHY_QUEUE_SEL_QUE, que)
+    
   #define AXI_TMU_CURQ_PTR            0x38 
     //  Reset = 32'b0
     //- csr_curq_ptr 31:0 R/W Direct Access; NA for NPU_AVB; used to configure queue for either tail drop or wred drop. 
@@ -1396,10 +1406,9 @@ typedef enum {
     //- csr_port0_tpid 15:0 R/W Port 0 tpid
     //- csr_port0_fallback_bd_id 28:16 R/W Port 0 fallback bd id
     #define AXI_CLASS_STRUC1_PORT_TPID_Pos               0
-    #define AXI_CLASS_STRUC1_PORT_TPID_Msk               0x0000FFFF
+    #define AXI_CLASS_STRUC1_PORT_TPID_Msk               0x0000FFFFUL
     #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_Pos      16
-    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_Msk      0x1FFF0000
-       #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_DEF        0x1 // iports fallback bd id
+    #define AXI_CLASS_STRUC1_PORT_FALLBACK_BDID_Msk      0x1FFF0000UL
       
     #define AXI_CLASS_STRUC1_FILL(fallback, tag)   _VAL2FLD(AXI_CLASS_STRUC1_PORT_TPID, tag) \
                                                  | _VAL2FLD(AXI_CLASS_STRUC1_PORT_FALLBACK_BDID, fallback)
@@ -1424,7 +1433,7 @@ typedef enum {
   #define AXI_CLASS_PORT16_STRUC2         0x58c
     //  Reset = 22'h0
     //- csr_port0_shutdown 0 R/W Value 1 implements shutdown
-    //- csr_port0_aft 7:4 R/W
+    //- csr_port0_aft 7:4 R/W - Acceptable frame type
     //  0: any tagging 
     //  1: tagged only 
     //  2: untagged only
@@ -1433,7 +1442,7 @@ typedef enum {
         KX028_PortAcc_TaggedOnly,
         KX028_PortAcc_UntaggedOnly,
       } MDR_KX028_PortAcceptTag_e;    
-    //- csr_port0_blockstate 11:8 R/W 
+    //- csr_port0_blockstate 11:8 R/W - for RSTP protocol
     //  0: forward, 
     //  1: blocked 
     //  2: Learnonly
@@ -1442,12 +1451,12 @@ typedef enum {
         KX028_PortBlkState_Blocked,           // do not learn SA; do not forward frames
         KX028_PortBlkState_LearnOnly,         // ok to learn SA, but do not forward frames
       } MDR_KX028_PortAcceptSTP_t;
-    //- csr_port0_def_cfi 12 R/W Def CFI value
-    //- csr_port0_def_pri 15:13 R/W Def prio field.
+    //- csr_port0_def_cfi 12 R/W Def CFI value (Canonical frame identificator (VLAN))
+    //- csr_port0_def_pri 15:13 R/W Def prio field (Traffic Control)
     //- csr_port0_def_tc 18:16 R/W def tc field
     //- csr_port0_trusted 19 R/W indicates the port is trusted
     //- csr_port0_vid_prefix 20 R/W port0 vid prefix
-    //- csr_port0_untag_from_btable 21 R/W Port 0 Enabling of Untag from Btable
+    //- csr_port0_untag_from_btable 21 R/W Port 0 Enabling of Untag from Btable (Bridge Table)
       #define AXI_CLASS_STRUC2_PORT_SHUTDOWN_Pos                 0
       #define AXI_CLASS_STRUC2_PORT_AFT_Pos                      4
       #define AXI_CLASS_STRUC2_PORT_BLOCKSTATE_Pos               8

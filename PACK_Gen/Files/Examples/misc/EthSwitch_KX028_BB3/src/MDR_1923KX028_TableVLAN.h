@@ -41,8 +41,6 @@ typedef struct {
 #define MDR_KX028_VLAN_ENTRY_MCAST_MISS_ACT_MASK             0x000E000000000000       // 49 - 51
 #define MDR_KX028_VLAN_ENTRY_MSTP_ACT_MASK                   0x0070000000000000       // 52 - 54
 
-
-
 #define MDR_KX028_FILL_VLAN_ENTRY(fpl, utl, uha, mha, uma, mma, mstp)   ((( uint64_t )(fpl) & MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK) \
     | ((( uint64_t )(utl) << MDR_KX028_VLAN_ENTRY_UNTAG_LIST_POS)     & MDR_KX028_VLAN_ENTRY_UNTAG_LIST_MASK)      \
     | ((( uint64_t )(uha) << MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_POS)  & MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_MASK)   \

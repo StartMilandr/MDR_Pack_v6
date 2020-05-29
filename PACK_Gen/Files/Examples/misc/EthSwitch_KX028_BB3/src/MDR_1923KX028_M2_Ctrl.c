@@ -83,7 +83,7 @@ static inline void MDR_KX028_InitEMAC(uint32_t i)
 }
 
 
-static uint32_t addrClass[2] = {AXI_CLASS_HW1_BASE_ADDR, AXI_CLASS_HW2_BASE_ADDR};
+//static uint32_t addrClass[2] = {AXI_CLASS_HW1_BASE_ADDR, AXI_CLASS_HW2_BASE_ADDR};
 
 
 //typedef enum {
@@ -100,54 +100,54 @@ static uint32_t addrClass[2] = {AXI_CLASS_HW1_BASE_ADDR, AXI_CLASS_HW2_BASE_ADDR
 //    KX028_STP_ACC_LEARN_ONLY,        // ok to learn SA, but do not forward frames
 //} MDR_KX028_PortAcceptSTP_t;
 
-void MDR_KX028_PortsInit( void )
-{
-    uint8_t ucI, classNum;
-    uint32_t addrReg1, addrReg2; 
-    uint32_t portCfgStruct1 = AXI_CLASS_STRUC1_FILL(KX028_PORTS_FALLBACK_ID, KX028_PORTS_TAG_ID);
-    uint32_t portCfgStruct2 = AXI_CLASS_STRUC2_FILL(  KX028_PORTS_SHUTDOWN, 
-                                                      KX028_PORTS_AFT,
-                                                      KX028_PORTS_BLOCKSTATE, 
-                                                      KX028_PORTS_DEF_CFI, 
-                                                      KX028_PORTS_DEF_PRI, 
-                                                      KX028_PORTS_DEF_TC,
-                                                      KX028_PORTS_TRUSTED, 
-                                                      KX028_PORTS_VID_PREFIX, 
-                                                      KX028_PORTS_UNTAG_FROM_BTABLE);
-  
-    //uint32_t classBase = AXI_CLASS_HW1_BASE_ADDR;
-    for( classNum = 0; classNum < 2; classNum++ )
-    {
-      for( ucI = 0; ucI < KX028_EMAC_NUMS; ucI++ )
-      {
-          addrReg1 = addrClass[classNum] + KX028_PortOffsStruct1[ucI];
-          addrReg2 = addrClass[classNum] + KX028_PortOffsStruct2[ucI];
-        
-          MDR_KX028_WriteAXI( addrReg1,  portCfgStruct1);                
-          MDR_KX028_WriteAXI( addrReg2, portCfgStruct2);
-      }     
-        
-        //????????????????????????????????????????????????????????????????
-        //wr_axi( classBase + CLASS_HW_BCAST_PORTMAP, FWD_PORT_LIST_MASK );
-        
-        /* Configure STP MAC details */
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_CTRL, STP_CTRL_REG_VAL );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_CTRL, 0 );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB, STP_MAC_ADDR1_LSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB, STP_MAC_ADDR1_MSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR2_LSB, STP_MAC_ADDR2_LSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR2_MSB, STP_MAC_ADDR2_MSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK1_LSB, STP_MAC_MASK1_LSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK1_MSB, STP_MAC_MASK1_MSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK2_LSB, STP_MAC_MASK2_LSB );
-        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK2_MSB, STP_MAC_MASK2_MSB );
-        
-        //wr_axi( classBase + CLASS_HW_GLOBAL_CUTTHRU_REG, CUT_THRU_PORTLIST | ( STPID1 << STPID1_START_POS ) );
-      
-//      //  The same for CLASS2_HW2
-//      classBase = AXI_CLASS_HW1_BASE_ADDR;
-    }
-}
+//void MDR_KX028_PortsInit( void )
+//{
+//    uint8_t ucI, classNum;
+//    uint32_t addrReg1, addrReg2; 
+////    uint32_t portCfgStruct1 = AXI_CLASS_STRUC1_FILL(KX028_PORTS_FALLBACK_ID, KX028_PORTS_TAG_ID);
+////    uint32_t portCfgStruct2 = AXI_CLASS_STRUC2_FILL(  KX028_PORTS_SHUTDOWN, 
+////                                                      KX028_PORTS_AFT,
+////                                                      KX028_PORTS_BLOCKSTATE, 
+////                                                      KX028_PORTS_DEF_CFI, 
+////                                                      KX028_PORTS_DEF_PRI, 
+////                                                      KX028_PORTS_DEF_TC,
+////                                                      KX028_PORTS_TRUSTED, 
+////                                                      KX028_PORTS_VID_PREFIX, 
+////                                                      KX028_PORTS_UNTAG_FROM_BTABLE);
+//  
+//    //uint32_t classBase = AXI_CLASS_HW1_BASE_ADDR;
+//    for( classNum = 0; classNum < 2; classNum++ )
+//    {
+//      for( ucI = 0; ucI < KX028_EMAC_NUMS; ucI++ )
+//      {
+//          addrReg1 = addrClass[classNum] + KX028_PortOffsStruct1[ucI];
+//          addrReg2 = addrClass[classNum] + KX028_PortOffsStruct2[ucI];
+//        
+//          MDR_KX028_WriteAXI( addrReg1,  portCfgStruct1);                
+//          MDR_KX028_WriteAXI( addrReg2, portCfgStruct2);
+//      }     
+//        
+//        //????????????????????????????????????????????????????????????????
+//        //wr_axi( classBase + CLASS_HW_BCAST_PORTMAP, FWD_PORT_LIST_MASK );
+//        
+//        /* Configure STP MAC details */
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_CTRL, STP_CTRL_REG_VAL );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_CTRL, 0 );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB, STP_MAC_ADDR1_LSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB, STP_MAC_ADDR1_MSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR2_LSB, STP_MAC_ADDR2_LSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_ADDR2_MSB, STP_MAC_ADDR2_MSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK1_LSB, STP_MAC_MASK1_LSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK1_MSB, STP_MAC_MASK1_MSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK2_LSB, STP_MAC_MASK2_LSB );
+//        //MDR_KX028_WriteAXI( classBase + AXI_CLASS_SNOOP_SPL_MCAST_MASK2_MSB, STP_MAC_MASK2_MSB );
+//        
+//        //wr_axi( classBase + CLASS_HW_GLOBAL_CUTTHRU_REG, CUT_THRU_PORTLIST | ( STPID1 << STPID1_START_POS ) );
+//      
+////      //  The same for CLASS2_HW2
+////      classBase = AXI_CLASS_HW1_BASE_ADDR;
+//    }
+//}
 
 
 
@@ -270,7 +270,7 @@ void MDR_KX028_Mode2_Init( uint32_t waitCyclesMax )
     MDR_KX028_VLAN_TableAdd( 1, action_entry, waitCyclesMax);
     
     Write_InitHW_Table( &sw_hwreg_enable_emac_1_to_16[0] );
-    MDR_KX028_PortsInit();
+//    MDR_KX028_PortsInit();
     
 #if MDR_KX028_DEBUG    
     Printf_InitHW_Table( &sw_hwreg_settings[0] );

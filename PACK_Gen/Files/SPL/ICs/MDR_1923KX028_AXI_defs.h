@@ -740,6 +740,7 @@ typedef enum {
   #define AXI_CLASS_PHY7_RX_PKTS              0x308
   #define AXI_CLASS_PHY8_RX_PKTS              0x330
   #define AXI_CLASS_PHY9_RX_PKTS              0x5f0
+  #define AXI_CLASS_PHY10_RX_PKTS             0x618  
   #define AXI_CLASS_PHY11_RX_PKTS             0x640
   #define AXI_CLASS_PHY12_RX_PKTS             0x668
   #define AXI_CLASS_PHY13_RX_PKTS             0x690
@@ -747,7 +748,6 @@ typedef enum {
   #define AXI_CLASS_PHY15_RX_PKTS             0x6e0
   #define AXI_CLASS_PHY16_RX_PKTS             0x708
   #define AXI_CLASS_PHY17_RX_PKTS             0x730
-  #define AXI_CLASS_PHY10_RX_PKTS             0x618
     //  Reset = 32'h0
     //- class_phy1_rx_pkts 31:0 R count for number of packets received at phy0 port
   #define AXI_CLASS_PHY1_TX_PKTS              0x120 
@@ -1554,8 +1554,8 @@ typedef enum {
     #define AXI_CLASS_PUNT_COS_SA_ACTIVE_Msk    0x000F0000UL
     #define AXI_CLASS_PUNT_COS_SNOOP_Pos        20
     #define AXI_CLASS_PUNT_COS_SNOOP_Msk        0x00F00000UL
-    #define AXI_CLASS_PUNT_COS_REQ_Pos         24
-    #define AXI_CLASS_PUNT_COS_REQ_Msk        0x0F000000UL
+    #define AXI_CLASS_PUNT_COS_REQ_Pos          24
+    #define AXI_CLASS_PUNT_COS_REQ_Msk          0x0F000000UL
     
     #define AXI_CLASS_PUNT_COS_FILL(mgm, l2, mis, rel, act, snoop, req) \
                   _VAL2FLD(AXI_CLASS_PUNT_COS_MGMT,       mgm) \

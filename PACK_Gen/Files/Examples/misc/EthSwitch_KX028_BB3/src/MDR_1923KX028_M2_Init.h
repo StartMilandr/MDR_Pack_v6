@@ -52,6 +52,10 @@ void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, u
 void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac);
 void MDR_KX028_InitETGPI(MDR_KX028_EMAC_e emac);
 
+//  EMAC GEM GXL timer increment register (0x01DC) count value has to be configured as 20 for 50Mhz
+__STATIC_INLINE void MDR_KX028_InitEMAC_TSU(MDR_KX028_EMAC_e emac)
+{ MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_TSU_TIM_INC, CFG_TSU_INC_PER_1NS); }
+
 
 //===================   Init other blocks ===================
 //void MDR_KX028_SysSoftReset(MDR_KX028_DelayMs DelayFunc);
@@ -63,6 +67,15 @@ void MDR_KX028_InitHIF(void);
 void MDR_KX028_InitClassHW1(void);
 void MDR_KX028_InitClassHW2(void);
 void MDR_KX028_InitTMU(void);
+
+//  Additional initialization - from driver (not needed by specification) - TODO check!
+void MDR_KX028_InitClassHW1_Ex(void);
+void MDR_KX028_InitClassHW2_Ex(void);
+void MDR_KX028_InitHGPI_Ex(void);
+void MDR_KX028_InitEGPI_Ex(MDR_KX028_EMAC_e emac);
+void MDR_KX028_InitETGPI_Ex(MDR_KX028_EMAC_e emac);
+void MDR_KX028_InitTMU_Ex(void);
+void MDR_KX028_InitHIF_Ex(void);
 
 __STATIC_INLINE void MDR_KX028_InitBMU_GPI_TMU_CLASS(MDR_KX028_DelayMs DelayFunc)
 {
@@ -80,10 +93,6 @@ __STATIC_INLINE void MDR_KX028_InitBMU_GPI_TMU_CLASS(MDR_KX028_DelayMs DelayFunc
 void MDR_KX028_EnableBlocks(void);
 
 
-//==================    Other Stuff ========================
-//  EMAC GEM GXL timer increment register (0x01DC) count value has to be configured as 20 for 50Mhz
-__STATIC_INLINE void MDR_KX028_InitEMAC_TSU(MDR_KX028_EMAC_e emac)
-{ MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_TSU_TIM_INC, CFG_TSU_INC_PER_1NS); }
 
 
 //===================   HGPI, HIF Init (Host) ===================

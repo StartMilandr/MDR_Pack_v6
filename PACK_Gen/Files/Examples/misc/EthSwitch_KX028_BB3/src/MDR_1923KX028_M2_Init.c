@@ -6,6 +6,8 @@ static void MDR_KX028_SetCtrlHGPI(uint32_t regValue);
 static void MDR_KX028_SetCtrlCLASS_All(uint32_t regValue);
 
 
+// ---------  BMU Initialization  -----------
+
 void MDR_KX028_InitBMU1(MDR_KX028_DelayMs DelayFunc)
 {
   // 1 - Soft reset the BMU block. After soft reset, need to wait for 100us to perform another CSR write/read.
@@ -37,14 +39,28 @@ void MDR_KX028_InitBMU2(MDR_KX028_DelayMs DelayFunc)
   MDR_KX028_WriteAXI(AXI_BMU2_BASE_ADDR + AXI_BMU_INT_ENABLE,     AXI_BMU_INT_DisALL);
 }
 
-
+// ---------  EMAC Initialization  -----------
 void MDR_KX028_InitEMAC(MDR_KX028_EMAC_e emac, uint32_t netCfgReg)
 {
-  //  Disable EMAC ports
+  // 1 - Disable EMAC ports
   MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk);
-  //  Network configuration
+  // 2 - Apply Network configuration
   MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG, netCfgReg);
 }  
+
+void MDR_KX028_InitEMAC_GEM(MDR_KX028_EMAC_e emac)
+{
+  // 1 - Programming the lower 32bit DA address register to accept all packets
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_ADDR_LO, 0x00000000 );
+  // 2 - Programming the upper 32bit DA address register to accept all packets.
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_ADDR_HI, 0x00000000 );          
+  // 3 - Programming the lower 32bit DA address mask register to accept all packets
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_L0, 0xFFFFFFFF );
+  // 4 - Programming the upper 16bit DA address mask register to accept all packets.
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_Hi, 0x0000FFFF );
+  // 5 - Enable Stacked VLAN Processing mode.
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN,       CFG_EMAC_GEM_VLAN_EN);
+}
 
 //  from Demo-Board MAC Init
 void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
@@ -78,82 +94,92 @@ void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, u
   MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct2);    
 }
 
+// ---------  GPI Initialization (EGPI/ETGPI/HGPI) -----------
+
 void MDR_KX028_InitHGPI(void)
 {
-  // LMEM buffer enable / Wait CLK count for retry allocate LMEM buffers
+  // 1 - LMEM buffer enable / Wait CLK count for retry allocate LMEM buffers
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_RX_CONFIG,         AXI_GPI_RX_CONFIG_FILL(CFG_HGPI_LMEM_BUF_EN, CFG_HGPI_RX_LMEM_BUF_RETR_WAIT_CLK));  //{ 0x00650008, 0x02000001 },
-  // LMEM first buffer header size value
+  // 2 - LMEM first buffer header size value
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_HDR_SIZE,          AXI_GPI_HDR_SIZE_FILL(CFG_HGPI_LMEM_BUF1_HRD_SIZE, CFG_HGPI_DDR_BUF1_HRD_SIZE)); //{ 0x0065000C, 0x00000030 },	
-  // LMEM buffer size value as 128 bytes
+  // 3 - LMEM buffer size value as 128 bytes
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_BUF_SIZE,          AXI_GPI_BUF_SIZE_FILL(CFG_HGPI_LMEM_BUF_SIZE, CFG_HGPI_DDR_BUF_SIZE));  //{ 0x00650010, 0x00000080 },	
-  // Address of BMU1, where buffer should be allocated
+  // 4 - Address of BMU1 / BMU2, where buffer should be allocated
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_ALLOC_ADDR,   CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_ALLOC_CTRL);       //{ 0x00650014, 0xC0100030 },	//BMU_1
-  // Address of BMU1, where buffer should be freed.
+  // 5 - Address of BMU1 / BMU2, where buffer should be freed.
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);        //{ 0x00650018, 0xC0100034 },	//BMU_1
-  // Address of Class HW INQ register where packet from peripherals are sent to.
-  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CLASS_ADDR,        CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);  //{ 0x00650024, 0xC0620010 },	//CLASS_HW_1 CLASS_INQ_PKTPTR    
-  
+  // 6 - Address of Class HW1 / HW2 INQ register where packet from peripherals are sent to.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CLASS_ADDR,        CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);  //{ 0x00650024, 0xC0620010 },	//CLASS_HW_1 CLASS_INQ_PKTPTR      
+  // 7 - LMEM header size from second buffer onwards for each buffer in chain.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE);  //{ 0x00650060, 0x00000010 },  
+  // 8 - Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_TMLF_TX,  CFG_HGPI_TX_FIFO_START_THRES);                      //{ 0x0065004C, 0x00000178 },
+  // 9 - Initial number of bytes read from received pointer in LMEM, to check for action fields.
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DTX_ASEQ, CFG_GPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },
+}  
+ 
+void MDR_KX028_InitHGPI_Ex(void)
+{  
 //  //  - from driver? VASSA -!
 //  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DDR_DATA_OFFSET,   0x00000100);         //{ 0x00650034, 0x00000100 },	//___Q no in spec  
 //  // LMEM data offset. Not applicable for NPU
-//  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010);         //{ 0x00650038, 0x00000010 },	//___Q no in spec
-  
-  // LMEM header size from second buffer onwards for each buffer in chain.
-  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE);  //{ 0x00650060, 0x00000010 },  
-  // Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
-  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_TMLF_TX,  CFG_HGPI_TX_FIFO_START_THRES);                      //{ 0x0065004C, 0x00000178 },
-  // Initial number of bytes read from received pointer in LMEM, to check for action fields.
-  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DTX_ASEQ, CFG_GPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },
+//  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010);         //{ 0x00650038, 0x00000010 },	//___Q no in spec  
 }
 
 void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac)
 {
+  //  The same like in MDR_KX028_InitHGPI
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_RX_CONFIG,          AXI_GPI_RX_CONFIG_FILL(CFG_EGPI_LMEM_BUF_EN, CFG_EGPI_RX_LMEM_BUF_RETR_WAIT_CLK));  // 0x02000001 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_HDR_SIZE,           AXI_GPI_HDR_SIZE_FILL(CFG_EGPI_LMEM_BUF1_HRD_SIZE, CFG_EGPI_DDR_BUF1_HRD_SIZE)); //0x00000030 );       //___Q in spec value 0x30
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_BUF_SIZE,           AXI_GPI_BUF_SIZE_FILL(CFG_HGPI_LMEM_BUF_SIZE, CFG_EGPI_DDR_BUF_SIZE));  //0x00000080 );       //___Q in spec value 0x80
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_ALLOC_ADDR,    CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_ALLOC_CTRL);              //0xC0100030 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_FREE_ADDR,     CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);               //0xC0100034 );
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_CLASS_ADDR,         CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);       //0xC0620010 );
-  
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_CLASS_ADDR,         CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);       //0xC0620010 );    
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET,  CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE);                               //{ 0x00650060, 0x00000010 },  
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_TMLF_TX,            CFG_EGPI_TX_FIFO_START_THRES );                                         //0x00000178
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_DTX_ASEQ,           CFG_EGPI_DTX_ASEQ_LEN);                                                 //0x00000050 );  
+}
+
+void MDR_KX028_InitEGPI_Ex(MDR_KX028_EMAC_e emac)
+{
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM2_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU2_BASE_ADDR | AXI_BMU_FREE_CTRL);         //0xC0700034 );    
   //MDR_KX028_WriteAXI ( MDR_KX028_AxiAddrEGP[emac] + AXI_GPI_DDR_DATA_OFFSET, 0x00000100 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_DATA_OFFSET,   0x00000010 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE );
-  
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_TMLF_TX,            CFG_EGPI_TX_FIFO_START_THRES );                                   //0x00000178
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_DTX_ASEQ,           CFG_EGPI_DTX_ASEQ_LEN);                                           //0x00000050 );
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM2_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU2_BASE_ADDR | AXI_BMU_FREE_CTRL);         //0xC0700034 );
 }
 
 void MDR_KX028_InitETGPI(MDR_KX028_EMAC_e emac)
 {
+  //  The same like in MDR_KX028_InitHGPI
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_RX_CONFIG,         AXI_GPI_RX_CONFIG_FILL(CFG_ETGPI_LMEM_BUF_EN, CFG_ETGPI_RX_LMEM_BUF_RETR_WAIT_CLK));  //0x02000001 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_HDR_SIZE,          AXI_GPI_HDR_SIZE_FILL(CFG_EGPI_LMEM_BUF1_HRD_SIZE, CFG_ETGPI_DDR_BUF1_HRD_SIZE)); //0x01000030 );       //___Q in spec value 0x30  -TODO ?
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_BUF_SIZE,          AXI_GPI_BUF_SIZE_FILL(CFG_HGPI_LMEM_BUF_SIZE, CFG_ETGPI_DDR_BUF_SIZE)); //0x08000080 );       //___Q in spec value 0x80  -TODO ?
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_ALLOC_ADDR,   CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_ALLOC_CTRL);              //0xC0100030 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);               //0xC0100034 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_CLASS_ADDR,        CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);       //0xC0620010 );
-  
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_DDR_DATA_OFFSET,   0x00000100 );
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010 );
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_ETGPI_LMEM_BUF_HDR_CHAIN_SIZE );
-  
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_ETGPI_LMEM_BUF_HDR_CHAIN_SIZE );  
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_TMLF_TX,           CFG_ETGPI_TX_FIFO_START_THRES);     //0x000000BC
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_DTX_ASEQ,          CFG_ETGPI_DTX_ASEQ_LEN );           //0x00000050 ); 
-  
+}
+
+void MDR_KX028_InitETGPI_Ex(MDR_KX028_EMAC_e emac)
+{
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_DDR_DATA_OFFSET,   0x00000100 );
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_CTRL,              0x00000001 );  // -TODO - (different with EGPI)?  ENABLE-?
 }
 
- 
+
+// ---------  HIF Initialization -----------
+
 void MDR_KX028_InitHIF(void)
 {
-  // TX/RX BDP read/write poll counter
+  // 1, 2 - TX/RX BDP read/write poll counter
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_TX_POLL_CTRL,  AXI_HIF_TXRX_POLL_CTRL_FILL(CFG_HIF_TX_POLL_RD_CNT, CFG_HIF_TX_POLL_WR_CNT)); //{ 0x00640004, 0x00400040 },
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_RX_POLL_CTRL,  AXI_HIF_TXRX_POLL_CTRL_FILL(CFG_HIF_RX_POLL_RD_CNT, CFG_HIF_RX_POLL_WR_CNT)); //{ 0x00640008, 0x00400040 },
-  //  Sequence number check enable / BDP Timeout / Initial sequence number to be programmed, default – 0
+  // 3 - Sequence number check enable / BDP Timeout / Initial sequence number to be programmed, default – 0
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_MISC,  AXI_HIF_MISC_FILL(CFG_HIF_SEQ_CHECK_EN, CFG_HIF_MISK_BDPRD_WRDONE, CFG_HIF_BDP_TIMEOUT_EN, CFG_HIF_SEQ_START_NUM));	//{ 0x0064000C, 0x5CC50001 },	//___Q in spec value 0x0000_0001
-  //  Timeout for BDP fetch/update, Data write/read.
-  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_TIMEOUT_REG, CFG_HIF_BDP_TIMEOUT);	                                //{ 0x00640010, 0xC92C3BCD },	//___Q no in spec    
-  // Based on the requirement need to map the TMU queue 0-7 to any of the HIF Channels
+  // 4 - Based on the requirement need to map the TMU queue 0-7 to any of the HIF Channels
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_RX_QUEUE_MAP_CH_NO_ADDR,   AXI_HIF_RX_QUEUE_MAP_CH_FILL(	          //{ 0x006400CC, 0x32103210 },	//___Q in spec value 0x3210_3210    
       CFG_HIF_RX1_TO_TMU_QUE,
       CFG_HIF_RX2_TO_TMU_QUE,
@@ -164,12 +190,20 @@ void MDR_KX028_InitHIF(void)
       CFG_HIF_RX7_TO_TMU_QUE,
       CFG_HIF_RX8_TO_TMU_QUE
     ));
-  // HIF programmable DMA busrt size. Default : 128byte
+  // 5 - HIF programmable DMA busrt size. Default : 128byte
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_DMA_BURST_SIZE_ADDR, CFG_HIF_DMA_BURST_Bytes);                     //{ 0x006400C8, 0x00000000 },    
-  
+}
+
+void MDR_KX028_InitHIF_Ex(void)
+{  
+  // Timeout for BDP fetch/update, Data write/read.
+  MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_TIMEOUT_REG, CFG_HIF_BDP_TIMEOUT);	                                //{ 0x00640010, 0xC92C3BCD },	//___Q no in spec    
   // Maximum no of packets accpeted by HIF TX for this channel when LTC pkt flow bit is enabled.
   MDR_KX028_WriteAXI(AXI_HIF1_BASE_ADDR + AXI_HIF_CH0_BASE_ADDR + AXI_HIF_CH_LTC_MAX_PKT, CFG_HIF_CH_LTC_MAX_PKT);	  //{ 0x006401E4, 0x00000004 },	//___Q no in spec
 }
+
+
+// ---------  CLASS Initialization -----------
 
 void MDR_KX028_InitClassHW1(void)
 {
@@ -192,8 +226,10 @@ void MDR_KX028_InitClassHW1(void)
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB, CFG_CLASS1_SNOOP_MCAST_ADDR_LO);                //{ 0x00620368, 0xC200000E },
   //  8 - SPL multicast address1 msb remaining 16 bits, program DA upper 16bits address of PTP packets to punt to host control channel.
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB, CFG_CLASS1_SNOOP_MCAST_ADDR_HI);                //{ 0x0062036C, 0x00000180 },    
+}  
   
-  //  ? - Punt actions for reasons
+void MDR_KX028_InitClassHW1_Ex(void)  
+{  
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_PUNT_COS,  AXI_CLASS_PUNT_COS_FILL(
         CFG_CLASS1_PUNT_COS_MGMT,
         CFG_CLASS1_PUNT_COS_L2,
@@ -219,7 +255,6 @@ void MDR_KX028_InitClassHW1(void)
 
 void MDR_KX028_InitClassHW2(void)
 {
-  //  TODO merge from home
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_HDR_SIZE,                  CFG_CLASS2_LMEM_HDR_SIZE); //{ 0x00770014, 0x00000030 },
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_TM_INQ_ADDR,               CBUS_BASE_ADDR | AXI_TMU_BASE_ADDR  | AXI_TMU_PHY_INQ_PKTPTR);  //{ 0x00770114, 0xC0600008 },
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_BMU1_BUF_FREE,             CBUS_BASE_ADDR | AXI_BMU2_BASE_ADDR | AXI_BMU_FREE_CTRL);       //{ 0x0077024C, 0xC0700034 },		//___Q must be 0xC070_0034 (BMU2)    
@@ -230,6 +265,10 @@ void MDR_KX028_InitClassHW2(void)
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_SNOOP_SPL_MCAST_MASK1_MSB, CFG_CLASS2_SNOOP_MCAST_MASK_HI); //{ 0x0077037C, 0x0000FFFF },
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB, CFG_CLASS2_SNOOP_MCAST_ADDR_LO); //{ 0x00770368, 0xC200000E },
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB, CFG_CLASS2_SNOOP_MCAST_ADDR_HI); //{ 0x0077036C, 0x00000180 },      
+}
+
+void MDR_KX028_InitClassHW2_Ex(void)
+{
   MDR_KX028_WriteAXI(AXI_CLASS_HW2_BASE_ADDR + AXI_CLASS_PUNT_COS, AXI_CLASS_PUNT_COS_FILL(
         CFG_CLASS2_PUNT_COS_MGMT,
         CFG_CLASS2_PUNT_COS_L2,
@@ -252,13 +291,10 @@ void MDR_KX028_InitClassHW2(void)
 }
 
 
+// ---------  TMU Initialization (TLITE) -----------
+
 void MDR_KX028_InitTMU(void)
 {
-  //  Threshold point above which, RTL shows INQ fifo is full
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_INQ_WATERMARK, CFG_BUF_WATERMARK_AFULL);                                 //{ 0x00600004, BUFFERS_WATERMARK_AFULL },	//TMU_INQ_WATERMARK
-  // 44 - Address of BMU, where buffer should be freed in case of drop.  
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_BMU_INQ_ADDR, CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);  //{ 0x00600100, 0xC0100034 },
-
   // 1..16 - INQ address of PORT0 is EGPI1, etc
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY0_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI1_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600200, 0xC0780030 },	//EGPI1
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY1_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI2_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600204, 0xC0790030 },	//EGPI2
@@ -292,8 +328,8 @@ void MDR_KX028_InitTMU(void)
       MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(emac, queInd));
       
       // 20 - Resetting current queue pointer.
-      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR ), 0x00000000 );
-      // 21 - AXI_MU_CURQ_PKT_CNT
+      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR ),     0x00000000 );
+      // 21 - used to configure queue for either tail drop or wred drop.
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_MU_CURQ_PKT_CNT,      0x00000000 );
       // 22 - Resetting current queue drop count value.
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DROP_CNT,    0x00000000 );
@@ -308,8 +344,7 @@ void MDR_KX028_InitTMU(void)
       // ? - TODO-?
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DEBUG,       0x00000000 );                                //___Q no in spec
     }  
-  
-  
+    
   // 27..43
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY0_TDQ_CTRL,  CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002A0, 0x0000000F },	//TMU PHY0 TDQ
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY1_TDQ_CTRL,  CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002A4, 0x0000000F },	//TMU PHY1 TDQ
@@ -327,10 +362,16 @@ void MDR_KX028_InitTMU(void)
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY13_TDQ_CTRL, CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002D4, 0x0000000F },	//TMU PHY13 TDQ
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY14_TDQ_CTRL, CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002D8, 0x0000000F },	//TMU PHY14 TDQ
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY15_TDQ_CTRL, CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002DC, 0x0000000F },	//TMU PHY15 TDQ
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_TDQ_CTRL, CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002E0, 0x0000000F },	//TMU PHY16 TDQ (host)
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_TDQ_CTRL, CFG_TMU_PHY_TDQ_CTRL);	//{ 0x006002E0, 0x0000000F },	//TMU PHY16 TDQ (host)    
+  // 44 - Address of BMU, where buffer should be freed in case of drop.  
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_BMU_INQ_ADDR, CBUS_BASE_ADDR | AXI_BMU1_BASE_ADDR | AXI_BMU_FREE_CTRL);  //{ 0x00600100, 0xC0100034 },    
 }
 
-
+void MDR_KX028_InitTMU_Ex(void)
+{
+  //  Threshold point above which, RTL shows INQ fifo is full
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_INQ_WATERMARK, CFG_BUF_WATERMARK_AFULL);                                 //{ 0x00600004, BUFFERS_WATERMARK_AFULL },	//TMU_INQ_WATERMARK
+}
 
 //=======================   Enable Blocks ====================
 static void MDR_KX028_SetCtrlBMU_All(uint32_t regValue)
@@ -357,6 +398,26 @@ static void MDR_KX028_SetCtrlEGPI_All(uint32_t regValue)
   MDR_KX028_WriteAXI(AXI_EGPI14_BASE_ADDR + AXI_GPI_CTRL,  regValue); //{ 0x00850004, 0x00000001 },         /* EGPI14 enable */
   MDR_KX028_WriteAXI(AXI_EGPI15_BASE_ADDR + AXI_GPI_CTRL,  regValue); //{ 0x00860004, 0x00000001 },         /* EGPI15 enable */
   MDR_KX028_WriteAXI(AXI_EGPI16_BASE_ADDR + AXI_GPI_CTRL,  regValue); //{ 0x00870004, 0x00000001 },         /* EGPI16 enable */
+}
+
+static void MDR_KX028_SetCtrlETGPI_All(uint32_t regValue)
+{
+  MDR_KX028_WriteAXI(AXI_ETGPI1_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI2_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI3_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI4_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI5_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI6_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI7_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI8_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI9_BASE_ADDR  + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI10_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI11_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI12_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI13_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI14_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI15_BASE_ADDR + AXI_GPI_CTRL,  regValue);
+  MDR_KX028_WriteAXI(AXI_ETGPI16_BASE_ADDR + AXI_GPI_CTRL,  regValue);
 }
 
 static void MDR_KX028_SetCtrlHGPI(uint32_t regValue)
@@ -395,16 +456,17 @@ static void MDR_KX028_EnableEMACs(void)
 __STATIC_INLINE void MDR_KX028_EnableBMU(void)   { MDR_KX028_SetCtrlBMU_All(AXI_BMU_CTRL_EN_Msk); }
 __STATIC_INLINE void MDR_KX028_EnableEGPI(void)  { MDR_KX028_SetCtrlEGPI_All(AXI_GPI_CTRL_EN_Mks); }
 __STATIC_INLINE void MDR_KX028_EnableHGPI(void)  { MDR_KX028_SetCtrlHGPI(AXI_GPI_CTRL_EN_Mks); }
+__STATIC_INLINE void MDR_KX028_EnableETGPI(void) { MDR_KX028_SetCtrlETGPI_All(AXI_GPI_CTRL_EN_Mks); }
 __STATIC_INLINE void MDR_KX028_EnableClass(void) { MDR_KX028_SetCtrlCLASS_All(AXI_CLASS_TX_CTRL_EN_Msk); }
 
 void MDR_KX028_EnableBlocks(void)
 {
-  MDR_KX028_EnableBMU();
-  MDR_KX028_EnableEGPI();
-  MDR_KX028_EnableHGPI();
-  //MDR_KX028_EnableETGPI();
-  MDR_KX028_EnableClass();
-  MDR_KX028_EnableEMACs();
+  MDR_KX028_EnableBMU();      // 1,2 - by specification
+  MDR_KX028_EnableEGPI();     // 3..18
+  MDR_KX028_EnableHGPI();     // 19
+  MDR_KX028_EnableETGPI();    // 20..35
+  MDR_KX028_EnableClass();    // 36, 37
+  MDR_KX028_EnableEMACs();    // 38..53
 }
 
 //  From demoboard

@@ -24,7 +24,9 @@ void MDR_KX028_Log(MDR_KX028_LogID logID, uint32_t value)
     case MDR_KX028_Log_Learn_WrongStructInd:
       //
       break;
-      
+    case MDR_KX028_Log_Learn_UnusedPort:
+      //
+      break;
   }
 }
 

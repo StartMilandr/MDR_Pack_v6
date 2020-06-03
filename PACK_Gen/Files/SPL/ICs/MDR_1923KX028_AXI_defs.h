@@ -32,8 +32,9 @@ typedef enum {
 //  Внутренний адрес на шине:  AXI SLAVE ADDRESS is CBUS_BASE_ADDR + SLAVE BASE ADDRESS
 //  SLAVE BASE ADDRESS - AXI адреса в данном файле
 //  CBUS_BASE_ADDR - расширитель адреса на шине, необходим при записи адресов в регистры.
-#define CBUS_BASE_ADDR    0xC0000000UL
-
+#define CBUS_BASE_ADDR              0xC0000000UL
+//  Маска для выделения базового адреса блоков
+#define AXI_BLOCKS_BASE_ADDR_MSK    0xFFE00000UL
 
 typedef enum {
     KX028_ACT_FORWARD = 0,      // Normal forward, use forward_list of MAC entry
@@ -237,8 +238,6 @@ typedef enum {
 #define AXI_LMEM6_END_OFFSET                     0x57FFFF
 #define AXI_LMEM7_END_OFFSET                     0x5FFFFF
 
-  //  Адрес с которого читается указатель на входной фрейм по шине AXI
-  #define AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF	   0x0043FFA0UL
 
   //  Маска адреса считанного из AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF
   #define KX028_FRAME_PTR_ADDR_MSK               0xFFFFFF80
@@ -1696,7 +1695,7 @@ typedef enum {
     } AXI_HASH_CMD_ID;
     
     typedef struct {
-      uint32_t cmd        : 4;    // 3..0 - AXI_HASH_CMD
+      uint32_t cmd        : 4;    // 3..0 - AXI_HASH_CMD_ID
       uint32_t reserved1  : 4;    // 7..4
       uint32_t isValidMAC1: 1;    // 8  - value in MAC1 register is Valid
       uint32_t isValidMAC2: 1;    // 9  - value in MAC2 register is Valid
@@ -1709,8 +1708,10 @@ typedef enum {
       uint32_t reserved3  : 12;   // 20..31
     } AXI_HASH_CMD_Bits;
     
+    #define AXI_HASH_CMD_ADDR_OFFS    16
+    
     typedef union {
-      uint32_t              value;
+      uint32_t           value;
       AXI_HASH_CMD_Bits  bits;
     } AXI_HASH_CMD_t;
     
@@ -1742,19 +1743,6 @@ typedef enum {
     #define AXI_HASH_STAT_ENTR_ADD               0x00000008
     #define AXI_HASH_STAT_ENTR_MATCH             0x00000010
     #define AXI_HASH_STAT_REG_CLR                0xFFFFFFFF       
-        
-    //   AXI_CLASS_DAMACHASH_HOST_MAC_ADDR3_REG def 
-    #define AXI_HASH_REG3_ENTRY_FRESH_FLAG        0x04000000
-    #define AXI_HASH_REG3_ENTRY_STATIC_FLAG       0x08000000    
-    //   AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG def 
-    #define AXI_HASH_REG4_ENTRY_VALID_FLAG        0x08000000
-    #define AXI_HASH_REG4_ENTRY_COLL_FLAG         0x04000000    
-
-    //    MAC_TABLE TWO_FIELD
-    #define MAC_TABLE_HASH_ENTRIES             0x1000
-    #define MAC_TABLE_COLL_ENTRIES             0x1000
-    #define MAC_TABLE_INIT_HEAD_PTR            0x1000
-    #define MAC_TABLE_INIT_TAIL_PTR            0x1FFF
     
     //    VLAN_TABLE
     //    AXI_CLASS_BUS_ACCESS_ADDR defs 

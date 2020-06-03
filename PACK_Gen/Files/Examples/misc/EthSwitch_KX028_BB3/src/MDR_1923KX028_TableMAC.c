@@ -19,8 +19,8 @@ static inline void AXI_WriteMAC_Regs(uint32_t classBaseAddr, uint8_t *mac, uint1
 {
   MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR1_REG, ( mac[0] << 24 | mac[1] << 16 | mac[2] << 8 | mac[3] ) );
   MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR2_REG, ( ((vlanId << 16) & 0xFFFF0000) | mac[4] << 8 | mac[5] ) );
-  //MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR3_REG, 0x00 );
-  //MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG, 0x00 );
+  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR3_REG, 0x00 );
+  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG, 0x00 );
 }
 
 static inline void AXI_ExecCommand(uint32_t classBaseAddr, uint32_t command)
@@ -60,8 +60,7 @@ MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearch(uint8_t *mac, uint16_t vlanId, u
       // Clear req entry reg
       AXI_WriteEntry(classBase, 0x0);
     }
-    else
-    { //  NOT FOUND
+    else { //  NOT FOUND
       result.value = -1;
     }
     return result;    
@@ -134,15 +133,14 @@ bool MDR_KX028_MAC_TableUpdate(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entr
   return errCnt == 0;
 }
 
+#define REG4_COLL_PTR_ADDR_START   ((CFG_MAC_TABLE_START_ADDR + CFG_MAC_TABLE_COLL_HEAD_PTR) << KX028_ItemMAC_REG4_CollizPtr_Pos)
+#define REG4_COLL_PTR_ADDR_INC     (0x1UL << KX028_ItemMAC_REG4_CollizPtr_Pos)
 
-#define REG4_COLL_PTR_MSK          0x04000000UL 
-#define REG4_COLL_PTR_ADDR_START  (REG4_COLL_PTR_MSK | 0x00100000UL)
-#define REG4_COLL_PTR_ADDR_INC     0x100UL
-#define REG4_COLL_PTR_MAC_PTR      REG4_COLL_PTR_MSK 
+#define REG4_COLL_PTR_MAC_PTR       REG4_COLL_PTR_MSK 
 
 void MDR_KX028_MAC_TableInit(uint32_t waitCyclesMax)
 {
-    uint32_t status, classNum, i, classBase, collisionPtr;
+    uint32_t status, classNum, i, classBase, REG4_collisionPtr;
 
     /* 2-field Mac table format: Table Depth - 8192(hash 4096 + collison 4096)
     *=====================================================================================*
@@ -177,26 +175,25 @@ void MDR_KX028_MAC_TableInit(uint32_t waitCyclesMax)
         MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_HOST_ENTRY_REG ), 0x0);
 
         //  Update col_ptr in AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG and Write
-        collisionPtr = REG4_COLL_PTR_ADDR_START;
-        for( i = 0; i < MAC_TABLE_HASH_ENTRIES; i++ )
+        REG4_collisionPtr = REG4_COLL_PTR_ADDR_START;
+        for (i = 0; i < CFG_MAC_TABLE_COLL_ITEMS_COUNT; i++)
         {
-            if( i == ( MAC_TABLE_HASH_ENTRIES - 1 ) ){
-                collisionPtr = REG4_COLL_PTR_MAC_PTR;    //0x40000 << 8;
-            }else{
-                collisionPtr += REG4_COLL_PTR_ADDR_INC;  //( 0x41001 + i ) << 8;
-            }
+            if (i == (CFG_MAC_TABLE_COLL_ITEMS_COUNT - 1))
+                REG4_collisionPtr = CFG_MAC_TABLE_START_ADDR << KX028_ItemMAC_REG4_CollizPtr_Pos;    //0x40000 << 8;
+            else
+                REG4_collisionPtr += REG4_COLL_PTR_ADDR_INC;                                         //( 0x41001 + i ) << 8;
 
-            MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG ), collisionPtr);
-            AXI_ExecCommand(classBase, ( ( MAC_TABLE_HASH_ENTRIES + i ) << 16 ) | AXI_HASH_CMD_ID_MEM_WRITE );
+            MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG, REG4_collisionPtr);
+            AXI_ExecCommand(classBase, ( ( CFG_MAC_TABLE_COLL_ITEMS_COUNT + i ) << AXI_HASH_CMD_ADDR_OFFS ) | AXI_HASH_CMD_ID_MEM_WRITE );
             cmdOk = AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
 
             if (!cmdOk)
               MDR_KX028_Log(MDR_KX028_Log_MAC_Table_SpaceFault, classNum);
         }
 
-        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_HEAD_PTR ), MAC_TABLE_INIT_HEAD_PTR );
-        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_TAIL_PTR ), MAC_TABLE_INIT_TAIL_PTR );
-        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_ENTRIES ), MAC_TABLE_COLL_ENTRIES );
+        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_HEAD_PTR ), CFG_MAC_TABLE_COLL_HEAD_PTR );
+        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_TAIL_PTR ), CFG_MAC_TABLE_COLL_TAIL_PTR );
+        MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_FREELIST_ENTRIES ),  CFG_MAC_TABLE_COLL_ITEMS_COUNT );
 
         MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_HOST_STATUS_REG ), AXI_HASH_STAT_REG_CLR );
         MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG ), 0x00 );
@@ -270,7 +267,7 @@ int32_t MDR_KX028_MAC_TableSprintf(char *buff, uint32_t waitCyclesMax)
         resOK = MDR_KX028_MAC_TableRead(&tableItem, entry, waitCyclesMax);
 //        taskEXIT_CRITICAL();
           
-        if( resOK && (tableItem.regMAC4 & AXI_HASH_REG4_ENTRY_VALID_FLAG) )
+        if( resOK && (tableItem.regMAC4 & KX028_ItemMAC_REG4_IsActive_Msk) )
         {
             record++;
             dataLen = sprintf( buff, "Record %d:\r\n", record );
@@ -283,12 +280,12 @@ int32_t MDR_KX028_MAC_TableSprintf(char *buff, uint32_t waitCyclesMax)
             dataLen += sprintf( &buff[dataLen], "%02x:",  ( tableItem.regMAC2 >> 8 ) & 0xFF );
             dataLen += sprintf( &buff[dataLen], "%02x\r\n", tableItem.regMAC2 & 0xFF );
 
-            if( tableItem.regMAC3 & AXI_HASH_REG3_ENTRY_FRESH_FLAG )
+            if( tableItem.regMAC3 & KX028_ItemMAC_REG3_IsFresh_Msk )
                 dataLen += sprintf( &buff[dataLen], "Fresh bit: Set\r\n" );
             else
                 dataLen += sprintf( &buff[dataLen], "Fresh bit: Reset\r\n" );
 
-            if( tableItem.regMAC3 & AXI_HASH_REG3_ENTRY_STATIC_FLAG )
+            if( tableItem.regMAC3 & KX028_ItemMAC_REG3_IsStatic_Msk )
                 dataLen += sprintf( &buff[dataLen], "Type:      Static\r\n" );
             else
                 dataLen += sprintf( &buff[dataLen], "Type:      Dynamic\r\n" );

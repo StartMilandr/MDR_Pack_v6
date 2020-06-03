@@ -11,6 +11,7 @@ typedef enum {
   MDR_KX028_Log_VLAN_Table_InitFault,
   MDR_KX028_Log_VLAN_Table_SpaceFault,
   MDR_KX028_Log_Learn_WrongStructInd,
+  MDR_KX028_Log_Learn_UnusedPort,
 } MDR_KX028_LogID;
 
 

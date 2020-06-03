@@ -56,6 +56,9 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_BMU_THRES_UCAST             CFG_BMU_UCAST_BUF_CNT
 
 
+#define CFG_BMU1_SEL_LMEM_ADDR    AXI_LMEM0_BASE_ADDR
+#define CFG_BMU2_SEL_LMEM_ADDR    AXI_LMEM4_BASE_ADDR
+
 // =================  EMAC Configs  ===============
 //  --------    Full Duplex   ---------
 //  GMII Full Duplex 1Gbps - 0x0123040A
@@ -308,7 +311,14 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 //  ====================  Slow SPI Access ===========
-#define CFG_NEW_PACKET_IN_LMEM_REG_ADDR     AXI_NEW_PACKET_IN_LMEM_REG_ADDR_DEF
+//  Адрес с которого читается указатель на входной фрейм по шине AXI (соответствует CFG_BMU2_SEL_LMEM_ADDR)
+#define CFG_NEW_PACKET_IN_LMEM_REG_ADDR          AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL     //0x0043FFA0UL
+
+//  Адрес с которого лежат данные принятого пакета в CFG_NEW_PACKET_IN_LMEM_REG_ADDR
+//  Начинается с MAC_DEST, предыдущие данные - загловки
+#define CFG_LMEM_NEW_PACKET_UNKNOWN_HEADER    32
+#define CFG_LMEM_NEW_PACKET_OFFS      (CFG_LMEM_NEW_PACKET_UNKNOWN_HEADER + CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE)
+
 
 //  TX/RX path enable, Management port enable, External TSU timer enable - 0x0080001C
 #define CFG_EMAC1_ENA_CTRL      AXI_EMAC_NETCTRL_RX_EN_Msk | AXI_EMAC_NETCTRL_TX_EN_Msk | AXI_EMAC_NETCTRL_MANAG_EN_Msk | AXI_EMAC_NETCTRL_TSU_EN_Msk
@@ -327,6 +337,15 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_EMAC14_ENA_CTRL     CFG_EMAC1_ENA_CTRL
 #define CFG_EMAC15_ENA_CTRL     CFG_EMAC1_ENA_CTRL
 #define CFG_EMAC16_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+
+
+//======================= MAC Table  ==================
+#define CFG_MAC_TABLE_START_ADDR               0x40000UL 
+
+#define CFG_MAC_TABLE_HASH_ITEMS_COUNT         0x1000
+#define CFG_MAC_TABLE_COLL_ITEMS_COUNT         0x1000
+#define CFG_MAC_TABLE_COLL_HEAD_PTR            CFG_MAC_TABLE_HASH_ITEMS_COUNT
+#define CFG_MAC_TABLE_COLL_TAIL_PTR            CFG_MAC_TABLE_COLL_HEAD_PTR + CFG_MAC_TABLE_COLL_ITEMS_COUNT - 1
 
 
 

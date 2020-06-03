@@ -19,7 +19,7 @@ void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax, uint32_t wait
 //  Обучение таблиц маршрутизации, 
 //    framesToProcessMax - сколько фреймов обработать за вызов функции
 //    возвращает количество обработанных фреймов
-uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_t waitCyclesMax);
+uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_t waitCyclesMax, uint16_t enabledPortList);
 
 
 #endif  //MDR_1923KX029_M2_TABLES_CTRL_H

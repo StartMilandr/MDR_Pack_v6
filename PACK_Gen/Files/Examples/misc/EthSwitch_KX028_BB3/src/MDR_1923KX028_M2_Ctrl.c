@@ -173,9 +173,10 @@ void MDR_KX028_Mode2_Init( uint32_t waitCyclesMax )
     uint32_t status;
     MDR_KX028_VLAN_Entry_t action_entry;
         
-    MDR_KX028_WriteAXI( AXI_BMU1_BASE_ADDR + 0x04, 0x3 );
-    MDR_KX028_WriteAXI( AXI_BMU2_BASE_ADDR + 0x04, 0x3 );
+    MDR_KX028_WriteAXI( AXI_BMU1_BASE_ADDR + AXI_BMU_CTRL, AXI_BMU_CTRL_EN_Msk | AXI_BMU_CTRL_RESET_Msk);
+    MDR_KX028_WriteAXI( AXI_BMU2_BASE_ADDR + AXI_BMU_CTRL, AXI_BMU_CTRL_EN_Msk | AXI_BMU_CTRL_RESET_Msk );
     
+  
     MDR_KX028_WriteAXI( ( AXI_WSP_GLOBAL_BASE_ADDR + 0x20 ), ( 1 << 30 ) );
     //MDR_KX028_DelayMs(1000); //    vTaskDelay( 1000 );
     MDR_KX028_WriteAXI( ( AXI_WSP_GLOBAL_BASE_ADDR + 0x20 ), 0 );

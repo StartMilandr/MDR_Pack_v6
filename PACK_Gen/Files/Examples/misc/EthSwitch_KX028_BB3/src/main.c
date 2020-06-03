@@ -29,8 +29,8 @@
 #define AGE_TIMER                 MDR_TIMER2ex
 
 
-#define PORTS_VLAN_FALLBACK         1UL
-
+#define PORTS_VLAN_FALLBACK     1UL
+#define BOARD_USED_PORT_LIST    0x7
 
 static void ModeM2_InitKX028(void);
 static void Mode2_Process(void);
@@ -85,7 +85,7 @@ static void Mode2_Process(void)
     //  Старение
     Mode2_ProcessAgeing(AGE_TIMER->TIMERx->CNT, TABLE_AGEING_PERIOD_MS);  
     //  Обучение
-    MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS);
+    MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS, BOARD_USED_PORT_LIST);
   }
 }
 

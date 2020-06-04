@@ -70,8 +70,8 @@ void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk );
 
 //  next 2 string is new in 1.1 version of firmware
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + 0x210, 0x00008020 );       //EMAC support full duplex via SGMII, next page support
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + 0x21C, 0x00002001 );       //EMAC has not next page
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_ADV,   0x00008020 );       //EMAC support full duplex via SGMII, next page support
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_NT_TX, 0x00002001 );       //EMAC has not next page
          
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG,      0x083F0C12 );       // 1G, SGMII mode, jumbo frames disable, 1536 bytes frame disable, reject error packets...      
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_TSU_TIM_INC, 0x00000014 );
@@ -83,7 +83,7 @@ void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_Hi, 0x0000FFFF );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN,       CFG_EMAC_GEM_VLAN_EN);
 
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + 0x048, 9000 );             // Jumbo
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN_JUMBO_MAX_LEN, 9000 );             // Jumbo
 }  
   
 void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 )
@@ -120,10 +120,9 @@ void MDR_KX028_InitHGPI(void)
  
 void MDR_KX028_InitHGPI_Ex(void)
 {  
-//  //  - from driver? VASSA -!
 //  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DDR_DATA_OFFSET,   0x00000100);         //{ 0x00650034, 0x00000100 },	//___Q no in spec  
-//  // LMEM data offset. Not applicable for NPU
-//  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010);         //{ 0x00650038, 0x00000010 },	//___Q no in spec  
+  // LMEM data offset. Not applicable for NPU
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_LMEM_DATA_OFFSET,  CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE);         //{ 0x00650038, 0x00000010 },	//___Q no in spec  
 }
 
 void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac)
@@ -316,21 +315,21 @@ void MDR_KX028_InitTMU(void)
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_INQ_ADDR, CBUS_BASE_ADDR | CFG_NEW_PACKET_IN_LMEM_REG_ADDR); //{ 0x00600240, CBUS_BASE_ADDR | AXI_NEW_PACKET_IN_LMEM_REG_ADDR },        //HGPI ADDRESS IN LMEM
   
   // 18 - Controls the direct/indirect access to context memory. 0 - indirect, 1 - direct  
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ACCESS_CTRL, CFG_TMU_CNTX_ACCESS_MODE); //{ 0x006002F0, 0x00000000 }, //INDIRECT ACCESS
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ACCESS_CTRL, AXI_TMU_CNTX_ACCESS_CTRL_DIRECT); //{ 0x006002F0, 0x00000000 }, //INDIRECT ACCESS
   
   //  CONTEXT MEMORY INITIALISATION
   uint32_t queInd;
   MDR_KX028_EMAC_e emac;
   for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; emac++)
-    for (queInd = 0; queInd < AXI_PHY_QUEUE_COUNT; queInd++ )
+    for (queInd = 0; queInd < AXI_TMU_PHY_QUEUE_COUNT; queInd++ )
     {
       // 19 - Select Queue
-      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(emac, queInd));
+      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(emac, queInd));
       
       // 20 - Resetting current queue pointer.
-      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR ),     0x00000000 );
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR,         0x00000000 );
       // 21 - used to configure queue for either tail drop or wred drop.
-      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_MU_CURQ_PKT_CNT,      0x00000000 );
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PKT_CNT,     0x00000000 );
       // 22 - Resetting current queue drop count value.
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DROP_CNT,    0x00000000 );
       // 23 - Resetting current queue transmitted packet count value.
@@ -341,8 +340,8 @@ void MDR_KX028_InitTMU(void)
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_HW_PROB_CFG_TBL0, 0x00000000 );
       // 26 - Resetting HW probability table1 values.
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_HW_PROB_CFG_TBL1, 0x00000000 );
-      // ? - TODO-?
-      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DEBUG,       0x00000000 );                                //___Q no in spec
+      // clr for debug
+      MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_DEBUG,       0x00000000 );
     }  
     
   // 27..43
@@ -461,6 +460,8 @@ __STATIC_INLINE void MDR_KX028_EnableClass(void) { MDR_KX028_SetCtrlCLASS_All(AX
 
 void MDR_KX028_EnableBlocks(void)
 {
+  MDR_KX028_WriteAXI( CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0);    
+  
   MDR_KX028_EnableBMU();      // 1,2 - by specification
   MDR_KX028_EnableEGPI();     // 3..18
   MDR_KX028_EnableHGPI();     // 19
@@ -469,11 +470,60 @@ void MDR_KX028_EnableBlocks(void)
   MDR_KX028_EnableEMACs();    // 38..53
 }
 
+
+static bool AXI_IndirWaitCompleted(uint32_t readyMask,  uint32_t *status, uint32_t waitCyclesMax)
+{
+  while (--waitCyclesMax)
+  {
+    *status = MDR_KX028_ReadAXI(AXI_TMU_INDIRECT_ACCESS_CMD_REG);
+    if ((*status & readyMask) == readyMask)
+      return true;
+  }
+  return false;
+}
+
+void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax)
+{
+  uint32_t que, reg;
+  uint32_t status;
+      
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ACCESS_CTRL, AXI_TMU_CNTX_ACCESS_CTRL_INDIRECT);
+
+  for(que = 0; que < AXI_TMU_PHY_QUEUE_COUNT; que++)
+    for (reg = 0; reg < AXI_TMU_IND_REG_COUNT; reg++)
+    {
+      MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_ADDR_REG, AXI_TMU_INDIRECT_ACCESS_ADDR_FILL(KX028_PORT_HOST, que, reg));
+              
+      if (reg == AXI_TMU_IND_REG_QSTAT)
+        MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_DATA_REG, AXI_TMU_IND_REG_QSTAT_TAILDROP_FILL(0, maxFrameInHostQueue));
+      else
+        MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_DATA_REG, 0 );
+
+      MDR_KX028_WriteAXI(AXI_TMU_INDIRECT_ACCESS_CMD_REG, AXI_TMU_INDIRECT_ACCESS_CMD_WRITE | AXI_TMU_INDIRECT_ACCESS_CMD_START);
+      AXI_IndirWaitCompleted(AXI_TMU_INDIRECT_ACCESS_CMD_DONE, &status, waitCyclesMax);          
+    }
+}
+
+
+
 //  From demoboard
 void MDR_KX028_SysSoftReset(MDR_KX028_DelayMs DelayFunc)
 {
+  //  TODO
+  //1 - Disable EMAC RX
+  //#define CFG_EMAC1_ENA_CTRL      AXI_EMAC_NETCTRL_RX_EN_Msk | AXI_EMAC_NETCTRL_TX_EN_Msk | AXI_EMAC_NETCTRL_MANAG_EN_Msk | AXI_EMAC_NETCTRL_TSU_EN_Msk
+  
+  //2 - Disable HIF TX DMA Engine By doing these steps, we are stopping traffic from external to NPU
+  //3 - Wait for remaining BMU Count as zero This makes sure that there is no packet inside NPU
+  //4 - Disable HIF RX DMA Engine
+  
+  //5 - Wait for 100us ( Resonable time , so that packets are send out to host)
+  DelayFunc(MDR_KX028_RESET_DLEAY_MS);  
+  //6 - Write Soft Reset bit of wsp global register
   MDR_KX028_WriteAXI(AXI_WSP_GLOBAL_BASE_ADDR + AXI_WSP_SYS_GENERIC_CONTROL, AXI_WSP_SYS_GENERIC_CONTROL_SOFT_RESET_Msk);
+  //7 - Wait for 100us
   DelayFunc(MDR_KX028_RESET_DLEAY_MS);
+  //8 - Clear Soft Reset
   MDR_KX028_WriteAXI(AXI_WSP_GLOBAL_BASE_ADDR + AXI_WSP_SYS_GENERIC_CONTROL, 0);
 }
 

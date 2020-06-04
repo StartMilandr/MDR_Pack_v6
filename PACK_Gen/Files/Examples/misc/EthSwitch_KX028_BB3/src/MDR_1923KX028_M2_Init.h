@@ -7,6 +7,8 @@
 #include <MDR_1923KX028_Config.h>
 #include <MDR_1923KX028_M2_Defs.h>
 
+//===================   Host ===================
+void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax);
 
 //===================   Init EMAC blocks ===================
 void MDR_KX028_InitEMAC(MDR_KX028_EMAC_e emac, uint32_t netCfgReg);
@@ -45,8 +47,6 @@ __STATIC_INLINE void MDR_KX028_InitEMAC_SGMII_FD_10M_def(MDR_KX028_EMAC_e emac)
 __STATIC_INLINE void MDR_KX028_InitEMAC_None(MDR_KX028_EMAC_e emac)
 { MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk); }
 
-
-void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac);  // TODO -?
 
 void MDR_KX028_InitPortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 );
 void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac);
@@ -88,6 +88,22 @@ __STATIC_INLINE void MDR_KX028_InitBMU_GPI_TMU_CLASS(MDR_KX028_DelayMs DelayFunc
   MDR_KX028_InitTMU();
 }
 
+__STATIC_INLINE void MDR_KX028_InitBMU_GPI_TMU_CLASS_ex(MDR_KX028_DelayMs DelayFunc)
+{
+  MDR_KX028_InitClassHW1_Ex();
+  MDR_KX028_InitClassHW2_Ex();
+  MDR_KX028_InitHGPI_Ex();
+  MDR_KX028_InitTMU_Ex();
+  MDR_KX028_InitHIF_Ex();
+  
+  MDR_KX028_EMAC_e emac;
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
+  {
+    MDR_KX028_InitEGPI_Ex(emac);
+    MDR_KX028_InitETGPI_Ex(emac);
+  }
+}
+
 
 //==================    Enable Blocks =================
 void MDR_KX028_EnableBlocks(void);
@@ -102,5 +118,11 @@ void MDR_KX028_InitHIF(void);
 //==================    from Demo-Board code ========================
 //  Sync with PCIe driver -? TODO
 void MDR_KX028_SysSoftReset(MDR_KX028_DelayMs DelayFunc);
+
+//==================    for debug =====================
+void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac);  // TODO -?
+
+
+
 
 #endif  //MDR_1923KX029_MODE2_INIT_H

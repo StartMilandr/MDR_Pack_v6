@@ -25,6 +25,7 @@ typedef enum {
     KX028_EMAC_NUMS
 } MDR_KX028_EMAC_e;
 
+#define KX028_PORT_HOST             17
 #define AXI_CLASS_HOST_COUNT        1
 #define AXI_CLASS_PORT_COUNT        (KX028_EMAC_NUMS + AXI_CLASS_HOST_COUNT) 
 
@@ -274,7 +275,7 @@ typedef enum {
 #define AXI_TMU_BASE_ADDR                        0x600000
 #define AXI_TMU_END_OFFSET                       0x60FFFF
 
-#define AXI_PHY_QUEUE_COUNT   8
+#define AXI_TMU_PHY_QUEUE_COUNT   8
 
 
   #define AXI_TMU_VERSION             0x00
@@ -300,7 +301,7 @@ typedef enum {
     //  Reset = 32'h0
     //- tmu_phy_inq_stat 31:0 R shows INQ fifo count and wr/rd address;{tmu_inq_fifo_cnt, inq_rd_ptr(8), inq_wr_ptr(8)}
 
-  #define AXI_PHY_QUEUE_SEL           0x34 
+  #define AXI_TMU_PHY_QUEUE_SEL       0x34 
     //  Reset = 12'b0
     //- csr_queue_sel 2:0 R/W Direct Access; NA for NPU_AVB; 
     //- csr_phy_sel 12:8 R/W Direct Access; NA for NPU_AVB;   
@@ -319,7 +320,7 @@ typedef enum {
   #define AXI_TMU_CURQ_PTR            0x38 
     //  Reset = 32'b0
     //- csr_curq_ptr 31:0 R/W Direct Access; NA for NPU_AVB; used to configure queue for either tail drop or wred drop. 
-  #define AXI_MU_CURQ_PKT_CNT         0x3c 
+  #define AXI_TMU_CURQ_PKT_CNT        0x3c 
     //  Reset = 32'b0
     //- csr_pkt_cnt 31:0 R/W Direct Access; NA for NPU_AVB; used to configure queue for either tail drop or wred drop.
   #define AXI_TMU_CURQ_DROP_CNT       0x40 
@@ -448,6 +449,7 @@ typedef enum {
     //  1 --> direct. SW should only use indirect access
     #define AXI_TMU_CNTX_ACCESS_CTRL_INDIRECT   0
     #define AXI_TMU_CNTX_ACCESS_CTRL_DIRECT     1
+    
   #define AXI_TMU_CNTX_ADDR           0x2F4 
     //  Reset = 20'b0
     //- csr_cntx_ind_addr 15:0 R/W write the context memory address to this register.
@@ -463,6 +465,8 @@ typedef enum {
     //   6: curQ_hw_prob_cfg_tbl1 
     //   7: curQ_dbg
     //- csr_cntx_ind_phy_no 20:16 R/W Phy no field
+    #define AXI_TMU_PHY_QUEUE_REG_CNT   8
+    
   #define AXI_TMU_CNTX_DATA           0x2F8 
     //  Reset = 32'b0
     //- csr_cntx_ind_data 31:0 R/W it will have the read/write data based on the command
@@ -534,13 +538,58 @@ typedef enum {
     //  only 17 PHYs, so valid range is x01000 to x11fff
 
 
-#define AXI_TMU_INDIRECT_ACCESS_PAR1_REG	     AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ADDR
-#define AXI_TMU_INDIRECT_ACCESS_PAR2_REG	     AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_DATA
+#define AXI_TMU_INDIRECT_ACCESS_ADDR_REG	     AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ADDR        
+    #define AXI_TMU_INDIRECT_REG_Pos           0
+    #define AXI_TMU_INDIRECT_REG_Msk           0x00000007UL
+    #define AXI_TMU_INDIRECT_QUEUE_Pos         3
+    #define AXI_TMU_INDIRECT_QUEUE_Msk         0x00000038UL
+    #define AXI_TMU_INDIRECT_PHY_Pos           16
+    #define AXI_TMU_INDIRECT_PHY_Msk           0x001F0000UL
+    
+    #define AXI_TMU_INDIRECT_ACCESS_ADDR_FILL(phy, que, reg)  \
+              _VAL2FLD(AXI_TMU_INDIRECT_REG,    phy) \
+            | _VAL2FLD(AXI_TMU_INDIRECT_QUEUE,  que) \
+            | _VAL2FLD(AXI_TMU_INDIRECT_PHY,    reg)
+            
+    #define AXI_TMU_IND_REG_CURQ_PTR    0
+    #define AXI_TMU_IND_REG_PKT_CNT     1
+    #define AXI_TMU_IND_REG_DROP_CNT    2
+    #define AXI_TMU_IND_REG_TRANS_CNT   3
+    #define AXI_TMU_IND_REG_QSTAT       4
+        #define AXI_TMU_IND_REG_QSTAT_TailDrop_Msk  0x1
+        #define AXI_TMU_IND_REG_QSTAT_WRED_Msk      0x2
+        #define AXI_TMU_IND_REG_QSTAT_QMIN_Pos      2
+        #define AXI_TMU_IND_REG_QSTAT_QMIN_Msk      0x000007FCUL
+        #define AXI_TMU_IND_REG_QSTAT_QMAX_Pos      11
+        #define AXI_TMU_IND_REG_QSTAT_QMAX_Msk      0x000FF800UL
+
+        // In case of tail drop, if the curQ_pkt_cnt >= curQ_Qmax, the packets will be droped. 
+        #define AXI_TMU_IND_REG_QSTAT_TAILDROP_FILL(Qmin, Qmax) \
+                          AXI_TMU_IND_REG_QSTAT_TailDrop_Msk \
+                        | _VAL2FLD(AXI_TMU_IND_REG_QSTAT_QMIN,  Qmin) \
+                        | _VAL2FLD(AXI_TMU_IND_REG_QSTAT_QMAX,  Qmax)
+    
+        //In case of WRED, if the packet count is more than or equal to curQ_Qmax or curQ_pkt_cnt > curQ_min and with probability packets are dropped.
+        #define AXI_TMU_IND_REG_QSTAT_WRED_FILL(Qmin, Qmax) \
+                          AXI_TMU_IND_REG_QSTAT_WRED_Msk \
+                        | _VAL2FLD(AXI_TMU_IND_REG_QSTAT_QMIN,  Qmin) \
+                        | _VAL2FLD(AXI_TMU_IND_REG_QSTAT_QMAX,  Qmax)        
+
+    #define AXI_TMU_IND_REG_CFG_TBL0    5
+    #define AXI_TMU_IND_REG_CFG_TBL1    6
+    #define AXI_TMU_IND_REG_DEBUG       7
+    
+    #define AXI_TMU_IND_REG_COUNT       8
+            
+    
+#define AXI_TMU_INDIRECT_ACCESS_DATA_REG	     AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_DATA
 #define AXI_TMU_INDIRECT_ACCESS_CMD_REG	       AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_CMD    
     #define AXI_TMU_INDIRECT_ACCESS_CMD_READ	     0x0
     #define AXI_TMU_INDIRECT_ACCESS_CMD_WRITE	     0x1
     #define AXI_TMU_INDIRECT_ACCESS_CMD_START	     0x2
     #define AXI_TMU_INDIRECT_ACCESS_CMD_DONE	     0x4
+    
+    
 
 
 // ---------------------- CLASS_HW - аппаратный классификатор -------------------
@@ -2597,6 +2646,10 @@ typedef enum {
   #define AXI_EMAC_GEM_VLAN        0x00C0
     #define AXI_EMAC_GEM_VLAN_EN_Pos  31
     #define AXI_EMAC_GEM_VLAN_EN_Msk  0x80000000UL
+  
+  #define AXI_EMAC_PCS_AN_ADV         0x210
+  #define AXI_EMAC_PCS_AN_NT_TX       0x21C 
+  #define AXI_EMAC_MAN_JUMBO_MAX_LEN  0x048    
   
   //  MAC_TSU
   #define AXI_EMAC_TSU_TIM_INC    0x01DC

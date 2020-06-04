@@ -31,9 +31,9 @@ typedef struct {
 #define MDR_KX028_VLAN_ENTRY_MSTP_ACT_POS              52
 
 //#define MDR_KX028_FWD_PORT_LIST_MASK                   0x1FFFF
-#define MDR_KX028_FWD_PORT_LIST_MASK                   0x0FFFF
+//#define MDR_KX028_FWD_PORT_LIST_MASK                   0x0FFFF
 
-#define MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK              MDR_KX028_FWD_PORT_LIST_MASK       // 00 - 19
+#define MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK              0x000000000000FFFF       // 00 - 19
 #define MDR_KX028_VLAN_ENTRY_UNTAG_LIST_MASK                 0x000000FFFFF00000       // 20 - 39
 #define MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_MASK              0x0000070000000000       // 40 - 42
 #define MDR_KX028_VLAN_ENTRY_MCAST_HIT_ACT_MASK              0x0000380000000000       // 43 - 45
@@ -41,13 +41,18 @@ typedef struct {
 #define MDR_KX028_VLAN_ENTRY_MCAST_MISS_ACT_MASK             0x000E000000000000       // 49 - 51
 #define MDR_KX028_VLAN_ENTRY_MSTP_ACT_MASK                   0x0070000000000000       // 52 - 54
 
-#define MDR_KX028_FILL_VLAN_ENTRY(fpl, utl, uha, mha, uma, mma, mstp)   ((( uint64_t )(fpl) & MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK) \
+#define MDR_KX028_VLAN_ENTRY_FILL(ports, utl, uha, mha, uma, mma, mstp)   \
+      ((( uint64_t )(ports) & MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK) \
     | ((( uint64_t )(utl) << MDR_KX028_VLAN_ENTRY_UNTAG_LIST_POS)     & MDR_KX028_VLAN_ENTRY_UNTAG_LIST_MASK)      \
     | ((( uint64_t )(uha) << MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_POS)  & MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_MASK)   \
     | ((( uint64_t )(mha) << MDR_KX028_VLAN_ENTRY_MCAST_HIT_ACT_POS)  & MDR_KX028_VLAN_ENTRY_MCAST_HIT_ACT_MASK)   \
     | ((( uint64_t )(uma) << MDR_KX028_VLAN_ENTRY_UCAST_MISS_ACT_POS) & MDR_KX028_VLAN_ENTRY_UCAST_MISS_ACT_MASK)  \
     | ((( uint64_t )(mma) << MDR_KX028_VLAN_ENTRY_MCAST_MISS_ACT_POS) & MDR_KX028_VLAN_ENTRY_MCAST_MISS_ACT_MASK)  \
     | ((( uint64_t )(mstp) << MDR_KX028_VLAN_ENTRY_MSTP_ACT_POS)  & MDR_KX028_VLAN_ENTRY_MSTP_ACT_MASK))   \
+
+#define MDR_KX028_VLAN_ENTRY_FILL_FORW_ALL(ports, untPorts)   \
+                         ((( uint64_t )(ports) & MDR_KX028_VLAN_ENTRY_FWD_PORT_LIST_MASK) \
+                       | ((( uint64_t )(untPorts) << MDR_KX028_VLAN_ENTRY_UNTAG_LIST_POS) & MDR_KX028_VLAN_ENTRY_UNTAG_LIST_MASK))
 
 
 typedef struct {

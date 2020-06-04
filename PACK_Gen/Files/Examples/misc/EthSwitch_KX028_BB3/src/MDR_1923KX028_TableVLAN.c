@@ -106,12 +106,6 @@ MDR_KX028_VLAN_Entry_t MDR_KX028_VLAN_TableSearch(uint16_t vlanid, uint32_t wait
   return result;    
 }
 
-
-bool MDR_KX028_VLAN_TableAdd(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry, uint32_t waitCyclesMax)
-{
-    uint32_t status, classNum, classBase;//, entry1, entry2;
-    bool result = true;
-
     /* vlan group table format *
     *======================================================================*
     * valid bits | col_ptr | portNo | field_valids | action entry | vlan   *
@@ -129,6 +123,12 @@ bool MDR_KX028_VLAN_TableAdd(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry, ui
     * [51:49]       - mcast_miss_action
     * [54-52]       - Not used yet
     *=======================================*/
+
+
+bool MDR_KX028_VLAN_TableAdd(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry, uint32_t waitCyclesMax)
+{
+    uint32_t status, classNum, classBase;//, entry1, entry2;
+    bool result = true;
     
     classBase = AXI_CLASS_HW1_BASE_ADDR;
     for( classNum = 1; classNum <= 2; classNum++ )

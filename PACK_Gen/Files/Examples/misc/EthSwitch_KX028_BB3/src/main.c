@@ -28,13 +28,15 @@
 #define TIM_AGEING_PSC 		        TABLE_AGEING_PERIOD_MS * TIM_PSC_144MHZ_TO_1MS
 #define AGE_TIMER                 MDR_TIMER2ex
 
+// Максимальное количество пакетов в очереди которое TMU отдает на HOST. 
+// Если придут пакеты при заполненной очереди, то они отбрасываются. (Чтобы хост успевал отрабатывать)
+#define HOST_LEARN_QUEUE_LEN    3
 
 #define PORTS_VLAN_FALLBACK     1UL
-#define BOARD_USED_PORT_LIST    0x7
 
-static void ModeM2_InitKX028(void);
+static uint32_t ModeM2_InitKX028(void);
 static void Mode2_Process(void);
-static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod);
+static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount);
 
 int main(void)
 {
@@ -76,16 +78,19 @@ static void Mode2_Process(void)
 	MDR_Timer_Start(AGE_TIMER);  
    
   // Инициализация 1923KX028
-  ModeM2_InitKX028();  
+  uint32_t usedPortList = ModeM2_InitKX028();  
   MDR_KX028_M2_InitTables(TABLES_TIMEOUT_READY_READS);
+  //  User VLAN Init
+  MDR_KX028_VLAN_Entry_t  action_entry = {.value = MDR_KX028_VLAN_ENTRY_FILL_FORW_ALL(usedPortList, 0)};  // 0 - untagged port list
+  MDR_KX028_VLAN_TableAdd( 1, action_entry, TABLES_TIMEOUT_READY_READS);  
   
   //  Process
   while (1)
   {
     //  Старение
-    Mode2_ProcessAgeing(AGE_TIMER->TIMERx->CNT, TABLE_AGEING_PERIOD_MS);  
+    Mode2_ProcessAgeing(AGE_TIMER->TIMERx->CNT, TABLE_AGEING_PERIOD_MS, TABLES_AGING_CNT_PER_ITERATION);  
     //  Обучение
-    MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS, BOARD_USED_PORT_LIST);
+    MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS, usedPortList);
   }
 }
 
@@ -94,7 +99,7 @@ void DelayMs(uint32_t delayMs)
 
 }
 
-static void ModeM2_InitKX028(void)
+static uint32_t ModeM2_InitKX028(void)
 {
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC1);
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC2);
@@ -105,18 +110,24 @@ static void ModeM2_InitKX028(void)
   for (emac = KX028_EMAC4; emac < KX028_EMAC_NUMS; ++emac)
     MDR_KX028_InitEMAC_None(emac);
   
-  for (emac = KX028_EMAC4; emac < KX028_EMAC_NUMS; ++emac)
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
   {
     MDR_KX028_InitPortStruct(emac, KX028_PORTS_STRUC1_DEF(PORTS_VLAN_FALLBACK), KX028_PORTS_STRUC2_DEF);
   }  
   
   MDR_KX028_InitBMU_GPI_TMU_CLASS(DelayMs);
+  //MDR_KX028_InitBMU_GPI_TMU_CLASS_ex(); - extra init from demoBoard
+  
+  MDR_KX028_M2_HostPort_InitTailDrop(HOST_LEARN_QUEUE_LEN, TABLES_TIMEOUT_READY_READS);
+  
   MDR_KX028_EnableBlocks();
+  
+  return (1 << KX028_EMAC1) | (1 << KX028_EMAC2) | (1 << KX028_EMAC3); // Mask of used Ports
 }
 
-static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod)
+static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount)
 {
-  int32_t  cntToAgeing = 0;
+  static int32_t  cntToAgeing = 0;
   int32_t  cntItems;
   uint32_t lastStart;
   
@@ -130,9 +141,10 @@ static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod)
   //  Process ageing
   if (cntToAgeing > 0) 
   {
-    cntItems = cntToAgeing - TABLES_AGING_CNT_PER_ITERATION;
+    cntItems = cntToAgeing - procItemsCount;
     if (cntItems < 0)
-      cntItems = TABLES_AGING_CNT_PER_ITERATION - cntToAgeing;
+      cntItems = procItemsCount - cntToAgeing;
+    
     MDR_KX028_M2_ProcessTablesAgeing(cntItems, TABLES_TIMEOUT_READY_READS);
     cntToAgeing -= cntItems;
   }

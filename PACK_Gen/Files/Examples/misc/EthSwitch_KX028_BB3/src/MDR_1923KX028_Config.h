@@ -307,7 +307,6 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 //  TMU
 #define CFG_TMU_PHY_TDQ_CTRL      AXI_TMU_PHY_TDQ_EN_ALL
-#define CFG_TMU_CNTX_ACCESS_MODE  AXI_TMU_CNTX_ACCESS_CTRL_INDIRECT
 
 
 //  ====================  Slow SPI Access ===========

@@ -1,5 +1,5 @@
-#ifndef  MDR_1923KX028_TABLE_VLAN_H
-#define  MDR_1923KX028_TABLE_VLAN_H
+#ifndef  MDR_1923KX028_M2_TABLE_VLAN_H
+#define  MDR_1923KX028_M2_TABLE_VLAN_H
 
 #include <MDR_1923KX028.h>
 #include <MDR_1923KX028_AXI_defs.h>
@@ -87,4 +87,4 @@ bool MDR_KX028_VLAN_TableRead( MDR_KX028_VLAN_TableItem *tableItem, uint16_t has
 uint32_t MDR_KX028_VLAN_TableSprintf(char *buff, uint32_t waitCyclesMax);
 
 
-#endif // MDR_1923KX028_TABLE_VLAN_H
+#endif // MDR_1923KX028_M2_TABLE_VLAN_H

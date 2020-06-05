@@ -45,6 +45,22 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define KX028_SOFT_RESET_DELAY_MS     100
 
 
+// =================  PC Driver Acknowledge  ===============
+#define CFG_KX028_PC_ACK_ADDR    0
+#define CFG_KX028_PC_ACK_MSK     0xFFFFUL
+#define CFG_KX028_PC_ACK_READY   0x16C3UL
+
+#define CFG_KX028_PC_MAJOR_FW_VERSION        1
+#define CFG_KX028_PC_MINOR_FW_VERSION        2
+
+#define CFG_KX028_PC_REG_CMD                 0x814
+#define CFG_KX028_PC_REG_STATUS              0x5C
+#define CFG_KX028_PC_REG_DATA1               0x58
+#define CFG_KX028_PC_REG_DATA2               0x54
+
+#define CFG_KX028_PC_TEST_DATA1  0x09080706
+#define CFG_KX028_PC_TEST_DATA2  0x19181700
+
 // =================  BMU Configs  ===============
 // Program for Maximum buffer count as 2048 (i.e. 256K memory accommodating, 2048 buffers of size 128 bytes) - 0x800
 #define CFG_BMU_UCAST_BUF_CNT           AXI_BMU_UCAST_BUF_CNT_MAX

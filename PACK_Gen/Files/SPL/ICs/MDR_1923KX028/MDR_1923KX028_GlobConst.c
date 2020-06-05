@@ -1,4 +1,4 @@
-#include <MDR_1923KX028_M2_Defs.h>
+#include <MDR_1923KX028_GlobConst.h>
 
 const uint32_t MDR_KX028_AxiAddrEMAC[KX028_EMAC_NUMS] =
 {

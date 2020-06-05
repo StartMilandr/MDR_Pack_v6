@@ -787,14 +787,14 @@ typedef struct {
 
 #define MDR_1923KX028_Ctrl18_TxPreEmphPhy13_Pos     0
 #define MDR_1923KX028_Ctrl18_TxPreEmphPhy13_Msk     0x0000007FUL
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy14_Pos    7
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy14_Msk    0x00003F80UL
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy15_Pos    14
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy15_Msk    0x001FC000UL
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy16_Pos    21
-#define MDR_1923KX028_Ctrl18_TxPreEmphPhy16_Msk    0x0FE00000UL
-#define MDR_1923KX028_Ctrl18_SelPhyToShowSpeed_Pos 28
-#define MDR_1923KX028_Ctrl18_SelPhyToShowSpeed_Msk 0xF0000000UL
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy14_Pos     7
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy14_Msk     0x00003F80UL
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy15_Pos     14
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy15_Msk     0x001FC000UL
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy16_Pos     21
+#define MDR_1923KX028_Ctrl18_TxPreEmphPhy16_Msk     0x0FE00000UL
+#define MDR_1923KX028_Ctrl18_SelPhyToShowSpeed_Pos  28
+#define MDR_1923KX028_Ctrl18_SelPhyToShowSpeed_Msk  0xF0000000UL
 
 typedef union {
   __IOM uint32_t             value;
@@ -827,6 +827,13 @@ typedef struct {
 #define MDR_1923KX028_Ctrl19_TxTermOffsPhy5_Msk     0x01F00000UL
 #define MDR_1923KX028_Ctrl19_TxTermOffsPhy6_Pos     25
 #define MDR_1923KX028_Ctrl19_TxTermOffsPhy6_Msk     0x3E000000UL
+
+#define MDR_1923KX028_Ctrl19_TxTermOffsPhy1_6_Msk   ( MDR_1923KX028_Ctrl19_TxTermOffsPhy1_Msk \
+                                                    | MDR_1923KX028_Ctrl19_TxTermOffsPhy2_Msk \
+                                                    | MDR_1923KX028_Ctrl19_TxTermOffsPhy3_Msk \
+                                                    | MDR_1923KX028_Ctrl19_TxTermOffsPhy4_Msk \
+                                                    | MDR_1923KX028_Ctrl19_TxTermOffsPhy5_Msk \
+                                                    | MDR_1923KX028_Ctrl19_TxTermOffsPhy6_Msk )
 
 typedef union {
   __IOM uint32_t             value;
@@ -863,6 +870,13 @@ typedef struct {
 #define MDR_1923KX028_Ctrl20_PorUccIOEn_Pos         31
 #define MDR_1923KX028_Ctrl20_PorUccIOEn_Msk         0x80000000UL
 
+#define MDR_1923KX028_Ctrl20_TxTermOffsPhy7_12_Msk   (MDR_1923KX028_Ctrl20_TxTermOffsPhy7_Msk \
+                                                    | MDR_1923KX028_Ctrl20_TxTermOffsPhy8_Msk \
+                                                    | MDR_1923KX028_Ctrl20_TxTermOffsPhy9_Msk \
+                                                    | MDR_1923KX028_Ctrl20_TxTermOffsPhy10_Msk \
+                                                    | MDR_1923KX028_Ctrl20_TxTermOffsPhy11_Msk \
+                                                    | MDR_1923KX028_Ctrl20_TxTermOffsPhy12_Msk )
+
 typedef union {
   __IOM uint32_t             value;
   MDR_1923KX028_Ctrl20_Bits  bits;
@@ -897,6 +911,11 @@ typedef struct {
 #define MDR_1923KX028_Ctrl21_SscRefClkSel_Msk      0x7FC00000UL
 #define MDR_1923KX028_Ctrl21_Lane10BitSel_Pos      31
 #define MDR_1923KX028_Ctrl21_Lane10BitSel_Msk      0x80000000UL
+
+#define MDR_1923KX028_Ctrl21_TxTermOffsPhy13_16_Msk  (MDR_1923KX028_Ctrl21_TxTermOffsPhy13_Msk \
+                                                    | MDR_1923KX028_Ctrl21_TxTermOffsPhy14_Msk \
+                                                    | MDR_1923KX028_Ctrl21_TxTermOffsPhy15_Msk \
+                                                    | MDR_1923KX028_Ctrl21_TxTermOffsPhy16_Msk)
 
 typedef union {
   __IOM uint32_t             value;

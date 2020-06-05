@@ -1,6 +1,6 @@
 #include <MDR_1923KX028_M2_TablesCtrl.h>
 #include <MDR_1923KX028_ErrLog.h>
-#include <MDR_1923KX028_M2_Defs.h>
+#include <MDR_1923KX028_GlobConst.h>
 
 static void MDR_KX028_MAC_DeleteTableItem(MDR_KX028_MAC_TableItem_t *tableItem, uint32_t waitCyclesMax)
 {
@@ -35,7 +35,7 @@ static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tabl
 }
 
 
-static inline void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32_t waitCyclesMax)
+void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32_t waitCyclesMax)
 {
   uint32_t coll_ptr = 0;
   MDR_KX028_MAC_TableItem_t tableItem;
@@ -82,18 +82,19 @@ static inline void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32
 }
 
 
-void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax, uint32_t waitCyclesMax)
+//void MDR_KX028_M2_ProcessTablesAgeing(uint32_t framesToProcessMax, uint32_t waitCyclesMax)
+uint16_t MDR_KX028_M2_ProcessTablesAgeing(uint16_t framesToProcessMax, uint16_t fromHashAddr, uint32_t waitCyclesMax)
 {
-    uint16_t i;
-    static uint16_t hashAddr = 0;
-
-    for (i = 0; i <  framesToProcessMax; i++)
-    {
-      MDR_KX028_M2_ProcessTableItemAgeing(hashAddr, waitCyclesMax);
-      hashAddr += 1;
-      if (hashAddr >= MDR_KX028_MAC_TABLE_LEN)
-        hashAddr = 0;
-    }
+  uint16_t i;  
+  for (i = 0; i <  framesToProcessMax; i++)
+  {
+    MDR_KX028_M2_ProcessTableItemAgeing(fromHashAddr, waitCyclesMax);
+    fromHashAddr += 1;
+    if (fromHashAddr >= MDR_KX028_MAC_TABLE_LEN)
+      fromHashAddr = 0;
+  }
+  
+  return fromHashAddr; 
 }
 
 

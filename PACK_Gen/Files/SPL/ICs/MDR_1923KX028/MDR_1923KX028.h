@@ -52,6 +52,7 @@ void MDR_1923KX028_Write(MDR_1923KX028_Obj *objKX028, uint32_t addr24, uint32_t 
 void MDR_1923KX028_CS_SetActive(const MDR_1923KX028_Obj *objKX028);
 void MDR_1923KX028_CS_SetInactive(const MDR_1923KX028_Obj *objKX028);
 
+
 //  ----------------    AXI Bus control ------------------
 
 //  Функции для последовательного чтения с некоторого адреса
@@ -132,6 +133,10 @@ void     MDR_KX028_ReadBeginAXI_def(uint32_t fromAddr);
 uint32_t MDR_KX028_ReadNextAXI_def(void);
 void     MDR_KX028_ReadEndAXI_def(void);
 
+
+//  ----------------    Registers control ------------------
+uint32_t  MDR_KX028_ReadReg (uint32_t addr);
+void      MDR_KX028_WriteReg(uint32_t addr, uint32_t data);
 
 
 #endif  //MDR_1923KX028_H

@@ -9,13 +9,21 @@
 #include "ePHY_Ctrl.h"
 #include "Reset_Ctrl.h"
 
+#include <MDR_1923KX028_M0_Ctrl.h>
+#include <MDR_1923KX028_M0_TransferPC.h>
+
 #include <MDR_1923KX028_M2_Init.h>
 #include <MDR_1923KX028_M2_TablesCtrl.h>
+#include <MDR_1923KX028_M2_Stats.h>
 #include <MDR_1923KX028_Config.h>
 
-//  Table Processing
-#define TABLES_AGING_CNT_PER_ITERATION   10 // MDR_KX028_MAC_TABLE_LEN
+
+
+//  Сколько Items обрабатывать за один вызвов Learn/Ageing/StatsUpdate
+#define TABLES_AGING_CNT_PER_ITERATION   10
 #define TABLES_LEARN_CNT_PER_ITERATION   10
+#define STATS_UPDATE_ITERATION           1
+
 //  Таймаут ожидании окончания операции, в количествах чтения регистра статуса
 #define TABLES_TIMEOUT_READY_READS       100
 
@@ -23,20 +31,29 @@
 #define TIM_BRG_144MHZ_TO_1MS 		MDR_Div128P_div32
 #define TIM_PSC_144MHZ_TO_1MS 		4000
 //  Таймер старения, текущее время берется из Timer->CNT, 
-#define TABLE_AGEING_PERIOD_MS    10
-#define TIM_AGEING_BRG            TIM_BRG_144MHZ_TO_1MS
-#define TIM_AGEING_PSC 		        TABLE_AGEING_PERIOD_MS * TIM_PSC_144MHZ_TO_1MS
+#define TABLE_AGEING_PERIOD_MIN   5
+#define TABLE_AGEING_PERIOD_MS    (60 * 1000 * TABLE_AGEING_PERIOD_MIN)
 #define AGE_TIMER                 MDR_TIMER2ex
+
+#define STATS_UPDATE_PERIOD_MS    TABLE_AGEING_PERIOD_MS
 
 // Максимальное количество пакетов в очереди которое TMU отдает на HOST. 
 // Если придут пакеты при заполненной очереди, то они отбрасываются. (Чтобы хост успевал отрабатывать)
 #define HOST_LEARN_QUEUE_LEN    3
 
 #define PORTS_VLAN_FALLBACK     1UL
+#define PORTS_CNT_ON_BOARD      3
 
+//  Mode2 Process
 static uint32_t ModeM2_InitKX028(void);
 static void Mode2_Process(void);
+//  Ageing
 static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount);
+//  Statistics
+MDR_KX028_StatsEMAC_t    statsEMAC[PORTS_CNT_ON_BOARD];
+static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount);
+
+static void Mode0_Process(void);
 
 int main(void)
 {
@@ -57,11 +74,13 @@ int main(void)
   
   MDR_1923KX028_Mode modeKX028 = KX028_GetMode();
   switch (modeKX028) {
-    case MDR_1923KX028_Mode0_PCIe: break;
-    case MDR_1923KX028_Mode1_ExtFlash: break;
+    case MDR_1923KX028_Mode0_PCIe: 
+      Mode0_Process();  
+      break;
     case MDR_1923KX028_Mode2_SlaveSPI: 
       Mode2_Process();
       break;
+    case MDR_1923KX028_Mode1_ExtFlash: break;    
     case MDR_1923KX028_Mode3_Uncontrolled: break;
   }
   
@@ -71,10 +90,29 @@ int main(void)
   }
 }
 
+
+void DelayMs(uint32_t delayMs)
+{
+
+}
+
+//===========  MODE0: PC Driver - PCIe Control  ============
+static void Mode0_Process(void)
+{
+  MDR_KX028_M0_WaitPC_DriverReady();
+  MDR_KX028_M0_SetupBars();
+  
+  while (1)
+  {
+    MDR_KX028_M0_TransferPC();
+  }
+}
+
+//===========  MODE2: - SlaveSPI  ============
 static void Mode2_Process(void)
 {
-  // Таймер старения
-  MDR_Timer_InitPeriod(AGE_TIMER, TIM_AGEING_BRG, TIM_AGEING_PSC, TIM_MAX_VALUE, false);
+  // Таймер старения, отсчет - 1мс
+  MDR_Timer_InitPeriod(AGE_TIMER, TIM_BRG_144MHZ_TO_1MS, TIM_PSC_144MHZ_TO_1MS, TIM_MAX_VALUE, false);
 	MDR_Timer_Start(AGE_TIMER);  
    
   // Инициализация 1923KX028
@@ -82,7 +120,7 @@ static void Mode2_Process(void)
   MDR_KX028_M2_InitTables(TABLES_TIMEOUT_READY_READS);
   //  User VLAN Init
   MDR_KX028_VLAN_Entry_t  action_entry = {.value = MDR_KX028_VLAN_ENTRY_FILL_FORW_ALL(usedPortList, 0)};  // 0 - untagged port list
-  MDR_KX028_VLAN_TableAdd( 1, action_entry, TABLES_TIMEOUT_READY_READS);  
+  MDR_KX028_VLAN_TableAdd(1, action_entry, TABLES_TIMEOUT_READY_READS);  
   
   //  Process
   while (1)
@@ -91,20 +129,18 @@ static void Mode2_Process(void)
     Mode2_ProcessAgeing(AGE_TIMER->TIMERx->CNT, TABLE_AGEING_PERIOD_MS, TABLES_AGING_CNT_PER_ITERATION);  
     //  Обучение
     MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS, usedPortList);
+    //  Статистика
+    Mode2_ProcessStatsUpdate(AGE_TIMER->TIMERx->CNT, STATS_UPDATE_PERIOD_MS, STATS_UPDATE_ITERATION);
   }
 }
 
-void DelayMs(uint32_t delayMs)
-{
-
-}
 
 static uint32_t ModeM2_InitKX028(void)
 {
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC1);
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC2);
   MDR_KX028_InitEMAC_SGMII_FD_1G_def(KX028_EMAC3);
-  //MDR_KX028_InitEMAC_SGMII_FD_1G_def(KX028_EMAC4); - TODO
+  //MDR_KX028_InitEMAC_SGMII_FD_1G_def(KX028_EMAC4); - TODO?
   
   MDR_KX028_EMAC_e emac;
   for (emac = KX028_EMAC4; emac < KX028_EMAC_NUMS; ++emac)
@@ -116,8 +152,7 @@ static uint32_t ModeM2_InitKX028(void)
   }  
   
   MDR_KX028_InitBMU_GPI_TMU_CLASS(DelayMs);
-  //MDR_KX028_InitBMU_GPI_TMU_CLASS_ex(); - extra init from demoBoard
-  
+  //MDR_KX028_InitBMU_GPI_TMU_CLASS_ex(); - extra init from demoBoard  
   MDR_KX028_M2_HostPort_InitTailDrop(HOST_LEARN_QUEUE_LEN, TABLES_TIMEOUT_READY_READS);
   
   MDR_KX028_EnableBlocks();
@@ -127,28 +162,54 @@ static uint32_t ModeM2_InitKX028(void)
 
 static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount)
 {
-  static int32_t  cntToAgeing = 0;
+  static uint16_t activeHashAddr = 0;  
+  static int32_t  cntToProcess = 0;
+  static uint32_t lastStart = 0;
   int32_t  cntItems;
-  uint32_t lastStart;
   
   //  Start ageing
-  if ((nowTime - lastStart) > ageingPeriod)  
+  if ((nowTime - lastStart) > ageingPeriod) 
   {
     lastStart = nowTime;
-    cntToAgeing = MDR_KX028_MAC_TABLE_LEN;
+    cntToProcess = MDR_KX028_MAC_TABLE_LEN;
   }  
   
   //  Process ageing
-  if (cntToAgeing > 0) 
+  if (cntToProcess > 0) 
   {
-    cntItems = cntToAgeing - procItemsCount;
+    cntItems = cntToProcess - procItemsCount;
     if (cntItems < 0)
-      cntItems = procItemsCount - cntToAgeing;
+      cntItems = procItemsCount - cntToProcess;
     
-    MDR_KX028_M2_ProcessTablesAgeing(cntItems, TABLES_TIMEOUT_READY_READS);
-    cntToAgeing -= cntItems;
-  }
+    activeHashAddr = MDR_KX028_M2_ProcessTablesAgeing(cntItems, activeHashAddr, TABLES_TIMEOUT_READY_READS);       
+    cntToProcess -= cntItems;
+  }  
 }
 
+static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount)
+{
+  static MDR_KX028_EMAC_e activeEMAC = KX028_EMAC1;
+  static int32_t  cntToProcess = 0;
+  static uint32_t lastStart = 0;
+  int32_t  cntItems;
+
+  //  Start processing
+  if ((nowTime - lastStart) > processPeriod) 
+  {
+    lastStart = nowTime;
+    cntToProcess = PORTS_CNT_ON_BOARD;
+  }  
+
+  //  Processing
+  if (cntToProcess > 0) 
+  {
+    cntItems = cntToProcess - procItemsCount;
+    if (cntItems < 0)
+      cntItems = procItemsCount - cntToProcess;
+      
+    activeEMAC = MDR_KX028_M2_UpdateStatNextEMACs(cntItems, activeEMAC, PORTS_CNT_ON_BOARD, &(statsEMAC[activeEMAC]));    
+    cntToProcess -= cntItems;
+  }  
+}
 
 

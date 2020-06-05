@@ -88,11 +88,16 @@ typedef union
     };
 } MDR_KX028_StatsClassHW_t;
 
-extern MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
+//extern MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
 extern MDR_KX028_StatsClassHW_t statsClassHW[ KX028_EMAC_NUMS ];
 
-//  Return True if last MAC processed
-bool MDR_KX028_M2_UpdateStatsNextEMAC(void);
+// Считывает статисктику блока eMAC в pStatsEMAC
+void MDR_KX028_M2_UpdateStatsEMAC(MDR_KX028_EMAC_e eMAC, MDR_KX028_StatsEMAC_t* pStatsEMAC);
+// Считывает статисктику cntToProcess блоков eMAC в массив statsEMAC_Arr длиной statsEMAC_ArrLen, начиная с nextEMAC
+// Возвращает nextEMAC для следующего вызова
+MDR_KX028_EMAC_e MDR_KX028_M2_UpdateStatNextEMACs(uint32_t cntToProcess, MDR_KX028_EMAC_e nextEMAC, uint32_t statsEMAC_ArrLen, MDR_KX028_StatsEMAC_t* statsEMAC_Arr);
+
+
 
 void MDR_KX028_M2_UpdateStatsClassHW(void);
 

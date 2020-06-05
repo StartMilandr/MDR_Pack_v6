@@ -5,7 +5,7 @@
 #include <MDR_1923KX028.h>
 #include <MDR_1923KX028_AXI_defs.h>
 #include <MDR_1923KX028_Config.h>
-#include <MDR_1923KX028_M2_Defs.h>
+#include <MDR_1923KX028_GlobConst.h>
 
 //===================   Host ===================
 void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax);

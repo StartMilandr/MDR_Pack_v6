@@ -1,5 +1,5 @@
-#ifndef  _1923KX028_MAC_TABLE_H_
-#define  _1923KX028_MAC_TABLE_H_
+#ifndef  _1923KX028_M2_MAC_TABLE_H_
+#define  _1923KX028_M2_MAC_TABLE_H_
 
 #include <MDR_1923KX028.h>
 #include <MDR_1923KX028_AXI_defs.h>
@@ -258,4 +258,4 @@ bool MDR_KX028_MAC_TableWrite( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t ha
 
 int32_t MDR_KX028_MAC_TableSprintf(char *buff, uint32_t waitCyclesMax);
 
-#endif /* _1923KX028_MAC_TABLE_H_ */
+#endif // _1923KX028_M2_MAC_TABLE_H_

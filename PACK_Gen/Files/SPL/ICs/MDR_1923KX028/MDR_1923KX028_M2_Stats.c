@@ -1,5 +1,5 @@
 #include <MDR_1923KX028_M2_Stats.h>
-#include <MDR_1923KX028_M2_Defs.h>
+#include <MDR_1923KX028_GlobConst.h>
 
 
 #define CLASS_RX          MDR_KX028_STAT_ID_CLASS_RX
@@ -343,25 +343,44 @@ void MDR_KX028_M2_UpdateStatsClassHW(void)
 //    taskEXIT_CRITICAL();
 }
 
-MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
+//MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
 MDR_KX028_StatsClassHW_t statsClassHW[ KX028_EMAC_NUMS ];
 
-//  Return True if last MAC processed
-bool MDR_KX028_M2_UpdateStatsNextEMAC(void)
+void MDR_KX028_M2_UpdateStatsEMAC(MDR_KX028_EMAC_e eMAC, MDR_KX028_StatsEMAC_t* pStatsEMAC)
 {
-  static uint32_t activeEMAC = 0;
- 
-  MDR_KX028_UpdateStatsEMAC(MDR_KX028_AxiAddrEMAC[activeEMAC], MDR_KX028_AxiAddrEGPI[activeEMAC], &(statsEMAC[activeEMAC]));
-  
-  activeEMAC += 1;
-  if (activeEMAC >= KX028_EMAC_NUMS)
-  {
-    activeEMAC = 0;
-    return true;
-  }
-  else
-    return false;
+  MDR_KX028_UpdateStatsEMAC(MDR_KX028_AxiAddrEMAC[eMAC], MDR_KX028_AxiAddrEGPI[eMAC], pStatsEMAC);  
 }
+
+MDR_KX028_EMAC_e MDR_KX028_M2_UpdateStatNextEMACs(uint32_t cntToProcess, MDR_KX028_EMAC_e nextEMAC, uint32_t statsEMAC_ArrLen, MDR_KX028_StatsEMAC_t* statsEMAC_Arr)
+{ 
+  uint32_t i;
+  for (i = 0; i < cntToProcess; i++)
+  {
+    MDR_KX028_M2_UpdateStatsEMAC(nextEMAC, &(statsEMAC_Arr[nextEMAC]));
+    nextEMAC += 1;
+    if (nextEMAC >= statsEMAC_ArrLen)
+      nextEMAC = KX028_EMAC1;    
+  }
+  
+  return nextEMAC;
+}
+
+////  Return True if last MAC processed
+//bool MDR_KX028_M2_UpdateStatsNextEMAC(void)
+//{
+//  static uint32_t activeEMAC = 0;
+// 
+//  MDR_KX028_UpdateStatsEMAC(MDR_KX028_AxiAddrEMAC[activeEMAC], MDR_KX028_AxiAddrEGPI[activeEMAC], &(statsEMAC[activeEMAC]));
+//  
+//  activeEMAC += 1;
+//  if (activeEMAC >= KX028_EMAC_NUMS)
+//  {
+//    activeEMAC = 0;
+//    return true;
+//  }
+//  else
+//    return false;
+//}
 
 
 

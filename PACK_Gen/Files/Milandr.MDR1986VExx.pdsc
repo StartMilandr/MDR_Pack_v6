@@ -1665,13 +1665,44 @@
       </files>
     </component>
     <!-- 1923KX028 -->
-    <component Cclass="IC Drivers" Cgroup="1923KX028" Cversion="2.0" condition="CON_MDR_ALL">
+    <component Cclass="IC Drivers" Cgroup="1923KX028_Core" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Ethernet switch 1923KX028 control</description>
       <files>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028.h"/>
-        <file category="source"  name="SPL/ICs/MDR_1923KX028.c"/>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028.h"/>
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028.c"/>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_defs.h"/>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_AXI_defs.h"/>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_ErrLog.h" attr="config" version="2.0.0"/>
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_ErrLog.c" attr="config" version="2.0.0"/>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_Config.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <component Cclass="IC Drivers" Cgroup="1923KX028_Mode0" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Ethernet switch 1923KX028 control</description>
+      <files>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_Ctrl.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_Ctrl.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_TransferPC.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_TransferPC.c" />        
+      </files>
+    </component>
+    <component Cclass="IC Drivers" Cgroup="1923KX028_Mode2" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Ethernet switch 1923KX028 control</description>
+      <files>
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_GlobConst.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_GlobConst.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Init.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Init.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableMAC.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableMAC.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableVLAN.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableVLAN.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TablesCtrl.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TablesCtrl.c" />
+        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Stats.h" />
+        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Stats.c" />
+      </files>
+    </component>    
 
     <!--Boards-->
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">

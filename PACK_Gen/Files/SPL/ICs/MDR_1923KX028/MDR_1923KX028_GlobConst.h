@@ -1,5 +1,5 @@
-#ifndef MDR_1923KX029_MODE2_DEFS_H
-#define MDR_1923KX029_MODE2_DEFS_H
+#ifndef MDR_1923KX029_GLOB_CONST_H
+#define MDR_1923KX029_GLOB_CONST_H
 
 //#include <MDR_1923KX028.h>
 #include <MDR_1923KX028_AXI_defs.h>
@@ -16,16 +16,6 @@ extern const uint32_t KX028_PortOffsStruct1[AXI_CLASS_PORT_COUNT];
 extern const uint32_t KX028_PortOffsStruct2[AXI_CLASS_PORT_COUNT];
 
 
-typedef struct {
-  uint32_t addr;
-  uint32_t data;
-} MDR_KX028_AddrData_t;
 
 
-extern MDR_KX028_AddrData_t sw_hwreg_settings[];
-extern MDR_KX028_AddrData_t sw_hwreg_enable_bmu_1_2_egpi_1_to_16[];
-extern MDR_KX028_AddrData_t sw_hwreg_enable_class_1_2[];
-extern MDR_KX028_AddrData_t sw_hwreg_enable_emac_1_to_16[];
-
-
-#endif  //MDR_1923KX029_MODE2_DEFS_H
+#endif  //MDR_1923KX029_GLOB_CONST_H

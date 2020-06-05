@@ -1,5 +1,5 @@
 #include <MDR_Funcs.h>
-#include <MDR_1923KX028_TableMAC.h>
+#include <MDR_1923KX028_M2_TableMAC.h>
 #include <MDR_1923KX028_ErrLog.h>
 #include <stdio.h>
 

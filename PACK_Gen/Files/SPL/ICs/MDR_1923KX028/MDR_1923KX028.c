@@ -247,7 +247,7 @@ FnReadBeginAXI_t  MDR_KX028_ReadBeginAXI = MDR_KX028_ReadBeginAXI_def;
 FnReadNextAXI_t  MDR_KX028_ReadNextAXI  = MDR_KX028_ReadNextAXI_def;
 FnReadEndAXI_t MDR_KX028_ReadEndAXI   = MDR_KX028_ReadEndAXI_def;
 
-MDR_1923KX028_Obj _objKX028;
+static MDR_1923KX028_Obj _objKX028;
 
 MDR_1923KX028_Obj* MDR_KX028_InitDef(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg)
 {
@@ -292,4 +292,14 @@ void     MDR_KX028_ReadEndAXI_def(void)
   MDR_1923KX028_ReadAXI_End(&_objKX028);
 }
 
+//  ----------------    Registers control ------------------
+uint32_t  MDR_KX028_ReadReg (uint32_t addr)
+{
+  return MDR_1923KX028_ReadReg(&_objKX028, addr);
+}
+
+void MDR_KX028_WriteReg(uint32_t addr, uint32_t data)
+{
+  MDR_1923KX028_WriteReg(&_objKX028, addr, data);
+}
 

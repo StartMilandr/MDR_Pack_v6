@@ -141,9 +141,9 @@ typedef struct {
 typedef struct {
       __IOM MDR_Div256P  HSE_SEL    : 4;            /*!< [3..0] RTC HSE freq devider, [/1, /2, /4 .. /256]                 */
       __IOM MDR_Div256P  HSI_SEL    : 4;            /*!< [7..4] RTC HSI freq devider, [/1, /2, /4 .. /256]                 */
-      __IOM MDR_OnOff        HSE_RTC_EN : 1;            /*!< [8..8] RTC HSE Clock enable                                       */
-      __IOM MDR_OnOff        HSI_RTC_EN : 1;            /*!< [9..9] RTC HSI Clock enable                                       */
-      __IM  uint32_t                    : 22;
+      __IOM MDR_OnOff    HSE_RTC_EN : 1;            /*!< [8..8] RTC HSE Clock enable                                       */
+      __IOM MDR_OnOff    HSI_RTC_EN : 1;            /*!< [9..9] RTC HSI Clock enable                                       */
+      __IM  uint32_t     : 22;
 } MDR_RST_RTC_Bits;
 
 #define MDR_RST_RTC__HSE_SEL_Pos    (0UL)                /*!< MDR_RST_CLOCK RTC_CLOCK: HSE_SEL (Bit 0)                         */

@@ -64,10 +64,10 @@ typedef enum {
 
 /* ========================================================  REG_0F  ========================================================= */
 typedef enum {
-    MDR_RTC_LSI      = 0,                   /*!< LSI : RTC use LSI clock                                                       */
-    MDR_RTC_LSE      = 0,                   /*!< LSE : RTC use LSE clock                                                       */
-    MDR_RTC_HSIRTC   = 0,                   /*!< HSIRTC : RTC use HSIRTC clock                                                 */
-    MDR_RTC_HSERTC   = 0                    /*!< HSERTC : RTC use HSERTC clock                                                 */
+    MDR_RTC_LSI     = 0,                   /*!< LSI : RTC use LSI clock                                                       */
+    MDR_RTC_LSE     = 1,                   /*!< LSE : RTC use LSE clock                                                       */
+    MDR_RTC_RTCHSI  = 2,                   /*!< HSIRTC : RTC use HSIRTC clock                                                 */
+    MDR_RTC_RTCHSE  = 3                    /*!< HSERTC : RTC use HSERTC clock                                                 */
 } MDR_BKP_RTC_SEL;
 
 // MDR_BKP_LSI_TRIM can be used for LSI_TRIM, rest items (of 32) has value about 32KHz

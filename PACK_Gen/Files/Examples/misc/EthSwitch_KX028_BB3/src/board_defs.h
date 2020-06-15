@@ -91,8 +91,8 @@
 #define KX028_MODE_PINS_Msk  0xFUL
 
 
-//===================================    UART Control   ========================================
-#define CLI_UART                MDR_UART1
+//===================================    UART CLI Control   ========================================
+//#define CLI_UART                MDR_UART1
 #define CLI_UART_PORT           MDR_GPIO_C
 #define CLI_UART_TX             MDR_Pin_3
 #define CLI_UART_RX             MDR_Pin_4

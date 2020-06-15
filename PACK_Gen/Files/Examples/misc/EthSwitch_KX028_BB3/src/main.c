@@ -2,6 +2,8 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_GPIO.h>
 #include <MDR_Timer.h>
+#include <MDR_UART_CLI.h>
+
 #include "board_defs.h"
 
 #include "BB3_Ctrl.h"
@@ -99,12 +101,25 @@ void DelayMs(uint32_t delayMs)
 //===========  MODE0: PC Driver - PCIe Control  ============
 static void Mode0_Process(void)
 {
+  CLI_CMD_e cliCMD;
+  uint8_t  cliParamLen;
+  uint8_t *pCliParams;
+  
   MDR_KX028_M0_WaitPC_DriverReady();
-  MDR_KX028_M0_SetupBars();
+  MDR_KX028_M0_SetupBars();  
   
   while (1)
   {
     MDR_KX028_M0_TransferPC();
+    
+    cliCMD = MDR_CLI_GetCommand(&cliParamLen, &pCliParams);
+    switch (cliCMD) {
+      case cliCMD_NONE: break;
+      case cliCMD_ERROR: 
+        MDR_CLI_SetResponse(cliCMD_ERROR, 0, NULL);
+        break;
+    }
+    
   }
 }
 
@@ -212,4 +227,15 @@ static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, u
   }  
 }
 
+void CLI_Init(uint32_t freqCPU_Hz)
+{
+  MDR_UART_CfgPinGPIO _pinUartTX = {MDR_GPIO_C, CLI_UART_TX, CLI_UART_TX_FUNC};
+  MDR_UART_CfgPinGPIO _pinUartRX = {MDR_GPIO_C, CLI_UART_RX, CLI_UART_RX_FUNC};  
+	MDR_UART_CfgPinsGPIO pinsGPIO = {
+		.pPinTX = &_pinUartTX,
+    .pPinRX = &_pinUartRX,	
+	};
+
+  MDR_CLI_UART_Init(0, freqCPU_Hz, &pinsGPIO);  
+}
 

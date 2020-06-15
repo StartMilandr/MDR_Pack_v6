@@ -2,12 +2,6 @@
 #define MDR_CONFIG_VK214_H
 
  #include <MDR_1986VK234.h>
-  
-
-//=============  Debug Uart printf settings  ==================
-#define UART_DEBUG_IND              1    
-#define UART_DEBUG_SHOW_WELLCOME    1
-#define UART_DEBUG_BAUD_DEF         9600
 
 
 //=============  Защита пинов совмещенных с Jtag  ==================
@@ -45,6 +39,38 @@
 
 //  PLL Ready Timeout
 #define PLL_TIMEOUT         0x0600UL
+
+
+//=============  Debug Uart printf settings  ==================
+#define UART_DEBUG_IND              1    
+#define UART_DEBUG_SHOW_WELLCOME    1
+#define UART_DEBUG_BAUD_DEF         9600
+
+//=============  UART CLI Interface  ==================
+#define CFG_CLI_UARTex          MDR_UART1ex
+#define CFG_CLI_DMA_ChanTX      MDR_DMA_CH_SREQ_UART1_TX
+#define CFG_CLI_DMA_ChanRX      MDR_DMA_CH_SREQ_UART1_RX
+
+//  Максимальное количество байт за один трансфер комнады, не больше 512 байт
+#define CFG_CLI_MESS_LEN_MAX    50
+
+//  Обрабатывать команду по приходу спец символа, иначе по таймауту приема
+#define CFG_CLI_PROC_BY_END_CODES   1
+//  Стоп символы (Enter)
+#define CFG_CLI_PROC_END_CODE1     0x0D
+#define CFG_CLI_PROC_END_CODE2     0x0A
+
+
+//  Дописать команды для своего приложения.
+typedef enum {
+  cliCMD_NONE  = 0,
+  cliCMD_ERROR = 1,
+  //  User Defs
+  cliCMD_,
+  
+  //  Not for use
+  cliCMD_LEN
+} CLI_CMD_e;
 
 
 // =========================   DMA   ================================

@@ -1,7 +1,7 @@
 #include <MDR_BKP_RTC.h>
 #include <MDR_Funcs.h>
 
-//  Если нет в MDR_Config.h
+//  Р•СЃР»Рё РЅРµС‚ РІ MDR_Config.h
 #ifndef CFG_RTC_ResetTicks
   #define CFG_RTC_ResetTicks  10
 #endif

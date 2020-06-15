@@ -1433,6 +1433,7 @@
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
         <file category="header"  name="SPL/Drivers/MDR_BKP_RTC.h" version="2.0.0"/>
         <file category="source"  name="SPL/Drivers/MDR_BKP_RTC.c" version="2.0.0"/>
+        <file category="header" name="SPL/Drivers/MDR_RTC_Cfg1.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <component Cclass="Drivers" Cgroup="Backup and RTC" Cversion="2.0" condition="CON_MDR_VE8x">
@@ -1504,6 +1505,15 @@
         <file category="source"  name="SPL/Drivers/MDR_UART.c" version="2.0.0"/>
       </files>
     </component>
+    <!--UART_CLI-->
+    <component Cclass="Drivers" Cgroup="UART_CLI" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>UART Command Line Interpreter by DMA</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_UART_CLI.h" version="2.0.0"/>
+        <file category="source"  name="SPL/Drivers/MDR_UART_CLI.c" version="2.0.0"/>
+      </files>
+    </component>    
     <!--Timer-->
     <component Cclass="Drivers" Cgroup="Timer" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Timer driver</description>

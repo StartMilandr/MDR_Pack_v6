@@ -62,7 +62,7 @@ __STATIC_INLINE void MDR_RTC_NVIC_InitIRQ(uint32_t priority)
   NVIC_SetPriority(BKP_IRQn, priority);
 }
 
-//  TODO: разобраться, надо ли обнулять регист DIV!?
+//  TODO: СЂР°Р·РѕР±СЂР°С‚СЊСЃСЏ, РЅР°РґРѕ Р»Рё РѕР±РЅСѓР»СЏС‚СЊ СЂРµРіРёСЃС‚ DIV!?
 void MDR_RTC_ReinitInterval(uint32_t fromTime, uint32_t alarmTime);
 
 void MDR_RTC_Start(void);

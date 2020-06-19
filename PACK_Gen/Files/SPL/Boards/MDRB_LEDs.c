@@ -32,7 +32,7 @@ void MDRB_LED_Toggle(uint32_t LEDs_Sel)
 }	
 
 
-//  ==========================    Keil LED API ==========================
+//  ==========================    Led Index To Mask ==========================
 #if defined (MDRB_LED_8)
   #define MDRB_LED_COUNT  8
   static const uint32_t _LED_Pins[MDRB_LED_COUNT] = {MDRB_LED_1, MDRB_LED_2, MDRB_LED_3, MDRB_LED_4, MDRB_LED_5, MDRB_LED_6, MDRB_LED_7, MDRB_LED_8};
@@ -59,7 +59,19 @@ void MDRB_LED_Toggle(uint32_t LEDs_Sel)
   
 #endif
 
+uint32_t MDRB_LED_SelIndToMask(uint32_t ledSelByInd)
+{
+  uint32_t i;
+  uint32_t result = 0;  
+  for (i = 0; i < MDRB_LED_COUNT; ++i)
+    if ((ledSelByInd & (1 << i)) != 0)
+      result |= _LED_Pins[i];
+  
+  return result & MDRB_LED_PinAll;    
+}
+  
 
+//  ==========================    Keil LED API ==========================  
 int32_t 	LED_Initialize (void)
 { 
   MDRB_LED_Init(MDRB_LED_PinAll);

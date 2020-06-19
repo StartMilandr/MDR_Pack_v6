@@ -125,6 +125,10 @@ __STATIC_INLINE bool MDR_DMA_GetCycleCompletedPri(uint32_t chIndex) {return (MDR
 __STATIC_INLINE bool MDR_DMA_GetCycleCompletedAlt(uint32_t chIndex) {return (MDR_DMA_GetChCtrlAlt(chIndex).Value & MDR_DMA_ChCtrl_Mode_Msk) == DMA_MODE_Stop;}
 
 
+__STATIC_INLINE void MDR_DMA_EnableSREQ(uint32_t chIndex)  { MDR_DMA->CHNL_USEBURST_CLR = (1 << chIndex); }
+__STATIC_INLINE void MDR_DMA_DisableSREQ(uint32_t chIndex) { MDR_DMA->CHNL_USEBURST_SET = (1 << chIndex); }
+
+
 //  Готовые функции копирования массивов с использованием DMA
 //  Необходима предварительная инициализация блока - MDR_DMA_Init()
 void MDR_DMA_CopyStart8 (uint32_t chIndex, uint8_t  *src, uint8_t  *dest, uint16_t count);

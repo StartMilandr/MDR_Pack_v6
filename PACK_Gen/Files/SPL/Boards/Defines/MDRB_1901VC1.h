@@ -160,7 +160,7 @@
     #define MDRB_LED_5 	            PIN_PB11    // VD7
 
     #define MDRB_LED_GPIO           MDR_GPIO_B
-    #define MDRB_LED_PinAll         MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4 | MDRB_LED_5
+    #define MDRB_LED_PinAll         (MDRB_LED_1 | MDRB_LED_2 | MDRB_LED_3 | MDRB_LED_4 | MDRB_LED_5)
 
 //  ----------  LCD Definition ---------------
     // Initialization                 //  D0 .. D7

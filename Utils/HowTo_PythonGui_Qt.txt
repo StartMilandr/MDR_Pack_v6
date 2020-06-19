@@ -1,0 +1,41 @@
+Под WINDOWS:
+1 - Установка Python - https://www.python.org/downloads/
+    - Скачать установить:
+      - Выбрать "Add Python 3.8 to PATH"
+      - выбрать режим инсталляции Custom, оставить все галки активными.
+      - выбрать "Install for All Users" , при этом станет активна опция "Precompile standard library"
+      - путь выбрать покороче, и чтобы доступ был без прав администратора. Например, "C:\Python38-32".
+
+2 - Установить pySide2 - https://habr.com/ru/post/458536/
+    - в окне Cmd(Win7) или PowerShell(Win10):
+      > pip install PySide2
+
+    (Опционально: обновить pip, если warning говорит, что есть новая версия)
+     > python -m pip install --upgrade pip
+
+
+3 - Реализовать дизайн ui в QtDesigner, который находится здесь C:\Python38-32\Lib\site-packages\PySide2
+    - запускаем designer.exe, дизайним форму
+    - сохраняем в папке проекта, где будем делать приложение. Например, MDR_Pack\Utils\pyComPort\PyComPort.ui.
+
+4 - Конвертируем дезайн из файла pyComPort.ui в питоновский формат pyComPort.py
+    - в окне Cmd(Win7) или PowerShell(Win10):
+      - переходим в директорию с pyComPort.ui
+	> cd C:\CODE\PACK\MDR_Pack\Utils
+      - конвертируем
+	> pyside2-uic "PyComPort.ui" -o "PyComPort_ui.py"
+      - в директории проекта появился файл PyComPort_ui.py
+
+5 - Пишем программу на Python для данного GUI.     
+
+6 - Для COM порта необходимо поставить библиотеку 
+    > pip install pyserial
+
+
+Калькулятор:    https://habr.com/ru/post/458536/   
+ComPort: 	https://habr.com/ru/post/443326/
+Калькулятор:    https://www.youtube.com/watch?v=cK-hvG-Q9B0
+
+https://pythonhosted.org/pyserial/shortintro.html
+Компоненты
+https://srinikom.github.io/pyside-docs/PySide/QtGui/index.html

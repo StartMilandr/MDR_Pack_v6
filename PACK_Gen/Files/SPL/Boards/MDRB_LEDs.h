@@ -15,6 +15,8 @@ uint32_t MDRB_LED_NumToSel(uint32_t num);
 __STATIC_INLINE void MDRB_LED_InitALL(void) {MDRB_LED_Init(MDRB_LED_PinAll);}
 
 
+uint32_t MDRB_LED_SelIndToMask(uint32_t ledSelByInd);
+
 //  ================    Keil LED API ===============
 int32_t 	LED_Initialize (void);
 int32_t 	LED_Uninitialize (void);

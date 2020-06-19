@@ -29,3 +29,5 @@ PACK_Gen/Files/Examples/All_Boards/DMA_Test/DMA_ADC_PingPong/Listings/
 PACK_Gen/Files/Examples/All_Boards/OTP/OTP_Test_VE8/Objects/
 PACK_Gen/Files/Examples/All_Boards/OTP/OTP_Test_VE8/Listings/
 PACK_Gen/Milandr.MDR1986VExx.2.05.pack
+Utils/pyComPort/__pycache__/
+Utils/pyComPort/Logs/

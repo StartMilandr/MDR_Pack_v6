@@ -206,10 +206,10 @@ CLI_CMD_e MDR_CLI_GetCommand(uint16_t *lenCmdParams, uint8_t **pCmdParams)
   return _cmdID;
 }
 
-void MDR_CLI_GetResponceBuf(uint16_t *lenAckBuf, uint8_t **pAckBuf)
+uint16_t MDR_CLI_GetResponceBuf(uint8_t **pAckBuf)
 {
-  *lenAckBuf = DMA_BUFF_LEN - MESS_HEADER_LEN;
   *pAckBuf = &_outData[MESS_HEADER_LEN];
+  return DMA_BUFF_LEN - MESS_HEADER_LEN;
 }
 
 void MDR_CLI_SetResponse(CLI_CMD_e cmd, uint16_t lenAckParams)

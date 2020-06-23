@@ -265,6 +265,44 @@ void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl)
   MDR_DMA->CHNL_ENABLE_SET = VAL2FLD_Pos(1, chIndex);
 }
 
+
+//  Перезапуск цикла, с изменением источника данных и количества данных
+static void  MDR_DMA_RunNextBuff_X(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint32_t srcEndAddr, uint16_t count)
+{
+  //  Protection
+  uint32_t chSel = VAL2FLD_Pos(1, chIndex);    
+  MDR_DMA->CHNL_ENABLE_CLR   = chSel;
+  
+  chCtrl.Fields.N_minus1 = count - 1;
+  
+  MDR_DMA_CtrlTablePri(chIndex).Src_EndAddr = srcEndAddr;
+  MDR_DMA_CtrlTablePri(chIndex).Control = chCtrl;
+  
+  //  same MDR_DMA_ReStartChannel();  
+  MDR_DMA->CHNL_REQ_MASK_CLR = chSel;
+  MDR_DMA->CHNL_ENABLE_SET   = chSel;
+}
+
+void  MDR_DMA_RunNextBuff8_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint8_t *srcAddr, uint16_t count)
+{
+  uint32_t srcEndAddr = (uint32_t)srcAddr + count - 1;
+  MDR_DMA_RunNextBuff_X(chIndex, chCtrl, srcEndAddr, count);
+}
+
+void  MDR_DMA_RunNextBuff16_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint16_t *srcAddr, uint16_t count)  
+{
+  uint32_t srcEndAddr = (uint32_t)srcAddr  + (uint32_t)((count - 1) << 1);
+  MDR_DMA_RunNextBuff_X(chIndex, chCtrl, srcEndAddr, count);
+}
+
+void  MDR_DMA_RunNextBuff32_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint32_t *srcAddr, uint16_t count)  
+{
+  uint32_t srcEndAddr = (uint32_t)srcAddr  + (uint32_t)((count - 1) << 2);
+  MDR_DMA_RunNextBuff_X(chIndex, chCtrl, srcEndAddr, count);
+}
+
+
+
 //  Готовые функции копирования массивов с использованием DMA
 //  Необходима предварительная инициализация блока - MDR_DMA_Init()
 

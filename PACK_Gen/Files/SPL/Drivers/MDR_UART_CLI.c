@@ -4,16 +4,16 @@
 
 
 #define _CLI_UART     CFG_CLI_UARTex->UARTx
-#define DMA_BUFF_LEN  CFG_CLI_MESS_LEN_MAX * 2
+// Буфер с запасом под OddTail
+#define DMA_BUFF_LEN  CFG_CLI_MESS_LEN_MAX + 1
 
 static uint8_t    _inpData[DMA_BUFF_LEN] __RAM_EXEC;
-static uint32_t   _inpDataLen;
+static uint16_t   _inpDataLen = 0;
+static uint16_t   _messLen = 0;
 static uint8_t    _outData[DMA_BUFF_LEN] __RAM_EXEC;
-static uint32_t   _outDataLen;
+static uint16_t   _outDataLen = 0;
 
-static CLI_CMD_e _cmdID;
-static uint8_t   _cmdData[CFG_CLI_MESS_LEN_MAX];
-static uint8_t   _cmdDataLen;
+static CLI_CMD_e  _cmdID;
 
 static MDR_DMA_ChCtrl RestartCtrl_TX;
 static MDR_DMA_ChCtrl RestartCtrl_RX;
@@ -108,113 +108,125 @@ static void CLI_DMA_Init(void)
 //  MDR_DMA_StopChannel(CFG_CLI_DMA_ChanRX);
 //}
 
+//  CMD - [0..63], LEN - [0..1023]
+//  _inpData[0] - LenLo
+//  _inpData[1] - LenHi[6..7], Cmd[0..5]
+#define CLI_CMD_OFFS    0
+#define CLI_CMD_MSK     0x3F
+//#define CLI_LEN_OFFS    6
+//#define CLI_LEN_HI_MSK     0xFFC0
+
+#define MESS_MIN_LEN    3
+#define MESS_GET_CMD    (_inpData[1] & CLI_CMD_MSK)
+#define MESS_GET_LEN   ( (uint16_t)_inpData[0] | ((uint16_t)(_inpData[1] & 0xC0) << 3) )
+
+#define MESS_SET_HEADER(arr, cmd, len)    arr[1] = (uint8_t)(((uint16_t)(len) >> 3) & 0x00C0) | (uint8_t)(cmd); \
+                                          arr[0] = (uint8_t)(len);
+
+#define MESS_HEADER_LEN   2    
+#define MESS_IND_CMD      1    
+#define MESS_IND_DATA     2    
+
+
+
+//static inline uint16_t GetLength(void)
+//{
+//  uint16_t *pBuff16 = (uint16_t *)_inpData;
+//  return pBuff16[0] & CLI_LEN_MSK >> CLI_LEN_OFFS;
+//}
+
 static bool CLI_GetDataReceived(void)
 {
+  // Наличие флага TimeoutRx говорит о том, что оно слово еще лежит в FIFO
+  // Потому что DMA выяитывает блоками по 2 слова
   bool hasNewData = _CLI_UART->RIS & MDR_UART_EFL_RT;
   if (hasNewData)    
   {
     MDR_UART_ClearEventsIRQ(_CLI_UART, MDR_UART_EFL_RT);
-       
-    //  Read Out Last data from FIFO
-    MDR_DMA_EnableSREQ(CFG_CLI_DMA_ChanRX);
-    while (MDR_UART_CanRead(_CLI_UART));
-    MDR_DMA_DisableSREQ(CFG_CLI_DMA_ChanRX);
-    
-#if CFG_CLI_PROC_BY_END_CODES
-    MDR_DMA_ChCtrl ctrl = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanRX);
-    uint32_t cntRX = RestartCtrl_RX.Fields.N_minus1 - ctrl.Fields.N_minus1;
-    if (cntRX > 4)
-      if ((_inpData[cntRX - 2] == CFG_CLI_PROC_END_CODE1) && (_inpData[cntRX - 1] == CFG_CLI_PROC_END_CODE2))
-      {
-        // Stop DMA_RX
-        MDR_DMA_StopChannel(CFG_CLI_DMA_ChanRX);
-        _inpDataLen = cntRX;
-      }      
-#else      
-    // Stop DMA_RX
-    MDR_DMA_StopChannel(CFG_CLI_DMA_ChanRX);
+
+    // Проверяем, что пришло байт не меньше 3-х (Два скачало DMA, одно еще в FIFO)
+    // Если меньше - выходим, ждем следующий приход данных
     MDR_DMA_ChCtrl ctrl = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanRX);
     _inpDataLen = RestartCtrl_RX.Fields.N_minus1 - ctrl.Fields.N_minus1;
-#endif    
+    if (_inpDataLen < (MESS_MIN_LEN - 1))
+      return false;
+    // Достаем длину посылки из первых 2-х байт, проверяем что пришли все байты, включая один в FIFO
+    // Если не все - выходим до следующего таймаута
+    _messLen = MESS_GET_LEN;
+    if (_inpDataLen < (_messLen - 1))
+      return false;
     
-    //uint16_t stopChar = _CLI_UART->DR;    
+    // Даем DMA вычитать последний байт из UART_FIFO_RX
+    MDR_DMA_EnableSREQ(CFG_CLI_DMA_ChanRX);
+    while (MDR_UART_CanRead(_CLI_UART));
+    MDR_DMA_DisableSREQ(CFG_CLI_DMA_ChanRX);       
+    // Останавливаем DMA, (позже будем переинициализировать под новый цикл обмена)
+    MDR_DMA_StopChannel(CFG_CLI_DMA_ChanRX);
+    
+    // Вычитываем последнее слово из FIFO
+    // _inpDataLen - общее количество пришедших байт
+    ctrl = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanRX);
+    _inpDataLen = RestartCtrl_RX.Fields.N_minus1 - ctrl.Fields.N_minus1;
   }
    
   return hasNewData;
 }
 
-#define MESS_MIN_LEN    3
 
-CLI_CMD_e MDR_CLI_GetCommand(uint8_t *lenCmdParams, uint8_t **pCmdParams)
+CLI_CMD_e MDR_CLI_GetCommand(uint16_t *lenCmdParams, uint8_t **pCmdParams)
 {
   if (CLI_GetDataReceived())
-  {
-    // Данные передаются парами - "слово"/"инверсия слова" для проверки отсутствия ошибок        
-    // Если данные вне этого протокола, то просто возвращаем их "сырыми"
-    _cmdID = cliCMD_ERROR;
-    *lenAckParams = _inpDataLen;
-    *pCmdParams = _inpData;
+  {   
+    bool messOK;
+    if ((_messLen & 1) == 0)
+      messOK = _inpDataLen == (_messLen + 1);
+    else
+      messOK = _inpDataLen == _messLen;
     
-    // Прореживаем данные если они по двойному протоколу
-    if (_inpDataLen >= MESS_MIN_LEN)
-      if (_inpData[0] == (uint8_t)(~_inpData[1]))
-        if (_inpData[0] < cliCMD_LEN)
-        {
-          _cmdID = (CLI_CMD_e)_inpData[0];
-          
-          uint32_t i;
-          _cmdDataLen = 0;
-          uint8_t hash = _inpData[0];
-          for (i = 2; i < _inpDataLen - 1; i += 2)
-          {
-            if (_inpData[i] == (uint8_t)(~_inpData[i+1]))
-            {
-              _cmdData[_cmdDataLen++] = _inpData[i];
-              hash ^= _inpData[i];
-            }
-            else
-              break;  //  неправильное количество данных к команде покажет что была ошибка
-          }
-          if (hash == _inpData[_inpDataLen - 1])
-          { //  OK:
-            *lenAckParams = _cmdDataLen;
-            *pCmdParams = _cmdData;
-          }
-        }
+    uint8_t cmd;
+    if (messOK)
+    {
+      cmd = MESS_GET_CMD;
+      messOK = (cmd < cliCMD_LEN);
+    }  
+    
+    if (messOK)
+    { 
+      _cmdID = (CLI_CMD_e)cmd;
+      *lenCmdParams = _messLen - MESS_HEADER_LEN;
+      *pCmdParams = &_inpData[MESS_HEADER_LEN];      
+    }
+    else
+    {
+      _cmdID = cliCMD_ERROR;
+      *lenCmdParams = _inpDataLen;
+      *pCmdParams = _inpData;      
+    }
   }
   return _cmdID;
 }
 
-void MDR_CLI_SetResponse(CLI_CMD_e cmd, uint8_t lenAckParams, uint8_t *pAckParams)
+void MDR_CLI_GetResponceBuf(uint16_t *lenAckBuf, uint8_t **pAckBuf)
 {
-  _cmdID = cliCMD_NONE;
-  
+  *lenAckBuf = DMA_BUFF_LEN - MESS_HEADER_LEN;
+  *pAckBuf = &_outData[MESS_HEADER_LEN];
+}
+
+void MDR_CLI_SetResponse(CLI_CMD_e cmd, uint16_t lenAckParams)
+{ 
+  //  Посылка ответа
+  _cmdID = cliCMD_NONE;  
   if (cmd != cliCMD_ERROR)
-  {
-    uint32_t dmaOffs = DMA_BUFF_LEN - (((lenAckParams) << 1) + MESS_MIN_LEN);
-    _outData[dmaOffs] = (uint8_t)cmd;
-    _outData[dmaOffs + 1] = (uint8_t)(~_outData[dmaOffs]);
-    
-    uint32_t i;
-    _outDataLen = 2;
-    uint8_t hash = (uint8_t)cmd;
-    for (i = 0; i < lenAckParams; i++)  
-    {
-      _outData[dmaOffs + _outDataLen++] = pAckParams[i];
-      hash ^= pAckParams[i];
-      _outData[dmaOffs + _outDataLen++] = (uint8_t)(~pAckParams[i]);
-    }
-    _outData[dmaOffs + _outDataLen++] = hash;
+  { 
+    _outDataLen = lenAckParams + MESS_HEADER_LEN;
+    MESS_SET_HEADER(_outData, cmd, _outDataLen);
+    if ((_outDataLen & 1) == 0)
+      _outDataLen++;    
+    MDR_DMA_RunNextBuff8_Pri(CFG_CLI_DMA_ChanTX, RestartCtrl_TX, _outData, _outDataLen);
   }
   else
   {
-    uint32_t dmaOffs = DMA_BUFF_LEN - lenAckParams;
-    uint32_t i;
-    for (i = 0; i < lenAckParams; i++)  
-    {
-      _outData[dmaOffs + i] = pAckParams[i];
-    }
-    _outDataLen = i;
+    MDR_DMA_RunNextBuff8_Pri(CFG_CLI_DMA_ChanTX, RestartCtrl_TX, _inpData, _inpDataLen);
   }
 
   //  Инициализируем DMA для приема следующей команды
@@ -222,13 +234,15 @@ void MDR_CLI_SetResponse(CLI_CMD_e cmd, uint8_t lenAckParams, uint8_t *pAckParam
   MDR_DMA_ReStartChannel(CFG_CLI_DMA_ChanRX);  
     
   //  Инициализируем DMA для посылки ответа
-  RestartCtrl_TX.Fields.N_minus1 = _outDataLen - 1;
-  MDR_DMA_InitNextCyclePri(CFG_CLI_DMA_ChanTX, RestartCtrl_TX);  
-  MDR_DMA_ReStartChannel(CFG_CLI_DMA_ChanTX);
+//  MDR_DMA_RunNextBuff8_Pri(CFG_CLI_DMA_ChanTX, RestartCtrl_TX, _outData, _outDataLen);
   
-  MDR_Delay(100000);
-  volatile MDR_DMA_ChCfg chCtrl = MDR_DMA_CtrlTablePri(CFG_CLI_DMA_ChanTX);
-  volatile MDR_DMA_ChCtrl ctrl1 = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanTX);  
+//  RestartCtrl_TX.Fields.N_minus1 = _outDataLen - 1;
+//  MDR_DMA_InitNextCyclePri(CFG_CLI_DMA_ChanTX, RestartCtrl_TX);  
+//  MDR_DMA_ReStartChannel(CFG_CLI_DMA_ChanTX);
+  
+//  MDR_Delay(100000);
+//  volatile MDR_DMA_ChCfg chCtrl = MDR_DMA_CtrlTablePri(CFG_CLI_DMA_ChanTX);
+//  volatile MDR_DMA_ChCtrl ctrl1 = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanTX);  
 }
 
 

@@ -26,12 +26,12 @@ class Ui_Form(object):
         self.splitter = QSplitter(Form)
         self.splitter.setObjectName(u"splitter")
         self.splitter.setOrientation(Qt.Horizontal)
-        self.widget = QWidget(self.splitter)
-        self.widget.setObjectName(u"widget")
-        self.verticalLayout_2 = QVBoxLayout(self.widget)
+        self.layoutWidget = QWidget(self.splitter)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.verticalLayout_2 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.gbxTool = QGroupBox(self.widget)
+        self.gbxTool = QGroupBox(self.layoutWidget)
         self.gbxTool.setObjectName(u"gbxTool")
         self.horizontalLayout = QHBoxLayout(self.gbxTool)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -73,7 +73,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.gbxTool)
 
-        self.groupBox = QGroupBox(self.widget)
+        self.groupBox = QGroupBox(self.layoutWidget)
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout = QVBoxLayout(self.groupBox)
         self.verticalLayout.setSpacing(6)
@@ -295,6 +295,7 @@ class Ui_Form(object):
         self.cbxProtocol = QComboBox(self.groupBox_2)
         self.cbxProtocol.addItem("")
         self.cbxProtocol.addItem("")
+        self.cbxProtocol.addItem("")
         self.cbxProtocol.setObjectName(u"cbxProtocol")
         self.cbxProtocol.setMinimumSize(QSize(0, 24))
 
@@ -315,7 +316,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.groupBox)
 
-        self.splitter.addWidget(self.widget)
+        self.splitter.addWidget(self.layoutWidget)
         self.txtEdLog = QTextEdit(self.splitter)
         self.txtEdLog.setObjectName(u"txtEdLog")
         self.splitter.addWidget(self.txtEdLog)
@@ -361,6 +362,7 @@ class Ui_Form(object):
         self.label.setText(QCoreApplication.translate("Form", u"Protocol", None))
         self.cbxProtocol.setItemText(0, QCoreApplication.translate("Form", u"None", None))
         self.cbxProtocol.setItemText(1, QCoreApplication.translate("Form", u"Double", None))
+        self.cbxProtocol.setItemText(2, QCoreApplication.translate("Form", u"HdrLen", None))
 
         self.btLogSave.setText(QCoreApplication.translate("Form", u"Save...", None))
     # retranslateUi

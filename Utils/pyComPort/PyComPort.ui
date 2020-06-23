@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QGroupBox" name="gbxTool">
@@ -419,6 +419,11 @@
                  <item>
                   <property name="text">
                    <string>Double</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HdrLen</string>
                   </property>
                  </item>
                 </widget>

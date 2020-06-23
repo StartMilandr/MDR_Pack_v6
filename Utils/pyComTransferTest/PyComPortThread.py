@@ -95,6 +95,8 @@ class ComPortThread():
 
 
   def fromHdrLenProtocol(self, dataRx):
+    # for d in dataRx:
+    #     print(str(d))
     result = []    
     dataLen = len(dataRx)
     if dataLen < 3:
@@ -108,6 +110,7 @@ class ComPortThread():
       else:
         protocolOk = dataLen
       if protocolOk:
+        # print('MessLen = {}'.format(messLen))
         for i in range(1, messLen):
           result.append(dataRx[i])
         result[0] &= 0x3F

@@ -56,7 +56,7 @@
 #define CFG_CLI_DMA_ChanRX      MDR_DMA_CH_SREQ_UART3_RX
 
 //  Максимальное количество байт за один трансфер комнады, не больше 512 байт
-#define CFG_CLI_MESS_LEN_MAX    50
+#define CFG_CLI_MESS_LEN_MAX    128
 
 //  Обрабатывать команду по приходу спец символа, иначе по таймауту приема
 #define CFG_CLI_PROC_BY_END_CODES   0
@@ -73,7 +73,6 @@ typedef enum {
   cliCMD_LedShow,
   cliCMD_LedHide,
   cliCMD_LedOut,
-  cliCMD_Echo,
   
   //  Not for use
   cliCMD_LEN

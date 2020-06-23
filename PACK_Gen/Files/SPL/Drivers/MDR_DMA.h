@@ -106,7 +106,7 @@ __STATIC_INLINE MDR_DMA_ChCtrl   MDR_DMA_GetChCtrlAlt(uint32_t chIndex)
 
 
 //  Перезапуск следующего цикла DMA
-////  Обновляет контрольное слово в упр. структуре и выставляет Enable!
+//  Обновляет контрольное слово в упр. структуре и выставляет Enable!
 void  MDR_DMA_RunNextCyclePri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
 void  MDR_DMA_RunNextCycleAlt(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl);
 
@@ -119,6 +119,10 @@ __STATIC_INLINE bool MDR_DMA_GetActivePri(uint32_t chIndex) {return (MDR_DMA->CH
 __STATIC_INLINE void MDR_DMA_SetActivePri(uint32_t chIndex, bool setActive)
   { if (setActive) MDR_DMA->CHNL_PRI_ALT_CLR = 1 << chIndex; else MDR_DMA->CHNL_PRI_ALT_SET = 1 << chIndex;}
 
+//  Перезапуск цикла, с изменением источника данных и количества данных после MDR_DMA_StopChannel()
+void  MDR_DMA_RunNextBuff8_Pri (uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint8_t *srcAddr, uint16_t count);
+void  MDR_DMA_RunNextBuff16_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint16_t *srcAddr, uint16_t count);  
+void  MDR_DMA_RunNextBuff32_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint32_t *srcAddr, uint16_t count);  
   
 //   
 __STATIC_INLINE bool MDR_DMA_GetCycleCompletedPri(uint32_t chIndex) {return (MDR_DMA_GetChCtrlPri(chIndex).Value & MDR_DMA_ChCtrl_Mode_Msk) == DMA_MODE_Stop;}

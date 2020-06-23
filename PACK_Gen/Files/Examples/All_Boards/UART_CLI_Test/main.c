@@ -25,7 +25,7 @@ int main(void)
   MDR_CLI_UART_Init(UART_BAUD_115200, freqCPU_Hz, &pinsGPIO);  
 
   CLI_CMD_e cliCMD;
-  uint8_t  cliParamLen;
+  uint16_t  cliParamLen;
   uint8_t *pCliParams;
   
   while (1)
@@ -35,20 +35,19 @@ int main(void)
       case cliCMD_NONE: break;
       case cliCMD_LedShow: 
         MDRB_LED_Set(MDRB_LED_SelIndToMask(pCliParams[0]), true); 
-        MDR_CLI_SetResponse(cliCMD, 0, NULL);
+        MDR_CLI_SetResponse(cliCMD, 0);
         break; 
       case cliCMD_LedHide: 
         MDRB_LED_Set(MDRB_LED_SelIndToMask(pCliParams[0]), false); 
-        MDR_CLI_SetResponse(cliCMD, 0, NULL);
+        MDR_CLI_SetResponse(cliCMD, 0);
         break;
       case cliCMD_LedOut:  
         LED_SetOut(pCliParams[0]); 
-        MDR_CLI_SetResponse(cliCMD, 0, NULL);
+        MDR_CLI_SetResponse(cliCMD, 0);
         break;
-      case cliCMD_Echo:
       case cliCMD_ERROR: 
       default: // Send Echo
-        MDR_CLI_SetResponse(cliCMD, cliParamLen, pCliParams);
+        MDR_CLI_SetResponse(cliCMD, cliParamLen);
     }
   }  
   

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>422</width>
+    <height>464</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="btUpdateAll">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>26</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Read All</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tblPorts">
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string/>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string/>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>State</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>ShutDown</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>TPID</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Fallback</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>AFT</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Blockstate</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>UntagBTable</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string/>
+      </property>
+     </row>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,5 @@
+pyside2-uic "pyBasisMain.ui" -o "pyBasisMain_ui.py"
+pyside2-uic "pyBasisMAC.ui" -o "pyBasisMAC_ui.py"
+pyside2-uic "pyBasisVLAN.ui" -o "pyBasisVLAN_ui.py"
+pyside2-uic "pyBasisStats.ui" -o "pyBasisStats_ui.py"
+pyside2-uic "pyBasisPort.ui" -o "pyBasisPort_ui.py"

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>442</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Statistics</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <widget class="QGroupBox" name="grbxCtrl">
+     <property name="title">
+      <string>Control</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QPushButton" name="btClearAll">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Clear All Statictics</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitter_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QGroupBox" name="grbxPort">
+      <property name="title">
+       <string>Port Statistics</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <widget class="QWidget" name="">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QComboBox" name="cbxPortSel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Port 1</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Port 2</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Port 3</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Port 4</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btPortClear">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>26</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btPortRead">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>26</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Update</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="tblPortStat">
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <row>
+              <property name="text">
+               <string>Bytes</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>OK</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Broadcast</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Multicast</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Pause</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>64 bytes packets</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>65..127 bytes packets</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>128..255 bytes packets</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>256..511 bytes packets</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>512..1023 bytes packets</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>&gt;1518 bytes packets</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>TX</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>RX</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QTableWidget" name="tblPortTx">
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <row>
+              <property name="text">
+               <string>Underruns</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Single Collisions</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>2-15 Collisions</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>&gt;15 Collisions</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Late Collisions</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Deffered</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>TX</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="tblPortRx">
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <row>
+              <property name="text">
+               <string>Excessive Len</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Jubbers</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>FCS Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Len Erorrs</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Symbol Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Aligment Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Resource Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Overruns</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>IP CRC Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>TCP CRC Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>UDP CRC Errors</string>
+              </property>
+             </row>
+             <row>
+              <property name="text">
+               <string>Dropped</string>
+              </property>
+             </row>
+             <column>
+              <property name="text">
+               <string>RX</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="grbxClass">
+      <property name="title">
+       <string>Classificator Statistics</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QComboBox" name="cbxClassSel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>Classificator 1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Classificator 2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btClassClear">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Clear</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btClassRead">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Update</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tblClassStat">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <row>
+          <property name="text">
+           <string>RX</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>L3 Fails</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>IPV4</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>IPV6</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>CRC Errors</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>TLL Errors</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>ICMP</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>IGMP</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>TCP</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>UDP</string>
+          </property>
+         </row>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

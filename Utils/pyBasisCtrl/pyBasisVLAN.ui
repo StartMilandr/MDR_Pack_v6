@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>649</width>
+    <height>438</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>VLAN Table</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QGroupBox" name="grboxSave">
+           <property name="title">
+            <string>View Table</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QPushButton" name="btSaveToFile">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Save to File...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btSelTgl">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Select / Unselect All</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="gbxDevice">
+           <property name="title">
+            <string>Device Table</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="btRead">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Read</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btDelSelected">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Delete Selected</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="grBoxTableRd">
+         <property name="title">
+          <string>Table</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QTableWidget" name="tblTableRd">
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>sel</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>VLAN_ID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>ForwPorts</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>UntagPorts</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>UnicastMiss</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>MulticastHit</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>MulticastMiss</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Mstp</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="grbxAddItem">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>160</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Add Items</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTableWidget" name="tblCtrl">
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string> VLAN_ID </string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ForwPorts</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>UntagPorts</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>UnicastHit</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>UnicastMiss</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>MuticastHit</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>MuticastMiss</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Mstp</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Apply</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

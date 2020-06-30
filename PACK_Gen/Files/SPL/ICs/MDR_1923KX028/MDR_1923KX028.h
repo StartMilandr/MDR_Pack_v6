@@ -133,6 +133,12 @@ void     MDR_KX028_ReadBeginAXI_def(uint32_t fromAddr);
 uint32_t MDR_KX028_ReadNextAXI_def(void);
 void     MDR_KX028_ReadEndAXI_def(void);
 
+//  Оптимизированное чтение последовательных адресов
+uint32_t MDR_KX028_ReadSequence(const uint32_t addrBase);
+uint32_t MDR_KX028_ReadSequenceStop(void);
+
+//  Оптимизированное чтение списка адресов
+void MDR_KX028_ReadByAddrList(uint16_t count, const uint32_t addrBase, const uint32_t *addrList, uint32_t *rdData);
 
 //  ----------------    Registers control ------------------
 uint32_t  MDR_KX028_ReadReg (uint32_t addr);

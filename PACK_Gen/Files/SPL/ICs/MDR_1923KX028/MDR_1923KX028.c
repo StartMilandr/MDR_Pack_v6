@@ -1,4 +1,4 @@
-#include "MDR_1923KX028.h"
+#include <MDR_1923KX028.h>
 
 
 // Инициализация SPI для общения с 1923KX028
@@ -243,9 +243,9 @@ MDR_SSP_Type *SSPx = objKX028->SSPx;
 
 FnReadAXI_t      MDR_KX028_ReadAXI      = MDR_KX028_ReadAXI_def;
 FnWriteAXI_t     MDR_KX028_WriteAXI     = MDR_KX028_WriteAXI_def;
-FnReadBeginAXI_t  MDR_KX028_ReadBeginAXI = MDR_KX028_ReadBeginAXI_def;
+FnReadBeginAXI_t MDR_KX028_ReadBeginAXI = MDR_KX028_ReadBeginAXI_def;
 FnReadNextAXI_t  MDR_KX028_ReadNextAXI  = MDR_KX028_ReadNextAXI_def;
-FnReadEndAXI_t MDR_KX028_ReadEndAXI   = MDR_KX028_ReadEndAXI_def;
+FnReadEndAXI_t   MDR_KX028_ReadEndAXI   = MDR_KX028_ReadEndAXI_def;
 
 static MDR_1923KX028_Obj _objKX028;
 
@@ -292,6 +292,44 @@ void     MDR_KX028_ReadEndAXI_def(void)
   MDR_1923KX028_ReadAXI_End(&_objKX028);
 }
 
+
+void MDR_KX028_ReadByAddrList(uint16_t count, const uint32_t addrBase, const uint32_t *addrList, uint32_t *rdData)
+{
+  uint16_t i;
+  for (i = 0; i < count; i++)
+    rdData[i] = MDR_KX028_ReadSequence(addrBase + addrList[i]);
+  MDR_KX028_ReadSequenceStop();
+}
+
+//  Оптимизированное чтение последовательных адресов
+static uint32_t _seqLastAddr = 0;
+
+uint32_t MDR_KX028_ReadSequence(const uint32_t addrBase)
+{
+  if (_seqLastAddr == 0)
+  {
+    MDR_KX028_ReadBeginAXI(addrBase);
+  }
+  else if (addrBase != _seqLastAddr + 4)
+  {
+    MDR_KX028_ReadEndAXI();
+    MDR_KX028_ReadBeginAXI(addrBase);    
+  }
+  
+  _seqLastAddr = addrBase;
+  return MDR_KX028_ReadNextAXI();  
+}
+
+uint32_t MDR_KX028_ReadSequenceStop(void)
+{
+  if (_seqLastAddr)
+  {
+    MDR_KX028_ReadEndAXI();
+    _seqLastAddr = 0;
+  }
+}
+
+
 //  ----------------    Registers control ------------------
 uint32_t  MDR_KX028_ReadReg (uint32_t addr)
 {
@@ -302,4 +340,6 @@ void MDR_KX028_WriteReg(uint32_t addr, uint32_t data)
 {
   MDR_1923KX028_WriteReg(&_objKX028, addr, data);
 }
+
+
 

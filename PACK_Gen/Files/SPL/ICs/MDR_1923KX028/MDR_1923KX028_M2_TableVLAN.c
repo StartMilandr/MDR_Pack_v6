@@ -348,3 +348,12 @@ uint32_t MDR_KX028_VLAN_TableSprintf(char *buff, uint32_t waitCyclesMax)
 
     return 0;
 }
+
+void MDR_KX028_VLAN_TableFlush(uint32_t optionMask, uint32_t waitCyclesMax)
+{
+  uint32_t status, classBase = AXI_CLASS_HW1_BASE_ADDR;
+
+  AXI_ExecCommand(classBase, optionMask | AXI_HASH_CMD_ID_FLUSH );
+  AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
+}
+

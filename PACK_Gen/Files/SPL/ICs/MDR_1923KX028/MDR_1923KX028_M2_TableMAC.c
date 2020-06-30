@@ -15,10 +15,18 @@ static bool AXI_WaitCommandCompleted(uint32_t classBase, uint32_t readyMask,  ui
   return false;
 }
 
-static inline void AXI_WriteMAC_Regs(uint32_t classBaseAddr, uint8_t *mac, uint16_t vlanId)
+//static inline void AXI_WriteMAC_Regs(uint32_t classBaseAddr, uint8_t *mac, uint16_t vlanId)
+//{
+//  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR1_REG, ( mac[0] << 24 | mac[1] << 16 | mac[2] << 8 | mac[3] ) );
+//  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR2_REG, ( ((vlanId << 16) & 0xFFFF0000) | mac[4] << 8 | mac[5] ) );
+//  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR3_REG, 0x00 );
+//  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG, 0x00 );
+//}
+
+static inline void AXI_WriteMAC_Key(uint32_t classBaseAddr, MDR_KX028_KeyMAC_t *key)
 {
-  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR1_REG, ( mac[0] << 24 | mac[1] << 16 | mac[2] << 8 | mac[3] ) );
-  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR2_REG, ( ((vlanId << 16) & 0xFFFF0000) | mac[4] << 8 | mac[5] ) );
+  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR1_REG, key->regs.valReg1);
+  MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR2_REG, key->regs.valReg2);
   MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR3_REG, 0x00 );
   MDR_KX028_WriteAXI( classBaseAddr + AXI_CLASS_DAMACHASH_HOST_MAC_ADDR4_REG, 0x00 );
 }
@@ -39,13 +47,13 @@ static inline void AXI_WriteEntry(uint32_t classBaseAddr, uint32_t entry)
 }
 
 
-MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearch(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax)
+MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearchByKey(MDR_KX028_KeyMAC_t *key, uint32_t waitCyclesMax)
 {
     uint32_t status, classBase = AXI_CLASS_HW1_BASE_ADDR;
     MDR_KX028_MAC_Entry_t result;
 
     // Run Command
-    AXI_WriteMAC_Regs(classBase, mac, vlanId);
+    AXI_WriteMAC_Key(classBase, key);
     AXI_ExecCommand(classBase, AXI_HASH_CMD_ID_SEARCH | AXI_HASH_CMD_VALID_MAC1_Msk | AXI_HASH_CMD_VALID_MAC2_Msk );
     bool cmdOk = AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
   
@@ -67,11 +75,11 @@ MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearch(uint8_t *mac, uint16_t vlanId, u
 }
 
 
-static int32_t MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+static int32_t MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)  
 {
     // Run Command
-    AXI_WriteMAC_Regs(classBaseAddr, mac, vlanId);
-    AXI_WriteEntry(classBaseAddr, entry.value);
+    AXI_WriteMAC_Key(classBaseAddr, &keyEntry->key);
+    AXI_WriteEntry(classBaseAddr, keyEntry->entry.value);
     AXI_ExecCommand(classBaseAddr, AXI_HASH_CMD_ID_ADD | AXI_HASH_CMD_VALID_MAC1_Msk | AXI_HASH_CMD_VALID_MAC2_Msk);
 
     uint32_t  status;  
@@ -84,16 +92,17 @@ static int32_t MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, uint8_t *mac, ui
       return -1;
 }
 
-bool MDR_KX028_MAC_TableAdd(uint8_t *mac, uint16_t vlaId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+bool MDR_KX028_MAC_TableAddByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
-  int32_t errCnt =  MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW1_BASE_ADDR, mac, vlaId, entry, waitCyclesMax)
-                  + MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW2_BASE_ADDR, mac, vlaId, entry, waitCyclesMax);
+  int32_t errCnt =  MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax)
+                  + MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
   
   return errCnt == 0;
 }
 
 
-void MDR_KX028_MAC_TableDel(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax)
+//void MDR_KX028_MAC_TableDel(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax)
+void MDR_KX028_MAC_TableDelByKey(MDR_KX028_KeyMAC_t *key, uint32_t waitCyclesMax)
 {
     uint32_t  status, i, classBase;
 
@@ -101,7 +110,7 @@ void MDR_KX028_MAC_TableDel(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMa
     for (i = 0; i < 2; i++)
     {
       // Exec Command
-      AXI_WriteMAC_Regs(classBase, mac, vlanId);
+      AXI_WriteMAC_Key(classBase, key);
       AXI_ExecCommand(classBase, AXI_HASH_CMD_ID_DEL | AXI_HASH_CMD_VALID_MAC1_Msk | AXI_HASH_CMD_VALID_MAC2_Msk);
       AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
       AXI_ClearStatus(classBase);
@@ -112,13 +121,14 @@ void MDR_KX028_MAC_TableDel(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMa
 }
 
 
-bool MDR_KX028_MAC_TableUpdateHW(uint32_t classBaseAddr, uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+//bool MDR_KX028_MAC_TableUpdateHW(uint32_t classBaseAddr, uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+bool MDR_KX028_MAC_TableUpdateHW(uint32_t classBaseAddr, MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
     uint32_t  status;
 
     // Exec Command
-    AXI_WriteMAC_Regs(classBaseAddr, mac, vlanId);
-    AXI_WriteEntry(classBaseAddr, entry.value);
+    AXI_WriteMAC_Key(classBaseAddr, &keyEntry->key);
+    AXI_WriteEntry(classBaseAddr, keyEntry->entry.value);
     AXI_ExecCommand(classBaseAddr, AXI_HASH_CMD_ID_UPDATE | AXI_HASH_CMD_VALID_MAC1_Msk | AXI_HASH_CMD_VALID_MAC2_Msk);
     bool cmdOk = AXI_WaitCommandCompleted(classBaseAddr, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
     AXI_ClearStatus(classBaseAddr);
@@ -126,10 +136,10 @@ bool MDR_KX028_MAC_TableUpdateHW(uint32_t classBaseAddr, uint8_t *mac, uint16_t 
     return  cmdOk && ((status & AXI_HASH_STAT_ENTR_ADD) != 0);
 }
 
-bool MDR_KX028_MAC_TableUpdate(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+bool MDR_KX028_MAC_TableUpdateByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
-  uint32_t errCnt = MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW1_BASE_ADDR, mac, vlanId, entry, waitCyclesMax)
-                  + MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW2_BASE_ADDR, mac, vlanId, entry, waitCyclesMax);
+  uint32_t errCnt = MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax)
+                  + MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
   return errCnt == 0;
 }
 
@@ -310,4 +320,12 @@ int32_t MDR_KX028_MAC_TableSprintf(char *buff, uint32_t waitCyclesMax)
 
     return 0;
 }
-/*********************** End of File **********************/
+
+void MDR_KX028_MAC_TableFlush(uint32_t optionMask, uint32_t waitCyclesMax)
+{
+  uint32_t status, classBase = AXI_CLASS_HW1_BASE_ADDR;
+
+  AXI_ExecCommand(classBase, optionMask | AXI_HASH_CMD_ID_FLUSH );
+  AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
+}
+

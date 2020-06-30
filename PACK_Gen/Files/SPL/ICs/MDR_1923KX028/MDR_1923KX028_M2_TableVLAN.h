@@ -10,7 +10,7 @@
 void MDR_KX028_VLAN_TableInit(uint32_t waitCyclesMax);
 
 // VLAN (BD) Hash table action entry map:
-typedef struct {
+typedef __PACKED_STRUCT {
   uint64_t forwPortList       : 20;    // [19:00]         - forward port list
   uint64_t untagList          : 20;    // [39:20]         - untag list
   uint64_t ucastHitActions    : 3;     // [42:40]         - ucast_hit_action
@@ -55,12 +55,12 @@ typedef struct {
                        | ((( uint64_t )(untPorts) << MDR_KX028_VLAN_ENTRY_UNTAG_LIST_POS) & MDR_KX028_VLAN_ENTRY_UNTAG_LIST_MASK))
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t lo32;
   uint32_t hi32;
 } MDR_KX028_VLAN_Entry32;
 
-typedef union {
+typedef __packed union {
   int64_t                    value;
   MDR_KX028_VLAN_Entry32     value64;
   MDR_KX028_VLAN_Entry_Bits  bits;
@@ -85,6 +85,9 @@ typedef struct {
 bool MDR_KX028_VLAN_TableRead( MDR_KX028_VLAN_TableItem *tableItem, uint16_t hashAddr, uint32_t waitCyclesMax );
 
 uint32_t MDR_KX028_VLAN_TableSprintf(char *buff, uint32_t waitCyclesMax);
+
+void MDR_KX028_VLAN_TableFlush(uint32_t optionMask, uint32_t waitCyclesMax);
+
 
 
 #endif // MDR_1923KX028_M2_TABLE_VLAN_H

@@ -127,10 +127,8 @@ typedef struct {
 void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint32_t waitCyclesMax, uint16_t enabledPortList)
 {  
   uint32_t vlan_id, fwd_action;
-  MDR_KX028_MAC_Entry_t  entryMAC;
-  MDR_KX028_MAC_Entry_t  newEntryMAC;
+  MDR_KX028_MAC_Entry_t  entryMAC = {.value = 0};
   MDR_KX028_VLAN_Entry_t entryVLAN;
-  uint8_t *src_mac;
   
   //  Check PortInd
   uint16_t portInd = frmInfo->ctrl_b.portNum;   
@@ -164,10 +162,14 @@ void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
 //  src_mac[3] = ( ( ptr[6] >> 16 ) & 0xFF );
 //  src_mac[4] = ( ( ptr[6] >> 8 ) & 0xFF );
 //  src_mac[5] = (   ptr[6] & 0xFF );
-  src_mac = (uint8_t *)(&frmInfo->destMAC_srcMAC) + 2;
+  uint8_t *src_mac = (uint8_t *)(&frmInfo->destMAC_srcMAC) + 2;
+  
+  MDR_KX028_KeyEntryMAC_t keyEntryMAC;
+  MDR_KX028_MAC_FillKeyEntry(src_mac, vlan_id, entryMAC, &keyEntryMAC);
   
   //printf( "src mac %02X:%02X:%02X:%02X:%02X:%02X\n", src_mac[0], src_mac[1], src_mac[2], src_mac[3], src_mac[4], src_mac[5] );
-  entryMAC = MDR_KX028_MAC_TableSearch(src_mac, vlan_id, waitCyclesMax);
+  //entryMAC = MDR_KX028_MAC_TableSearch(src_mac, vlan_id, waitCyclesMax);
+  entryMAC = MDR_KX028_MAC_TableSearchByKey(&keyEntryMAC.key, waitCyclesMax);
   if( entryMAC.value == -1 )
   { // MAC Search fail
     //printf( "Search in mac fail\n" );    
@@ -180,18 +182,17 @@ void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
       fwd_action = (entryVLAN.value & MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_MASK) >> MDR_KX028_VLAN_ENTRY_UCAST_HIT_ACT_POS;
     }
 
-    newEntryMAC.value = MDR_KX028_MAC_ENTRY_FILL_DEF(portList, fwd_action, static_entry);    
-    MDR_KX028_MAC_TableAdd( src_mac, vlan_id, newEntryMAC, waitCyclesMax);
+    keyEntryMAC.entry.value = MDR_KX028_MAC_ENTRY_FILL_DEF(portList, fwd_action, static_entry);    
+    MDR_KX028_MAC_TableAddByKey(&keyEntryMAC, waitCyclesMax);
   }
   else
   { // MAC hash entry found
     //printf( "Search in mac success\n" );
-    newEntryMAC.value = entryMAC.value;
     switch (frmInfo->ctrl_b.puntReason) {
       case KX028_FRAME_PUNT_SA_IS_ACTIVE: {
         //printf( "Punt is ACTIVE\n" );
-        if (newEntryMAC.value & MDR_KX028_MAC_ENTRY_FRESH_Msk)
-          newEntryMAC.value = newEntryMAC.value & ~MDR_KX028_MAC_ENTRY_FRESH_Msk;
+        if (entryMAC.value & MDR_KX028_MAC_ENTRY_FRESH_Msk)
+          entryMAC.value = entryMAC.value & ~MDR_KX028_MAC_ENTRY_FRESH_Msk;
         else
           return;
         //  Unreachable
@@ -199,10 +200,10 @@ void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
       }
       case KX028_FRAME_PUNT_SA_RELEARN: {
         //printf( "Punt is RELEARN\n" );
-        if ((newEntryMAC.value & portList) == 0) 
+        if ((entryMAC.value & portList) == 0) 
         {
-          newEntryMAC.value &= ~MDR_KX028_MAC_ENTRY_FWD_PORT_LIST_Msk;
-          newEntryMAC.value |= portList;
+          entryMAC.value &= ~MDR_KX028_MAC_ENTRY_FWD_PORT_LIST_Msk;
+          entryMAC.value |= portList;
         }
         else
           return;
@@ -214,7 +215,8 @@ void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
       default:
         return;
     }
-    MDR_KX028_MAC_TableUpdate( src_mac, vlan_id, newEntryMAC, waitCyclesMax);
+    keyEntryMAC.entry.value = entryMAC.value;    
+    MDR_KX028_MAC_TableUpdateByKey(&keyEntryMAC, waitCyclesMax);
   }
 }
 

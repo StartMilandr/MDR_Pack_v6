@@ -5,6 +5,7 @@
 #include <MDR_1923KX028_AXI_defs.h>
 
 
+//==========================    EMAC Statistics ========================
 typedef struct
 {
     uint64_t tx_ok;
@@ -54,25 +55,35 @@ typedef struct
     uint64_t rx_bytes;
 } MDR_KX028_StatsEMAC_t;
 
-typedef enum
-{
-    MDR_KX028_STAT_ID_CLASS_RX = 0,
-    MDR_KX028_STAT_ID_CLASS_L3_FAIL,
-    MDR_KX028_STAT_ID_CLASS_IPV4,
-    MDR_KX028_STAT_ID_CLASS_IPV6,
-    MDR_KX028_STAT_ID_CLASS_BAD_CRC,
-    MDR_KX028_STAT_ID_CLASS_BAD_TTL,
-    MDR_KX028_STAT_ID_CLASS_ICMP,
-    MDR_KX028_STAT_ID_CLASS_IGMP,
-    MDR_KX028_STAT_ID_CLASS_TCP,
-    MDR_KX028_STAT_ID_CLASS_UDP,
+//extern MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
+
+// Считывает статисктику блока eMAC в pStatsEMAC
+void MDR_KX028_M2_UpdateStatsEMAC(MDR_KX028_EMAC_e eMAC, MDR_KX028_StatsEMAC_t* pStatsEMAC);
+// Считывает статисктику cntToProcess блоков eMAC в массив statsEMAC_Arr длиной statsEMAC_ArrLen, начиная с nextEMAC
+// Возвращает nextEMAC для следующего вызова
+MDR_KX028_EMAC_e MDR_KX028_M2_UpdateStatNextEMACs(uint32_t cntToProcess, MDR_KX028_EMAC_e nextEMAC, uint32_t statsEMAC_ArrLen, MDR_KX028_StatsEMAC_t* statsEMAC_Arr);
+
+
+
+//==========================    Classif_EMAC Statistics ========================
+typedef enum {
+    MDR_KX028_STAT_CLASS_RX = 0,
+    MDR_KX028_STAT_CLASS_L3_FAIL,
+    MDR_KX028_STAT_CLASS_IPV4,
+    MDR_KX028_STAT_CLASS_IPV6,
+    MDR_KX028_STAT_CLASS_BAD_CRC,
+    MDR_KX028_STAT_CLASS_BAD_TTL,
+    MDR_KX028_STAT_CLASS_ICMP,
+    MDR_KX028_STAT_CLASS_IGMP,
+    MDR_KX028_STAT_CLASS_TCP,
+    MDR_KX028_STAT_CLASS_UDP,
     //  Count
-    MDR_KX028_STAT_ID_CLASS_CNTRS_NUMS,
+    MDR_KX028_STAT_CLASS_CNTRS_NUMS,
 } MDR_KX028_StatsClassHW_ID;
 
 typedef union
 {
-    uint64_t ullData[ MDR_KX028_STAT_ID_CLASS_CNTRS_NUMS ];
+    uint64_t data64[ MDR_KX028_STAT_CLASS_CNTRS_NUMS ];
     struct
     {
         uint64_t class_rx;
@@ -88,18 +99,14 @@ typedef union
     };
 } MDR_KX028_StatsClassHW_t;
 
-//extern MDR_KX028_StatsEMAC_t    statsEMAC[ KX028_EMAC_NUMS ];
+
+// Считывание счетчика по SPI обнуляет счетчик. Пока SPI выдает считанный счетчик, базис считывает следующий - тем самым обнуляя его.
+// Поэтому счетчики можно считать только с последовательно увеличивающимися адресами. 
+// Адреса перемешаны, поэтому считать счетчики отдельного ЕМАС не получится, не затронув ближайшие адреса.
+// Поэтому статистика вычитывается в глобальную структуру statsClassHW, согласно очередности адресов в таблице classCountersAddrOrder.
 extern MDR_KX028_StatsClassHW_t statsClassHW[ KX028_EMAC_NUMS ];
 
-// Считывает статисктику блока eMAC в pStatsEMAC
-void MDR_KX028_M2_UpdateStatsEMAC(MDR_KX028_EMAC_e eMAC, MDR_KX028_StatsEMAC_t* pStatsEMAC);
-// Считывает статисктику cntToProcess блоков eMAC в массив statsEMAC_Arr длиной statsEMAC_ArrLen, начиная с nextEMAC
-// Возвращает nextEMAC для следующего вызова
-MDR_KX028_EMAC_e MDR_KX028_M2_UpdateStatNextEMACs(uint32_t cntToProcess, MDR_KX028_EMAC_e nextEMAC, uint32_t statsEMAC_ArrLen, MDR_KX028_StatsEMAC_t* statsEMAC_Arr);
-
-
-
-void MDR_KX028_M2_UpdateStatsClassHW(void);
+void MDR_KX028_M2_UpdateStatsClassHW(uint32_t selEMACs);
 
 
 #endif  //MDR_1923KX029_M2_STATS_H

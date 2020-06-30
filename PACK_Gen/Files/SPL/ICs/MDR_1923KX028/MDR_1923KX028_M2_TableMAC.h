@@ -11,7 +11,7 @@ void MDR_KX028_MAC_TableInit(uint32_t waitCyclesMax);
 
 
 //  =========   Функции работы с "entry" для пары [mac, vlanId]   ===========
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t forwPortList: 20;    // [19:0] – список коммутируемых портов
   uint32_t TC          : 3;     // [22:20] – TC для MACDA2TC
   uint32_t forwActions : 3;     // [25:23] – поле операции (ACTION FIELD)
@@ -50,22 +50,85 @@ typedef struct {
                 | _VAL2FLD(MDR_KX028_MAC_ENTRY_STATIC,        Static)
 
 
-typedef union {
-  int32_t                value;
+typedef __packed union {
+  int32_t                  value;
   MDR_KX028_MAC_Entry_Bits bits;
 } MDR_KX028_MAC_Entry_t;
 
+typedef __PACKED_STRUCT {  
+  uint8_t   MAC[6];
+  uint16_t  VLAN_ID;
+} MDR_KX028_KeyMAC_Fields;
+
+typedef __PACKED_STRUCT {  
+  uint32_t  valReg1;
+  uint32_t  valReg2;
+} MDR_KX028_KeyMAC_Regs;
+
+typedef __packed union {
+  MDR_KX028_KeyMAC_Regs     regs;
+  MDR_KX028_KeyMAC_Fields   fields;
+} MDR_KX028_KeyMAC_t;
+
+typedef __PACKED_STRUCT {
+  MDR_KX028_KeyMAC_t    key;
+  MDR_KX028_MAC_Entry_t entry;
+} MDR_KX028_KeyEntryMAC_t;
+
+__STATIC_INLINE void MDR_KX028_MAC_FillKey(uint8_t *mac, uint16_t vlanId, MDR_KX028_KeyMAC_t *key)
+{
+  key->regs.valReg1 =   mac[0] << 24 | mac[1] << 16 | mac[2] << 8 | mac[3];
+  key->regs.valReg2 = ((vlanId << 16) & 0xFFFF0000) | mac[4] << 8 | mac[5];
+}
+
+__STATIC_INLINE void MDR_KX028_MAC_FillKeyEntry(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, MDR_KX028_KeyEntryMAC_t *keyEntry)
+{
+  MDR_KX028_MAC_FillKey(mac, vlanId, &keyEntry->key);
+  keyEntry->entry = entry;
+}
+
 //  Считать "entry" для item c заданным [mac, vlanId]
 //  if not found returns value = -1
-MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearch(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax);
+MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearchByKey(MDR_KX028_KeyMAC_t *key, uint32_t waitCyclesMax);
+
+__STATIC_INLINE MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearch(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax)
+{
+  MDR_KX028_KeyMAC_t key;
+  MDR_KX028_MAC_FillKey(mac, vlanId, &key);
+  return MDR_KX028_MAC_TableSearchByKey(&key, waitCyclesMax);
+}
+
 
 //  Добавить item c заданным [mac, vlanId] и "entry"
-bool MDR_KX028_MAC_TableAdd   (uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax);
-//  Обновить значение "entry" для item c заданным [mac, vlanId]
-bool MDR_KX028_MAC_TableUpdate(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax);
-//  Удалить item c заданным [mac, vlanId]
-void MDR_KX028_MAC_TableDel   (uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax);
+bool MDR_KX028_MAC_TableAddByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax);
 
+__STATIC_INLINE bool MDR_KX028_MAC_TableAdd(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+{
+  MDR_KX028_KeyEntryMAC_t keyEntry;
+  MDR_KX028_MAC_FillKeyEntry(mac, vlanId, entry, &keyEntry);
+  return MDR_KX028_MAC_TableAddByKey(&keyEntry, waitCyclesMax);
+}
+
+//  Обновить значение "entry" для item c заданным [mac, vlanId]
+bool MDR_KX028_MAC_TableUpdateByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax);
+
+__STATIC_INLINE bool MDR_KX028_MAC_TableUpdate(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, uint32_t waitCyclesMax)
+{
+  MDR_KX028_KeyEntryMAC_t keyEntry;
+  MDR_KX028_MAC_FillKeyEntry(mac, vlanId, entry, &keyEntry);
+  return MDR_KX028_MAC_TableUpdateByKey(&keyEntry, waitCyclesMax);
+}
+
+
+//  Удалить item c заданным [mac, vlanId]
+void MDR_KX028_MAC_TableDelByKey(MDR_KX028_KeyMAC_t *key, uint32_t waitCyclesMax);
+
+__STATIC_INLINE void MDR_KX028_MAC_TableDel(uint8_t *mac, uint16_t vlanId, uint32_t waitCyclesMax)
+{
+  MDR_KX028_KeyMAC_t key;
+  MDR_KX028_MAC_FillKey(mac, vlanId, &key);
+  return MDR_KX028_MAC_TableDelByKey(&key, waitCyclesMax);
+}
 
 // ==========   Чтение запись таблицы МАС =================
 typedef struct {
@@ -257,5 +320,8 @@ bool MDR_KX028_MAC_TableRead ( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t ha
 bool MDR_KX028_MAC_TableWrite( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t hashAddr, uint32_t waitCyclesMax );
 
 int32_t MDR_KX028_MAC_TableSprintf(char *buff, uint32_t waitCyclesMax);
+
+void MDR_KX028_MAC_TableFlush(uint32_t optionMask, uint32_t waitCyclesMax);
+
 
 #endif // _1923KX028_M2_MAC_TABLE_H_

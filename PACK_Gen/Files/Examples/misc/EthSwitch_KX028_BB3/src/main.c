@@ -2,7 +2,7 @@
 #include <MDR_RST_Clock.h>
 #include <MDR_GPIO.h>
 #include <MDR_Timer.h>
-#include <MDR_UART_CLI.h>
+//#include <MDR_UART_CLI.h>
 
 #include "board_defs.h"
 
@@ -19,6 +19,7 @@
 #include <MDR_1923KX028_M2_Stats.h>
 #include <MDR_1923KX028_Config.h>
 
+#include "KX028_CLI.h"
 
 
 //  Сколько Items обрабатывать за один вызвов Learn/Ageing/StatsUpdate
@@ -44,16 +45,16 @@
 #define HOST_LEARN_QUEUE_LEN    3
 
 #define PORTS_VLAN_FALLBACK     1UL
-#define PORTS_CNT_ON_BOARD      3
+
 
 //  Mode2 Process
 static uint32_t ModeM2_InitKX028(void);
-static void Mode2_Process(void);
+static void Mode2_Process(uint32_t freqCPU_Hz);
 //  Ageing
 static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount);
 //  Statistics
-MDR_KX028_StatsEMAC_t    statsEMAC[PORTS_CNT_ON_BOARD];
-static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount);
+MDR_KX028_StatsEMAC_t    statsEMAC[KX028_EMAC_PORT_COUNT];
+static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount, uint32_t usedPortList);
 
 static void Mode0_Process(void);
 
@@ -80,7 +81,7 @@ int main(void)
       Mode0_Process();  
       break;
     case MDR_1923KX028_Mode2_SlaveSPI: 
-      Mode2_Process();
+      Mode2_Process(freqCPU_Hz);
       break;
     case MDR_1923KX028_Mode1_ExtFlash: break;    
     case MDR_1923KX028_Mode3_Uncontrolled: break;
@@ -100,31 +101,19 @@ void DelayMs(uint32_t delayMs)
 
 //===========  MODE0: PC Driver - PCIe Control  ============
 static void Mode0_Process(void)
-{
-  CLI_CMD_e cliCMD;
-  uint8_t  cliParamLen;
-  uint8_t *pCliParams;
-  
+{ 
   MDR_KX028_M0_WaitPC_DriverReady();
   MDR_KX028_M0_SetupBars();  
   
   while (1)
   {
+    //  Обмен с драйвером через PCIe
     MDR_KX028_M0_TransferPC();
-    
-    cliCMD = MDR_CLI_GetCommand(&cliParamLen, &pCliParams);
-    switch (cliCMD) {
-      case cliCMD_NONE: break;
-      case cliCMD_ERROR: 
-        MDR_CLI_SetResponse(cliCMD_ERROR, 0, NULL);
-        break;
-    }
-    
   }
 }
 
 //===========  MODE2: - SlaveSPI  ============
-static void Mode2_Process(void)
+static void Mode2_Process(uint32_t freqCPU_Hz)
 {
   // Таймер старения, отсчет - 1мс
   MDR_Timer_InitPeriod(AGE_TIMER, TIM_BRG_144MHZ_TO_1MS, TIM_PSC_144MHZ_TO_1MS, TIM_MAX_VALUE, false);
@@ -136,6 +125,8 @@ static void Mode2_Process(void)
   //  User VLAN Init
   MDR_KX028_VLAN_Entry_t  action_entry = {.value = MDR_KX028_VLAN_ENTRY_FILL_FORW_ALL(usedPortList, 0)};  // 0 - untagged port list
   MDR_KX028_VLAN_TableAdd(1, action_entry, TABLES_TIMEOUT_READY_READS);  
+  //  CLI
+  KX028_InitCLI(freqCPU_Hz);  
   
   //  Process
   while (1)
@@ -145,7 +136,9 @@ static void Mode2_Process(void)
     //  Обучение
     MDR_KX028_M2_ProcessTablesLearning(TABLES_LEARN_CNT_PER_ITERATION, TABLES_TIMEOUT_READY_READS, usedPortList);
     //  Статистика
-    Mode2_ProcessStatsUpdate(AGE_TIMER->TIMERx->CNT, STATS_UPDATE_PERIOD_MS, STATS_UPDATE_ITERATION);
+    Mode2_ProcessStatsUpdate(AGE_TIMER->TIMERx->CNT, STATS_UPDATE_PERIOD_MS, STATS_UPDATE_ITERATION, usedPortList);
+    //  Команды с COM порта
+    KX028_ProcessCLI(TABLES_TIMEOUT_READY_READS);       
   }
 }
 
@@ -201,7 +194,7 @@ static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_
   }  
 }
 
-static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount)
+static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, uint32_t procItemsCount, uint32_t usedPortList)
 {
   static MDR_KX028_EMAC_e activeEMAC = KX028_EMAC1;
   static int32_t  cntToProcess = 0;
@@ -212,30 +205,29 @@ static void Mode2_ProcessStatsUpdate(uint32_t nowTime, uint32_t processPeriod, u
   if ((nowTime - lastStart) > processPeriod) 
   {
     lastStart = nowTime;
-    cntToProcess = PORTS_CNT_ON_BOARD;
+    cntToProcess = KX028_EMAC_PORT_COUNT + 1;
   }  
 
   //  Processing
   if (cntToProcess > 0) 
   {
-    cntItems = cntToProcess - procItemsCount;
-    if (cntItems < 0)
-      cntItems = procItemsCount - cntToProcess;
-      
-    activeEMAC = MDR_KX028_M2_UpdateStatNextEMACs(cntItems, activeEMAC, PORTS_CNT_ON_BOARD, &(statsEMAC[activeEMAC]));    
-    cntToProcess -= cntItems;
+    if (cntToProcess <= KX028_EMAC_PORT_COUNT)
+    {
+      cntItems = cntToProcess - procItemsCount;
+      if (cntItems < 0)
+        cntItems = procItemsCount - cntToProcess;
+        
+      activeEMAC = MDR_KX028_M2_UpdateStatNextEMACs(cntItems, activeEMAC, KX028_EMAC_PORT_COUNT, &(statsEMAC[activeEMAC]));    
+      cntToProcess -= cntItems;
+    }
+    else
+    {
+      MDR_KX028_M2_UpdateStatsClassHW(usedPortList);
+      cntToProcess--;
+    }
+
   }  
 }
 
-void CLI_Init(uint32_t freqCPU_Hz)
-{
-  MDR_UART_CfgPinGPIO _pinUartTX = {MDR_GPIO_C, CLI_UART_TX, CLI_UART_TX_FUNC};
-  MDR_UART_CfgPinGPIO _pinUartRX = {MDR_GPIO_C, CLI_UART_RX, CLI_UART_RX_FUNC};  
-	MDR_UART_CfgPinsGPIO pinsGPIO = {
-		.pPinTX = &_pinUartTX,
-    .pPinRX = &_pinUartRX,	
-	};
 
-  MDR_CLI_UART_Init(0, freqCPU_Hz, &pinsGPIO);  
-}
 

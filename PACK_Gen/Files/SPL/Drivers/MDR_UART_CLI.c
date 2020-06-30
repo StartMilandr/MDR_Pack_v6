@@ -7,11 +7,28 @@
 // Буфер с запасом под OddTail
 #define DMA_BUFF_LEN  CFG_CLI_MESS_LEN_MAX + 1
 
-static uint8_t    _inpData[DMA_BUFF_LEN] __RAM_EXEC;
-static uint16_t   _inpDataLen = 0;
+// countLo, cmd_cntHi - служебные байты: команда/кол. байт в посылке
+// buff - параметры к команде. Для удобства работы с 32-разрядными значениями, 
+//        надо чтобы buff начинался с выровненного адреса. 
+//        (CortexM1 не поддерживает невыровненные операции с памятью
+//         CortexM3 делает доступ за несколько циклов выровненный транзакций)
+typedef __PACKED_STRUCT {
+  uint16_t  _alignOffset;
+  uint8_t   countLo;
+  uint8_t   cmd_cntHi;
+  uint8_t   buff[DMA_BUFF_LEN];  // Aligned by 4!
+} CLI_AlignedBuff;
+
+static CLI_AlignedBuff  _inpAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
+static uint8_t         *_inpData = &_inpAlignedBuff.countLo;
+static uint16_t         _inpDataLen = 0;
+
 static uint16_t   _messLen = 0;
-static uint8_t    _outData[DMA_BUFF_LEN] __RAM_EXEC;
-static uint16_t   _outDataLen = 0;
+
+
+static CLI_AlignedBuff  _outAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
+static uint8_t         *_outData = &_outAlignedBuff.countLo;
+static uint16_t         _outDataLen = 0;
 
 static CLI_CMD_e  _cmdID;
 

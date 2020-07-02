@@ -20,3 +20,10 @@ def BasisGetPortNames():
       _PortNames.append('Port {}'.format(d))
 
   return _PortNames
+
+
+def _VAL2FLD(value, valPos, ValMsk):
+  return (value << valPos) & ValMsk
+
+def _FLD2VAL(value, valPos, ValMsk):
+  return (value & ValMsk) >> valPos

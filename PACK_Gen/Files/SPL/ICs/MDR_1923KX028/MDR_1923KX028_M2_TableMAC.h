@@ -171,7 +171,7 @@ typedef struct {
 #define KX028_ItemMAC_REG3_PortListH_Pos    0
 #define KX028_ItemMAC_REG3_PortListH_Msk    0x00001FFFUL
 #define KX028_ItemMAC_REG3_TC_Pos           17
-#define KX028_ItemMAC_REG3_TC_Msk           0x0000E000UL
+#define KX028_ItemMAC_REG3_TC_Msk           0x000E0000UL
 #define KX028_ItemMAC_REG3_Actions_Pos      20
 #define KX028_ItemMAC_REG3_Actions_Msk      0x00700000UL
 #define KX028_ItemMAC_REG3_CutThrough_Pos   23
@@ -224,8 +224,8 @@ typedef struct {
   uint32_t IsActive         : 1;  // 27
 } MDR_KX028_ItemMAC_REG4_Bits;
 
-#define KX028_ItemMAC_REG4_IsValidREG4_Pos      0
-#define KX028_ItemMAC_REG4_IsValidREG4_Msk      0x00000001UL
+#define KX028_ItemMAC_REG4_IsValidREG5_Pos      0
+#define KX028_ItemMAC_REG4_IsValidREG5_Msk      0x00000001UL
 #define KX028_ItemMAC_REG4_PortNum_Pos          4
 #define KX028_ItemMAC_REG4_PortNum_Msk          0x000000F0UL
 #define KX028_ItemMAC_REG4_CollizPtr_Pos        8
@@ -236,7 +236,7 @@ typedef struct {
 #define KX028_ItemMAC_REG4_IsActive_Msk         0x08000000UL
 
 #define KX028_ItemMAC_REG4_FILL_DEF(IsValR5, PortNum, CollPtr, IsValCollPtr, IsActive) \
-                _VAL2FLD(KX028_ItemMAC_REG4_IsValidREG4,    IsValR5) \
+                _VAL2FLD(KX028_ItemMAC_REG4_IsValidREG5,    IsValR5) \
               | _VAL2FLD(KX028_ItemMAC_REG4_PortNum,        PortNum) \
               | _VAL2FLD(KX028_ItemMAC_REG4_CollizPtr,      CollPtr) \
               | _VAL2FLD(KX028_ItemMAC_REG4_IsValidCollPtr, IsValCollPtr) \

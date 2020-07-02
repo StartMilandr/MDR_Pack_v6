@@ -407,6 +407,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\Reset_Ctrl.c</FilePath>
             </File>
+            <File>
+              <FileName>KX028_CLI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\KX028_CLI.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

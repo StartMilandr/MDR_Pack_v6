@@ -1809,12 +1809,7 @@ typedef enum {
     
     //  Common defs
     #define AXI_VLAN_VALID_ID_MSK                 0x1FFF
-    
-    #define VLAN_TABLE_HASH_ENTRIES               0x40
-    #define VLAN_TABLE_COLL_ENTRIES               0x40    
-    #define VLAN_TABLE_INIT_HEAD_PTR              0x40
-    #define VLAN_TABLE_INIT_TAIL_PTR              0x7f
-    
+ 
 
 //  --------------------------    WSP_GLOBAL_CSR ----------------------------------------
 #define AXI_WSP_GLOBAL_BASE_ADDR                 0x630000

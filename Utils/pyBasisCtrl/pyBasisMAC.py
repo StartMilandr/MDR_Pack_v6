@@ -4,6 +4,9 @@ from pyWidgetsUtils import *
 from pyWidgetsStyles import *
 from pyBasisRes import *
 
+from KX028_CLI import KX028_CLI
+from KX028_KeyEntryMAC import KX028_KeyEntryMAC
+
 #  TableRx Colunms
 cCOL_RX_SEL     = 0
 cCOL_RX_VLAN    = 1
@@ -35,7 +38,7 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         self.initTableCtrl()
         self.initTableRx()
         self.debugAddTableRx()
-
+        self.comCLI = None        
 
     def closeEvent(self, event):
         #self.comThread.stop()
@@ -88,7 +91,8 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         tableWidget_AddComboBox(      self.tblCtrl, i, cCOL_ADD_ACTION, ACT_ACTIIONS, 0)
         tableWidget_AddSpinBoxRange(  self.tblCtrl, i, cCOL_ADD_PORT, 0, 15)
         tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_FORW, '0x00')
-        tableWidget_PushButton(       self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
+        btn = tableWidget_PushButton(       self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
+        btn.clicked.connect(self.writeItemMAC)
       # Resize
       header = self.tblCtrl.horizontalHeader()
       header.setSectionResizeMode(cCOL_ADD_VLAN,   QtWidgets.QHeaderView.ResizeToContents)
@@ -99,5 +103,9 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
       header.setSectionResizeMode(cCOL_ADD_FORW,   QtWidgets.QHeaderView.Stretch)
       header.setSectionResizeMode(cCOL_ADD_APPLY,  QtWidgets.QHeaderView.ResizeToContents)
 
+
+    def writeItemMAC(self):
+        keyEntry = KX028_KeyEntryMAC()
+        self.comCLI.UpdateOrAddMAC(keyEntry)
 
 

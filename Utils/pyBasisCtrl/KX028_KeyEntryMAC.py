@@ -10,11 +10,12 @@ ItemMAC_REG2_VlanID_Pos    = 16
 ItemMAC_REG2_VlanID_Msk    = 0x1FFF0000
 
 class KX028_KeyMAC:
+  packLen = 8
   def __init__(self):
     self.MAC = '01:23:45:67:89:AB'
     self.vlanID = 1
 
-  def pack(self, buff):
+  def pack(self, buff, offs):
     #MAC and VLAN ID
     mac64 = int(self.MAC.translate(self.MAC.maketrans('', '', ':.- ')), 16)
     #print('mac64_TX: ', hex(mac64) )
@@ -24,10 +25,10 @@ class KX028_KeyMAC:
     REG2 =  _VAL2FLD(mac64 >> 32,    ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) \
           | _VAL2FLD(self.vlanID,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)
     #PACK to Buff
-    struct.pack_into("LL", buff, 0, REG1, REG2)
+    struct.pack_into("LL", buff, offs, REG1, REG2)
 
-  def unpack(self, buff):
-    REG1, REG2 = struct.unpack_from('LL', buff, 0)
+  def unpack(self, buff, offs):
+    REG1, REG2 = struct.unpack_from('LL', buff, offs)
     #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
     #MAC
     mac64 = REG1 | (_FLD2VAL(REG2, ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) << 32)
@@ -51,18 +52,19 @@ MAC_ENTRY_STATIC_Pos          = 30
 MAC_ENTRY_STATIC_Msk          = 0x40000000
 
 class KX028_KeyEntryMAC:
+  packLen = KX028_KeyMAC.packLen + 4
   def __init__(self):
     self.key = KX028_KeyMAC()
     #entry
-    self.forwPorts = 0
-    self.tc = 0
-    self.action = 0
-    self.cutThrough = False 
-    self.isFresh = False
-    self.isStatic = False 
+    self.forwPorts = 7
+    self.tc = 7
+    self.action = 7
+    self.cutThrough = True 
+    self.isFresh = True
+    self.isStatic = True 
 
 
-  def pack(self, buff):
+  def pack(self, buff, offs):
     REG3 =  _VAL2FLD(self.forwPorts,   MAC_ENTRY_FWD_PORT_LIST_Pos, MAC_ENTRY_FWD_PORT_LIST_Msk) \
           | _VAL2FLD(self.tc,          MAC_ENTRY_TC_Pos,            MAC_ENTRY_TC_Msk) \
           | _VAL2FLD(self.action,      MAC_ENTRY_FWD_ACT_Pos,       MAC_ENTRY_FWD_ACT_Msk) \
@@ -70,12 +72,12 @@ class KX028_KeyEntryMAC:
           | _VAL2FLD(self.isFresh,     MAC_ENTRY_FRESH_Pos,         MAC_ENTRY_FRESH_Msk) \
           | _VAL2FLD(self.isStatic,    MAC_ENTRY_STATIC_Pos,        MAC_ENTRY_STATIC_Msk) \
     #PACK to Buff
-    self.key.pack(buff)
-    struct.pack_into("L", buff, 8, REG3)
+    self.key.pack(buff, offs)
+    struct.pack_into("L", buff, offs + KX028_KeyMAC.packLen, REG3)
 
-  def unpack(self, buff):
-    self.key.unpack(buff)
-    (REG3, ) = struct.unpack_from('L', buff, 8)
+  def unpack(self, buff, offs):
+    self.key.unpack(buff, offs)
+    (REG3, ) = struct.unpack_from('L', buff, offs + KX028_KeyMAC.packLen)
     print(hex(REG3))
     #REG3
     self.forwPorts   = _FLD2VAL(REG3, MAC_ENTRY_FWD_PORT_LIST_Pos,  MAC_ENTRY_FWD_PORT_LIST_Msk)
@@ -88,6 +90,8 @@ class KX028_KeyEntryMAC:
 
 
 #--------------  Tests ---------------
+TEST_OFFS = 0
+
 def TestKeyMAC():
     item1 = KX028_KeyMAC()
     item1.MAC = 'AB:89:67:45:23:01'
@@ -101,9 +105,9 @@ def TestKeyMAC():
     # send ItemMAC
     ITEM_MAC_BUF_LEN = 8
     buff = create_string_buffer(ITEM_MAC_BUF_LEN)
-    item1.pack(buff)
+    item1.pack(buff, TEST_OFFS)
     print("Byte chunk: ", repr(buff.raw))
-    item2.unpack(buff)
+    item2.unpack(buff, TEST_OFFS)
 
     # Check
     attrs = vars(item2)
@@ -133,9 +137,9 @@ def TestKeyEntryMAC():
     # send ItemMAC
     ITEM_MAC_BUF_LEN = 20
     buff = create_string_buffer(ITEM_MAC_BUF_LEN)
-    item1.pack(buff)
+    item1.pack(buff, TEST_OFFS)
     print("Byte chunk: ", repr(buff.raw))
-    item2.unpack(buff)
+    item2.unpack(buff, TEST_OFFS)
 
     # Check
     attrs = vars(item2.key)
@@ -148,4 +152,4 @@ def TestKeyEntryMAC():
 
 
 #TestKeyMAC()
-TestKeyEntryMAC()
+#TestKeyEntryMAC()

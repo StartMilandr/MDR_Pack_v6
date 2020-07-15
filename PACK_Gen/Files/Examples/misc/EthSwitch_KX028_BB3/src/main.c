@@ -48,8 +48,8 @@
 
 
 //  Mode2 Process
-static uint32_t ModeM2_InitKX028(void);
-static void Mode2_Process(uint32_t freqCPU_Hz);
+static uint32_t ModeM2_InitKX028(uint32_t freqCPU_Hz);
+static void     Mode2_Process(uint32_t freqCPU_Hz);
 //  Ageing
 static void Mode2_ProcessAgeing(uint32_t nowTime, uint32_t ageingPeriod, uint32_t procItemsCount);
 //  Statistics
@@ -71,9 +71,7 @@ int main(void)
   //  ePHY Open
   ePHY_VE1_Init(freqCPU_Hz);
   ePHY_VE1_Open();
-  //  SPI Controls Init
-  BB3_SPI_Init(); 
-  KX028_SPI_Init(freqCPU_Hz);
+
   
   MDR_1923KX028_Mode modeKX028 = KX028_GetMode();
   switch (modeKX028) {
@@ -103,7 +101,7 @@ void DelayMs(uint32_t delayMs)
 static void Mode0_Process(void)
 { 
   MDR_KX028_M0_WaitPC_DriverReady();
-  MDR_KX028_M0_SetupBars();  
+  MDR_KX028_M0_SetupBaseAddrRegisters();  
   
   while (1)
   {
@@ -120,7 +118,7 @@ static void Mode2_Process(uint32_t freqCPU_Hz)
 	MDR_Timer_Start(AGE_TIMER);  
    
   // Инициализация 1923KX028
-  uint32_t usedPortList = ModeM2_InitKX028();  
+  uint32_t usedPortList = ModeM2_InitKX028(freqCPU_Hz);  
   MDR_KX028_M2_InitTables(TABLES_TIMEOUT_READY_READS);
   //  User VLAN Init
   MDR_KX028_VLAN_Entry_t  action_entry = {.value = MDR_KX028_VLAN_ENTRY_FILL_FORW_ALL(usedPortList, 0)};  // 0 - untagged port list
@@ -143,8 +141,13 @@ static void Mode2_Process(uint32_t freqCPU_Hz)
 }
 
 
-static uint32_t ModeM2_InitKX028(void)
+static uint32_t ModeM2_InitKX028(uint32_t freqCPU_Hz)
 {
+  //  SPI Controls Init
+  BB3_SPI_Init(); 
+  KX028_SPI_Init(freqCPU_Hz);
+  
+  //  KX028 Init
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC1);
   MDR_KX028_InitEMAC_MII_FD_100M_def(KX028_EMAC2);
   MDR_KX028_InitEMAC_SGMII_FD_1G_def(KX028_EMAC3);

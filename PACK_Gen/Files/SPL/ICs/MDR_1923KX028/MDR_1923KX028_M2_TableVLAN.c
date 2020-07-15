@@ -248,9 +248,9 @@ void MDR_KX028_VLAN_TableInit(uint32_t waitCyclesMax)
         MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAVLANHASH_HOST_ENTRY_REG ), 0x0);
         MDR_KX028_WriteAXI( ( classBase + AXI_CLASS_DAVLANHASH_HOST_DIRECT ), 0x0);
 
-        for( i = 0; i < VLAN_TABLE_HASH_ENTRIES; i++ )
+        for( i = 0; i < CFG_VLAN_TABLE_HASH_ENTRIES; i++ )
         {
-            if( i == (VLAN_TABLE_HASH_ENTRIES - 1) ){
+            if( i == (CFG_VLAN_TABLE_HASH_ENTRIES - 1) ){
                 collisionPtr = COLL_PTR_ADDR_RETR;          // 0x40000
             }else{
                 collisionPtr = COLL_PTR_ADDR_START + 1 + i; // 0x40041 + i
@@ -258,7 +258,7 @@ void MDR_KX028_VLAN_TableInit(uint32_t waitCyclesMax)
 
             MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_HOST_MAC_ADDR3_REG, ( ( collisionPtr & 0xFFFF ) << 16 ) );
             MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_HOST_MAC_ADDR4_REG, ( ( collisionPtr >> 16 ) & 0xF ) );
-            AXI_ExecCommand( classBase, AXI_HASH_CMD_ID_MEM_WRITE | ( ( VLAN_TABLE_HASH_ENTRIES + i ) << 16 ) );
+            AXI_ExecCommand( classBase, AXI_HASH_CMD_ID_MEM_WRITE | ( ( CFG_VLAN_TABLE_HASH_ENTRIES + i ) << 16 ) );
             bool resOK = AXI_WaitCommandCompleted(classBase, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
             AXI_ClearStatus(classBase);
 
@@ -266,9 +266,9 @@ void MDR_KX028_VLAN_TableInit(uint32_t waitCyclesMax)
                 MDR_KX028_Log(MDR_KX028_Log_VLAN_Table_SpaceFault, classNum);
         }
 
-        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_HEAD_PTR, VLAN_TABLE_INIT_HEAD_PTR );
-        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_TAIL_PTR, VLAN_TABLE_INIT_TAIL_PTR );
-        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_ENTRIES , VLAN_TABLE_HASH_ENTRIES );
+        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_HEAD_PTR, CFG_VLAN_TABLE_INIT_HEAD_PTR );
+        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_TAIL_PTR, CFG_VLAN_TABLE_INIT_TAIL_PTR );
+        MDR_KX028_WriteAXI( classBase + AXI_CLASS_DAVLANHASH_FREELIST_ENTRIES , CFG_VLAN_TABLE_HASH_ENTRIES );
         
         //  Repeat the same for CLASS_HW2
         classBase = AXI_CLASS_HW2_BASE_ADDR;

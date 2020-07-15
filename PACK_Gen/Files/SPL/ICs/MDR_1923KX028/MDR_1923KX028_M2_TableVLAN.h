@@ -3,6 +3,7 @@
 
 #include <MDR_1923KX028.h>
 #include <MDR_1923KX028_AXI_defs.h>
+#include <MDR_1923KX028_Config.h>
 
 // waitCyclesMax - таймаут ожидания исполнения команды, в количествах считывания регистра статуса.
 

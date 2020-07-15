@@ -93,38 +93,11 @@ uint16_t MDR_1923KX028_ReadID  (MDR_1923KX028_Obj *objKX028);
 //===    Переопределить с CriticalSection при использовании с FreeRTOS  =======
 //=============================================================================
 
-typedef uint32_t (*FnReadAXI_t)(uint32_t addr);
-typedef void     (*FnWriteAXI_t)(uint32_t addr, uint32_t data);
-typedef void     (*FnReadBeginAXI_t)(uint32_t fromAddr);
-typedef uint32_t (*FnReadNextAXI_t)(void);
-typedef void     (*FnReadEndAXI_t)(void);
+//  Функция инициализации MDR_1923KX028_Init() с локальным глобальным значением MDR_1923KX028_Obj,
+//  которое используется в функциях типа MDR_KX028_ReadAXI_def(), 
+//  (чтобы не передаваеть его постоянно параметром в функции)
+MDR_1923KX028_Obj* MDR_KX028_Init(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg);
 
-//  Обеспечить thread-safe:
-//  Функции работы с Базисом заданы переменными,
-//  для того чтобы их можно было перекрыть в многопоточных 
-//  приложениях с использованием критических секций. (если требуется)
-//  Изначально переменным назначены функции MDR_KX028_ReadAXI_def() и т.д.
-extern FnReadAXI_t      MDR_KX028_ReadAXI;
-extern FnWriteAXI_t     MDR_KX028_WriteAXI;
-extern FnReadBeginAXI_t MDR_KX028_ReadBeginAXI;
-extern FnReadNextAXI_t  MDR_KX028_ReadNextAXI;
-extern FnReadEndAXI_t   MDR_KX028_ReadEndAXI;
-
-//  Новые функции, в необходимой обертке если требуется.
-typedef struct {
-  FnReadAXI_t      funcReadAXI; 
-  FnWriteAXI_t     funcWriteAXI;
-  FnReadBeginAXI_t funcReadBeginAXI;
-  FnReadNextAXI_t  funcReadNextAXI;
-  FnReadEndAXI_t   funcReadEndAXI;
-} MDR_KX028_CritSectFuncs;
-
-
-//  Функция инициализации MDR_1923KX028_Init() с локальным значением MDR_1923KX028_Obj,
-//  которое используется в функциях типа MDR_KX028_ReadAXI_def().
-MDR_1923KX028_Obj* MDR_KX028_InitDef(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg);
-//  Тоже самое с возможностью перекрытия функций для обеспечения thread-safe
-MDR_1923KX028_Obj* MDR_KX028_Init(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg, MDR_KX028_CritSectFuncs *funcs);
 
 //  Функции работы с 1923KX028 с локальным объектом MDR_1923KX028_Obj.
 uint32_t MDR_KX028_ReadAXI_def(uint32_t addr);
@@ -133,9 +106,20 @@ void     MDR_KX028_ReadBeginAXI_def(uint32_t fromAddr);
 uint32_t MDR_KX028_ReadNextAXI_def(void);
 void     MDR_KX028_ReadEndAXI_def(void);
 
+//  Определение не ThreadSafe функций работы по шине AXI через SPI.
+//  Если потребуется потокозащщенность - обернуть _def функции в критическую секцию!
+#ifndef MDR_KX028_ReadAXI
+  #define MDR_KX028_ReadAXI       MDR_KX028_ReadAXI_def
+  #define MDR_KX028_WriteAXI      MDR_KX028_WriteAXI_def
+  #define MDR_KX028_ReadBeginAXI  MDR_KX028_ReadBeginAXI_def
+  #define MDR_KX028_ReadNextAXI   MDR_KX028_ReadNextAXI_def
+  #define MDR_KX028_ReadEndAXI    MDR_KX028_ReadEndAXI_def  
+#endif
+
+
 //  Оптимизированное чтение последовательных адресов
 uint32_t MDR_KX028_ReadSequence(const uint32_t addrBase);
-uint32_t MDR_KX028_ReadSequenceStop(void);
+void     MDR_KX028_ReadSequenceStop(void);
 
 //  Оптимизированное чтение списка адресов
 void MDR_KX028_ReadByAddrList(uint16_t count, const uint32_t addrBase, const uint32_t *addrList, uint32_t *rdData);

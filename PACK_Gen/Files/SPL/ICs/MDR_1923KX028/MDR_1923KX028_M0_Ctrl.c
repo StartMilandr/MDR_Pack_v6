@@ -17,7 +17,7 @@ void MDR_KX028_M0_Clear_TxTermOffsPhyAll(void)
   MDR_KX028_WriteReg( MDR_1923KX028_Control_21, tto_tmp );
 }
 
-void MDR_KX028_M0_SetupBars( void )
+void MDR_KX028_M0_SetupBaseAddrRegisters( void )
 {
   uint32_t tmp, addr;
   

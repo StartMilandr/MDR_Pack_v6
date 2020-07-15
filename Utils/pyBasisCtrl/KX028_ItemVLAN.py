@@ -51,6 +51,7 @@ ItemVLAN_REG4_IsActive_Msk        = 0x00000008
 
 
 class KX028_ItemVLAN:
+  packLen = 16
   def __init__(self):    
     self.vlanID = 1
     self.forwPorts = 0 
@@ -71,7 +72,7 @@ class KX028_ItemVLAN:
     self.isValidColiz = True
 
 
-  def pack(self, buff):
+  def pack(self, buff, offs):
     #REG1
     REG1 =  _VAL2FLD(self.vlanID,     ItemVLAN_REG1_VlanID_Pos,      ItemVLAN_REG1_VlanID_Msk) \
           | _VAL2FLD(self.forwPorts, ItemVLAN_REG1_ForwPortsLo_Pos, ItemVLAN_REG1_ForwPortsLo_Msk)   
@@ -98,11 +99,11 @@ class KX028_ItemVLAN:
           | _VAL2FLD(self.isActive,      ItemVLAN_REG4_IsActive_Pos,        ItemVLAN_REG4_IsActive_Msk)
 
     #PACK to Buff
-    print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
-    struct.pack_into("LLLL", buff, 0, REG1, REG2, REG3, REG4)
+    #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
+    struct.pack_into("LLLL", buff, offs, REG1, REG2, REG3, REG4)
 
-  def unpack(self, buff):
-    REG1, REG2, REG3, REG4 = struct.unpack_from('LLLL', buff, 0)
+  def unpack(self, buff, offs):
+    REG1, REG2, REG3, REG4 = struct.unpack_from('LLLL', buff, offs)
     #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
     #REG1
     self.vlanID = _FLD2VAL(REG1,     ItemVLAN_REG1_VlanID_Pos,      ItemVLAN_REG1_VlanID_Msk) 
@@ -130,6 +131,8 @@ class KX028_ItemVLAN:
 
 
 #--------------  Test ---------------
+TEST_OFFS = 0
+
 def TestItemVLAN():
     item1 = KX028_ItemVLAN()
     item1.vlanID = 15
@@ -157,9 +160,9 @@ def TestItemVLAN():
 
     # send ItemMAC
     buff = create_string_buffer(16)
-    item1.pack(buff)
+    item1.pack(buff, TEST_OFFS)
     print("Byte chunk: ", repr(buff.raw))
-    item2.unpack(buff)
+    item2.unpack(buff, TEST_OFFS)
 
     # Check
     attrs = vars(item2)
@@ -168,4 +171,4 @@ def TestItemVLAN():
     print(', '.join("%s: %s" % item for item in attrs.items()))    
 
 
-TestItemVLAN()
+#TestItemVLAN()

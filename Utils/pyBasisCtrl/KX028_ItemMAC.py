@@ -44,6 +44,7 @@ ItemMAC_REG4_IsActive_Msk       = 0x08000000
 
 
 class KX028_ItemMAC:
+  packLen = 16
   def __init__(self):
     self.MAC = '01:23:45:67:89:AB'
     self.vlanID = 1
@@ -64,7 +65,7 @@ class KX028_ItemMAC:
     self.isValidColiz = True
 
 
-  def pack(self, buff):
+  def pack(self, buff, offs):
     #MAC and VLAN ID
     mac64 = int(self.MAC.translate(self.MAC.maketrans('', '', ':.- ')), 16)
     #print('mac64_TX: ', hex(mac64) )
@@ -92,10 +93,10 @@ class KX028_ItemMAC:
           | _VAL2FLD(self.isValidColiz, ItemMAC_REG4_IsValidCollPtr_Pos, ItemMAC_REG4_IsValidCollPtr_Msk) \
           | _VAL2FLD(self.isActive,     ItemMAC_REG4_IsActive_Pos,       ItemMAC_REG4_IsActive_Msk)    
     #PACK to Buff
-    struct.pack_into("LLLL", buff, 0, REG1, REG2, REG3, REG4)
+    struct.pack_into("LLLL", buff, offs, REG1, REG2, REG3, REG4)
 
-  def unpack(self, buff):
-    REG1, REG2, REG3, REG4 = struct.unpack_from('LLLL', buff, 0)
+  def unpack(self, buff, offs):
+    REG1, REG2, REG3, REG4 = struct.unpack_from('LLLL', buff, offs)
     #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
     #MAC
     mac64 = REG1 | (_FLD2VAL(REG2, ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) << 32)
@@ -123,6 +124,8 @@ class KX028_ItemMAC:
 
 
 #--------------  Test ---------------
+TEST_OFFS = 0
+
 def TestItemMAC():
     item1 = KX028_ItemMAC()
     item1.MAC = 'AB:89:67:45:23:01'
@@ -151,9 +154,9 @@ def TestItemMAC():
     # send ItemMAC
     ITEM_MAC_BUF_LEN = 16
     buff = create_string_buffer(ITEM_MAC_BUF_LEN)
-    item1.pack(buff)
+    item1.pack(buff, TEST_OFFS)
     print("Byte chunk: ", repr(buff.raw))
-    item2.unpack(buff)
+    item2.unpack(buff, TEST_OFFS)
 
     # Check
     attrs = vars(item2)
@@ -162,4 +165,4 @@ def TestItemMAC():
     print(', '.join("%s: %s" % item for item in attrs.items()))    
 
 
-TestItemMAC()
+#TestItemMAC()

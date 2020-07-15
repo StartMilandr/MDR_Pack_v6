@@ -241,29 +241,12 @@ MDR_SSP_Type *SSPx = objKX028->SSPx;
 //===    Переопределить с CriticalSection при использовании с FreeRTOS  =======
 //=============================================================================
 
-FnReadAXI_t      MDR_KX028_ReadAXI      = MDR_KX028_ReadAXI_def;
-FnWriteAXI_t     MDR_KX028_WriteAXI     = MDR_KX028_WriteAXI_def;
-FnReadBeginAXI_t MDR_KX028_ReadBeginAXI = MDR_KX028_ReadBeginAXI_def;
-FnReadNextAXI_t  MDR_KX028_ReadNextAXI  = MDR_KX028_ReadNextAXI_def;
-FnReadEndAXI_t   MDR_KX028_ReadEndAXI   = MDR_KX028_ReadEndAXI_def;
-
 static MDR_1923KX028_Obj _objKX028;
 
-MDR_1923KX028_Obj* MDR_KX028_InitDef(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg)
+MDR_1923KX028_Obj* MDR_KX028_Init(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg)
 {
   _objKX028 = MDR_1923KX028_Init(exSSPx, cfg);
   return &_objKX028;
-}
-
-MDR_1923KX028_Obj* MDR_KX028_Init(const MDR_SSP_TypeEx *exSSPx, MDR_1923KX028_Cfg *cfg, MDR_KX028_CritSectFuncs *funcs)
-{  
-  MDR_KX028_ReadAXI      = funcs->funcReadAXI;
-  MDR_KX028_WriteAXI     = funcs->funcWriteAXI;
-  MDR_KX028_ReadBeginAXI = funcs->funcReadBeginAXI;
-  MDR_KX028_ReadNextAXI  = funcs->funcReadNextAXI;
-  MDR_KX028_ReadEndAXI   = funcs->funcReadEndAXI;  
-  
-  return MDR_KX028_InitDef(exSSPx, cfg);
 }
 
 
@@ -320,7 +303,7 @@ uint32_t MDR_KX028_ReadSequence(const uint32_t addrBase)
   return MDR_KX028_ReadNextAXI();  
 }
 
-uint32_t MDR_KX028_ReadSequenceStop(void)
+void MDR_KX028_ReadSequenceStop(void)
 {
   if (_seqLastAddr)
   {

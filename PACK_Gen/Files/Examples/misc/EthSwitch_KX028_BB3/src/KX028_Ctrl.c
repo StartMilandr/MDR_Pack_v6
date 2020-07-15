@@ -4,7 +4,7 @@
 #include <MDR_GPIO.h>
 #include "board_defs.h"
 
-static MDR_1923KX028_Obj  _spiKX028;
+//static MDR_1923KX028_Obj  _spiKX028;
 
 
 void KX028_SPI_Init(uint32_t freqCPU_Hz)
@@ -26,7 +26,8 @@ void KX028_SPI_Init(uint32_t freqCPU_Hz)
     .ticksDelayCS = NS_TO_DELAY_LOOPS(0, freqCPU_Hz),
   } ;
   
-  _spiKX028 = MDR_1923KX028_Init(KX028_SPI, &cfgKX028);
+  //_spiKX028 = MDR_1923KX028_Init(KX028_SPI, &cfgKX028);
+  MDR_KX028_Init(KX028_SPI, &cfgKX028);
 }
 
 static inline void KX028_ModePins_Init(void)

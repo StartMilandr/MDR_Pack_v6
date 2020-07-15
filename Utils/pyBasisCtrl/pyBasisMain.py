@@ -10,10 +10,14 @@ from pyBasisStats import PyBasisWindowStats
 from pyWidgetsStyles import dockWidgetStyles
 
 from PyComUtils import Com_GetSerialPorts, Com_Speeds
-from PyComPortThread import ComPortThread
-from PyComPortConfigs import ComPortConfigs
-from PyComPortConfigKeys import *
+#from PyComPortThread import ComPortThread
+#from PyComPortConfigs import ComPortConfigs
+#from PyComPortConfigKeys import *
 from pathlib import Path
+
+from PyComPortTransf import ComPortTransf
+from KX028_CLI import KX028_CLI
+
 
 runPath = str(Path().absolute())
 saveFileName = runPath + '/settings.ini'
@@ -60,6 +64,8 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         #Forms
         self.formsMAC = list()
+        self.comTransf = ComPortTransf()
+        self.comCLI = KX028_CLI(self.comTransf)
 
         self.setStyleSheet(dockWidgetStyles)
         # Toolbars - Forms
@@ -70,7 +76,7 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.toolBarViews.addAction('Statistics', self.CreateViewStats)
         # Toolbars - Connect
         self.toolBarCom = self.addToolBar('Connect')
-        self.toolBarCom.addAction('Connect', self.ComConnect)
+        self.actConnect = self.toolBarCom.addAction('Connect', self.ComConnect)
         # DockArea
         self.setDockNestingEnabled(False)
         self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
@@ -113,7 +119,9 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       wigdet.show()
 
     def CreateViewMAC(self):
-      self.addDockedWidget(PyBasisWindowMAC(self), "Table MAC", Qt.LeftDockWidgetArea)
+      window = PyBasisWindowMAC(self)
+      window.comCLI = self.comCLI
+      self.addDockedWidget(window, "Table MAC", Qt.LeftDockWidgetArea)
       
     def CreateViewVLAN(self):
       self.addDockedWidget(PyBasisWindowVLAN(self), "Table VLAN", Qt.LeftDockWidgetArea)
@@ -129,16 +137,29 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       print('Create Statistics')
 
     def ComConnect(self):
-      print('COM Connect')                  
+      if not self.comTransf.started:
+        self.comTransf.start()
+      else:
+        self.comTransf.stop()
+      self.showConnected()             
+
+    def showConnected(self):
+      if self.comTransf.started:
+        #self.btStatus.setStyleSheet("background-color: green")
+        self.actConnect.setText('Connected')
+      else:
+        #self.btStatus.setStyleSheet("background-color: red")
+        self.actConnect.setText('Press to Connect')
 
     #def changeComPort(self, text):  
       #self.comThread.comPort = text
 
     def closeEvent(self, event):
-        #self.comThread.stop()
-        #self.saveSettings(saveFileName)
-        #self.saveGeomerty()
-        event.accept()
+      #self.comThread.stop()
+      #self.saveSettings(saveFileName)
+      #self.saveGeomerty()
+      self.comTransf.stop()
+      event.accept()
 
 
 

@@ -72,7 +72,6 @@ typedef enum {
   cliAck_TBL_AddOk,
   cliAck_TBL_AddFault,
   cliAck_TBL_UpdOk,
-  cliAck_TBL_RdOk,
   cliAck_TBL_RdFault,
 } KX028_CLI_ACK_e;
 
@@ -150,6 +149,27 @@ static uint16_t CLI_MAC_Read(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_
     else
       cli_OutData[0] = cliAck_TBL_RdFault;
   }
+  else if (lenCmdParams == (sizeof(uint16_t) * 2))
+  { // Return only activeItems
+    uint16_t fromHash  = ((uint16_t *)pCmdParams)[0];
+    uint16_t rdCount = ((uint16_t *)pCmdParams)[1];
+    
+    uint16_t retCnt = 0;
+    MDR_KX028_MAC_TableItem_t *pRetItem;
+    while (fromHash < CFG_MAC_TABLE_ITEMS_COUNT)
+    {
+      pRetItem = &((MDR_KX028_MAC_TableItem_t *)cli_OutData)[retCnt];
+      if (MDR_KX028_MAC_TableRead(pRetItem, fromHash, waitCyclesMax))
+        if (pRetItem->regMAC4 & KX028_ItemMAC_REG4_IsActive_Msk)
+        {
+          retCnt++;
+          if (retCnt == rdCount)
+            break;
+        }      
+      fromHash++;
+    }
+    retCnt *= sizeof(MDR_KX028_MAC_TableItem_t);    
+  }
   else
     cli_OutData[0] = cliAck_LenError;
   
@@ -225,6 +245,27 @@ static uint16_t CLI_VLAN_Read(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32
       retCnt = sizeof(MDR_KX028_VLAN_TableItem);
     else
       cli_OutData[0] = cliAck_TBL_RdFault;
+  }
+  else if (lenCmdParams == (sizeof(uint16_t) * 2))
+  { // Return only activeItems
+    uint16_t fromHash  = ((uint16_t *)pCmdParams)[0];
+    uint16_t rdCount = ((uint16_t *)pCmdParams)[1];
+    
+    uint16_t retCnt = 0;
+    MDR_KX028_VLAN_TableItem *pRetItem;
+    while (fromHash < CFG_VLAN_TABLE_ENTRIES)
+    {
+      pRetItem = &((MDR_KX028_VLAN_TableItem *)cli_OutData)[retCnt];
+      if (MDR_KX028_VLAN_TableRead(pRetItem, fromHash, waitCyclesMax))
+        if (pRetItem->regMAC4 & KX028_ItemVLAN_REG4_IsActive_Msk)
+        {
+          retCnt++;
+          if (retCnt == rdCount)
+            break;
+        }      
+      fromHash++;
+    }
+    retCnt *= sizeof(MDR_KX028_VLAN_TableItem);    
   }
   else
     cli_OutData[0] = cliAck_LenError;

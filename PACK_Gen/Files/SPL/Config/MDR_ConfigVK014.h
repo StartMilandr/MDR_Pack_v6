@@ -84,15 +84,9 @@
 #define CFG_CLI_DMA_ChanTX      MDR_DMA_CH_SREQ_UART1_TX
 #define CFG_CLI_DMA_ChanRX      MDR_DMA_CH_SREQ_UART1_RX
 
-//  Максимальное количество байт за один трансфер комнады, не больше 512 байт
-#define CFG_CLI_MESS_LEN_MAX    50
-
-//  Обрабатывать команду по приходу спец символа, иначе по таймауту приема
-#define CFG_CLI_PROC_BY_END_CODES   1
-//  Стоп символы (Enter)
-#define CFG_CLI_PROC_END_CODE1     0x0D
-#define CFG_CLI_PROC_END_CODE2     0x0A
-
+//  Максимальное количество байт за один трансфер (длина, команда + данные)
+//  Не более 1023 (ограничение от DMA на 1024 байта и нечетное количество байт)
+#define CFG_CLI_MESS_LEN_MAX    128
 
 //  Дописать команды для своего приложения.
 typedef enum {

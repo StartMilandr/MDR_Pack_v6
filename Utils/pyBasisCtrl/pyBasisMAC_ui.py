@@ -163,7 +163,7 @@ class Ui_Form(object):
         ___qtablewidgetitem4 = self.tblTableRd.horizontalHeaderItem(4)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("Form", u"isStatic", None));
         ___qtablewidgetitem5 = self.tblTableRd.horizontalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("Form", u"PortRx", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("Form", u"TC", None));
         ___qtablewidgetitem6 = self.tblTableRd.horizontalHeaderItem(6)
         ___qtablewidgetitem6.setText(QCoreApplication.translate("Form", u"ForwPorts", None));
         ___qtablewidgetitem7 = self.tblTableRd.horizontalHeaderItem(7)
@@ -178,7 +178,7 @@ class Ui_Form(object):
         ___qtablewidgetitem11 = self.tblCtrl.horizontalHeaderItem(3)
         ___qtablewidgetitem11.setText(QCoreApplication.translate("Form", u"Action", None));
         ___qtablewidgetitem12 = self.tblCtrl.horizontalHeaderItem(4)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("Form", u" Port ", None));
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("Form", u" TC ", None));
         ___qtablewidgetitem13 = self.tblCtrl.horizontalHeaderItem(5)
         ___qtablewidgetitem13.setText(QCoreApplication.translate("Form", u"ForwPorts", None));
         ___qtablewidgetitem14 = self.tblCtrl.horizontalHeaderItem(6)

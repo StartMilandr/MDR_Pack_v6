@@ -65,7 +65,7 @@ class PyBasisWindowVLAN(QtWidgets.QWidget, Ui_Form):
         tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MHIT,  ACT_ACTIIONS, 0)
         tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MMISS, ACT_ACTIIONS, 0)
         tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MSTP,  ACT_ACTIIONS, 0)
-        tableWidget_PushButton(self.tblCtrl,  i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
+        tableWidget_AddPushButton(self.tblCtrl,  i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
       # Resize
       header = self.tblCtrl.horizontalHeader()
       header.setSectionResizeMode(cCOL_ADD_VLAN,   QtWidgets.QHeaderView.ResizeToContents)

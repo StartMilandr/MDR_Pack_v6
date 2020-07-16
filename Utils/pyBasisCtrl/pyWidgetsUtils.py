@@ -11,7 +11,8 @@ def tableWidget_AddComboBox(tblWdg, rowInd, colInd, items, index):
 
 def tableWidget_AddLineEdit_MAC(tblWdg, rowInd, colInd):
     wdg = QtWidgets.QLineEdit(tblWdg)
-    wdg.setInputMask('HH:HH:HH:HH:HH:HH;_')
+    wdg.setInputMask('HH:HH:HH:HH:HH:HH;0')
+    #wdg.setText('00:00:00:00:00:00')
     tblWdg.setCellWidget(rowInd, colInd, wdg)
     return wdg
 
@@ -60,7 +61,7 @@ def tableWidget_AddSpinBoxRange(tblWdg, rowInd, colInd, minVal, maxVal):
     return wdg
 
 
-def tableWidget_PushButton(tblWdg, rowInd, colInd, caption):
+def tableWidget_AddPushButton(tblWdg, rowInd, colInd, caption):
     wdg = QtWidgets.QPushButton(tblWdg)
     wdg.setText(caption)
     tblWdg.setCellWidget(rowInd, colInd, wdg)
@@ -70,3 +71,11 @@ def tableWidget_SetRowHeight(tblWdg, height):
     headerV = tblWdg.verticalHeader()
     headerV.setSectionResizeMode(QtWidgets.QHeaderView.Fixed)
     headerV.setDefaultSectionSize(height)
+
+
+#---------  GetControls ----------
+#def tableWidget_GetSpinBox(tblWdg, row, col):
+#   tblWdg.item(rowInd, cCOL_ADD_MAC)
+def printObj(obj):
+  attrs = vars(obj)
+  print(', '.join("%s: %s" % item for item in attrs.items()))

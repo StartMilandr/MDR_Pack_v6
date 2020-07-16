@@ -10,6 +10,8 @@ ItemMAC_REG2_VlanID_Msk    = 0x1FFF0000
 ItemMAC_REG2_PortListL_Pos = 29
 ItemMAC_REG2_PortListL_Msk = 0xE0000000
 
+ItemMAC_REG3_ForwPortsHi_Offs = 3
+
 ItemMAC_REG3_PortListH_Pos   = 0
 ItemMAC_REG3_PortListH_Msk   = 0x00001FFF
 ItemMAC_REG3_TC_Pos          = 17
@@ -76,7 +78,7 @@ class KX028_ItemMAC:
           | _VAL2FLD(self.vlanID,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)   \
           | _VAL2FLD(self.forwPorts, ItemMAC_REG2_PortListL_Pos, ItemMAC_REG2_PortListL_Msk) 
     #REG3
-    REG3 =  _VAL2FLD(self.forwPorts,    ItemMAC_REG3_PortListH_Pos,   ItemMAC_REG3_PortListH_Msk) \
+    REG3 =  _VAL2FLD(self.forwPorts >> ItemMAC_REG3_ForwPortsHi_Offs,    ItemMAC_REG3_PortListH_Pos,   ItemMAC_REG3_PortListH_Msk) \
           | _VAL2FLD(self.tc,          ItemMAC_REG3_TC_Pos,           ItemMAC_REG3_TC_Msk) \
           | _VAL2FLD(self.action,      ItemMAC_REG3_Actions_Pos,      ItemMAC_REG3_Actions_Msk) \
           | _VAL2FLD(self.cutThrough,  ItemMAC_REG3_CutThrough_Pos,   ItemMAC_REG3_CutThrough_Msk) \
@@ -103,9 +105,9 @@ class KX028_ItemMAC:
     self.MAC = ':'.join( ['{:02x}'.format((mac64 >> ele) & 0xff) for ele in range(0,8*6,8)][::-1] )
     #rest
     self.vlanID    = _FLD2VAL(REG2,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)
-    self.forwPorts = _FLD2VAL(REG2, ItemMAC_REG2_PortListL_Pos, ItemMAC_REG2_PortListL_Msk) 
+    self.forwPorts = _FLD2VAL(REG2, ItemMAC_REG2_PortListL_Pos, ItemMAC_REG2_PortListL_Msk) \
+                  | (_FLD2VAL(REG3 , ItemMAC_REG3_PortListH_Pos,  ItemMAC_REG3_PortListH_Msk) << ItemMAC_REG3_ForwPortsHi_Offs)
     #REG3
-    self.forwPorts   = _FLD2VAL(REG3, ItemMAC_REG3_PortListH_Pos,    ItemMAC_REG3_PortListH_Msk)
     self.tc          = _FLD2VAL(REG3, ItemMAC_REG3_TC_Pos,           ItemMAC_REG3_TC_Msk)
     self.action      = _FLD2VAL(REG3, ItemMAC_REG3_Actions_Pos,      ItemMAC_REG3_Actions_Msk)
     self.cutThrough  = _FLD2VAL(REG3, ItemMAC_REG3_CutThrough_Pos,   ItemMAC_REG3_CutThrough_Msk) != 0

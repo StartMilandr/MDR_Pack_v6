@@ -88,7 +88,7 @@ typedef struct {
 #define KX028_ItemVLAN_REG1_ForwPortsLo_Msk   0xFFFFE000UL
 
 typedef struct {
-  uint32_t untagPorts_hi  : 1;  //  0..0  
+  uint32_t forwPorts_hi  : 1;  //  0..0  
   uint32_t untagPorts     : 20; //  1..20
   uint32_t UCastHit       : 3;  //  21..23
   uint32_t MCastHit       : 3;  //  24..26

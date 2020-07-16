@@ -40,7 +40,7 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
         portNames = BasisGetPortNames()
         for i in range(colCnt):
             tableWidget_AddComboBox(self.tblPorts, ROW_PORT, i, portNames, i)
-            tableWidget_PushButton(self.tblPorts,  ROW_READ, i, TEXT_BTN_READ)
+            tableWidget_AddPushButton(self.tblPorts,  ROW_READ, i, TEXT_BTN_READ)
             tableWidget_AddItemStr(self.tblPorts,  ROW_STAT, i, TEXT_LINK_DOWN)
             tableWidget_AddComboBox(self.tblPorts, ROW_SHUTDOWN, i, SHUT_DOWN_ITEMS, 0)
             tableWidget_AddLineEdit_0x8FFF(self.tblPorts,  ROW_TPID,  i, '0x8100')
@@ -48,7 +48,7 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
             tableWidget_AddComboBox(self.tblPorts, ROW_AFT, i, AFT_ITEMS, 0)
             tableWidget_AddComboBox(self.tblPorts, ROW_BLOCKSTATE, i, BLOCKSTATE_ITEMS, 0)
             tableWidget_AddSpinBoxRange(self.tblPorts,  ROW_UNTAG_BT, i, 0, 127)
-            tableWidget_PushButton(self.tblPorts, ROW_WRITE, i, TEXT_BTN_WRITE)
+            tableWidget_AddPushButton(self.tblPorts, ROW_WRITE, i, TEXT_BTN_WRITE)
         #rescale
         header = self.tblPorts.horizontalHeader()
         for i in range(colCnt):

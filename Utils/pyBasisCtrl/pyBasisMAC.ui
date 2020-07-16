@@ -133,7 +133,7 @@
             </column>
             <column>
              <property name="text">
-              <string>PortRx</string>
+              <string>TC</string>
              </property>
             </column>
             <column>
@@ -191,7 +191,7 @@
          </column>
          <column>
           <property name="text">
-           <string> Port </string>
+           <string> TC </string>
           </property>
          </column>
          <column>

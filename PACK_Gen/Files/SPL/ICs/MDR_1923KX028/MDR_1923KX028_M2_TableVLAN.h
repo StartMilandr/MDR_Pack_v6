@@ -61,7 +61,7 @@ typedef __PACKED_STRUCT {
   uint32_t hi32;
 } MDR_KX028_VLAN_Entry32;
 
-typedef __packed union {
+typedef __PACKED_UNION {
   int64_t                    value;
   MDR_KX028_VLAN_Entry32     value64;
   MDR_KX028_VLAN_Entry_Bits  bits;
@@ -77,7 +77,7 @@ bool MDR_KX028_VLAN_TableUpdate(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry,
 
 // =============    VLAN TABLE ITEM =======================
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t VLANID         : 13; //  0..12
   uint32_t forwPorts_lo   : 19; //  13..31
 } MDR_KX028_ItemVLAN_REG1_Bits;  
@@ -87,13 +87,13 @@ typedef struct {
 #define KX028_ItemVLAN_REG1_ForwPortsLo_Pos   13
 #define KX028_ItemVLAN_REG1_ForwPortsLo_Msk   0xFFFFE000UL
 
-typedef struct {
-  uint32_t forwPorts_hi  : 1;  //  0..0  
+typedef __PACKED_STRUCT {
+  uint32_t forwPorts_hi   : 1;  //  0..0  
   uint32_t untagPorts     : 20; //  1..20
   uint32_t UCastHit       : 3;  //  21..23
   uint32_t MCastHit       : 3;  //  24..26
   uint32_t UCastMiss      : 3;  //  27..29
-  uint32_t MCastMiss_lo   : 3;  //  30..31
+  uint32_t MCastMiss_lo   : 2;  //  30..31
 } MDR_KX028_ItemVLAN_REG2_Bits;
 
 #define KX028_ItemVLAN_REG2_ForwPortsHi_Pos   0
@@ -110,7 +110,7 @@ typedef struct {
 #define KX028_ItemVLAN_REG2_MCastMissLo_Msk   0xC0000000UL
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t MCastMiss_hi   : 1;  //  0..0
   uint32_t MSTP           : 3;  //  1..3
   uint32_t IsValidREG1    : 1;  //  4
@@ -142,10 +142,11 @@ typedef struct {
 #define KX028_ItemVLAN_REG3_CollizPtr_Pos     16
 #define KX028_ItemVLAN_REG3_CollizPtr_Msk     0xFFFF0000UL
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t _reserved        : 2;  // 0..1
   uint32_t IsValidCollizPtr : 1;  // 2
   uint32_t IsActive         : 1;  // 3
+  uint32_t                  : 28; //
 } MDR_KX028_ItemVLAN_REG4_Bits;
 
 #define KX028_ItemVLAN_REG4_IsValidCollPtr_Pos   2
@@ -181,28 +182,23 @@ typedef struct {
 
 
 // Read function for procFS
-typedef struct {
-  union {
+typedef __PACKED_STRUCT {
+  __PACKED_UNION {
     uint32_t                      regMAC1;
     MDR_KX028_ItemVLAN_REG1_Bits  regMAC1_b;
   };  
-  union {
+  __PACKED_UNION {
     uint32_t                      regMAC2;
     MDR_KX028_ItemVLAN_REG2_Bits  regMAC2_b;
   };
-  union {
+  __PACKED_UNION {
     uint32_t                      regMAC3;
     MDR_KX028_ItemVLAN_REG3_Bits  regMAC3_b;
   };
-  union {  
+  __PACKED_UNION {  
     uint32_t                      regMAC4;
     MDR_KX028_ItemVLAN_REG4_Bits  regMAC4_b;
   };  
-  
-//  uint32_t regMAC1;
-//  uint32_t regMAC2;
-//  uint32_t regMAC3;
-//  uint32_t regMAC4;
 } MDR_KX028_VLAN_TableItem;
 
 

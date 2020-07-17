@@ -50,7 +50,7 @@ typedef __PACKED_STRUCT {
                 | _VAL2FLD(MDR_KX028_MAC_ENTRY_STATIC,        Static)
 
 
-typedef __packed union {
+typedef __PACKED_UNION {
   int32_t                  value;
   MDR_KX028_MAC_Entry_Bits bits;
 } MDR_KX028_MAC_Entry_t;
@@ -65,7 +65,7 @@ typedef __PACKED_STRUCT {
   uint32_t  valReg2;
 } MDR_KX028_KeyMAC_Regs;
 
-typedef __packed union {
+typedef __PACKED_UNION {
   MDR_KX028_KeyMAC_Regs     regs;
   MDR_KX028_KeyMAC_Fields   fields;
 } MDR_KX028_KeyMAC_t;

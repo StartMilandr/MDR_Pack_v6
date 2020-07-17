@@ -235,7 +235,7 @@ static uint16_t CLI_VLAN_Del(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_
   }
   else
     cli_OutData[0] = cliAck_LenError;
-  return 1;
+  return 1;  
 }
 
 //  Если возвращаемое количество не кратно 4, то это код ошибки
@@ -258,7 +258,7 @@ static uint16_t CLI_VLAN_Read(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32
     uint16_t fromHash  = ((uint16_t *)pCmdParams)[0];
     uint16_t rdCount = ((uint16_t *)pCmdParams)[1];
     
-    uint16_t retCnt = 0;
+    retCnt = 0;
     MDR_KX028_VLAN_TableItem *pRetItem;
     while (fromHash < CFG_VLAN_TABLE_ENTRIES)
     {
@@ -272,7 +272,13 @@ static uint16_t CLI_VLAN_Read(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32
         }      
       fromHash++;
     }
-    retCnt *= sizeof(MDR_KX028_VLAN_TableItem);    
+    if (retCnt == 0)      
+    {
+      cli_OutData[0] = cliAck_TBL_Empty;
+      retCnt = 1;
+    }
+    else
+      retCnt *= sizeof(MDR_KX028_VLAN_TableItem);
   }
   else
     cli_OutData[0] = cliAck_LenError;

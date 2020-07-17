@@ -20,7 +20,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(649, 438)
+        Form.resize(993, 432)
         self.verticalLayout_4 = QVBoxLayout(Form)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.splitter = QSplitter(Form)
@@ -79,8 +79,8 @@ class Ui_Form(object):
         self.verticalLayout_2 = QVBoxLayout(self.grBoxTableRd)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.tblTableRd = QTableWidget(self.grBoxTableRd)
-        if (self.tblTableRd.columnCount() < 8):
-            self.tblTableRd.setColumnCount(8)
+        if (self.tblTableRd.columnCount() < 9):
+            self.tblTableRd.setColumnCount(9)
         __qtablewidgetitem = QTableWidgetItem()
         self.tblTableRd.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -97,6 +97,8 @@ class Ui_Form(object):
         self.tblTableRd.setHorizontalHeaderItem(6, __qtablewidgetitem6)
         __qtablewidgetitem7 = QTableWidgetItem()
         self.tblTableRd.setHorizontalHeaderItem(7, __qtablewidgetitem7)
+        __qtablewidgetitem8 = QTableWidgetItem()
+        self.tblTableRd.setHorizontalHeaderItem(8, __qtablewidgetitem8)
         self.tblTableRd.setObjectName(u"tblTableRd")
         self.tblTableRd.horizontalHeader().setStretchLastSection(True)
 
@@ -114,24 +116,24 @@ class Ui_Form(object):
         self.tblCtrl = QTableWidget(self.grbxAddItem)
         if (self.tblCtrl.columnCount() < 9):
             self.tblCtrl.setColumnCount(9)
-        __qtablewidgetitem8 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(0, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(1, __qtablewidgetitem9)
+        self.tblCtrl.setHorizontalHeaderItem(0, __qtablewidgetitem9)
         __qtablewidgetitem10 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(2, __qtablewidgetitem10)
+        self.tblCtrl.setHorizontalHeaderItem(1, __qtablewidgetitem10)
         __qtablewidgetitem11 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(3, __qtablewidgetitem11)
+        self.tblCtrl.setHorizontalHeaderItem(2, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(4, __qtablewidgetitem12)
+        self.tblCtrl.setHorizontalHeaderItem(3, __qtablewidgetitem12)
         __qtablewidgetitem13 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(5, __qtablewidgetitem13)
+        self.tblCtrl.setHorizontalHeaderItem(4, __qtablewidgetitem13)
         __qtablewidgetitem14 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(6, __qtablewidgetitem14)
+        self.tblCtrl.setHorizontalHeaderItem(5, __qtablewidgetitem14)
         __qtablewidgetitem15 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(7, __qtablewidgetitem15)
+        self.tblCtrl.setHorizontalHeaderItem(6, __qtablewidgetitem15)
         __qtablewidgetitem16 = QTableWidgetItem()
-        self.tblCtrl.setHorizontalHeaderItem(8, __qtablewidgetitem16)
+        self.tblCtrl.setHorizontalHeaderItem(7, __qtablewidgetitem16)
+        __qtablewidgetitem17 = QTableWidgetItem()
+        self.tblCtrl.setHorizontalHeaderItem(8, __qtablewidgetitem17)
         self.tblCtrl.setObjectName(u"tblCtrl")
         self.tblCtrl.horizontalHeader().setStretchLastSection(True)
 
@@ -165,31 +167,33 @@ class Ui_Form(object):
         ___qtablewidgetitem3 = self.tblTableRd.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("Form", u"UntagPorts", None));
         ___qtablewidgetitem4 = self.tblTableRd.horizontalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("Form", u"UnicastMiss", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("Form", u"UnicastHit", None));
         ___qtablewidgetitem5 = self.tblTableRd.horizontalHeaderItem(5)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("Form", u"MulticastHit", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("Form", u"UnicastMiss", None));
         ___qtablewidgetitem6 = self.tblTableRd.horizontalHeaderItem(6)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("Form", u"MulticastMiss", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("Form", u"MulticastHit", None));
         ___qtablewidgetitem7 = self.tblTableRd.horizontalHeaderItem(7)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("Form", u"Mstp", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("Form", u"MulticastMiss", None));
+        ___qtablewidgetitem8 = self.tblTableRd.horizontalHeaderItem(8)
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("Form", u"MSTP", None));
         self.grbxAddItem.setTitle(QCoreApplication.translate("Form", u"Add Items", None))
-        ___qtablewidgetitem8 = self.tblCtrl.horizontalHeaderItem(0)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("Form", u" VLAN_ID ", None));
-        ___qtablewidgetitem9 = self.tblCtrl.horizontalHeaderItem(1)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("Form", u"ForwPorts", None));
-        ___qtablewidgetitem10 = self.tblCtrl.horizontalHeaderItem(2)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("Form", u"UntagPorts", None));
-        ___qtablewidgetitem11 = self.tblCtrl.horizontalHeaderItem(3)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("Form", u"UnicastHit", None));
-        ___qtablewidgetitem12 = self.tblCtrl.horizontalHeaderItem(4)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("Form", u"UnicastMiss", None));
-        ___qtablewidgetitem13 = self.tblCtrl.horizontalHeaderItem(5)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("Form", u"MuticastHit", None));
-        ___qtablewidgetitem14 = self.tblCtrl.horizontalHeaderItem(6)
-        ___qtablewidgetitem14.setText(QCoreApplication.translate("Form", u"MuticastMiss", None));
-        ___qtablewidgetitem15 = self.tblCtrl.horizontalHeaderItem(7)
-        ___qtablewidgetitem15.setText(QCoreApplication.translate("Form", u"Mstp", None));
-        ___qtablewidgetitem16 = self.tblCtrl.horizontalHeaderItem(8)
-        ___qtablewidgetitem16.setText(QCoreApplication.translate("Form", u"Apply", None));
+        ___qtablewidgetitem9 = self.tblCtrl.horizontalHeaderItem(0)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("Form", u" VLAN_ID ", None));
+        ___qtablewidgetitem10 = self.tblCtrl.horizontalHeaderItem(1)
+        ___qtablewidgetitem10.setText(QCoreApplication.translate("Form", u"ForwPorts", None));
+        ___qtablewidgetitem11 = self.tblCtrl.horizontalHeaderItem(2)
+        ___qtablewidgetitem11.setText(QCoreApplication.translate("Form", u"UntagPorts", None));
+        ___qtablewidgetitem12 = self.tblCtrl.horizontalHeaderItem(3)
+        ___qtablewidgetitem12.setText(QCoreApplication.translate("Form", u"UnicastHit", None));
+        ___qtablewidgetitem13 = self.tblCtrl.horizontalHeaderItem(4)
+        ___qtablewidgetitem13.setText(QCoreApplication.translate("Form", u"UnicastMiss", None));
+        ___qtablewidgetitem14 = self.tblCtrl.horizontalHeaderItem(5)
+        ___qtablewidgetitem14.setText(QCoreApplication.translate("Form", u"MuticastHit", None));
+        ___qtablewidgetitem15 = self.tblCtrl.horizontalHeaderItem(6)
+        ___qtablewidgetitem15.setText(QCoreApplication.translate("Form", u"MuticastMiss", None));
+        ___qtablewidgetitem16 = self.tblCtrl.horizontalHeaderItem(7)
+        ___qtablewidgetitem16.setText(QCoreApplication.translate("Form", u"MSTP", None));
+        ___qtablewidgetitem17 = self.tblCtrl.horizontalHeaderItem(8)
+        ___qtablewidgetitem17.setText(QCoreApplication.translate("Form", u"Apply", None));
     # retranslateUi
 

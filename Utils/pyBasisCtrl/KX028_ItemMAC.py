@@ -68,16 +68,12 @@ class KX028_ItemMAC:
 
 
   def pack(self, buff, offs):
-    #MAC and VLAN ID
     mac64 = int(self.MAC.translate(self.MAC.maketrans('', '', ':.- ')), 16)
     #print('mac64_TX: ', hex(mac64) )
-    #REG1
     REG1 = mac64 & 0xFFFFFFFF
-    #REG2
     REG2 =  _VAL2FLD(mac64 >> 32,    ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) \
           | _VAL2FLD(self.vlanID,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)   \
           | _VAL2FLD(self.forwPorts, ItemMAC_REG2_PortListL_Pos, ItemMAC_REG2_PortListL_Msk) 
-    #REG3
     REG3 =  _VAL2FLD(self.forwPorts >> ItemMAC_REG3_ForwPortsHi_Offs,    ItemMAC_REG3_PortListH_Pos,   ItemMAC_REG3_PortListH_Msk) \
           | _VAL2FLD(self.tc,          ItemMAC_REG3_TC_Pos,           ItemMAC_REG3_TC_Msk) \
           | _VAL2FLD(self.action,      ItemMAC_REG3_Actions_Pos,      ItemMAC_REG3_Actions_Msk) \
@@ -88,13 +84,11 @@ class KX028_ItemMAC:
           | _VAL2FLD(self.isValidREG2, ItemMAC_REG3_IsValidREG2_Pos,  ItemMAC_REG3_IsValidREG2_Msk) \
           | _VAL2FLD(self.isValidREG3, ItemMAC_REG3_IsValidREG3_Pos,  ItemMAC_REG3_IsValidREG3_Msk) \
           | _VAL2FLD(self.isValidREG4, ItemMAC_REG3_IsValidREG4_Pos,  ItemMAC_REG3_IsValidREG4_Msk)
-    #REG4
     REG4 =  _VAL2FLD(self.isValidREG5,  ItemMAC_REG4_IsValidREG5_Pos,    ItemMAC_REG4_IsValidREG5_Msk) \
           | _VAL2FLD(self.port,         ItemMAC_REG4_PortNum_Pos,        ItemMAC_REG4_PortNum_Msk) \
           | _VAL2FLD(self.collizPtr,    ItemMAC_REG4_CollizPtr_Pos,      ItemMAC_REG4_CollizPtr_Msk) \
           | _VAL2FLD(self.isValidColiz, ItemMAC_REG4_IsValidCollPtr_Pos, ItemMAC_REG4_IsValidCollPtr_Msk) \
           | _VAL2FLD(self.isActive,     ItemMAC_REG4_IsActive_Pos,       ItemMAC_REG4_IsActive_Msk)    
-    #PACK to Buff
     struct.pack_into("LLLL", buff, offs, REG1, REG2, REG3, REG4)
 
   def unpack(self, buff, offs):

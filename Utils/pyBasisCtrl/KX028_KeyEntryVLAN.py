@@ -4,19 +4,19 @@ from ctypes import create_string_buffer
 
 
 #--------------  KX028_KeyVLAN ---------------
-ItemVLAN_REG1_VlanID_Msk = 0x00001FFF
+ItemVLAN_REG1_VlanID_Msk = 0x1FFF
 
 class KX028_KeyVLAN:
-  packLen = 4
+  packLen = 2
   def __init__(self):
     self.vlanID = 1
 
   def pack(self, buff, offs):
     REG1 = self.vlanID & ItemVLAN_REG1_VlanID_Msk
-    struct.pack_into("L", buff, offs, REG1)
+    struct.pack_into("H", buff, offs, REG1)
 
   def unpack(self, buff, offs):
-    (REG1, ) = struct.unpack_from('L', buff, offs)
+    (REG1, ) = struct.unpack_from('H', buff, offs)
     self.vlanID = REG1 & ItemVLAN_REG1_VlanID_Msk
 
 
@@ -42,7 +42,7 @@ EntryVLAN_REG2_MSTP_Pos          = 20
 EntryVLAN_REG2_MSTP_Msk          = 0x0070000E
 
 class KX028_KeyEntryVLAN:
-  packLen = 12
+  packLen = 10
   def __init__(self):
     self.key = KX028_KeyVLAN()
     #entry
@@ -64,11 +64,16 @@ class KX028_KeyEntryVLAN:
         | _VAL2FLD(self.UCastMissAct,   EntryVLAN_REG2_UCastMiss_Pos,    EntryVLAN_REG2_UCastMiss_Msk)   \
         | _VAL2FLD(self.MCastMissAct,   EntryVLAN_REG2_MCastMiss_Pos,    EntryVLAN_REG2_MCastMiss_Msk)  \
         | _VAL2FLD(self.MSTPAct,        EntryVLAN_REG2_MSTP_Pos,         EntryVLAN_REG2_MSTP_Msk)
-    struct.pack_into("LLL", buff, offs, R0, R1, R2)
+    #struct.pack_into("HLL", buff, offs, R0, R1, R2)
+    self.key.pack(buff, offs)
+    struct.pack_into("LL", buff, offs + KX028_KeyVLAN.packLen, R1, R2)
 
   def unpack(self, buff, offs):
-    REG0, REG1, REG2 = struct.unpack_from('LLL', buff, offs)
-    self.key.vlanID = REG0 & ItemVLAN_REG1_VlanID_Msk
+    #REG0, REG1, REG2 = struct.unpack_from('HLL', buff, offs)
+    self.key.unpack(buff, offs)
+    REG1, REG2 = struct.unpack_from('LL', buff, offs + KX028_KeyVLAN.packLen)
+
+    #self.key.vlanID = REG0 & ItemVLAN_REG1_VlanID_Msk
     self.forwPorts = _FLD2VAL(REG1,  EntryVLAN_REG1_ForwPorts_Pos, EntryVLAN_REG1_ForwPorts_Msk)
     self.untaggedPorts = _FLD2VAL(REG1,  EntryVLAN_REG1_UntagPortsLo_Pos, EntryVLAN_REG1_UntagPortsLo_Msk) \
                       | (_FLD2VAL(REG2 , EntryVLAN_REG2_UntagPortsHi_Pos, EntryVLAN_REG2_UntagPortsHi_Msk) << EntryVLAN_REG2_UntagPortsHi_Offs)

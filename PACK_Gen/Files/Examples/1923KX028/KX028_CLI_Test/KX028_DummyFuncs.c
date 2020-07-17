@@ -93,7 +93,7 @@ bool MDR_KX028_MAC_TableRead ( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t ha
 
 bool MDR_KX028_MAC_TableWrite( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t hashAddr, uint32_t waitCyclesMax )
 {
-    if (hashAddr < TST_TBL_MAC_LEN)
+  if (hashAddr < TST_TBL_MAC_LEN)
   {
     tstTblMac[hashAddr] = *tableItem;
     return true;
@@ -114,10 +114,16 @@ void MDR_KX028_MAC_TableFlush(uint32_t optionMask, uint32_t waitCyclesMax)
 static void KeyEntryToVlanItem(MDR_KX028_VLAN_TableItem *tblItem, uint16_t vlanid, MDR_KX028_VLAN_Entry_t *keyEntry)
 {
   tblItem->regMAC1_b.VLANID = vlanid;
+  
   tblItem->regMAC1_b.forwPorts_lo = keyEntry->bits.forwPortList; 
+  tblItem->regMAC2_b.forwPorts_hi = keyEntry->bits.forwPortList >> KX028_ItemVLAN_REG1_ForwPortsLo_Pos;
+  
   tblItem->regMAC2_b.untagPorts = keyEntry->bits.untagList;
   tblItem->regMAC2_b.MCastHit = keyEntry->bits.mcastHitActions;
+  
   tblItem->regMAC2_b.MCastMiss_lo = keyEntry->bits.mcastMissActions;
+  tblItem->regMAC3_b.MCastMiss_hi = keyEntry->bits.mcastMissActions >> KX028_ItemVLAN_REG2_MCastMissLo_Pos;
+  
   tblItem->regMAC2_b.UCastHit = keyEntry->bits.ucastHitActions;
   tblItem->regMAC2_b.UCastMiss = keyEntry->bits.ucastMisstActions;
   
@@ -157,7 +163,7 @@ bool MDR_KX028_VLAN_TableDel(uint16_t vlanid, uint32_t waitCyclesMax)
   uint16_t i;
   for (i = 0; i < TST_TBL_VLAN_LEN; i++)
     if (tstTblVLAN[i].regMAC1_b.VLANID == vlanid)
-      if (tstTblVLAN[i].regMAC4_b.IsActive == 0)
+      if (tstTblVLAN[i].regMAC4_b.IsActive)
       {
         tstTblVLAN[i].regMAC4_b.IsActive = 0;
         return true;

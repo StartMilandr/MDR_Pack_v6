@@ -147,24 +147,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC8000 -FN1 -FF0MDR1986VE9x_EEPROM -FS08000000 -FL020000 -FP0($$Device:MDR1901VC1$Keil\FLM\MDR1986VE9x_EEPROM.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>257</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134222550</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>C:\CODE\PACK\Keil_Packs\Milandr\MDR1986VExx\2.05\SPL\Drivers\MDR_UART_CLI.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\KX028_CLI_Test\C:/CODE/PACK/Keil_Packs/Milandr/MDR1986VExx/2.05/SPL/Drivers/MDR_UART_CLI.c\257</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -181,12 +164,17 @@
           <WinNumber>1</WinNumber>
           <ItemText>tstTblMac</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tstTblVLAN</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>1</SubType>
-          <ItemText>0x400D0018</ItemText>
+          <ItemText>_outData</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -297,7 +285,7 @@
 
   <Group>
     <GroupName>::Drivers</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>1</RteFlg>

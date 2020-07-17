@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>649</width>
-    <height>438</height>
+    <width>993</width>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,6 +128,11 @@
             </column>
             <column>
              <property name="text">
+              <string>UnicastHit</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>UnicastMiss</string>
              </property>
             </column>
@@ -143,7 +148,7 @@
             </column>
             <column>
              <property name="text">
-              <string>Mstp</string>
+              <string>MSTP</string>
              </property>
             </column>
            </widget>
@@ -206,7 +211,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Mstp</string>
+           <string>MSTP</string>
           </property>
          </column>
          <column>

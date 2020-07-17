@@ -133,7 +133,6 @@ class KX028_CLI:
   def readItemMAC(self, hashAddr, rxItemMAC):
     offs = self.packHeader(cliCMD_ReadMAC, 2)
     struct.pack_into("H", self.buffTx, offs, hashAddr)
-    #txCount = self.packValidateMessLen(offs + 2)
     resOK = self.transfer(cliCMD_ReadMAC, KX028_ItemMAC.packLen)
     if resOK:
       rxItemMAC.unpack(self.buffRx.data, offs)
@@ -141,13 +140,9 @@ class KX028_CLI:
       print('Fault readItemMAC')
     return resOK  
 
-
-
-
   def readItemVLAN(self, hashAddr, rxItemVLAN):
     offs = self.packHeader(cliCMD_ReadVLAN, 2)
     struct.pack_into("H", self.buffTx, offs, hashAddr)
-    #txCount = self.packValidateMessLen(offs + 2)
     resOK = self.transfer(cliCMD_ReadVLAN, KX028_ItemVLAN.packLen)
     if resOK:
       rxItemVLAN.unpack(self.buffRx.data, offs)
@@ -155,58 +150,11 @@ class KX028_CLI:
       print('Fault readItemVLAN')
     return resOK 
 
-  def readActiveItemsVLAN(self, fromHashAddr, rdCount):
-    offs = self.packHeader(cliCMD_ReadVLAN, 4)
-    struct.pack_into("HH", self.buffTx, offs, fromHashAddr, rdCount)
-    #txCount = self.packValidateMessLen(offs + 4)
-    resOK = self.transfer(cliCMD_ReadVLAN, KX028_ItemVLAN.packLen)
-    resList = []    
-    if resOK:
-      messLenRx = len(self.buffRx.data)
-      while offs < messLenRx:
-        item = KX028_ItemVLAN()
-        item.unpack(self.buffRx.data, offs)
-        resList.append(item)
-        offs += KX028_ItemVLAN.packLen
-    else:
-      print('Fault readActiveItemsVLAN')
-    return resList 
-
-  def ReadTableMAC(self):
-    cntToRead = CFG_MAC_TABLE_ITEMS_COUNT
-    itemsList = []
-    fromHashAddr = 0
-    while cntToRead > 0:
-      rdCnt = self.readActiveItemsMAC(fromHashAddr, CFG_MAC_ITEMS_RD_ITER, itemsList)
-      if rdCnt < CFG_MAC_ITEMS_RD_ITER:
-        break
-      else:
-        cntToRead -= CFG_MAC_ITEMS_RD_ITER
-        fromHashAddr += CFG_MAC_ITEMS_RD_ITER
-    return itemsList
-
-
-  # --- Add Items to Tables ---
-  def UpdateOrAddMAC(self, keyEntryMAC):
-    #print('BufBefore Header {}'.format(len(self.buffTx)))
-    offs = self.packHeader(cliCMD_UpdAddMAC, KX028_KeyEntryMAC.packLen)
-    #print('BufAfter Header {}'.format(len(self.buffTx)))
-    keyEntryMAC.pack(self.buffTx, offs)
-    #print('keyEntryMAC {}'.format(len(self.buffTx)))
-    #self.packValidateMessLen()
-    resOK = self.transfer(cliCMD_UpdAddMAC, cliACK_MinLen_1)
-    if resOK:
-      self.checkAckStatus()
-    else:
-      print('Fault UpdateOrAddMAC')
-    return resOK 
-
   def readActiveItemsMAC(self, fromHashAddr, rdCount, itemsList):
     offs = self.packHeader(cliCMD_ReadMAC, 4)
     struct.pack_into("HH", self.buffTx, offs, fromHashAddr, rdCount)
-    #txCount = self.packValidateMessLen(offs + 4)
-    rdItemsCnt = 0
     resOK = self.transfer(cliCMD_ReadMAC, cliACK_MinLen_1)
+    rdItemsCnt = 0    
     if resOK:
       messLenRx = len(self.buffRx.data)
       if messLenRx > KX028_ItemMAC.packLen:
@@ -222,6 +170,63 @@ class KX028_CLI:
       print('Fault readActiveItemsMAC')
     return rdItemsCnt 
 
+  def readActiveItemsVLAN(self, fromHashAddr, rdCount, itemsList):
+    offs = self.packHeader(cliCMD_ReadVLAN, 4)
+    struct.pack_into("HH", self.buffTx, offs, fromHashAddr, rdCount)
+    resOK = self.transfer(cliCMD_ReadVLAN, cliACK_MinLen_1)
+    rdItemsCnt = 0
+    if resOK:
+      messLenRx = len(self.buffRx.data)
+      if messLenRx > KX028_ItemVLAN.packLen:
+        while offs  + KX028_ItemVLAN.packLen < messLenRx:
+          item = KX028_ItemVLAN()
+          item.unpack(self.buffRx.data, offs)
+          itemsList.append(item)
+          offs += KX028_ItemVLAN.packLen
+          rdItemsCnt += 1
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readActiveItemsVLAN')
+    return rdItemsCnt 
+
+  def ReadTableMAC(self):
+    cntToRead = CFG_MAC_TABLE_ITEMS_COUNT
+    itemsList = []
+    fromHashAddr = 0
+    while cntToRead > 0:
+      rdCnt = self.readActiveItemsMAC(fromHashAddr, CFG_MAC_ITEMS_RD_ITER, itemsList)
+      if rdCnt < CFG_MAC_ITEMS_RD_ITER:
+        break
+      else:
+        cntToRead -= CFG_MAC_ITEMS_RD_ITER
+        fromHashAddr += CFG_MAC_ITEMS_RD_ITER
+    return itemsList
+
+  def ReadTableVLAN(self):
+    cntToRead = CFG_VLAN_TABLE_ITEMS_COUNT
+    itemsList = []
+    fromHashAddr = 0
+    while cntToRead > 0:
+      rdCnt = self.readActiveItemsVLAN(fromHashAddr, CFG_VLAN_ITEMS_RD_ITER, itemsList)
+      if rdCnt < CFG_VLAN_ITEMS_RD_ITER:
+        break
+      else:
+        cntToRead -= CFG_VLAN_ITEMS_RD_ITER
+        fromHashAddr += CFG_VLAN_ITEMS_RD_ITER
+    return itemsList  
+
+
+  # --- Add Items to Tables ---
+  def UpdateOrAddMAC(self, keyEntryMAC):
+    offs = self.packHeader(cliCMD_UpdAddMAC, KX028_KeyEntryMAC.packLen)
+    keyEntryMAC.pack(self.buffTx, offs)
+    resOK = self.transfer(cliCMD_UpdAddMAC, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault UpdateOrAddMAC')
+    return resOK 
 
   def UpdateOrAddVLAN(self, keyEntryVLAN):
     offs = self.packHeader(cliCMD_UpdAddVLAN, KX028_KeyEntryVLAN.packLen)
@@ -244,21 +249,11 @@ class KX028_CLI:
     else:
       print('Fault DelItemMAC')
     return resOK 
-    # offs = self.packHeader(cliCMD_DelMAC, KX028_KeyMAC.packLen)
-    # keyMAC.pack(self.buffTx, offs)
-    # # self.packValidateMessLen(offs + KX028_KeyMAC.packLen)
-    # resOK = self.transfer(cliCMD_DelMAC, 1)
-    # if resOK:
-    #   self.checkAckStatus()
-    # else:
-    #   print('Fault DelItemMAC')
-    # return resOK 
 
   def DelItemVLAN(self, keyVLAN):
     offs = self.packHeader(cliCMD_DelVLAN, keyVLAN.packLen)
     keyVLAN.pack(self.buffTx, offs)
-    # self.packValidateMessLen(offs + keyVLAN.packLen)
-    resOK = self.transfer(cliCMD_DelVLAN, 1)
+    resOK = self.transfer(cliCMD_DelVLAN, cliACK_MinLen_1)
     if resOK:
       self.checkAckStatus()
     else:

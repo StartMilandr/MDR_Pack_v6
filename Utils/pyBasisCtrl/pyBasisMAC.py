@@ -1,12 +1,13 @@
 from PySide2 import QtWidgets, QtGui, QtCore
 from pyBasisMAC_ui import Ui_Form
 from pyWidgetsUtils import *
-from pyWidgetsStyles import *
+from pyWidgetsStyles import comboBoxStyles, comboBoxStyles_DropDown
 from pyBasisRes import *
 
 from KX028_CLI import KX028_CLI
 from KX028_KeyEntryMAC import KX028_KeyEntryMAC, KX028_KeyMAC
 from KX028_ItemMAC import KX028_ItemMAC
+
 
 #  TableRx Colunms
 cCOL_RX_SEL     = 0
@@ -38,7 +39,7 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         self.setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown)
         self.initTableCtrl()
         self.initTableRx()
-        self.debugAddTableRx()
+        self.DemoAddTableRx()
         self.comCLI = None
         self.tableItems = []
         self.btRead.clicked.connect(self.ReadTableFromDevice)        
@@ -50,42 +51,9 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         #self.comThread.stop()
         #self.saveSettings(saveFileName)
         #self.saveGeomerty()
-        event.accept()
+        event.accept()    
 
-    def initTableRx(self):
-        #self.tblTableRd.resizeColumnsToContents()
-        self.tableRxColumnSetSize()
-        tableWidget_SetRowHeight(self.tblTableRd, TABLE_ITEM_HEIGHT)
-
-    def tableRxColumnSetSize(self):
-        header = self.tblTableRd.horizontalHeader()
-        header.setSectionResizeMode(cCOL_RX_SEL,    QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(cCOL_RX_VLAN,   QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(cCOL_RX_MAC,    QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(cCOL_RX_FRESH,  QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(cCOL_RX_STATIC, QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(cCOL_RX_TC,     QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(cCOL_RX_FORW,   QtWidgets.QHeaderView.Stretch)
-
-    def debugAddTableRx(self):
-        #debug-test
-        self.tblTableRd.setRowCount(1)
-        self.tableRxAddItem(0, KX028_ItemMAC())
-
-    def tableRxAddItem(self, ind, itemMAC):
-        # Selected
-        item = QtWidgets.QTableWidgetItem('')
-        item.setCheckState(QtCore.Qt.Unchecked)
-        self.tblTableRd.setItem(ind, cCOL_RX_SEL, item) 
-        # Others
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_VLAN,   str(itemMAC.vlanID)) 
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_MAC,    itemMAC.MAC) 
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_FRESH,  str(itemMAC.isFresh))
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_STATIC, str(itemMAC.isStatic))
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_TC,     str(itemMAC.tc)) 
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_FORW,   hex(itemMAC.forwPorts))
-        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_ACTION, ACT_ACTIIONS[itemMAC.action])
-
+    # ------------- Control Table ---------------
     def initTableCtrl(self):
       self.tblCtrl.setRowCount(cCTRL_ROW_COUNT)
       self.grbxAddItem.setMaximumHeight(170)
@@ -109,13 +77,7 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
       header.setSectionResizeMode(cCOL_ADD_FORW,   QtWidgets.QHeaderView.Stretch)
       header.setSectionResizeMode(cCOL_ADD_APPLY,  QtWidgets.QHeaderView.ResizeToContents)
 
-
-    def writeItemMAC(self):
-        button = self.sender()
-        index = self.tblCtrl.indexAt(button.pos())
-        keyEntry = self.GUI_GetKeyEntry(index.row())
-        self.comCLI.UpdateOrAddMAC(keyEntry)
-
+    # AddOrUpdateItem:
     def GUI_GetKeyEntry(self, row):
         keyEntry = KX028_KeyEntryMAC()
         keyEntry.key.MAC =  self.tblCtrl.cellWidget(row, cCOL_ADD_MAC).text()
@@ -126,14 +88,52 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         keyEntry.cutThrough = False 
         keyEntry.isFresh = False
         keyEntry.isStatic = self.tblCtrl.item(row, cCOL_ADD_STATIC).checkState() == QtCore.Qt.Checked
-
-        printObj(keyEntry)
-        printObj(keyEntry.key)
-
+        #printObj(keyEntry)
+        #printObj(keyEntry.key)
         return keyEntry
 
+    def writeItemMAC(self):
+        button = self.sender()
+        index = self.tblCtrl.indexAt(button.pos())
+        keyEntry = self.GUI_GetKeyEntry(index.row())
+        self.comCLI.UpdateOrAddMAC(keyEntry)
+    
+
+    # ------------- Read Table ---------------
+    def initTableRx(self):
+        #self.tblTableRd.resizeColumnsToContents()
+        self.tableRxColumnSetSize()
+        tableWidget_SetRowHeight(self.tblTableRd, TABLE_ITEM_HEIGHT)
+
+    def tableRxColumnSetSize(self):
+        header = self.tblTableRd.horizontalHeader()
+        header.setSectionResizeMode(cCOL_RX_SEL,    QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(cCOL_RX_VLAN,   QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(cCOL_RX_MAC,    QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(cCOL_RX_FRESH,  QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(cCOL_RX_STATIC, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(cCOL_RX_TC,     QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(cCOL_RX_FORW,   QtWidgets.QHeaderView.Stretch)
+
+    def tableRxAddItem(self, ind, itemMAC):
+        # Selected
+        tableWidget_AddItemCheck(self.tblTableRd, ind, cCOL_RX_SEL, False)  
+        # Others
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_VLAN,   str(itemMAC.vlanID)) 
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_MAC,    itemMAC.MAC) 
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_FRESH,  str(itemMAC.isFresh))
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_STATIC, str(itemMAC.isStatic))
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_TC,     str(itemMAC.tc)) 
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_FORW,   hex(itemMAC.forwPorts))
+        tableWidget_AddItemStr(self.tblTableRd, ind, cCOL_RX_ACTION, ACT_ACTIIONS[itemMAC.action])
+
+    def DemoAddTableRx(self):
+        #debug-test
+        self.tblTableRd.setRowCount(1)
+        self.tableRxAddItem(0, KX028_ItemMAC())
+
+    # Read Table Actions:
     def ReadTableFromDevice(self):
-        #self.tblTableRd.clear()        
         self.tableItems = self.comCLI.ReadTableMAC()
         self.tblTableRd.setRowCount(len(self.tableItems))
         row = 0

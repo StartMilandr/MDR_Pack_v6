@@ -104,7 +104,7 @@ class KX028_ItemVLAN:
 
   def unpack(self, buff, offs):
     REG1, REG2, REG3, REG4 = struct.unpack_from('LLLL', buff, offs)
-    #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
+    print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
     #REG1
     self.vlanID = _FLD2VAL(REG1,     ItemVLAN_REG1_VlanID_Pos,      ItemVLAN_REG1_VlanID_Msk) 
     self.forwPorts = _FLD2VAL(REG1,  ItemVLAN_REG1_ForwPortsLo_Pos, ItemVLAN_REG1_ForwPortsLo_Msk) \

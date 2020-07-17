@@ -3,7 +3,9 @@ from pyBasisStats_ui import Ui_Form
 from pyWidgetsUtils import *
 #from pyWidgetsStyles import *
 from pyBasisRes import *
+from KX028_CLI import KX028_CLI
 from KX028_PortStatsModel import KX028_PortStatsModel
+import struct
 
 class PyBasisWindowStats(QtWidgets.QWidget, Ui_Form):
     # Constructor
@@ -15,18 +17,20 @@ class PyBasisWindowStats(QtWidgets.QWidget, Ui_Form):
         self.treeView.setModel(self.statModel.model)
         self.ColumnsFit()
         self.btPortRead.clicked.connect(self.ReadStatsFromDevice)
-          
 
     def closeEvent(self, event):
         event.accept()
         
-    def ReadStatsFromDevice(self):
-        self.statModel.debugIncCounters()
-
     def ColumnsFit(self):
         header = self.treeView.header()
         header.setSectionResizeMode(0,   QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(1,    QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1,   QtWidgets.QHeaderView.Stretch)
+
+    def AssighCLI(self, comCLI):
+        self.statModel.comCLI = comCLI
+
+    def ReadStatsFromDevice(self):
+        self.statModel.UpdateModelFromDevice(self.cbxPortSel.currentIndex())
 
 
 

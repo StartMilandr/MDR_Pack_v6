@@ -108,17 +108,18 @@ class KX028_CLI:
       #print('b1={}, b2={}'.format(b1, b2))
       messLen = b1 | ((b2 & 0xC0) << 2)
       rxCmd = b2 & 0x3F
-      print('cmd={} , Len={}'.format(rxCmd, messLen))
+      print('cmd={} , messLen={}'.format(rxCmd, messLen))
       dataLen = len(self.buffRx.data)
       if IsEvenNum(messLen):
         protocolOk = dataLen == messLen + 1
       else:
-        protocolOk = dataLen == messLen
+        protocolOk = dataLen == messLen 
       protocolOk = protocolOk and (rxCmd == cmd)
-      if protocolOk and ((len(self.buffRx.data) - HDR_LEN) >= minAckLen):
+      #print(str(protocolOk))
+      if protocolOk and (dataLen - HDR_LEN >= minAckLen):
         return True
       else:
-        print('Wrong Length = {}'.format(len(self.buffRx.data)))
+        print('Wrong DataLength = {}'.format(dataLen))
         return False
 
   def checkAckStatus(self):
@@ -275,7 +276,6 @@ class KX028_CLI:
   def ClearVLAN(self, options):
     offs = self.packHeader(cliCMD_ClearVLAN, 4)
     struct.pack_into("L", self.buffTx, offs, options)
-    # self.packValidateMessLen(offs + 4)
     resOK = self.transfer(cliCMD_ClearVLAN, 1)
     if resOK:
       self.checkAckStatus()
@@ -296,15 +296,29 @@ class KX028_CLI:
 
 
   # --- Read Statistics ---
-  def readStatsEMAC(self, emac):
+  def readStatsEMAC(self, emac, estimLen):
     offs = self.packHeader(cliCMD_ReadStatPort, 1)
     struct.pack_into("B", self.buffTx, offs, emac)
-    #txCount = self.packValidateMessLen(offs + 1)
-    #TODO
+    resOK = self.transfer(cliCMD_ReadStatPort, cliACK_MinLen_1)
+    if resOK:
+      if len(self.buffRx.data) > estimLen + offs:
+        return (self.buffRx.data, ACK_PARS_OFFS)
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readStatsEMAC')
+    return (None, 1)
     
 
-  def readStatClassifEMAC(self, emac):
+  def readStatClassifEMAC(self, emac, estimLen):
     offs = self.packHeader(cliCMD_ReadStatClass, 1)
     struct.pack_into("B", self.buffTx, offs, emac)
-    # txCount = self.packValidateMessLen(offs + 1)
-    #TODO
+    resOK = self.transfer(cliCMD_ReadStatClass, cliACK_MinLen_1)
+    if resOK:
+      if len(self.buffRx.data) > estimLen + offs:
+        return (self.buffRx.data, ACK_PARS_OFFS)
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readStatClassifEMAC')
+    return (None, 1)

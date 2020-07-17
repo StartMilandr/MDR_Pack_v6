@@ -365,7 +365,7 @@ static uint16_t CLI_ReadStatEMAC(uint16_t lenCmdParams, uint8_t *pCmdParams, uin
     for (i = 0; i < cnt32; i++)
       *pOutData++ = *pInData++;
       
-    return cnt32 << 2;
+    return sizeof(MDR_KX028_StatsEMAC_t);
   }
   else
   {
@@ -389,7 +389,7 @@ static uint16_t CLI_ReadStatClass(uint16_t lenCmdParams, uint8_t *pCmdParams, ui
     for (i = 0; i < cnt32; i++)
       *pOutData++ = *pInData++;
       
-    return cnt32 << 2;
+    return sizeof(MDR_KX028_StatsClassHW_t);
   }
   else
   {

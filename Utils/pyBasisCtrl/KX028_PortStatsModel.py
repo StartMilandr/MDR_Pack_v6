@@ -1,66 +1,78 @@
 from PySide2 import QtGui
+import struct
+from KX028_CLI import KX028_CLI
 
-idRx_Bytes      = 0
-idRx_OK         = 1
-idRx_Broadcast  = 2
-idRx_Multicast  = 3
-idRx_Pause      = 4
-idRx_LenTo64    = 5
-idRx_LenTo127   = 6
-idRx_LenTo255   = 7
-idRx_LenTo512   = 8
-idRx_LenTo1023  = 9
-idRx_LenOv1518  = 10
+idTx_OK         = 0
+idTx_Broadcast  = 1
+idTx_Multicast  = 2
+idTx_Pause      = 3
+idTx_LenTo64    = 4
+idTx_LenTo127   = 5
+idTx_LenTo255   = 6
+idTx_LenTo511   = 7
+idTx_LenTo1023  = 8
+idTx_LenTo1517  = 9
+idTx_LenOv1518  = 10
+idTx_Underruns   = 11
+idTx_SingleColls = 12
+idTx_Le15Colls   = 13
+idTx_Gt15Colls   = 14
+idTx_LateColls   = 15
+idTx_Deffered    = 16
 
-idTx_Bytes      = 11
-idTx_OK         = 12
-idTx_Broadcast  = 13
-idTx_Multicast  = 14
-idTx_Pause      = 15
-idTx_LenTo64    = 16
-idTx_LenTo127   = 17
-idTx_LenTo255   = 18
-idTx_LenTo512   = 19
-idTx_LenTo1023  = 20
-idTx_LenOv1518  = 21
+idRx_OK         = 17
+idRx_Broadcast  = 18
+idRx_Multicast  = 19
+idRx_Pause      = 20
+idRx_LenTo64    = 21
+idRx_LenTo127   = 22
+idRx_LenTo255   = 23
+idRx_LenTo511   = 24
+idRx_LenTo1023  = 25
+idRx_LenTo1517  = 26
+idRx_LenOv1518  = 27
+idRx_LenLT64    = 28
+idRX_ExcLen     = 29
+idRX_Jubbers    = 30
+idRX_FCSErrs    = 31
+idRX_LenErrs    = 32
+idRX_SymErrs    = 33
+idRX_ResErrs    = 34
+idRX_AlignErrs  = 35
+idRX_OverErrs   = 36
+idRX_IpCrcErrs  = 37
+idRX_TcpCrcErrs = 38
+idRX_UdpCrcErrs = 39
+idRX_Dropped    = 40
 
-idRX_ExcLen     = 22
-idRX_Jubbers    = 23
-idRX_FCSErrs    = 24
-idRX_LenErrs    = 25
-idRX_SymErrs    = 26
-idRX_ResErrs    = 27
-idRX_AlignErrs  = 28
-idRX_OverErrs   = 29
-idRX_IpCrcErrs  = 30
-idRX_TcpCrcErrs = 31
-idRX_UdpCrcErrs = 32
-idRX_Dropped    = 33
+idTx_Bytes      = 41
+idRx_Bytes      = 42
 
-idTx_Underruns   = 34
-idTx_SingleColls = 35
-idTx_Le15Colls   = 36
-idTx_Gt15Colls   = 37
-idTx_LateColls   = 38
-idTx_Deffered    = 39
+EMAC_STAT_COUNT    = idRx_Bytes + 1
+EMAC_STAT_CNTR_LEN = 8
+EMAC_STAT_LEN      = EMAC_STAT_COUNT * EMAC_STAT_CNTR_LEN
 
-idCL_RX          = 40
-idCL_L3_Fails    = 41
-idCL_IPV4        = 42
-idCL_IPV6        = 43
-idCL_CRC_Errs    = 44
-idCL_TLL_Errs    = 45
-idCL_ICMP        = 46
-idCL_IGMP        = 47
-idCL_TCP         = 48
-idCL_UDP         = 49
+idCL_RX          = 43
+idCL_L3_Fails    = 44
+idCL_IPV4        = 45
+idCL_IPV6        = 46
+idCL_CRC_Errs    = 47
+idCL_TLL_Errs    = 48
+idCL_ICMP        = 49
+idCL_IGMP        = 50
+idCL_TCP         = 51
+idCL_UDP         = 52
 
+idCL_LOW  = idCL_RX
+idCL_HIGH = idCL_UDP
+CLASS_STAT_LEN = idCL_HIGH - idCL_LOW + 1
 
 class KX028_PortStatsModel:
   def __init__(self):
     self.model = QtGui.QStandardItemModel()
     self.model.setHorizontalHeaderLabels(['Params', 'Values'])
     self.rootItem = self.model.invisibleRootItem()
+    self.comCLI = None
     
     # Create ItemsList
     self.itemsList = {  \
@@ -73,9 +85,11 @@ class KX028_PortStatsModel:
       idRx_LenTo64:   [QtGui.QStandardItem('64 bytes packets'),         QtGui.QStandardItem('0') ], \
       idRx_LenTo127:  [QtGui.QStandardItem('65..127 bytes packets'),    QtGui.QStandardItem('0') ], \
       idRx_LenTo255:  [QtGui.QStandardItem('128..255 bytes packets'),   QtGui.QStandardItem('0') ], \
-      idRx_LenTo512:  [QtGui.QStandardItem('256..511 bytes packets'),   QtGui.QStandardItem('0') ], \
+      idRx_LenTo511:  [QtGui.QStandardItem('256..511 bytes packets'),   QtGui.QStandardItem('0') ], \
       idRx_LenTo1023: [QtGui.QStandardItem('512..1023 bytes packets'),  QtGui.QStandardItem('0') ], \
+      idRx_LenTo1517: [QtGui.QStandardItem('1024..1516 bytes packets'), QtGui.QStandardItem('0') ], \
       idRx_LenOv1518: [QtGui.QStandardItem('>1518 bytes packets'),      QtGui.QStandardItem('0') ], \
+      idRx_LenLT64:   [QtGui.QStandardItem('<64 bytes packets'),        QtGui.QStandardItem('0') ], \
       #RX_Err
       idRX_ExcLen:     [QtGui.QStandardItem('Excessive Length'), QtGui.QStandardItem('0') ], \
       idRX_Jubbers:    [QtGui.QStandardItem('Jubbers'),          QtGui.QStandardItem('0') ], \
@@ -98,8 +112,9 @@ class KX028_PortStatsModel:
       idTx_LenTo64:   [QtGui.QStandardItem('64 bytes packets'),         QtGui.QStandardItem('0') ], \
       idTx_LenTo127:  [QtGui.QStandardItem('65..127 bytes packets'),    QtGui.QStandardItem('0') ], \
       idTx_LenTo255:  [QtGui.QStandardItem('128..255 bytes packets'),   QtGui.QStandardItem('0') ], \
-      idTx_LenTo512:  [QtGui.QStandardItem('256..511 bytes packets'),   QtGui.QStandardItem('0') ], \
+      idTx_LenTo511:  [QtGui.QStandardItem('256..511 bytes packets'),   QtGui.QStandardItem('0') ], \
       idTx_LenTo1023: [QtGui.QStandardItem('512..1023 bytes packets'),  QtGui.QStandardItem('0') ], \
+      idTx_LenTo1517: [QtGui.QStandardItem('1024..1516 bytes packets'), QtGui.QStandardItem('0') ], \
       idTx_LenOv1518: [QtGui.QStandardItem('>1518 bytes packets'),      QtGui.QStandardItem('0') ], \
       # TX_Err
       idTx_Underruns:   [QtGui.QStandardItem('Underruns'),         QtGui.QStandardItem('0') ], \
@@ -133,9 +148,11 @@ class KX028_PortStatsModel:
     itemRX[0].appendRow(self.itemsList[idRx_LenTo64])
     itemRX[0].appendRow(self.itemsList[idRx_LenTo127])
     itemRX[0].appendRow(self.itemsList[idRx_LenTo255])
-    itemRX[0].appendRow(self.itemsList[idRx_LenTo512])
+    itemRX[0].appendRow(self.itemsList[idRx_LenTo511])
     itemRX[0].appendRow(self.itemsList[idRx_LenTo1023])
+    itemRX[0].appendRow(self.itemsList[idRx_LenTo1517])
     itemRX[0].appendRow(self.itemsList[idRx_LenOv1518])
+    itemRX[0].appendRow(self.itemsList[idRx_LenLT64])
     #TX
     itemTX = [QtGui.QStandardItem('EMAC_TX'), QtGui.QStandardItem('Frame Type Counters')]
     self.rootItem.appendRow(itemTX)
@@ -147,8 +164,9 @@ class KX028_PortStatsModel:
     itemTX[0].appendRow(self.itemsList[idTx_LenTo64])
     itemTX[0].appendRow(self.itemsList[idTx_LenTo127])
     itemTX[0].appendRow(self.itemsList[idTx_LenTo255])
-    itemTX[0].appendRow(self.itemsList[idTx_LenTo512])
+    itemTX[0].appendRow(self.itemsList[idTx_LenTo511])
     itemTX[0].appendRow(self.itemsList[idTx_LenTo1023])
+    itemTX[0].appendRow(self.itemsList[idTx_LenTo1517])
     itemTX[0].appendRow(self.itemsList[idTx_LenOv1518])
     #RX_Errors
     itemErrRX = [QtGui.QStandardItem('RX_Errors'), QtGui.QStandardItem('Error Counters')]
@@ -193,3 +211,30 @@ class KX028_PortStatsModel:
       for value in self.itemsList.values():
         val = int(value[1].text())
         value[1].setText(str(val + 1))
+
+  def unpackStatEMAC(self, buff, offs):
+    for i in range(EMAC_STAT_COUNT):
+      (R64, ) = struct.unpack_from('Q', buff, offs)
+      offs += EMAC_STAT_CNTR_LEN
+      self.itemsList[i][1].setText(str(R64))
+
+  def unpackStatClass(self, buff, offs):
+    for i in range(idCL_LOW, idCL_HIGH + 1):
+      (R64, ) = struct.unpack_from('Q', buff, offs)
+      offs += EMAC_STAT_CNTR_LEN
+      self.itemsList[i][1].setText(str(R64))
+
+  def UpdateModelFromDevice(self, selEmac):
+    #EMAC
+    (buff, offs) = self.comCLI.readStatsEMAC(selEmac, EMAC_STAT_LEN)
+    if buff != None:
+      self.unpackStatEMAC(buff, offs)
+    else:
+      print('readStatsEMAC Faults')  
+    #CLASS
+    (buff, offs) = self.comCLI.readStatClassifEMAC(selEmac, CLASS_STAT_LEN)
+    if buff != None:
+      self.unpackStatClass(buff, offs)
+    else:
+      print('readStatClassifEMAC Faults')        
+      

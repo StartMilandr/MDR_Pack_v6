@@ -132,8 +132,9 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       self.addDockedWidget(PyBasisWindowPort(self), "Ports", Qt.RightDockWidgetArea)
 
     def CreateViewStats(self):
-      self.addDockedWidget(PyBasisWindowStats(self), "Statistics", Qt.RightDockWidgetArea)      
-
+      window = PyBasisWindowStats(self)
+      window.AssighCLI(self.comCLI)
+      self.addDockedWidget(window, "Table Statistics", Qt.RightDockWidgetArea)
 
     def CreateViewStatistic(self):
       print('Create Statistics')

@@ -53,9 +53,6 @@ class PyBasisWindowVLAN(QtWidgets.QWidget, Ui_Form):
 
 
     def closeEvent(self, event):
-        #self.comThread.stop()
-        #self.saveSettings(saveFileName)
-        #self.saveGeomerty()
         event.accept()
        
     # ------------- Control Table ---------------

@@ -1,8 +1,10 @@
 from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtCore import QSettings
 from pyBasisMAC_ui import Ui_Form
 from pyWidgetsUtils import *
-from pyWidgetsStyles import comboBoxStyles, comboBoxStyles_DropDown
+from pyWidgetsStyles import comboBoxStyles, comboBoxStyles_DropDown, lineEditStyles
 from pyBasisRes import *
+from pathlib import Path
 
 from KX028_CLI import KX028_CLI
 from KX028_KeyEntryMAC import KX028_KeyEntryMAC, KX028_KeyMAC
@@ -36,7 +38,7 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         # Setup UI and Show
         self.setupUi(self)
         #Tables
-        self.setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown)
+        self.setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown + lineEditStyles)
         self.initTableCtrl()
         self.initTableRx()
         self.DemoAddTableRx()
@@ -45,10 +47,23 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
         self.btRead.clicked.connect(self.ReadTableFromDevice)        
         self.btSelTgl.clicked.connect(self.SelectItemsToggle)
         self.btDelSelected.clicked.connect(self.DelSelectedItems)
-        
 
-    def closeEvent(self, event):
-        event.accept()    
+        self.saveFileName = str(Path().absolute()) + '/saves/TableMAC.ini'
+        self.RestoreWidgets()
+
+
+    def __del__(self):
+        self.SaveWidgets()
+
+    def SaveWidgets(self):
+        #print("Save to: " + self.saveFileName)
+        settings = QSettings(self.saveFileName, QSettings.IniFormat)
+        tableWidget_SaveWidgets(self.tblCtrl, settings)
+
+    def RestoreWidgets(self): 
+        #print("Load From: " + self.saveFileName)
+        settings = QSettings(self.saveFileName, QSettings.IniFormat)
+        tableWidget_RestoreWidgets(self.tblCtrl, settings)
 
     # ------------- Control Table ---------------
     def initTableCtrl(self):
@@ -56,14 +71,17 @@ class PyBasisWindowMAC(QtWidgets.QWidget, Ui_Form):
       self.grbxAddItem.setMaximumHeight(170)
       for i in range(cCTRL_ROW_COUNT):
         # Columns Widgets                       
-        tableWidget_AddSpinBoxRange(  self.tblCtrl, i, cCOL_ADD_VLAN, 0, 100)
-        tableWidget_AddLineEdit_MAC(  self.tblCtrl, i, cCOL_ADD_MAC)
+        tableWidget_AddSpinBoxRange(  self.tblCtrl, i, cCOL_ADD_VLAN, 0, 100, 'spbVLAN_' + str(i))
+        tableWidget_AddLineEdit_MAC(  self.tblCtrl, i, cCOL_ADD_MAC, 'leMAC_' + str(i))
         tableWidget_AddItemCheck(     self.tblCtrl, i, cCOL_ADD_STATIC, False)
-        tableWidget_AddComboBox(      self.tblCtrl, i, cCOL_ADD_ACTION, ACT_ACTIIONS, 0)
-        tableWidget_AddSpinBoxRange(  self.tblCtrl, i, cCOL_ADD_TC, 0, 7)
-        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_FORW, '0x00')
-        btn = tableWidget_AddPushButton(self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
+        tableWidget_AddComboBox(      self.tblCtrl, i, cCOL_ADD_ACTION, ACT_ACTIIONS, 0, 'cbxActions_' + str(i))
+        tableWidget_AddSpinBoxRange(  self.tblCtrl, i, cCOL_ADD_TC, 0, 7,'spbActions_' + str(i))
+        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_FORW, '0x00', 'leActions_' + str(i))
+        btn = tableWidget_AddPushButton(self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT, 'btActions_' + str(i))
         btn.clicked.connect(self.writeItemMAC)
+      #self.tblCtrl.cellWidget(0, cCOL_ADD_MAC).setText('AB:89:67:45:23:01')
+      #self.tblCtrl.cellWidget(1, cCOL_ADD_MAC).setText('66:55:44:33:22:11')
+      #self.tblCtrl.cellWidget(2, cCOL_ADD_MAC).setText('77:88:99:AA:BB:CC')
       # Resize
       header = self.tblCtrl.horizontalHeader()
       header.setSectionResizeMode(cCOL_ADD_VLAN,   QtWidgets.QHeaderView.ResizeToContents)

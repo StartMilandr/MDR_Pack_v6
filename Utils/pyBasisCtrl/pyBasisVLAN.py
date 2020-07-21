@@ -1,10 +1,12 @@
 from PySide2 import QtWidgets, QtGui
+from PySide2.QtCore import QSettings
 from pyBasisVLAN_ui import Ui_Form
 from pyWidgetsUtils import *
-from pyWidgetsStyles import comboBoxStyles, comboBoxStyles_DropDown
+from pyWidgetsStyles import comboBoxStyles, comboBoxStyles_DropDown, lineEditStyles
 from pyBasisRes import *
 from KX028_KeyEntryVLAN import KX028_KeyEntryVLAN, KX028_KeyVLAN
 from KX028_ItemVLAN import KX028_ItemVLAN
+from pathlib import Path
 
 # AddItem Table
 cCTRL_RAW_COUNT = 3
@@ -41,7 +43,7 @@ class PyBasisWindowVLAN(QtWidgets.QWidget, Ui_Form):
         # Setup UI and Show
         self.setupUi(self)
         #Tables
-        self.setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown)
+        self.setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown + lineEditStyles)
         self.initTableCtrl()
         self.initTableRx()
         self.DemoAddTableRx()
@@ -51,9 +53,23 @@ class PyBasisWindowVLAN(QtWidgets.QWidget, Ui_Form):
         self.btSelTgl.clicked.connect(self.SelectItemsToggle)
         self.btDelSelected.clicked.connect(self.DelSelectedItems)
 
+        self.saveFileName = str(Path().absolute()) + '/saves/TableVLAN.ini'
+        self.RestoreWidgets()
 
-    def closeEvent(self, event):
-        event.accept()
+        
+    def __del__(self):
+        self.SaveWidgets()
+
+    def SaveWidgets(self):
+        #print("Save to: " + self.saveFileName)
+        settings = QSettings(self.saveFileName, QSettings.IniFormat)
+        tableWidget_SaveWidgets(self.tblCtrl, settings)
+
+    def RestoreWidgets(self): 
+        #print("Load From: " + self.saveFileName)
+        settings = QSettings(self.saveFileName, QSettings.IniFormat)
+        tableWidget_RestoreWidgets(self.tblCtrl, settings)
+
        
     # ------------- Control Table ---------------
     def initTableCtrl(self):
@@ -61,15 +77,15 @@ class PyBasisWindowVLAN(QtWidgets.QWidget, Ui_Form):
       self.grbxAddItem.setMaximumHeight(170)
       for i in range(cCTRL_RAW_COUNT):
         # Column Widgets                       
-        tableWidget_AddSpinBoxRange(self.tblCtrl, i, cCOL_ADD_VLAN, 0, 100)
-        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_FORW, '0x00')
-        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_UNTAG, '0x00')
-        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_UHIT,  ACT_ACTIIONS, 0)
-        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_UMISS, ACT_ACTIIONS, 0)
-        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MHIT,  ACT_ACTIIONS, 0)
-        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MMISS, ACT_ACTIIONS, 0)
-        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MSTP,  ACT_ACTIIONS, 0)
-        btn = tableWidget_AddPushButton(self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT)
+        tableWidget_AddSpinBoxRange(self.tblCtrl, i, cCOL_ADD_VLAN, 0, 100, 'spbVLAN_' + str(i))
+        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_FORW, '0x00', 'leForw_' + str(i))
+        tableWidget_AddLineEdit_0x1FF(self.tblCtrl, i, cCOL_ADD_UNTAG, '0x00', 'leUntag_' + str(i))
+        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_UHIT,  ACT_ACTIIONS, 0, 'cbxUHit_' + str(i))
+        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_UMISS, ACT_ACTIIONS, 0, 'cbxUMiss' + str(i))
+        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MHIT,  ACT_ACTIIONS, 0, 'cbxMHIt' + str(i))
+        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MMISS, ACT_ACTIIONS, 0, 'cbxMMiss' + str(i))
+        tableWidget_AddComboBox(self.tblCtrl, i, cCOL_ADD_MSTP,  ACT_ACTIIONS, 0, 'cbxMSTP' + str(i))
+        btn = tableWidget_AddPushButton(self.tblCtrl, i, cCOL_ADD_APPLY, sAPPLY_BTN_TEXT, 'btApply_' + str(i))
         btn.clicked.connect(self.writeItemVLAN)
       # Resize
       header = self.tblCtrl.horizontalHeader()

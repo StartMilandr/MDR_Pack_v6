@@ -79,6 +79,10 @@ typedef enum {
   //  STAT
   cliCMD_ReadStatPort,
   cliCMD_ReadStatClass,
+  cliCMD_ClearStatPort,
+  cliCMD_ClearStatClass,
+  //  Port
+  cliCMD_WriteEmacCfg,
   //  AXI
   cliCMD_ReadAXI,
   cliCMD_WriteAXI,

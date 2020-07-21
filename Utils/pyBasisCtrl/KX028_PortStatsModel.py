@@ -237,4 +237,7 @@ class KX028_PortStatsModel:
       self.unpackStatClass(buff, offs)
     else:
       print('readStatClassifEMAC Faults')        
-      
+
+  def ClearStats(self, selEmac):
+    self.comCLI.clearStatsEMAC(selEmac)
+    self.comCLI.clearStatClassifEMAC(selEmac)

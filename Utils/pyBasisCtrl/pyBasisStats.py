@@ -17,6 +17,8 @@ class PyBasisWindowStats(QtWidgets.QWidget, Ui_Form):
         self.treeView.setModel(self.statModel.model)
         self.ColumnsFit()
         self.btPortRead.clicked.connect(self.ReadStatsFromDevice)
+        self.btPortClear.clicked.connect(self.ClearStats)
+        self.btClearAll.clicked.connect(self.ClearStatsAll)
 
     def closeEvent(self, event):
         event.accept()
@@ -31,6 +33,14 @@ class PyBasisWindowStats(QtWidgets.QWidget, Ui_Form):
 
     def ReadStatsFromDevice(self):
         self.statModel.UpdateModelFromDevice(self.cbxPortSel.currentIndex())
+
+    def ClearStats(self):
+        self.statModel.ClearStats(self.cbxPortSel.currentIndex())
+
+    def ClearStatsAll(self):
+        for i in range(self.cbxPortSel.count()):
+            self.statModel.ClearStats(i)
+        self.ReadStatsFromDevice()    
 
 
 

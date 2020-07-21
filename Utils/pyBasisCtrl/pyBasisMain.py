@@ -129,7 +129,9 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       self.addDockedWidget(window, "Table VLAN", Qt.LeftDockWidgetArea)
 
     def CreateViewPort(self):
-      self.addDockedWidget(PyBasisWindowPort(self), "Ports", Qt.RightDockWidgetArea)
+      window = PyBasisWindowPort(self)
+      window.comCLI = self.comCLI
+      self.addDockedWidget(window, "Ports", Qt.RightDockWidgetArea)
 
     def CreateViewStats(self):
       window = PyBasisWindowStats(self)

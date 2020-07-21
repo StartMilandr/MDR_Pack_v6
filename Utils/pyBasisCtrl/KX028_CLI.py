@@ -5,6 +5,8 @@ from KX028_ItemMAC import KX028_ItemMAC
 from KX028_ItemVLAN import KX028_ItemVLAN
 from KX028_KeyEntryMAC import KX028_KeyMAC, KX028_KeyEntryMAC
 from KX028_KeyEntryVLAN import KX028_KeyVLAN, KX028_KeyEntryVLAN
+from KX028_ItemPort import KX028_ItemPort
+from pyBasisRes import kx028_AddrStruc1, kx028_AddrStruc2, CLASS1_BASE_ADDR
 
 
 #Commands
@@ -21,8 +23,18 @@ cliCMD_DelVLAN        = 8
 cliCMD_ClearVLAN      = 9
 cliCMD_ReadStatPort   = 10
 cliCMD_ReadStatClass  = 11
-cliCMD_ReadAXI        = 12
-cliCMD_WriteAXI       = 13
+cliCMD_ClearStatPort  = 12
+cliCMD_ClearStatClass = 13
+cliCMD_WritePortCfg   = 14
+cliCMD_ReadAXI        = 15
+cliCMD_WriteAXI       = 16
+
+cliCMD_Str = ['cmdNone', 'cmdError', \
+              'cmdReadMAC',  'cmdUpdAddMAC',  'cmdDelMAC',  'cmdClearMAC', \
+              'cmdReadVLAN', 'cmdUpdAddVLAN', 'cmdDelVLAN', 'cmdClearVLAN', \
+              'ReadStatPort', 'ReadStatClass', 'ClearStatPort', 'ClearStatClass', \
+              'WritePortCfg', 'ReadAXI', 'WriteAXI']
+
 
 cliACK_MinLen_1       = 1
 
@@ -81,24 +93,7 @@ class KX028_CLI:
     struct.pack_into("BB", self.buffTx, 0, b1, b2)
     return HDR_LEN
 
-  # def unpackHeader(self):
-  #   b1, b2 = struct.unpack_from('BB', buff, 0)
-
-  #   txBytes = paramsLen + 2
-  #   b1 = txBytes & 0xFF
-  #   b2 = cmd | ((txBytes >> 2) & 0xC0)
-  #   struct.pack_into("BB", self.buffTx, 0, b1, b2)
-  #   return 2  
-
-  def packValidateMessLen(self):
-    bufLen = len(self.buffTx)
-    print('IN buffTx.len = {}'.format(len(self.buffTx)))
-    if IsEvenNum(bufLen):
-      struct.pack_into("B", self.buffTx, bufLen, 0)
-      print('OUT buffTx.len = {}'.format(len(self.buffTx)))
-
   def transfer(self, cmd, minAckLen):
-    #self.packValidateMessLen()
     rxCnt = self.ComPort.transfer(self.buffTx, self.buffRx)
     if rxCnt < 3:
       print('rxCnt Too Small: {}'.format(rxCnt))
@@ -218,84 +213,84 @@ class KX028_CLI:
     return itemsList  
 
 
-  # --- Add Items to Tables ---
-  def UpdateOrAddMAC(self, keyEntryMAC):
-    offs = self.packHeader(cliCMD_UpdAddMAC, KX028_KeyEntryMAC.packLen)
-    keyEntryMAC.pack(self.buffTx, offs)
-    resOK = self.transfer(cliCMD_UpdAddMAC, cliACK_MinLen_1)
+  # --- Simplest Commands with single ack (no data) ---
+  def SendObjectWithAck(self, cmd, obj):
+    offs = self.packHeader(cmd, obj.packLen)
+    obj.pack(self.buffTx, offs)
+    resOK = self.transfer(cmd, cliACK_MinLen_1)
     if resOK:
       self.checkAckStatus()
     else:
-      print('Fault UpdateOrAddMAC')
-    return resOK 
+      print('Fault ' + cliCMD_Str[cmd])
+    return resOK  
+
+  def UpdateOrAddMAC(self, keyEntryMAC):
+    return self.SendObjectWithAck(cliCMD_UpdAddMAC, keyEntryMAC)
 
   def UpdateOrAddVLAN(self, keyEntryVLAN):
-    offs = self.packHeader(cliCMD_UpdAddVLAN, KX028_KeyEntryVLAN.packLen)
-    keyEntryVLAN.pack(self.buffTx, offs)    
-    resOK = self.transfer(cliCMD_UpdAddVLAN, 1)
-    if resOK:
-      self.checkAckStatus()
-    else:
-      print('Fault UpdateOrAddVLAN')
-    return resOK 
+    return self.SendObjectWithAck(cliCMD_UpdAddVLAN, keyEntryVLAN)
 
-
-  # --- Delete Items from Tables ---
   def DelItemMAC(self, keyMAC):
-    offs = self.packHeader(cliCMD_DelMAC, KX028_KeyMAC.packLen)
-    keyMAC.pack(self.buffTx, offs)
-    resOK = self.transfer(cliCMD_DelMAC, cliACK_MinLen_1)
-    if resOK:
-      self.checkAckStatus()
-    else:
-      print('Fault DelItemMAC')
-    return resOK 
+    return self.SendObjectWithAck(cliCMD_DelMAC, keyMAC)  
 
   def DelItemVLAN(self, keyVLAN):
-    offs = self.packHeader(cliCMD_DelVLAN, keyVLAN.packLen)
-    keyVLAN.pack(self.buffTx, offs)
-    resOK = self.transfer(cliCMD_DelVLAN, cliACK_MinLen_1)
+    return self.SendObjectWithAck(cliCMD_DelVLAN, keyVLAN)      
+
+
+  # --- Commands with single param (int32) ---
+  def SendCmdPar32WithAck(self, cmd, par32):
+    offs = self.packHeader(cmd, 4)
+    struct.pack_into("L", self.buffTx, offs, par32)
+    resOK = self.transfer(cmd, cliACK_MinLen_1)
     if resOK:
       self.checkAckStatus()
     else:
-      print('Fault DelItemVLAN')
+      print('Fault ' + cliCMD_Str[cmd])
     return resOK 
 
-  # --- Clear Tables ---
   def ClearMAC(self, options):
-    offs = self.packHeader(cliCMD_ClearMAC, 4)
-    struct.pack_into("L", self.buffTx, offs, options)
-    # self.packValidateMessLen(offs + 4)
-    resOK = self.transfer(cliCMD_ClearMAC, 1)
-    if resOK:
-      self.checkAckStatus()
-    else:
-      print('Fault ClearMAC')
-    return resOK 
+    return self.SendCmdPar32WithAck(cliCMD_ClearMAC, options)
 
   def ClearVLAN(self, options):
-    offs = self.packHeader(cliCMD_ClearVLAN, 4)
-    struct.pack_into("L", self.buffTx, offs, options)
-    resOK = self.transfer(cliCMD_ClearVLAN, 1)
-    if resOK:
-      self.checkAckStatus()
-    else:
-      print('Fault ClearVLAN')
-    return resOK
+    return self.SendCmdPar32WithAck(cliCMD_ClearVLAN, options)
+
 
   # --- AXI Registers ---
   def readAxiRegList(self, regAddrList):
-    offs = self.packHeader(cliCMD_ReadAXI, len(regAddrList) * 4)
-    #TODO
-    # txCount = self.packValidateMessLen(offs + len(regAddrList) * 4)
+    regCnt = len(regAddrList)
+    offs = self.packHeader(cliCMD_ReadAXI, regCnt * 4)
+    for Reg in regAddrList:
+      struct.pack_into("L", self.buffTx, offs, Reg)
+      offs += 4
+    resOK = self.transfer(cliCMD_ReadAXI, cliACK_MinLen_1)
+    valueList = []
+    if resOK:
+      if len(self.buffRx.data) == (regCnt * 4 + HDR_LEN + 1):
+        offs = ACK_PARS_OFFS
+        for i in range(regCnt):
+          R, = struct.unpack_from('L', self.buffRx.data, offs)
+          valueList.append(R)
+          offs += 4
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readAxiRegList')
+    return valueList
 
   def writeAxiRegList(self, regAddrList, regDataList):
-    offs = self.packHeader(cliCMD_WriteAXI, len(regAddrList) * 4 * 2)
-    #TODO
-    # txCount = self.packValidateMessLen(offs + len(regAddrList) * 4 * 2)
+    regCnt = len(regAddrList)
+    offs = self.packHeader(cliCMD_WriteAXI, regCnt * 8)
+    for i in range(regCnt):
+      struct.pack_into("LL", self.buffTx, offs, regAddrList[i], regDataList[i])
+      offs += 8
+    resOK = self.transfer(cliCMD_WriteAXI, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault writeAxiRegList')
+    return resOK 
 
-
-  # --- Read Statistics ---
+  # --- Read/Clear Statistics ---
   def readStatsEMAC(self, emac, estimLen):
     offs = self.packHeader(cliCMD_ReadStatPort, 1)
     struct.pack_into("B", self.buffTx, offs, emac)
@@ -322,3 +317,41 @@ class KX028_CLI:
     else:
       print('Fault readStatClassifEMAC')
     return (None, 1)
+
+  def SendCmdPar8WithAck(self, cmd, par8):
+    offs = self.packHeader(cmd, 1)
+    struct.pack_into("B", self.buffTx, offs, par8)
+    resOK = self.transfer(cmd, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault ' + cliCMD_Str[cmd])
+    return resOK 
+  
+  
+  def clearStatsEMAC(self, emac):
+    return self.SendCmdPar8WithAck(cliCMD_ClearStatPort, emac)
+
+  def clearStatClassifEMAC(self, emac):
+    return self.SendCmdPar8WithAck(cliCMD_ClearStatClass, emac)
+
+
+  # --- EMAC Ports Control ---
+  def writePortCfg(self, emac, itemPort):
+    offs = self.packHeader(cliCMD_WritePortCfg, itemPort.packLen + 1)
+    offs = itemPort.pack(self.buffTx, offs)
+    struct.pack_into("B", self.buffTx, offs, emac)
+    resOK = self.transfer(cliCMD_WritePortCfg, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault writePortCfg')
+    return resOK 
+
+
+  def readPortCfg(self, emac):
+    addrs = [CLASS1_BASE_ADDR + kx028_AddrStruc1[emac], CLASS1_BASE_ADDR + kx028_AddrStruc2[emac]]
+    values = self.readAxiRegList(addrs)
+    itemPort = KX028_ItemPort()
+    itemPort.unpackFromRegs(values[0], values[1])
+    return itemPort

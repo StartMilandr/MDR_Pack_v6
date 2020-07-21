@@ -6,7 +6,7 @@ MDR_KX028_MAC_TableItem_t tstTblMac[TST_TBL_MAC_LEN];
 #define TST_TBL_VLAN_LEN  2
 MDR_KX028_VLAN_TableItem tstTblVLAN[TST_TBL_VLAN_LEN];
 
-#define TST_REGS_LEN  10
+#define TST_REGS_LEN  (KX028_EMAC_NUMS + 1) * 2
 uint32_t tstTblREGS[TST_REGS_LEN];
 
 
@@ -39,6 +39,8 @@ static void KeyEntryToMacItem(MDR_KX028_MAC_TableItem_t *tblItem, MDR_KX028_KeyE
 
 bool MDR_KX028_MAC_TableUpdateByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
+  IncStataEMACS();  
+  
   uint16_t i;
   for (i = 0; i < TST_TBL_MAC_LEN; i++)
     if (tstTblMac[i].regMAC1 == keyEntry->key.regs.valReg1)  // Упрощенное сравнение
@@ -54,6 +56,8 @@ bool MDR_KX028_MAC_TableUpdateByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t 
 //  Добавить item c заданным [mac, vlanId] и "entry"
 bool MDR_KX028_MAC_TableAddByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
+  IncStataEMACS();    
+  
   uint16_t i;
   for (i = 0; i < TST_TBL_MAC_LEN; i++)
     if (tstTblMac[i].regMAC4_b.IsActive == 0)
@@ -79,9 +83,7 @@ void MDR_KX028_MAC_TableDelByKey(MDR_KX028_KeyMAC_t *key, uint32_t waitCyclesMax
 }
 
 bool MDR_KX028_MAC_TableRead ( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t hashAddr, uint32_t waitCyclesMax )
-{
-  IncStataEMACS();  
-  
+{  
   if (hashAddr < TST_TBL_MAC_LEN)
   {
     *tableItem = tstTblMac[hashAddr];
@@ -133,6 +135,8 @@ static void KeyEntryToVlanItem(MDR_KX028_VLAN_TableItem *tblItem, uint16_t vlani
 
 bool MDR_KX028_VLAN_TableUpdate(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry, uint32_t waitCyclesMax)
 {
+  IncStatClassEMACs();  
+  
   uint16_t i;
   for (i = 0; i < TST_TBL_VLAN_LEN; i++)
     if (tstTblVLAN[i].regMAC1_b.VLANID == vlanid)
@@ -147,6 +151,8 @@ bool MDR_KX028_VLAN_TableUpdate(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry,
 
 bool MDR_KX028_VLAN_TableAdd(uint16_t vlanid, MDR_KX028_VLAN_Entry_t brentry, uint32_t waitCyclesMax)
 {
+  IncStatClassEMACs();  
+  
   uint16_t i;
   for (i = 0; i < TST_TBL_VLAN_LEN; i++)
     if (tstTblVLAN[i].regMAC4_b.IsActive == 0)
@@ -175,9 +181,7 @@ bool MDR_KX028_VLAN_TableDel(uint16_t vlanid, uint32_t waitCyclesMax)
 
 
 bool MDR_KX028_VLAN_TableRead( MDR_KX028_VLAN_TableItem *tableItem, uint16_t hashAddr, uint32_t waitCyclesMax )
-{
-  IncStatClassEMACs();
-  
+{ 
   if (hashAddr < TST_TBL_VLAN_LEN)
   {
     *tableItem = tstTblVLAN[hashAddr];
@@ -289,4 +293,10 @@ static void IncStatClassEMACs(void)
   IncStatClassEMAC(1, 20);
   IncStatClassEMAC(2, 30);
   IncStatClassEMAC(3, 40);
+}
+
+void MDR_KX028_WritePortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 )
+{ 
+  tstTblREGS[emac] = regClassStruct1;
+  tstTblREGS[KX028_EMAC_NUMS + emac + 1] = regClassStruct2;
 }

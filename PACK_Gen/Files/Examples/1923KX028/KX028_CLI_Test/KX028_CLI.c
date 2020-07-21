@@ -7,6 +7,7 @@
 
 #include <MDR_1923KX028_M2_TableMAC.h>
 #include <MDR_1923KX028_M2_TableVLAN.h>
+#include <MDR_1923KX028_M2_Init.h>
 
 uint8_t *cli_OutData;
 uint16_t cli_OutDataLen;
@@ -40,30 +41,39 @@ static uint16_t CLI_WriteAXI(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_
 
 static uint16_t CLI_ReadStatEMAC(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
 static uint16_t CLI_ReadStatClass(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
+static uint16_t CLI_ClearStatEMAC(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
+static uint16_t CLI_ClearStatClass(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
+
+static uint16_t CLI_WriteEMacCfg(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
+
 
 
 typedef uint16_t (*CLI_HandlerFunc)(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax);
 
 CLI_HandlerFunc HandlersCLI[cliCMD_LEN] = {
-  NULL,             //cliCMD_NONE  = 0,
-  NULL,             //cliCMD_ERROR = 1,
+  NULL,               //cliCMD_NONE  = 0, - CLI_CMD_e from MDR_ConfigXX.h
+  NULL,               //cliCMD_ERROR = 1,
   //  User Defs
   //  MAC
-  CLI_MAC_Read,     //cliCMD_ReadMAC,
-  CLI_MAC_UpdAdd,   //cliCMD_UpdAddMAC,
-  CLI_MAC_Del,      //cliCMD_DelMAC,
-  CLI_MAC_Clear,    //cliCMD_ClearMAC,
+  CLI_MAC_Read,       //cliCMD_ReadMAC,
+  CLI_MAC_UpdAdd,     //cliCMD_UpdAddMAC,
+  CLI_MAC_Del,        //cliCMD_DelMAC,
+  CLI_MAC_Clear,      //cliCMD_ClearMAC,
   //  VLAN
-  CLI_VLAN_Read,    //cliCMD_ReadVLAN
-  CLI_VLAN_UpdAdd,  //cliCMD_UpdAddVLAN,
-  CLI_VLAN_Del,     //cliCMD_DelVLAN,
-  CLI_VLAN_Clear,   //cliCMD_ClearVLAN,
+  CLI_VLAN_Read,      //cliCMD_ReadVLAN
+  CLI_VLAN_UpdAdd,    //cliCMD_UpdAddVLAN,
+  CLI_VLAN_Del,       //cliCMD_DelVLAN,
+  CLI_VLAN_Clear,     //cliCMD_ClearVLAN,
   //  STAT
-  CLI_ReadStatEMAC, //cliCMD_ReadStatPort,
-  CLI_ReadStatClass,//cliCMD_ReadStatClass,
+  CLI_ReadStatEMAC,   //cliCMD_ReadStatPort,
+  CLI_ReadStatClass,  //cliCMD_ReadStatClass,
+  CLI_ClearStatEMAC,  //cliCMD_ClearStatPort,  
+  CLI_ClearStatClass, //cliCMD_ClearStatClass,
+  //  Port
+  CLI_WriteEMacCfg,   //cliCMD_WriteEmacCfg
   //  AXI
-  CLI_ReadAXI,      //cliCMD_ReadAXI,
-  CLI_WriteAXI,     //cliCMD_WriteAXI
+  CLI_ReadAXI,        //cliCMD_ReadAXI,
+  CLI_WriteAXI,       //cliCMD_WriteAXI
 };
 
 typedef enum {
@@ -357,11 +367,11 @@ static uint16_t CLI_ReadStatEMAC(uint16_t lenCmdParams, uint8_t *pCmdParams, uin
   {  
     uint8_t portInd = pCmdParams[0];
     
-    uint32_t i;
     uint32_t cnt32 = sizeof(MDR_KX028_StatsEMAC_t) >> 2;
     uint32_t *pInData = (uint32_t *)&statsEMAC[portInd];
-    uint32_t *pOutData = (uint32_t *)cli_OutData;  
+    uint32_t *pOutData = (uint32_t *)cli_OutData;
     
+    uint32_t i;    
     for (i = 0; i < cnt32; i++)
       *pOutData++ = *pInData++;
       
@@ -398,3 +408,58 @@ static uint16_t CLI_ReadStatClass(uint16_t lenCmdParams, uint8_t *pCmdParams, ui
   } 
 }
 
+static uint16_t CLI_ClearStatEMAC(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax)
+{
+  if (lenCmdParams == 1)
+  {
+    uint8_t portInd = pCmdParams[0];
+    uint32_t cnt32 = sizeof(MDR_KX028_StatsEMAC_t) >> 2;
+    uint32_t *pData = (uint32_t *)&statsEMAC[portInd];
+    
+    uint32_t i;    
+    for (i = 0; i < cnt32; i++)
+      *pData++ = 0;
+    
+    cli_OutData[0] = cliAck_Ok;  
+  }
+  else
+    cli_OutData[0] = cliAck_LenError;
+  return 1;  
+}
+
+static uint16_t CLI_ClearStatClass(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax)
+{
+  if (lenCmdParams == 1)
+  {
+    uint8_t portInd = pCmdParams[0];
+    uint32_t cnt32 = sizeof(MDR_KX028_StatsClassHW_t) >> 2;
+    uint32_t *pData = (uint32_t *)&statsClassHW[portInd];
+    
+    uint32_t i;    
+    for (i = 0; i < cnt32; i++)
+      *pData++ = 0;
+    
+    cli_OutData[0] = cliAck_Ok;  
+  }
+  else
+    cli_OutData[0] = cliAck_LenError;
+  return 1;   
+}
+
+static uint16_t CLI_WriteEMacCfg(uint16_t lenCmdParams, uint8_t *pCmdParams, uint32_t waitCyclesMax)
+{
+  if (lenCmdParams == 9)
+  {
+    uint32_t *pInp32 = (uint32_t *)pCmdParams;
+    uint32_t struct1 = pInp32[0];
+    uint32_t struct2 = pInp32[1];
+    uint8_t portInd = pCmdParams[8];    
+    
+    MDR_KX028_WritePortStruct((MDR_KX028_EMAC_e)portInd, struct1, struct2);
+    
+    cli_OutData[0] = cliAck_Ok;  
+  }
+  else
+    cli_OutData[0] = cliAck_LenError;
+  return 1;
+}

@@ -12,7 +12,7 @@ typedef struct
     uint64_t tx_broadcast;
     uint64_t tx_multicast;
     uint64_t tx_pause;
-    uint64_t tx_64;  
+    uint64_t tx_64;
     uint64_t tx_65_127;
     uint64_t tx_128_255;
     uint64_t tx_256_511;
@@ -22,7 +22,7 @@ typedef struct
     uint64_t tx_underruns;
     uint64_t tx_single_collision;
     uint64_t tx_2_15_collision;
-    uint64_t tx_more_15_collision;  
+    uint64_t tx_more_15_collision;
     uint64_t tx_late_collision;
     uint64_t tx_deferred;
 
@@ -31,25 +31,21 @@ typedef struct
     uint64_t rx_multicast;
     uint64_t rx_pause;
     uint64_t rx_64;
-    
     uint64_t rx_65_127;
     uint64_t rx_128_255;
     uint64_t rx_256_511;
     uint64_t rx_512_1023;
     uint64_t rx_1024_1518;
-    
     uint64_t rx_more_1518;
     uint64_t rx_less_64;
     uint64_t rx_excessive_len;
     uint64_t rx_jabbers;
     uint64_t rx_fcs_err;
-    
     uint64_t rx_len_err;
     uint64_t rx_symbol_err;
     uint64_t rx_aligment_err;
     uint64_t rx_recource_err;
     uint64_t rx_overruns;
-    
     uint64_t rx_ip_crc_err;
     uint64_t rx_tcp_crc_err;
     uint64_t rx_udp_crc_err;

@@ -2,6 +2,7 @@ from PySide2 import QtWidgets, QtGui, QtWidgets
 from PySide2.QtWidgets import QFileDialog, QToolBar
 from PySide2.QtCore import QSettings, Qt
 from pyBasisMain_ui import Ui_MainWindow
+from pyWidgetsUtils import WindowRestoreGeometry, WindowSaveGeometry
 
 from pyBasisMAC import PyBasisWindowMAC
 from pyBasisVLAN import PyBasisWindowVLAN
@@ -87,23 +88,18 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.centralwidget.hide()
         #self.centralwidget.setMaximumSize(0, 0)
 
-        # self.addFormMac = QtGui.QAction(self)
-        # self.addFormMac.setObjectName("actAddMAC")
-        # self.addFormMac.setText('Add MAC')
-        # self.toolBar.addAction(self.addFormMac)
-        
-        # Vars
-        # self.comThread = ComPortThread(self.showDataRx)
-        # self.showTx = False
-        # self.convRx = rxConvAsChar
-        # Widgets Init
-        #self.loadGeomerty()
-        #self.loadSettings(saveFileName)
-
+        self.saveFileName = str(Path().absolute()) + '/saves/Main.ini'
+        settings = QSettings(self.saveFileName, QSettings.IniFormat)
+        WindowRestoreGeometry(self, settings)
         # Form Show
         self.show()
-        #self.showConnected()
-    
+
+    def closeEvent(self, event):
+      settings = QSettings(self.saveFileName, QSettings.IniFormat)
+      WindowSaveGeometry(self, settings)
+      self.comTransf.stop()
+      event.accept()
+
     def centralHack1(self):
       secMainWin = QtWidgets.QMainWindow(self)
       secMainWin.setCentralWidget(QtWidgets.QTextEdit(secMainWin))
@@ -159,12 +155,7 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
     #def changeComPort(self, text):  
       #self.comThread.comPort = text
 
-    def closeEvent(self, event):
-      #self.comThread.stop()
-      #self.saveSettings(saveFileName)
-      #self.saveGeomerty()
-      self.comTransf.stop()
-      event.accept()
+
 
 
 

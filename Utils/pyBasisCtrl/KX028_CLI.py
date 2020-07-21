@@ -103,7 +103,7 @@ class KX028_CLI:
       #print('b1={}, b2={}'.format(b1, b2))
       messLen = b1 | ((b2 & 0xC0) << 2)
       rxCmd = b2 & 0x3F
-      print('cmd={} , messLen={}'.format(rxCmd, messLen))
+      #print('cmd={} , messLen={}'.format(rxCmd, messLen))
       dataLen = len(self.buffRx.data)
       if IsEvenNum(messLen):
         protocolOk = dataLen == messLen + 1

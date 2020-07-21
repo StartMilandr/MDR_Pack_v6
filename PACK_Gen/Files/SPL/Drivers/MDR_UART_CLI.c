@@ -19,14 +19,19 @@ typedef __PACKED_STRUCT {
   uint8_t   buff[DMA_BUFF_LEN];  // Aligned by 4!
 } CLI_AlignedBuff;
 
-static CLI_AlignedBuff  _inpAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
+#ifdef DMA_NEED_EXECUTABLE_MEM_RANGE
+  static CLI_AlignedBuff  _inpAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
+  static CLI_AlignedBuff  _outAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
+#else
+  static CLI_AlignedBuff  _inpAlignedBuff  __attribute__ ((aligned (4)));
+  static CLI_AlignedBuff  _outAlignedBuff  __attribute__ ((aligned (4)));
+#endif
+
 static uint8_t         *_inpData = &_inpAlignedBuff.countLo;
 static uint16_t         _inpDataLen = 0;
 
 static uint16_t   _messLen = 0;
 
-
-static CLI_AlignedBuff  _outAlignedBuff  __RAM_EXEC __attribute__ ((aligned (4)));
 static uint8_t         *_outData = &_outAlignedBuff.countLo;
 static uint16_t         _outDataLen = 0;
 
@@ -42,9 +47,9 @@ static bool CLI_GetDataReceived(void);
 
 
 void MDR_CLI_UART_Init(uint32_t baudRate, uint32_t UART_ClockHz, MDR_UART_CfgPinsGPIO *pinsGPIO)
-{	
+{	  
   //  Init UART PIN
-	MDR_UART_InitPinsGPIO(pinsGPIO, MDR_PIN_FAST);      
+	MDR_UART_InitPinsGPIO(pinsGPIO, MDR_PIN_FAST);  
   
 	//	Подача на UARTx_Clock частоты ядра или MAX_Clock.
   MDR_UARTex_SetUartClock_InpPLLCPU(CFG_CLI_UARTex, MDR_Div128P_div1);  
@@ -72,8 +77,9 @@ void MDR_CLI_UART_Init(uint32_t baudRate, uint32_t UART_ClockHz, MDR_UART_CfgPin
 	};  
   
 	MDR_UARTex_InitByBaud(CFG_CLI_UARTex, &cfgUART, &cfgBaud);	  
+  //  Clear FIFO and RX Event
   MDR_UART_ClearRxFIFO(_CLI_UART);
-  MDR_UART_ClearEventsIRQ(_CLI_UART, MDR_UART_EFL_RT);    
+  MDR_UART_ClearEventsIRQ(_CLI_UART, MDR_UART_EFL_ALL);
   
   //  Init DMA
   CLI_DMA_Init();
@@ -135,9 +141,9 @@ static void CLI_DMA_Init(void)
 
 #define MESS_MIN_LEN    3
 #define MESS_GET_CMD    (_inpData[1] & CLI_CMD_MSK)
-#define MESS_GET_LEN   ( (uint16_t)_inpData[0] | ((uint16_t)(_inpData[1] & 0xC0) << 3) )
+#define MESS_GET_LEN   ( (uint16_t)_inpData[0] | ((uint16_t)(_inpData[1] & 0xC0) << 2) )
 
-#define MESS_SET_HEADER(arr, cmd, len)    arr[1] = (uint8_t)(((uint16_t)(len) >> 3) & 0x00C0) | (uint8_t)(cmd); \
+#define MESS_SET_HEADER(arr, cmd, len)    arr[1] = (uint8_t)(((uint16_t)(len) >> 2) & 0x00C0) | (uint8_t)(cmd); \
                                           arr[0] = (uint8_t)(len);
 
 #define MESS_HEADER_LEN   2    
@@ -157,9 +163,11 @@ static bool CLI_GetDataReceived(void)
   // Наличие флага TimeoutRx говорит о том, что оно слово еще лежит в FIFO
   // Потому что DMA выяитывает блоками по 2 слова
   bool hasNewData = _CLI_UART->RIS & MDR_UART_EFL_RT;
+  //MDR_DMA_ChCtrl ctrl = MDR_DMA_GetChCtrlPri(CFG_CLI_DMA_ChanRX);
   if (hasNewData)    
   {
     MDR_UART_ClearEventsIRQ(_CLI_UART, MDR_UART_EFL_RT);
+    //MDR_UART_ClearEventsIRQ(_CLI_UART, MDR_UART_EFL_ALL);
 
     // Проверяем, что пришло байт не меньше 3-х (Два скачало DMA, одно еще в FIFO)
     // Если меньше - выходим, ждем следующий приход данных

@@ -18,6 +18,8 @@ ROW_BLOCKSTATE  = 7
 ROW_UNTAG_BT    = 8
 ROW_WRITE       = 9
 
+LinkState_Str = ['LinkDown', 'LinkUp']        
+
 class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
     # Constructor
     def __init__(self, parent=None):
@@ -31,6 +33,7 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
         self.comCLI = None
         self.saveFileName = str(Path().absolute()) + '/saves/Ports.ini'
         self.RestoreWidgets()
+        self.btUpdateAll.clicked.connect(self.readAllPorts)        
 
         
     def __del__(self):
@@ -94,13 +97,26 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
         emac = self.tblPorts.cellWidget(ROW_PORT, index.column()).currentIndex()
         itemPort = self.GUI_GetItemPort(index.column())
         self.comCLI.writePortCfg(emac, itemPort)
-        printObj(itemPort)
+
+
+    def readPort(self, col):
+        emac = self.tblPorts.cellWidget(ROW_PORT, col).currentIndex()
+        #Read Config
+        itemPort = self.comCLI.readPortCfg(emac)
+        self.GUI_SetItemPort(col, itemPort)
+        #Read LinkStatus
+        netStat = self.comCLI.readAxiRegList([ kx028_EmacAdr[emac] + EMAC_NETSTAT ])
+        if netStat != None:
+            self.tblPorts.item(ROW_STAT, col).setText(LinkState_Str[netStat[0] & EMAC_NETSTAT_LINK_Msk])
+        else:
+            self.tblPorts.item(ROW_STAT, col).setText('Error')
 
     def readItemPort(self):
         button = self.sender()
         index = self.tblPorts.indexAt(button.pos())
-        emac = self.tblPorts.cellWidget(ROW_PORT, index.column()).currentIndex()
-        itemPort = self.comCLI.readPortCfg(emac)
-        self.GUI_SetItemPort(index.column(), itemPort)
-        printObj(itemPort)
-                
+        self.readPort(index.column())
+        
+    def readAllPorts(self):
+        for i in range(self.tblPorts.columnCount()):
+            self.readPort(i)
+        

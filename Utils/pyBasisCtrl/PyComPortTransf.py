@@ -52,11 +52,11 @@ class ComPortTransf():
   def transfer(self, byteBuffTx, byteDataBuffRx):
     if self.started:
       self.comPort.write(byteBuffTx)
-      print('Send {} bytes'.format(len(byteBuffTx)))
+      #print('Send {} bytes'.format(len(byteBuffTx)))
 
       byteDataBuffRx.data = self.comPort.read(self.maxMessageLen)
       byteDataBuffRx.dataLen = len(byteDataBuffRx.data)
-      print('Received {} bytes'.format(byteDataBuffRx.dataLen))
+      #print('Received {} bytes'.format(byteDataBuffRx.dataLen))
       return byteDataBuffRx.dataLen
     else:
       return 0  

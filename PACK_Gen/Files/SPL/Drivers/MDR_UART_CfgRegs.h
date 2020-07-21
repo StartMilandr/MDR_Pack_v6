@@ -107,6 +107,8 @@ typedef struct {
 #define MDR_UART_EFL_BE          MDR_UART_EVENT_BE_Msk
 #define MDR_UART_EFL_OE          MDR_UART_EVENT_OE_Msk
 
+#define MDR_UART_EFL_ALL        MDR_UART_EVENT_ClearAll
+
 #ifdef MDR_UART_HAS_LEN9
   #define MDR_UART_EFL_RX_FNE    MDR_UART_EVENT_RX_FNE_Msk
   #define MDR_UART_EFL_TX_FE     MDR_UART_EVENT_TX_FE_Msk

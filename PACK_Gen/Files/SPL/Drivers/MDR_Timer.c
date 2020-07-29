@@ -72,7 +72,7 @@ static void MDR_Timer_ClearRegs(const MDR_TIMER_TypeEx *TIMERex)
   MDR_TIMER_Type *TIMER = TIMERex->TIMERx;
   
   //  Stop, Enable Immediate Update
-  TIMER->CNTRL = MDR_TIMER_CNTRL_ARRB_EN_Pos;
+  TIMER->CNTRL = MDR_TIMER_CNTRL_ARRB_EN_Msk;
   
   //  TIM_CLOCK On
   //  Need to apply to CNT, PSG, ARR, CCRx shadow registers!
@@ -186,7 +186,7 @@ static void MDR_Timer_InitPeriod_loc(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128
   //  IRQ Enable
   if (selectIRQ != 0)
   {
-    //NVIC_ClearPendingIRQ(TIMERex->TIMERx_IRQn);
+    NVIC_ClearPendingIRQ(TIMERex->TIMERx_IRQn);
     NVIC_EnableIRQ(TIMERex->TIMERx_IRQn);
   }
   

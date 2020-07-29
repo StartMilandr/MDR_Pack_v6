@@ -1613,6 +1613,27 @@
         <file category="source"  name="SPL/Drivers/MDR_I2C.c"/>
       </files>
     </component>     
+    <!-- I2C software Driver -->
+    <component Cclass="Drivers" Cgroup="Soft Master I2C" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>I2C driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_SoftI2C_States.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_SoftI2C_MasterStates.c"/>
+        <file category="header"  name="SPL/Drivers/MDR_SoftI2C_byTimer.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_SoftI2C_byTimer.c"/>
+      </files>
+    </component> 
+    <component Cclass="Drivers" Cgroup="Soft Slave I2C" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>I2C driver</description>
+      <files>
+        <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
+        <file category="header"  name="SPL/Drivers/MDR_SoftI2C_States.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_SoftI2C_SlaveStates.c"/>
+        <file category="header"  name="SPL/Drivers/MDR_SoftI2C_byTimer.h"/>
+        <file category="source"  name="SPL/Drivers/MDR_SoftI2C_byTimer.c"/>        
+      </files>
+    </component>     
     <!-- Ethernet Driver -->
     <component Cclass="Drivers" Cgroup="Ethernet" Cversion="2.0" condition="CON_MDR_Ethernet">
       <description>Ethernet driver</description>
@@ -2229,6 +2250,11 @@
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="I2C_Test.uvmpw"/></project>
     </example>
+    <example name="I2C_Soft_byTimer" folder="Examples/All_Boards/I2C_Soft_byTimer" doc="ReadMe.md" version="2.0.0">
+      <description>Software I2C Master-Slave example</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="Soft_I2C_byTimer.uvprojx"/></project>
+    </example>    
     <example name="DMA_ADC_PingPong" folder="Examples/All_Boards/DMA_Test/DMA_ADC_PingPong" doc="ReadMe.md" version="2.0.0">
       <description>DMA ping-pong ADC</description>
       <board name="All_Boards" vendor="Milandr"/>

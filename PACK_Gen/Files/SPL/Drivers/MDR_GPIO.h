@@ -275,6 +275,10 @@ __STATIC_INLINE
 void MDR_Port_InitPin_PortIN(MDR_PORT_Type *GPIO_Port, uint32_t pinInd) { MDR_Port_InitPin_PortIN_Pull(GPIO_Port, pinInd, MDR_Pin_PullOff); }
 
 
+void MDR_Port_SetPullUp(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect);
+void MDR_Port_SetPullDown(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect);
+void MDR_Port_ClearPull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect);
+
 // =============================== ВАРИАНТ НАСТРОЙКИ 2+ (Дополнение) ========================
 //  Сбор настроек пинов порта в структуру с масками CLR и SET для последующего применения к портам за один вызов Apply
 //  Иногда это оптимальней, чем вызывать применение в порт для каждого отдельного пина
@@ -459,5 +463,51 @@ typedef struct {
   const MDR_GPIO_Port *portGPIO;
   uint32_t       selPins;
 } MDR_GPIO_CfgPinPort;
+
+
+//  ====  Получение информации для переключения функции для пина  ====
+#ifdef MDR_GPIO_HAS_KEY 
+  typedef struct {
+    uint32_t addrFuncSet;
+    uint32_t addrFuncClr;
+    uint32_t funcPinPos;
+    uint32_t funcPinMsk;
+  } MDR_GPIO_PinFuncCfg;
+
+  typedef struct {
+    uint32_t addrFuncSet;
+    uint32_t addrFuncClr;
+    uint32_t maskPinPort;
+    uint32_t maskPinFunc;
+  } MDR_GPIO_PinFuncMasks;  
+#else
+  typedef struct {
+    uint32_t addrFuncReg;
+    uint32_t funcPinPos;
+    uint32_t funcPinMsk;
+  } MDR_GPIO_PinFuncCfg;
+
+  typedef struct {
+    uint32_t addrFuncReg;
+    uint32_t maskPinPort;
+    uint32_t maskPinFunc;
+  } MDR_GPIO_PinFuncMasks;
+#endif
+
+MDR_GPIO_PinFuncCfg MDR_GPIO_GetPinFuncCfg(MDR_PORT_Type *GPIO_Port, uint32_t pinInd);
+
+// Получить маску для переключения пина в функцию для записи OR в funcRegAddr.
+__STATIC_INLINE uint32_t MDR_GPIO_GetPinFuncMask(MDR_GPIO_PinFuncCfg *pinFuncCfg, MDR_PIN_FUNC pinFunc)
+{  
+  return ((uint32_t)pinFunc << pinFuncCfg->funcPinPos) & pinFuncCfg->funcPinMsk;
+}
+
+
+//  Функии для переключения функции пина в функцию периферии / в порт
+MDR_GPIO_PinFuncMasks MDR_GPIO_GetPinFuncMasks(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_PIN_FUNC pinFunc);
+void MDR_GPIO_PinFunc_SetFunc(MDR_GPIO_PinFuncMasks *pinFuncMasks);
+void MDR_GPIO_PinFunc_SetPort(MDR_GPIO_PinFuncMasks *pinFuncMasks);
+
+
 
 #endif //  _MDR_GPIO_H

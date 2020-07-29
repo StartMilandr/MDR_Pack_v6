@@ -12,7 +12,7 @@ void MDR_I2C_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPo
   else
     pinModeIO = MDR_Pin_In;
   
-  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinGroupCfg);
+  MDR_Port_InitDigGroupPinCfg(MDR_On, pinsPower, MDR_Off, MDR_Off, &pinGroupCfg);
   //  pPinSCL
   if (pinsCfg->pPinSCL != NULL)
   {

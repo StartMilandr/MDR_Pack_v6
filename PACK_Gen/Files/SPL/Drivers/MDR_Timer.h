@@ -176,20 +176,24 @@ void MDR_Timer_AddCascadePeriod(const MDR_TIMER_TypeEx *TIMERex, MDR_Div128P clo
 
 //  Запуск отдельного таймера
 __STATIC_INLINE 
-void MDR_Timer_Start(const MDR_TIMER_TypeEx *TIMERex) {MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);}
+void MDR_Timer_Start(const MDR_TIMER_TypeEx *TIMERex) 
+{
+  MDR_PerClock_SetGateOpen(&TIMERex->CfgClock);
+  TIMERex->TIMERx->CNTRL |= MDR_TIMER_CNTRL_CNT_EN_Msk;
+}
 
 __STATIC_INLINE 
 void MDR_Timer_Stop(const MDR_TIMER_TypeEx  *TIMERex) 
 {  
   TIMERex->TIMERx->CNTRL &= ~MDR_TIMER_CNTRL_CNT_EN_Msk;
-  MDR_PerClock_GateClose  (&TIMERex->CfgClock);
+  MDR_PerClock_GateClose(&TIMERex->CfgClock);
 }
 
 //  Приостановка
 __STATIC_INLINE 
 void MDR_Timer_PauseOn(const MDR_TIMER_TypeEx  *TIMERex) 
 {  
-  MDR_PerClock_GateClose  (&TIMERex->CfgClock);
+  MDR_PerClock_GateClose(&TIMERex->CfgClock);
 }
 
 __STATIC_INLINE 
@@ -412,6 +416,8 @@ void MDR_TimerCh_ChangeCCR1(MDR_TIMER_CH_Type *TIMER_CH, uint_tim value);
 //  Инициализация канала через регистры настроек - максимальное быстродействие, но необходимо разобраться какие биты выставлять.
 void MDR_TimerCh_InitByCfgRegs(MDR_TIMER_CH_Type *TIMER_CH, MDR_TIMER_CH_CfgRegs *cfgRegs);
 
+__STATIC_INLINE void MDR_TimerCh_InvertPWM_Ch(MDR_TIMER_CH_Type *TIMER_CH)  { TIMER_CH->CHx_CNTRL1 ^= MDR_TIM_CHx_CNTRL1_Inv_Msk; }
+__STATIC_INLINE void MDR_TimerCh_InvertPWM_nCh(MDR_TIMER_CH_Type *TIMER_CH) { TIMER_CH->CHx_CNTRL1 ^= MDR_TIM_CHx_CNTRL1_NInv_Msk; }
 
 //=========================================================================================================
 //=================================      Channel Capture Rise/Fall events (CAP)    ========================

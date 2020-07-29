@@ -469,3 +469,60 @@ void MDR_Port_InitPin_PortIN_Pull(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR
   MDR_Port_InitDigPinPort(GPIO_Port, pinInd, (MDR_Pin_IO)pinPull, &groupPinCfg);    
 }
 
+
+// Управление подтяжками
+void MDR_Port_SetPullUp(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  uint32_t regVal = GPIO_Port->PULL;
+  regVal &= ~pinSelect;
+  GPIO_Port->PULL = regVal | (pinSelect << MDR_GPIO_PULL_UP__Pin_Pos);
+}
+
+void MDR_Port_SetPullDown(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  uint32_t regVal = GPIO_Port->PULL;
+  regVal &= ~(pinSelect << MDR_GPIO_PULL_UP__Pin_Pos);
+  GPIO_Port->PULL = regVal | pinSelect;
+
+}
+
+void MDR_Port_ClearPull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  GPIO_Port->PULL &= ~(pinSelect | pinSelect << MDR_GPIO_PULL_UP__Pin_Pos);  
+}
+
+//  Получение информации для переключения функции для пина
+MDR_GPIO_PinFuncCfg MDR_GPIO_GetPinFuncCfg(MDR_PORT_Type *GPIO_Port, uint32_t pinInd)
+{
+  MDR_GPIO_PinFuncCfg result;
+  result.addrFuncReg = (uint32_t)&GPIO_Port->FUNC;
+  result.funcPinPos = pinInd << MDR_GPIO_FUNC__Pin_MskOffs;
+  result.funcPinMsk = MDR_GPIO_FUNC__Pin_Msk << result.funcPinPos;
+  
+  return result;
+}
+
+MDR_GPIO_PinFuncMasks MDR_GPIO_GetPinFuncMasks(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_PIN_FUNC pinFunc)
+{
+  MDR_GPIO_PinFuncMasks pinMasks;
+  MDR_GPIO_PinFuncCfg   pinCfg = MDR_GPIO_GetPinFuncCfg(GPIO_Port, pinInd);
+  
+  pinMasks.addrFuncReg = pinCfg.addrFuncReg;
+  pinMasks.maskPinPort = pinCfg.funcPinMsk;  
+  pinMasks.maskPinFunc = MDR_GPIO_GetPinFuncMask(&pinCfg, pinFunc);
+  
+  return pinMasks;
+}
+
+void MDR_GPIO_PinFunc_SetFunc(MDR_GPIO_PinFuncMasks *pinFuncMasks)
+{
+  uint32_t regValue = REG32(pinFuncMasks->addrFuncReg);
+  REG32(pinFuncMasks->addrFuncReg) = MDR_MaskClrSet(regValue, pinFuncMasks->maskPinPort, pinFuncMasks->maskPinFunc);    
+}
+
+void MDR_GPIO_PinFunc_SetPort(MDR_GPIO_PinFuncMasks *pinFuncMasks)
+{
+  uint32_t regValue = REG32(pinFuncMasks->addrFuncReg);
+  REG32(pinFuncMasks->addrFuncReg) = MDR_MaskClrSet(regValue, pinFuncMasks->maskPinPort, 0);    
+}
+

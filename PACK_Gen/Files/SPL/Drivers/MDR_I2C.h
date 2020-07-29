@@ -22,8 +22,7 @@ typedef struct {
   MDR_PIN_FUNC   pinFunc;
 } MDR_I2C_CfgPinGPIO;
 
-//  Все пины кроме pPinCLK могут быть NULL и тогда они не будут проинициализированы.
-//  Это на случай, если надо только принимать, или только посылать, или FSS не нужен.
+
 typedef struct {
   const MDR_I2C_CfgPinGPIO *pPinSCL;  
   const MDR_I2C_CfgPinGPIO *pPinSDA;

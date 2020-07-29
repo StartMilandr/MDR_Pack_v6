@@ -125,6 +125,7 @@ typedef struct {
 
 #define MDR_GPIO_FUNC__Pin_Pos           (0UL)
 #define MDR_GPIO_FUNC__Pin_Msk           (0x3UL)
+#define MDR_GPIO_FUNC__Pin_MskOffs       1
 
 
 /* ====================================================  reg  ANALOG  ========================================================= */

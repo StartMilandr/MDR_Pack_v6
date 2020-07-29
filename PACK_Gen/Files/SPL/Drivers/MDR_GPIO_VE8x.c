@@ -552,3 +552,83 @@ void MDR_Port_InitPinEx(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_GPIO_PinC
   MDR_Port_InitEx(GPIO_Port, 1 << pinInd, pinCfg);
 }
 
+
+// Управление подтяжками
+void MDR_Port_SetPullUp(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  GPIO_Port->PULLDOWN_Clr = pinSelect;
+  GPIO_Port->PULLUP_Set = pinSelect; 
+}
+
+void MDR_Port_SetPullDown(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  GPIO_Port->PULLUP_Clr = pinSelect;
+  GPIO_Port->PULLDOWN_Set = pinSelect; 
+}
+
+void MDR_Port_ClearPull(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect)
+{
+  GPIO_Port->PULLDOWN_Clr = pinSelect;
+  GPIO_Port->PULLUP_Clr = pinSelect;  
+}
+
+//  Получение информации для переключения функции для пина
+MDR_GPIO_PinFuncCfg MDR_GPIO_GetPinFuncCfg(MDR_PORT_Type *GPIO_Port, uint32_t pinInd)
+{
+  MDR_GPIO_PinFuncCfg result;
+  uint32_t pinRegOffs;
+
+  if (pinInd < 8)
+  {
+    result.addrFuncSet = (uint32_t)&GPIO_Port->FUNC0_Set;
+    result.addrFuncClr = (uint32_t)&GPIO_Port->FUNC0_Clr;
+    pinRegOffs = pinInd;
+    
+  }
+  else if (pinInd < 16)
+  {
+    result.addrFuncSet = (uint32_t)&GPIO_Port->FUNC1_Set;
+    result.addrFuncClr = (uint32_t)&GPIO_Port->FUNC1_Clr;
+    pinRegOffs = pinInd - 8;
+  }
+  else if (pinInd < 24)
+  {
+    result.addrFuncSet = (uint32_t)&GPIO_Port->FUNC2_Set;
+    result.addrFuncClr = (uint32_t)&GPIO_Port->FUNC2_Clr;
+    pinRegOffs = pinInd - 16;
+  }
+  else
+  {
+    result.addrFuncSet = (uint32_t)&GPIO_Port->FUNC3_Set;
+    result.addrFuncClr = (uint32_t)&GPIO_Port->FUNC3_Clr;
+    pinRegOffs = pinInd - 24;
+  }
+  
+  result.funcPinPos = pinRegOffs << MDR_GPIO_FUNC__Pin_MskOffs;
+  result.funcPinMsk = MDR_GPIO_FUNC__Pin_Msk << result.funcPinPos;  
+  return result;
+}
+
+MDR_GPIO_PinFuncMasks MDR_GPIO_GetPinFuncMasks(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_PIN_FUNC pinFunc)
+{
+  MDR_GPIO_PinFuncMasks pinMasks;
+  MDR_GPIO_PinFuncCfg   pinCfg = MDR_GPIO_GetPinFuncCfg(GPIO_Port, pinInd);
+  
+  pinMasks.addrFuncSet = pinCfg.addrFuncSet;
+  pinMasks.addrFuncClr = pinCfg.addrFuncClr;
+  pinMasks.maskPinPort = pinCfg.funcPinMsk;  
+  pinMasks.maskPinFunc = MDR_GPIO_GetPinFuncMask(&pinCfg, pinFunc);
+  
+  return pinMasks;
+}
+
+void MDR_GPIO_PinFunc_SetFunc(MDR_GPIO_PinFuncMasks *pinFuncMasks)
+{
+  REG32(pinFuncMasks->addrFuncClr) = pinFuncMasks->maskPinPort;
+  REG32(pinFuncMasks->addrFuncSet) = pinFuncMasks->maskPinFunc;
+}
+
+void MDR_GPIO_PinFunc_SetPort(MDR_GPIO_PinFuncMasks *pinFuncMasks)
+{
+  REG32(pinFuncMasks->addrFuncClr) = pinFuncMasks->maskPinPort;
+}

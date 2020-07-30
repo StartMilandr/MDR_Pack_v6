@@ -144,7 +144,7 @@ void MDR_I2Cst_MasterStartWrite(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, 
   i2cObj->addr_7bit = addr_7bit;
   i2cObj->dataCnt = dataLen;
   i2cObj->pData = data;  
-  i2cObj->pRegValues = NULL;
+  i2cObj->readRegMode = false;
   MDR_I2Cs_MasterStart(i2cObj, true);
 }
 
@@ -153,16 +153,18 @@ void MDR_I2Cst_MasterStartRead(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, u
   i2cObj->addr_7bit = addr_7bit;
   i2cObj->dataCnt = dataLen;
   i2cObj->pData = data;  
-  i2cObj->pRegValues = NULL;
+  i2cObj->readRegMode = false;
   MDR_I2Cs_MasterStart(i2cObj, false);
 }
 
-void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, MDR_I2Cst_pData *pRegValues)
+void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, const uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen)
 {
   i2cObj->addr_7bit = addr_7bit;
   i2cObj->dataCnt = wrDataLen;
   i2cObj->pData = wrData;  
-  i2cObj->pRegValues = pRegValues;
+  i2cObj->regAddrCfg.dataCnt = rdDataLen;
+  i2cObj->regAddrCfg.pData = rdData;
+  i2cObj->readRegMode = true;
   MDR_I2Cs_MasterStart(i2cObj, true);
 }
 
@@ -244,5 +246,6 @@ void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj)
       MDR_I2Cs_SlaveStop(i2cObj);
   }
 }
+
 
 

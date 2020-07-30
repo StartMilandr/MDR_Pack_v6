@@ -66,7 +66,6 @@ uint8_t wrDataMaster[DATA_LEN];
 uint8_t regDataMaster[DATA_LEN];
 
 #define TEST_REG_LEN    2
-MDR_I2Cst_pData RegDataMaster = {.dataCnt = TEST_REG_LEN, .pData = regDataMaster};
 
 uint8_t retDataSlave[DATA_LEN];
 #define SLAVE_REG_LEN    4
@@ -182,7 +181,7 @@ int main(void)
     if (MDRB_BntClicked_Left(true))
     {
       PrepareStart(transfReadReg);
-      MDR_I2Cst_MasterStartReadRegs(&masterI2C, I2C_ADDR, wrDataMaster, 1, &RegDataMaster);    
+      MDR_I2Cst_MasterStartReadRegs(&masterI2C, I2C_ADDR, wrDataMaster, 1, regDataMaster, TEST_REG_LEN);
       started = true;
     }    
     

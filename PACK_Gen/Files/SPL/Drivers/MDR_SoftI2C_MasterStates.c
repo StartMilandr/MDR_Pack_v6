@@ -46,7 +46,7 @@ static bool MDR_I2Cs_MasterWriteHandler(void *obj, bool isClkDown)
   if (MDR_I2Cs_MasterWriteDataBits(i2cObj, isClkDown))
     if (MDR_I2Cs_MasterWriteStartNextData(i2cObj))
     { 
-      if (i2cObj->pRegValues == NULL)
+      if (!i2cObj->readRegMode)
         i2cObj->ProcessFunc = MDR_I2Cs_MasterStopHandler;
       else
         i2cObj->ProcessFunc = MDR_I2Cs_MasterRestartToReadHandler;
@@ -81,8 +81,8 @@ static bool MDR_I2Cs_MasterRestartToReadHandler(void *obj, bool isClkDown)
   }
   else
   { // Event0: CLK = 1: Start Read Transfer    
-    i2cObj->pData = i2cObj->pRegValues->pData;
-    i2cObj->dataCnt = i2cObj->pRegValues->dataCnt;
+    i2cObj->pData = i2cObj->regAddrCfg.pData;
+    i2cObj->dataCnt = i2cObj->regAddrCfg.dataCnt;
     
     MDR_I2Cs_MasterStart(obj, false);
     return true;

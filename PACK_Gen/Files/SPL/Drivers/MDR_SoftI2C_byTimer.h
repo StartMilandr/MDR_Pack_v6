@@ -3,7 +3,6 @@
 
 #include <MDR_Config.h>
 #include <MDR_Types.h>
-#include <MDR_I2C_defs.h>
 #include <MDR_Funcs.h>
 #include <MDR_GPIO.h>
 #include <MDR_Timer.h>
@@ -68,7 +67,8 @@ void MDR_I2Cst_MasterHandlerIRQ_Soft(MDR_I2Cst_MasterObj *i2cObj);
 
 void MDR_I2Cst_MasterStartWrite(MDR_I2Cst_MasterObj    *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 void MDR_I2Cst_MasterStartRead(MDR_I2Cst_MasterObj     *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
-void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, MDR_I2Cst_pData *pRegValues);
+//void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, MDR_I2Cst_pData *pRegValues);
+void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, const uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen);
 
 __STATIC_INLINE bool MDR_I2Cst_MasterGetStarted(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->started; }
 

@@ -57,6 +57,7 @@ typedef struct {
   // Status
   bool             started;
   bool             writeMode;
+  bool             readRegMode;
   // Data Array for transfer
   uint8_t          dataCnt;
   uintI2C_t       *pData;
@@ -71,8 +72,8 @@ typedef struct {
   uint32_t         pinSelSDA;
   MDR_PORT_Type   *portCLK;
   uint32_t         pinSelCLK;  
-  //  Buff for RegRead - set NULL for simple write and read transfer
-  MDR_I2Cst_pData *pRegValues;
+  //  Buff for RegRead - set NULL for simple write and read transfer  
+  MDR_I2Cst_pData  regAddrCfg;
 } MDR_I2Cst_MasterObj;
 
 

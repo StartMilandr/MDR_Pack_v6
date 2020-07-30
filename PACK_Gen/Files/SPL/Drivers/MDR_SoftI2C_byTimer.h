@@ -68,7 +68,7 @@ void MDR_I2Cst_MasterHandlerIRQ_Soft(MDR_I2Cst_MasterObj *i2cObj);
 void MDR_I2Cst_MasterStartWrite(MDR_I2Cst_MasterObj    *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 void MDR_I2Cst_MasterStartRead(MDR_I2Cst_MasterObj     *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 //void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, MDR_I2Cst_pData *pRegValues);
-void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, const uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen);
+void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen);
 
 __STATIC_INLINE bool MDR_I2Cst_MasterGetStarted(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->started; }
 
@@ -107,6 +107,9 @@ __STATIC_INLINE void MDR_I2Cst_StopSlave(MDR_I2Cst_SlaveObj *cfgI2C)  { MDR_Time
 
 void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj);
 
+
+//  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
+void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData);
 
 
 

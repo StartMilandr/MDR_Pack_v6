@@ -7,13 +7,6 @@
 //#include <MDR_Funcs.h>
 
 
-
-////  Подавление warnings компилятора V6 о добавлении  "пустот" в структуры
-//#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-//  #pragma clang diagnostic push
-//  #pragma clang diagnostic ignored "-Wpadded"
-//#endif
-
 #define SET_SDA_0(i2cObj)     MDR_Port_ClearPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
 #define FREE_SDA_1(i2cObj)    MDR_Port_SetPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
 #define GET_SDA_1(i2cObj)    (bool)(MDR_Port_Get((i2cObj)->portSDA) & (i2cObj)->pinSelSDA)
@@ -137,12 +130,6 @@ __STATIC_INLINE bool MDR_I2Cs_SlaveProcessCompleted(MDR_I2Cst_SlaveObj *i2cObj, 
   else
     return true;
 }
-
-
-
-//#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-//  #pragma clang diagnostic pop  
-//#endif
 
 
 

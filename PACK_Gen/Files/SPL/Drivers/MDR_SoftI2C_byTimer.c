@@ -50,7 +50,7 @@ static void MDR_I2Cs_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PW
 
 
 //===================   I2C Master   ==========================
-
+#ifndef I2C_SOFT_MASTER_DISABLE
 static void MDR_I2Cst_Start(void *obj);
 static void MDR_I2Cst_Stop(void *obj);
 
@@ -157,7 +157,7 @@ void MDR_I2Cst_MasterStartRead(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, u
   MDR_I2Cs_MasterStart(i2cObj, false);
 }
 
-void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, const uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen)
+void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen)
 {
   i2cObj->addr_7bit = addr_7bit;
   i2cObj->dataCnt = wrDataLen;
@@ -167,8 +167,10 @@ void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bi
   i2cObj->readRegMode = true;
   MDR_I2Cs_MasterStart(i2cObj, true);
 }
+#endif  // I2C_SOFT_MASTER_DISABLE
 
 //===================   I2C Slave   ==========================
+#ifndef I2C_SOFT_SLAVE_DISABLE
 MDR_I2Cst_SlaveObj MDR_I2Cst_InitSlave(MDR_I2Cs_InitSlaveCfg *cfgI2C)
 {
   //  Timer counter
@@ -213,17 +215,11 @@ MDR_I2Cst_SlaveObj MDR_I2Cst_InitSlave(MDR_I2Cs_InitSlaveCfg *cfgI2C)
   i2cObj.eventRiseSDA = cfgI2C->timCapCh_SDA.selIRQ_CCR_Rise;
   i2cObj.OnCheckAddr = cfgI2C->OnCheckAddr;
   i2cObj.OnCompleted = cfgI2C->OnCompleted;
-  
-  
-  
-//  i2cObj.TimerEventsStart = MDR_I2Cst_Start;
-//  i2cObj.TimerEventsStop = MDR_I2Cst_Stop;
-//  i2cObj.timTact = 0;
+
   i2cObj.started = false;
     
   return i2cObj;
 }
-
 
 void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj)
 {  
@@ -246,6 +242,12 @@ void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj)
       MDR_I2Cs_SlaveStop(i2cObj);
   }
 }
+#endif //I2C_SOFT_SLAVE_DISABLE
 
+//  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
+void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData)
+{
+  MDR_I2Cst_MasterStartReadRegs(i2cObj, addr, &rdAddr, 1, rdData, rdCount);
+}
 
 

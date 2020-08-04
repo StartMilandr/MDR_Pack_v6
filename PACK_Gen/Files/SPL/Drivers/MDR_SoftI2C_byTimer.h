@@ -109,7 +109,7 @@ void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj);
 
 
 //  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
-void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData);
+void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t *rdAddr, uint8_t rdCount, uint8_t *rdData);
 
 
 

@@ -1695,6 +1695,15 @@
         <file category="source"  name="SPL/ICs/MDR_5600BB3.c"/>
       </files>
     </component>
+    <!-- SFP modules -->
+    <component Cclass="IC Drivers" Cgroup="SFP modules" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Reads SPF modules' info by software I2C</description>
+      <files>      
+        <file category="header"  name="SPL/ICs/MDR_SFP_ReadInfo.h"/>
+        <file category="source"  name="SPL/ICs/MDR_SFP_ReadInfo.c"/>
+        <file category="header"  name="SPL/ICs/Configs/MDR_SFP_Config.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
     <!-- 1923KX028 -->
     <component Cclass="IC Drivers" Cgroup="1923KX028_Core" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Ethernet switch 1923KX028 control</description>
@@ -2254,6 +2263,11 @@
       <description>Software I2C Master-Slave example</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="Soft_I2C_byTimer.uvprojx"/></project>
+    </example>
+    <example name="I2C_Soft_ReadInfoSFP" folder="Examples\All_Boards\I2C_Soft_ReadInfoSFP" doc="ReadMe.md" version="2.0.0">
+      <description>Reads info from SFP by software I2C</description>
+      <board name="All_Boards" vendor="Milandr"/>
+      <project><environment name="uv" load="I2C_Soft_ReadInfoSFP.uvprojx"/></project>
     </example>    
     <example name="DMA_ADC_PingPong" folder="Examples/All_Boards/DMA_Test/DMA_ADC_PingPong" doc="ReadMe.md" version="2.0.0">
       <description>DMA ping-pong ADC</description>

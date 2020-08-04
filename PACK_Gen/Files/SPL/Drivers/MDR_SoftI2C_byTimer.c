@@ -50,7 +50,8 @@ static void MDR_I2Cs_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PW
 
 
 //===================   I2C Master   ==========================
-#ifndef I2C_SOFT_MASTER_DISABLE
+#if !I2C_SOFT_MASTER_DISABLE
+
 static void MDR_I2Cst_Start(void *obj);
 static void MDR_I2Cst_Stop(void *obj);
 
@@ -170,7 +171,8 @@ void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bi
 #endif  // I2C_SOFT_MASTER_DISABLE
 
 //===================   I2C Slave   ==========================
-#ifndef I2C_SOFT_SLAVE_DISABLE
+#if !I2C_SOFT_SLAVE_DISABLE
+
 MDR_I2Cst_SlaveObj MDR_I2Cst_InitSlave(MDR_I2Cs_InitSlaveCfg *cfgI2C)
 {
   //  Timer counter
@@ -244,10 +246,10 @@ void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj)
 }
 #endif //I2C_SOFT_SLAVE_DISABLE
 
-//  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
-void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t rdAddr, uint8_t rdCount, uint8_t *rdData)
+//  ======  Р§С‚РµРЅРёРµ РґР°РЅРЅС‹С… РїРѕ РІРЅСѓС‚СЂРµРЅРЅРµРјСѓ Р°РґСЂРµСЃСѓ СѓСЃС‚СЂРѕР№СЃС‚РІР° (С‡Р°СЃС‚Рѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ) ======
+void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t *rdAddr, uint8_t rdCount, uint8_t *rdData)
 {
-  MDR_I2Cst_MasterStartReadRegs(i2cObj, addr, &rdAddr, 1, rdData, rdCount);
+  MDR_I2Cst_MasterStartReadRegs(i2cObj, addr, rdAddr, 1, rdData, rdCount);
 }
 
 

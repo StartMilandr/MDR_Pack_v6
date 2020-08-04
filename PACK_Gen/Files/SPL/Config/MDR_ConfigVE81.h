@@ -163,5 +163,12 @@ typedef enum {
 #define MDR_ETH_DMA_CHANNEL_TX  MDR_DMA_CH_REQ_SOFT2
 
 
+//===========================  Soft I2C  ===========================
+// "Отключение" программного SlaveI2C, чтобы собирался MDR_SoftI2C_byTimer, если драйвер MDR_SoftI2C_SlaveStates не подключен
+#define I2C_SOFT_SLAVE_DISABLE   1
+
+// "Отключение" программного MasterI2C, чтобы собирался MDR_SoftI2C_byTimer, если драйвер MDR_SoftI2C_MasterStates не подключен
+#define I2C_SOFT_MASTER_DISABLE  0
+
 
 #endif  //  MDR_CONFIG_VE8_H

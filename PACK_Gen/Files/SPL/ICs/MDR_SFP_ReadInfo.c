@@ -29,7 +29,7 @@ bool MDR_ReadSFP_ProcessCompleted(void)
 {
   if (!_pMasterI2C->started)
     _started = StartReadNextItem();
-  return _started;
+  return !_started;
 }
 
 static bool StartReadNextItem(void)
@@ -38,10 +38,10 @@ static bool StartReadNextItem(void)
   {  
     MDR_I2C_StartReadAddrData(_pMasterI2C, I2C_ADDR_SFR, (uint8_t *)&MDR_SFP_InfoItems[_infoInd].addr, MDR_SFP_InfoItems[_infoInd].len, &_infoBuff[_infoInd * SFP_ITEM_LEN_MAX]);  
     _infoInd++;
-    return false;
+    return true;
   }
   else
-    return true;
+    return false;
 }
 
 

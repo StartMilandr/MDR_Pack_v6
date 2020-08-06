@@ -1,4 +1,4 @@
-#include "MDR_SFP_ReadInfo.h"
+#include <MDR_SFP_ReadInfo.h>
 
 const SFP_Info_Item MDR_SFP_InfoItems[CFG_SFP_ITEMS_CNT] = CFG_SFP_ITEMS;
 

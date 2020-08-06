@@ -1,5 +1,3 @@
-BaudRate: 9600
-BaudError: 0.000000
 Wellcome to UART DebugOut!
 BaudRate: 9600
 BaudError: 0.000000

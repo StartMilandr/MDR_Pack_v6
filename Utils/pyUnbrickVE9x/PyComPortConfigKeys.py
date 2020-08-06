@@ -1,0 +1,8 @@
+sPort = 'Port'
+sData = 'Data'
+sIsDataStr = 'IsDataStr'
+sBaud = 'Baud'
+sBaudList = 'BaudList'
+sRates = 'Rates'
+sLastSettings = 'LastSettings'
+sTimeoutRx = 'TimeoutRx'

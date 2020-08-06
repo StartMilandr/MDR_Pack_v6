@@ -12,8 +12,8 @@ typedef struct {
   char *  name;
 } SFP_Info_Item;
 
-
-extern const SFP_Info_Item MDR_SFP_InfoItems[CFG_SFP_ITEMS_CNT];
+// Описание полей, которые будут вычитываться - задается в MDR_SFP_Config.h
+extern const SFP_Info_Item  MDR_SFP_InfoItems[CFG_SFP_ITEMS_CNT];
 
 bool MDR_ReadSFP_Start(MDR_I2Cst_MasterObj *masterI2C, uint8_t *infoBuff);
 bool MDR_ReadSFP_ProcessCompleted(void);

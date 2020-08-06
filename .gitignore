@@ -38,3 +38,4 @@ PACK_Gen/Files/Examples/1923KX028/KX028_CLI_Test/Listings/
 PACK_Gen/Files/Examples/All_Boards/I2C_Soft_byTimer/Objects/
 PACK_Gen/Files/Examples/All_Boards/I2C_Soft_byTimer/Listings/
 Utils/pyBasisCtrl/saves/
+Utils/pyUnbrickVE9x/__pycache__/

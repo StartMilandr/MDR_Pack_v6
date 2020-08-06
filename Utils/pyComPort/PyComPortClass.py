@@ -216,6 +216,7 @@ class PyComPortForm(QtWidgets.QWidget, Ui_Form):
         self.cbxComSel.addItems(comList)        
         if lastCom in comList:
             self.cbxComSel.setEditText(lastCom)
+            self.comThread.port = lastCom
 
         if sBaudList in cfg.config:
           rates = cfg.config[sBaudList][sRates]

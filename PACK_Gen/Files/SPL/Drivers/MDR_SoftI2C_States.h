@@ -7,22 +7,23 @@
 //#include <MDR_Funcs.h>
 
 
-#define SET_SDA_0(i2cObj)     MDR_Port_ClearPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
-#define FREE_SDA_1(i2cObj)    MDR_Port_SetPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
-#define GET_SDA_1(i2cObj)    (bool)(MDR_Port_Get((i2cObj)->portSDA) & (i2cObj)->pinSelSDA)
+#define SET_SDA_0(i2cObj)     MDR_GPIO_TxClearPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
+#define FREE_SDA_1(i2cObj)    MDR_GPIO_TxSetPins((i2cObj)->portSDA, (i2cObj)->pinSelSDA)
+#define GET_SDA_1(i2cObj)    (bool)(MDR_GPIO_Get((i2cObj)->portSDA) & (i2cObj)->pinSelSDA)
 #define GET_SDA_0            !GET_SDA_1
 
-#define GET_CLK_1(i2cObj)    (bool)(MDR_Port_Get((i2cObj)->portCLK) & (i2cObj)->pinSelCLK)
+#define SET_CLK_0(i2cObj)     MDR_GPIO_TxClearPins((i2cObj)->portCLK, (i2cObj)->pinSelCLK)
+#define FREE_CLK_1(i2cObj)    MDR_GPIO_TxSetPins((i2cObj)->portCLK, (i2cObj)->pinSelCLK)
+#define GET_CLK_1(i2cObj)    (bool)(MDR_GPIO_Get((i2cObj)->portCLK) & (i2cObj)->pinSelCLK)
 #define GET_CLK_0            !GET_SDA_1
 
-#define GET_SDA_ACK   GET_SDA_0
+
+#define GET_SDA_ACK           GET_SDA_0
 //#define GET_SDA_ACK   GET_SDA_1 // for debug!
 
-#define SET_SDA_ACK   SET_SDA_0
-#define CLR_SDA_ACK   FREE_SDA_1
+#define SET_SDA_ACK           SET_SDA_0
+#define CLR_SDA_ACK           FREE_SDA_1
 
-#define SET_CLK_0(i2cObj)     MDR_Port_ClearPins((i2cObj)->portCLK, (i2cObj)->pinSelCLK)
-#define FREE_CLK_1(i2cObj)    MDR_Port_SetPins((i2cObj)->portCLK, (i2cObj)->pinSelCLK)
 
 
 //===================   Soft I2C Master  ====================
@@ -43,14 +44,18 @@ typedef struct {
 typedef struct {
   // User Stop Handle
   const void      *timerEx;
+  void            *timerExCh;
   pOnEventI2C_f    TimerEventsStart;
   pOnEventI2C_f    TimerEventsStop;
+  pOnEventI2C_f    TimerEventsStopPWM;
   uint8_t          addr_7bit;
   uint8_t          timTact;
   // Status
   bool             started;
   bool             writeMode;
   bool             readRegMode;
+  bool             regModeByRestart;
+  bool             clkEnable;
   // Data Array for transfer
   uint8_t          dataCnt;
   uintI2C_t       *pData;
@@ -61,10 +66,10 @@ typedef struct {
   bool             ackOk;
   pProcessFuncI2C  ProcessFunc;
   // GPIO - SDA, CLK
-  MDR_PORT_Type   *portSDA;
-  uint32_t         pinSelSDA;
-  MDR_PORT_Type   *portCLK;
-  uint32_t         pinSelCLK;  
+  const MDR_GPIO_Port  *portSDA;
+  uint32_t              pinSelSDA;
+  const MDR_GPIO_Port  *portCLK;
+  uint32_t              pinSelCLK;  
   //  Buff for RegRead - set NULL for simple write and read transfer  
   MDR_I2Cst_pData  regAddrCfg;
 } MDR_I2Cst_MasterObj;
@@ -99,9 +104,9 @@ typedef struct {
   bool                ackOk;
   pProcessFuncI2C     ProcessFunc;
   // GPIO - SDA
-  MDR_PORT_Type      *portSDA;
+  const MDR_GPIO_Port *portSDA;
   uint32_t            pinSelSDA;
-  MDR_PORT_Type      *portCLK;
+  const MDR_GPIO_Port *portCLK;
   uint32_t            pinSelCLK;
   // SDA PinFunc control. Uses for switch SDA to Port for set ACK
   MDR_GPIO_PinFuncMasks  pinFuncMasks;

@@ -1,18 +1,6 @@
 #include <MDR_SoftI2C_States.h>
 #include <MDR_GPIO.h>
 
-//#define SET_SDA_0     MDR_Port_ClearPins(i2cObj->portSDA, i2cObj->pinSelSDA)
-//#define FREE_SDA_1    MDR_Port_SetPins(i2cObj->portSDA, i2cObj->pinSelSDA)
-//#define GET_SDA_1    (bool)(MDR_Port_Get(i2cObj->portSDA) & i2cObj->pinSelSDA)
-//#define GET_SDA_0    !GET_SDA_1
-
-//#define GET_SDA_ACK   GET_SDA_0
-//#define SET_SDA_ACK   SET_SDA_0
-//#define CLR_SDA_ACK   FREE_SDA_1
-
-//#define MDR_I2C_RD_Msk    1
-
-
 static bool MDR_I2Cs_SlaveWriteHandler(void *obj, bool isClkFall);
 static bool MDR_I2Cs_SlaveReadHandler(void *obj, bool isClkFall);
 

@@ -327,6 +327,7 @@ typedef struct {
 #define MDR_TIM_EVENT_CCR1_CAP_CH4_Pos (16UL)                   /*!< MDR_TIMER1 STATUS: CCR1_CAP_CH4 (Bit 16)              */
 #define MDR_TIM_EVENT_CCR1_CAP_CH4_Msk (0x10000UL)              /*!< MDR_TIMER1 STATUS: CCR1_CAP_CH4 (Bitfield-Mask: 0x01) */
 
+#define MDR_TIM_EVENT_ALL_Msk (0x1FFFFUL)
 
 /* ========================================  CHx_CNTRL2           =================================================== */
 typedef enum {

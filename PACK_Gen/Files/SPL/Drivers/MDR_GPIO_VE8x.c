@@ -366,10 +366,10 @@ void MDR_Port_InitDigGroupPinCfg(MDR_OnOff pinOpenDrain, MDR_PIN_PWR pinPower, M
 }
 
 //  Конвертация в MDR_GPIO_PinCfg для вызова первого варианта
-void MDR_Port_ToPinCfg(MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg)
+void MDR_Port_ToPinCfgEx(MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg, MDR_PIN_RXTX pinLevel)
 {
   IO_ToCfg(pinInOut, &pinCfg->OutputEnable, &pinCfg->PullUp, &pinCfg->PullDown);    
-  pinCfg->RxTx = MDR_PIN_Low; 
+  pinCfg->RxTx = pinLevel; 
   pinCfg->Func = pinFunc;
   pinCfg->DigMode   = groupPinCfg->DigMode;
   pinCfg->OpenDrain = groupPinCfg->OpenDrain;
@@ -385,13 +385,16 @@ void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_IO p
   MDR_Port_Init(GPIO_Port, pinSelect, &pinCfg);
 }
 
-void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg)
+void MDR_Port_InitDigPinEx(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, bool setHiLevel)
 {
   MDR_Port_ApplyMask applyMask;
   
   MDR_Port_Clear_SetCfg(&applyMask.MaskSET);
   MDR_Port_Clear_ClearCfg(&applyMask.MaskCLR);
 
+  if (setHiLevel)
+    applyMask.MaskSET.RXTX = 1 << pinInd;
+  
   MDR_Port_MaskAddPin(pinInd, pinInOut, pinFunc, groupPinCfg, &applyMask);
   MDR_Port_WriteRegs(GPIO_Port, &applyMask.MaskSET, &applyMask.MaskCLR);
 }

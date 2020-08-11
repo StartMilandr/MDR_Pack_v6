@@ -1,7 +1,23 @@
-#ifndef MDR_CONFIG_VE1_H
-#define MDR_CONFIG_VE1_H
+#ifndef MDR_CONFIG_VE9x_H
+#define MDR_CONFIG_VE9x_H
 
-#include <MDR_1986VE1.h>
+#include <MDR_1986VE9x.h> 
+
+
+//=============  Debug Uart printf settings  ==================
+#define UART_DEBUG_IND              2    
+#define UART_DEBUG_SHOW_WELLCOME    1
+#define UART_DEBUG_BAUD_DEF         9600
+
+
+//=============  Защита пинов совмещенных с Jtag  ==================
+// Писать в пины порта совмещенные с Jtag можно только 0.
+// Иначе отладчик потеряет соединение. Активным может быть только один.
+
+#define USE_JTAG_A
+//#define USE_JTAG_B
+//#define USE_SWD_A
+//#define USE_SWD_B
 
 
 //================  Параметры источников частоты ================
@@ -32,38 +48,8 @@
 
 
 //  PLL Ready Timeout
-#define PLL_TIMEOUT         0x0600UL
+#define PLL_TIMEOUT       0x0600UL
 
-//  External Generator for Ethernet PHY
-#define HSE2_IS_RESONATOR    1
-#define HSE2_FREQ_HZ         25000000UL
-#define HSE2_TIMEOUT_CYCLES  0x0600UL
-
-
-//=============  Debug Uart printf settings  ==================
-#define UART_DEBUG_IND              1    
-#define UART_DEBUG_SHOW_WELLCOME    1
-#define UART_DEBUG_BAUD_DEF         9600
-
-//=============  UART CLI Interface  ==================
-#define CFG_CLI_UARTex          MDR_UART1ex
-#define CFG_CLI_DMA_ChanTX      MDR_DMA_CH_SREQ_UART1_TX
-#define CFG_CLI_DMA_ChanRX      MDR_DMA_CH_SREQ_UART1_RX
-
-//  Максимальное количество байт за один трансфер (длина, команда + данные)
-//  Не более 1023 (ограничение от DMA на 1024 байта и нечетное количество байт)
-#define CFG_CLI_MESS_LEN_MAX    128
-
-//  Дописать команды для своего приложения.
-typedef enum {
-  cliCMD_NONE  = 0,
-  cliCMD_ERROR = 1,
-  //  User Defs
-  cliCMD_,
-  
-  //  Not for use
-  cliCMD_LEN
-} CLI_CMD_e;
 
 // =========================   DMA   ================================
 //  Для экономии памяти можно прописать 0, если альтернативные структуры DMA не используются
@@ -89,52 +75,26 @@ typedef enum {
 //    Вариант на DWT есть только в Cortex-M3/M4 и требует предварительное включение вызовом MDR_Delay_Init().
 #define   USE_MDR_DELAY_ASM
 //#define   USE_MDR_DELAY_C
-
+//#define   USE_MDR_DELAY_DWT
 
 //  Исполнение функции задержки из ОЗУ / EEPROM происходит за разное количество тактов CPU. 
 //  Данными параметрами можно уточнить сколько тактов CPU занимает один цикл задержки в MDR_Funcs, для повышения точности.
-#define DELAY_LOOP_CYCLES_ASM       4
-#define DELAY_LOOP_CYCLES_ASM_RAM   8
-#define DELAY_LOOP_CYCLES_C         9
-#define DELAY_LOOP_CYCLES_C_RAM     16
+#define DELAY_LOOP_CYCLES_ASM       3
+#define DELAY_LOOP_CYCLES_ASM_RAM   9
+#define DELAY_LOOP_CYCLES_C         6
+#define DELAY_LOOP_CYCLES_C_RAM    12
+#define DELAY_LOOP_CYCLES_DWT       1
 
 
 #ifdef USE_MDR_DELAY_C
   #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_C
   #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_C_RAM
+#elif defined USE_MDR_DELAY_DWT  
+  #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_DWT
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_WDT_RAM
 #else
   #define DELAY_LOOP_CYCLES         DELAY_LOOP_CYCLES_ASM
-  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_ASM_RAM
-#endif
-
-
-// =========================   ETHERNET ===========================
-//  Выбор режима работы буферов Ethernet (Только один!)
-#define MDR_ETH_BUFF_LIN        0
-#define MDR_ETH_BUFF_AUTO_PTR   0
-#define MDR_ETH_BUFF_FIFO       1
-
-#define MDR_ETH_BUFF_LEN_TX     1514
-#define MDR_ETH_BUFF_LEN_RX     MDR_ETH_BUFF_LEN_TX
-#define MDR_ETH_MDIO_TIMEOUT    0x0004FFFFUL
-
-#define MDR_ETH_DMA_CHANNEL_RX  MDR_DMA_CH_REQ_SOFT1
-#define MDR_ETH_DMA_CHANNEL_TX  MDR_DMA_CH_REQ_SOFT2
-
-
-//===========================  FreeRTOS (for FreeRTOSConfig.h)  ===========================
-//  Выбор таймера для отсчета configTICK_RATE_HZ, по умолчанию - системный таймер SysTimer
-#define configOVERRIDE_DEFAULT_TICK_CONFIGURATION     1 
-
-#if configOVERRIDE_DEFAULT_TICK_CONFIGURATION != 0
-  // Выбор аппаратного таймера для FreeRTOS (вместо SysTimer который в ВЕ1 и ВЕ3 имеет ошибку в errata)
-  #define MDR_FREE_RTOS_TIMER                MDR_TIMER4ex
-  #define MDR_FREE_RTOS_TIMER_HANDLER        TIMER4_IRQHandler
-  
-  // Подстройка отсчетов времени при configUSE_TICKLESS_IDLE = 1
-  // !!! Значение неправильное (взято наглаз по скорости мигания светодиода), перемерить осциллографом и поменять!!!
-  // см функцию - vPortSuppressTicksAndSleep() файл FreeRTOS/port.c
-  #define MDR_FREE_RTOS_TIMER_MISSED_FACTOR  445
+  #define DELAY_LOOP_CYCLES_RAM     DELAY_LOOP_CYCLES_ASM
 #endif
 
 
@@ -147,7 +107,8 @@ typedef enum {
 
 //  Включение задержки после формирования СТОП, чтобы отложить следующий СТАРТ. 
 //  Иначе SDA фронт-спад возможно "сливаются" слишком близко для какого нибудь ведомого и он их не поймет.
-#define I2C_STOP_DELAY_EN        0
+#define I2C_STOP_DELAY_EN        1
 
 
-#endif  //  MDR_CONFIG_VE1_H
+
+#endif  //  MDR_CONFIG_VE9x_H

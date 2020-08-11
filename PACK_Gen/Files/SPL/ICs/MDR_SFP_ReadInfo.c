@@ -7,13 +7,14 @@ static MDR_I2Cst_MasterObj   *_pMasterI2C = NULL;
 static uint8_t *_infoBuff;
 
 static bool _started = false;
+static bool _byRestart = false;
 static uint32_t _infoInd;
 
 
 static bool StartReadNextItem(void);
 
 
-bool MDR_ReadSFP_Start(MDR_I2Cst_MasterObj *masterI2C, uint8_t *infoBuff)
+bool MDR_ReadSFP_Start(MDR_I2Cst_MasterObj *masterI2C, uint8_t *infoBuff, bool byRestart)
 {
   if (_started)
     return false;
@@ -22,6 +23,7 @@ bool MDR_ReadSFP_Start(MDR_I2Cst_MasterObj *masterI2C, uint8_t *infoBuff)
   _infoBuff = infoBuff;
   _infoInd = 0;
   _started = StartReadNextItem();
+  _byRestart = byRestart;
   return true;
 }
 
@@ -36,7 +38,7 @@ static bool StartReadNextItem(void)
 {
   if (_infoInd < CFG_SFP_ITEMS_CNT)
   {  
-    MDR_I2C_StartReadAddrData(_pMasterI2C, I2C_ADDR_SFR, (uint8_t *)&MDR_SFP_InfoItems[_infoInd].addr, MDR_SFP_InfoItems[_infoInd].len, &_infoBuff[_infoInd * SFP_ITEM_LEN_MAX]);  
+    MDR_I2C_StartReadAddrData(_pMasterI2C, I2C_ADDR_SFR, (uint8_t *)&MDR_SFP_InfoItems[_infoInd].addr, MDR_SFP_InfoItems[_infoInd].len, &_infoBuff[_infoInd * SFP_ITEM_LEN_MAX], _byRestart);  
     _infoInd++;
     return true;
   }

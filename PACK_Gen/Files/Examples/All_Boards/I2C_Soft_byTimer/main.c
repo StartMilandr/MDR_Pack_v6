@@ -181,7 +181,7 @@ int main(void)
     if (MDRB_BntClicked_Left(true))
     {
       PrepareStart(transfReadReg);
-      MDR_I2Cst_MasterStartReadRegs(&masterI2C, I2C_ADDR, wrDataMaster, 1, regDataMaster, TEST_REG_LEN);
+      MDR_I2Cst_MasterStartReadRegs(&masterI2C, I2C_ADDR, wrDataMaster, 1, regDataMaster, TEST_REG_LEN, true);
       started = true;
     }    
     

@@ -1,29 +1,73 @@
 #include <MDR_GPIO.h>
 
+
+// Значение для хранения последного значения в режиме Port. Вместо регистра RDTX, которого нет в 1986ВЕ9х.
+// В 1986ВЕ1Т такой регистр есть, это поле не нужно.
+// С данным полем работают функции типа - MDR_GPIOPort_Set (префикс MDR_GPIOPort_)
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  static MDR_GPIO_SoftRDTX MDR_PortA_SoftRDTX;
+  static MDR_GPIO_SoftRDTX MDR_PortB_SoftRDTX;
+  static MDR_GPIO_SoftRDTX MDR_PortC_SoftRDTX;
+  #ifdef MDR_PORTD  
+    static MDR_GPIO_SoftRDTX MDR_PortD_SoftRDTX;
+  #endif
+  #ifdef MDR_PORTE
+    static MDR_GPIO_SoftRDTX MDR_PortE_SoftRDTX;
+  #endif
+  #ifdef MDR_PORTF  
+    static MDR_GPIO_SoftRDTX MDR_PortF_SoftRDTX;
+  #endif
+  #ifdef MDR_PORTG  
+    static MDR_GPIO_SoftRDTX MDR_PortG_SoftRDTX;
+  #endif
+  #ifdef MDR_PORTH  
+    static MDR_GPIO_SoftRDTX MDR_PortH_SoftRDTX;
+  #endif
+  #ifdef MDR_PORTI  
+    static MDR_GPIO_SoftRDTX MDR_PortI_SoftRDTX;
+  #endif
+#endif
+
 //  Привязка портов к включению тактирования
 const MDR_GPIO_Port   GPIO_A_Port = {
   .PORTx            =  MDR_PORTA,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_A,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_A)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_A),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortA_SoftRDTX
+#endif
 };
 
 const MDR_GPIO_Port   GPIO_B_Port = {
   .PORTx            =  MDR_PORTB,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_B,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_B)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_B),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortB_SoftRDTX
+#endif  
 };
 
 const MDR_GPIO_Port   GPIO_C_Port = {
   .PORTx            =  MDR_PORTC,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_C,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_C)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_C),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortC_SoftRDTX
+#endif  
 };
 
 #ifdef MDR_PORTD
 const MDR_GPIO_Port   GPIO_D_Port = {
   .PORTx            =  MDR_PORTD,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_D,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_D)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_D),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortD_SoftRDTX
+#endif  
 };
 #endif
 
@@ -31,7 +75,11 @@ const MDR_GPIO_Port   GPIO_D_Port = {
 const MDR_GPIO_Port   GPIO_E_Port = {
   .PORTx            =  MDR_PORTE,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_E,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_E)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_E),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortE_SoftRDTX
+#endif  
 };
 #endif
 
@@ -39,7 +87,11 @@ const MDR_GPIO_Port   GPIO_E_Port = {
 const MDR_GPIO_Port   GPIO_F_Port = {
   .PORTx            =  MDR_PORTF,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_F,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_F)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_F),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortF_SoftRDTX
+#endif  
 };
 #endif
 
@@ -47,7 +99,11 @@ const MDR_GPIO_Port   GPIO_F_Port = {
 const MDR_GPIO_Port   GPIO_G_Port = {
   .PORTx            =  MDR_PORTG,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_G,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_G)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_G),
+
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortG_SoftRDTX
+#endif
 };
 #endif
 
@@ -55,7 +111,11 @@ const MDR_GPIO_Port   GPIO_G_Port = {
 const MDR_GPIO_Port   GPIO_H_Port = {
   .PORTx            =  MDR_PORTH,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_H,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_H)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_H),
+
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortH_SoftRDTX
+#endif
 };
 #endif
 
@@ -63,7 +123,11 @@ const MDR_GPIO_Port   GPIO_H_Port = {
 const MDR_GPIO_Port   GPIO_I_Port = {
   .PORTx            =  MDR_PORTI,
   .RST_ClockEn_Addr =  MDR_CLK_EN_ADDR_PORT_I,
-  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_I)
+  .ClockEnaMask     = (1 << MDR_CLK_EN_BIT_PORT_I),
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR  
+  .pSoftRDTX        = &MDR_PortI_SoftRDTX
+#endif  
 };
 #endif
 
@@ -167,7 +231,9 @@ void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgRegs)
 void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgRegs)
 {
 #ifndef PORT_JTAG
+  #ifndef GPIO_INIT_HOLD_RXTX
   GPIO_Port->RXTX   = cfgRegs->RXTX;
+  #endif
   GPIO_Port->OE     = cfgRegs->OE;
   GPIO_Port->FUNC   = cfgRegs->FUNC;
   GPIO_Port->ANALOG = cfgRegs->ANALOG;
@@ -176,7 +242,9 @@ void MDR_Port_WriteRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgRegs)
   GPIO_Port->PWR    = cfgRegs->PWR;
   GPIO_Port->GFEN   = cfgRegs->GFEN;
 #else
+  #ifndef GPIO_INIT_HOLD_RXTX
   GPIO_Port->RXTX   = cfgRegs->RXTX   & (~JTAG_PINS(GPIO_Port));
+  #endif
   GPIO_Port->OE     = cfgRegs->OE     & (~JTAG_PINS(GPIO_Port));
   GPIO_Port->FUNC   = cfgRegs->FUNC   & (~JTAG_PINS_x2(GPIO_Port));
   GPIO_Port->ANALOG = cfgRegs->ANALOG & (~JTAG_PINS(GPIO_Port));
@@ -214,10 +282,10 @@ __STATIC_INLINE void IO_ToCfg(MDR_Pin_IO InOut, MDR_OnOff *OutEna, MDR_OnOff *re
   }
 }
 
-void MDR_Port_ToPinCfg(MDR_Pin_IO InOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg)  
+void MDR_Port_ToPinCfgEx(MDR_Pin_IO InOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg, MDR_PIN_RXTX pinLevel)  
 {
   IO_ToCfg(InOut, &pinCfg->OutputEnable, &pinCfg->PullUp, &pinCfg->PullDown);    
-  pinCfg->RxTx        = MDR_PIN_Low; 
+  pinCfg->RxTx        = pinLevel; //MDR_PIN_Low; 
   pinCfg->Func        = pinFunc;
   pinCfg->DigMode     = groupPinCfg->DigMode;
   pinCfg->OpenDrain   = groupPinCfg->OpenDrain;
@@ -237,7 +305,7 @@ void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_IO I
 }
 
 //  Применение настроек в порт для одного пина
-void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg)  
+void MDR_Port_InitDigPinEx(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, bool setHiLevel)  
 {
   uint32_t offsVal;
   MDR_GPIO_SetCfg tmpRegs; 
@@ -250,7 +318,10 @@ void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO p
   MDR_Port_ReadRegs(GPIO_Port, &tmpRegs);
 
   pinSelect = 1 << pinInd;
-  tmpRegs.RXTX   &= ~pinSelect;  
+  if (!setHiLevel)
+    tmpRegs.RXTX   &= ~pinSelect;
+  else
+    tmpRegs.RXTX   |= pinSelect;
   tmpRegs.ANALOG |= pinSelect;  
   
   SET_OR_CLEAR   (regOutEn,     MDR_On,  tmpRegs.OE,   pinSelect);  

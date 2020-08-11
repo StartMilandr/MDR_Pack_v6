@@ -231,7 +231,14 @@ typedef struct {
 
 //  Инициализация пинов с дополнительными настройками и групповыми.
 void MDR_Port_InitDig(MDR_PORT_Type *GPIO_Port, uint32_t pinSelect, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg);
-void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t PinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg);
+void MDR_Port_InitDigPinEx(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, bool setHiLevel);
+
+__STATIC_INLINE
+void MDR_Port_InitDigPin(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg)  
+{
+  MDR_Port_InitDigPinEx(GPIO_Port, pinInd, pinInOut, pinFunc, groupPinCfg, false);
+}
+
 
 
 __STATIC_INLINE 
@@ -259,7 +266,13 @@ void MDR_Port_InitDigPinFunc(MDR_PORT_Type *GPIO_Port, uint32_t pinInd, MDR_Pin_
 }
 
 //  Конвертация в MDR_GPIO_CfgRegs для вызова первого варианта
-void MDR_Port_ToPinCfg(MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg);
+void MDR_Port_ToPinCfgEx(MDR_Pin_IO InOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg, MDR_PIN_RXTX pinLevel);
+
+__STATIC_INLINE
+void MDR_Port_ToPinCfg(MDR_Pin_IO pinInOut, MDR_PIN_FUNC pinFunc, const MDR_PinDig_GroupPinCfg *groupPinCfg, MDR_GPIO_PinCfg *pinCfg)
+{
+  MDR_Port_ToPinCfgEx(pinInOut, pinFunc, groupPinCfg, pinCfg, MDR_PIN_Low);
+}
 
 
 // Упрощенная настройка пинов/пина в функции порт IN/OUT по умолчанию
@@ -320,6 +333,10 @@ void MDR_Port_ReadRegs(MDR_PORT_Type *GPIO_Port, MDR_GPIO_SetCfg *cfgRegs);
 //==================================================================================
 // ===========  Расширенная реализация c включением тактирования ===================
 //==================================================================================
+typedef struct {
+  uint32_t enaPinMask;
+  uint32_t pinStateMask;
+} MDR_GPIO_SoftRDTX;
 
 typedef struct {
   // GPIO Port
@@ -327,6 +344,13 @@ typedef struct {
   // Clock Enable
   volatile uint32_t*    RST_ClockEn_Addr;
   uint32_t              ClockEnaMask;
+  
+#ifndef MDR_GPIO_HAS_SET_CLEAR
+  // Значение для хранения последного значения в режиме Port. Вместо регистра RDTX, которого нет в 1986ВЕ9х.
+  // В 1986ВЕ1Т такой регистр есть, это поле не нужно.
+  // С данным полем работают функции типа - MDR_GPIOPort_Set (префикс MDR_GPIOPort_)
+  MDR_GPIO_SoftRDTX    *pSoftRDTX;
+#endif
 } MDR_GPIO_Port;
 
 extern const MDR_GPIO_Port    GPIO_A_Port;
@@ -424,6 +448,106 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
 
   #define MDR_GPIO_Init_PortIN_Pull(GP, Sel, pull)      MDR_Port_Init_PortIN_Pull   ((GP)->PORTx, (Sel), (pull))
   #define MDR_GPIO_InitPin_PortIN_Pull(GP, Ind, pull)   MDR_Port_InitPin_PortIN_Pull((GP)->PORTx, (Ind), (pull))
+
+
+// Функции для работы с пинами в режиме Port с запоминанием последнего выведенного значения Tx.
+// Необходимо для 1986ВЕ9х и подобных, где нет регистра RDTX.
+// Предназначено в основном для OpenDrain (например в программном I2C), 
+// когда биты должны выставляться от ранее заданного значения, 
+// а не от состояния линии, которую может перетянуть ведомый.
+#if defined(MDR_GPIO_HAS_SET_CLEAR)
+    //  Нет необходимости в userRDTX, он есть аппаратный
+    #define  MDR_GPIO_TxSet           MDR_GPIO_Set
+    #define  MDR_GPIO_TxSetPins       MDR_GPIO_SetPins
+    #define  MDR_GPIO_TxClearPins     MDR_GPIO_ClearPins
+    #define  MDR_GPIO_TxTogglePins    MDR_GPIO_TogglePins
+
+    __STATIC_INLINE uint32_t MDR_GPIO_TxGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->PORTx->RDTX; }
+    
+    #define MDR_GPIO_TxEnable(a, b)       UNUSED(0)
+    #define MDR_GPIO_TxDisable(a, b)      UNUSED(0)
+    #define MDR_GPIO_TxPinEnable(a, b)    UNUSED(0)
+    #define MDR_GPIO_TxPinDisable(a, b)   UNUSED(0)
+#else
+  __STATIC_INLINE void MDR_GPIO_TxEnable (const MDR_GPIO_Port *GPIO_Port, uint32_t selPins) { GPIO_Port->pSoftRDTX->enaPinMask |=  selPins; }
+  __STATIC_INLINE void MDR_GPIO_TxDisable(const MDR_GPIO_Port *GPIO_Port, uint32_t selPins) { GPIO_Port->pSoftRDTX->enaPinMask &= ~selPins; }
+
+  __STATIC_INLINE void MDR_GPIO_TxPinEnable (const MDR_GPIO_Port *GPIO_Port, uint32_t pinInd) { GPIO_Port->pSoftRDTX->enaPinMask |=   1 << pinInd; }
+  __STATIC_INLINE void MDR_GPIO_TxPinDisable(const MDR_GPIO_Port *GPIO_Port, uint32_t pinInd) { GPIO_Port->pSoftRDTX->enaPinMask &= ~(1 << pinInd); }
+
+  __STATIC_INLINE void MDR_GPIO_TxApply(MDR_PORT_Type *PORTx, MDR_GPIO_SoftRDTX *pSoftRDTX) 
+  { PORTx->RXTX = PORTx->RXTX & ~(pSoftRDTX->enaPinMask) | pSoftRDTX->pinStateMask; }
+  
+  __STATIC_INLINE uint32_t MDR_GPIO_TxPinsGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->pSoftRDTX->pinStateMask; }
+
+  #ifdef PORT_JTAG
+    __STATIC_INLINE     void MDR_GPIO_TxSet       (const MDR_GPIO_Port *GPIO_Port, uint32_t portData)  
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;
+  
+        pSoftRDTX->pinStateMask = portData & (~JTAG_PINS(PORTx)); 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);  
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxSetPins   (const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect)   
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;
+  
+        pSoftRDTX->pinStateMask = (pSoftRDTX->pinStateMask |  pinSelect) & (~JTAG_PINS(PORTx));
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);  
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxClearPins (const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect) 
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;  
+        
+        pSoftRDTX->pinStateMask = (pSoftRDTX->pinStateMask & ~(pinSelect | JTAG_PINS(PORTx))); 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);  
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxTogglePins(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect) 
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;  
+        
+        pSoftRDTX->pinStateMask = (pSoftRDTX->pinStateMask ^  pinSelect) & (~JTAG_PINS(PORTx)); 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);  
+      }      
+  #else
+    __STATIC_INLINE     void MDR_GPIO_TxSet       (const MDR_GPIO_Port *GPIO_Port, uint32_t portData)  
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;
+  
+        pSoftRDTX->pinStateMask = portData; 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxSetPins   (const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect) 
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;
+  
+        pSoftRDTX->pinStateMask |= pinSelect; 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);        
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxClearPins (const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect) 
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;        
+        
+        pSoftRDTX->pinStateMask &= ~pinSelect; 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);
+      }
+    __STATIC_INLINE     void MDR_GPIO_TxTogglePins(const MDR_GPIO_Port *GPIO_Port, uint32_t pinSelect) 
+      { 
+        MDR_GPIO_SoftRDTX *pSoftRDTX = GPIO_Port->pSoftRDTX;
+        MDR_PORT_Type *PORTx = GPIO_Port->PORTx;        
+        
+        pSoftRDTX->pinStateMask ^= pinSelect; 
+        MDR_GPIO_TxApply(PORTx, pSoftRDTX);
+      }    
+  #endif
+#endif
 
 
 //===================================

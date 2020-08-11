@@ -29,19 +29,6 @@ typedef struct {
   const MDR_I2C_CfgPinGPIO *pPinSDA;
 } MDR_I2C_CfgPinsGPIO;
 
-//void MDR_I2C_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower, bool pullUpPins);
-
-//const MDR_Timer_CfgPinGPIO _pinTim1_CH1  = {MDR_GPIO_E,  7, MDR_PIN_MAIN};
-
-//#define I2C_TIM         MDR_TIMER1ex
-//#define I2C_TIM_CH      MDR_TIMER1_CH1
-//#define I2C_CLK_PIN_CH  _pinTim1_CH1
-
-
-//#define TIM_BRG_PWM       MDR_Div128P_div1
-//#define TIM_PSG_PWM1      100
-////#define TIM_PSG_PWM2      50
-//#define TIM_PERIOD_PWM    900
 
 typedef struct {
   //  Timer
@@ -68,9 +55,10 @@ void MDR_I2Cst_MasterHandlerIRQ_Soft(MDR_I2Cst_MasterObj *i2cObj);
 void MDR_I2Cst_MasterStartWrite(MDR_I2Cst_MasterObj    *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 void MDR_I2Cst_MasterStartRead(MDR_I2Cst_MasterObj     *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 //void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, MDR_I2Cst_pData *pRegValues);
-void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen);
+void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *wrData, uint8_t wrDataLen, uint8_t *rdData, uint8_t rdDataLen, bool byRestart);
 
 __STATIC_INLINE bool MDR_I2Cst_MasterGetStarted(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->started; }
+__STATIC_INLINE bool MDR_I2Cst_MasterGetCompleted(MDR_I2Cst_MasterObj *i2cObj) { return !i2cObj->started; }
 
 
 
@@ -109,7 +97,7 @@ void MDR_I2Cst_SlaveHandlerIRQ(MDR_I2Cst_SlaveObj *i2cObj);
 
 
 //  ======  Чтение данных по внутреннему адресу устройства (часто используется) ======
-void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t *rdAddr, uint8_t rdCount, uint8_t *rdData);
+void MDR_I2C_StartReadAddrData(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr, uint8_t *rdAddr, uint8_t rdCount, uint8_t *rdData, bool byRestart);
 
 
 

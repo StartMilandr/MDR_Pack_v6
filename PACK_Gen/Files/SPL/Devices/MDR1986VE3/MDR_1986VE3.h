@@ -200,7 +200,7 @@ typedef enum IRQn
 #include <MDR_CAN_defs.h>
 
 /*=========  Ethernet ========*/
-#include <MDR_ETH_VE1VE3_defs.h>
+#include <MDR_ETH_VE1VE3_Defs.h>
 
 /*@}*/ /* end of group MDR1986VE3_Peripherals */
 

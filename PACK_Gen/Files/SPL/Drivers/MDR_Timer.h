@@ -60,6 +60,7 @@ extern const MDR_TIMER_TypeEx    _MDR_TIMER2ex;
 #define TIM_FL_ETR_RE         MDR_TIM_EVENT_ETR_RE_Msk
 #define TIM_FL_ETR_FE         MDR_TIM_EVENT_ETR_FE_Msk
 #define TIM_FL_BRK_Msk        MDR_TIM_EVENT_BRK_Msk
+#define TIM_FL_BRK            MDR_TIM_EVENT_BRK_Msk
 #define TIM_FL_CCR_CAP_CH1    MDR_TIM_EVENT_CCR_CAP_CH1_Msk
 #define TIM_FL_CCR_CAP_CH2    MDR_TIM_EVENT_CCR_CAP_CH2_Msk
 #define TIM_FL_CCR_CAP_CH3    MDR_TIM_EVENT_CCR_CAP_CH3_Msk
@@ -73,9 +74,11 @@ extern const MDR_TIMER_TypeEx    _MDR_TIMER2ex;
 #define TIM_FL_CCR1_CAP_CH3   MDR_TIM_EVENT_CCR1_CAP_CH3_Msk
 #define TIM_FL_CCR1_CAP_CH4   MDR_TIM_EVENT_CCR1_CAP_CH4_Msk
 
+#define TIM_FL_EVENT_ALL      MDR_TIM_EVENT_ALL_Msk
 
 //=====================   Управление прерываниями   ==================
 __STATIC_INLINE void     MDR_Timer_ClearEvent(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {TIMERx->STATUS = ~eventFlags;}
+__STATIC_INLINE void     MDR_Timer_ClearEventAll(MDR_TIMER_Type *TIMERx) {TIMERx->STATUS = 0;}
 __STATIC_INLINE uint32_t MDR_Timer_GetStatus(MDR_TIMER_Type *TIMERx) {return TIMERx->STATUS;}
 __STATIC_INLINE bool     MDR_Timer_IsEventsSet(MDR_TIMER_Type *TIMERx, uint32_t eventFlags) {return (TIMERx->STATUS & eventFlags) == eventFlags;}
 
@@ -406,6 +409,10 @@ void MDR_TimerCh_InitPWM (MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM 
 void MDR_TimerCh_InitPWM1(MDR_TIMER_CH_Type *TIMER_CH, const MDR_TimerCh_CfgPWM *cfgPWM, MDR_TIM_PWM1_Ref modeRef, uint_tim CCR, uint_tim CCR1);
 
 void MDR_TimerCh_DeInit(MDR_TIMER_CH_Type *TIMER_CH);
+
+__STATIC_INLINE void MDR_TimerCh_OffPWM(MDR_TIMER_CH_Type *TIMER_CH)  { TIMER_CH->CHx_CNTRL1 ^= MDR_TIM_CHx_CNTRL1_SelOE_Msk; }
+__STATIC_INLINE void MDR_TimerCh_OnPWM(MDR_TIMER_CH_Type *TIMER_CH)  { TIMER_CH->CHx_CNTRL1 ^= MDR_TIM_CHx_CNTRL1_SelOE_Msk; }
+
 
 //  Функции управления - использовать только после включения таймера - Start!
 //  Иначе, без Start не подана частота TIM_CLOCK, и биты WR_CMPL не сбрасываются совсем.

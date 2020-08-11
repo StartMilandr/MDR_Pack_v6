@@ -11,8 +11,9 @@
 
 #define BTN_DEBOUNCE_MS 10
 
-#define I2C_FREQ_HZ     10000
-#define I2C_TO_TIM_HZ   4
+#define  I2C_FREQ_HZ      10000
+#define  I2C_TO_TIM_HZ    4
+#define  I2C_RESTART_EN   false
 
 #define I2C_TIMER_M     MDR_TIMER1ex
 #define I2C_TIMER_M_CH  MDR_TIMER1_CH1
@@ -65,8 +66,8 @@ int main(void)
     {
       uint32_t i;
       for (i = 0; i < CFG_SFP_ITEMS_TABLE_LEN; i++)
-        infoSFP[i] = 2;
-      readStarted = MDR_ReadSFP_Start(&masterI2C, infoSFP);
+        infoSFP[i] = 2; // fill with some char
+      readStarted = MDR_ReadSFP_Start(&masterI2C, infoSFP, I2C_RESTART_EN);
     }
     
     if (readStarted)

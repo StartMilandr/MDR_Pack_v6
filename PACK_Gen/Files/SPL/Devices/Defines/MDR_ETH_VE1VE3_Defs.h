@@ -7,7 +7,7 @@ extern "C" {
 
 
 #include <MDR_Types.h>
-#include <MDR_ETH_defs.h>
+#include <MDR_ETH_Defs.h>
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
 #if defined (__CC_ARM)

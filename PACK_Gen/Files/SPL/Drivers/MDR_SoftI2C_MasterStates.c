@@ -6,6 +6,7 @@ static bool MDR_I2Cs_MasterWriteHandler(void *obj, bool isClkDown);
 static bool MDR_I2Cs_MasterReadHandler(void *obj, bool isClkDown);
 static bool MDR_I2Cs_MasterStopHandler(void *obj, bool isClkDown);
 static bool MDR_I2Cs_MasterRestartToReadHandler(void *obj, bool isClkDown);
+static bool MDR_I2Cs_MasterStopAndGoReadHandler(void *obj, bool isClkDown);
 
 // Tacts of MDR_I2Cs_MasterWriteHandler:
 static bool MDR_I2Cs_MasterWriteDataBits(MDR_I2Cst_MasterObj *i2cObj, bool isClkDown);
@@ -20,7 +21,7 @@ void MDR_I2Cs_MasterStart(MDR_I2Cst_MasterObj *i2cObj, bool writeMode)
 {
   //  Write START
   SET_SDA_0(i2cObj);
-  MDR_Port_ClearPins(i2cObj->portSDA, i2cObj->pinSelSDA);
+  
   //  Init Transfer
   if (writeMode)
   {
@@ -37,40 +38,54 @@ void MDR_I2Cs_MasterStart(MDR_I2Cst_MasterObj *i2cObj, bool writeMode)
   //  Run Events
   i2cObj->writeMode = writeMode;
   i2cObj->started = true;
+  i2cObj->clkEnable = true;
   i2cObj->TimerEventsStart(i2cObj);
 }
 
-static bool MDR_I2Cs_MasterWriteHandler(void *obj, bool isClkDown)
-{
-  MDR_I2Cst_MasterObj *i2cObj = obj;
-  if (MDR_I2Cs_MasterWriteDataBits(i2cObj, isClkDown))
-    if (MDR_I2Cs_MasterWriteStartNextData(i2cObj))
-    { 
-      if (!i2cObj->readRegMode)
-        i2cObj->ProcessFunc = MDR_I2Cs_MasterStopHandler;
+#if I2C_STOP_DELAY_EN
+  static bool MDR_I2Cs_MasterStopHandler(void *obj, bool isClkDown)
+  { 
+    MDR_I2Cst_MasterObj *i2cObj = obj;
+    if (i2cObj->bitInd == 0)
+    {
+      if (isClkDown)
+        SET_SDA_0(i2cObj); // CLK = 0: Set SDA to 0 before CLK
       else
-        i2cObj->ProcessFunc = MDR_I2Cs_MasterRestartToReadHandler;
+      {      
+        FREE_SDA_1(i2cObj);  // Event0: CLK = 1: Set SDA to 1 for stop 
+        i2cObj->bitInd = 99;
+        if (i2cObj->TimerEventsStopPWM != NULL)  
+          i2cObj->TimerEventsStopPWM(i2cObj);
+        i2cObj->clkEnable = false;
+        // Stop PWM-?
+      }
     }
-    
-  return false;
-}
-
-static bool MDR_I2Cs_MasterStopHandler(void *obj, bool isClkDown)
-{ 
-  MDR_I2Cst_MasterObj *i2cObj = obj;
-  if (isClkDown)
-  { // CLK = 0: Set SDA to 0 before CLK
-    SET_SDA_0(i2cObj);
+    else if (!isClkDown)
+    {
+      i2cObj->started = false;        
+      i2cObj->TimerEventsStop(i2cObj);
+      return true;    
+    }
     return false;
   }
-  else
-  { // Event0: CLK = 1: Set SDA to 1 for stop 
-    FREE_SDA_1(i2cObj);
-    i2cObj->started = false;        
-    i2cObj->TimerEventsStop(i2cObj);
-    return true;
+#else
+  static bool MDR_I2Cs_MasterStopHandler(void *obj, bool isClkDown)
+  { 
+    MDR_I2Cst_MasterObj *i2cObj = obj;
+    if (isClkDown)
+    { // CLK = 0: Set SDA to 0 before CLK
+      SET_SDA_0(i2cObj);
+      return false;
+    }
+    else
+    { // Event0: CLK = 1: Set SDA to 1 for stop 
+      FREE_SDA_1(i2cObj);
+      i2cObj->started = false;        
+      i2cObj->TimerEventsStop(i2cObj);
+      return true;
+    }
   }
-}
+#endif //I2C_STOP_DELAY_EN
 
 static bool MDR_I2Cs_MasterRestartToReadHandler(void *obj, bool isClkDown)
 {
@@ -88,6 +103,36 @@ static bool MDR_I2Cs_MasterRestartToReadHandler(void *obj, bool isClkDown)
     return true;
   }
 }
+
+static bool MDR_I2Cs_MasterStopAndGoReadHandler(void *obj, bool isClkDown)
+{
+  MDR_I2Cst_MasterObj *i2cObj = obj;
+  if (i2cObj->bitInd == 0)
+  {
+    if (isClkDown)
+      SET_SDA_0(i2cObj);  // CLK = 0: Set SDA to 0 before CLK
+    else
+    {
+      FREE_SDA_1(i2cObj); // Event0: CLK = 1: Set SDA to 1 for stop 
+      i2cObj->bitInd = 99;
+      if (i2cObj->TimerEventsStopPWM != NULL)  
+        i2cObj->TimerEventsStopPWM(i2cObj);
+      i2cObj->clkEnable = false;
+    }
+  }
+  else if (!isClkDown)
+  {
+    //Start Read Transfer
+    i2cObj->clkEnable = true;
+    i2cObj->pData = i2cObj->regAddrCfg.pData;
+    i2cObj->dataCnt = i2cObj->regAddrCfg.dataCnt;
+    MDR_I2Cs_MasterStart(obj, false);  
+    return true;
+  }
+  
+  return false;
+}
+
 
 static bool MDR_I2Cs_MasterWriteDataBits(MDR_I2Cst_MasterObj *i2cObj, bool isClkDown)
 {
@@ -129,6 +174,26 @@ static bool MDR_I2Cs_MasterWriteStartNextData(MDR_I2Cst_MasterObj *i2cObj)
   }
   else
     return true;
+}
+
+static bool MDR_I2Cs_MasterWriteHandler(void *obj, bool isClkDown)
+{
+  MDR_I2Cst_MasterObj *i2cObj = obj;
+  if (MDR_I2Cs_MasterWriteDataBits(i2cObj, isClkDown))
+    if (MDR_I2Cs_MasterWriteStartNextData(i2cObj))
+    { 
+      if (!(i2cObj->ackOk && i2cObj->readRegMode))
+      //if (!i2cObj->readRegMode)
+        i2cObj->ProcessFunc = MDR_I2Cs_MasterStopHandler;
+      else
+      { if (i2cObj->regModeByRestart) 
+          i2cObj->ProcessFunc = MDR_I2Cs_MasterRestartToReadHandler;
+        else
+          i2cObj->ProcessFunc = MDR_I2Cs_MasterStopAndGoReadHandler;
+      }
+    }
+    
+  return false;
 }
 
 // -------------  Master Read Transfer ------------

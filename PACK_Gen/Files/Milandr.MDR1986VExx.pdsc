@@ -1704,6 +1704,15 @@
         <file category="header"  name="SPL/ICs/Configs/MDR_SFP_Config.h" attr="config" version="2.0.0"/>
       </files>
     </component>
+    <!-- SFP presence -->
+    <component Cclass="IC Drivers" Cgroup="SFP presence" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Check SPF presence and update info</description>
+      <files>      
+        <file category="header"  name="SPL/ICs/MDR_SFP_PresenceCtrl.h"/>
+        <file category="source"  name="SPL/ICs/MDR_SFP_PresenceCtrl.c"/>
+        <file category="header"  name="SPL/ICs/Configs/MDR_SFP_PresenceCtrl_Config.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
     <!-- 1923KX028 -->
     <component Cclass="IC Drivers" Cgroup="1923KX028_Core" Cversion="2.0" condition="CON_MDR_ALL">
       <description>Ethernet switch 1923KX028 control</description>

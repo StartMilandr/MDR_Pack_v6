@@ -399,7 +399,7 @@ typedef struct
 #include <MDR_CAN_defs.h>
 
 /*=========  Ethernet ========*/
-#include <MDR_ETH_ES_defs.h>
+#include <MDR_ETH_ES_Defs.h>
 
 
 /*@}*/ /* end of group ESila_Peripherals */

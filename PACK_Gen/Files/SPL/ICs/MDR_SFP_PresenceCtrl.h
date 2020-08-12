@@ -16,7 +16,7 @@ typedef void     (*OnEventSFP)(uint32_t);
 typedef struct {
   MDR_I2Cst_MasterObj  *pMasterI2C;
   pGetPresenceMaskFunc  GetPresenceMaskFunc;
-  uint32_t             *pPresenceMask;    // Pin masks for every countSFP
+  const uint32_t       *pPresenceMask;    // Pin masks for every countSFP
   OnEventSFP            OnConnected;
   OnEventSFP            OnDisconnected;
   //  ptr to SFP Info

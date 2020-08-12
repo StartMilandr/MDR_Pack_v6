@@ -69,8 +69,6 @@
 #define SFP_LEN_VENDOR_SPECIF_RO       32
 
 
-#define SFP_ITEM_LEN_MAX      16
-
 //  Выбор какую информацию читать из SFP
 #define CFG_SFP_ITEMS {  \
   /*  Standard  */    \
@@ -104,9 +102,38 @@
   {SFP_ADDR_CC_EXT      , SFP_LEN_CC_EXT     , "CC_EXT"}     \
 }      \
 
+#define CFG_SFP_ITEMS_TABLE_LEN  (\
+                          SFP_LEN_ID \
+                        + SFP_LEN_IDEX \
+                        + SFP_LEN_CONNECTOR \
+                        + SFP_LEN_TANSCEIVER \
+                        + SFP_LEN_ENCODING \
+                        + SFP_LEN_BITRATE \
+                        + SFP_LEN_RESERVED_1 \
+                        + SFP_LEN_LEN9KM \
+                        + SFP_LEN_LEN9M \
+                        + SFP_LEN_LEN50M \
+                        + SFP_LEN_LEN62P5M \
+                        + SFP_LEN_COPPER \
+                        + SFP_LEN_RESERVED_2 \
+                        + SFP_LEN_VENDOR_NAME \
+                        + SFP_LEN_RESERVED_3 \
+                        + SFP_LEN_VENDOR_OUI \
+                        + SFP_LEN_VENDOR_PN \
+                        + SFP_LEN_VENDOR_REV \
+                        + SFP_LEN_RESERVED_4 \
+                        + SFP_LEN_CC_BASE \
+                        + SFP_LEN_OPTIONS \
+                        + SFP_LEN_BITRATE_MAX \
+                        + SFP_LEN_BITRATE_MIN \
+                        + SFP_LEN_VENDOR_SN  \
+                        + SFP_LEN_DATA_CODE \
+                        + SFP_LEN_RESERVED_5 \
+                        + SFP_LEN_CC_EXT  \
+                        ) \
+
 #define  CFG_SFP_ITEMS_CNT    27
 
-#define CFG_SFP_ITEMS_TABLE_LEN   SFP_ITEM_LEN_MAX * CFG_SFP_ITEMS_CNT
 
 
 #endif  //MDR_SFP_CONFIG_H

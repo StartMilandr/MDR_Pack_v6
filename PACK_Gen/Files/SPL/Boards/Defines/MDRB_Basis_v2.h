@@ -13,9 +13,10 @@
 #define I2C_ADDR_MUX          0x70
 
 #define SFP_MUX_X1_1          0x1
-#define SFP_MUX_X8_1          0x2
+#define SFP_MUX_X8_2          0x2
 #define SFP_MUX_X1_2          0x4
-#define SFP_MUX_X8_2          0x8
+#define SFP_MUX_X8_1          0x8
+
 
 //  SFP Presence
 #define SFP_COUNT             4

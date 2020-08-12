@@ -1,5 +1,4 @@
 #include <MDR_RST_Clock.h>
-//#include <MDR_PER_Clock.h>
 
 #include <MDR_SoftI2C_ByTimer.h>
 #include <MDRB_UART_Debug.h>
@@ -7,7 +6,6 @@
 #include <stdio.h>
 #include "MDR_SFP_Config.h"
 #include "MDR_SFP_ReadInfo.h"
-//#include "ReadInfoSFP.h"
 
 #define BTN_DEBOUNCE_MS 10
 
@@ -59,6 +57,12 @@ int main(void)
   
   masterI2C = MDR_I2Cst_InitMasterSoft(&cfgI2C_Mst);   
   
+  if (!MDR_ReadSFP_Init())
+  {
+    printf("Wrong Items Length table!\n"); 
+    while (1);
+  }
+  
   bool readStarted = false;  
   while (1)
   {
@@ -97,5 +101,5 @@ void ShowInfoSPF(void)
 {
   uint32_t i;
   for (i = 0; i < CFG_SFP_ITEMS_CNT; i++)
-    ShowInfoItemSPF(i, &infoSFP[i * SFP_ITEM_LEN_MAX]);
+    ShowInfoItemSPF(i, &infoSFP[ MDR_ReadSFP_GetInfoItemOffset(i)]);
 }

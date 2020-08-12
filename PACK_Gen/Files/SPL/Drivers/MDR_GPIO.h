@@ -476,7 +476,7 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
   __STATIC_INLINE void MDR_GPIO_TxPinDisable(const MDR_GPIO_Port *GPIO_Port, uint32_t pinInd) { GPIO_Port->pSoftRDTX->enaPinMask &= ~(1 << pinInd); }
 
   __STATIC_INLINE void MDR_GPIO_TxApply(MDR_PORT_Type *PORTx, MDR_GPIO_SoftRDTX *pSoftRDTX) 
-  { PORTx->RXTX = PORTx->RXTX & ~(pSoftRDTX->enaPinMask) | pSoftRDTX->pinStateMask; }
+  { PORTx->RXTX = (PORTx->RXTX & ~pSoftRDTX->enaPinMask) | pSoftRDTX->pinStateMask; }
   
   __STATIC_INLINE uint32_t MDR_GPIO_TxPinsGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->pSoftRDTX->pinStateMask; }
 

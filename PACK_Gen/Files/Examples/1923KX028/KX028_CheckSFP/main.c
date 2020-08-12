@@ -116,7 +116,7 @@ void ShowInfoSPF(uint32_t indSFP)
   uint8_t *infoSFP = pInfoSFP[indSFP];
   for (i = 0; i < CFG_SFP_ITEMS_CNT; i++)
   {
-    ShowInfoSPFex(indSFP, i, &infoSFP[i * SFP_ITEM_LEN_MAX]); 
+    ShowInfoSPFex(indSFP, i, &infoSFP[MDR_ReadSFP_GetInfoItemOffset(i)]); 
   }
 }
 
@@ -138,9 +138,11 @@ void ShowDisconected(uint32_t indSFP)
 void InfoTableInit(void)
 {
   uint32_t i;
-  for (i = 0; i < SFP_COUNT * CFG_SFP_ITEMS_TABLE_LEN; i++)
-    InfoBuffSFP[i] = 2;
-  
+  uint32_t cnt  = SFP_COUNT * CFG_SFP_ITEMS_TABLE_LEN;
+  for (i = 0; i < cnt; i++)
+    InfoBuffSFP[i] = 2;  
+
+  pInfoSFP[0] = InfoBuffSFP;
   for (i = 0; i < SFP_COUNT; i++)
     pInfoSFP[i] = &(InfoBuffSFP[i * CFG_SFP_ITEMS_TABLE_LEN]);
 }

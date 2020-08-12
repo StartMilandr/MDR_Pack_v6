@@ -30,7 +30,7 @@ static void MDR_I2Cs_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PW
     if (pullUpPins)
       MDR_Port_SetPullUp(MDR_PortCLK, pinSelCLK);
     
-    MDR_GPIO_TxPinEnable(GPIO_Port, pinSelCLK);
+    MDR_GPIO_TxPinEnable(GPIO_Port, pinInd);
     MDR_GPIO_TxSetPins(GPIO_Port, pinSelCLK);
   } 
 
@@ -47,25 +47,9 @@ static void MDR_I2Cs_InitPinsGPIO(const MDR_I2C_CfgPinsGPIO *pinsCfg, MDR_PIN_PW
     if (pullUpPins)
       MDR_Port_SetPullUp(MDR_PortSDA, pinSelSDA);    
     
-    MDR_GPIO_TxPinEnable(GPIO_Port, pinSelSDA);
+    MDR_GPIO_TxPinEnable(GPIO_Port, pinInd);
     MDR_GPIO_TxSetPins(GPIO_Port, pinSelSDA);
   } 
-    
-//  //  Stop Condition
-//  if (pullUpPins)
-//    MDR_Port_SetPullUp(MDR_PortSDA, pinSelSDA);
-//  //  Маска ставится при чтении текущих значений на линии.
-//  //  Если CLK не успел вытянутся в 1, то при маскировании SDA чтение CLK дает 0, который будет записан при выставлении SDA.  
-//  if (MDR_PortSDA == MDR_PortCLK)
-//    //MDR_Port_SetPins(MDR_PortSDA, pinSelSDA | pinSelCLK);  
-//    MDR_GPIO_TxSetPins(pinsCfg->pPinSCL->portGPIO, pinSelSDA | pinSelCLK);
-//  else
-//  {
-//    //MDR_Port_SetPins(MDR_PortCLK, pinSelCLK);
-//    //MDR_Port_SetPins(MDR_PortSDA, pinSelSDA);  
-//    MDR_GPIO_TxSetPins(pinsCfg->pPinSCL->portGPIO, pinSelCLK);
-//    MDR_GPIO_TxSetPins(pinsCfg->pPinSDA->portGPIO, pinSelSDA);
-//  }
 }
 
 
@@ -174,9 +158,15 @@ void MDR_I2Cst_MasterHandlerIRQ_Soft(MDR_I2Cst_MasterObj *i2cObj)
 
 #if I2C_STOP_DELAY_EN   
   switch (i2cObj->timTact++) {
-    case 0: if (i2cObj->clkEnable) SET_CLK_0(i2cObj); break;
+    case 0: 
+      if (i2cObj->clkEnable) 
+        SET_CLK_0(i2cObj); 
+      break;
     case 1: MDR_I2Cs_MasterProcessCompleted(i2cObj, true); break;
-    case 2: if (i2cObj->clkEnable) FREE_CLK_1(i2cObj); break;
+    case 2: 
+      if (i2cObj->clkEnable) 
+        FREE_CLK_1(i2cObj); 
+      break;
     case 3: MDR_I2Cs_MasterProcessCompleted(i2cObj, false); i2cObj->timTact = 0; break;
   }
 #else

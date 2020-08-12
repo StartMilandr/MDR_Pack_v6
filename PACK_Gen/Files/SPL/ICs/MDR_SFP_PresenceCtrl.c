@@ -26,6 +26,8 @@ static bool SFP_ReadInfoSFP_WaitCompleted(void);
 
 void MDR_SFP_PresCtrlInit(MDR_SFP_PresCtrl_Cfg *presCfg, MDR_SFP_PresCtrl_MuxI2C_Cfg *muxCfg)
 {
+  MDR_ReadSFP_Init();
+  
   _presCfg = *presCfg;
   _muxCfgEnabled = muxCfg != NULL;
   if (_muxCfgEnabled)
@@ -46,7 +48,7 @@ static bool SFP_CheckPresenceChanged(void)
 {
   uint32_t newPresence = _presCfg.GetPresenceMaskFunc();
   _changedPresence = newPresence ^ _activePresence;
-  _activePresence = newPresence;
+  _activePresence = newPresence; 
   if (_changedPresence != 0)
   {
     _indSFP = 0;

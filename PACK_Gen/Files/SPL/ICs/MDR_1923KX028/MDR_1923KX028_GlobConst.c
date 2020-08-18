@@ -1,5 +1,9 @@
 #include <MDR_1923KX028_GlobConst.h>
 
+uint8_t *g_pInfoSFP[SFP_COUNT];
+uint32_t g_EventsSFP;
+uint32_t g_PresenceSFP;
+
 const uint32_t MDR_KX028_AxiAddrEMAC[KX028_EMAC_NUMS] =
 {
     AXI_EMAC1_BASE_ADDR,

@@ -1,4 +1,5 @@
 #include <MDR_1923KX028_M0_Ctrl.h>
+#include <MDR_1923KX028_PCIE_defs.h>
 
 void MDR_KX028_M0_Clear_TxTermOffsPhyAll(void)
 {
@@ -19,41 +20,44 @@ void MDR_KX028_M0_Clear_TxTermOffsPhyAll(void)
 
 void MDR_KX028_M0_SetupBaseAddrRegisters( void )
 {
-  uint32_t tmp, addr;
+  uint32_t tmp; //, addr;
   
-  tmp  = MDR_KX028_ReadAXI( 0x8bc);                                   // Set bit DBI_RO_WR_EN 
-  MDR_KX028_WriteAXI( 0x8bc, ( tmp | 1 ) );
+  // // Enable DBI access to RO registers
+  tmp  = MDR_KX028_ReadAXI( KX028_PCIE_MISC_CONTROL_1_OFF);           // (0x8bc) Set bit DBI_RO_WR_EN 
+  MDR_KX028_WriteAXI(KX028_PCIE_MISC_CONTROL_1_OFF, ( tmp | KX028_PCIE_DBI_RO_WR_EN_MSK ) );    // 0x8bc, ( tmp | 1 ) );
   
-  MDR_KX028_WriteAXI( 0x000000, 0x0bad16c3 );                         // Setup DEVICE ID   
-  MDR_KX028_WriteAXI( 0x000008, 0x02000000 );                         // Base Class, Sub-Class, Interface (Network controller, Ethernet controller)
+  
+  MDR_KX028_WriteAXI( KX028_PCIE_DEVICE_ID_VENDOR_ID_REG, PCIE_DEVICE_VENDOR_ID_FILL(CFG_PCIE_VENDOR_ID, CFG_PCIE_DEVICE_ID)); //0x000000, 0x0bad16c3 ); // Setup DEVICE ID   
+  MDR_KX028_WriteAXI( KX028_PCIE_CLASS_CODE_REVISION_ID, 
+    PCIE_CLASS_CODE_REVISION_ID_FILL(CFG_PCIE_REVISION_ID, CFG_PCIE_PROGRAM_INTERFACE, CFG_PCIE_SUBCLASS_CODE, CFG_PCIE_BASE_CLASS_CODE)); //0x000008, 0x02000000 ); // Base Class, Sub-Class, Interface (Network controller, Ethernet controller)
   
   MDR_KX028_WriteAXI( 0x100010, 0 );                                  // Disable BAR0
   
   /* Settings for REGION 0 (Inbound)  */
   /* Define Inbound region 0 as MEM region matching BAR2 */
   /* Setup Target Address Registers */
-  addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x14 );
-  MDR_KX028_WriteAXI( addr, 0xC0000000 );	                            // Lower Target Address
+  //addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x14 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_TARG_ADDR(0), 0xC0000000 );	                            // Lower Target Address
   
   /* Config the region through the Region Control 1 Register */
-  addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x0 );
-  MDR_KX028_WriteAXI( addr, 0x00000000 );    
+  //addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x0 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_CTRL1_ADDR(0), 0x00000000 );    
   
   /* Enable the region */
-  addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x4 );
-  MDR_KX028_WriteAXI( addr, 0xC0000200 );    
+  //addr = 0x300000 |( 0 << 9 )|( 1 << 8 )|( 0x4 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_CTRL2_ADDR(0), 0xC0000200 );    
   
   /* Setup Target Address Registers */
-  addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x14 );
-  MDR_KX028_WriteAXI( addr, 0xC0800000 );	                            // Lower Target Address   
+  //addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x14 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_TARG_ADDR(1), 0xC0800000 );	                            // Lower Target Address   
   
   /* Config the region through the Region Control 1 Register */
-  addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x0 );
-  MDR_KX028_WriteAXI( addr, 0x00000000 );
+  //addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x0 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_CTRL1_ADDR(1), 0x00000000 );
   
   /* Enable the region */
-  addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x4 );
-  MDR_KX028_WriteAXI( addr, 0xC0000400 );
+  //addr = 0x300000 |( 1 << 9 )|( 1 << 8 )|( 0x4 );
+  MDR_KX028_WriteAXI( KX028_PCIE_IATU_REGION_IN_CTRL2_ADDR(1), 0xC0000400 );
     
   MDR_KX028_M0_Clear_TxTermOffsPhyAll(); 
 }

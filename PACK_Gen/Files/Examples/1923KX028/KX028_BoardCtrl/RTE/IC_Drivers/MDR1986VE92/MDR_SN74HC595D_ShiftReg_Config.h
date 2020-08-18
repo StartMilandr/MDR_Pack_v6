@@ -1,0 +1,58 @@
+
+#ifndef _MDR_SN74HC595D_CONFIG_H
+#define _MDR_SN74HC595D_CONFIG_H
+
+#include <MDR_Config.h>
+#include <MDR_GPIO.h>
+#include <stdint.h>
+
+
+//===============================   Пользовательские настройки  ===========================
+//  Разрядность и опции
+#define MDR_SN74HC595D_SHIFT_LEN        16
+
+//  Опции
+#define MDR_SN74HC595D_DO_REVBIT        1
+#if MDR_SN74HC595D_DO_REVBIT
+  #define MDR_SN74HC595D_RSHIFT         16
+#endif
+
+//  Пины микросхем
+#define MDR_SN74HC595D_PORT             MDR_GPIO_B
+
+#define MDR_SN74HC595D_PIN_IND_OE       6
+#define MDR_SN74HC595D_PIN_IND_CLR      7
+#define MDR_SN74HC595D_PIN_IND_SRCLK    8
+#define MDR_SN74HC595D_PIN_IND_IN       9
+#define MDR_SN74HC595D_PIN_IND_RCLK     10
+
+#define MDR_SN74HC595D_PIN_POWER        MDR_PIN_FAST
+
+
+//===============================   Определения для драйвера  ===========================
+//  Маски
+#define MDR_SN74HC595D_PIN_OE                (1UL << MDR_SN74HC595D_PIN_IND_OE)
+#define MDR_SN74HC595D_PIN_CLR               (1UL << MDR_SN74HC595D_PIN_IND_CLR)
+#define MDR_SN74HC595D_PIN_SRCLK             (1UL << MDR_SN74HC595D_PIN_IND_SRCLK)
+#define MDR_SN74HC595D_PIN_IN                (1UL << MDR_SN74HC595D_PIN_IND_IN)
+#define MDR_SN74HC595D_PIN_RCLK              (1UL << MDR_SN74HC595D_PIN_IND_RCLK)
+
+#define MDR_SN74HC595D_PIN_ALL      (MDR_SN74HC595D_PIN_OE | MDR_SN74HC595D_PIN_CLR | MDR_SN74HC595D_PIN_SRCLK | MDR_SN74HC595D_PIN_IN | MDR_SN74HC595D_PIN_RCLK)
+
+//  Функции управления пинами
+#define MDR_SN74HC595D_SET_0(mask)      MDR_Port_ClearPins(MDR_SN74HC595D_PORT->PORTx, mask)
+#define MDR_SN74HC595D_SET_1(mask)      MDR_Port_SetPins(MDR_SN74HC595D_PORT->PORTx, mask)
+
+#define MDR_SN74HC595D_OE_0             MDR_SN74HC595D_SET_0(MDR_SN74HC595D_PIN_OE)
+#define MDR_SN74HC595D_OE_1             MDR_SN74HC595D_SET_1(MDR_SN74HC595D_PIN_OE)
+#define MDR_SN74HC595D_CLR_0            MDR_SN74HC595D_SET_0(MDR_SN74HC595D_PIN_CLR)
+#define MDR_SN74HC595D_CLR_1            MDR_SN74HC595D_SET_1(MDR_SN74HC595D_PIN_CLR)
+#define MDR_SN74HC595D_SRCLK_0          MDR_SN74HC595D_SET_0(MDR_SN74HC595D_PIN_SRCLK)
+#define MDR_SN74HC595D_SRCLK_1          MDR_SN74HC595D_SET_1(MDR_SN74HC595D_PIN_SRCLK)
+#define MDR_SN74HC595D_IN_0             MDR_SN74HC595D_SET_0(MDR_SN74HC595D_PIN_IN)
+#define MDR_SN74HC595D_IN_1             MDR_SN74HC595D_SET_1(MDR_SN74HC595D_PIN_IN)
+#define MDR_SN74HC595D_RCLK_0           MDR_SN74HC595D_SET_0(MDR_SN74HC595D_PIN_RCLK)
+#define MDR_SN74HC595D_RCLK_1           MDR_SN74HC595D_SET_1(MDR_SN74HC595D_PIN_RCLK)
+
+
+#endif	//_MDR_SN74HC595D_CONFIG_H

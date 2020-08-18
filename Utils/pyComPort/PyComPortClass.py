@@ -83,6 +83,7 @@ class PyComPortForm(QtWidgets.QWidget, Ui_Form):
         self.cbxProtocol.currentIndexChanged.connect(self.setProtocol)
         self.cbxConvRx.currentIndexChanged.connect(self.setConvRx)
         self.cbxComSel.currentTextChanged.connect(self.changeComPort)
+        self.cbxComBaud.currentTextChanged.connect(self.changeComBaud)
         self.chbxLogTx.clicked.connect(self.switchLogTx)
 
     def setProtocol(self, index):
@@ -93,6 +94,9 @@ class PyComPortForm(QtWidgets.QWidget, Ui_Form):
 
     def changeComPort(self, text):  
       self.comThread.comPort = text
+
+    def changeComBaud(self, text):  
+      self.comThread.baud = int(text)  
 
     def showDataAsHex(self, data):
       logText = []
@@ -217,6 +221,8 @@ class PyComPortForm(QtWidgets.QWidget, Ui_Form):
         if lastCom in comList:
             self.cbxComSel.setEditText(lastCom)
             self.comThread.port = lastCom
+        elif len(comList) > 0:
+          self.comThread.port = comList[0]    
 
         if sBaudList in cfg.config:
           rates = cfg.config[sBaudList][sRates]

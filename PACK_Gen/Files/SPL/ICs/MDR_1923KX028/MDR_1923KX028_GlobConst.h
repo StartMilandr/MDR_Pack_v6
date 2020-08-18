@@ -15,6 +15,10 @@ extern const uint32_t MDR_KX028_AxiAddrETGPI[KX028_EMAC_NUMS];
 extern const uint32_t KX028_PortOffsStruct1[AXI_CLASS_PORT_COUNT];
 extern const uint32_t KX028_PortOffsStruct2[AXI_CLASS_PORT_COUNT];
 
+// SFP Global variables for MDR_1923KX028_M0_TransferPC.c
+extern uint8_t *g_pInfoSFP[SFP_COUNT];
+extern uint32_t g_EventsSFP;
+extern uint32_t g_PresenceSFP;
 
 
 

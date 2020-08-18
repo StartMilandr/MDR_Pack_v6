@@ -18,7 +18,7 @@ class ComPortTransf():
     self.comPort = None
     self.started = False
     # COM port settings
-    self.port = 'COM15'
+    self.port = 'COM16'
     self.baud = 115200
     self.timeoutRx = 0.5
     self.maxMessageLen = 1024

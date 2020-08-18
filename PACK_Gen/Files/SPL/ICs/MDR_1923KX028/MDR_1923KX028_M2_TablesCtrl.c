@@ -15,23 +15,23 @@ static void MDR_KX028_MAC_DeleteTableItem(MDR_KX028_MAC_TableItem_t *tableItem, 
   mac[5] =   tableItem->regMAC2 & 0xFF;
   vlanid = ( tableItem->regMAC2 >> 16 ) & 0xFFFF;
 
-// taskENTER_CRITICAL();
+  MDR_KX028_CRITSECT_ENTER;
   MDR_KX028_MAC_TableDel(mac, vlanid, waitCyclesMax);
-// taskEXIT_CRITICAL();            
+  MDR_KX028_CRITSECT_EXIT;
 }
 
 static inline void MDR_KX028_MAC_ReadTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry, uint32_t waitCyclesMax)
 {
-// taskENTER_CRITICAL();
+  MDR_KX028_CRITSECT_ENTER;
   MDR_KX028_MAC_TableRead(tableItem, entry, waitCyclesMax);
-// taskEXIT_CRITICAL();  
+  MDR_KX028_CRITSECT_EXIT;
 }
 
 static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tableItem, uint16_t entry, uint32_t waitCyclesMax)
 {
-// taskENTER_CRITICAL();
+  MDR_KX028_CRITSECT_ENTER;
   MDR_KX028_MAC_TableWrite(tableItem, entry, waitCyclesMax);
-// taskEXIT_CRITICAL();  
+  MDR_KX028_CRITSECT_EXIT;
 }
 
 
@@ -99,32 +99,12 @@ uint16_t MDR_KX028_M2_ProcessTablesAgeing(uint16_t framesToProcessMax, uint16_t 
 
 
 //========================   Frame Learning ==========================
-typedef struct {
-  uint8_t  ctrl;
-  uint8_t  portNum;
-  uint8_t  puntReason;
-  uint8_t  reserved;
-} MDR_KX028_FrameCtrl_Fields;
-
-typedef struct {
-  uint32_t   size;
-  union {
-    uint32_t                    ctrl;
-    MDR_KX028_FrameCtrl_Fields  ctrl_b;
-  };
-  uint32_t   destMAC;
-  uint32_t   destMAC_srcMAC;
-  uint32_t   srcMAC;
-  uint32_t   vlanTag;
-} MDR_KX028_FrameInfo;
-
 #define _ETH_TYPE_VLAN  0x8100
 #define IS_FRAME_VLAN_TAGGED(vlanTag)  ((vlanTag >> 16) & 0xFFFF ) == _ETH_TYPE_VLAN
 #define FRAME_GET_VLAN_ID(vlanTag)      (vlanTag) & 0x0FFF
  
 
-
-void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint32_t waitCyclesMax, uint16_t enabledPortList)
+void MDR_KX028_LearnFrame( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint32_t waitCyclesMax, uint16_t enabledPortList)
 {  
   uint32_t vlan_id, fwd_action;
   MDR_KX028_MAC_Entry_t  entryMAC = {.value = 0};
@@ -220,7 +200,7 @@ void fp_switch_host_learn( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
   }
 }
 
-static void free_buffers_of_packets( uint32_t start_packet_pointer, int32_t pck_size)
+void MDR_KX028_FreeFrameBMU( uint32_t start_packet_pointer, int32_t pck_size)
 {
   uint32_t tmp, next_buffer, offset, addrBMU;
   
@@ -255,7 +235,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax, u
 {   
     MDR_KX028_FrameInfo frmInfo;
       
-  // taskENTER_CRITICAL();
+    MDR_KX028_CRITSECT_ENTER;// taskENTER_CRITICAL();
 
     frameAddr &= KX028_FRAME_PTR_ADDR_MSK;
     frmInfo.size = MDR_KX028_ReadAXI(frameAddr + KX028_FRAME_SIZE_ADDR_OFFS) & KX028_FRAME_SIZE_MSK;
@@ -286,7 +266,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax, u
           case KX028_FRAME_PUNT_SA_MISS:
           case KX028_FRAME_PUNT_SA_RELEARN:
           case KX028_FRAME_PUNT_SA_IS_ACTIVE:
-            fp_switch_host_learn( &frmInfo, false, waitCyclesMax, enabledPortList);
+            MDR_KX028_LearnFrame( &frmInfo, false, waitCyclesMax, enabledPortList);
             break;          
           default:
           break;
@@ -295,13 +275,13 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax, u
     }
     
     // Free BMU buffers
-    free_buffers_of_packets(frameAddr, frmInfo.size);
+    MDR_KX028_FreeFrameBMU(frameAddr, frmInfo.size);
     // Free polling register
     MDR_KX028_WriteAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
     // Reset HGPI
     MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CTRL, AXI_GPI_CTRL_EN_Mks | AXI_GPI_CTRL_RESET_Mks );
     
-//    taskEXIT_CRITICAL();
+    MDR_KX028_CRITSECT_EXIT;//    taskEXIT_CRITICAL();
 }
 
 

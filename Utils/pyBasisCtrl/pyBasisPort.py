@@ -7,6 +7,8 @@ from pathlib import Path
 from PySide2.QtCore import QSettings
 from KX028_ItemPort import KX028_ItemPort
 
+COLUMN_COUNT    = 4
+
 ROW_PORT        = 0
 ROW_READ        = 1
 ROW_STAT        = 2
@@ -48,11 +50,11 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
         tableWidget_RestoreWidgets(self.tblPorts, settings)
 
     def initPortsTable(self):
-        colCnt = len(PORTS)
-        self.tblPorts.setColumnCount(colCnt)
+        #colCnt = COLUMN_COUNT
+        self.tblPorts.setColumnCount(COLUMN_COUNT)
         # Create Ctrls    
         portNames = BasisGetPortNames()
-        for i in range(colCnt):
+        for i in range(COLUMN_COUNT):
             tableWidget_AddComboBox(self.tblPorts, ROW_PORT, i, portNames, i, 'cbxPort_' + str(i))
             btn = tableWidget_AddPushButton(self.tblPorts,  ROW_READ, i, TEXT_BTN_READ, 'btRead_' + str(i))
             btn.clicked.connect(self.readItemPort)
@@ -68,7 +70,7 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
             btn.clicked.connect(self.writeItemPort)
         #rescale
         header = self.tblPorts.horizontalHeader()
-        for i in range(colCnt):
+        for i in range(COLUMN_COUNT):
             header.setSectionResizeMode(i,   QtWidgets.QHeaderView.Stretch)
         tableWidget_SetRowHeight(self.tblPorts, TABLE_ITEM_HEIGHT)
 
@@ -103,13 +105,16 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
         emac = self.tblPorts.cellWidget(ROW_PORT, col).currentIndex()
         #Read Config
         itemPort = self.comCLI.readPortCfg(emac)
-        self.GUI_SetItemPort(col, itemPort)
-        #Read LinkStatus
-        netStat = self.comCLI.readAxiRegList([ kx028_EmacAdr[emac] + EMAC_NETSTAT ])
-        if netStat != None:
-            self.tblPorts.item(ROW_STAT, col).setText(LinkState_Str[netStat[0] & EMAC_NETSTAT_LINK_Msk])
+        if itemPort != None:
+            self.GUI_SetItemPort(col, itemPort)
+            #Read LinkStatus
+            netStat = self.comCLI.readAxiRegList([ kx028_EmacAdr[emac] + EMAC_NETSTAT ])
+            if netStat != None:
+                self.tblPorts.item(ROW_STAT, col).setText(LinkState_Str[netStat[0] & EMAC_NETSTAT_LINK_Msk])
+            else:
+                self.tblPorts.item(ROW_STAT, col).setText('Error')
         else:
-            self.tblPorts.item(ROW_STAT, col).setText('Error')
+            print('readPort Fault')      
 
     def readItemPort(self):
         button = self.sender()

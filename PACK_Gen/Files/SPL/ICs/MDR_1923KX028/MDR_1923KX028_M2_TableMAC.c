@@ -75,7 +75,7 @@ MDR_KX028_MAC_Entry_t MDR_KX028_MAC_TableSearchByKey(MDR_KX028_KeyMAC_t *key, ui
 }
 
 
-static int32_t MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)  
+static bool MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)  
 {
     // Run Command
     AXI_WriteMAC_Key(classBaseAddr, &keyEntry->key);
@@ -86,18 +86,15 @@ static int32_t MDR_KX028_MAC_TableAddHW(uint32_t classBaseAddr, MDR_KX028_KeyEnt
     bool cmdOk = AXI_WaitCommandCompleted(classBaseAddr, AXI_HASH_STAT_CMD_DONE, &status, waitCyclesMax);
     AXI_ClearStatus(classBaseAddr);
 
-    if (cmdOk && ((status & AXI_HASH_STAT_ENTR_ADD) != 0))  
-      return 0;
-    else
-      return -1;
+    return cmdOk && ((status & AXI_HASH_STAT_ENTR_ADD) != 0);
 }
 
 bool MDR_KX028_MAC_TableAddByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
-  int32_t errCnt =  MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax)
-                  + MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
+  bool okClass1 = MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax);
+  bool okClass2 = MDR_KX028_MAC_TableAddHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
   
-  return errCnt == 0;
+  return okClass1 && okClass2;
 }
 
 
@@ -138,9 +135,9 @@ bool MDR_KX028_MAC_TableUpdateHW(uint32_t classBaseAddr, MDR_KX028_KeyEntryMAC_t
 
 bool MDR_KX028_MAC_TableUpdateByKey(MDR_KX028_KeyEntryMAC_t *keyEntry, uint32_t waitCyclesMax)
 {
-  uint32_t errCnt = MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax)
-                  + MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
-  return errCnt == 0;
+  bool okClass1 = MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW1_BASE_ADDR, keyEntry, waitCyclesMax);
+  bool okClass2 = MDR_KX028_MAC_TableUpdateHW(AXI_CLASS_HW2_BASE_ADDR, keyEntry, waitCyclesMax);
+  return okClass1 && okClass2;
 }
 
 #define REG4_COLL_PTR_ADDR_START   ((CFG_MAC_TABLE_START_ADDR + CFG_MAC_TABLE_COLL_HEAD_PTR) << KX028_ItemMAC_REG4_CollizPtr_Pos)

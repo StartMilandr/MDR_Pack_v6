@@ -63,7 +63,7 @@ void MDR_1923KX028_ReadAXI_Begin(MDR_1923KX028_Obj *objKX028, uint32_t addr)
   MDR_1923KX028_CS_SetActive(objKX028);
   
   //  Write Addr and dummy byte
-  MDR_SSP_WriteData(SSPx,  MDR_1923KX028_CMD_AXI_WR);  
+  MDR_SSP_WriteData(SSPx,  MDR_1923KX028_CMD_AXI_RD);  
   MDR_SSP_WriteData(SSPx, (uint8_t)(addr >> 16));
   MDR_SSP_WriteData(SSPx, (uint8_t)(addr >> 8));
   MDR_SSP_WriteData(SSPx, (uint8_t)(addr >> 0));
@@ -92,7 +92,7 @@ uint32_t MDR_1923KX028_ReadAXI_Next(MDR_1923KX028_Obj *objKX028)
   pRes[1] = (uint8_t)MDR_SSP_ReadData(SSPx);
   pRes[0] = (uint8_t)MDR_SSP_ReadData(SSPx);
 
-  MDR_1923KX028_CS_SetInactive(objKX028);
+//  MDR_1923KX028_CS_SetInactive(objKX028);
   
   return result;
 }

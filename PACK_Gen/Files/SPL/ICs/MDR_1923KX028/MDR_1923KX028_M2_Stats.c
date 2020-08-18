@@ -11,7 +11,7 @@ static void MDR_KX028_UpdateStatsEMAC(uint32_t emacBaseAddr, uint32_t egpiBaseAd
 {
     uint64_t bytes = 0, tmp;
     
-//  taskENTER_CRITICAL();
+    MDR_KX028_CRITSECT_ENTER;//  taskENTER_CRITICAL();
   
     MDR_KX028_ReadBeginAXI( emacBaseAddr + 0x100 );
     bytes = MDR_KX028_ReadNextAXI_64();                     // 0x100
@@ -69,7 +69,7 @@ static void MDR_KX028_UpdateStatsEMAC(uint32_t emacBaseAddr, uint32_t egpiBaseAd
     
     item->rx_dropped = MDR_KX028_ReadAXI( egpiBaseAddr + 0x06C );
     
-//    taskEXIT_CRITICAL();
+    MDR_KX028_CRITSECT_EXIT;//    taskEXIT_CRITICAL();
 }
 
 
@@ -343,7 +343,7 @@ void MDR_KX028_M2_UpdateStatsClassHW(uint32_t selEMACs)
     uint32_t rdAddr;
     uint32_t emac, emacSel, ecntr;
     
-//    taskENTER_CRITICAL();
+    MDR_KX028_CRITSECT_ENTER;//    taskENTER_CRITICAL();
     
     ulClassConfig = MDR_KX028_ReadAXI(AXI_WSP_GLOBAL_BASE_ADDR + AXI_WSP_EMAC_CLASS_CONFIG); // 0 - CLASS1, 1 - CLASS2
     
@@ -370,7 +370,7 @@ void MDR_KX028_M2_UpdateStatsClassHW(uint32_t selEMACs)
     }
     MDR_KX028_ReadSequenceStop();
     
-//    taskEXIT_CRITICAL();
+    MDR_KX028_CRITSECT_EXIT;//    taskEXIT_CRITICAL();
 }
 
 

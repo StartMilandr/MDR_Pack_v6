@@ -9,6 +9,8 @@ from KX028_ItemPort import KX028_ItemPort
 from pyBasisRes import kx028_AddrStruc1, kx028_AddrStruc2, CLASS1_BASE_ADDR
 
 
+DEBUG_MODE = False
+
 #Commands
 cliCMD_NONE           = 0
 cliCMD_ERROR          = 1
@@ -64,9 +66,9 @@ BUF_RX_LEN = 1024
 HDR_LEN       = 2
 ACK_PARS_OFFS = 2
 
-CFG_MAC_TABLE_ITEMS_COUNT  = 4
-CFG_MAC_ITEMS_RD_ITER      = 4
-CFG_VLAN_TABLE_ITEMS_COUNT = 2
+CFG_MAC_TABLE_ITEMS_COUNT  = 4095 #8192
+CFG_MAC_ITEMS_RD_ITER      = 16
+CFG_VLAN_TABLE_ITEMS_COUNT = 128
 CFG_VLAN_ITEMS_RD_ITER     = 4
 
 def IsEvenNum(num):
@@ -147,6 +149,7 @@ class KX028_CLI:
     return resOK 
 
   def readActiveItemsMAC(self, fromHashAddr, rdCount, itemsList):
+    #print('RdFrom: {} Count: {}'.format(fromHashAddr, rdCount))
     offs = self.packHeader(cliCMD_ReadMAC, 4)
     struct.pack_into("HH", self.buffTx, offs, fromHashAddr, rdCount)
     resOK = self.transfer(cliCMD_ReadMAC, cliACK_MinLen_1)
@@ -187,6 +190,16 @@ class KX028_CLI:
     return rdItemsCnt 
 
   def ReadTableMAC(self):
+    # itemsList = []
+    # fromHashAddr = 0
+    # while fromHashAddr < CFG_MAC_TABLE_ITEMS_COUNT:
+    #   if fromHashAddr + CFG_MAC_ITEMS_RD_ITER < CFG_MAC_TABLE_ITEMS_COUNT:
+    #     rdCount = CFG_MAC_ITEMS_RD_ITER
+    #   else:
+    #     rdCount = CFG_MAC_TABLE_ITEMS_COUNT - fromHashAddr
+    #   self.readActiveItemsMAC(fromHashAddr, rdCount, itemsList)  
+    #   fromHashAddr += rdCount
+
     cntToRead = CFG_MAC_TABLE_ITEMS_COUNT
     itemsList = []
     fromHashAddr = 0
@@ -350,8 +363,15 @@ class KX028_CLI:
 
 
   def readPortCfg(self, emac):
-    addrs = [CLASS1_BASE_ADDR + kx028_AddrStruc1[emac], CLASS1_BASE_ADDR + kx028_AddrStruc2[emac]]
+    if not DEBUG_MODE:
+      addrs = [CLASS1_BASE_ADDR + kx028_AddrStruc1[emac], CLASS1_BASE_ADDR + kx028_AddrStruc2[emac]]
+    else:
+      addrs = [kx028_AddrStruc1_dbg[emac], kx028_AddrStruc1_dbg[emac]]
     values = self.readAxiRegList(addrs)
-    itemPort = KX028_ItemPort()
-    itemPort.unpackFromRegs(values[0], values[1])
-    return itemPort
+    if len(values) > 1:
+      itemPort = KX028_ItemPort()
+      itemPort.unpackFromRegs(values[0], values[1])
+      return itemPort
+    else:
+      return None
+

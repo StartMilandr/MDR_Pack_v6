@@ -27,4 +27,27 @@ void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32_t waitCyclesM
 uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_t waitCyclesMax, uint16_t enabledPortList);
 
 
+
+typedef struct {
+  uint8_t  ctrl;
+  uint8_t  portNum;
+  uint8_t  puntReason;
+  uint8_t  reserved;
+} MDR_KX028_FrameCtrl_Fields;
+
+typedef struct {
+  uint32_t   size;
+  union {
+    uint32_t                    ctrl;
+    MDR_KX028_FrameCtrl_Fields  ctrl_b;
+  };
+  uint32_t   destMAC;
+  uint32_t   destMAC_srcMAC;
+  uint32_t   srcMAC;
+  uint32_t   vlanTag;
+} MDR_KX028_FrameInfo;
+
+void MDR_KX028_LearnFrame( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint32_t waitCyclesMax, uint16_t enabledPortList);
+void MDR_KX028_FreeFrameBMU( uint32_t start_packet_pointer, int32_t pck_size);
+
 #endif  //MDR_1923KX029_M2_TABLES_CTRL_H

@@ -12,8 +12,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 //  Redefine Functions
 //#define MDR_KX028_DelayMs(x)
-#define MDR_KX028_CRITSECT_ENTER
-#define MDR_KX028_CRITSECT_LEAVE
+#define MDR_KX028_CRITSECT_ENTER    (void)(0)
+#define MDR_KX028_CRITSECT_EXIT     (void)(0)
 
 
 //  Port Init Settings
@@ -370,6 +370,22 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_VLAN_TABLE_ENTRIES                  (CFG_VLAN_TABLE_HASH_ENTRIES + CFG_VLAN_TABLE_COLL_ENTRIES)
 #define CFG_VLAN_TABLE_INIT_HEAD_PTR            0x40
 #define CFG_VLAN_TABLE_INIT_TAIL_PTR            (CFG_VLAN_TABLE_HASH_ENTRIES + CFG_VLAN_TABLE_COLL_ENTRIES - 1)
+
+
+//======================= SFP modules on board  ==================
+#ifndef SFP_COUNT
+  #define SFP_COUNT  1
+#endif
+
+
+//======================= PCI Config  ==================
+#define CFG_PCIE_VENDOR_ID   0x16c3
+#define CFG_PCIE_DEVICE_ID   0x0bad
+
+#define CFG_PCIE_REVISION_ID            0
+#define CFG_PCIE_PROGRAM_INTERFACE      0
+#define CFG_PCIE_SUBCLASS_CODE          0
+#define CFG_PCIE_BASE_CLASS_CODE        2
 
 
 #endif  //MDR_1923KX028_CONFIG_H_

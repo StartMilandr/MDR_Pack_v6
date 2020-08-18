@@ -72,27 +72,26 @@ static inline void DrvCmd_GetTemp()
 static void DrvCmd_GetEventsSFP()
 {
   uint32_t events_dummy = 0;
-//  uint32_t events = SFP_GetEventsAndClear();
-//  events = EventsSFP_to_Data(events, g_PresenceSFP);
+  uint32_t events = SFP_GetEventsAndClear();
+  events = EventsSFP_to_Data(events, g_PresenceSFP);
   
   DrvWriteData1(events_dummy);
 }
 
-
 static void DrvCmd_GetDataSFP(uint32_t cmdReg)
 {
-//  uint32_t indSFR = CmdPar_To_IndSFR(cmdReg);
-//  uint32_t offs = CmdPar_To_Offs(cmdReg);
-//  uint32_t cnt = CmdPar_To_RdCnt(cmdReg);
-//  
-//  const uint8_t *pBytes = SFP_pInfo[indSFR];
-//  pBytes += offs;
-//  uint32_t *pUint32 = (uint32_t *)pBytes;
-//  
-//  if (cnt > 0)
-//    DrvWriteData1(__REV(pUint32[0]));
-//  if (cnt > 4)
-//    DrvWriteData2(__REV(pUint32[1]));
+  uint32_t indSFR = CmdPar_To_IndSFR(cmdReg);
+  uint32_t offs = CmdPar_To_Offs(cmdReg);
+  uint32_t cnt = CmdPar_To_RdCnt(cmdReg);
+  
+  uint8_t *pBytes = g_pInfoSFP[indSFR];
+  pBytes += offs;
+  uint32_t *pUint32 = (uint32_t *)pBytes;
+  
+  if (cnt > 0)
+    DrvWriteData1(__REV(pUint32[0]));
+  if (cnt > 4)
+    DrvWriteData2(__REV(pUint32[1]));
   
   uint16_t dummy1 = 0xAA; 
   uint16_t dummy2 = 0xBB; 
@@ -100,15 +99,15 @@ static void DrvCmd_GetDataSFP(uint32_t cmdReg)
   DrvWriteData2(dummy2);
 }
 
-static void DrvCmd_PhyReset(uint32_t cmdReg)
-{
+//static void DrvCmd_PhyReset(uint32_t cmdReg)
+//{
 //  uint32_t selPHY = CmdPar_To_SelPHY(cmdReg);
 //  
 //  if (CmdPar_To_BoolPHY(cmdReg))
 //    ShiftSetValue(g_ShiftLastValue | selPHY);
 //  else
 //    ShiftSetValue(g_ShiftLastValue & (~selPHY));
-}
+//}
 
 void DrvCmd_SetTest(void)
 {
@@ -135,7 +134,7 @@ void MDR_KX028_M0_TransferPC(void)
     case CID_GET_TEMP:    DrvCmd_GetTemp(); break;
     case CID_SFP_EVENTS:  DrvCmd_GetEventsSFP(); break;
     case CID_SFP_DATA:    DrvCmd_GetDataSFP(cmdReg); break;
-    case CID_PHY_RESET:   DrvCmd_PhyReset(cmdReg); break;
+    //case CID_PHY_RESET:   DrvCmd_PhyReset(cmdReg); break;
     case CID_TEST:        DrvCmd_SetTest(); break;
     default:              {
       DrvWriteData1(cmdReg);

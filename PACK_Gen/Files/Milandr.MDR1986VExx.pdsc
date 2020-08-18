@@ -1752,8 +1752,22 @@
         <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Stats.c" />
       </files>
     </component>    
-
+    <component Cclass="IC Drivers" Cgroup="SN74HC595D" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>SN74HC595D Shift Register control</description>
+      <files>
+        <file category="header"  name="SPL/ICs/MDR_SN74HC595D_ShiftReg.h" />
+        <file category="source"  name="SPL/ICs/MDR_SN74HC595D_ShiftReg.c" />
+        <file category="header"  name="SPL/ICs/Configs/MDR_SN74HC595D_ShiftReg_Config.h" attr="config" version="2.0.0"/>
+      </files>
+    </component>
     <!--Boards-->
+    <component Cclass="Board Support" Cgroup="BoardDefs" Cversion="2.0" condition="CON_MDR_ALL">
+      <description>Board resource defines</description>
+      <files>
+        <file category="include" name="SPL/Boards/Defines/"    version="2.0.0"/>
+        <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
+      </files>
+    </component> 
     <component Cclass="Board Support" Cgroup="LED" Cversion="2.0" condition="CON_MDR_ALL">
       <description>LED flasher control</description>
       <files>
@@ -2273,7 +2287,7 @@
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="Soft_I2C_byTimer.uvprojx"/></project>
     </example>
-    <example name="I2C_Soft_ReadInfoSFP" folder="Examples\All_Boards\I2C_Soft_ReadInfoSFP" doc="ReadMe.md" version="2.0.0">
+    <example name="I2C_Soft_ReadInfoSFP" folder="Examples/All_Boards/I2C_Soft_ReadInfoSFP" doc="ReadMe.md" version="2.0.0">
       <description>Reads info from SFP by software I2C</description>
       <board name="All_Boards" vendor="Milandr"/>
       <project><environment name="uv" load="I2C_Soft_ReadInfoSFP.uvprojx"/></project>

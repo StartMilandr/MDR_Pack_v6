@@ -110,6 +110,7 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
             #Read LinkStatus
             netStat = self.comCLI.readAxiRegList([ kx028_EmacAdr[emac] + EMAC_NETSTAT ])
             if netStat != None:
+                print(hex(netStat[0]))
                 self.tblPorts.item(ROW_STAT, col).setText(LinkState_Str[netStat[0] & EMAC_NETSTAT_LINK_Msk])
             else:
                 self.tblPorts.item(ROW_STAT, col).setText('Error')

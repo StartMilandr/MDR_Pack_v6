@@ -175,7 +175,7 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btConnect.setText('Press to Connect')
 
     def changeComPort(self, text):  
-      self.comTransf.comPort = text
+      self.comTransf.portName = text
 
     def changeComBaud(self, text):  
       self.comTransf.baud = int(text)

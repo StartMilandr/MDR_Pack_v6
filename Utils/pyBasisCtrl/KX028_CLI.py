@@ -190,16 +190,6 @@ class KX028_CLI:
     return rdItemsCnt 
 
   def ReadTableMAC(self):
-    # itemsList = []
-    # fromHashAddr = 0
-    # while fromHashAddr < CFG_MAC_TABLE_ITEMS_COUNT:
-    #   if fromHashAddr + CFG_MAC_ITEMS_RD_ITER < CFG_MAC_TABLE_ITEMS_COUNT:
-    #     rdCount = CFG_MAC_ITEMS_RD_ITER
-    #   else:
-    #     rdCount = CFG_MAC_TABLE_ITEMS_COUNT - fromHashAddr
-    #   self.readActiveItemsMAC(fromHashAddr, rdCount, itemsList)  
-    #   fromHashAddr += rdCount
-
     cntToRead = CFG_MAC_TABLE_ITEMS_COUNT
     itemsList = []
     fromHashAddr = 0

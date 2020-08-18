@@ -18,15 +18,16 @@ class ComPortTransf():
     self.comPort = None
     self.started = False
     # COM port settings
-    self.port = 'COM16'
+    self.portName = 'COM16'
     self.baud = 115200
     self.timeoutRx = 0.5
     self.maxMessageLen = 1024
 
   def start(self):
     try:
-      self.comPort = serial.Serial(port=self.port, baudrate=self.baud, timeout=self.timeoutRx)
+      self.comPort = serial.Serial(port=self.portName, baudrate=self.baud, timeout=self.timeoutRx)
       if self.comPort.is_open:
+        print('{} opened at {}'.format(self.portName, self.baud))
         self.started = True
     except Exception as e:
       print(e)

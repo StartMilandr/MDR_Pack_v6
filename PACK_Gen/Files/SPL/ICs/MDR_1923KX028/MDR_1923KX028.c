@@ -275,6 +275,14 @@ void     MDR_KX028_ReadEndAXI_def(void)
   MDR_1923KX028_ReadAXI_End(&_objKX028);
 }
 
+uint32_t MDR_KX028_MaskAXI_def(uint32_t addr, uint32_t clrMask, uint32_t setMask)
+{
+  uint32_t regValue = MDR_1923KX028_ReadAXI(&_objKX028, addr);
+  regValue &= ~clrMask;
+  regValue |= setMask;
+  MDR_1923KX028_WriteAXI(&_objKX028, addr, regValue);
+  return regValue;
+}
 
 void MDR_KX028_ReadByAddrList(uint16_t count, const uint32_t addrBase, const uint32_t *addrList, uint32_t *rdData)
 {

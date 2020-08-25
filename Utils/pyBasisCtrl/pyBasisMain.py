@@ -8,6 +8,7 @@ from pyBasisMAC import PyBasisWindowMAC
 from pyBasisVLAN import PyBasisWindowVLAN
 from pyBasisPort import PyBasisWindowPort
 from pyBasisStats import PyBasisWindowStats
+from pyBasisDebug import PyBasisWindowDebug
 from pyWidgetsStyles import dockWidgetStyles
 
 from PyComUtils import Com_GetSerialPorts, Com_Speeds
@@ -58,6 +59,7 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.toolBarViews.addAction('VLAN Table', self.CreateViewVLAN)
         self.toolBarViews.addAction('Ports', self.CreateViewPort)
         self.toolBarViews.addAction('Statistics', self.CreateViewStats)
+        self.toolBarViews.addAction('Debug', self.CreateViewDebug)
         # Toolbars - Connect
         self.toolBarCom = self.addToolBar('Connect')
 
@@ -156,8 +158,11 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       window.AssighCLI(self.comCLI)
       self.addDockedWidget(window, "Table Statistics", Qt.RightDockWidgetArea)
 
-    def CreateViewStatistic(self):
-      print('Create Statistics')
+    def CreateViewDebug(self):
+      window = PyBasisWindowDebug(self)
+      window.comCLI = self.comCLI
+      self.addDockedWidget(window, "Debug", Qt.LeftDockWidgetArea)
+
 
     def ComConnect(self):
       if not self.comTransf.started:

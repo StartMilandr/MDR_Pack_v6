@@ -81,5 +81,16 @@ void MDR_JTAG_IR_WriteDR_Paused(uint32_t bitLenIR, uint32_t instr, uint32_t bitL
 void MDR_JTAG_IR_ReadDR_Paused(uint32_t bitLenIR, uint32_t instr, uint32_t bitLenDR, uint32_t *data, uint32_t instPauseCnt, uint32_t dataPauseCnt);
 
 
+//  ================    For 1986VE1 ===============
+
+#define MDR_JTAG_VE1_IR_LEN            8
+#define MDR_JTAG_VE1_IR_IDCODE      0x02
+#define MDR_JTAG_VE1_DR_IDCODE_LEN    32
+
+
+static inline uint32_t MDR_JTAG_1986VE1_Read_IDCODE(void)
+{    
+  return MDR_JTAG_IR_ReadDR(MDR_JTAG_VE1_IR_LEN, MDR_JTAG_VE1_IR_IDCODE, MDR_JTAG_VE1_DR_IDCODE_LEN);
+}
 
 #endif  //  _JTAG_GPIO_H

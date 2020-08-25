@@ -75,10 +75,23 @@ typedef __PACKED_STRUCT {
   MDR_KX028_MAC_Entry_t entry;
 } MDR_KX028_KeyEntryMAC_t;
 
+__STATIC_INLINE void MDR_KX028_MAC_FillKeyR(uint32_t macHi32, uint16_t macLo16, uint16_t vlanId, MDR_KX028_KeyMAC_t *key)
+{
+  key->regs.valReg1 =   macHi32;
+  key->regs.valReg2 = ((vlanId << 16) & 0xFFFF0000) | macLo16;
+}
+
 __STATIC_INLINE void MDR_KX028_MAC_FillKey(uint8_t *mac, uint16_t vlanId, MDR_KX028_KeyMAC_t *key)
 {
+  // MAC: 0x112233445566  R1 = 0x11223344  R2 = 0x00005566
   key->regs.valReg1 =   mac[0] << 24 | mac[1] << 16 | mac[2] << 8 | mac[3];
   key->regs.valReg2 = ((vlanId << 16) & 0xFFFF0000) | mac[4] << 8 | mac[5];
+}
+
+__STATIC_INLINE void MDR_KX028_MAC_FillKeyEntryR(uint32_t macHi32, uint16_t macLo16, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, MDR_KX028_KeyEntryMAC_t *keyEntry)
+{
+  MDR_KX028_MAC_FillKeyR(macHi32, macLo16, vlanId, &keyEntry->key);
+  keyEntry->entry = entry;
 }
 
 __STATIC_INLINE void MDR_KX028_MAC_FillKeyEntry(uint8_t *mac, uint16_t vlanId, MDR_KX028_MAC_Entry_t entry, MDR_KX028_KeyEntryMAC_t *keyEntry)
@@ -303,15 +316,15 @@ typedef struct {
 #endif
 /* =========================================  End of section using anonymous unions  ========================================= */
 
-#define KX028_MAC_ITEM_IS_ACTIVE(item)         (item).regMAC4 & KX028_ItemMAC_REG4_IsActive_Msk
-#define KX028_MAC_ITEM_IS_HAS_COLLISION(item)  (item).regMAC4 & KX028_ItemMAC_REG4_IsValidCollPtr_Msk
-#define KX028_MAC_ITEM_IS_FRESH(item)          (item).regMAC3 & KX028_ItemMAC_REG3_IsFresh_Msk
-#define KX028_MAC_ITEM_IS_STATIC(item)         (item).regMAC3 & KX028_ItemMAC_REG3_IsStatic_Msk
+#define KX028_MAC_ITEM_IS_ACTIVE(item)         ((item).regMAC4 & KX028_ItemMAC_REG4_IsActive_Msk)
+#define KX028_MAC_ITEM_IS_HAS_COLLISION(item)  ((item).regMAC4 & KX028_ItemMAC_REG4_IsValidCollPtr_Msk)
+#define KX028_MAC_ITEM_IS_FRESH(item)          ((item).regMAC3 & KX028_ItemMAC_REG3_IsFresh_Msk)
+#define KX028_MAC_ITEM_IS_STATIC(item)         ((item).regMAC3 & KX028_ItemMAC_REG3_IsStatic_Msk)
 
 #define KX028_MAC_ITEM_COLLIS_PTR(item)        _FLD2VAL(KX028_ItemMAC_REG4_IsValidCollPtr, (item).regMAC4)
 
-#define KX028_MAC_ITEM_SET_FRESH(item)          (item).regMAC3 |= KX028_ItemMAC_REG3_IsFresh_Msk
-#define KX028_MAC_ITEM_SET_STATIC(item)         (item).regMAC3 |= KX028_ItemMAC_REG3_IsStatic_Msk
+#define KX028_MAC_ITEM_SET_FRESH(item)          ((item).regMAC3 |= KX028_ItemMAC_REG3_IsFresh_Msk)
+#define KX028_MAC_ITEM_SET_STATIC(item)         ((item).regMAC3 |= KX028_ItemMAC_REG3_IsStatic_Msk)
 
 
 #define MDR_KX028_MAC_TABLE_LEN     8192

@@ -430,6 +430,7 @@ typedef __PACKED_STRUCT{
 
 #define MDR_ETH_PHY_R0_Reserved_Msk           0x00FF
 
+#define MDR_ETH_PHY_R0_100FD_AUTO     (MDR_ETH_PHY_R0_FULL_DUPLEX_Msk | MDR_ETH_PHY_R0_AUTONEG_ENA_Msk | MDR_ETH_PHY_R0_100Mbps_Msk)
 
 //  Register R1 - RO Base Status
 #define MDR_ETH_PHY_R1                        1

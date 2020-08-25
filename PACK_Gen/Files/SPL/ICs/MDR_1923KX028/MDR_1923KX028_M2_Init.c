@@ -59,22 +59,22 @@ void MDR_KX028_InitEMAC_GEM(MDR_KX028_EMAC_e emac)
   // 4 - Programming the upper 16bit DA address mask register to accept all packets.
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_Hi, 0x0000FFFF );
   // 5 - Enable Stacked VLAN Processing mode.
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN,       CFG_EMAC_GEM_VLAN_EN);
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN, CFG_EMAC_GEM_VLAN_EN);
 }
 
 //  from Demo-Board MAC Init
 void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
 {
-//  EMAC 
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_IER,  0x00010200 );       // enable interrupts at: pcs_autoneg_compete, pcs_link_change
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk );
+////  EMAC 
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_IER,  0x00010200 );       // enable interrupts at: pcs_autoneg_compete, pcs_link_change
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_CTRL, AXI_EMAC_CTRL_PORT_DIS_Msk );
 
-//  next 2 string is new in 1.1 version of firmware
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_ADV,   0x00008020 );       //EMAC support full duplex via SGMII, next page support
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_NT_TX, 0x00002001 );       //EMAC has not next page
-         
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG,      0x083F0C12 );       // 1G, SGMII mode, jumbo frames disable, 1536 bytes frame disable, reject error packets...      
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_TSU_TIM_INC, 0x00000014 );
+////  next 2 string is new in 1.1 version of firmware
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_ADV,   0x00008020 );       //EMAC support full duplex via SGMII, next page support
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_PCS_AN_NT_TX, 0x00002001 );       //EMAC has not next page
+//         
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG,      0x083F0C12 );       // 1G, SGMII mode, jumbo frames disable, 1536 bytes frame disable, reject error packets...      
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_TSU_TIM_INC, 0x00000014 );
 
   //  EMAC_GEM
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_ADDR_LO, 0x00000000 );
@@ -144,7 +144,7 @@ void MDR_KX028_InitEGPI_Ex(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM2_FREE_ADDR,    CBUS_BASE_ADDR | AXI_BMU2_BASE_ADDR | AXI_BMU_FREE_CTRL);         //0xC0700034 );    
   //MDR_KX028_WriteAXI ( MDR_KX028_AxiAddrEGP[emac] + AXI_GPI_DDR_DATA_OFFSET, 0x00000100 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_DATA_OFFSET,   0x00000010 );
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE );
+//  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET, CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE );
 }
 
 void MDR_KX028_InitETGPI(MDR_KX028_EMAC_e emac)
@@ -246,6 +246,7 @@ void MDR_KX028_InitClassHW1_Ex(void)
           CFG_HW1_Q_ETGS_COS,
           CFG_HW1_DISCARD_COS
           ));     //{ 0x006204FC, 0x01011000 },	//CLASS_NPU_CTRL
+  
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_NPU_CTRL1, AXI_CLASS_NPU_CTRL1_FILL(CFG_HW1_PUNT_PORT));	  //{ 0x006207F0, 0x00000100 },	//CLASS_NPU_CTRL1	HIF - port 16 (count to 0)
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_INQ_AFULL_THRES, CFG_BUF_WATERMARK_AFULL);                 //{ 0x00620290, BUFFERS_WATERMARK_AFULL },	//CLASS_ING_AFULL_THRES
   MDR_KX028_WriteAXI(AXI_CLASS_HW1_BASE_ADDR + AXI_CLASS_USE_TMU_INQ,     CFG_HW1_USE_TMU_INQ);	                    //{ 0x00620250, 0x00000001 },	              //CLASS_USE_TMU_INQ
@@ -319,12 +320,12 @@ void MDR_KX028_InitTMU(void)
   
   //  CONTEXT MEMORY INITIALISATION
   uint32_t queInd;
-  MDR_KX028_EMAC_e emac;
-  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; emac++)
+  uint32_t port;
+  for (port = 0; port < AXI_CLASS_PORT_COUNT; port++)
     for (queInd = 0; queInd < AXI_TMU_PHY_QUEUE_COUNT; queInd++ )
     {
       // 19 - Select Queue
-      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(emac, queInd));
+      MDR_KX028_WriteAXI( ( AXI_TMU_BASE_ADDR + AXI_TMU_PHY_QUEUE_SEL ), AXI_PHY_QUEUE_SEL_FILL(port, queInd));
       
       // 20 - Resetting current queue pointer.
       MDR_KX028_WriteAXI( AXI_TMU_BASE_ADDR + AXI_TMU_CURQ_PTR,         0x00000000 );
@@ -453,9 +454,9 @@ static void MDR_KX028_EnableEMACs(void)
 
 
 __STATIC_INLINE void MDR_KX028_EnableBMU(void)   { MDR_KX028_SetCtrlBMU_All(AXI_BMU_CTRL_EN_Msk); }
-__STATIC_INLINE void MDR_KX028_EnableEGPI(void)  { MDR_KX028_SetCtrlEGPI_All(AXI_GPI_CTRL_EN_Mks); }
-__STATIC_INLINE void MDR_KX028_EnableHGPI(void)  { MDR_KX028_SetCtrlHGPI(AXI_GPI_CTRL_EN_Mks); }
-__STATIC_INLINE void MDR_KX028_EnableETGPI(void) { MDR_KX028_SetCtrlETGPI_All(AXI_GPI_CTRL_EN_Mks); }
+__STATIC_INLINE void MDR_KX028_EnableEGPI(void)  { MDR_KX028_SetCtrlEGPI_All(AXI_GPI_CTRL_EN_Msk); }
+__STATIC_INLINE void MDR_KX028_EnableHGPI(void)  { MDR_KX028_SetCtrlHGPI(AXI_GPI_CTRL_EN_Msk); }
+__STATIC_INLINE void MDR_KX028_EnableETGPI(void) { MDR_KX028_SetCtrlETGPI_All(AXI_GPI_CTRL_EN_Msk); }
 __STATIC_INLINE void MDR_KX028_EnableClass(void) { MDR_KX028_SetCtrlCLASS_All(AXI_CLASS_TX_CTRL_EN_Msk); }
 
 void MDR_KX028_EnableBlocks(void)
@@ -528,3 +529,53 @@ void MDR_KX028_SysSoftReset(MDR_KX028_DelayMs DelayFunc)
 }
 
 
+//===================   EMACs MDIO Control  ==========================
+void MDR_KX028_MDIO_Init(MDR_KX028_EMAC_e emac, MDR_KX028_MDC_DIV divMDC)
+{
+  //  Set Clock Divider
+  MDR_KX028_MaskAXI_def(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCFG, AXI_EMAC_NETCFG_MDC_DIV_Msk, _VAL2FLD(AXI_EMAC_NETCFG_MDC_DIV, divMDC));    
+  //  Enable MDC Output
+  MDR_KX028_MaskAXI_def(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_NETCTRL, AXI_EMAC_NETCTRL_MANAG_EN_Msk, AXI_EMAC_NETCTRL_MANAG_EN_Msk);
+}
+
+//It takes about 2000 pclk cycles to complete, when MDC is set for pclk divide by 32 in the network configuration register
+bool MDR_KX028_MDIO_Write(MDR_KX028_EMAC_e emac, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t value, uint32_t delayTicks_10us)
+{
+  uint32_t regValue = AXI_EMAC_MDIO_FILL_WRITE(addrPHY, addrRegInPHY, value, CFG_EMAC_PHY_CLAUSE_22);
+  
+  MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN, regValue);  
+  if (delayTicks_10us > 0)
+    MDR_Delay(delayTicks_10us);
+  
+  uint32_t ackRegValue = MDR_KX028_ReadAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN);
+  return ((regValue ^ ackRegValue) & (~AXI_EMAC_MDIO_VERIF_MSK)) == 0;
+}
+  
+bool MDR_KX028_MDIO_Read(MDR_KX028_EMAC_e emac, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t *value, uint32_t delayTicks_10us)
+{
+  uint32_t regValue = AXI_EMAC_MDIO_FILL_READ(addrPHY, addrRegInPHY, CFG_EMAC_PHY_CLAUSE_22);
+  
+  MDR_KX028_WriteAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN, regValue);
+  if (delayTicks_10us > 0)
+    MDR_Delay(delayTicks_10us);
+  
+  uint32_t ackRegValue = MDR_KX028_ReadAXI(MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN);  
+  
+  bool rdOk = ((regValue ^ ackRegValue) & (~AXI_EMAC_MDIO_VERIF_MSK)) == 0;
+  if (rdOk)
+    *value = (uint16_t)ackRegValue;    
+  return rdOk;
+}
+
+bool MDR_KX028_MDIO_Mask(MDR_KX028_EMAC_e emac, uint16_t addrPHY, uint16_t addrRegInPHY, uint16_t clrMask, uint16_t setMask, uint32_t delayTicks_10us)
+{
+  uint16_t regValue;
+  if (MDR_KX028_MDIO_Read(emac, addrPHY, addrRegInPHY, &regValue, delayTicks_10us))
+  {
+    regValue &= ~clrMask;
+    regValue |= setMask;
+    return MDR_KX028_MDIO_Write(emac, addrPHY, addrRegInPHY, regValue, delayTicks_10us);
+  }
+  else
+    return false;    
+}

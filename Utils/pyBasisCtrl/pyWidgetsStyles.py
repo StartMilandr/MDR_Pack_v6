@@ -5,6 +5,8 @@ comboBoxStyles_DropDown = 'QComboBox::drop-down { subcontrol-origin: padding; su
 comboBoxStyles_DropDown_SpinW = 'QComboBox::drop-down { subcontrol-origin: padding; subcontrol-position: top right; width: 18px; \
                             border-left-width: 1px; border-left-color: darkgray; border-left-style: solid;}'
 
+comboBox_ColorGreen = 'QComboBox {color: green; font-weight: bold;}'
+
 lineEditStyles = 'QLineEdit {border: 0px solid silver; padding: 1px 18px 1px 3px; min-width: 6em; }'
 
 dockWidgetStyles = 'QDockWidget {color: darkBlue; font-size: 18px; background-color: cyan}'

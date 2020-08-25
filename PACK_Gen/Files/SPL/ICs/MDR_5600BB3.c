@@ -13,6 +13,8 @@ MDR_SSP_Type* MDR_5600BB3_Init(const MDR_SSP_TypeEx *exSSPx, MDR_SSP_Rates spiRa
     .DivPSR_2_254 = spiRates.divPSR_2_254,
   };  
   MDR_SSPex_Init(exSSPx, &cfgSSP);
+  //  Подача SSP_Clock на SPI - ПОДАТЬ СНАРУЖИ!
+  //MDR_SSPex_SetSSPClock_InpPLLCPU(exSSPx, MDR_Div128P_div1);    
   MDR_SSPex_EnableMaster(exSSPx, false);
   
   //  Init SPI Pins  

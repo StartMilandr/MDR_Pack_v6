@@ -78,18 +78,20 @@ void MDR_KX028_M2_UpdateStatsEMAC(MDR_KX028_EMAC_e eMAC, MDR_KX028_StatsEMAC_t* 
   MDR_KX028_UpdateStatsEMAC(MDR_KX028_AxiAddrEMAC[eMAC], MDR_KX028_AxiAddrEGPI[eMAC], pStatsEMAC);  
 }
 
-MDR_KX028_EMAC_e MDR_KX028_M2_UpdateStatNextEMACs(uint32_t cntToProcess, MDR_KX028_EMAC_e nextEMAC, uint32_t statsEMAC_ArrLen, MDR_KX028_StatsEMAC_t* statsEMAC_Arr)
-{ 
-  uint32_t i;
-  for (i = 0; i < cntToProcess; i++)
+
+void MDR_KX028_M2_UpdateStatNextEMACs(MDR_KX028_StatsEMAC_Item *usedEmacTable, uint8_t usedEmacTableLen, uint8_t cntToProcess, uint8_t *nextItemInd)
+{
+  uint8_t itemInd = *nextItemInd;
+  while (cntToProcess > 0)
   {
-    MDR_KX028_M2_UpdateStatsEMAC(nextEMAC, &(statsEMAC_Arr[nextEMAC]));
-    nextEMAC += 1;
-    if (nextEMAC >= statsEMAC_ArrLen)
-      nextEMAC = KX028_EMAC1;    
+    MDR_KX028_M2_UpdateStatsEMAC(usedEmacTable[itemInd].eMAC, usedEmacTable[itemInd].pStatBuff);
+    cntToProcess--;
+    
+    itemInd++;
+    if (itemInd >= usedEmacTableLen)
+      itemInd = 0;    
   }
-  
-  return nextEMAC;
+  *nextItemInd = itemInd;
 }
 
 ////  Return True if last MAC processed

@@ -105,6 +105,7 @@ void     MDR_KX028_WriteAXI_def(uint32_t addr, uint32_t data);
 void     MDR_KX028_ReadBeginAXI_def(uint32_t fromAddr);
 uint32_t MDR_KX028_ReadNextAXI_def(void);
 void     MDR_KX028_ReadEndAXI_def(void);
+uint32_t MDR_KX028_MaskAXI_def(uint32_t addr, uint32_t clrMask, uint32_t setMask);
 
 //  Определение не ThreadSafe функций работы по шине AXI через SPI.
 //  Если потребуется потокозащщенность - обернуть _def функции в критическую секцию!
@@ -114,6 +115,8 @@ void     MDR_KX028_ReadEndAXI_def(void);
   #define MDR_KX028_ReadBeginAXI  MDR_KX028_ReadBeginAXI_def
   #define MDR_KX028_ReadNextAXI   MDR_KX028_ReadNextAXI_def
   #define MDR_KX028_ReadEndAXI    MDR_KX028_ReadEndAXI_def  
+  
+  #define MDR_KX028_MaskAXI       MDR_KX028_MaskAXI_def  
 #endif
 
 

@@ -7,7 +7,7 @@ TEXT_BTN_READ  = 'Read'
 TEXT_BTN_WRITE = 'Write'
 TEXT_LINK_DOWN = 'Down'
 
-SHUT_DOWN_ITEMS = ['PowerOff', 'PowerOn']
+SHUT_DOWN_ITEMS = ['PowerOn', 'PowerOff']
 AFT_ITEMS = ['AnyTagged', 'Tagged', 'Untagged']
 BLOCKSTATE_ITEMS = ['Forwarding', 'Blocked', 'LearnOnly']
 
@@ -154,4 +154,192 @@ kx028_AddrStruc2_dbg = [dbg_PORT0_STRUC2,  dbg_PORT1_STRUC2,  dbg_PORT2_STRUC2, 
                         dbg_PORT5_STRUC2,  dbg_PORT6_STRUC2,  dbg_PORT7_STRUC2,  dbg_PORT8_STRUC2,  dbg_PORT9_STRUC2, \
                         dbg_PORT10_STRUC2, dbg_PORT11_STRUC2, dbg_PORT12_STRUC2, dbg_PORT13_STRUC2, dbg_PORT14_STRUC2, \
                         dbg_PORT15_STRUC2, dbg_PORT16_STRUC2]
-                    
+
+EMAC_PCS_CONTROL = 0x200
+EMAC_PCS_STATUS  = 0x204
+EMAC_PCS_ADV     = 0x210
+EMAC_PCS_BASE    = 0x214
+
+
+kxo28_RegsEMAC = { 'emac1_pcs_control': EMAC1_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac2_pcs_control': EMAC2_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac3_pcs_control': EMAC3_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac4_pcs_control': EMAC4_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac5_pcs_control': EMAC5_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac6_pcs_control': EMAC6_BASE_ADDR + EMAC_PCS_CONTROL,
+                  'emac7_pcs_control': EMAC7_BASE_ADDR + EMAC_PCS_CONTROL,
+                  #
+                  'emac1_pcs_status':  EMAC1_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac2_pcs_status':  EMAC2_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac3_pcs_status':  EMAC3_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac4_pcs_status':  EMAC4_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac5_pcs_status':  EMAC5_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac6_pcs_status':  EMAC6_BASE_ADDR + EMAC_PCS_STATUS,
+                  'emac7_pcs_status':  EMAC7_BASE_ADDR + EMAC_PCS_STATUS,
+                  # adv
+                  'emac1_pcs_adv':  EMAC1_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac2_pcs_adv':  EMAC2_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac3_pcs_adv':  EMAC3_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac4_pcs_adv':  EMAC4_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac5_pcs_adv':  EMAC5_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac6_pcs_adv':  EMAC6_BASE_ADDR + EMAC_PCS_ADV,
+                  'emac7_pcs_adv':  EMAC7_BASE_ADDR + EMAC_PCS_ADV,
+                  # adv
+                  'emac1_pcs_base':  EMAC1_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac2_pcs_base':  EMAC2_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac3_pcs_base':  EMAC3_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac4_pcs_base':  EMAC4_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac5_pcs_base':  EMAC5_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac6_pcs_base':  EMAC6_BASE_ADDR + EMAC_PCS_BASE,
+                  'emac7_pcs_base':  EMAC7_BASE_ADDR + EMAC_PCS_BASE,
+}
+
+#--------  BMU  ---------------
+AXI_BMU1_BASE_ADDR          = 0x100000
+AXI_BMU2_BASE_ADDR          = 0x700000
+
+AXI_BMU_CTRL                = 0x04
+AXI_BMU_UCAST_CONFIG        = 0x08
+AXI_BMU_UCAST_BASEADDR      = 0x0c
+AXI_BMU_BUF_SIZE            = 0x10 
+AXI_BMU_BUF_CNT             = 0x14 
+AXI_BMU_THRES               = 0x18
+AXI_BMU_INT_SRC             = 0x20
+AXI_BMU_INT_ENABLE          = 0x24 
+
+AXI_TMU_BASE_ADDR           = 0x600000
+AXI_TMU_PHY16_INQ_ADDR      = 0x240
+
+kxo28_RegsBMU = { 
+                  'TMU16_INQADDR':      AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_INQ_ADDR,
+  #define AXI_TMU_PHY16_INQ_ADDR      0x240
+                  'BMU1_CTRL':      AXI_BMU1_BASE_ADDR + AXI_BMU_CTRL,
+                  'BMU1_CFG':       AXI_BMU1_BASE_ADDR + AXI_BMU_UCAST_CONFIG,
+                  'BMU1_BASE_ADDR': AXI_BMU1_BASE_ADDR + AXI_BMU_UCAST_BASEADDR,
+                  'BMU1_BUF_SIZE':  AXI_BMU1_BASE_ADDR + AXI_BMU_BUF_SIZE,
+                  'BMU1_BUF_CNT':   AXI_BMU1_BASE_ADDR + AXI_BMU_BUF_CNT,
+                  'BMU1_THRES':     AXI_BMU1_BASE_ADDR + AXI_BMU_THRES,
+                  'BMU1_INT_SRC':   AXI_BMU1_BASE_ADDR + AXI_BMU_INT_SRC,
+                  'BMU1_INT_ENA':   AXI_BMU1_BASE_ADDR + AXI_BMU_INT_ENABLE,                  
+                  # BMU2
+                  'BMU2_CTRL':      AXI_BMU2_BASE_ADDR + AXI_BMU_CTRL,
+                  'BMU2_CFG':       AXI_BMU2_BASE_ADDR + AXI_BMU_UCAST_CONFIG,
+                  'BMU2_BASE_ADDR': AXI_BMU2_BASE_ADDR + AXI_BMU_UCAST_BASEADDR,
+                  'BMU2_BUF_SIZE':  AXI_BMU2_BASE_ADDR + AXI_BMU_BUF_SIZE,
+                  'BMU2_BUF_CNT':   AXI_BMU2_BASE_ADDR + AXI_BMU_BUF_CNT,
+                  'BMU2_THRES':     AXI_BMU2_BASE_ADDR + AXI_BMU_THRES,
+                  'BMU2_INT_SRC':   AXI_BMU2_BASE_ADDR + AXI_BMU_INT_SRC,
+                  'BMU2_INT_ENA':   AXI_BMU2_BASE_ADDR + AXI_BMU_INT_ENABLE,
+}
+
+#--------  GPI  ---------------
+AXI_EGPI1_BASE_ADDR         = 0x780000
+AXI_EGPI2_BASE_ADDR         = 0x790000
+AXI_EGPI3_BASE_ADDR         = 0x7A0000
+AXI_EGPI4_BASE_ADDR         = 0x7B0000
+AXI_EGPI5_BASE_ADDR         = 0x7C0000
+AXI_EGPI6_BASE_ADDR         = 0x7D0000
+AXI_EGPI7_BASE_ADDR         = 0x7E0000
+AXI_EGPI8_BASE_ADDR         = 0x7F0000
+AXI_EGPI9_BASE_ADDR         = 0x800000
+AXI_EGPI10_BASE_ADDR        = 0x810000
+AXI_EGPI11_BASE_ADDR        = 0x820000
+AXI_EGPI12_BASE_ADDR        = 0x830000
+AXI_EGPI13_BASE_ADDR        = 0x840000
+AXI_EGPI14_BASE_ADDR        = 0x850000
+AXI_EGPI15_BASE_ADDR        = 0x860000
+AXI_EGPI16_BASE_ADDR        = 0x870000
+
+kxo28_Addr_GPI = [
+  AXI_EGPI1_BASE_ADDR,
+  AXI_EGPI2_BASE_ADDR,
+  AXI_EGPI3_BASE_ADDR,
+  AXI_EGPI4_BASE_ADDR,
+  AXI_EGPI5_BASE_ADDR,
+  AXI_EGPI6_BASE_ADDR,
+  AXI_EGPI7_BASE_ADDR,
+  AXI_EGPI8_BASE_ADDR,
+  AXI_EGPI9_BASE_ADDR,
+  AXI_EGPI10_BASE_ADDR,
+  AXI_EGPI11_BASE_ADDR,
+  AXI_EGPI12_BASE_ADDR,
+  AXI_EGPI13_BASE_ADDR,
+  AXI_EGPI14_BASE_ADDR,
+  AXI_EGPI15_BASE_ADDR,
+  AXI_EGPI16_BASE_ADDR,
+]
+
+AXI_GPI_CTRL               = 0x04
+AXI_GPI_RX_CONFIG          = 0x08
+AXI_GPI_HDR_SIZE           = 0x0c
+AXI_GPI_BUF_SIZE           = 0x10 
+AXI_GPI_LMEM_ALLOC_ADDR    = 0x14
+AXI_GPI_LMEM_FREE_ADDR     = 0x18
+AXI_GPI_CLASS_ADDR         = 0x24 
+AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET  = 0x60 
+AXI_GPI_TMLF_TX             = 0x4C
+AXI_GPI_DTX_ASEQ            = 0X50 
+AXI_GPI_LMEM2_FREE_ADDR     = 0x148 
+AXI_GPI_LMEM_DATA_OFFSET    = 0x38 
+
+kxo28_RegsOffs_GPI = { 
+                  'GPI_CTRL':                 AXI_GPI_CTRL,
+                  'GPI_RX_CONFIG':            AXI_GPI_RX_CONFIG,
+                  'GPI_HDR_SIZE':             AXI_GPI_HDR_SIZE,
+                  'GPI_BUF_SIZE':             AXI_GPI_BUF_SIZE,
+                  'GPI_LMEM_ALLOC_ADDR':      AXI_GPI_LMEM_ALLOC_ADDR,
+                  'GPI_LMEM_FREE_ADDR':       AXI_GPI_LMEM_FREE_ADDR,
+                  'GPI_CLASS_ADDR':           AXI_GPI_CLASS_ADDR,
+                  'GPI_LMEM_SEC_BUF_DATA_OFFSET': AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET,
+                  'GPI_TMLF_TX':              AXI_GPI_TMLF_TX,
+                  'GPI_DTX_ASEQ':             AXI_GPI_DTX_ASEQ,
+                  'GPI_LMEM2_FREE_ADDR':      AXI_GPI_LMEM2_FREE_ADDR,
+                  'GPI_LMEM_DATA_OFFSET':     AXI_GPI_LMEM_DATA_OFFSET,
+}
+
+#--------  Classif  ---------------
+AXI_CLASS_HW1_BASE_ADDR             = 0x620000
+AXI_CLASS_HW2_BASE_ADDR             = 0x770000
+
+kxo28_Addr_CLASS = [AXI_CLASS_HW1_BASE_ADDR, AXI_CLASS_HW2_BASE_ADDR]
+
+AXI_CLASS_TX_CTRL                   = 0x04 
+AXI_CLASS_HDR_SIZE                  = 0x14
+AXI_CLASS_TM_INQ_ADDR               = 0x114 
+AXI_CLASS_BMU1_BUF_FREE             = 0x24c 
+AXI_CLASS_BUS_ACCESS_BASE_ADDR      = 0x258
+AXI_CLASS_GLOBAL_CFG                = 0x4ac
+AXI_CLASS_GLOBAL_CFG1               = 0x7e8  
+AXI_CLASS_SNOOP_SPL_MCAST_MASK1_LSB = 0x378 
+AXI_CLASS_SNOOP_SPL_MCAST_MASK1_MSB = 0x37C 
+AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB = 0x368 
+AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB = 0x36C 
+AXI_CLASS_PUNT_COS                  = 0x4c0 
+AXI_CLASS_NPU_CTRL                  = 0x4fc 
+AXI_CLASS_NPU_CTRL1                 = 0x7f0 
+AXI_CLASS_INQ_AFULL_THRES           = 0x290 
+AXI_CLASS_USE_TMU_INQ               = 0x250 
+
+kxo28_RegsOffs_CLASS = { 
+                  'CLASS_TX_CTRL':                AXI_CLASS_TX_CTRL,
+                  'CLASS_HDR_SIZE':               AXI_CLASS_HDR_SIZE,
+                  'CLASS_TM_INQ_ADDR':            AXI_CLASS_TM_INQ_ADDR,
+                  'CLASS_BMU1_BUF_FREE':          AXI_CLASS_BMU1_BUF_FREE,
+                  'CLASS_BUS_ACCESS_BASE_ADDR':   AXI_CLASS_BUS_ACCESS_BASE_ADDR,
+                  'CLASS_GLOBAL_CFG':             AXI_CLASS_GLOBAL_CFG,
+                  'CLASS_GLOBAL_CFG1':            AXI_CLASS_GLOBAL_CFG1,
+                  'CLASS_SNOOP_MCAST_MASK1_LSB':  AXI_CLASS_SNOOP_SPL_MCAST_MASK1_LSB,
+                  'CLASS_SNOOP_MCAST_MASK1_MSB':  AXI_CLASS_SNOOP_SPL_MCAST_MASK1_MSB,
+                  'CLASS_SNOOP_MCAST_ADDR1_LSB':  AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_LSB,
+                  'CLASS_SNOOP_MCAST_ADDR1_MSB':  AXI_CLASS_SNOOP_SPL_MCAST_ADDR1_MSB,
+                  'CLASS_PUNT_COS':               AXI_CLASS_PUNT_COS,
+                  'CLASS_NPU_CTRL':               AXI_CLASS_NPU_CTRL,
+                  'CLASS_NPU_CTRL1':              AXI_CLASS_NPU_CTRL1,
+                  'CLASS_INQ_AFULL_THRES':        AXI_CLASS_INQ_AFULL_THRES,
+                  'CLASS_USE_TMU_INQ':            AXI_CLASS_USE_TMU_INQ,
+}
+
+kxo28_RegsAXI = kxo28_RegsBMU
+
+
+

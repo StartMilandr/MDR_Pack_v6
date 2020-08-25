@@ -37,30 +37,13 @@ static inline void MDR_KX028_MAC_WriteTableItem( MDR_KX028_MAC_TableItem_t *tabl
 
 void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32_t waitCyclesMax)
 {
-  uint32_t coll_ptr = 0;
   MDR_KX028_MAC_TableItem_t tableItem;
   
-  MDR_KX028_MAC_ReadTableItem(&tableItem, hashAddr, waitCyclesMax);
-
-  if (KX028_MAC_ITEM_IS_ACTIVE(tableItem))
+  // Set Fresh if Item IsActive and not Static
+  // Delete Fresh Items
+  while (hashAddr)
   {
-    if (KX028_MAC_ITEM_IS_HAS_COLLISION(tableItem))
-      coll_ptr = KX028_MAC_ITEM_COLLIS_PTR(tableItem);
-
-    if (KX028_MAC_ITEM_IS_FRESH(tableItem))
-      MDR_KX028_MAC_DeleteTableItem(&tableItem, waitCyclesMax);
-    else if (!KX028_MAC_ITEM_IS_STATIC(tableItem))
-    {
-      KX028_MAC_ITEM_SET_FRESH(tableItem);
-      MDR_KX028_MAC_WriteTableItem(&tableItem, hashAddr, waitCyclesMax);
-    }
-  }
-
-  // Process collision space entries
-  while( coll_ptr )
-  {
-    MDR_KX028_MAC_ReadTableItem(&tableItem, coll_ptr, waitCyclesMax);
-
+    MDR_KX028_MAC_ReadTableItem(&tableItem, hashAddr, waitCyclesMax);
     if (KX028_MAC_ITEM_IS_ACTIVE(tableItem))
     { 
       if (KX028_MAC_ITEM_IS_FRESH(tableItem))
@@ -68,17 +51,56 @@ void MDR_KX028_M2_ProcessTableItemAgeing(uint16_t hashAddr, uint32_t waitCyclesM
       else if (!KX028_MAC_ITEM_IS_STATIC(tableItem))
       {
         KX028_MAC_ITEM_SET_FRESH(tableItem);
-        MDR_KX028_MAC_WriteTableItem(&tableItem, coll_ptr, waitCyclesMax);
+        MDR_KX028_MAC_WriteTableItem(&tableItem, hashAddr, waitCyclesMax);
       }
       
       if (KX028_MAC_ITEM_IS_HAS_COLLISION(tableItem))
-        coll_ptr = KX028_MAC_ITEM_COLLIS_PTR(tableItem);
+        hashAddr = KX028_MAC_ITEM_COLLIS_PTR(tableItem);
       else
-        coll_ptr = 0;
+        hashAddr = 0;
     }
     else
-      coll_ptr = 0;
-  }
+      hashAddr = 0;
+  }  
+  
+  
+//  MDR_KX028_MAC_ReadTableItem(&tableItem, hashAddr, waitCyclesMax);
+//  if (KX028_MAC_ITEM_IS_ACTIVE(tableItem))
+//  {
+//    if (KX028_MAC_ITEM_IS_HAS_COLLISION(tableItem))
+//      coll_ptr = KX028_MAC_ITEM_COLLIS_PTR(tableItem);
+
+//    if (KX028_MAC_ITEM_IS_FRESH(tableItem))
+//      MDR_KX028_MAC_DeleteTableItem(&tableItem, waitCyclesMax);
+//    else if (!KX028_MAC_ITEM_IS_STATIC(tableItem))
+//    {
+//      KX028_MAC_ITEM_SET_FRESH(tableItem);
+//      MDR_KX028_MAC_WriteTableItem(&tableItem, hashAddr, waitCyclesMax);
+//    }
+//  }
+
+//  // Process collision space entries
+//  while( coll_ptr )
+//  {
+//    MDR_KX028_MAC_ReadTableItem(&tableItem, coll_ptr, waitCyclesMax);
+//    if (KX028_MAC_ITEM_IS_ACTIVE(tableItem))
+//    { 
+//      if (KX028_MAC_ITEM_IS_FRESH(tableItem))
+//        MDR_KX028_MAC_DeleteTableItem(&tableItem, waitCyclesMax);
+//      else if (!KX028_MAC_ITEM_IS_STATIC(tableItem))
+//      {
+//        KX028_MAC_ITEM_SET_FRESH(tableItem);
+//        MDR_KX028_MAC_WriteTableItem(&tableItem, coll_ptr, waitCyclesMax);
+//      }
+//      
+//      if (KX028_MAC_ITEM_IS_HAS_COLLISION(tableItem))
+//        coll_ptr = KX028_MAC_ITEM_COLLIS_PTR(tableItem);
+//      else
+//        coll_ptr = 0;
+//    }
+//    else
+//      coll_ptr = 0;
+//  }
 }
 
 
@@ -100,7 +122,7 @@ uint16_t MDR_KX028_M2_ProcessTablesAgeing(uint16_t framesToProcessMax, uint16_t 
 
 //========================   Frame Learning ==========================
 #define _ETH_TYPE_VLAN  0x8100
-#define IS_FRAME_VLAN_TAGGED(vlanTag)  ((vlanTag >> 16) & 0xFFFF ) == _ETH_TYPE_VLAN
+#define IS_FRAME_VLAN_TAGGED(vlanTag) (((vlanTag >> 16) & 0xFFFF ) == _ETH_TYPE_VLAN)
 #define FRAME_GET_VLAN_ID(vlanTag)      (vlanTag) & 0x0FFF
  
 
@@ -112,7 +134,7 @@ void MDR_KX028_LearnFrame( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
   
   //  Check PortInd
   uint16_t portInd = frmInfo->ctrl_b.portNum;   
-  if (frmInfo->ctrl_b.portNum < AXI_CLASS_PORT_COUNT) {
+  if (frmInfo->ctrl_b.portNum >= AXI_CLASS_PORT_COUNT) {
     MDR_KX028_Log(MDR_KX028_Log_Learn_WrongStructInd, portInd);
     return;
   }
@@ -134,18 +156,21 @@ void MDR_KX028_LearnFrame( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
     vlan_id = _FLD2VAL(AXI_CLASS_STRUC1_PORT_FALLBACK_BDID, vlan_id);
   }  
   //printf( "vlan id %d\n", vlan_id );
+
+//  uint8_t *pRxMac = (uint8_t *)(&frmInfo->destMAC_srcMAC) + 2;  
+//  uint8_t src_mac[6];  
+//////src_mac = ( uint8_t* )( ( ( uint32_t )ptr ) + 22 );  
+//  src_mac[0] = ( ( frmInfo->destMAC_srcMAC >> 8 ) & 0xFF );
+//  src_mac[1] = (   frmInfo->destMAC_srcMAC & 0xFF );
+//  src_mac[2] = ( ( frmInfo->srcMAC >> 24 ) & 0xFF );
+//  src_mac[3] = ( ( frmInfo->srcMAC >> 16 ) & 0xFF );
+//  src_mac[4] = ( ( frmInfo->srcMAC >> 8 ) & 0xFF );
+//  src_mac[5] = (   frmInfo->srcMAC & 0xFF );
   
-////src_mac = ( uint8_t* )( ( ( uint32_t )ptr ) + 22 );  
-//  src_mac[0] = ( ( ptr[5] >> 8 ) & 0xFF );
-//  src_mac[1] = (   ptr[5] & 0xFF );
-//  src_mac[2] = ( ( ptr[6] >> 24 ) & 0xFF );
-//  src_mac[3] = ( ( ptr[6] >> 16 ) & 0xFF );
-//  src_mac[4] = ( ( ptr[6] >> 8 ) & 0xFF );
-//  src_mac[5] = (   ptr[6] & 0xFF );
-  uint8_t *src_mac = (uint8_t *)(&frmInfo->destMAC_srcMAC) + 2;
-  
+  uint32_t macReg1 = (frmInfo->destMAC_srcMAC << 16) | (frmInfo->srcMAC >> 16);
   MDR_KX028_KeyEntryMAC_t keyEntryMAC;
-  MDR_KX028_MAC_FillKeyEntry(src_mac, vlan_id, entryMAC, &keyEntryMAC);
+  MDR_KX028_MAC_FillKeyEntryR(macReg1, frmInfo->srcMAC, vlan_id, entryMAC, &keyEntryMAC);
+  //MDR_KX028_MAC_FillKeyEntry(src_mac, vlan_id, entryMAC, &keyEntryMAC);
   
   //printf( "src mac %02X:%02X:%02X:%02X:%02X:%02X\n", src_mac[0], src_mac[1], src_mac[2], src_mac[3], src_mac[4], src_mac[5] );
   //entryMAC = MDR_KX028_MAC_TableSearch(src_mac, vlan_id, waitCyclesMax);
@@ -279,7 +304,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax, u
     // Free polling register
     MDR_KX028_WriteAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
     // Reset HGPI
-    MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CTRL, AXI_GPI_CTRL_EN_Mks | AXI_GPI_CTRL_RESET_Mks );
+    MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CTRL, AXI_GPI_CTRL_EN_Msk | AXI_GPI_CTRL_RESET_Msk );
     
     MDR_KX028_CRITSECT_EXIT;//    taskEXIT_CRITICAL();
 }

@@ -28,16 +28,16 @@ uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_
 
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint8_t  ctrl;
-  uint8_t  portNum;
-  uint8_t  puntReason;
+  uint8_t  portNum;  
   uint8_t  reserved;
+  uint8_t  puntReason;  // ntoh(hi16)
 } MDR_KX028_FrameCtrl_Fields;
 
-typedef struct {
+typedef __PACKED_STRUCT {
   uint32_t   size;
-  union {
+  __PACKED_UNION {
     uint32_t                    ctrl;
     MDR_KX028_FrameCtrl_Fields  ctrl_b;
   };

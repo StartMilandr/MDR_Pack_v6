@@ -25,7 +25,7 @@ typedef enum {
     KX028_EMAC_NUMS
 } MDR_KX028_EMAC_e;
 
-#define KX028_PORT_HOST             17
+#define KX028_PORT_HOST             16
 #define AXI_CLASS_HOST_COUNT        1
 #define AXI_CLASS_PORT_COUNT        (KX028_EMAC_NUMS + AXI_CLASS_HOST_COUNT) 
 
@@ -312,7 +312,7 @@ typedef enum {
     #define AXI_PHY_QUEUE_SEL_QUE_Pos    0
     #define AXI_PHY_QUEUE_SEL_QUE_Msk    0x0007UL
     #define AXI_PHY_QUEUE_SEL_PHY_Pos    8
-    #define AXI_PHY_QUEUE_SEL_PHY_Msk    0x0F00UL
+    #define AXI_PHY_QUEUE_SEL_PHY_Msk    0x1F00UL
     
     #define AXI_PHY_QUEUE_SEL_FILL(phy, que)   _VAL2FLD(AXI_PHY_QUEUE_SEL_PHY, phy) \
                                              | _VAL2FLD(AXI_PHY_QUEUE_SEL_QUE, que)
@@ -1664,7 +1664,7 @@ typedef enum {
     //  setting a bit would make the respective cos value to flood when the action==ACT_COS_DISCARD; 
     //  if the value is zero and action==ACT_COS_DISCARD then the packet will be discarded    
     #define AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Pos  0
-    #define AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Msk  0x000FUL
+    #define AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Msk  0x00FFUL
         #define AXI_CLASS_NPU_CTRL_HIF1_Msk         0x0004UL
         #define AXI_CLASS_NPU_CTRL_HIF2_Msk         0x0008UL
     #define AXI_CLASS_NPU_CTRL_QOS_NPU_Pos        12
@@ -1674,7 +1674,7 @@ typedef enum {
     #define AXI_CLASS_NPU_CTRL_EGTS_COS_Pos       16
     #define AXI_CLASS_NPU_CTRL_EGTS_COS_Msk       0x000F0000UL
     #define AXI_CLASS_NPU_CTRL_DISC_COSN_Pos      24
-    #define AXI_CLASS_NPU_CTRL_DISC_COSN_Msk      0x0100000UL
+    #define AXI_CLASS_NPU_CTRL_DISC_COSN_Msk      0x01000000UL
 
     #define AXI_CLASS_NPU_CTRL_FILL(puntPortInd, qos, puntdis, etgs, floodon)     \
                               ((1UL << puntPortInd) & AXI_CLASS_NPU_CTRL_PUNT_PORT_MAP_Msk) \
@@ -1690,7 +1690,7 @@ typedef enum {
     #define AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Pos  0
     #define AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Msk  0x0FFFUL
     
-    #define AXI_CLASS_NPU_CTRL1_FILL(puntPortInd)   (((1UL << puntPortInd) >> 12) & AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Msk)
+    #define AXI_CLASS_NPU_CTRL1_FILL(puntPortInd)   (((1UL << puntPortInd) >> 8) & AXI_CLASS_NPU_CTRL1_PUNT_PORT_MAP_Msk)
     
   #define AXI_CLASS_UNMANAGED_PORTMAP       0x500 
     //  Reset = 24'h03
@@ -2553,27 +2553,30 @@ typedef enum {
     #define AXI_EMAC_NETCFG_BIG_Pos		        8         /* Receive 1536 byte frames */
     #define AXI_EMAC_NETCFG_BIG_Msk		        0x0100
     #define AXI_EMAC_NETCFG_EAE_Pos		        9         /* External address match enable */
-    #define AXI_EMAC_NETCFG_EAE_Msk		        0x0200
+    #define AXI_EMAC_NETCFG_EAE_Msk		        0x00000200UL
     #define AXI_EMAC_NETCFG_CLK_Pos		        10
-    #define AXI_EMAC_NETCFG_CLK_Msk		        0x0C00
+    #define AXI_EMAC_NETCFG_CLK_Msk		        0x00000C00UL
       #define AXI_EMAC_NETCFG_CLK_1GBps_Msk		  0x0400
       #define AXI_EMAC_NETCFG_CLK_SGMII_Msk		  0x0800
     #define AXI_EMAC_NETCFG_RTY_Pos		        12        /* Retry test */
-    #define AXI_EMAC_NETCFG_RTY_Msk		        0x1000
+    #define AXI_EMAC_NETCFG_RTY_Msk		        0x00001000UL
     #define AXI_EMAC_NETCFG_PAE_Pos		        13        /* Pause enable */
-    #define AXI_EMAC_NETCFG_PAE_Msk		        0x2000
+    #define AXI_EMAC_NETCFG_PAE_Msk		        0x00002000UL
   //  #define AXI_EMAC_NETCFG_RM9200_RMII_Pos	13      /* AT91RM9200 only */
   //  #define AXI_EMAC_NETCFG_RM9200_RMII_Msk	0x2000  /* AT91RM9200 only */
     #define AXI_EMAC_NETCFG_RBOF_Pos	        14        /* Receive buffer offset */
-    #define AXI_EMAC_NETCFG_RBOF_Msk		      0xC000
+    #define AXI_EMAC_NETCFG_RBOF_Msk		      0x0000C000UL
     #define AXI_EMAC_NETCFG_RLCE_Pos	        16        /* Length field error frame discard */
-    #define AXI_EMAC_NETCFG_RLCE_Msk		      0x10000
+    #define AXI_EMAC_NETCFG_RLCE_Msk		      0x00010000UL
     #define AXI_EMAC_NETCFG_DRFCS_Pos	        17        /* FCS remove */
-    #define AXI_EMAC_NETCFG_DRFCS_Msk		      0x20000
-    #define AXI_EMAC_NETCFG_EFRHD_Pos	        18
-    #define AXI_EMAC_NETCFG_EFRHD_Msk		      0x40000
-    #define AXI_EMAC_NETCFG_IRXFCS_Pos	      19
-    #define AXI_EMAC_NETCFG_IRXFCS_Mks	      0x80000
+    #define AXI_EMAC_NETCFG_DRFCS_Msk		      0x00020000UL
+    #define AXI_EMAC_NETCFG_MDC_DIV_Pos	      18
+    #define AXI_EMAC_NETCFG_MDC_DIV_Msk		    0x001C0000UL  
+    
+//    #define AXI_EMAC_NETCFG_EFRHD_Pos	        18
+//    #define AXI_EMAC_NETCFG_EFRHD_Msk		      0x40000
+//    #define AXI_EMAC_NETCFG_IRXFCS_Pos	      19
+//    #define AXI_EMAC_NETCFG_IRXFCS_Mks	      0x80000
     
     #define AXI_EMAC_NETCFG_FIFO_W64_Mks	    0x00200000UL
     #define AXI_EMAC_NETCFG_RX_FCS_Mks	      0x01000000UL
@@ -2626,6 +2629,42 @@ typedef enum {
   #define AXI_EMAC_IDR		        0x002c /* Interrupt Disable */
   #define AXI_EMAC_IMR		        0x0030 /* Interrupt Mask */
   #define AXI_EMAC_MAN		        0x0034 /* PHY Maintenance */  
+    #define AXI_EMAC_MAN_PhyData_Pos    0
+    #define AXI_EMAC_MAN_PhyData_Msk    0x0000FFFFUL
+    #define AXI_EMAC_MAN_WR10_Pos       16
+    #define AXI_EMAC_MAN_WR10_Msk       0x00030000UL
+    #define AXI_EMAC_MAN_PhyReg_Pos     18
+    #define AXI_EMAC_MAN_PhyReg_Msk     0x007C0000UL
+    #define AXI_EMAC_MAN_PhyAddr_Pos    23
+    #define AXI_EMAC_MAN_PhyAddr_Msk    0x0F800000UL
+    #define AXI_EMAC_MAN_Oper_Pos       28
+    #define AXI_EMAC_MAN_Oper_Msk       0x30000000UL
+    #define AXI_EMAC_MAN_WR1_Pos        30
+    #define AXI_EMAC_MAN_WR1_Msk        0x40000000UL  
+    #define AXI_EMAC_MAN_WR0_Pos        31
+    #define AXI_EMAC_MAN_WR0_Msk        0x80000000UL
+
+    #define AXI_EMAC_MAN_Oper_Addr        (0 << AXI_EMAC_MAN_Oper_Pos)
+    #define AXI_EMAC_MAN_Oper_Write       (1 << AXI_EMAC_MAN_Oper_Pos)
+    #define AXI_EMAC_MAN_Oper_ReadInc     (2 << AXI_EMAC_MAN_Oper_Pos)
+    #define AXI_EMAC_MAN_Oper_ReadFrame   (3 << AXI_EMAC_MAN_Oper_Pos)
+    
+    #define AXI_EMAC_MDIO_VERIF_MSK   (AXI_EMAC_MAN_PhyData_Msk | AXI_EMAC_MAN_WR10_Msk)
+    
+    #define AXI_EMAC_MDIO_FILL_READ(phyAddr, phyReg, isClause22)  \
+                    (2 << AXI_EMAC_MAN_WR10_Pos) | _VAL2FLD(AXI_EMAC_MAN_WR1, isClause22) \
+                  | _VAL2FLD(AXI_EMAC_MAN_PhyAddr, phyAddr) \
+                  | _VAL2FLD(AXI_EMAC_MAN_PhyReg, phyReg) \
+                  | AXI_EMAC_MAN_Oper_ReadInc
+  
+    #define AXI_EMAC_MDIO_FILL_WRITE(phyAddr, phyReg, data, isClause22)  \
+                    (2 << AXI_EMAC_MAN_WR10_Pos) | _VAL2FLD(AXI_EMAC_MAN_WR1, isClause22) \
+                  | _VAL2FLD(AXI_EMAC_MAN_PhyAddr, phyAddr) \
+                  | _VAL2FLD(AXI_EMAC_MAN_PhyReg, phyReg) \
+                  | _VAL2FLD(AXI_EMAC_MAN_PhyData, data) \
+                  | AXI_EMAC_MAN_Oper_Write
+  
+  
   // ... other regs from link
   
   //  MAC_GEM
@@ -2698,8 +2737,8 @@ typedef enum {
   //- csr_gpi_en 0 R/W GPI Enable. This signal needs to be set to enable the gpi module
   //- csr_gpi_swrst 1 R/W GPI Reset. This signal is used to initiate soft reset of the gpi. 
   //  This is a self clear signal. Software should only set this register and should not attempt to clear it.
-  #define AXI_GPI_CTRL_EN_Mks       0x0001UL
-  #define AXI_GPI_CTRL_RESET_Mks    0x0002UL
+  #define AXI_GPI_CTRL_EN_Msk       0x0001UL
+  #define AXI_GPI_CTRL_RESET_Msk    0x0002UL
   
 #define AXI_GPI_RX_CONFIG         0x08 
   //  Reset = 26'h200_0001

@@ -87,6 +87,10 @@ class PyBasisWindowPort(QtWidgets.QWidget, Ui_Form):
 
     def GUI_SetItemPort(self, col, itemPort):
         self.tblPorts.cellWidget(ROW_SHUTDOWN, col).setCurrentIndex(itemPort.shutDown)
+        if (itemPort.shutDown == 0):
+          self.tblPorts.cellWidget(ROW_SHUTDOWN, col).setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown_SpinW + comboBox_ColorGreen)
+        else:
+          self.tblPorts.cellWidget(ROW_SHUTDOWN, col).setStyleSheet(comboBoxStyles + comboBoxStyles_DropDown_SpinW)  
         self.tblPorts.cellWidget(ROW_TPID, col).setText(hex(itemPort.TPID))
         self.tblPorts.cellWidget(ROW_FALLBACK, col).setValue(itemPort.Fallback)
         self.tblPorts.cellWidget(ROW_AFT, col).setCurrentIndex(itemPort.AFT)

@@ -19,6 +19,10 @@ class PyBasisWindowStats(QtWidgets.QWidget, Ui_Form):
         self.btPortRead.clicked.connect(self.ReadStatsFromDevice)
         self.btPortClear.clicked.connect(self.ClearStats)
         self.btClearAll.clicked.connect(self.ClearStatsAll)
+        #Ports
+        self.cbxPortSel.clear()
+        portNames = ['eMac' + str(i)  for i in range(1,17) ]
+        self.cbxPortSel.addItems(portNames)
 
     def closeEvent(self, event):
         event.accept()

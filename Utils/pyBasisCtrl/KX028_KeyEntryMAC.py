@@ -4,8 +4,8 @@ from ctypes import create_string_buffer
 
 
 #--------------  KX028_KeyMAC ---------------
-ItemMAC_REG2_MAC_Hi16_Pos  = 0
-ItemMAC_REG2_MAC_Hi16_Msk  = 0x0000FFFF
+ItemMAC_REG2_MAC_Lo16_Pos  = 0
+ItemMAC_REG2_MAC_Lo16_Msk  = 0x0000FFFF
 ItemMAC_REG2_VlanID_Pos    = 16
 ItemMAC_REG2_VlanID_Msk    = 0x1FFF0000
 
@@ -20,18 +20,18 @@ class KX028_KeyMAC:
     mac64 = int(self.MAC.translate(self.MAC.maketrans('', '', ':.- ')), 16)
     #print('mac64_TX: ', hex(mac64) )
     #REG1
-    REG1 = mac64 & 0xFFFFFFFF
+    REG1 = (mac64 >> 16) & 0xFFFFFFFF
     #REG2
-    REG2 =  _VAL2FLD(mac64 >> 32,    ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) \
+    REG2 =  _VAL2FLD(mac64,    ItemMAC_REG2_MAC_Lo16_Pos,  ItemMAC_REG2_MAC_Lo16_Msk) \
           | _VAL2FLD(self.vlanID,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)
     #PACK to Buff
     struct.pack_into("LL", buff, offs, REG1, REG2)
 
   def unpack(self, buff, offs):
     REG1, REG2 = struct.unpack_from('LL', buff, offs)
-    #print(hex(REG1), hex(REG2), hex(REG3), hex(REG4))
+    print(hex(REG1), hex(REG2))
     #MAC
-    mac64 = REG1 | (_FLD2VAL(REG2, ItemMAC_REG2_MAC_Hi16_Pos,  ItemMAC_REG2_MAC_Hi16_Msk) << 32)
+    mac64 = (REG1 << 16 ) | (_FLD2VAL(REG2, ItemMAC_REG2_MAC_Lo16_Pos,  ItemMAC_REG2_MAC_Lo16_Msk))
     self.MAC = ':'.join( ['{:02x}'.format((mac64 >> ele) & 0xff) for ele in range(0,8*6,8)][::-1] )
     #rest
     self.vlanID    = _FLD2VAL(REG2,    ItemMAC_REG2_VlanID_Pos,    ItemMAC_REG2_VlanID_Msk)

@@ -17,7 +17,7 @@
         MDR_RST_ETH__PHY_BRG_Msk    | MDR_RST_ETH__ETH_BRG_Msk 
       | MDR_RST_ETH__PHY_CLK_EN_Msk | MDR_RST_ETH__ETH_CLK_EN_Msk | MDR_RST_ETH__PHY_CLK_SEL_Msk
      ,  MDR_ETH_CLK_EN_MASK) 
-      | VAL2FLD_Pos(MDR_PHY_HSE2, MDR_RST_ETH__PHY_CLK_SEL_Pos);      
+      | VAL2FLD_Pos(MDR_PHY_HSE2, MDR_RST_ETH__PHY_CLK_SEL_Pos);
   }
 #endif
 

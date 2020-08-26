@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+
+#define CFG_LEANR_BY_EMAC      0
+
 //  Прототип функция задержки, (передается в функции работы с базисом, для реализации задержки).
 //  В случае RTOS можно использовать Sleep
 typedef void (*MDR_KX028_DelayMs)(uint32_t);
@@ -20,7 +23,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define KX028_PORTS_VLAN_TAG            0x8100UL
 #define KX028_PORTS_STRUC1_DEF(vlanFallback)       AXI_CLASS_STRUC1_FILL( vlanFallback, KX028_PORTS_VLAN_TAG )
 
-#define KX028_PORTS_SHUTDOWN            0                              // 0x00000001
+#define KX028_PORTS_SHUTDOWN_ON         AXI_CLASS_STRUC2_PORT_SHUTDOWN_Msk  // 0x00000001
+#define KX028_PORTS_SHUTDOWN_OFF        0
 #define KX028_PORTS_AFT                 KX028_PortAcc_AnyTagging       // 0x000000F0
 #define KX028_PORTS_BLOCKSTATE          KX028_PortBlkState_Forwarding  // 0x00000F00
 #define KX028_PORTS_DEF_CFI             0                              // 0x00001000
@@ -30,8 +34,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define KX028_PORTS_VID_PREFIX          0                              // 0x00100000
 #define KX028_PORTS_UNTAG_FROM_BTABLE   0                              // 0x00200000
 
-#define KX028_PORTS_STRUC2_DEF         AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN, \
-                                                   KX028_PORTS_AFT,                 \
+#define KX028_PORTS_STRUC2_OFF_DEF     AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN_ON, \
+                                                   KX028_PORTS_AFT, \
                                                    KX028_PORTS_BLOCKSTATE, \
                                                    KX028_PORTS_DEF_CFI, \
                                                    KX028_PORTS_DEF_PRI, \
@@ -39,6 +43,16 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
                                                    KX028_PORTS_TRUSTED, \
                                                    KX028_PORTS_VID_PREFIX,  \
                                                    KX028_PORTS_UNTAG_FROM_BTABLE)
+                                                   
+#define KX028_PORTS_STRUC2_ON_DEF     AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN_OFF,\
+                                                   KX028_PORTS_AFT, \
+                                                   KX028_PORTS_BLOCKSTATE, \
+                                                   KX028_PORTS_DEF_CFI, \
+                                                   KX028_PORTS_DEF_PRI, \
+                                                   KX028_PORTS_DEF_TC,  \
+                                                   KX028_PORTS_TRUSTED, \
+                                                   KX028_PORTS_VID_PREFIX,  \
+                                                   KX028_PORTS_UNTAG_FROM_BTABLE)                                                   
 
 #define MDR_KX028_DEBUG     1
 
@@ -156,6 +170,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 //  Enable Stacked VLAN Processing mode. Otherwise write 0
 #define CFG_EMAC_GEM_VLAN_EN            AXI_EMAC_GEM_VLAN_EN_Msk
 
+#define CFG_EMAC_JUMBO_MAX_LEN          9000
+
 // =================  TSU Configs  ===============
 #define CFG_TSU_INC_PER_1NS     0x14
 
@@ -177,7 +193,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 //  Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
 #define CFG_HGPI_TX_FIFO_START_THRES        0x178
 //  Initial number of bytes read from received pointer in LMEM, to check for action fields.
-#define CFG_GPI_DTX_ASEQ_CNT                0x40
+#define CFG_HGPI_DTX_ASEQ_CNT               0x40
 
 // =================  EGPI/ETGPI Configs  ===============
 #define CFG_EGPI_LMEM_BUF_EN                1
@@ -235,6 +251,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 // Maximum no of packets accpeted by HIF TX for this channel when LTC pkt flow bit is enabled.
 #define CFG_HIF_CH_LTC_MAX_PKT      4
+
+
 
 
 //==================    CLASS_HW  Configs  ======================
@@ -300,11 +318,17 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 // Punt port map. Only one bit should be set(hif1 = 4 or hif2 = 8) - TODO?
-#define CFG_HW1_PUNT_PORT         16
+//#if CFG_LEANR_BY_EMAC
+//  #define CFG_HW1_PUNT_PORT         CFG_LEARN_EMAC
+//#else
+  #define CFG_HW1_PUNT_PORT         16  
+//#endif
+
+
 // Q number from TC value or cos (1:  NPU, 0: not NPU)
 #define CFG_HW1_Q_NUM_SEL         1
 // Disables the punt
-#define CFG_HW1_PUNT_DIS          1
+#define CFG_HW1_PUNT_DIS          0
 // Q number for egress time-stamp report
 #define CFG_HW1_Q_ETGS_COS        1
 // flood supression.setting a bit would make the respective cos value to flood when the action==ACT_COS_DISCARD; 
@@ -326,8 +350,19 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 //  ====================  Slow SPI Access ===========
-//  Адрес с которого читается указатель на входной фрейм по шине AXI (соответствует CFG_BMU2_SEL_LMEM_ADDR)
-#define CFG_NEW_PACKET_IN_LMEM_REG_ADDR          AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL     //0x0043FFA0UL
+#if CFG_LEANR_BY_EMAC
+  //  Отправка пакетов на обучение через EMAC - выбрать необходимый
+  #define CFG_LEARN_EMAC                            KX028_EMAC4
+  #define CFG_LEARN_EGPI                            KX028_EGPI4
+  #define CFG_LEARN_TMU_INQ_ADDR                    AXI_TMU_PHY3_INQ_ADDR
+  
+  #define CFG_NEW_PACKET_IN_LMEM_ADDR               (AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL)
+  #define CFG_TMU_PUNT_ADDR                         (AXI_EGPI4_BASE_ADDR  | AXI_GPI_INQ_PKTPTR)  
+#else
+  //  Адрес с которого читается указатель на входной фрейм по шине AXI (соответствует CFG_BMU2_SEL_LMEM_ADDR)
+  #define CFG_NEW_PACKET_IN_LMEM_ADDR          (AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL)     //0x0043FFA0UL
+  #define CFG_TMU_PUNT_ADDR                     CFG_NEW_PACKET_IN_LMEM_ADDR  
+#endif
 
 //  Адрес с которого лежат данные принятого пакета в CFG_NEW_PACKET_IN_LMEM_REG_ADDR
 //  Начинается с MAC_DEST, предыдущие данные - загловки
@@ -373,9 +408,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 //======================= SFP modules on board  ==================
-#ifndef SFP_COUNT
-  #define SFP_COUNT  1
-#endif
+#define SFP_COUNT  1
 
 
 //======================= PCI Config  ==================
@@ -387,5 +420,11 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_PCIE_SUBCLASS_CODE          0
 #define CFG_PCIE_BASE_CLASS_CODE        2
 
+
+//======================= EMAC PHYs  ==================
+// Must be set to 1 for a valid Clause 22 frame and to 0 for a valid Clause 45 frame
+// (Clouse45 - косвенная адресация, появилась когда не хватило 5 бит на адрес регистра)
+#define CFG_EMAC_PHY_CLAUSE_22    1
+#define CFG_EMAC_PHY_RESET_MS     50
 
 #endif  //MDR_1923KX028_CONFIG_H_

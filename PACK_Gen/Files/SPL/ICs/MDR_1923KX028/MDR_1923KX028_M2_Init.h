@@ -8,7 +8,12 @@
 #include <MDR_1923KX028_GlobConst.h>
 
 //===================   Host ===================
-void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax);
+void MDR_KX028_M2_TMU_InitTailDropGPI(MDR_KX028_GPI_e gpi, uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax);
+
+__STATIC_INLINE void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax)
+{
+  MDR_KX028_M2_TMU_InitTailDropGPI(KX028_HGPI, maxFrameInHostQueue, waitCyclesMax);
+}
 
 //===================   Init EMAC blocks ===================
 void MDR_KX028_InitEMAC(MDR_KX028_EMAC_e emac, uint32_t netCfgReg);
@@ -114,52 +119,7 @@ __STATIC_INLINE void MDR_KX028_InitAll_BeforeEMAC(MDR_KX028_DelayMs DelayFunc)
   MDR_KX028_InitBMU2(DelayFunc);
 }
 
-__STATIC_INLINE void MDR_KX028_InitAll_AfterEMAC(MDR_KX028_DelayMs DelayFunc, bool doExtraInit)
-{
-  MDR_KX028_EMAC_e emac; 
-  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
-  {
-    if (doExtraInit)
-      MDR_KX028_InitEMAC_ex(emac);
-    MDR_KX028_InitEMAC_TSU(emac); 
-    MDR_KX028_InitEMAC_GEM(emac);
-  }
-  //  Classif 1-2
-  MDR_KX028_InitClassHW1();
-  MDR_KX028_InitClassHW2();
-  if (doExtraInit)
-  {
-    MDR_KX028_InitClassHW1_Ex();  
-    MDR_KX028_InitClassHW2_Ex();
-  }
-  //  EGPI
-  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
-  {
-    MDR_KX028_InitEGPI(emac);
-    if (doExtraInit)
-      MDR_KX028_InitEGPI_Ex(emac);  
-  }
-  //  HGPI
-  MDR_KX028_InitHGPI();
-  if (doExtraInit)
-    MDR_KX028_InitHGPI_Ex();
-  //  ETGPI  
-  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
-  {
-    MDR_KX028_InitETGPI(emac);
-    if (doExtraInit)
-      MDR_KX028_InitETGPI_Ex(emac);
-  }
-  //  TMU
-  MDR_KX028_InitTMU();
-  if (doExtraInit)
-    MDR_KX028_InitTMU_Ex();
-  //  HIF
-  MDR_KX028_InitHIF();  
-  if (doExtraInit)
-    MDR_KX028_InitHIF_Ex();
-}
-
+void MDR_KX028_InitAll_AfterEMAC(MDR_KX028_DelayMs DelayFunc, bool doExtraInit);
 
 
 //==================    Enable Blocks =================

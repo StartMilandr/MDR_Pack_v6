@@ -117,12 +117,13 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
             print('Convertion error!')
 
     def ReadEGPI(self):
-        self.ReadRegsEGPI(0)
         self.ReadRegsEGPI(1)
+        self.ReadRegsEGPI(3)
+        self.ReadRegsEGPI(16)
 
     def ReadRegsEGPI(self, indEGPI):
         baseAddr = kxo28_Addr_GPI[indEGPI]
-        self.txtEdit.append('   EGPI_{} Registers:'.format(indEGPI))
+        self.txtEdit.append('   EGPI_{} Registers:'.format(indEGPI + 1))
         for regName, addr in kxo28_RegsOffs_GPI.items():
             addr += baseAddr
             self.ReadRegAndShow(regName, addr)

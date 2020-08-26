@@ -25,9 +25,31 @@ typedef enum {
     KX028_EMAC_NUMS
 } MDR_KX028_EMAC_e;
 
-#define KX028_PORT_HOST             16
+
 #define AXI_CLASS_HOST_COUNT        1
 #define AXI_CLASS_PORT_COUNT        (KX028_EMAC_NUMS + AXI_CLASS_HOST_COUNT) 
+
+typedef enum {
+    KX028_EGPI1 = 0,
+    KX028_EGPI2,
+    KX028_EGPI3,
+    KX028_EGPI4,
+    KX028_EGPI5,
+    KX028_EGPI6,
+    KX028_EGPI7,
+    KX028_EGPI8,
+    KX028_EGPI9,
+    KX028_EGPI10,
+    KX028_EGPI11,
+    KX028_EGPI12,
+    KX028_EGPI13,
+    KX028_EGPI14,
+    KX028_EGPI15,
+    KX028_EGPI16,
+    KX028_HGPI,
+    //  Count
+    KX028_GPI_NUMS
+} MDR_KX028_GPI_e;
 
 
 //  Внутренний адрес на шине:  AXI SLAVE ADDRESS is CBUS_BASE_ADDR + SLAVE BASE ADDRESS

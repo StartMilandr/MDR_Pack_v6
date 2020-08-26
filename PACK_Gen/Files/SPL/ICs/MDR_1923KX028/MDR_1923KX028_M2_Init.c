@@ -83,7 +83,7 @@ void MDR_KX028_InitEMAC_ex(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_DA_MASK_Hi, 0x0000FFFF );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_GEM_VLAN,       CFG_EMAC_GEM_VLAN_EN);
 
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN_JUMBO_MAX_LEN, 9000 );             // Jumbo
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEMAC[emac] + AXI_EMAC_MAN_JUMBO_MAX_LEN, CFG_EMAC_JUMBO_MAX_LEN ); // Jumbo
 }  
   
 void MDR_KX028_WritePortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, uint32_t regClassStruct2 )
@@ -115,7 +115,7 @@ void MDR_KX028_InitHGPI(void)
   // 8 - Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
   MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_TMLF_TX,  CFG_HGPI_TX_FIFO_START_THRES);                      //{ 0x0065004C, 0x00000178 },
   // 9 - Initial number of bytes read from received pointer in LMEM, to check for action fields.
-  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DTX_ASEQ, CFG_GPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },
+  MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_DTX_ASEQ, CFG_HGPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },
 }  
  
 void MDR_KX028_InitHGPI_Ex(void)
@@ -136,7 +136,7 @@ void MDR_KX028_InitEGPI(MDR_KX028_EMAC_e emac)
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_CLASS_ADDR,         CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR);       //0xC0620010 );    
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_LMEM_SEC_BUF_DATA_OFFSET,  CFG_EGPI_LMEM_BUF_HDR_CHAIN_SIZE);                               //{ 0x00650060, 0x00000010 },  
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_TMLF_TX,            CFG_EGPI_TX_FIFO_START_THRES );                                         //0x00000178
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_DTX_ASEQ,           CFG_EGPI_DTX_ASEQ_LEN);                                                 //0x00000050 );  
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[emac] + AXI_GPI_DTX_ASEQ,           CFG_EGPI_DTX_ASEQ_LEN);                                                 //0x00000050 );
 }
 
 void MDR_KX028_InitEGPI_Ex(MDR_KX028_EMAC_e emac)
@@ -163,7 +163,7 @@ void MDR_KX028_InitETGPI(MDR_KX028_EMAC_e emac)
 
 void MDR_KX028_InitETGPI_Ex(MDR_KX028_EMAC_e emac)
 {
-  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_DDR_DATA_OFFSET,   0x00000100 );
+  //MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_DDR_DATA_OFFSET,   0x00000100 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_LMEM_DATA_OFFSET,  0x00000010 );
   MDR_KX028_WriteAXI( MDR_KX028_AxiAddrETGPI[emac] + AXI_GPI_CTRL,              0x00000001 );  // -TODO - (different with EGPI)?  ENABLE-?
 }
@@ -299,8 +299,8 @@ void MDR_KX028_InitTMU(void)
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY0_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI1_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600200, 0xC0780030 },	//EGPI1
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY1_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI2_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600204, 0xC0790030 },	//EGPI2
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY2_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI3_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600208, 0xC07A0030 },	//EGPI3
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY3_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI4_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x0060020C, 0xC07B0030 },	//EGPI4
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY4_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI5_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600210, 0xC07C0030 },	//EGPI5
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY3_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI4_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x0060020C, 0xC07B0030 },	//EGPI4  
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY4_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI5_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600210, 0xC07C0030 },	//EGPI5 
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY5_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI6_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600214, 0xC07D0030 },	//EGPI6
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY6_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI7_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x00600218, 0xC07E0030 },	//EGPI7
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY7_INQ_ADDR,  CBUS_BASE_ADDR | AXI_EGPI8_BASE_ADDR  | AXI_GPI_INQ_PKTPTR);	//{ 0x0060021C, 0xC07F0030 },	//EGPI8
@@ -313,7 +313,7 @@ void MDR_KX028_InitTMU(void)
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY14_INQ_ADDR, CBUS_BASE_ADDR | AXI_EGPI15_BASE_ADDR | AXI_GPI_INQ_PKTPTR);	//{ 0x00600238, 0xC0860030 },	//EGPI15
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY15_INQ_ADDR, CBUS_BASE_ADDR | AXI_EGPI16_BASE_ADDR | AXI_GPI_INQ_PKTPTR);	//{ 0x0060023C, 0xC0870030 },	//EGPI16
   // 17 (modified) - Addr to access unknown packets through SlaveSPI - for tables learning
-  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_INQ_ADDR, CBUS_BASE_ADDR | CFG_NEW_PACKET_IN_LMEM_REG_ADDR); //{ 0x00600240, CBUS_BASE_ADDR | AXI_NEW_PACKET_IN_LMEM_REG_ADDR },        //HGPI ADDRESS IN LMEM
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_PHY16_INQ_ADDR, CBUS_BASE_ADDR | CFG_TMU_PUNT_ADDR); //{ 0x00600240, CBUS_BASE_ADDR | AXI_NEW_PACKET_IN_LMEM_REG_ADDR },        //HGPI ADDRESS IN LMEM
   
   // 18 - Controls the direct/indirect access to context memory. 0 - indirect, 1 - direct  
   MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + AXI_TMU_CNTX_ACCESS_CTRL, AXI_TMU_CNTX_ACCESS_CTRL_DIRECT); //{ 0x006002F0, 0x00000000 }, //INDIRECT ACCESS
@@ -461,7 +461,7 @@ __STATIC_INLINE void MDR_KX028_EnableClass(void) { MDR_KX028_SetCtrlCLASS_All(AX
 
 void MDR_KX028_EnableBlocks(void)
 {
-  MDR_KX028_WriteAXI( CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0);    
+  MDR_KX028_WriteAXI( CFG_NEW_PACKET_IN_LMEM_ADDR, 0);    
   
   MDR_KX028_EnableBMU();      // 1,2 - by specification
   MDR_KX028_EnableEGPI();     // 3..18
@@ -483,7 +483,8 @@ static bool AXI_IndirWaitCompleted(uint32_t readyMask,  uint32_t *status, uint32
   return false;
 }
 
-void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax)
+//void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax)
+void MDR_KX028_M2_TMU_InitTailDropGPI(MDR_KX028_GPI_e gpi, uint16_t maxFrameInHostQueue, uint32_t waitCyclesMax)
 {
   uint32_t que, reg;
   uint32_t status;
@@ -493,7 +494,7 @@ void MDR_KX028_M2_HostPort_InitTailDrop(uint16_t maxFrameInHostQueue, uint32_t w
   for(que = 0; que < AXI_TMU_PHY_QUEUE_COUNT; que++)
     for (reg = 0; reg < AXI_TMU_IND_REG_COUNT; reg++)
     {
-      MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_ADDR_REG, AXI_TMU_INDIRECT_ACCESS_ADDR_FILL(KX028_PORT_HOST, que, reg));
+      MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_ADDR_REG, AXI_TMU_INDIRECT_ACCESS_ADDR_FILL((uint8_t)gpi, que, reg));
               
       if (reg == AXI_TMU_IND_REG_QSTAT)
         MDR_KX028_WriteAXI( AXI_TMU_INDIRECT_ACCESS_DATA_REG, AXI_TMU_IND_REG_QSTAT_TAILDROP_FILL(0, maxFrameInHostQueue));
@@ -578,4 +579,56 @@ bool MDR_KX028_MDIO_Mask(MDR_KX028_EMAC_e emac, uint16_t addrPHY, uint16_t addrR
   }
   else
     return false;    
+}
+
+
+void MDR_KX028_InitAll_AfterEMAC(MDR_KX028_DelayMs DelayFunc, bool doExtraInit)
+{
+  MDR_KX028_EMAC_e emac; 
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
+  {
+    if (doExtraInit)
+      MDR_KX028_InitEMAC_ex(emac);
+    MDR_KX028_InitEMAC_TSU(emac); 
+    MDR_KX028_InitEMAC_GEM(emac);
+  }
+  //  Classif 1-2
+  MDR_KX028_InitClassHW1();
+  MDR_KX028_InitClassHW2();
+  if (doExtraInit)
+  {
+    MDR_KX028_InitClassHW1_Ex();  
+    MDR_KX028_InitClassHW2_Ex();
+  }
+  //  EGPI
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
+  {
+    MDR_KX028_InitEGPI(emac);
+    if (doExtraInit)
+      MDR_KX028_InitEGPI_Ex(emac);  
+  }
+#if CFG_LEANR_BY_EMAC
+  MDR_KX028_WriteAXI(AXI_TMU_BASE_ADDR + CFG_LEARN_TMU_INQ_ADDR,  CBUS_BASE_ADDR | CFG_NEW_PACKET_IN_LMEM_ADDR);
+  MDR_KX028_WriteAXI( MDR_KX028_AxiAddrEGPI[CFG_LEARN_EMAC] + AXI_GPI_DTX_ASEQ, CFG_HGPI_DTX_ASEQ_CNT);                              //{ 0x00650050, 0x00000040 },  
+#endif
+  
+  //  HGPI
+  MDR_KX028_InitHGPI();
+  if (doExtraInit)
+    MDR_KX028_InitHGPI_Ex();
+  //  ETGPI  
+  for (emac = KX028_EMAC1; emac < KX028_EMAC_NUMS; ++emac)
+  {
+    MDR_KX028_InitETGPI(emac);
+    if (doExtraInit)
+      MDR_KX028_InitETGPI_Ex(emac);
+  }
+  //  TMU
+  MDR_KX028_InitTMU();
+  if (doExtraInit)
+    MDR_KX028_InitTMU_Ex();
+  //  HIF
+  MDR_KX028_InitHIF();  
+  if (doExtraInit)
+    MDR_KX028_InitHIF_Ex();
 }

@@ -98,20 +98,20 @@ typedef struct {
   __IOM uint16_t                  PHY_ADDR   : 5;             /*!< [15..11] Phy Address                                     */
 } MDR_ETH_PHY_CTRL_Bits;
 
-#define MDR_ETH_PHY_CTRL_nRST_Pos     (0UL)                     /*!< MDR_ETH1 PHY_CONTROL: nRST (Bit 0)                    */
-#define MDR_ETH_PHY_CTRL_nRST_Msk     (0x1UL)                   /*!< MDR_ETH1 PHY_CONTROL: nRST (Bitfield-Mask: 0x01)      */
-#define MDR_ETH_PHY_CTRL_MODE_Pos     (1UL)                     /*!< MDR_ETH1 PHY_CONTROL: MODE (Bit 1)                    */
-#define MDR_ETH_PHY_CTRL_MODE_Msk     (0xeUL)                   /*!< MDR_ETH1 PHY_CONTROL: MODE (Bitfield-Mask: 0x07)      */
-#define MDR_ETH_PHY_CTRL_FX_En_Pos    (7UL)                     /*!< MDR_ETH1 PHY_CONTROL: FX_En (Bit 7)                   */
-#define MDR_ETH_PHY_CTRL_FX_En_Msk    (0x80UL)                  /*!< MDR_ETH1 PHY_CONTROL: FX_En (Bitfield-Mask: 0x01)     */
-#define MDR_ETH_PHY_CTRL_MDI_Pos      (8UL)                     /*!< MDR_ETH1 PHY_CONTROL: MDI (Bit 8)                     */
-#define MDR_ETH_PHY_CTRL_MDI_Msk      (0x100UL)                 /*!< MDR_ETH1 PHY_CONTROL: MDI (Bitfield-Mask: 0x01)       */
-#define MDR_ETH_PHY_CTRL_MDIO_SEL_Pos (9UL)                     /*!< MDR_ETH1 PHY_CONTROL: MDIO_SEL (Bit 9)                */
-#define MDR_ETH_PHY_CTRL_MDIO_SEL_Msk (0x200UL)                 /*!< MDR_ETH1 PHY_CONTROL: MDIO_SEL (Bitfield-Mask: 0x01)  */
-#define MDR_ETH_PHY_CTRL_MDC_Pos      (10UL)                    /*!< MDR_ETH1 PHY_CONTROL: MDC (Bit 10)                    */
-#define MDR_ETH_PHY_CTRL_MDC_Msk      (0x400UL)                 /*!< MDR_ETH1 PHY_CONTROL: MDC (Bitfield-Mask: 0x01)       */
-#define MDR_ETH_PHY_CTRL_PHY_ADDR_Pos (11UL)                    /*!< MDR_ETH1 PHY_CONTROL: PHY_ADDR (Bit 11)               */
-#define MDR_ETH_PHY_CTRL_PHY_ADDR_Msk (0xf800UL)                /*!< MDR_ETH1 PHY_CONTROL: PHY_ADDR (Bitfield-Mask: 0x1f)  */
+#define MDR_ETH_PHY_CTRL_nRST_Pos       0                     /*!< MDR_ETH1 PHY_CONTROL: nRST (Bit 0)                    */
+#define MDR_ETH_PHY_CTRL_nRST_Msk       0x1                   /*!< MDR_ETH1 PHY_CONTROL: nRST (Bitfield-Mask: 0x01)      */
+#define MDR_ETH_PHY_CTRL_MODE_Pos       1                     /*!< MDR_ETH1 PHY_CONTROL: MODE (Bit 1)                    */
+#define MDR_ETH_PHY_CTRL_MODE_Msk       0xE                   /*!< MDR_ETH1 PHY_CONTROL: MODE (Bitfield-Mask: 0x07)      */
+#define MDR_ETH_PHY_CTRL_FX_En_Pos      7                     /*!< MDR_ETH1 PHY_CONTROL: FX_En (Bit 7)                   */
+#define MDR_ETH_PHY_CTRL_FX_En_Msk      0x80                  /*!< MDR_ETH1 PHY_CONTROL: FX_En (Bitfield-Mask: 0x01)     */
+#define MDR_ETH_PHY_CTRL_MDI_Pos        8                     /*!< MDR_ETH1 PHY_CONTROL: MDI (Bit 8)                     */
+#define MDR_ETH_PHY_CTRL_MDI_Msk        0x100                 /*!< MDR_ETH1 PHY_CONTROL: MDI (Bitfield-Mask: 0x01)       */
+#define MDR_ETH_PHY_CTRL_MDIO_SEL_Pos   9                     /*!< MDR_ETH1 PHY_CONTROL: MDIO_SEL (Bit 9)                */
+#define MDR_ETH_PHY_CTRL_MDIO_SEL_Msk   0x200                 /*!< MDR_ETH1 PHY_CONTROL: MDIO_SEL (Bitfield-Mask: 0x01)  */
+#define MDR_ETH_PHY_CTRL_MDC_Pos        10                    /*!< MDR_ETH1 PHY_CONTROL: MDC (Bit 10)                    */
+#define MDR_ETH_PHY_CTRL_MDC_Msk        0x400                 /*!< MDR_ETH1 PHY_CONTROL: MDC (Bitfield-Mask: 0x01)       */
+#define MDR_ETH_PHY_CTRL_PHY_ADDR_Pos   11                    /*!< MDR_ETH1 PHY_CONTROL: PHY_ADDR (Bit 11)               */
+#define MDR_ETH_PHY_CTRL_PHY_ADDR_Msk   0xf800                /*!< MDR_ETH1 PHY_CONTROL: PHY_ADDR (Bitfield-Mask: 0x1f)  */
 
 
 /* ======================================================  PHY_STATUS  ======================================================= */

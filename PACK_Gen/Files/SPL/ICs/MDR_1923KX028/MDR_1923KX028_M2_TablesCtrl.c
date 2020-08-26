@@ -134,12 +134,12 @@ void MDR_KX028_LearnFrame( MDR_KX028_FrameInfo *frmInfo, bool static_entry, uint
   
   //  Check PortInd
   uint16_t portInd = frmInfo->ctrl_b.portNum;   
-  if (frmInfo->ctrl_b.portNum >= AXI_CLASS_PORT_COUNT) {
+  if (portInd >= AXI_CLASS_PORT_COUNT) {
     MDR_KX028_Log(MDR_KX028_Log_Learn_WrongStructInd, portInd);
     return;
   }
   //  Check Port Used (Port used in board)
-  uint32_t portList = (1 << frmInfo->ctrl_b.portNum) & enabledPortList;
+  uint32_t portList = (1 << portInd) & enabledPortList;
   if (portList == 0)
   {
     MDR_KX028_Log(MDR_KX028_Log_Learn_UnusedPort, portInd);
@@ -302,7 +302,7 @@ static void MDR_KX028_ProcessFrame(uint32_t frameAddr, uint32_t waitCyclesMax, u
     // Free BMU buffers
     MDR_KX028_FreeFrameBMU(frameAddr, frmInfo.size);
     // Free polling register
-    MDR_KX028_WriteAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR, 0 );
+    MDR_KX028_WriteAXI(CFG_NEW_PACKET_IN_LMEM_ADDR, 0 );
     // Reset HGPI
     MDR_KX028_WriteAXI(AXI_HGPI_BASE_ADDR + AXI_GPI_CTRL, AXI_GPI_CTRL_EN_Msk | AXI_GPI_CTRL_RESET_Msk );
     
@@ -318,7 +318,7 @@ uint32_t MDR_KX028_M2_ProcessTablesLearning(uint32_t framesToProcessMax, uint32_
   
   for (i = 0; i < framesToProcessMax; i++)
   {
-    pck_pointer = MDR_KX028_ReadAXI(CFG_NEW_PACKET_IN_LMEM_REG_ADDR);   
+    pck_pointer = MDR_KX028_ReadAXI(CFG_NEW_PACKET_IN_LMEM_ADDR);   
     if (pck_pointer)
       MDR_KX028_ProcessFrame(pck_pointer, waitCyclesMax, enabledPortList);
     else

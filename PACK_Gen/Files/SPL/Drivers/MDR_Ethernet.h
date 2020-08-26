@@ -324,7 +324,7 @@ void MDR_ETH_Debug_FillTestFrameTX(MDR_ETH_FrameTX* frameTX, uint16_t frameLen, 
 __STATIC_INLINE bool MDR_ETH_Debug_SendTestFrame(MDR_ETH_Type *MDR_Eth, uint16_t frameLen, uint8_t* srcMAC, uint8_t* destMAC)
 {
   MDR_ETH_FrameTX frameTX;	
-	MDR_ETH_Debug_FillTestFrameTX(&frameTX, frameLen, destMAC, srcMAC);
+	MDR_ETH_Debug_FillTestFrameTX(&frameTX, frameLen, srcMAC, destMAC);
 	return MDR_ETH_TrySendFrame(MDR_Eth, &frameTX);
 }
 

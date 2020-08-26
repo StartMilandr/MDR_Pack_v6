@@ -953,6 +953,10 @@
       <accept Dname="MDR1986VE94"/>
       <accept Dname="MDR1901VC1"/>
     </condition>
+    <condition id="CON_HAS_MII">
+      <description>Devices with I2C</description>
+      <accept Dname="MDR1986VE1"/>
+    </condition>    
     <condition id="CON_HAS_CRC_VE4x">
       <description>Devices with CRC</description>
       <accept Dname="MDR1986VE4"/>
@@ -1693,6 +1697,16 @@
       <files>
         <file category="header"  name="SPL/ICs/MDR_5600BB3.h"/>
         <file category="source"  name="SPL/ICs/MDR_5600BB3.c"/>
+      </files>
+    </component>
+    <!-- 1986VE1 -->
+    <component Cclass="IC Drivers" Cgroup="1986VE1_MII" Cversion="2.0" condition="CON_HAS_MII">
+      <description>1986VE1T Ethernet MII</description>
+      <files>
+        <file category="include" name="SPL/ICs/" version="2.0.0"/>
+        <file category="header"  name="SPL/ICs/MDR_1986VE1_MII.h"/>
+        <file category="source"  name="SPL/ICs/MDR_1986VE1_MII.c"/>
+        <file category="header"  name="SPL/ICs/Configs/MDR_1986VE1_MII_Config.h" attr="config" version="2.0.0"/>
       </files>
     </component>
     <!-- SFP modules -->

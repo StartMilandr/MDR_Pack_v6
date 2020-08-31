@@ -5,18 +5,20 @@
 #include <MDR_Types.h>
 
 //  Маски полей в 16-ти битной приемопередаче по SPI
-#define MDR_5600BB3_ADDR_POS        10
-#define MDR_5600BB3_ADDR_MSK        0x3F
-#define MDR_5600BB3_DATA_MSK        0xFF
-#define MDR_5600BB3_WR_MSK          0x200
+#define MDR_5600BB3_DATA_Pos        0
+#define MDR_5600BB3_DATA_Msk        0x00FF
+#define MDR_5600BB3_WR_Pos          0x0200
+#define MDR_5600BB3_WR_Msk          0x0200
+#define MDR_5600BB3_ADDR_Pos        10
+#define MDR_5600BB3_ADDR_Msk        0xFC00
 
 #define MDR_5600BB3_MAC_ADDR_HASH_Pos    3
 #define MDR_5600BB3_MAC_ADDR_USER_Msk    0x7
 
 //  Адреса регистров
 typedef enum {
-  MDR_5600BB3_regControl      = 0,
-  MDR_5600BB3_regStatus       = 1,
+  MDR_5600BB3_regControl      = 1,
+  MDR_5600BB3_regStatus       = 2,
   MDR_5600BB3_regFD_Mode5     = 3,
   MDR_5600BB3_regPhyModes12   = 4,
   MDR_5600BB3_regPhyModes34   = 0xB,
@@ -64,6 +66,8 @@ typedef enum {
   MDR_5600BB3_regMaxFrameL    = 0x33,
 } MDR_5600BB3_Reg;
 
+
+#define MDR_5600BB3_MAC_TABLE_LEN   0x800
 
 /* ========================================  Start of section using anonymous unions  ======================================== */
 #if defined (__CC_ARM)
@@ -140,6 +144,8 @@ typedef struct {
 #define MDR_5600BB3_FDMode5_DFEna_Pos      4
 #define MDR_5600BB3_FDMode5_FDEna_RDY_Msk  0x10
 
+#define  MDR_5600BB3_regFD_Mode5_FD   0x1F
+
 typedef union {
   __IOM uint8_t             value;
   MDR_5600BB3_FDMode5_Bits  bits;
@@ -215,6 +221,8 @@ typedef struct {
 #define MDR_5600BB3_RamCtrl0_SPI_EN_Pos       7
 #define MDR_5600BB3_RamCtrl0_SPI_EN_Msk       0x80
 
+#define MDR_5600BB3_RamCtrl0_RAM_AddrHi_Shift 8
+
 typedef union {
   __IOM uint8_t              value;
   MDR_5600BB3_RamCtrl0_Bits  bits;
@@ -243,6 +251,8 @@ typedef struct {
 #define MDR_5600BB3_AgeCtrl0_MAC_AgeIncEn_Msk   0x40
 #define MDR_5600BB3_AgeCtrl0_MAC_AgeDelEn_Pos   7
 #define MDR_5600BB3_AgeCtrl0_MAC_AgeDelEn_Msk   0x80
+
+#define MDR_5600BB3_AgeCtrl0_MAC_AGECLR_OFF     (MDR_5600BB3_AgeCtrl0_MAC_ClrEn_Msk | MDR_5600BB3_AgeCtrl0_MAC_AgeIncEn_Msk | MDR_5600BB3_AgeCtrl0_MAC_AgeLimHi_Msk)
 
 typedef union {
   __IOM uint8_t              value;

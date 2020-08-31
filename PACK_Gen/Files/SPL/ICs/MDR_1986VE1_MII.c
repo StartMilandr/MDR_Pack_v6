@@ -62,7 +62,7 @@ void MDR_1986VE1_MII_SetPhyClockHSE(void)
 
 void MDR_1986VE1_MII_Init(void)
 {   
-  //  Init MAC with MII to KX028
+  //  Init MAC with internal PHY
   MDR_ETH_MAC_CfgRegs  cfgRegs = MDR_ETH_MAC_INIT_MII(128, MDC_DIV_le160MHz);
   MDR_ETH_InitCfg      initCfg = {
     .cfgRegsMAC = &cfgRegs,

@@ -1,0 +1,77 @@
+Wellcome to UART DebugOut!
+BaudRate: 9600
+BaudError: 0.000000
+  READ REGs
+regControl = 0
+regStatus = fc
+regFD_Mode5 = f
+regPhyModes12 = 77
+regPhyModes34 = 77
+regAgeCtrl0 = ef
+regAgeCtrl1 = ff
+regAgeCtrl2 = 0
+regMacRamWrEn = 1f
+regPN1_MskAnd = ff
+regPN2_MskAnd = ff
+regPN3_MskAnd = ff
+regPN4_MskAnd = ff
+regPN5_MskAnd = ff
+regPN1_MskOr = 0
+regPN2_MskOr = 0
+regPN3_MskOr = 0
+regPN4_MskOr = 0
+regPN5_MskOr = 0
+regIPGh = 0
+regIPGl = 45
+regMAC_CtrlTx = a0
+regCollWindow = 1f
+regMAC_CtrlRx = 1
+regMinFrameH = 0
+regMinFrameL = 14
+regMaxFrameH = 8
+regMaxFrameL = 0
+  WRITE REGs
+  READ REGs
+regControl = 0
+regStatus = fc
+regFD_Mode5 = 1f
+regPhyModes12 = 77
+regPhyModes34 = 77
+regAgeCtrl0 = 6f
+regAgeCtrl1 = ff
+regAgeCtrl2 = 0
+regMacRamWrEn = 1f
+regPN1_MskAnd = ff
+regPN2_MskAnd = ff
+regPN3_MskAnd = ff
+regPN4_MskAnd = ff
+regPN5_MskAnd = ff
+regPN1_MskOr = 0
+regPN2_MskOr = 0
+regPN3_MskOr = 0
+regPN4_MskOr = 0
+regPN5_MskOr = 0
+regIPGh = 0
+regIPGl = 45
+regMAC_CtrlTx = a0
+regCollWindow = 1f
+regMAC_CtrlRx = 1
+regMinFrameH = 0
+regMinFrameL = 14
+regMaxFrameH = 8
+regMaxFrameL = 0
+  MAC TABLE
+  read completed
+  WRITE TWO MAC ITEMS
+HASH1: 0x3b8  MAC: 11:22:33:44:55:66  AGE: 0x64  PORT: 0x1
+HASH2: 0x170  MAC: 12:34:56:78:9a:bc  AGE: 0xc8  PORT: 0x2
+  MAC TABLE
+HASH: 0x170  MAC: 12:34:56:78:9a:bc  AGE: 0xfff  PORT: 0x2
+  read completed
+  WRITE TWO MAC ITEMS
+HASH1: 0x3b8  MAC: 11:22:33:44:55:66  AGE: 0x64  PORT: 0x1
+HASH2: 0x170  MAC: 12:34:56:78:9a:bc  AGE: 0xc8  PORT: 0x2
+  MAC TABLE
+HASH: 0x170  MAC: 12:34:56:78:9a:bc  AGE: 0xfff  PORT: 0x2
+HASH: 0x3b8  MAC: 11:22:33:44:55:66  AGE: 0xfff  PORT: 0x1
+  read completed

@@ -41,3 +41,6 @@ Utils/pyBasisCtrl/saves/
 Utils/pyUnbrickVE9x/__pycache__/
 PACK_Gen/Files/Examples/1923KX028/KX028_CheckSFP/Objects/
 PACK_Gen/Files/Examples/1923KX028/KX028_CheckSFP/Listings/
+PACK_Gen/Files/Examples/All_Boards/5600VV3_Test/Listings/
+PACK_Gen/Files/Examples/All_Boards/5600VV3_Test/Objects/
+PACK_Gen/Files/Examples/All_Boards/5600VV3_Test/JLinkLog.txt

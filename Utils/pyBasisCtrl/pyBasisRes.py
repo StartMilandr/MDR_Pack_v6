@@ -194,6 +194,26 @@ kxo28_RegsEMAC = { 'emac1_pcs_control': EMAC1_BASE_ADDR + EMAC_PCS_CONTROL,
                   'emac7_pcs_base':  EMAC7_BASE_ADDR + EMAC_PCS_BASE,
 }
 
+
+#--------  EMAC  ------------
+AXI_EMAC_NETCTRL		   = 0x0000
+AXI_EMAC_NETCFG		     = 0x0004 
+AXI_EMAC_CTRL          = 0x08A0 
+AXI_EMAC_NETSTAT		   = 0x0008 
+AXI_EMAC_TXSTAT		     = 0x0014 
+AXI_EMAC_RXSTAT		     = 0x0020 
+
+kxo28_RegsOffs_EMAC = { 
+                  'AXI_EMAC_NETCTRL':    AXI_EMAC_NETCTRL,
+                  'AXI_EMAC_NETCFG':     AXI_EMAC_NETCFG,
+                  'AXI_EMAC_CTRL':       AXI_EMAC_CTRL,
+                  'AXI_EMAC_NETSTAT':    AXI_EMAC_NETSTAT,
+                  'AXI_EMAC_TXSTAT':     AXI_EMAC_TXSTAT,
+                  'AXI_EMAC_TXSTAT':     AXI_EMAC_TXSTAT,
+                  'AXI_EMAC_RXSTAT':     AXI_EMAC_RXSTAT,
+}
+
+
 #--------  BMU  ---------------
 AXI_BMU1_BASE_ADDR          = 0x100000
 AXI_BMU2_BASE_ADDR          = 0x700000
@@ -233,6 +253,24 @@ kxo28_RegsBMU = {
 }
 
 #--------  GPI  ---------------
+EGPI1 = 0
+EGPI2 = 1
+EGPI3 = 2
+EGPI4 = 3
+EGPI5 = 4
+EGPI6 = 5
+EGPI7 = 6
+EGPI8 = 7
+EGPI9 = 8
+EGPI10 = 9
+EGPI11 = 10
+EGPI12 = 11
+EGPI13 = 12
+EGPI14 = 13
+EGPI15 = 14
+EGPI16 = 15
+HGPI = 16
+
 AXI_EGPI1_BASE_ADDR         = 0x780000
 AXI_EGPI2_BASE_ADDR         = 0x790000
 AXI_EGPI3_BASE_ADDR         = 0x7A0000
@@ -342,6 +380,5 @@ kxo28_RegsOffs_CLASS = {
 }
 
 kxo28_RegsAXI = kxo28_RegsBMU
-
 
 

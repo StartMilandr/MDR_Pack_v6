@@ -40,6 +40,8 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
         self.btDebug1.clicked.connect(self.ReadEGPI)
         self.btDebug2.setText('CLASS Regs')
         self.btDebug2.clicked.connect(self.ReadCLASS)
+        self.btDebug3.setText('EMAC Regs')
+        self.btDebug3.clicked.connect(self.ReadEMAC)
         
 
         self.lblWriteValue.setText('Write Hex Value')
@@ -117,9 +119,11 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
             print('Convertion error!')
 
     def ReadEGPI(self):
-        self.ReadRegsEGPI(1)
-        self.ReadRegsEGPI(3)
-        self.ReadRegsEGPI(16)
+        self.ReadRegsEGPI(EGPI2)
+        self.ReadRegsEGPI(EGPI3)
+        self.ReadRegsEGPI(EGPI4)
+        self.ReadRegsEGPI(EGPI7)
+        self.ReadRegsEGPI(HGPI)
 
     def ReadRegsEGPI(self, indEGPI):
         baseAddr = kxo28_Addr_GPI[indEGPI]
@@ -127,6 +131,20 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
         for regName, addr in kxo28_RegsOffs_GPI.items():
             addr += baseAddr
             self.ReadRegAndShow(regName, addr)
+
+    def ReadEMAC(self):
+        self.ReadRegsEMAC(EGPI2)
+        self.ReadRegsEMAC(EGPI3)
+        self.ReadRegsEMAC(EGPI4)
+        self.ReadRegsEMAC(EGPI7)
+        #self.ReadRegsEMAC(HGPI)
+
+    def ReadRegsEMAC(self, indEMAC):
+        baseAddr = kx028_EmacAdr[indEMAC]
+        self.txtEdit.append('   EMAC_{} Registers:'.format(indEMAC + 1))
+        for regName, addr in kxo28_RegsOffs_EMAC.items():
+            addr += baseAddr
+            self.ReadRegAndShow(regName, addr)        
 
     def ReadCLASS(self):
         self.ReadRegsCLASS(0)

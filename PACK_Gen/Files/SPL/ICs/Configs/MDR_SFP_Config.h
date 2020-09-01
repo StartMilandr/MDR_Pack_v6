@@ -102,7 +102,7 @@
   {SFP_ADDR_CC_EXT      , SFP_LEN_CC_EXT     , "CC_EXT"}     \
 }      \
 
-#define CFG_SFP_ITEMS_TABLE_LEN  \
+#define CFG_SFP_ITEMS_TABLE_LEN  (\
                           SFP_LEN_ID \
                         + SFP_LEN_IDEX \
                         + SFP_LEN_CONNECTOR \
@@ -130,6 +130,7 @@
                         + SFP_LEN_DATA_CODE \
                         + SFP_LEN_RESERVED_5 \
                         + SFP_LEN_CC_EXT \
+                        ) 
 
 #define  CFG_SFP_ITEMS_CNT    27
 

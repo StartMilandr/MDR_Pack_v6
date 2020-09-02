@@ -11,8 +11,6 @@ SHUT_DOWN_ITEMS = ['PowerOn', 'PowerOff']
 AFT_ITEMS = ['AnyTagged', 'Tagged', 'Untagged']
 BLOCKSTATE_ITEMS = ['Forwarding', 'Blocked', 'LearnOnly']
 
-TABLE_ITEM_HEIGHT = 20
-
 _PortNames = []
 def BasisGetPortNames():
   if len(_PortNames) != len(PORTS_ORDER):

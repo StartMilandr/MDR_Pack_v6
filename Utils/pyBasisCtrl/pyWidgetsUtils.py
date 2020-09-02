@@ -2,6 +2,8 @@ from PySide2 import QtWidgets, QtGui, QtCore
 import inspect
 from distutils.util import strtobool
 
+TABLE_ITEM_HEIGHT = 20
+
 def tableWidget_AddComboBox(tblWdg, rowInd, colInd, items, index, name):
     wdg = QtWidgets.QComboBox(tblWdg)
     wdg.setObjectName(name)
@@ -27,6 +29,12 @@ def tableWidget_AddLineEditValid(tblWdg, rowInd, colInd, validator, name):
 
 def tableWidget_AddLineEdit_0x1FF(tblWdg, rowInd, colInd, strValue, name):
     hexValidr = QtGui.QRegExpValidator(QtCore.QRegExp("0x[1][0-9A-Fa-f]{1,2}"))    
+    wdg = tableWidget_AddLineEditValid(tblWdg, rowInd, colInd, hexValidr, name)
+    wdg.setText(strValue)
+    return wdg
+
+def tableWidget_AddLineEdit_0xFFF(tblWdg, rowInd, colInd, strValue, name):
+    hexValidr = QtGui.QRegExpValidator(QtCore.QRegExp("0x[0-9A-Fa-f]{1,3}"))
     wdg = tableWidget_AddLineEditValid(tblWdg, rowInd, colInd, hexValidr, name)
     wdg.setText(strValue)
     return wdg

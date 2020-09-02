@@ -9,8 +9,10 @@ from pyBasisVLAN import PyBasisWindowVLAN
 from pyBasisPort import PyBasisWindowPort
 from pyBasisStats import PyBasisWindowStats
 from pyBasisDebug import PyBasisWindowDebug
-from pyWidgetsStyles import dockWidgetStyles
-
+from pyVV3_MAC import PyWindowMAC_VV3
+from pyVV3_Debug import PyWindowDebug_VV3
+from pyWidgetsStyles import dockWidgetStyles, TOOLBAR_LABEL_STYLES 
+ 
 from PyComUtils import Com_GetSerialPorts, Com_Speeds
 #from PyComPortThread import ComPortThread
 #from PyComPortConfigs import ComPortConfigs
@@ -40,7 +42,6 @@ saveComFileName = runPath + '/saves/ComPort.ini'
 sMaxMessageLen = 'MaxMessageLen'
 #sCheckHash = 'sCheckHash'
 
-
 class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
     # Constructor
     def __init__(self):
@@ -55,11 +56,28 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setStyleSheet(dockWidgetStyles)
         # Toolbars - Forms
         self.toolBarViews = self.addToolBar('Views')
+        self.lblKX028 = QtWidgets.QLabel(self.toolBarViews)
+        self.lblKX028.setText('1923KX028:')
+        self.lblKX028.setStyleSheet(TOOLBAR_LABEL_STYLES)
+        self.toolBarViews.addWidget(self.lblKX028)
+        self.lblKX028.setAlignment(Qt.AlignLeft)        
+
         self.toolBarViews.addAction('MAC Table', self.CreateViewMAC)
         self.toolBarViews.addAction('VLAN Table', self.CreateViewVLAN)
         self.toolBarViews.addAction('Ports', self.CreateViewPort)
         self.toolBarViews.addAction('Statistics', self.CreateViewStats)
         self.toolBarViews.addAction('Debug', self.CreateViewDebug)
+        # Toolbars - VV3
+        self.toolBarVV3 = self.addToolBar('BB3')
+        
+        self.lblVV3 = QtWidgets.QLabel(self.toolBarVV3)
+        self.lblVV3.setText('5600BB3:')
+        self.lblVV3.setStyleSheet(TOOLBAR_LABEL_STYLES)
+        self.toolBarVV3.addWidget(self.lblVV3)
+        self.lblVV3.setAlignment(Qt.AlignLeft)
+
+        self.toolBarVV3.addAction('MAC Table', self.CreateViewMAC_VV3)
+        self.toolBarVV3.addAction('Registers', self.CreateDebug_VV3)
         # Toolbars - Connect
         self.toolBarCom = self.addToolBar('Connect')
 
@@ -130,10 +148,10 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       secMainWin.setWindowFlag(Qt.Widget)
       self.setCentralWidget(secMainWin)
 
-    def addDockedWidget(self, wigdet, name, dockPlace):
+    def addDockedWidget(self, widget, name, dockPlace):
       dockArea = QtWidgets.QDockWidget(name, self)
       dockArea.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea | Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
-      dockArea.setWidget(wigdet)
+      dockArea.setWidget(widget)
       dockArea.setFloating(False)
       self.addDockWidget(dockPlace, dockArea)
       wigdet.show()
@@ -142,7 +160,12 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       window = PyBasisWindowMAC(self)
       window.comCLI = self.comCLI
       self.addDockedWidget(window, "Table MAC", Qt.LeftDockWidgetArea)
-      
+
+    def CreateViewMAC_VV3(self):
+      window = PyWindowMAC_VV3(self)
+      window.comCLI = self.comCLI
+      self.addDockedWidget(window, "5600BB3 MACs", Qt.RightDockWidgetArea)
+
     def CreateViewVLAN(self):
       window = PyBasisWindowVLAN(self)
       window.comCLI = self.comCLI
@@ -163,6 +186,10 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       window.comCLI = self.comCLI
       self.addDockedWidget(window, "Debug", Qt.LeftDockWidgetArea)
 
+    def CreateDebug_VV3(self):
+      window = PyWindowDebug_VV3(self)
+      window.comCLI = self.comCLI
+      self.addDockedWidget(window, "Registers 5600BB3T", Qt.LeftDockWidgetArea)  
 
     def ComConnect(self):
       if not self.comTransf.started:

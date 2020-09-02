@@ -6,6 +6,7 @@ from KX028_ItemVLAN import KX028_ItemVLAN
 from KX028_KeyEntryMAC import KX028_KeyMAC, KX028_KeyEntryMAC
 from KX028_KeyEntryVLAN import KX028_KeyVLAN, KX028_KeyEntryVLAN
 from KX028_ItemPort import KX028_ItemPort
+from pyVV3_ItemMAC import VV3_ItemMAC
 from pyBasisRes import kx028_AddrStruc1, kx028_AddrStruc2, CLASS1_BASE_ADDR
 
 
@@ -31,11 +32,18 @@ cliCMD_WritePortCfg   = 14
 cliCMD_ReadAXI        = 15
 cliCMD_WriteAXI       = 16
 
+cliCMD_VV3_ReadMAC    = 17
+cliCMD_VV3_AddMAC     = 18
+cliCMD_VV3_DelMAC     = 19
+cliCMD_VV3_ReadRegs   = 20
+cliCMD_VV3_WriteRegs  = 21
+
 cliCMD_Str = ['cmdNone', 'cmdError', \
               'cmdReadMAC',  'cmdUpdAddMAC',  'cmdDelMAC',  'cmdClearMAC', \
               'cmdReadVLAN', 'cmdUpdAddVLAN', 'cmdDelVLAN', 'cmdClearVLAN', \
               'ReadStatPort', 'ReadStatClass', 'ClearStatPort', 'ClearStatClass', \
-              'WritePortCfg', 'ReadAXI', 'WriteAXI']
+              'WritePortCfg', 'ReadAXI', 'WriteAXI', 
+              'AddMAC_BB3', 'DelMAC_BB3', 'ReadMAC_VV3',]
 
 
 cliACK_MinLen_1       = 1
@@ -70,6 +78,8 @@ CFG_MAC_TABLE_ITEMS_COUNT  = 4095 #8192
 CFG_MAC_ITEMS_RD_ITER      = 16
 CFG_VLAN_TABLE_ITEMS_COUNT = 128
 CFG_VLAN_ITEMS_RD_ITER     = 4
+
+CFG_VV3_MAC_TABLE_LEN = 0x800
 
 def IsEvenNum(num):
   return (num & 1) != 1
@@ -365,3 +375,84 @@ class KX028_CLI:
     else:
       return None
 
+  #============== VV3 ==============
+  def AddMAC_VV3(self, itemMac):
+    return self.SendObjectWithAck(cliCMD_VV3_AddMAC, itemMac)
+
+  def readActiveItemsMAC_VV3(self, fromHashAddr, rdCount, itemsList):
+    #print('RdFrom: {} Count: {}'.format(fromHashAddr, rdCount))
+    offs = self.packHeader(cliCMD_VV3_ReadMAC, 4)
+    struct.pack_into("HH", self.buffTx, offs, fromHashAddr, rdCount)
+    resOK = self.transfer(cliCMD_VV3_ReadMAC, cliACK_MinLen_1)
+    rdItemsCnt = 0    
+    if resOK:
+      messLenRx = len(self.buffRx.data)
+      if messLenRx > VV3_ItemMAC.packLen:
+        while offs + VV3_ItemMAC.packLen < messLenRx:
+          item = VV3_ItemMAC()
+          item.unpack(self.buffRx.data, offs)
+          itemsList.append(item)
+          offs += VV3_ItemMAC.packLen
+          rdItemsCnt += 1
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readActiveItemsMAC_VV3')
+    return rdItemsCnt
+
+  def ReadTableMAC_VV3(self):
+    cntToRead = CFG_VV3_MAC_TABLE_LEN
+    itemsList = []
+    fromHashAddr = 0
+    while cntToRead > 0:
+      rdCnt = self.readActiveItemsMAC_VV3(fromHashAddr, CFG_MAC_ITEMS_RD_ITER, itemsList)
+      if rdCnt < CFG_MAC_ITEMS_RD_ITER:
+        break
+      else:
+        cntToRead -= CFG_MAC_ITEMS_RD_ITER
+        fromHashAddr += CFG_MAC_ITEMS_RD_ITER
+    return itemsList
+
+  def DelItemMAC_VV3(self, hashAddr):
+    offs = self.packHeader(cliCMD_VV3_DelMAC, 2)
+    struct.pack_into("H", self.buffTx, offs, hashAddr)
+    resOK = self.transfer(cliCMD_VV3_DelMAC, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault ' + cliCMD_Str[cliCMD_VV3_DelMAC])
+    return resOK  
+
+  def ReadRegList_VV3(self, regAddrList):
+    regCnt = len(regAddrList)
+    offs = self.packHeader(cliCMD_VV3_ReadRegs, regCnt)
+    for Reg in regAddrList:
+      struct.pack_into("B", self.buffTx, offs, Reg)
+      offs += 1
+    resOK = self.transfer(cliCMD_VV3_ReadRegs, cliACK_MinLen_1)
+    valueList = []
+    if resOK:
+      if len(self.buffRx.data) >= (regCnt + HDR_LEN):
+        offs = ACK_PARS_OFFS
+        for i in range(regCnt):
+          R, = struct.unpack_from('B', self.buffRx.data, offs)
+          valueList.append(R)
+          offs += 1
+      else:
+        self.checkAckStatus()
+    else:
+      print('Fault readRegList_VV3')
+    return valueList
+
+  def WriteRegList_VV3(self, regAddrList, regDataList):
+    regCnt = len(regAddrList)
+    offs = self.packHeader(cliCMD_VV3_WriteRegs, regCnt * 2)
+    for i in range(regCnt):
+      struct.pack_into("BB", self.buffTx, offs, regAddrList[i], regDataList[i])
+      offs += 2
+    resOK = self.transfer(cliCMD_VV3_WriteRegs, cliACK_MinLen_1)
+    if resOK:
+      self.checkAckStatus()
+    else:
+      print('Fault writeRegList_VV3')
+    return resOK     

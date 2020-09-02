@@ -97,6 +97,13 @@ __STATIC_INLINE void MDR_5600BB3_MII_OldClearStop(MDR_SSP_Type *SSPx)
   MDR_5600BB3_Write(SSPx, MDR_5600BB3_regAgeCtrl0, MDR_5600BB3_AgeCtrl0_MAC_AGECLR_OFF);
 }
 
+//  Подобрано эмпирически для максимального значения счетчика старения 0xFFF (который стоит по умолчанию при включении)
+#define MDR_5600BB3_DIV_PER_MIN  0x18
+__STATIC_INLINE void MDR_5600BB3_SetAgeClearPeriod(MDR_SSP_Type *SSPx, uint8_t ageClearMinutes)
+{
+  MDR_5600BB3_Write(SSPx, MDR_5600BB3_regAgeCtrl2, ageClearMinutes * MDR_5600BB3_DIV_PER_MIN);
+}
+
 
 
 #endif  //MDR_5600BB3_H

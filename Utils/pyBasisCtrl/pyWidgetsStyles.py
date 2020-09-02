@@ -9,7 +9,9 @@ comboBox_ColorGreen = 'QComboBox {color: green; font-weight: bold;}'
 
 lineEditStyles = 'QLineEdit {border: 0px solid silver; padding: 1px 18px 1px 3px; min-width: 6em; }'
 
-dockWidgetStyles = 'QDockWidget {color: darkBlue; font-size: 18px; background-color: cyan}'
+dockWidgetStyles = 'QDockWidget {color: blue; font-style: oblique; font-size: 16px; background-color: Silver}'
+
+TOOLBAR_LABEL_STYLES = "color: blue; font-size: 12px; font-style: oblique; padding: 5 0 0 2px; border: 0 0 0 0px"
 
 spinBoxStyles = 'QSpinBox {border: 0px solid silver; padding: 0px 18px 0px 3px; min-width: 6em; }'
 

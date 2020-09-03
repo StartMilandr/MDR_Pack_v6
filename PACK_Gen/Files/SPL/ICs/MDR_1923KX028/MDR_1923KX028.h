@@ -130,7 +130,12 @@ void MDR_KX028_ReadByAddrList(uint16_t count, const uint32_t addrBase, const uin
 //  ----------------    Registers control ------------------
 uint32_t  MDR_KX028_ReadReg (uint32_t addr);
 void      MDR_KX028_WriteReg(uint32_t addr, uint32_t data);
+void      MDR_KX028_MaskReg(uint32_t addr, uint32_t maskClr, uint32_t maskSet);
 
+
+// ================  SFP Amplitude Control ==============
+void MDR_KX028_SetPhyAmp(uint8_t port, uint8_t level);
+void MDR_KX028_RestorePhyAmpDef(uint8_t port);
 
 #endif  //MDR_1923KX028_H
 

@@ -345,14 +345,14 @@ typedef struct {
 #define MDR_1923KX028_Ctrl7_LosLvlPhy13_16_Msk  0x000F8000UL
 #define MDR_1923KX028_Ctrl7_PhyMPLL_Mul_Pos     20
 #define MDR_1923KX028_Ctrl7_PhyMPLL_Mul_Msk     0x07F00000UL
-#define MDR_1923KX028_Ctrl7_PhyMPLL_En_Pos          27
-#define MDR_1923KX028_Ctrl7_PhyMPLL_En_Msk          0x08000000UL
-#define MDR_1923KX028_Ctrl7_SoftResetPhy_Pos     28
-#define MDR_1923KX028_Ctrl7_SoftResetPhy_Msk     0x10000000UL
-#define MDR_1923KX028_Ctrl7_RefClkDiv2_Pos       29
-#define MDR_1923KX028_Ctrl7_RefClkDiv2_Msk       0x40000000UL
-#define MDR_1923KX028_Ctrl7_RxTxRate_Pos         30
-#define MDR_1923KX028_Ctrl7_RxTxRate_Msk         0xC0000000UL
+#define MDR_1923KX028_Ctrl7_PhyMPLL_En_Pos      27
+#define MDR_1923KX028_Ctrl7_PhyMPLL_En_Msk      0x08000000UL
+#define MDR_1923KX028_Ctrl7_SoftResetPhy_Pos    28
+#define MDR_1923KX028_Ctrl7_SoftResetPhy_Msk    0x10000000UL
+#define MDR_1923KX028_Ctrl7_RefClkDiv2_Pos      29
+#define MDR_1923KX028_Ctrl7_RefClkDiv2_Msk      0x40000000UL
+#define MDR_1923KX028_Ctrl7_RxTxRate_Pos        30
+#define MDR_1923KX028_Ctrl7_RxTxRate_Msk        0xC0000000UL
 
 typedef union {
   __IOM uint32_t            value;
@@ -496,6 +496,9 @@ typedef struct {
 #define MDR_1923KX028_Ctrl10_TxAmpPhy3_Msk        0x01FC0000UL
 #define MDR_1923KX028_Ctrl10_TxAmpPhy4_Pos        25
 #define MDR_1923KX028_Ctrl10_TxAmpPhy4_Msk        0xFE000000UL
+
+#define MDR_1923KX028_PhyAmpMask    0x7FUL
+#define MDR_1923KX028_PhyAmpDef     0x12
 
 typedef union {
   __IOM uint32_t             value;

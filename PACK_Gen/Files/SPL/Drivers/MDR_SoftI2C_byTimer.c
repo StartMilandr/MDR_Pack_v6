@@ -211,6 +211,36 @@ void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bi
 }
 #endif  // I2C_SOFT_MASTER_DISABLE
 
+
+uint8_t _activeRegAddr;
+
+bool MDR_I2Cst_ReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t regAddr, uint8_t *rdData, uint8_t rdDataLen, bool useReadRestartI2C)
+{
+  _activeRegAddr = regAddr;  
+  MDR_I2Cst_MasterStartReadRegs(i2cObj, addr_7bit, &_activeRegAddr, 1, rdData, rdDataLen, useReadRestartI2C);
+  while (!MDR_I2Cst_MasterGetCompleted(i2cObj));
+  
+  return MDR_I2Cst_GetTransferedDataCount(i2cObj) == rdDataLen;
+}
+
+bool MDR_I2Cst_Write(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen)
+{
+  MDR_I2Cst_MasterStartWrite(i2cObj, addr_7bit, data, dataLen);
+  while (!MDR_I2Cst_MasterGetCompleted(i2cObj));  
+  return MDR_I2Cst_GetTransferedDataCount(i2cObj) == dataLen;  
+}
+
+bool MDR_I2Cst_Read(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen)
+{
+  MDR_I2Cst_MasterStartRead(i2cObj, addr_7bit, data, dataLen);
+  while (!MDR_I2Cst_MasterGetCompleted(i2cObj));  
+  return MDR_I2Cst_GetTransferedDataCount(i2cObj) == dataLen;  
+}
+
+
+
+
+
 //===================   I2C Slave   ==========================
 #if !I2C_SOFT_SLAVE_DISABLE
 

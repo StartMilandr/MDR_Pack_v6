@@ -332,5 +332,59 @@ void MDR_KX028_WriteReg(uint32_t addr, uint32_t data)
   MDR_1923KX028_WriteReg(&_objKX028, addr, data);
 }
 
+void MDR_KX028_MaskReg(uint32_t addr, uint32_t maskClr, uint32_t maskSet)
+{
+  uint32_t regValue = MDR_KX028_ReadReg(addr);
+  regValue &= ~maskClr;
+  regValue |= maskSet;
+  MDR_1923KX028_WriteReg(&_objKX028, addr, regValue);
+}
 
 
+
+// ================  SFP Amplitude Control ==============
+#define PHY_COUNT   16
+static const uint8_t _phy_amp_offs[PHY_COUNT] = 
+// PHY:  0   1   2   3  4  5   6   7   8   9  10  11  12  13  14  15
+        {4, 11, 18, 25, 0, 7, 14, 21,  0,  7, 14, 21,  0,  7, 14, 21};
+
+static void MDR_KX028_ResetPhyByMask(uint32_t resetMask)
+{
+  uint32_t regCtrl12 = MDR_KX028_ReadReg(MDR_1923KX028_Control_12);  
+  // SGMII PHYs reset
+  MDR_KX028_WriteReg(MDR_1923KX028_Control_12, regCtrl12 | resetMask);  
+  // SGMII PHYs in normal mode operations
+  MDR_KX028_WriteReg(MDR_1923KX028_Control_12, regCtrl12);
+}        
+        
+void MDR_KX028_SetPhyAmp(uint8_t port, uint8_t level)
+{   
+  uint8_t offset = _phy_amp_offs[port];
+  uint32_t maskClr  = MDR_1923KX028_PhyAmpMask << offset;
+  uint32_t value = level << offset;       
+  if( port < 4 )
+  {
+    MDR_KX028_MaskReg(MDR_1923KX028_Control_10, maskClr, value);
+    MDR_KX028_ResetPhyByMask(MDR_1923KX028_Ctrl12_SoftRstXauiPhy1_4_Msk);
+  }
+  else if( port < 8 )
+  {
+    MDR_KX028_MaskReg(MDR_1923KX028_Control_11, maskClr, value);
+    MDR_KX028_ResetPhyByMask(MDR_1923KX028_Ctrl12_SoftRstXauiPhy5_8_Msk);
+  }
+  else if( port < 12 )
+  {
+    MDR_KX028_MaskReg(MDR_1923KX028_Control_12, maskClr, value);
+    MDR_KX028_ResetPhyByMask(MDR_1923KX028_Ctrl12_SoftRstXauiPhy8_12_Msk);
+  }
+  else
+  {
+    MDR_KX028_MaskReg(MDR_1923KX028_Control_13, maskClr, value);
+    MDR_KX028_ResetPhyByMask(MDR_1923KX028_Ctrl12_SoftRstXauiPhy13_16_Msk);
+  }     
+}
+
+void MDR_KX028_RestorePhyAmpDef(uint8_t port)
+{
+  MDR_KX028_SetPhyAmp(port, MDR_1923KX028_PhyAmpDef);
+}

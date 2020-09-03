@@ -60,6 +60,13 @@ void MDR_I2Cst_MasterStartReadRegs(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bi
 __STATIC_INLINE bool MDR_I2Cst_MasterGetStarted(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->started; }
 __STATIC_INLINE bool MDR_I2Cst_MasterGetCompleted(MDR_I2Cst_MasterObj *i2cObj) { return !i2cObj->started; }
 
+__STATIC_INLINE uint8_t MDR_I2Cst_GetTransferedDataCount(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->dataInd; }
+__STATIC_INLINE bool    MDR_I2Cst_GetAckOk(MDR_I2Cst_MasterObj *i2cObj) { return i2cObj->ackOk; }
+
+//  Синхронные процедуры записи / чтения / чтения регистров
+bool MDR_I2Cst_ReadRegs(MDR_I2Cst_MasterObj *masterI2C, uint8_t addr_7bit, uint8_t regAddr, uint8_t *rdData, uint8_t rdDataLen, bool useReadRestartI2C);
+bool MDR_I2Cst_Write(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
+bool MDR_I2Cst_Read(MDR_I2Cst_MasterObj *i2cObj, uint8_t addr_7bit, uint8_t *data, uint8_t dataLen);
 
 
 //================================   I2C Soft SLAVE   ================================

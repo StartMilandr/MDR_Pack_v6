@@ -411,22 +411,22 @@ typedef __PACKED_STRUCT{
 //  Register R0 - RW Base Control
 #define MDR_ETH_PHY_R0                        0
 
-#define MDR_ETH_PHY_R0_FULL_DUPLEX_Pos         8
-#define MDR_ETH_PHY_R0_FULL_DUPLEX_Msk        (1 << MDR_ETH_PHY_R0_FULL_DUPLEX_Pos)
-#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Pos     9
-#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk    (1 << MDR_ETH_PHY_R0_RESTART_AUTONEG_Pos)
-#define MDR_ETH_PHY_R0_ISOL_Pos                10
-#define MDR_ETH_PHY_R0_ISOL_Msk               (1 << MDR_ETH_PHY_R0_ISOL_Pos)
-#define MDR_ETH_PHY_R0_PWR_DOWN_Pos            11
-#define MDR_ETH_PHY_R0_PWR_DOWN_Msk           (1 << MDR_ETH_PHY_R0_ISOL_Pos)
-#define MDR_ETH_PHY_R0_AUTONEG_ENA_Pos         12
-#define MDR_ETH_PHY_R0_AUTONEG_ENA_Msk        (1 << MDR_ETH_PHY_R0_AUTONEG_ENA_Pos)
-#define MDR_ETH_PHY_R0_100Mbps_Pos             13
-#define MDR_ETH_PHY_R0_100Mbps_Msk            (1 << MDR_ETH_PHY_R0_100Mbps_Pos)
-#define MDR_ETH_PHY_R0_Loopback_Pos            14
-#define MDR_ETH_PHY_R0_Loopback_Msk           (1 << MDR_ETH_PHY_R0_Loopback_Pos)
-#define MDR_ETH_PHY_R0_RESET_Pos               15
-#define MDR_ETH_PHY_R0_RESET_Msk              (1 << MDR_ETH_PHY_R0_RESET_Pos)
+#define MDR_ETH_PHY_R0_FULL_DUPLEX_Pos        8
+#define MDR_ETH_PHY_R0_FULL_DUPLEX_Msk        0x0100
+#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Pos    9
+#define MDR_ETH_PHY_R0_RESTART_AUTONEG_Msk    0x0200
+#define MDR_ETH_PHY_R0_ISOL_Pos               10
+#define MDR_ETH_PHY_R0_ISOL_Msk               0x0400
+#define MDR_ETH_PHY_R0_PWR_DOWN_Pos           11
+#define MDR_ETH_PHY_R0_PWR_DOWN_Msk           0x0800
+#define MDR_ETH_PHY_R0_AUTONEG_ENA_Pos        12
+#define MDR_ETH_PHY_R0_AUTONEG_ENA_Msk        0x1000
+#define MDR_ETH_PHY_R0_100Mbps_Pos            13
+#define MDR_ETH_PHY_R0_100Mbps_Msk            0x2000
+#define MDR_ETH_PHY_R0_Loopback_Pos           14
+#define MDR_ETH_PHY_R0_Loopback_Msk           0x4000
+#define MDR_ETH_PHY_R0_RESET_Pos              15
+#define MDR_ETH_PHY_R0_RESET_Msk              0x8000
 
 #define MDR_ETH_PHY_R0_Reserved_Msk           0x00FF
 
@@ -463,15 +463,15 @@ typedef __PACKED_STRUCT{
 #define MDR_ETH_PHY_R4                        4
 
 #define MDR_ETH_PHY_R4_10BaseHD_Ena_Pos        5
-#define MDR_ETH_PHY_R4_10BaseHD_Ena_Msk       (1 << MDR_ETH_PHY_R1_ExtEna_Pos)
+#define MDR_ETH_PHY_R4_10BaseHD_Ena_Msk        0x0020
 #define MDR_ETH_PHY_R4_10BaseFD_Ena_Pos        6
-#define MDR_ETH_PHY_R4_10BaseFD_Ena_Msk       (1 << MDR_ETH_PHY_R4_10BaseFD_Ena_Pos)
+#define MDR_ETH_PHY_R4_10BaseFD_Ena_Msk        0x0040
 #define MDR_ETH_PHY_R4_100BaseHD_Ena_Pos       7
-#define MDR_ETH_PHY_R4_100BaseHD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseHD_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseHD_Ena_Msk       0x0080
 #define MDR_ETH_PHY_R4_100BaseFD_Ena_Pos       8
-#define MDR_ETH_PHY_R4_100BaseFD_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseFD_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseFD_Ena_Msk       0x0100
 #define MDR_ETH_PHY_R4_100BaseT4_Ena_Pos       9
-#define MDR_ETH_PHY_R4_100BaseT4_Ena_Msk      (1 << MDR_ETH_PHY_R4_100BaseT4_Ena_Pos)
+#define MDR_ETH_PHY_R4_100BaseT4_Ena_Msk       0x0200
 
 #define MDR_ETH_PHY_R4_SEL_100Mbps      (MDR_ETH_PHY_R4_100BaseHD_Ena_Msk | MDR_ETH_PHY_R4_100BaseFD_Ena_Msk | MDR_ETH_PHY_R4_100BaseT4_Ena_Msk)
 

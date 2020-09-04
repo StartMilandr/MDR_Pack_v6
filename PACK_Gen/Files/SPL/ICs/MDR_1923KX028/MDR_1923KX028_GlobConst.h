@@ -2,6 +2,7 @@
 #define MDR_1923KX029_GLOB_CONST_H
 
 //#include <MDR_1923KX028.h>
+#include <MDR_Config.h>
 #include <MDR_1923KX028_AXI_defs.h>
 #include <MDR_1923KX028_Config.h>
 
@@ -17,9 +18,16 @@ extern const uint32_t KX028_PortOffsStruct2[AXI_CLASS_PORT_COUNT];
 
 // SFP Global variables for MDR_1923KX028_M0_TransferPC.c
 extern uint8_t *g_pInfoSFP[SFP_COUNT];
-extern uint32_t g_EventsSFP;
-extern uint32_t g_PresenceSFP;
 
+typedef __PACKED_STRUCT {
+  uint32_t maskPresence;
+  uint32_t maskEvents;
+  uint32_t maskIsCooper;
+  uint32_t maskIsMarvell;
+  uint32_t maskIsMarvellOk;  
+} MDR_SFP_Status_t;
+
+extern MDR_SFP_Status_t g_SFP_Status;
 
 
 #endif  //MDR_1923KX029_GLOB_CONST_H

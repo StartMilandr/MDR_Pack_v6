@@ -130,5 +130,9 @@ typedef enum {
 // "Отключение" программного MasterI2C, чтобы собирался MDR_SoftI2C_byTimer, если драйвер MDR_SoftI2C_MasterStates не подключен
 #define I2C_SOFT_MASTER_DISABLE  0
 
+//  Включение задержки после формирования СТОП, чтобы отложить следующий СТАРТ. 
+//  Иначе SDA фронт-спад возможно "сливаются" слишком близко для какого нибудь ведомого и он их не поймет.
+#define I2C_SOFT_STOP_DELAY_EN   0
+
 
 #endif  //  MDR_CONFIG_VK214_H

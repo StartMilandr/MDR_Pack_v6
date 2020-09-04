@@ -1,4 +1,5 @@
 #include <MDR_SFP_PresenceCtrl.h>
+#include <MDR_SFP_PresenceCtrl_Config.h>
 
 
 static MDR_SFP_PresCtrl_Cfg         _presCfg;
@@ -9,6 +10,10 @@ static uint32_t _activePresence = 0;
 static uint32_t _changedPresence;
 static uint32_t _indSFP = 0;
 static bool     _started;
+
+static uint32_t _timeNowMs  = 0; 
+static uint32_t _lastTimeMs = 0;
+
 
 //  Handlers Def
 typedef bool (*pProcessCompletedFunc)(void);
@@ -37,13 +42,21 @@ void MDR_SFP_PresCtrlInit(MDR_SFP_PresCtrl_Cfg *presCfg, MDR_SFP_PresCtrl_MuxI2C
   _nextFunc = SFP_CheckPresenceChanged;
 }
 
-bool MDR_SFP_PresCtrl_Process(void)
+bool MDR_SFP_PresCtrl_Process(uint32_t timeNowMs)
 {
+  _timeNowMs = timeNowMs;
   _started = _nextFunc();        
   return _started;
 }
 
 // Если маска наличия SFP поменялась - запускаем опрос для изменившихся бит
+static bool SFP_OnConnectWaitDelay(void)
+{
+  if ((_timeNowMs - _lastTimeMs) > SFP_POWER_ON_DELAY_MS)
+    _nextFunc = SFP_CheckNextSFP;
+  return false;
+}
+
 static bool SFP_CheckPresenceChanged(void)
 {
   uint32_t newPresence = _presCfg.GetPresenceMaskFunc();
@@ -52,7 +65,8 @@ static bool SFP_CheckPresenceChanged(void)
   if (_changedPresence != 0)
   {
     _indSFP = 0;
-    _nextFunc = SFP_CheckNextSFP;
+    _nextFunc = SFP_OnConnectWaitDelay; //SFP_CheckNextSFP;
+    _lastTimeMs = _timeNowMs;
     return false;
   }
   else    

@@ -123,7 +123,7 @@ static void MDR_I2Cst_Stop(void *obj)
   MDR_I2Cst_MasterObj *i2cObj = obj;
   MDR_Timer_Stop(i2cObj->timerEx);
 
-#if I2C_STOP_DELAY_EN    
+#if I2C_SOFT_STOP_DELAY_EN    
   //  Restore PWM
   if (i2cObj->timerExCh != NULL)
     MDR_TimerCh_OnPWM(i2cObj->timerExCh);
@@ -156,7 +156,7 @@ void MDR_I2Cst_MasterHandlerIRQ_Soft(MDR_I2Cst_MasterObj *i2cObj)
   uint32_t status = MDR_Timer_GetStatus(TIMERx);
   MDR_Timer_ClearEvent(TIMERx, status);
 
-#if I2C_STOP_DELAY_EN   
+#if I2C_SOFT_STOP_DELAY_EN   
   switch (i2cObj->timTact++) {
     case 0: 
       if (i2cObj->clkEnable) 

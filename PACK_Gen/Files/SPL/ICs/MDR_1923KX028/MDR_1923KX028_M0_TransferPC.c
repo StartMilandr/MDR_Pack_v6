@@ -73,7 +73,7 @@ static void DrvCmd_GetEventsSFP()
 {
   uint32_t events_dummy = 0;
   uint32_t events = SFP_GetEventsAndClear();
-  events = EventsSFP_to_Data(events, g_PresenceSFP);
+  events = EventsSFP_to_Data(events, g_SFP_Status.maskPresence);
   
   DrvWriteData1(events_dummy);
 }

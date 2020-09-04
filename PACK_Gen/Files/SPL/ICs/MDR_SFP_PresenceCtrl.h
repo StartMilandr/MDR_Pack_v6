@@ -33,7 +33,7 @@ typedef struct {
 
 void MDR_SFP_PresCtrlInit(MDR_SFP_PresCtrl_Cfg *presCfg, MDR_SFP_PresCtrl_MuxI2C_Cfg *muxCfg);
 //  Return true while updating, false - no presence changed
-bool MDR_SFP_PresCtrl_Process(void);
+bool MDR_SFP_PresCtrl_Process(uint32_t timeNowMs);
 
 
 #endif    //MDR_SFP_PRESENCE_CTRL_H

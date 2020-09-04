@@ -5,6 +5,7 @@ from pyWidgetsStyles import *
 from pyBasisRes import *
 from pathlib import Path
 from PySide2.QtCore import QSettings
+from pyInfoSFP import StatusSPF, InfoSPF
  
 
 uiRegSel = 'cbxRegSel'
@@ -42,6 +43,10 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
         self.btDebug2.clicked.connect(self.ReadCLASS)
         self.btDebug3.setText('EMAC Regs')
         self.btDebug3.clicked.connect(self.ReadEMAC)
+        self.btDebug4.setText('SFP Status')
+        self.btDebug4.clicked.connect(self.ReadStatusSFP)
+        self.btDebug5.setText('SFP Info')
+        self.btDebug5.clicked.connect(self.ReadInfoSFP)
         
 
         self.lblWriteValue.setText('Write Hex Value')
@@ -156,4 +161,21 @@ class PyBasisWindowDebug(QtWidgets.QWidget, Ui_Form):
         for regName, addr in kxo28_RegsOffs_CLASS.items():
             addr += baseAddr
             self.ReadRegAndShow(regName, addr)            
+
+    def ReadStatusSFP(self):
+        status = StatusSPF()
+        self.comCLI.ReadStatusSFP(status)
+        self.txtEdit.append('  SFP Status Masks:')
+        self.txtEdit.append('Presence : {}'.format(status.maskPresence))
+        self.txtEdit.append('Events   : {}'.format(status.maskEvents))
+        self.txtEdit.append('IsCooper : {}'.format(status.maskIsCooper))
+        self.txtEdit.append('IsMarvell: {}'.format(status.maskIsMarvell))
+        self.txtEdit.append('MarvellOk: {}'.format(status.maskIsMarvellOk))
+
+    def ReadInfoSFP(self):
+        info = InfoSPF()
+        self.comCLI.ReadInfoSFP(0, info)
+        self.txtEdit.append(info.infoText)
+
+
 

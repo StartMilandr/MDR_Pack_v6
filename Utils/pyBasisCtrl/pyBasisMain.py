@@ -154,7 +154,7 @@ class PyBasisMainForm(QtWidgets.QMainWindow, Ui_MainWindow):
       dockArea.setWidget(widget)
       dockArea.setFloating(False)
       self.addDockWidget(dockPlace, dockArea)
-      wigdet.show()
+      widget.show()
 
     def CreateViewMAC(self):
       window = PyBasisWindowMAC(self)

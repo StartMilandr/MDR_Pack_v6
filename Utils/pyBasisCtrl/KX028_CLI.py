@@ -8,6 +8,7 @@ from KX028_KeyEntryVLAN import KX028_KeyVLAN, KX028_KeyEntryVLAN
 from KX028_ItemPort import KX028_ItemPort
 from pyVV3_ItemMAC import VV3_ItemMAC
 from pyBasisRes import kx028_AddrStruc1, kx028_AddrStruc2, CLASS1_BASE_ADDR
+from pyInfoSFP import StatusSPF, InfoSPF
 
 
 DEBUG_MODE = False
@@ -38,12 +39,16 @@ cliCMD_VV3_DelMAC     = 19
 cliCMD_VV3_ReadRegs   = 20
 cliCMD_VV3_WriteRegs  = 21
 
+cliCMD_SFP_ReadStatus = 22
+cliCMD_SFP_ReadInfo   = 23
+
 cliCMD_Str = ['cmdNone', 'cmdError', \
               'cmdReadMAC',  'cmdUpdAddMAC',  'cmdDelMAC',  'cmdClearMAC', \
               'cmdReadVLAN', 'cmdUpdAddVLAN', 'cmdDelVLAN', 'cmdClearVLAN', \
               'ReadStatPort', 'ReadStatClass', 'ClearStatPort', 'ClearStatClass', \
               'WritePortCfg', 'ReadAXI', 'WriteAXI', 
-              'AddMAC_BB3', 'DelMAC_BB3', 'ReadMAC_VV3',]
+              'AddMAC_BB3', 'DelMAC_BB3', 'ReadMAC_VV3',
+              'ReadStatusSFP', 'ReadInfoSFP']
 
 
 cliACK_MinLen_1       = 1
@@ -456,3 +461,25 @@ class KX028_CLI:
     else:
       print('Fault writeRegList_VV3')
     return resOK     
+
+
+  #============== SFP ============== 
+  def ReadStatusSFP(self, statusSFP):
+    offs = self.packHeader(cliCMD_SFP_ReadStatus, 0)
+    resOK = self.transfer(cliCMD_SFP_ReadStatus, StatusSPF.packLen)
+    if resOK:
+      statusSFP.unpack(self.buffRx.data, offs)
+    else:
+      print('Fault readItemMAC')
+    return resOK
+
+  def ReadInfoSFP(self, indexSFP, infoSFP):
+    offs = self.packHeader(cliCMD_SFP_ReadInfo, 1)
+    struct.pack_into("B", self.buffTx, offs, indexSFP)
+    resOK = self.transfer(cliCMD_SFP_ReadInfo, StatusSPF.packLen)
+    if resOK:
+      infoSFP.unpack(self.buffRx.data, offs)
+    else:
+      print('Fault readItemMAC')
+    return resOK  
+

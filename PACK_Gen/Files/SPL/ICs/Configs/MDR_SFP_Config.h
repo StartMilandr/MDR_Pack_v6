@@ -72,26 +72,26 @@
 //  Выбор какую информацию читать из SFP
 #define CFG_SFP_ITEMS {  \
   /*  Standard  */    \
-  {SFP_ADDR_ID         , SFP_LEN_ID         , "ID"},         \
-  {SFP_ADDR_IDEX       , SFP_LEN_IDEX       , "IDex"},       \
-  {SFP_ADDR_CONNECTOR  , SFP_LEN_CONNECTOR  , "CONN"},       \
-  {SFP_ADDR_TANSCEIVER , SFP_LEN_TANSCEIVER , "TRANS"},      \
-  {SFP_ADDR_ENCODING   , SFP_LEN_ENCODING   , "ENC"},        \
-  {SFP_ADDR_BITRATE    , SFP_LEN_BITRATE    , "BITRATE"},    \
-  {SFP_ADDR_RESERVED_1 , SFP_LEN_RESERVED_1 , "RES_1"},      \
-  {SFP_ADDR_LEN9KM     , SFP_LEN_LEN9KM     , "LEN9KM"},     \
-  {SFP_ADDR_LEN9M      , SFP_LEN_LEN9M      , "LEN9M"},      \
-  {SFP_ADDR_LEN50M     , SFP_LEN_LEN50M     , "LEN50M"},     \
-  {SFP_ADDR_LEN62P5M   , SFP_LEN_LEN62P5M   , "LEN62,5M"},   \
-  {SFP_ADDR_LEN_COPPER , SFP_LEN_COPPER     , "COPPER"},     \
-  {SFP_ADDR_RESERVED_2 , SFP_LEN_RESERVED_2 , "RES_2"},      \
-  {SFP_ADDR_VENDOR_NAME, SFP_LEN_VENDOR_NAME, "VEND_NAME"},  \
-  {SFP_ADDR_RESERVED_3 , SFP_LEN_RESERVED_3 , "RES_3"},      \
-  {SFP_ADDR_VENDOR_OUI , SFP_LEN_VENDOR_OUI , "VEND_OUI"},   \
-  {SFP_ADDR_VENDOR_PN  , SFP_LEN_VENDOR_PN  , "VEND_PN"},    \
-  {SFP_ADDR_VENDOR_REV , SFP_LEN_VENDOR_REV , "VEND_REV"},   \
-  {SFP_ADDR_RESERVED_4 , SFP_LEN_RESERVED_4 , "RES_4"},      \
-  {SFP_ADDR_CC_BASE    , SFP_LEN_CC_BASE    , "CC_BASE"},    \
+  {SFP_ADDR_ID         , SFP_LEN_ID         ,  "ID"},         \
+  {SFP_ADDR_IDEX       , SFP_LEN_IDEX       ,  "IDex"},       \
+  {SFP_ADDR_CONNECTOR  , SFP_LEN_CONNECTOR  ,  "CONN"},       \
+  {SFP_ADDR_TANSCEIVER , SFP_LEN_TANSCEIVER ,  "TRANS"},      \
+  {SFP_ADDR_ENCODING   , SFP_LEN_ENCODING   ,  "ENC"},        \
+  {SFP_ADDR_BITRATE    , SFP_LEN_BITRATE    ,  "BITRATE"},    \
+  {SFP_ADDR_RESERVED_1 , SFP_LEN_RESERVED_1 ,  "RES_1"},      \
+  {SFP_ADDR_LEN9KM     , SFP_LEN_LEN9KM     ,  "LEN9KM"},     \
+  {SFP_ADDR_LEN9M      , SFP_LEN_LEN9M      ,  "LEN9M"},      \
+  {SFP_ADDR_LEN50M     , SFP_LEN_LEN50M     ,  "LEN50M"},     \
+  {SFP_ADDR_LEN62P5M   , SFP_LEN_LEN62P5M   ,  "LEN62,5M"},   \
+  {SFP_ADDR_LEN_COPPER , SFP_LEN_COPPER     ,  "COPPER"},     \
+  {SFP_ADDR_RESERVED_2 , SFP_LEN_RESERVED_2 ,  "RES_2"},      \
+  {SFP_ADDR_VENDOR_NAME, SFP_LEN_VENDOR_NAME,  "VEND_NAME"},  \
+  {SFP_ADDR_RESERVED_3 , SFP_LEN_RESERVED_3 ,  "RES_3"},      \
+  {SFP_ADDR_VENDOR_OUI , SFP_LEN_VENDOR_OUI ,  "VEND_OUI"},   \
+  {SFP_ADDR_VENDOR_PN  , SFP_LEN_VENDOR_PN  ,  "VEND_PN"},    \
+  {SFP_ADDR_VENDOR_REV , SFP_LEN_VENDOR_REV ,  "VEND_REV"},   \
+  {SFP_ADDR_RESERVED_4 , SFP_LEN_RESERVED_4 ,  "RES_4"},      \
+  {SFP_ADDR_CC_BASE    , SFP_LEN_CC_BASE    ,  "CC_BASE"},    \
   /*  Extended  */    \
   {SFP_ADDR_OPTIONS     , SFP_LEN_OPTIONS    , "OPTIONS"},   \
   {SFP_ADDR_BITRATE_MAX , SFP_LEN_BITRATE_MAX, "BR_MAX"},    \
@@ -134,6 +134,19 @@
 
 #define  CFG_SFP_ITEMS_CNT    27
 
+#define CFG_SFP_ITEM_COPPER_OFFS (\
+                          SFP_LEN_ID \
+                        + SFP_LEN_IDEX \
+                        + SFP_LEN_CONNECTOR \
+                        + SFP_LEN_TANSCEIVER \
+                        + SFP_LEN_ENCODING \
+                        + SFP_LEN_BITRATE \
+                        + SFP_LEN_RESERVED_1 \
+                        + SFP_LEN_LEN9KM \
+                        + SFP_LEN_LEN9M \
+                        + SFP_LEN_LEN50M \
+                        + SFP_LEN_LEN62P5M )
 
 
 #endif  //MDR_SFP_CONFIG_H
+

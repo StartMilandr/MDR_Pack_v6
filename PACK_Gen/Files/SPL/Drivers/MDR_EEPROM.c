@@ -9,20 +9,20 @@ static uint32_t MDR_EEPROM_ReadBuff_PageSector (uint32_t dataInd, uint32_t addre
 // ==================   Инициализация  =====================
 
 static MDR_EEPROM_Delays _Delays __RAM_EXEC = {
-  .loops_1us   = US_TO_DELAY_LOOPS(1,   HSI_FREQ_HZ),
-  .loops_5us   = US_TO_DELAY_LOOPS(5,   HSI_FREQ_HZ),  
-  .loops_40us  = US_TO_DELAY_LOOPS(40,  HSI_FREQ_HZ),
-  .loops_100us = US_TO_DELAY_LOOPS(100, HSI_FREQ_HZ),
-  .loops_40ms  = MS_TO_DELAY_LOOPS(40,  HSI_FREQ_HZ),  
+  .loops_1us   = US_TO_DELAY_LOOPS_EX(1,   HSI_FREQ_HZ, DELAY_LOOP_CYCLES_C_RAM),
+  .loops_5us   = US_TO_DELAY_LOOPS_EX(5,   HSI_FREQ_HZ, DELAY_LOOP_CYCLES_C_RAM),  
+  .loops_40us  = US_TO_DELAY_LOOPS_EX(40,  HSI_FREQ_HZ, DELAY_LOOP_CYCLES_C_RAM),
+  .loops_100us = US_TO_DELAY_LOOPS_EX(100, HSI_FREQ_HZ, DELAY_LOOP_CYCLES_C_RAM),
+  .loops_40ms  = US_TO_DELAY_LOOPS_EX(40,  HSI_FREQ_HZ, DELAY_LOOP_CYCLES_C_RAM),  
 } ;
 
 void MDR_EEPROM_InitDelayStruct(uint32_t CPU_FreqHz, MDR_EEPROM_Delays * delays)
-{
-  delays->loops_1us   = US_TO_DELAY_LOOPS(1,   CPU_FreqHz);
-  delays->loops_5us   = US_TO_DELAY_LOOPS(5,   CPU_FreqHz);  
-  delays->loops_40us  = US_TO_DELAY_LOOPS(40,  CPU_FreqHz);
-  delays->loops_100us = US_TO_DELAY_LOOPS(100, CPU_FreqHz);
-  delays->loops_40ms  = MS_TO_DELAY_LOOPS(40,  CPU_FreqHz);
+{  
+  delays->loops_1us   = US_TO_DELAY_LOOPS_EX(1,   CPU_FreqHz, DELAY_LOOP_CYCLES_C_RAM);
+  delays->loops_5us   = US_TO_DELAY_LOOPS_EX(5,   CPU_FreqHz, DELAY_LOOP_CYCLES_C_RAM);  
+  delays->loops_40us  = US_TO_DELAY_LOOPS_EX(40,  CPU_FreqHz, DELAY_LOOP_CYCLES_C_RAM);
+  delays->loops_100us = US_TO_DELAY_LOOPS_EX(100, CPU_FreqHz, DELAY_LOOP_CYCLES_C_RAM);
+  delays->loops_40ms  = US_TO_DELAY_LOOPS_EX(40,  CPU_FreqHz, DELAY_LOOP_CYCLES_C_RAM);
 }
 
 void MDR_EEPROM_Init(uint32_t CPU_FreqHz)

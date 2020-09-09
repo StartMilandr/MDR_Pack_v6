@@ -102,7 +102,7 @@ typedef enum {
 #define DELAY_LOOP_CYCLES_ASM       3
 #define DELAY_LOOP_CYCLES_ASM_RAM   9
 #define DELAY_LOOP_CYCLES_C         6
-#define DELAY_LOOP_CYCLES_C_RAM    12
+#define DELAY_LOOP_CYCLES_C_RAM    11
 #define DELAY_LOOP_CYCLES_DWT       1
 
 

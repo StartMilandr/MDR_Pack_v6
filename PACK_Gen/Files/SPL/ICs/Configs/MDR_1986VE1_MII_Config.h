@@ -478,9 +478,9 @@
     #define ETHCFG1_PHY_FULL_DUPLEX_Msk       0
   #endif
 
-  #define ETHCFG1_REG_PHY_CTRL      (ETHCFG1_PHY_OPTIC_MODE_Msk | ETHCFG1_PHY_100Mbps_Msk | ETHCFG1_PHY_LOOPBACK_Msk | \
-                                 ETHCFG1_PHY_AUTONEG_EN_Msk | ETHCFG1_PHY_FULL_DUPLEX_Msk | \
-                                 ETHCFG1_PHY_ADDR)
+  #define ETHCFG1_REG_PHY_CTRL_MII (ETHCFG1_PHY_OPTIC_MODE_Msk | ETHCFG1_PHY_100Mbps_Msk | ETHCFG1_PHY_LOOPBACK_Msk | \
+                                    ETHCFG1_PHY_AUTONEG_EN_Msk | ETHCFG1_PHY_FULL_DUPLEX_Msk | \
+                                    ETHCFG1_PHY_ADDR)
 
 #else
   #if ETHCFG1_PHY_OPTIC_MODE
@@ -489,7 +489,7 @@
     #define  ETHCFG1_PHY_MSK_OPTIC            0
   #endif
 
-  #define ETHCFG1_REG_PHY_CTRL            ((ETHCFG1_PHY_ADDR << MDR_ETH_PHY_CTRL_PHY_ADDR_Pos) & MDR_ETH_PHY_CTRL_PHY_ADDR_Msk)  \
+  #define ETHCFG1_REG_PHY_CTRL_MII  ((ETHCFG1_PHY_ADDR << MDR_ETH_PHY_CTRL_PHY_ADDR_Pos) & MDR_ETH_PHY_CTRL_PHY_ADDR_Msk)  \
                                     | ((ETHCFG1_PHY_MODE << MDR_ETH_PHY_CTRL_MODE_Pos)     & MDR_ETH_PHY_CTRL_MODE_Msk)  \
                                     |   ETHCFG1_PHY_MSK_OPTIC  
 #endif
@@ -518,11 +518,11 @@
                       }
 
 #if MDR_ETH_BUFF_LIN
-  #define MDR_ETH_MAC_INIT_DEF(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_Linear)
+  #define MDR_ETH_MAC_INIT_MII(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_Linear)
 #elif MDR_ETH_BUFF_AUTO_PTR
-  #define MDR_ETH_MAC_INIT_DEF(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_AutoPTR)
+  #define MDR_ETH_MAC_INIT_MII(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_AutoPTR)
 #elif MDR_ETH_BUFF_FIFO
-  #define MDR_ETH_MAC_INIT_DEF(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_FIFO)
+  #define MDR_ETH_MAC_INIT_MII(freqMHz, mdioClkDiv)    MDR_ETH_MAC_INIT(freqMHz, mdioClkDiv, MDR_ETH_BuffMode_FIFO)
 #else  
   Select Ethernet Buffer mode in MDR_Config.h!
 #endif

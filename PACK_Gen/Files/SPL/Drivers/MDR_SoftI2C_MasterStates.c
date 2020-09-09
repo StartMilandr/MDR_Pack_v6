@@ -42,7 +42,7 @@ void MDR_I2Cs_MasterStart(MDR_I2Cst_MasterObj *i2cObj, bool writeMode)
   i2cObj->TimerEventsStart(i2cObj);
 }
 
-#if I2C_STOP_DELAY_EN
+#if I2C_SOFT_STOP_DELAY_EN
   static bool MDR_I2Cs_MasterStopHandler(void *obj, bool isClkDown)
   { 
     MDR_I2Cst_MasterObj *i2cObj = obj;
@@ -85,7 +85,7 @@ void MDR_I2Cs_MasterStart(MDR_I2Cst_MasterObj *i2cObj, bool writeMode)
       return true;
     }
   }
-#endif //I2C_STOP_DELAY_EN
+#endif //I2C_SOFT_STOP_DELAY_EN
 
 static bool MDR_I2Cs_MasterRestartToReadHandler(void *obj, bool isClkDown)
 {

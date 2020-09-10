@@ -82,15 +82,29 @@ void MDR_JTAG_IR_ReadDR_Paused(uint32_t bitLenIR, uint32_t instr, uint32_t bitLe
 
 
 //  ================    For 1986VE1 ===============
-
 #define MDR_JTAG_VE1_IR_LEN            8
 #define MDR_JTAG_VE1_IR_IDCODE      0x02
 #define MDR_JTAG_VE1_DR_IDCODE_LEN    32
 
+#define MDR_JTAG_1986VE1_IDCODE     0xADC00FDF
 
 static inline uint32_t MDR_JTAG_1986VE1_Read_IDCODE(void)
 {    
   return MDR_JTAG_IR_ReadDR(MDR_JTAG_VE1_IR_LEN, MDR_JTAG_VE1_IR_IDCODE, MDR_JTAG_VE1_DR_IDCODE_LEN);
 }
+
+//  ================    For 1923KX028 ===============
+#define MDR_JTAG_1923KX028_IR_LEN           4
+#define MDR_JTAG_1923KX028_IR_IDCODE        3
+#define MDR_JTAG_1923KX028_DR_IDCODE_LEN    32
+
+//#define MDR_JTAG_1923KX028_IDCODE	    0xFBF00851 --> b1111 1011 1111 0000 0000 1000 0101 0001  <--0x8A100FDF
+#define MDR_JTAG_1923KX028_IDCODE	    0x8A100FDF
+
+static inline uint32_t MDR_JTAG_1923KX028_Read_IDCODE(void)
+{    
+  return MDR_JTAG_IR_ReadDR(MDR_JTAG_1923KX028_IR_LEN, MDR_JTAG_1923KX028_IR_IDCODE, MDR_JTAG_1923KX028_DR_IDCODE_LEN);
+}
+
 
 #endif  //  _JTAG_GPIO_H

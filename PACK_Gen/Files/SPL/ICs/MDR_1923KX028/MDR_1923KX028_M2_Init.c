@@ -90,7 +90,7 @@ void MDR_KX028_WritePortStruct(MDR_KX028_EMAC_e emac, uint32_t regClassStruct1, 
 { 
   MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct1);                
   MDR_KX028_WriteAXI( AXI_CLASS_HW1_BASE_ADDR + KX028_PortOffsStruct2[emac], regClassStruct2);  
-  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct1);                
+  MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct1[emac], regClassStruct1);
   MDR_KX028_WriteAXI( AXI_CLASS_HW2_BASE_ADDR + KX028_PortOffsStruct2[emac], regClassStruct2);    
 }
 

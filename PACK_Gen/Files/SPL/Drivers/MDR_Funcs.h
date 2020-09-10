@@ -119,6 +119,7 @@ uint32_t MDR_ToPseudoRand(uint32_t value);
 //  Доступ к регистрам по адресу
 #define REG32(x)   (*((volatile uint32_t *)(x)))
 #define REG32_C(x) (*((const volatile uint32_t *)(x)))
+#define REG16(x)   (*((volatile uint16_t *)(x)))
 
 #define MEM32    REG32
 

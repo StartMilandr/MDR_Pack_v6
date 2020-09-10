@@ -14,6 +14,10 @@
   #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
+//  Carriage return and NewLine chars
+#define MDR_CHAR_CR       13
+#define MDR_CHAR_LF       10
+#define MDR_CHAR_ENTER    MDR_CHAR_CR
 
 //  ----------------    Some Standards BaudRates   -------------------------
 #define UART_BAUD_9600        9600

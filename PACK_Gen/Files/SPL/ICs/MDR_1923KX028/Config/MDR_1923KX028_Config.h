@@ -82,6 +82,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_BMU1_SPI_READ_BUFF_COUNT    1
 // Buffer size bits or number of bit representing the LMEM buffer size (7 = 128bytes).
 #define CFG_BMU_BUF_SIZE_128            AXI_BMU_BUF_SIZE_128
+// Defined for SPL, according to CFG_BMU_BUF_SIZE_128
+#define CFG_BMU_BUF_LEN                 128
 //  Threshold number of LMEM buffers occupied to generate interrupt - 0x800
 #define CFG_BMU_THRES_UCAST             CFG_BMU_UCAST_BUF_CNT
 
@@ -426,5 +428,17 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 // (Clouse45 - косвенная адресация, появилась когда не хватило 5 бит на адрес регистра)
 #define CFG_EMAC_PHY_CLAUSE_22    1
 #define CFG_EMAC_PHY_RESET_MS     50
+
+
+//======================= FRAME INJECTION ================
+#define CFG_INJECT_BMU_ADDR        AXI_BMU1_BASE_ADDR
+#define CFG_INJECT_LMEM_ADDR      (CBUS_BASE_ADDR | AXI_LMEM0_BASE_ADDR)  // 0xC0200000
+#define CFG_INJECT_LMEM_ADDR_Msk   0xFFF00000
+
+// 128 buff len - 16 header len = 112 bytes in buff, starting from second
+// 1518 max frame Len / 112 = 13
+// +2 for first and second - for classifier operations
+#define CFG_INJECT_BUFF_CHAIN_LEN_MAX    15
+
 
 #endif  //MDR_1923KX028_CONFIG_H_

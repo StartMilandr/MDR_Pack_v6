@@ -458,6 +458,12 @@ typedef __PACKED_STRUCT{
 #define MDR_ETH_PHY_R1_Opt100BaseT4_Pos       16
 #define MDR_ETH_PHY_R1_Opt100BaseT4_Msk      ( 1 << MDR_ETH_PHY_R1_Opt100BaseT4_Pos)
 
+//  Register R2,R3 - Identificator
+#define MDR_ETH_PHY_R2                        2
+#define MDR_ETH_PHY_R3                        3
+
+#define MDR_ETH_PHY_R2_VALUE                  0x0FDF
+#define MDR_ETH_PHY_R3_VALUE                  0x0DC0
 
 //  Register R4 - Autonegotiation 
 #define MDR_ETH_PHY_R4                        4

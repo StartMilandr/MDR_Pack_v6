@@ -43,7 +43,7 @@ static void ReadFrameRx(void);
 static void ReadInfo(void);
 static void CheckLinkRoutine(void);
 
-MDR_ETH_FrameRX  frameRX;
+MDR_ETH_FrameRX  frameRX __RAM_EXEC_ALIGN4;
 uint32_t         framesCountRX;
 uint32_t         sentFrameIndex;
 
@@ -227,8 +227,8 @@ static void ReadFrameRx(void)
   uint16_t i;
   printf("FrameStatus: 0x%x\n", frameRX.statusRX.Status);
   printf("FrameData: \n");
-  for (i = 0; i < len; i++)
-    printf("0x%x ", frameRX.frame[i]);
+  for (i = 0; i < len; i++)  
+    printf("0x%02x ", frameRX.frame[i]);
   printf("\nBytesCount: %d\n", len);
 }
 

@@ -7,13 +7,14 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.05" date="2020-04-14">
+    <release version="2.1" date="2020-09-16">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
       - 2.0x: Increment paused
       - 2.04: 1986VE8T Added
       - 2.05: Pack paused
+      - 2.1:  1923KX028 support removed
     </release>
   </releases>
 
@@ -1726,46 +1727,7 @@
         <file category="source"  name="SPL/ICs/MDR_SFP_PresenceCtrl.c"/>
         <file category="header"  name="SPL/ICs/Configs/MDR_SFP_PresenceCtrl_Config.h" attr="config" version="2.0.0"/>
       </files>
-    </component>
-    <!-- 1923KX028 -->
-    <component Cclass="IC Drivers" Cgroup="1923KX028_Core" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Ethernet switch 1923KX028 control</description>
-      <files>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028.h"/>
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028.c"/>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_defs.h"/>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_AXI_defs.h"/>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_ErrLog.h" attr="config" version="2.0.0"/>
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_ErrLog.c" attr="config" version="2.0.0"/>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/Config/MDR_1923KX028_Config.h" attr="config" version="2.0.0"/>
-      </files>
-    </component>
-    <component Cclass="IC Drivers" Cgroup="1923KX028_Mode0" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Ethernet switch 1923KX028 control</description>
-      <files>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_Ctrl.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_Ctrl.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_TransferPC.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M0_TransferPC.c" />        
-      </files>
-    </component>
-    <component Cclass="IC Drivers" Cgroup="1923KX028_Mode2" Cversion="2.0" condition="CON_MDR_ALL">
-      <description>Ethernet switch 1923KX028 control</description>
-      <files>
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_GlobConst.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_GlobConst.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Init.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Init.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableMAC.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableMAC.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableVLAN.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TableVLAN.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TablesCtrl.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_TablesCtrl.c" />
-        <file category="header"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Stats.h" />
-        <file category="source"  name="SPL/ICs/MDR_1923KX028/MDR_1923KX028_M2_Stats.c" />
-      </files>
-    </component>    
+    </component>  
     <component Cclass="IC Drivers" Cgroup="SN74HC595D" Cversion="2.0" condition="CON_MDR_ALL">
       <description>SN74HC595D Shift Register control</description>
       <files>

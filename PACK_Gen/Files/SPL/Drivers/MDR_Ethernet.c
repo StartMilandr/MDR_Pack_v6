@@ -223,32 +223,34 @@ void MDR_ETH_SendFrameByPTR(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, boo
   }
 }
 
-MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_FIFO(MDR_ETH_Type *MDR_Eth, uint8_t *frame)
-{
-  //  Get BuffPTR
-  uint32_t *pInpFrame = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_RX_OFFS);  
-  
-  //  Read Receive Status Word and get Frame_Length
-  MDR_ETH_FrameStatusRX result;
-  result.Status = *pInpFrame;  
-  uint32_t frameLen32 = (result.Fields.Length + 3) >> 2;
+#if MDR_ETH_BUFF_FIFO
+  MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_FIFO(MDR_ETH_Type *MDR_Eth, uint8_t *frame)
+  {
+    //  Get BuffPTR
+    uint32_t *pInpFrame = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_RX_OFFS);  
+    
+    //  Read Receive Status Word and get Frame_Length
+    MDR_ETH_FrameStatusRX result;
+    result.Status = *pInpFrame;  
+    uint32_t frameLen32 = (result.Fields.Length + 3) >> 2;
 
-  //  DMA_Copy
-  MDR_DMA_Copy32_FromNoInc(MDR_ETH_DMA_CHANNEL_RX, pInpFrame, (uint32_t *) frame, frameLen32);  
-  
-  MDR_ETH_DecCountRx(MDR_Eth);    
-  return result;
-}
+    //  DMA_Copy
+    MDR_DMA_Copy32_FromNoInc(MDR_ETH_DMA_CHANNEL_RX, pInpFrame, (uint32_t *) frame, frameLen32);  
+    
+    MDR_ETH_DecCountRx(MDR_Eth);    
+    return result;
+  }
 
-void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX)
-{
-  //  Get BuffPTR
-  uint32_t *pOutBuff = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_TX_OFFS); 
-  //  Length with extra SendStatus word
-  uint32_t sendCount32 = ((frameTX->frameLen + 3) >> 2) + 2;    
-  //  DMA_Copy Frame data
-  MDR_DMA_Copy32_ToNoInc(MDR_ETH_DMA_CHANNEL_TX, (uint32_t *) frameTX, pOutBuff, sendCount32);
-}
+  void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX)
+  {
+    //  Get BuffPTR
+    uint32_t *pOutBuff = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_TX_OFFS); 
+    //  Length with extra SendStatus word
+    uint32_t sendCount32 = ((frameTX->frameLen + 3) >> 2) + 2;    
+    //  DMA_Copy Frame data
+    MDR_DMA_Copy32_ToNoInc(MDR_ETH_DMA_CHANNEL_TX, (uint32_t *) frameTX, pOutBuff, sendCount32);
+  }
+#endif
 
 uint32_t MDR_ETH_GetBuffFreeSizefRX(MDR_ETH_Type *MDR_Eth)
 {

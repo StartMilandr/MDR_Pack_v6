@@ -303,13 +303,13 @@ typedef struct {
 typedef struct {
   __IOM MDR_OnOff         RX_Empty   : 1;            /*!< [0..0] RX_FIFO empty                                                      */
   __IOM MDR_OnOff         RX_AEmpty  : 1;            /*!< [1..1] RX_FIFO is 1/32 full                                               */
-  __IOM MDR_OnOff         RX_Hald    : 1;            /*!< [2..2] RX_FIFO is 1/2 full                                                */
+  __IOM MDR_OnOff         RX_Half    : 1;            /*!< [2..2] RX_FIFO is 1/2 full                                                */
   __IOM MDR_OnOff         RX_AFull   : 1;            /*!< [3..3] RX_FIFO is 31/32 full                                              */
   __IOM MDR_OnOff         RX_Full    : 1;            /*!< [4..4] RX_FIFO is full                                                    */
   __IOM uint16_t          RX_Count   : 3;            /*!< [7..5] Frames in FIFO                                                     */
   __IOM MDR_OnOff         TX_Empty   : 1;            /*!< [8..8] TX_FIFO is Empty                                                   */
   __IOM MDR_OnOff         TX_AEmpty  : 1;            /*!< [9..9] TX_FIFO is 1/32 full                                               */
-  __IOM MDR_OnOff         TX_Hald    : 1;            /*!< [10..10] TX_FIFO is 1/2 full                                              */
+  __IOM MDR_OnOff         TX_Half    : 1;            /*!< [10..10] TX_FIFO is 1/2 full                                              */
   __IOM MDR_OnOff         TX_AFull   : 1;            /*!< [11..11] TX_FIFO is 31/32 full                                            */
   __IOM MDR_OnOff         TX_Full    : 1;            /*!< [12..12] TX_FIFO is full                                                  */
 } MDR_ETH_STAT_Bits;
@@ -319,8 +319,8 @@ typedef struct {
 #define MDR_ETH_STAT_RX_Empty_Msk        (0x1UL)                   /*!< MDR_ETH1 STAT: RX_Empty (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_AEmpty_Pos       (1UL)                     /*!< MDR_ETH1 STAT: RX_AEmpty (Bit 1)                      */
 #define MDR_ETH_STAT_RX_AEmpty_Msk       (0x2UL)                   /*!< MDR_ETH1 STAT: RX_AEmpty (Bitfield-Mask: 0x01)        */
-#define MDR_ETH_STAT_RX_Halt_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Halt (Bit 2)                        */
-#define MDR_ETH_STAT_RX_Halt_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Halt (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_STAT_RX_Half_Pos         (2UL)                     /*!< MDR_ETH1 STAT: RX_Halt (Bit 2)                        */
+#define MDR_ETH_STAT_RX_Half_Msk         (0x4UL)                   /*!< MDR_ETH1 STAT: RX_Halt (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_STAT_RX_AFull_Pos        (3UL)                     /*!< MDR_ETH1 STAT: RX_AFull (Bit 3)                       */
 #define MDR_ETH_STAT_RX_AFull_Msk        (0x8UL)                   /*!< MDR_ETH1 STAT: RX_AFull (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_RX_Full_Pos         (4UL)                     /*!< MDR_ETH1 STAT: RX_Full (Bit 4)                        */
@@ -331,8 +331,8 @@ typedef struct {
 #define MDR_ETH_STAT_TX_Empty_Msk        (0x100UL)                 /*!< MDR_ETH1 STAT: TX_Empty (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_TX_AEmpty_Pos       (9UL)                     /*!< MDR_ETH1 STAT: TX_AEmpty (Bit 9)                      */
 #define MDR_ETH_STAT_TX_AEmpty_Msk       (0x200UL)                 /*!< MDR_ETH1 STAT: TX_AEmpty (Bitfield-Mask: 0x01)        */
-#define MDR_ETH_STAT_TX_Hald_Pos         (10UL)                    /*!< MDR_ETH1 STAT: TX_Hald (Bit 10)                       */
-#define MDR_ETH_STAT_TX_Hald_Msk         (0x400UL)                 /*!< MDR_ETH1 STAT: TX_Hald (Bitfield-Mask: 0x01)          */
+#define MDR_ETH_STAT_TX_Half_Pos         (10UL)                    /*!< MDR_ETH1 STAT: TX_Hald (Bit 10)                       */
+#define MDR_ETH_STAT_TX_Half_Msk         (0x400UL)                 /*!< MDR_ETH1 STAT: TX_Hald (Bitfield-Mask: 0x01)          */
 #define MDR_ETH_STAT_TX_AFull_Pos        (11UL)                    /*!< MDR_ETH1 STAT: TX_AFull (Bit 11)                      */
 #define MDR_ETH_STAT_TX_AFull_Msk        (0x800UL)                 /*!< MDR_ETH1 STAT: TX_AFull (Bitfield-Mask: 0x01)         */
 #define MDR_ETH_STAT_TX_Full_Pos         (12UL)                    /*!< MDR_ETH1 STAT: TX_Full (Bit 12)                       */

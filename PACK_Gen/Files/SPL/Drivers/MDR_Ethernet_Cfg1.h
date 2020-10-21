@@ -73,7 +73,7 @@
 #define  ETHCFG1_TX_ADD_FRAME_CRC              1
 #define  ETHCFG1_TX_PREAMBLE_ENABLE            1
 #define  ETHCFG1_MDIO_PREAMBLE_ON              1
-#define  ETHCFG1_IPG                           96
+#define  ETHCFG1_IPG                           87
 
 //  Determ mode 
 #define  ETHCFG1_PSC_TO_US(clk_MHz)            (clk_MHz - 1)

@@ -105,9 +105,9 @@ typedef enum {                  /*!< MDR_TIMER1_CH1_CNTRL_CHPSC                 
 
 typedef enum {                      /*!< MDR_TIMER1_CH1_CNTRL_OCCM                    */
   MDR_TIM_PWM_Ref0          = 0,    /*!< Ref=0                                        */
-  MDR_TIM_PWM_Ref1_eqCCR   = 1,     /*!< if (CNT == [CCR, CCR1]) Ref=1, else Ref=1    */
-  MDR_TIM_PWM_Ref0_eqCCR   = 2,     /*!< if (CNT == [CCR, CCR1]) Ref=0, else Ref=0    */
-  MDR_TIM_PWM_RefTgl_eqCCR = 3,     /*!< if (CNT == [CCR, CCR1]) Ref=!Ref, start Ref = 1  */
+  MDR_TIM_PWM_Ref1_eqCCR    = 1,     /*!< if (CNT == [CCR, CCR1]) Ref=1, else Ref=0    */
+  MDR_TIM_PWM_Ref0_eqCCR    = 2,     /*!< if (CNT == [CCR, CCR1]) Ref=0, else Ref=1    */
+  MDR_TIM_PWM_RefTgl_eqCCR  = 3,     /*!< if (CNT == [CCR, CCR1]) Ref=!Ref, start Ref = 1  */
   MDR_TIM_PWM_Ref_0         = 4,    /*!< Ref=0                                        */
   MDR_TIM_PWM_Ref1          = 5,    /*!< Ref=1                                        */
                                     //  for CHxCONTROL2.CCR1_EN = false

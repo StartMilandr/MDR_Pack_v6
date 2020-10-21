@@ -422,6 +422,23 @@
 	#define MDRB_UART2_RX_PD14_Func	   MDR_PIN_MAIN
 
 
+//  ---------------  ETH_FX ----------------
+  #define MDRB_ETH_FX                    MDR_ETH1
+  #define MDRB_ETH_RJ45                  MDR_ETH2  
+  
+  #define MDRB_FX_PORT1                  MDR_GPIO_C
+  #define MDRB_FX_PIN1_EN                MDR_Pin_7
+  #define MDRB_FX_PIN1_TX                MDR_Pin_8
+  
+  #define MDRB_FX_PORT2                  MDR_GPIO_D
+  #define MDRB_FX_PIN2_RX                MDR_Pin_11
+  #define MDRB_FX_PIN2_SD                MDR_Pin_15
+  
+  #define MDRB_FX_PIN_FUNC               MDR_PIN_OVER
+  #define MDRB_FX_POWER                  MDR_PIN_MAXFAST
+
+
+
 #else
    Please, select board in MDRB_BoardSelect.h!
 

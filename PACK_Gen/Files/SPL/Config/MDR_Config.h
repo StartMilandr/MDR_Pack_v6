@@ -37,8 +37,9 @@
 #if defined ( __ICCARM__ )
   #define __RAM_EXEC    IAR_SECTION ("EXECUTABLE_MEMORY_SECTION")
 #else
-  #define __RAM_EXEC         __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
-  #define __RAM_EXEC_ALIGN4  __attribute__((section("EXECUTABLE_MEMORY_SECTION"))) __attribute__ ((aligned (4)))
+  #define __RAM_EXEC          __attribute__((section("EXECUTABLE_MEMORY_SECTION")))
+  #define __RAM_EXEC_ALIGN4   __attribute__((section("EXECUTABLE_MEMORY_SECTION"))) __attribute__((aligned (4))) 
+  #define __RAM_ALIGN4        __attribute__((aligned (4))) 
 #endif
 
 

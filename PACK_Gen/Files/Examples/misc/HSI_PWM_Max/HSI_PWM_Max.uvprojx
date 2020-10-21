@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>I2C_Soft_ReadInfoSFP</OutputName>
+          <OutputName>HSI_PWM_Max</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -398,99 +398,45 @@
         <Group>
           <GroupName>::Drivers</GroupName>
         </Group>
-        <Group>
-          <GroupName>::IC Drivers</GroupName>
-        </Group>
       </Groups>
     </Target>
   </Targets>
 
   <RTE>
-    <apis>
-      <api Capiversion="1.0.0" Cclass="Board Support" Cgroup="Buttons" exclusive="0">
-        <package name="MDK-Middleware" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="7.10.0"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </api>
-    </apis>
+    <apis/>
     <components>
-      <component Cclass="Board Support" Cgroup="Buttons" Cvendor="Milandr" Cversion="2.0" condition="CON_BRD_BUTTONS">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Board Support" Cgroup="UART_Debug" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Board Support" Cgroup="UART_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+      <component Cclass="Board Support" Cgroup="Timer_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE1">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="GPIO Port" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Drivers" Cgroup="RST Clock" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_Base">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Drivers" Cgroup="Soft Master I2C" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="Timer" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Drivers" Cgroup="UART" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
       <component Cclass="Drivers" Cgroup="UseFuncs" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </component>
-      <component Cclass="IC Drivers" Cgroup="SFP modules" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL">
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.05"/>
+        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
     </components>
     <files>
-      <file attr="config" category="header" name="SPL\Config\MDRB_BoardSelect.h" version="2.0.0">
-        <instance index="0">RTE\Board_Support\MDR1986VE1\MDRB_BoardSelect.h</instance>
-        <component Cclass="Board Support" Cgroup="UART_PinSelect" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </file>
       <file attr="config" category="header" name="SPL\Config\MDR_ConfigVE1.h" version="2.0.0">
         <instance index="0">RTE\Device\MDR1986VE1\MDR_ConfigVE1.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE1"/>
@@ -518,14 +464,6 @@
       <file attr="config" category="header" name="SPL\Devices\MDR1986VE1\system_MDR1986VE1.h" version="2.0.0">
         <instance index="0">RTE\Device\MDR1986VE1\system_MDR1986VE1.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR1986VE1"/>
-        <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
-        <targetInfos>
-          <targetInfo name="Target 1"/>
-        </targetInfos>
-      </file>
-      <file attr="config" category="header" name="SPL\ICs\Configs\MDR_SFP_Config.h" version="2.0.0">
-        <instance index="0">RTE\IC_Drivers\MDR1986VE1\MDR_SFP_Config.h</instance>
-        <component Cclass="IC Drivers" Cgroup="SFP modules" Cvendor="Milandr" Cversion="2.0" condition="CON_MDR_ALL"/>
         <package name="MDR1986VExx" schemaVersion="1.3" url="https://ic.milandr.ru/soft/" vendor="Milandr" version="2.1"/>
         <targetInfos>
           <targetInfo name="Target 1"/>

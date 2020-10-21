@@ -8,7 +8,8 @@
 #include <MDR_Ethernet_Cfg1.h>
 #include <stdio.h>
 #include <MDR_Timer.h>
-
+#include <MDRB_LEDs.h>
+#include <MDRB_Buttons.h>
 
 // UART Messages
 #define  UART_CMD_LEN     9
@@ -71,6 +72,12 @@ uint32_t timPass[TIM_CNT];
 uint32_t timWorkAver;
 uint32_t timPassAver;
 
+#define DEBOUNCE_MS   10
+#define FRAME_LEN_TX  100
+MDR_ETH_FrameTX frameTX  __RAM_EXEC_ALIGN4;
+uint8_t MAC_A[6] __RAM_ALIGN4 = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
+uint8_t MAC_B[6] __RAM_ALIGN4 = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
+
 int main(void)
 {
   //  Максимальная скорость тактирования
@@ -80,6 +87,9 @@ int main(void)
   
   // Прием команд в прерывании по RT
   MDR_UART_DBG_InitIrqRT(UART_BAUD_115200, true);  
+  
+  MDRB_LED_Init(MDRB_LED_1);
+  MDRB_Buttons_Init(DEBOUNCE_MS, freqCPU_Hz);
 
   //  НАСТРОЙКА ETHERNET
   MDR_Eth_SetClockHSE2();
@@ -91,9 +101,8 @@ int main(void)
   };  
   MDR_Eth_Init(MDR_ETH1, &initCfg);
   MDR_Eth_Start(MDR_ETH1);
-
-//MDR_Timer_InitPeriod(MDR_TIMER1ex, MDR_Div128P_div1, 1, 0xFFFFFFFF, false);
-//MDR_Timer_Start(MDR_TIMER1ex);
+  
+  MDR_ETH_Debug_FillTestFrameTX(&frameTX, FRAME_LEN_TX, MAC_A, MAC_B);  
   
   while(1)
   {
@@ -116,34 +125,13 @@ int main(void)
     //  Прием по Ethernet
     if (MDR_ETH_TryReadFrameF(MDR_ETH1, &frameRX))
       framesCountRX++;    
+
+    //  Передача фрейма по кнопке UP
+    if (MDRB_BntClicked_Up(false))
+      MDR_ETH_TrySendFrame(MDR_ETH1, &frameTX);
     
-    //  Опрос Link
-//    if (timInd < TIM_CNT)
-//    {
-//      timIn[timInd] = MDR_TIMER1->CNT;    
-//      CheckLinkRoutine();
-//      timOut[timInd] = MDR_TIMER1->CNT;    
-//      timInd++;
-//      
-//      if (timInd == TIM_CNT)
-//      {
-//        uint32_t i;
-//        timWorkAver = 0;
-//        timPassAver = 0;
-//        for (i = 0; i < TIM_CNT - 1; i++)
-//        {
-//          timWork[i] = timOut[i] - timIn[i];
-//          timPass[i] = timIn[i + 1] - timOut[i];
-//          timWorkAver += timWork[i];
-//          timPassAver += timPass[i];
-//        }
-//        timWorkAver /= TIM_CNT - 1;
-//        timPassAver /= TIM_CNT - 1;
-//      }
-//    }
-//    else
-      CheckLinkRoutine();    
-  }  // while(1)
+    CheckLinkRoutine();    
+  }
 }
 
 void UART1_IRQHandler(void)
@@ -248,9 +236,15 @@ static void CheckLinkRoutine(void)
     if (changedBits & MDR_ETH_PHY_STATUS_LED1_Msk)
     {
       if (value & MDR_ETH_PHY_STATUS_LED1_Msk)
+      {
+        MDRB_LED_Set(MDRB_LED_1, 0);
         printf("LINK_DOWN\n");
+      }
       else
+      {
+        MDRB_LED_Set(MDRB_LED_1, 1);
         printf("LINK_UP\n");
+      }
     }
     
     _lastPhyStatus = value;

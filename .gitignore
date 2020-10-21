@@ -48,3 +48,6 @@ PACK_Gen/Files/Examples/misc/EthUartCtrl/Listings/
 PACK_Gen/Files/Examples/misc/EthUartCtrl/Objects/
 PACK_Gen/Files/Examples/misc/EthUartCtrl/PythonPC/__pycache__/
 PACK_Gen/Milandr.MDR1986VExx.2.1.pack
+PACK_Gen/Files/Examples/All_Boards/I2C_Soft_ReadInfoSFP/Objects/
+PACK_Gen/Files/Examples/All_Boards/I2C_Soft_ReadInfoSFP/Listings/
+PACK_Gen/Files/Examples/misc/EthUartCtrl/JLinkLog.txt

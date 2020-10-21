@@ -35,7 +35,7 @@
 #define  ETHCFG1_RX_EVENT_MODE                 MDR_ETH_RCFG_EVENT_Saved
 
 //  Transmitter Options
-#define  ETHCFG1_TX_ADD_PAD_FOR_SHORT          1
+#define  ETHCFG1_TX_ADD_PAD_FOR_SHORT          0
 #define  ETHCFG1_TX_TRY_SEND_COUNT             MDR_ETH_XCFG_Rtry_10
 #define  ETHCFG1_TX_EVENT_MODE                 MDR_ETH_XCFG_EVENT_FIFO_Half
 
@@ -48,7 +48,7 @@
 #define  ETHCFG1_COLLISION_BIT_WIDTH           0x80
 
 //  IRQ Select
-#define  ETHCFG1_IRQ_ON_RECEIVE_OK             0
+#define  ETHCFG1_IRQ_ON_RECEIVE_OK             1
 #define  ETHCFG1_IRQ_ON_LOST_RX_OVER           0
 #define  ETHCFG1_IRQ_ON_FIFO_RX_OVER           0
 #define  ETHCFG1_IRQ_ON_RX_SOME_ERR            0

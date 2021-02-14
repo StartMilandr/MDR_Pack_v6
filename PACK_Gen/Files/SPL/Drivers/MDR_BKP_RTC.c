@@ -72,3 +72,15 @@ void MDR_RTC_ClearEvents(uint32_t selEvents)
   MDR_RTC_WaitCanWrite();
   MDR_BKP->RTC_CS |= selEvents;
 }
+
+uint32_t MDR_RTC_GetTimeProt(uint32_t minGap) 
+{ 
+  uint32_t regCnt;
+  uint32_t result;
+  do {
+    regCnt = MDR_BKP->RTC_CNT;
+    result = MDR_BKP->RTC_CNT;
+  } while ((result - regCnt) > minGap);
+  return result;
+}
+

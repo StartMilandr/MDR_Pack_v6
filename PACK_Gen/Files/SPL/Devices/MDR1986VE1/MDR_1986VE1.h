@@ -104,7 +104,7 @@ typedef enum IRQn
 /* ===========================  Configuration of the Arm Cortex-M4 Processor and Core Peripherals  =========================== */
 #define __CM1_REV                 0x0102    /*!< Core Revision r1p2 */
 #define __MPU_PRESENT             0         /*!< Set to 1 if MPU is present */
-#define __VTOR_PRESENT            1         /*!< Set to 1 if VTOR is present */
+#define __VTOR_PRESENT            0         /*!< Set to 1 if VTOR is present */
 #define __NVIC_PRIO_BITS          2         /*!< Number of Bits used for Priority Levels */
 #define __Vendor_SysTickConfig    0         /*!< Set to 1 if different SysTick Config is used */
 #define __FPU_PRESENT             0         /*!< Set to 1 if FPU is present */
@@ -359,8 +359,8 @@ typedef enum IRQn
 #define MDR_POWER                        ((MDR_PWR_Type 	    *)  ADDR_POWER_BASE)
 #define MDR_DMA                          ((MDR_DMA_Type       *)  ADDR_DMA_BASE)
 
-#define MDR_CAN1                         ((MDR_CAN1_Type      *)  ADDR_CAN1_BASE)
-#define MDR_CAN2                         ((MDR_CAN1_Type      *)  ADDR_CAN2_BASE)
+#define MDR_CAN1                         ((MDR_CAN_Type      *)  ADDR_CAN1_BASE)
+#define MDR_CAN2                         ((MDR_CAN_Type      *)  ADDR_CAN2_BASE)
 
 #define MDR_ETH1                         ((MDR_ETH_Type       *)  ADDR_ETH1_BASE)
 
@@ -447,6 +447,25 @@ typedef enum IRQn
 #define   MDR_UART1_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART1_BRG_Pos
 #define   MDR_UART2_CLOCK_GATE_BRG_POS    MDR_RST_UART__UART2_BRG_Pos
 
+
+//----------------    CAN Definitions  --------------------
+//  CAN1 Block Clock enable
+#define   MDR_CAN1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+#define   MDR_CAN2_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
+
+#define   MDR_CAN1_CLK_EN_MSK            MDR_RST_PER__CAN1_CLK_EN_Msk
+#define   MDR_CAN2_CLK_EN_MSK            MDR_RST_PER__CAN2_CLK_EN_Msk
+
+//  CAN1_ClockGate configs
+#define   MDR_CAN1_CLOCK_GATE_ADDR     (&MDR_CLOCK->CAN_CLOCK)
+#define   MDR_CAN2_CLOCK_GATE_ADDR     (&MDR_CLOCK->CAN_CLOCK)
+
+#define   MDR_CAN1_CLOCK_GATE_ENA_MSK    MDR_RST_CAN__CAN1_CLK_EN_Msk
+#define   MDR_CAN2_CLOCK_GATE_ENA_MSK    MDR_RST_CAN__CAN2_CLK_EN_Msk
+
+#define   MDR_CAN1_CLOCK_GATE_BRG_POS    MDR_RST_CAN__CAN1_BRG_Pos
+#define   MDR_CAN2_CLOCK_GATE_BRG_POS    MDR_RST_CAN__CAN2_BRG_Pos
+
 //----------------    TIMER Definitions  --------------------
 //  UART Block Clock enable
 #define   MDR_TIMER1_CLK_EN_ADDR         (&MDR_CLOCK->PER_CLOCK)
@@ -480,7 +499,6 @@ typedef enum IRQn
 #define   MDR_PWR_CLK_EN_MSK            MDR_RST_PER__PWR_CLK_EN_Msk
 
 
-//----------------    DMA Definitions  --------------------
 //----------------    DMA Definitions  --------------------
 #define   MDR_DMA_CLK_EN_ADDR       (&MDR_CLOCK->PER_CLOCK)
 #define   MDR_DMA_CLK_EN_MSK          MDR_RST_PER__DMA_CLK_EN_Msk

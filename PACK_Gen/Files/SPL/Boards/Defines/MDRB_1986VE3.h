@@ -9,6 +9,7 @@
 #define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le100MHz
 
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CPU_CFG_PLL_HSE_RES_DEF(HSE_PLL_MUL_MAX, HSE_EEPROM_DELAY_MAX, HSE_LOW_SELRI_MAX)
+#define MDRB_CLK_PLL_HSE_RES_80MHz   MDRB_CLK_PLL_HSE_RES_MAX
 
 //===================================    Заметки по плате    ========================================
 

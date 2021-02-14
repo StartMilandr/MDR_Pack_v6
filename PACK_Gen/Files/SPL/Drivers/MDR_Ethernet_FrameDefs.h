@@ -39,6 +39,8 @@
 #define MDR_ETH_VLAN_TAG_LEN_MAX      4
 #define MDR_ETH_FRAME_VLAN_LEN_MAX    (MDR_ETH_FRAME_LEN_MAX + MDR_ETH_VLAN_TAG_LEN_MAX)
 
+#define MDR_ETH_DELAY_FRAME_LEN       64
+
 
 //  From here, thanks a lot!!!
 //  http://we.easyelectronics.ru/electro-and-pc/podklyuchenie-mikrokontrollera-k-lokalnoy-seti-tcp-klient.html
@@ -48,15 +50,14 @@
 /*
  * BE conversion, HostToNex, NetToHost
  */
+#define _htons(a)			((((a)>>8)&0xff)|(((a)<<8)&0xff00))
+#define _ntohs(a)			_htons(a)
 
-#ifndef htons
-  #define htons(a)			((((a)>>8)&0xff)|(((a)<<8)&0xff00))
-  #define ntohs(a)			htons(a)
+#define _htonl(a)			( (((a)>>24)&0xff) | (((a)>>8)&0xff00) |\
+                      (((a)<<8)&0xff0000) | (((a)<<24)&0xff000000) )
+#define _ntohl(a)			_htonl(a)
 
-  #define htonl(a)			( (((a)>>24)&0xff) | (((a)>>8)&0xff00) |\
-                        (((a)<<8)&0xff0000) | (((a)<<24)&0xff000000) )
-  #define ntohl(a)			htonl(a)
-#endif
+#define htons_(a)			((((a)>>8)&0xff)|(((a)<<8)&0xff00))
 
 #define ETH_CRC_SIZE      4
 
@@ -64,13 +65,19 @@
  * Ethernet
  */
  
-#define ETH_TYPE_ARP		  htons(0x0806)
-#define ETH_TYPE_IP			  htons(0x0800)
-#define ETH_TYPE_VLAN     htons(0x8100)
-#define ETH_TYPE_VLAND    htons(0x9100)
-#define ETH_TYPE_ETHERCAT htons(0x88A4)
-#define ETH_TYPE_HSR      htons(0x892F)
-#define ETH_TYPE_PRP_SUP  htons(0x88FB)
+#define ETH_TYPE_ARP		  _htons(0x0806)
+#define ETH_TYPE_IP			  _htons(0x0800)
+#define ETH_TYPE_VLAN     _htons(0x8100)
+#define ETH_TYPE_VLAND    _htons(0x9100)
+#define ETH_TYPE_ETHERCAT _htons(0x88A4)
+#define ETH_TYPE_HSR      _htons(0x892F)
+#define ETH_TYPE_PRP_SUP  _htons(0x88FB)
+#define ETH_TYPE_PAUSE    _htons(0x8808)
+#define ETH_TYPE_PTP      _htons(0x88F7)
+
+#define ETH_PAUSE_MAC16_0  0x8001
+#define ETH_PAUSE_MAC16_1  0x00C2
+#define ETH_PAUSE_MAC16_2  0x0100
 
 typedef __PACKED_STRUCT eth_frame {
 	uint8_t  to_addr[6];
@@ -81,9 +88,11 @@ typedef __PACKED_STRUCT eth_frame {
 
 
 #define MDR_ETH_MAC_LEN               6
-#define MDR_ETH_HEADER_LEN						(MDR_ETH_MAC_LEN * 2 + sizeof(uint16_t))
-#define MDR_ETH_CRC_LEN               4
 #define MDR_ETH_TYPE_LEN              2
+#define MDR_ETH_HEADER_LEN						(MDR_ETH_MAC_LEN * 2 + MDR_ETH_TYPE_LEN)
+#define MDR_ETH_CRC_LEN               4
+#define MDR_ETH_nPAYLOAD_LEN          (MDR_ETH_HEADER_LEN + MDR_ETH_CRC_LEN)
+
 
 __STATIC_INLINE bool IsFrameTypeEQ(const eth_frame_t *frame, uint16_t etherType)
 {

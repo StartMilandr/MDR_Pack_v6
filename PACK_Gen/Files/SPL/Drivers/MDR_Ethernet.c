@@ -146,6 +146,10 @@ MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrameByPTR(MDR_ETH_Type *MDR_Eth, uint8_t *fr
   uint32_t *pFrom32 = (uint32_t *)(buffStartAddr + rdHead);         
   MDR_ETH_FrameStatusRX result;
   result.Status = *pFrom32++;
+//if (result.Fields.Length > 1500)
+//        while(1);  
+  
+  
   uint32_t readLen32 = (result.Fields.Length + 3) >> 2;  
   //  4 - already read status
   uint32_t lenToEnd32 = (delim - rdHead - 4) >> 2;
@@ -250,6 +254,99 @@ void MDR_ETH_SendFrameByPTR(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, boo
     //  DMA_Copy Frame data
     MDR_DMA_Copy32_ToNoInc(MDR_ETH_DMA_CHANNEL_TX, (uint32_t *) frameTX, pOutBuff, sendCount32);
   }
+  
+  
+  // ========== Async DMA FIFO Processing ====================
+  MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_FIFO_Start(MDR_ETH_Type *MDR_Eth, uint8_t *frame, uint32_t dmaChan)
+  {
+    //  Get BuffPTR
+    uint32_t *pInpFrame = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_RX_OFFS);  
+    
+    //  Read Receive Status Word and get Frame_Length
+    MDR_ETH_FrameStatusRX result;
+    result.Status = *pInpFrame;  
+    uint32_t frameLen32 = (result.Fields.Length + 3) >> 2;
+
+    //  DMA_Copy
+    MDR_DMA_Copy32_FromNoInc_Start(dmaChan, pInpFrame, (uint32_t *) frame, frameLen32);  
+    
+    return result;
+  }
+
+  bool MDR_ETH_TryReadFrame_AsyncFIFO(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameStatusRX *status, uint32_t dmaChan, bool *inProgress)
+  { 
+    bool result = false;
+    
+    if (!*inProgress)
+    { // Try Start
+      if (MDR_ETH_HasFrameToRead(MDR_Eth))
+      {
+        *status = MDR_ETH_ReadFrame_FIFO_Start(MDR_Eth, frame, dmaChan);
+        *inProgress = true;
+      }
+    }
+    else if (MDR_ETH_Frame_FIFO_Completed(dmaChan))
+    {
+      MDR_ETH_DecCountRx(MDR_Eth);
+      result = true;
+      *inProgress = false;
+    }
+    return result;
+  }
+  
+  bool MDR_ETH_ReadAsyncFIFO_TryStart(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameStatusRX *status, uint32_t dmaChan)
+  { 
+    bool result = MDR_ETH_HasFrameToRead(MDR_Eth);    
+    *status = MDR_ETH_ReadFrame_FIFO_Start(MDR_Eth, frame, dmaChan);    
+    return result;
+  }  
+  
+  
+  //------------------------
+  void  MDR_ETH_WriteFrame_FIFO_Start(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan)
+  {
+    //  Get BuffPTR
+    uint32_t *pOutBuff = (uint32_t *)((uint32_t)MDR_Eth + MDR_ETH_TO_BUFF_OFFSET + MDR_ETH_BUF_FIFO_TX_OFFS); 
+    //  Length with extra SendStatus word
+    uint32_t sendCount32 = ((frameTX->frameLen + 3) >> 2) + 2;    
+    //  DMA_Copy Frame data
+    MDR_DMA_Copy32_ToNoInc_Start(dmaChan, (uint32_t *) frameTX, pOutBuff, sendCount32);
+  }  
+    
+  
+  bool MDR_ETH_TrySendFrame_AsyncFIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan, bool *inProgress)
+  { 
+    bool result = false;
+    
+    if (!*inProgress)
+    { // Try Start, if enough space
+      if (MDR_ETH_GetBuffFreeSizeTX(MDR_Eth) > (frameTX->frameLen + MDR_ETH_BUFF_TX_LEN_SIZE + MDR_ETH_BUFF_TX_STATUS_SIZE))
+      {
+        MDR_ETH_WriteFrame_FIFO_Start(MDR_Eth, frameTX, dmaChan);
+        *inProgress = true;
+      }      
+    }
+    else if (MDR_ETH_Frame_FIFO_Completed(dmaChan))
+    {
+      result = true;
+      *inProgress = false;
+    }
+    return result;
+  }
+  
+  
+  bool MDR_ETH_SendAsyncFIFO_TryStart(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan)
+  { 
+    //bool result = MDR_ETH_GetBuffFreeSizeTX(MDR_Eth) > (frameTX->frameLen + MDR_ETH_BUFF_TX_LEN_SIZE + MDR_ETH_BUFF_TX_STATUS_SIZE);
+    
+    bool result = (MDR_Eth->STAT & MDR_ETH_STAT_TX_Half_Msk) == 0;
+    if (result)
+      MDR_ETH_WriteFrame_FIFO_Start(MDR_Eth, frameTX, dmaChan);
+    return result;
+  }  
+
+  
+  
 #endif
 
 uint32_t MDR_ETH_GetBuffFreeSizefRX(MDR_ETH_Type *MDR_Eth)
@@ -487,3 +584,29 @@ void MDR_ETH_Debug_FillTestFrameTX(MDR_ETH_FrameTX* frameTX, uint16_t frameLen, 
   frameTX->frameLen = echoPayloadLen + MDR_ETH_HEADER_LEN;
 }
 
+void MDR_ETH_FillPauseFrameTX(MDR_ETH_FrameTX* frameTX, uint8_t* srcMAC, uint16_t pause)
+{
+  eth_frame_t *outFrm      = (void *)frameTX->frame;
+  uint8_t     *outPayload  = (void *)outFrm->payload;
+  
+  uint16_t echoPayloadLen   = MDR_ETH_DELAY_FRAME_LEN - MDR_ETH_HEADER_LEN;
+      
+  //  Fill Output Frame
+	uint16_t *pInt16 = (uint16_t *)outFrm->to_addr;
+  pInt16[0] = ETH_PAUSE_MAC16_0;
+  pInt16[1] = ETH_PAUSE_MAC16_1;
+  pInt16[2] = ETH_PAUSE_MAC16_2;  
+  
+	MDR_ETH_CopyMAC(outFrm->from_addr, srcMAC);
+  outFrm->type = ETH_TYPE_PAUSE;
+	
+  pInt16 = (uint16_t *)outPayload;
+  pInt16[0] = 0x0100;
+  pInt16[1] = htons(pause);
+  // fill with zeros  
+	uint16_t i;
+  for (i = 2; i < ((MDR_ETH_DELAY_FRAME_LEN - MDR_ETH_HEADER_LEN) >> 1); ++i)
+    pInt16[i] = 0;
+  
+  frameTX->frameLen = echoPayloadLen + MDR_ETH_HEADER_LEN;  
+}

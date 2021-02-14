@@ -110,7 +110,7 @@ typedef enum IRQn
 /* ===========================  Configuration of the Arm Cortex-M4 Processor and Core Peripherals  =========================== */
 #define __CM1_REV                 0x0102    /*!< Core Revision r1p2 */
 #define __MPU_PRESENT             0         /*!< Set to 1 if MPU is present */
-#define __VTOR_PRESENT            1         /*!< Set to 1 if VTOR is present */
+#define __VTOR_PRESENT            0         /*!< Set to 1 if VTOR is present */
 #define __NVIC_PRIO_BITS          2         /*!< Number of Bits used for Priority Levels */
 #define __Vendor_SysTickConfig    0         /*!< Set to 1 if different SysTick Config is used */
 #define __FPU_PRESENT             0         /*!< Set to 1 if FPU is present */

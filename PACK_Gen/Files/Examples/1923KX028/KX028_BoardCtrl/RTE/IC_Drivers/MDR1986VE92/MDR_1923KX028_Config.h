@@ -3,6 +3,25 @@
 
 #include <stdint.h>
 
+
+#define CFG_LEANR_BY_EMAC           0
+#define CFG_USE_CRIT_SECT           1
+#define CFG_PTP_PUNT_FORW_MAC       1
+#define CFG_READ_TIMESTAMP          1
+
+//  The MAC can optionally replace the timestamp field in PTP 1588 transmit sync frames to support one step clock mode.
+#define CFG_PTP_ONE_STEP_TIMESTAMP  0
+//  The MAC can optionally do one step transparent clock residence time correction for PTP 1588 version 2 transmit sync frames
+#define CFG_PTP_CORRECTION          0
+//  FlowControl - Enable Pause Frames
+#define CFG_EMAC_PAUSE_RX_ENABLE    0
+
+
+#define KX028_SOFT_RESET_DELAY_MS   100
+
+//#define MDR_KX028_DEBUG     1
+
+
 //  Прототип функция задержки, (передается в функции работы с базисом, для реализации задержки).
 //  В случае RTOS можно использовать Sleep
 typedef void (*MDR_KX028_DelayMs)(uint32_t);
@@ -12,14 +31,176 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 //  Redefine Functions
 //#define MDR_KX028_DelayMs(x)
-#define MDR_KX028_CRITSECT_ENTER    (void)(0)
-#define MDR_KX028_CRITSECT_EXIT     (void)(0)
+
+#if CFG_USE_CRIT_SECT
+  #define MDR_KX028_CRITSECT_ENTER    __disable_irq()
+  #define MDR_KX028_CRITSECT_EXIT     __enable_irq()
+#else  
+  #define MDR_KX028_CRITSECT_ENTER    (void)(0)
+  #define MDR_KX028_CRITSECT_EXIT     (void)(0)
+#endif
+
+//  ===============================================================
+//  ================  MODE1: PC Driver Acknowledge  ===============
+//  ===============================================================
+#define CFG_KX028_PC_ACK_ADDR                 0
+#define CFG_KX028_PC_ACK_MSK                  0xFFFFUL
+#define CFG_KX028_PC_ACK_READY                0x16C3UL
+
+#define CFG_KX028_PC_MAJOR_FW_VERSION         1
+#define CFG_KX028_PC_MINOR_FW_VERSION         2
+
+#define CFG_KX028_PC_REG_CMD                  0x814
+#define CFG_KX028_PC_REG_STATUS               0x5C
+#define CFG_KX028_PC_REG_DATA1                0x58
+#define CFG_KX028_PC_REG_DATA2                0x54
+
+#define CFG_KX028_PC_TEST_DATA1               0x09080706
+#define CFG_KX028_PC_TEST_DATA2               0x19181700
+
+
+//  ===============================================================
+//  ===============  MODE2: SELECT ENABLE PORTS ===================
+//  ===============================================================
+
+// =================  EMAC Configs  ===============
+#if CFG_EMAC_PAUSE_RX_ENABLE
+  #define CFG_AXI_EMAC_NETCFG_PAUSE   AXI_EMAC_NETCFG_PAE_Msk
+#else
+  #define CFG_AXI_EMAC_NETCFG_PAUSE   0
+#endif
+
+
+// 0x01230000
+#define CFG_EMAC_NETCFG_COMMON            AXI_EMAC_NETCFG_RLCE_Msk \
+                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
+                                        | AXI_EMAC_NETCFG_FIFO_W64_Msk \
+                                        | AXI_EMAC_NETCFG_RX_FCS_Msk \
+                                        | CFG_AXI_EMAC_NETCFG_PAUSE
+
+//  --------    Full Duplex   ---------
+//  GMII Full Duplex 1Gbps - 0x0123040A
+#define CFG_EMAC_NETCFG_GMII_FD_1G        AXI_EMAC_NETCFG_1G_EN_Msk  \
+                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
+                                        | AXI_EMAC_NETCFG_FD_Msk \
+                                        | CFG_EMAC_NETCFG_COMMON
+                                            
+//  MII Full Duplex 100M - 0x01230003
+#define CFG_EMAC_NETCFG_MII_FD_100M       AXI_EMAC_NETCFG_100M \
+                                        | AXI_EMAC_NETCFG_FD_Msk \
+                                        | CFG_EMAC_NETCFG_COMMON
+
+//  MII Full Duplex 10M - 0x01230002
+#define CFG_EMAC_NETCFG_MII_FD_10M        AXI_EMAC_NETCFG_FD_Msk \
+                                        | CFG_EMAC_NETCFG_COMMON
+
+//  --------    Half Duplex   ---------
+//  MII Half Duplex 100M - 0x01231009 
+#define CFG_EMAC_NETCFG_MII_HD_100M       AXI_EMAC_NETCFG_100M \
+                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
+                                        | AXI_EMAC_NETCFG_RTY_Msk  \
+                                        | CFG_EMAC_NETCFG_COMMON
+
+//  MII Half Duplex 10M - 0x01231008
+#define CFG_EMAC_NETCFG_MII_HD_10M        AXI_EMAC_NETCFG_JFRAME_Msk \
+                                        | AXI_EMAC_NETCFG_RTY_Msk  \
+                                        | CFG_EMAC_NETCFG_COMMON
+
+//  --------    SGMII MODE (Serial GMII)   ---------
+#define CFG_EMAC_NETCFG_SGMII_FD_SEL      AXI_EMAC_NETCFG_FD_Msk \
+                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
+                                        | AXI_EMAC_NETCFG_PCS_SGMII_Msk \
+                                        | AXI_EMAC_NETCFG_SGMII_Msk \
+                                        | CFG_EMAC_NETCFG_COMMON
+                                        
+//  SGMII Full Duplex 1Gbps - 0x09230C0A
+#define CFG_EMAC_NETCFG_SGMII_FD_1G     (CFG_EMAC_NETCFG_SGMII_FD_SEL | AXI_EMAC_NETCFG_1G_EN_Msk)
+//  SGMII Full Duplex 100M - 0x0923080B
+#define CFG_EMAC_NETCFG_SGMII_FD_100M   (CFG_EMAC_NETCFG_SGMII_FD_SEL | AXI_EMAC_NETCFG_100M)
+//  SGMII Full Duplex 10M - 0x0923080A
+#define CFG_EMAC_NETCFG_SGMII_FD_10M    (CFG_EMAC_NETCFG_SGMII_FD_SEL)
+
+//  Enable Stacked VLAN Processing mode. Otherwise write 0
+#define CFG_EMAC_GEM_VLAN_EN            AXI_EMAC_GEM_VLAN_EN_Msk
+#define CFG_EMAC_JUMBO_MAX_LEN          9000
+
+
+//  ===============  SELECT ENABLE PORTS ===================
+#define EMAC_DISABLED           AXI_EMAC_CTRL_PORT_DIS_Msk
+
+#define CFG_EMAC_TST            KX028_EMAC1
+
+#define CFG_EMAC1_NETCFG        CFG_EMAC_NETCFG_SGMII_FD_1G
+#define CFG_EMAC2_NETCFG        EMAC_DISABLED
+#define CFG_EMAC3_NETCFG        EMAC_DISABLED
+#define CFG_EMAC4_NETCFG        EMAC_DISABLED //CFG_EMAC_NETCFG_MII_FD_100M
+#define CFG_EMAC5_NETCFG        EMAC_DISABLED
+#define CFG_EMAC6_NETCFG        EMAC_DISABLED
+#define CFG_EMAC7_NETCFG        EMAC_DISABLED //CFG_EMAC_NETCFG_SGMII_FD_100M // CFG_EMAC_NETCFG_SGMII_FD_1G
+#define CFG_EMAC8_NETCFG        EMAC_DISABLED
+#define CFG_EMAC9_NETCFG        EMAC_DISABLED
+#define CFG_EMAC10_NETCFG       EMAC_DISABLED
+#define CFG_EMAC11_NETCFG       EMAC_DISABLED
+#define CFG_EMAC12_NETCFG       EMAC_DISABLED
+#define CFG_EMAC13_NETCFG       EMAC_DISABLED
+#define CFG_EMAC14_NETCFG       EMAC_DISABLED
+#define CFG_EMAC15_NETCFG       EMAC_DISABLED
+#define CFG_EMAC16_NETCFG       EMAC_DISABLED
+
+#define CFG_DEF_VLANID          1
+
+#define CFG_EMAC1_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC2_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC3_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC4_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC5_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC6_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC7_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC8_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC9_VLANID        CFG_DEF_VLANID
+#define CFG_EMAC10_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC11_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC12_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC13_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC14_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC15_VLANID       CFG_DEF_VLANID
+#define CFG_EMAC16_VLANID       CFG_DEF_VLANID
+
+
+#define CFG_GPI_EN              AXI_GPI_CTRL_EN_Msk
+#define CFG_GPI_DIS             0
+
+//  ===============  MAC ENABLE WITH ===================
+//  TX/RX path enable, Management port enable, External TSU timer enable - 0x0080001C
+#define CFG_EMAC_CTRL_OFF       0
+#define CFG_EMAC1_CTRL_ON       (AXI_EMAC_NETCTRL_RX_EN_Msk | AXI_EMAC_NETCTRL_TX_EN_Msk | AXI_EMAC_NETCTRL_MANAG_EN_Msk | CFG_EMAC_PTP_ONE_STEP | CFG_EMAC_PTP_CORRECTION)
+//  TSU external (CLK from EMAC1 to others)
+#define CFG_EMAC2_16_CTRL_ON    (CFG_EMAC1_CTRL_ON | AXI_EMAC_NETCTRL_TSU_EN_Msk)
+
+#define CFG_EMAC1_ENA_CTRL      CFG_EMAC1_NETCFG  != EMAC_DISABLED ? CFG_EMAC1_CTRL_ON    : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC2_ENA_CTRL      CFG_EMAC2_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC3_ENA_CTRL      CFG_EMAC3_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC4_ENA_CTRL      CFG_EMAC4_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC5_ENA_CTRL      CFG_EMAC5_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC6_ENA_CTRL      CFG_EMAC6_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC7_ENA_CTRL      CFG_EMAC7_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC8_ENA_CTRL      CFG_EMAC8_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC9_ENA_CTRL      CFG_EMAC9_NETCFG  != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC10_ENA_CTRL     CFG_EMAC10_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC11_ENA_CTRL     CFG_EMAC11_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC12_ENA_CTRL     CFG_EMAC12_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC13_ENA_CTRL     CFG_EMAC13_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC14_ENA_CTRL     CFG_EMAC14_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC15_ENA_CTRL     CFG_EMAC15_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+#define CFG_EMAC16_ENA_CTRL     CFG_EMAC16_NETCFG != EMAC_DISABLED ? CFG_EMAC2_16_CTRL_ON : CFG_EMAC_CTRL_OFF
+
 
 //  Port Init Settings
 #define KX028_PORTS_VLAN_TAG            0x8100UL
 #define KX028_PORTS_STRUC1_DEF(vlanFallback)       AXI_CLASS_STRUC1_FILL( vlanFallback, KX028_PORTS_VLAN_TAG )
 
-#define KX028_PORTS_SHUTDOWN            0                              // 0x00000001
+#define KX028_PORTS_SHUTDOWN_ON         AXI_CLASS_STRUC2_PORT_SHUTDOWN_Msk  // 0x00000001
+#define KX028_PORTS_SHUTDOWN_OFF        0
 #define KX028_PORTS_AFT                 KX028_PortAcc_AnyTagging       // 0x000000F0
 #define KX028_PORTS_BLOCKSTATE          KX028_PortBlkState_Forwarding  // 0x00000F00
 #define KX028_PORTS_DEF_CFI             0                              // 0x00001000
@@ -29,8 +210,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define KX028_PORTS_VID_PREFIX          0                              // 0x00100000
 #define KX028_PORTS_UNTAG_FROM_BTABLE   0                              // 0x00200000
 
-#define KX028_PORTS_STRUC2_DEF         AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN, \
-                                                   KX028_PORTS_AFT,                 \
+#define KX028_PORTS_STRUC2_OFF_DEF     AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN_ON, \
+                                                   KX028_PORTS_AFT, \
                                                    KX028_PORTS_BLOCKSTATE, \
                                                    KX028_PORTS_DEF_CFI, \
                                                    KX028_PORTS_DEF_PRI, \
@@ -38,27 +219,17 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
                                                    KX028_PORTS_TRUSTED, \
                                                    KX028_PORTS_VID_PREFIX,  \
                                                    KX028_PORTS_UNTAG_FROM_BTABLE)
+                                                   
+#define KX028_PORTS_STRUC2_ON_DEF     AXI_CLASS_STRUC2_FILL( KX028_PORTS_SHUTDOWN_OFF,\
+                                                   KX028_PORTS_AFT, \
+                                                   KX028_PORTS_BLOCKSTATE, \
+                                                   KX028_PORTS_DEF_CFI, \
+                                                   KX028_PORTS_DEF_PRI, \
+                                                   KX028_PORTS_DEF_TC,  \
+                                                   KX028_PORTS_TRUSTED, \
+                                                   KX028_PORTS_VID_PREFIX,  \
+                                                   KX028_PORTS_UNTAG_FROM_BTABLE)                                                   
 
-#define MDR_KX028_DEBUG     1
-
-#define KX028_SOFT_RESET_DELAY_MS     100
-
-
-// =================  PC Driver Acknowledge  ===============
-#define CFG_KX028_PC_ACK_ADDR    0
-#define CFG_KX028_PC_ACK_MSK     0xFFFFUL
-#define CFG_KX028_PC_ACK_READY   0x16C3UL
-
-#define CFG_KX028_PC_MAJOR_FW_VERSION        1
-#define CFG_KX028_PC_MINOR_FW_VERSION        2
-
-#define CFG_KX028_PC_REG_CMD                 0x814
-#define CFG_KX028_PC_REG_STATUS              0x5C
-#define CFG_KX028_PC_REG_DATA1               0x58
-#define CFG_KX028_PC_REG_DATA2               0x54
-
-#define CFG_KX028_PC_TEST_DATA1  0x09080706
-#define CFG_KX028_PC_TEST_DATA2  0x19181700
 
 // =================  BMU Configs  ===============
 // Program for Maximum buffer count as 2048 (i.e. 256K memory accommodating, 2048 buffers of size 128 bytes) - 0x800
@@ -67,6 +238,8 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_BMU1_SPI_READ_BUFF_COUNT    1
 // Buffer size bits or number of bit representing the LMEM buffer size (7 = 128bytes).
 #define CFG_BMU_BUF_SIZE_128            AXI_BMU_BUF_SIZE_128
+// Defined for SPL, according to CFG_BMU_BUF_SIZE_128
+#define CFG_BMU_BUF_LEN                 128
 //  Threshold number of LMEM buffers occupied to generate interrupt - 0x800
 #define CFG_BMU_THRES_UCAST             CFG_BMU_UCAST_BUF_CNT
 
@@ -74,86 +247,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_BMU1_SEL_LMEM_ADDR    AXI_LMEM0_BASE_ADDR
 #define CFG_BMU2_SEL_LMEM_ADDR    AXI_LMEM4_BASE_ADDR
 
-// =================  EMAC Configs  ===============
-//  --------    Full Duplex   ---------
-//  GMII Full Duplex 1Gbps - 0x0123040A
-#define CFG_EMAC_NETCFG_GMII_FD_1G        AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_CLK_1GBps_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks
-                                            
-//  MII Full Duplex 100M - 0x01230003
-#define CFG_EMAC_NETCFG_MII_FD_100M       AXI_EMAC_NETCFG_SPD_Msk \
-                                        | AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks
 
-//  MII Full Duplex 10M - 0x01230002
-#define CFG_EMAC_NETCFG_MII_FD_10M        AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks
-
-//  --------    Half Duplex   ---------
-//  MII Half Duplex 100M - 0x01231009
-#define CFG_EMAC_NETCFG_MII_HD_100M       AXI_EMAC_NETCFG_SPD_Msk \
-                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_RTY_Pos  \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks
-
-//  MII Half Duplex 10M - 0x01231008
-#define CFG_EMAC_NETCFG_MII_HD_10M        AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_RTY_Pos  \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks
-
-//  --------    SGMII MODE (Serial GMII)   ---------
-//  SGMII Full Duplex 1Gbps - 0x09230C0A
-#define CFG_EMAC_NETCFG_SGMII_FD_1G       AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_CLK_1GBps_Msk \
-                                        | AXI_EMAC_NETCFG_CLK_SGMII_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks  \
-                                        | AXI_EMAC_NETCFG_SGMII_Mks
-                                            
-//  SGMII Full Duplex 100M - 0x0923080B
-#define CFG_EMAC_NETCFG_SGMII_FD_100M     AXI_EMAC_NETCFG_SPD_Msk \
-                                        | AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_CLK_SGMII_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks \
-                                        | AXI_EMAC_NETCFG_SGMII_Mks
-
-//  SGMII Full Duplex 10M - 0x0923080A
-#define CFG_EMAC_NETCFG_SGMII_FD_10M      AXI_EMAC_NETCFG_FD_Msk \
-                                        | AXI_EMAC_NETCFG_JFRAME_Msk \
-                                        | AXI_EMAC_NETCFG_CLK_SGMII_Msk \
-                                        | AXI_EMAC_NETCFG_RLCE_Msk \
-                                        | AXI_EMAC_NETCFG_DRFCS_Msk \
-                                        | AXI_EMAC_NETCFG_FIFO_W64_Mks \
-                                        | AXI_EMAC_NETCFG_RX_FCS_Mks \
-                                        | AXI_EMAC_NETCFG_SGMII_Mks
-
-
-//  Enable Stacked VLAN Processing mode. Otherwise write 0
-#define CFG_EMAC_GEM_VLAN_EN            AXI_EMAC_GEM_VLAN_EN_Msk
 
 // =================  TSU Configs  ===============
 #define CFG_TSU_INC_PER_1NS     0x14
@@ -176,7 +270,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 //  Threshold number of TMLF words - 64bit size, to be in the TMLF FIFO before transmission starts.
 #define CFG_HGPI_TX_FIFO_START_THRES        0x178
 //  Initial number of bytes read from received pointer in LMEM, to check for action fields.
-#define CFG_GPI_DTX_ASEQ_CNT                0x40
+#define CFG_HGPI_DTX_ASEQ_CNT               0x40
 
 // =================  EGPI/ETGPI Configs  ===============
 #define CFG_EGPI_LMEM_BUF_EN                1
@@ -235,23 +329,41 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 // Maximum no of packets accpeted by HIF TX for this channel when LTC pkt flow bit is enabled.
 #define CFG_HIF_CH_LTC_MAX_PKT      4
 
+#define CFG_CLASS1_INQ_ADDR     (CBUS_BASE_ADDR | AXI_CLASS_HW1_BASE_ADDR | AXI_CLASS_INQ_PKTPTR)
+#define CFG_TMU_INQ_ADDR        (CBUS_BASE_ADDR | AXI_TMU_BASE_ADDR  | AXI_TMU_PHY_INQ_PKTPTR)
+
 
 //==================    CLASS_HW  Configs  ======================
 //----------- Class HW1 -------------
 //  LMEM first buffer header size value. (Data in the LMEM is written from this offset. The first location of LMEM is however written with the subsequent buffer address if it exists.) - 48
-#define CFG_CLASS1_LMEM_HDR_SIZE          0x0030
+#define CFG_CLASS1_LMEM_HDR_SIZE            0x0030
 
 //  Snoop MCAST address mask (lower 32bit and upper 16bit)
-#define CFG_CLASS1_SNOOP_MCAST_MASK_LO    0xFFFFFFFFUL
-#define CFG_CLASS1_SNOOP_MCAST_MASK_HI    0x0000FFFFUL
+#define CFG_CLASS1_SNOOP_MCAST_MASK_LO      0xFFFFFFFFUL
+#define CFG_CLASS1_SNOOP_MCAST_MASK_HI      0x0000FFFFUL
 //  SPL multicast address of PTP packets to punt to host control channel. (lower 32bit and upper 16bit)
-#define CFG_CLASS1_SNOOP_MCAST_ADDR_LO    0xC200000EUL
-#define CFG_CLASS1_SNOOP_MCAST_ADDR_HI    0x00000180UL
+//  No Forwarded PTP MAC
+#if CFG_PTP_PUNT_FORW_MAC
+  #define CFG_CLASS1_SNOOP_MCAST_ADDR_LO    0x19000000UL
+  #define CFG_CLASS1_SNOOP_MCAST_ADDR_HI    0x0000011BUL
+#else
+  #define CFG_CLASS1_SNOOP_MCAST_ADDR_LO    0xC200000EUL
+  #define CFG_CLASS1_SNOOP_MCAST_ADDR_HI    0x00000180UL  
+#endif
 
 //  special punt enable for all ports
-#define CFG_CLASS1_SPEC_PUNT_ALL_EN       1
+#define CFG_CLASS1_SPEC_PUNT_ALL_EN       0
 // global fall back bd entry (31 bits in CFG and 24 bits in CFG1 registers)
-#define CFG_CLASS1_GL_FALLBACK_ENTRY      0
+// Данные поля задают, что классификатору делать с пакетом по умолчанию.
+// Т.е. когда для пакета нет соответствия в таблиах МАС и/или VLAN
+#define CFG_CLASS1_DEF_FORW_LIST          0
+#define CFG_CLASS1_DEF_UNTAG_LIST         0
+#define CFG_CLASS1_DEF_HIT_ACTION_UC      KX028_ACT_FORWARD
+#define CFG_CLASS1_DEF_HIT_ACTION_MC      KX028_ACT_FORWARD
+#define CFG_CLASS1_DEF_MISS_ACTION_UC     KX028_ACT_FORWARD
+#define CFG_CLASS1_DEF_MISS_ACTION_MC     KX028_ACT_FORWARD
+#define CFG_CLASS1_DEF_MSTP_ACTION        KX028_ACT_FORWARD
+
 
 //  Processor peripherals base address
 #define CFG_CLASS1_PER_BASE_ADDR          0x00C2UL
@@ -280,7 +392,7 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_CLASS2_SNOOP_MCAST_ADDR_HI    CFG_CLASS1_SNOOP_MCAST_ADDR_HI
 
 
-#define CFG_CLASS2_SPEC_PUNT_ALL_EN       1
+#define CFG_CLASS2_SPEC_PUNT_ALL_EN       0
 #define CFG_CLASS2_GL_FALLBACK_ENTRY      0
 #define CFG_CLASS2_PER_BASE_ADDR          CFG_CLASS1_PER_BASE_ADDR
 
@@ -299,11 +411,17 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 // Punt port map. Only one bit should be set(hif1 = 4 or hif2 = 8) - TODO?
-#define CFG_HW1_PUNT_PORT         16
+//#if CFG_LEANR_BY_EMAC
+//  #define CFG_HW1_PUNT_PORT         CFG_LEARN_EMAC
+//#else
+  #define CFG_HW1_PUNT_PORT         16  
+//#endif
+
+
 // Q number from TC value or cos (1:  NPU, 0: not NPU)
 #define CFG_HW1_Q_NUM_SEL         1
 // Disables the punt
-#define CFG_HW1_PUNT_DIS          1
+#define CFG_HW1_PUNT_DIS          0
 // Q number for egress time-stamp report
 #define CFG_HW1_Q_ETGS_COS        1
 // flood supression.setting a bit would make the respective cos value to flood when the action==ACT_COS_DISCARD; 
@@ -325,32 +443,39 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 
 
 //  ====================  Slow SPI Access ===========
-//  Адрес с которого читается указатель на входной фрейм по шине AXI (соответствует CFG_BMU2_SEL_LMEM_ADDR)
-#define CFG_NEW_PACKET_IN_LMEM_REG_ADDR          AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL     //0x0043FFA0UL
+#if CFG_LEANR_BY_EMAC
+  //  Отправка пакетов на обучение через EMAC - выбрать необходимый
+  #define CFG_LEARN_EMAC                            KX028_EMAC4
+  #define CFG_LEARN_EGPI                            KX028_EGPI4
+  #define CFG_LEARN_TMU_INQ_ADDR                    AXI_TMU_PHY3_INQ_ADDR
+  
+  #define CFG_TMU_PUNT_ADDR                        (AXI_EGPI4_BASE_ADDR  | AXI_GPI_INQ_PKTPTR)  
+#else
+  //  Адрес с которого читается указатель на входной фрейм по шине AXI (соответствует CFG_BMU2_SEL_LMEM_ADDR)
+  #define CFG_NEW_PACKET_IN_LMEM_ADDR              (AXI_LMEM4_BASE_ADDR + 0x0003FFA0UL)     //0x0043FFA0UL
+  #define CFG_TMU_PUNT_ADDR                         CFG_NEW_PACKET_IN_LMEM_ADDR  
+#endif
+
 
 //  Адрес с которого лежат данные принятого пакета в CFG_NEW_PACKET_IN_LMEM_REG_ADDR
 //  Начинается с MAC_DEST, предыдущие данные - загловки
 #define CFG_LMEM_NEW_PACKET_UNKNOWN_HEADER    32
-#define CFG_LMEM_NEW_PACKET_OFFS      (CFG_LMEM_NEW_PACKET_UNKNOWN_HEADER + CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE)
+#define CFG_LMEM_NEW_PACKET_OFFS        (CFG_LMEM_NEW_PACKET_UNKNOWN_HEADER + CFG_HGPI_LMEM_BUF_HDR_CHAIN_SIZE)
+#define CFG_LMEM_TIMESTAMP_NSEC_OFFS    (CFG_LMEM_NEW_PACKET_OFFS - 4)
+#define CFG_LMEM_TIMESTAMP_SEC_OFFS     (CFG_LMEM_NEW_PACKET_OFFS - 8)
 
 
-//  TX/RX path enable, Management port enable, External TSU timer enable - 0x0080001C
-#define CFG_EMAC1_ENA_CTRL      AXI_EMAC_NETCTRL_RX_EN_Msk | AXI_EMAC_NETCTRL_TX_EN_Msk | AXI_EMAC_NETCTRL_MANAG_EN_Msk | AXI_EMAC_NETCTRL_TSU_EN_Msk
-#define CFG_EMAC2_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC3_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC4_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC5_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC6_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC7_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC8_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC9_ENA_CTRL      CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC10_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC11_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC12_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC13_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC14_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC15_ENA_CTRL     CFG_EMAC1_ENA_CTRL
-#define CFG_EMAC16_ENA_CTRL     CFG_EMAC1_ENA_CTRL
+#if CFG_PTP_ONE_STEP_TIMESTAMP
+  #define CFG_EMAC_PTP_ONE_STEP   AXI_EMAC_NETCTRL_OSSMODE_EN_Msk
+#else
+  #define CFG_EMAC_PTP_ONE_STEP   0
+#endif
+
+#if CFG_PTP_CORRECTION
+  #define CFG_EMAC_PTP_CORRECTION AXI_EMAC_NETCTRL_OSS_CORRECTION_Msk
+#else
+  #define CFG_EMAC_PTP_CORRECTION 0
+#endif
 
 
 //======================= MAC Table  ==================
@@ -370,20 +495,37 @@ typedef void (*MDR_KX028_DelayMs)(uint32_t);
 #define CFG_VLAN_TABLE_INIT_HEAD_PTR            0x40
 #define CFG_VLAN_TABLE_INIT_TAIL_PTR            (CFG_VLAN_TABLE_HASH_ENTRIES + CFG_VLAN_TABLE_COLL_ENTRIES - 1)
 
+
 //======================= SFP modules on board  ==================
-#ifndef SFP_COUNT
-  #define SFP_COUNT  1
-#endif
+#define SFP_COUNT  1
 
 
 //======================= PCI Config  ==================
 #define CFG_PCIE_VENDOR_ID   0x16c3
-#define CFG_PCIE_DEVICE_ID   0x0bad
+#define CFG_PCIE_DEVICE_ID   0x0fac
 
 #define CFG_PCIE_REVISION_ID            0
 #define CFG_PCIE_PROGRAM_INTERFACE      0
 #define CFG_PCIE_SUBCLASS_CODE          0
 #define CFG_PCIE_BASE_CLASS_CODE        2
+
+
+//======================= EMAC PHYs  ==================
+// Must be set to 1 for a valid Clause 22 frame and to 0 for a valid Clause 45 frame
+// (Clause45 - косвенная адресация, появилась когда не хватило 5 бит на адрес регистра)
+#define CFG_EMAC_PHY_CLAUSE_22    1
+#define CFG_EMAC_PHY_RESET_MS     50
+
+
+//======================= FRAME INJECTION ================
+#define CFG_INJECT_BMU_ADDR        AXI_BMU1_BASE_ADDR
+#define CFG_INJECT_LMEM_ADDR      (CBUS_BASE_ADDR | AXI_LMEM0_BASE_ADDR)  // 0xC0200000
+#define CFG_INJECT_LMEM_ADDR_Msk   0xFFF00000
+
+// 128 buff len - 16 header len = 112 bytes in buff, starting from second
+// 1518 max frame Len / 112 = 13
+// +2 for first and second - for classifier operations
+#define CFG_INJECT_BUFF_CHAIN_LEN_MAX    15
 
 
 

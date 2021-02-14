@@ -70,6 +70,8 @@ void MDR_RTC_Stop(void);
 
 __STATIC_INLINE uint32_t MDR_RTC_GetTime(void) { return MDR_BKP->RTC_CNT; }
 
+uint32_t MDR_RTC_GetTimeProt(uint32_t minGap);
+
 
 #define MDR_RTC_EVENT_CNT_OV      MDR_BKP_RTC_CS_OWF_Msk
 #define MDR_RTC_EVENT_CNT         MDR_BKP_RTC_CS_SECF_Msk

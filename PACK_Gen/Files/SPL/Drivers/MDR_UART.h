@@ -319,20 +319,25 @@ void MDR_UARTex_NVIC_DisableIRQ(const MDR_UART_TypeEx *UARTex) { NVIC_DisableIRQ
 
 //===================   UART GPIO pins Init ==========================
 //  Функция инициализации выводов GPIO в функции UART
-typedef struct {
-  const MDR_GPIO_Port *portGPIO;
-  uint32_t       pinIndex;
-  MDR_PIN_FUNC   pinFunc;
-} MDR_UART_CfgPinGPIO;
+#define MDR_UART_CfgPinGPIO      MDR_GPIO_CfgPinIndFunc
+#define MDR_UART_CfgPinsGPIO     MDR_GPIO_CfgPinRXTX
+#define MDR_UART_InitPinsGPIO    MDR_GPIO_InitPinsRXTX
 
-//  Все пины кроме pPinCLK могут быть NULL и тогда они не будут проинициализированы.
-//  Это на случай, если надо только принимать, или только посылать, или FSS не нужен.
-typedef struct {
-  const MDR_UART_CfgPinGPIO *pPinTX;  
-  const MDR_UART_CfgPinGPIO *pPinRX;
-} MDR_UART_CfgPinsGPIO;
+////  Функция инициализации выводов GPIO в функции UART
+//typedef struct {
+//  const MDR_GPIO_Port *portGPIO;
+//  uint32_t       pinIndex;
+//  MDR_PIN_FUNC   pinFunc;
+//} MDR_UART_CfgPinGPIO;
 
-void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower);
+////  Все пины кроме pPinCLK могут быть NULL и тогда они не будут проинициализированы.
+////  Это на случай, если надо только принимать, или только посылать, или FSS не нужен.
+//typedef struct {
+//  const MDR_UART_CfgPinGPIO *pPinTX;  
+//  const MDR_UART_CfgPinGPIO *pPinRX;
+//} MDR_UART_CfgPinsGPIO;
+
+//void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower);
 
 
 //==================    Функции работы с блоком UART ===============

@@ -231,7 +231,7 @@ typedef enum
 #include <MDR_CAN_defs.h>
 
 /*=========  Ethernet ========*/
-#include <MDR_ETH_VE8_defs.h>
+#include <MDR_ETH_VE8_Defs.h>
 
 /*=========  ExtBus ========*/
 #include <MDR_EBC_VE8_defs.h>

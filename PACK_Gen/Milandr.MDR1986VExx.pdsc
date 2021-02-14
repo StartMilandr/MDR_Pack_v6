@@ -7,7 +7,7 @@
   <description>Milandr MDR1986VExx Series Device Support, Drivers and Examples</description>  
 
   <releases>
-    <release version="2.1" date="2020-09-16">
+    <release version="2.2" date="2020-12-29">
       - 2.0: Start Version
       - 2.01: Personal Config and VE8, VK014, ElSila headers added
       - 2.02: 1636RR52 flash memory driver added
@@ -15,6 +15,7 @@
       - 2.04: 1986VE8T Added
       - 2.05: Pack paused
       - 2.1:  1923KX028 support removed
+      - 2.2:  PTP Frame handlers added
     </release>
   </releases>
 
@@ -997,6 +998,12 @@
       <accept Dname="MDR1986VK234"/>
       <accept Dname="MDR1923VK014"/>
     </condition>
+    <condition id="CON_MDR_CM0_PERCLK">
+      <description>Cortex-M0 devices</description>
+      <accept Dname="MDR1986VE4"/>
+      <accept Dname="MDR1986VK214"/>
+      <accept Dname="MDR1986VK234"/>
+    </condition>
     <!--CM1 devices-->
     <condition id="CON_MDR1986VE1">
       <description>Cortex-M1 MDR1986VE1 device</description>
@@ -1476,7 +1483,7 @@
         <file category="source"  name="SPL/Drivers/MDR_PER_Clock.c" version="2.0.0"/>
       </files>
     </component>    
-    <component Cclass="Drivers" Cgroup="PER_Clock" Cversion="2.0" condition="CON_MDR_CM0">
+    <component Cclass="Drivers" Cgroup="PER_Clock" Cversion="2.0" condition="CON_MDR_CM0_PERCLK">
       <description>Peripherial clock select functions</description>
       <files>
         <file category="include" name="SPL/Devices/Defines/" version="2.0.0"/>
@@ -1821,6 +1828,7 @@
         <file category="include" name="SPL/Boards/"               version="2.0.0"/>
         <file category="header"  name="SPL/Boards/MDRB_UART_Debug.h" version="2.0.0"/>
         <file category="source"  name="SPL/Boards/MDRB_UART_Debug.c" version="2.0.0"/>
+        <file category="header"  name="SPL/Boards/Config/MDRB_UART_Debug_Config.h" attr="config" version="2.0.0"/>
         <file category="header"  name="SPL/Config/MDRB_BoardSelect.h" attr="config" version="2.0.0"/>
       </files>
     </component>
@@ -2044,6 +2052,23 @@
         <file category="header"  name="ThirdParty/HSRPRP/HSRPRP_Config/MDR_HSRPRP_Config.h" attr="config" version="1.0.0"/>
       </files>
     </component>
+    <!--PTP Ethernet-->
+    <component Cclass="PTP Protocol" Cgroup="PTP Frames" Cversion="1.0.0" condition="CON_MDR_ALL">
+      <description>Precision Time Protocol Frames</description>
+      <files>
+        <file category="include" name="ThirdParty/PTP/" version="1.0.0"/>
+        <file category="header"  name="ThirdParty/PTP/MDR_PTP_Frames.h" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/PTP/MDR_PTP_Frames.c" version="1.0.0"/>
+        <file category="header"  name="ThirdParty/PTP/Config/MDR_PTP_Config.h" attr="config" version="1.0.0"/>
+      </files>
+    </component>    
+    <component Cclass="PTP Protocol" Cgroup="PTP Handlers" Cversion="1.0.0" condition="CON_MDR_ALL">
+      <description>Precision Time Protocol Handlers</description>
+      <files>
+        <file category="header"  name="ThirdParty/PTP/MDR_PTP_Handlers.h" version="1.0.0"/>
+        <file category="source"  name="ThirdParty/PTP/MDR_PTP_Handlers.c" version="1.0.0"/>
+      </files>
+    </component>    
 
   </components>
 

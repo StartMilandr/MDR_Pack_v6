@@ -6,6 +6,7 @@
 #include <MDR_Funcs.h>
 #include <MDR_RST_Clock.h>
 #include <MDR_Ethernet_FrameDefs.h>
+#include <MDR_DMA.h>
 
 //  ----------    Clock Init Functions    ----------
 #ifdef MDR_EXIST_HSE2
@@ -109,6 +110,24 @@ __STATIC_INLINE void  MDR_ETH_WriteFrame_Auto(MDR_ETH_Type *MDR_Eth, MDR_ETH_Fra
 void  MDR_ETH_WriteFrame_FIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX);
 
   
+MDR_ETH_FrameStatusRX  MDR_ETH_ReadFrame_FIFO_Start (MDR_ETH_Type *MDR_Eth, uint8_t *frame, uint32_t dmaChan);
+                 void  MDR_ETH_WriteFrame_FIFO_Start(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan);
+__STATIC_INLINE  bool  MDR_ETH_Frame_FIFO_Completed(uint32_t dmaChan) { return MDR_DMA_CopyGetCompleted(dmaChan); }
+
+
+//  асинхронное чтение и запись фреймов через DMA в режиме FIFO, возвращают TRUE по окончании операции.
+//  inProgress - внешняя переменная "потока", для хранения состояния запущен "поток" или нет
+bool MDR_ETH_TryReadFrame_AsyncFIFO(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameStatusRX *status, uint32_t dmaChan, bool *inProgress);
+                bool MDR_ETH_ReadAsyncFIFO_TryStart(MDR_ETH_Type *MDR_Eth, uint8_t *frame, MDR_ETH_FrameStatusRX *status, uint32_t dmaChan);
+__STATIC_INLINE bool MDR_ETH_ReadAsyncFIFO_WaitCompleted(uint32_t dmaChan) { return MDR_ETH_Frame_FIFO_Completed(dmaChan);  }    
+
+bool MDR_ETH_TrySendFrame_AsyncFIFO(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan, bool *inProgress);
+                 bool MDR_ETH_SendAsyncFIFO_TryStart(MDR_ETH_Type *MDR_Eth, MDR_ETH_FrameTX *frameTX, uint32_t dmaChan);
+__STATIC_INLINE  bool MDR_ETH_SendAsyncFIFO_WaitCompleted(uint32_t dmaChan) { return MDR_ETH_Frame_FIFO_Completed(dmaChan); }  
+
+  
+
+
 //  ----------    Send / Receive Select    ----------
 #if MDR_ETH_BUFF_LIN
   #define MDR_ETH_SendFrame   MDR_ETH_WriteFrame_Lin
@@ -171,7 +190,7 @@ __STATIC_INLINE void MDR_ETH_ClearEventsAll(MDR_ETH_Type *MDR_Eth) { MDR_Eth->IF
 __STATIC_INLINE void MDR_ETH_EnableEventIRQ (MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IMR	|= selEvents; }
 __STATIC_INLINE void MDR_ETH_DisableEventIRQ(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { MDR_Eth->IMR	&= ~selEvents; }
 
-__STATIC_INLINE bool MDR_ETH_GetEventSet(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { return MDR_Eth->IFR & selEvents == selEvents; }
+__STATIC_INLINE bool MDR_ETH_GetEventSet(MDR_ETH_Type *MDR_Eth, uint32_t selEvents) { return (MDR_Eth->IFR & selEvents) == selEvents; }
 
 __STATIC_INLINE bool MDR_ETH_IsEventReceivedOk(MDR_ETH_Type *MDR_Eth) { return MDR_ETH_GetEventSet(MDR_Eth, MDR_ETH_EVENT_ReceivedOK); }
 __STATIC_INLINE void MDR_ETH_ClearEventReceivedOk(MDR_ETH_Type *MDR_Eth) { MDR_ETH_ClearEvent(MDR_Eth, MDR_ETH_EVENT_ReceivedOK); }
@@ -211,6 +230,11 @@ bool MDR_ETH_MDIO_GetMaskClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t
 void MDR_ETH_MDIO_WaitMaskSet(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t setMask);
 
 bool MDR_ETH_MDIO_MaskSetClear(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY, uint16_t addrRegPHY, uint16_t clrMask, uint16_t setMask);
+
+__STATIC_INLINE bool MDR_ETH_SetPhyLoopBack(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)  
+{ 
+  return MDR_ETH_MDIO_MaskSetClear(MDR_Eth, addrPHY, MDR_ETH_PHY_R0, 0, MDR_ETH_PHY_R0_Loopback_Msk);
+}
 
 
 __STATIC_INLINE bool MDR_ETH_GetAutonegCompleted(MDR_ETH_Type *MDR_Eth, uint16_t addrPHY)  
@@ -317,6 +341,9 @@ __STATIC_INLINE void MDR_ETH_CopyMAC(uint8_t *destMem, const uint8_t *fromMem)
 	dest[2] = from[2];
 }
 
+#define MDR_ETH_FillDestMAC(pFrame, destMAC) MDR_ETH_CopyMAC((uint8_t *)pFrame, destMAC);
+
+
 //	Функция формирования простейшего фрейма для быстрой проверки соединения. Для тестовых целей.
 void MDR_ETH_Debug_FillTestFrameTX(MDR_ETH_FrameTX* frameTX, uint16_t frameLen, uint8_t* srcMAC, uint8_t* destMAC);
 
@@ -334,6 +361,24 @@ __STATIC_INLINE bool MDR_ETH_Debug_SendTestFrameBroadcast(MDR_ETH_Type *MDR_Eth,
 	uint8_t broadcastMAC[MDR_ETH_MAC_LEN] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
   return MDR_ETH_Debug_SendTestFrame(MDR_Eth, frameLen, srcMAC, broadcastMAC);
 }
+
+//  Фрейм паузы
+void MDR_ETH_FillPauseFrameTX(MDR_ETH_FrameTX* frameTX, uint8_t* srcMAC, uint16_t pause);
+
+__STATIC_INLINE void MDR_ETH_PauseFrame_SetPause(MDR_ETH_FrameTX* frameTX, uint16_t newPause)
+{
+  eth_frame_t *frame = (eth_frame_t *)frameTX->frame;
+  *((uint16_t *)&(frame->payload[2])) = htons(newPause);
+}
+
+__STATIC_INLINE uint16_t MDR_ETH_PauseFrame_GetPause(const eth_frame_t *frame)
+{
+  return ntohs(*((uint16_t *)&(frame->payload[2])));
+}
+
+//  Замена типа фрейма
+__STATIC_INLINE void MDR_ETH_FrameFill_FrameType(void* frame, uint16_t frameType) { ((eth_frame_t *)frame)->type = frameType; }
+
 
 #endif // MDR_ETHERNET_H
 

@@ -274,29 +274,29 @@ void MDR_UART_CfgRegs_Clear(MDR_UART_CfgRegs *pCfgRegs)
 
 
 //===================   UART GPIO pins Init ==========================
-void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower)
-{
-  MDR_PinDig_PermRegs pinPermCfg;
+//void MDR_UART_InitPinsGPIO(const MDR_UART_CfgPinsGPIO *pinsCfg, MDR_PIN_PWR pinsPower)
+//{
+//  MDR_PinDig_PermRegs pinPermCfg;
 
-#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
-  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
-#else
-  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinPermCfg);  
-#endif
-  
-  //  TX
-  if (pinsCfg->pPinTX != NULL)
-  {
-    MDR_GPIO_Enable(pinsCfg->pPinTX->portGPIO);
-    MDR_GPIO_InitDigPin(pinsCfg->pPinTX->portGPIO, pinsCfg->pPinTX->pinIndex, MDR_Pin_In, pinsCfg->pPinTX->pinFunc, &pinPermCfg);  
-  }
-  //  RX
-  if (pinsCfg->pPinRX != NULL)
-  {
-    MDR_GPIO_Enable(pinsCfg->pPinRX->portGPIO);
-    MDR_GPIO_InitDigPin(pinsCfg->pPinRX->portGPIO, pinsCfg->pPinRX->pinIndex, MDR_Pin_In, pinsCfg->pPinRX->pinFunc, &pinPermCfg);
-  }
-}
+//#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
+//  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+//#else
+//  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinPermCfg);  
+//#endif
+//  
+//  //  TX
+//  if (pinsCfg->pPinTX != NULL)
+//  {
+//    MDR_GPIO_Enable(pinsCfg->pPinTX->portGPIO);
+//    MDR_GPIO_InitDigPin(pinsCfg->pPinTX->portGPIO, pinsCfg->pPinTX->pinIndex, MDR_Pin_In, pinsCfg->pPinTX->pinFunc, &pinPermCfg);  
+//  }
+//  //  RX
+//  if (pinsCfg->pPinRX != NULL)
+//  {
+//    MDR_GPIO_Enable(pinsCfg->pPinRX->portGPIO);
+//    MDR_GPIO_InitDigPin(pinsCfg->pPinRX->portGPIO, pinsCfg->pPinRX->pinIndex, MDR_Pin_In, pinsCfg->pPinRX->pinFunc, &pinPermCfg);
+//  }
+//}
 
 
 //==================    MDR_UART_TypeEx - Инициализация UART с тактированием и  прерваниями в NVIC  ===============

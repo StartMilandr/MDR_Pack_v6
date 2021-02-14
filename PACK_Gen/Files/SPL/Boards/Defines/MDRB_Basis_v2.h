@@ -1,6 +1,15 @@
 #ifndef MDRB_BASIS_V2_H
 #define MDRB_BASIS_V2_H
 
+
+//  PLL
+#define HSE_PLL_MUL_MAX              MDR_x10   //  HSE_max = 8MHz * 10 = 80MHz
+#define HSE_LOW_SELRI_MAX            MDR_LOWRI_gt80MHz
+#define HSE_EEPROM_DELAY_MAX         EEPROM_Delay_le100MHz
+
+#define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CPU_CFG_PLL_HSE_RES_DEF(HSE_PLL_MUL_MAX, HSE_EEPROM_DELAY_MAX, HSE_LOW_SELRI_MAX)
+
+
 #define PIN_PULL_UP(pinSel)   ((pinSel) << 16)
 #define PIN_PULL_DOWN(pinSel)  (pinSel)
 
@@ -19,7 +28,7 @@
 
 
 //  SFP Presence
-#define SFP_COUNT             4
+#define SFP_COUNT_MAX         4
 
 #define SFP_PRES_PORT_CLK     MDR_RST_PER__PORTA_CLK_EN_Msk
 #define SFP_PRES_PORT         MDR_PORTA

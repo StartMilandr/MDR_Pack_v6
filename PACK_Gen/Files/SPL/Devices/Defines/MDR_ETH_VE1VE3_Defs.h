@@ -94,7 +94,7 @@ typedef struct {
   __IOM MDR_OnOff                 FX_En      : 1;             /*!< [7..7] 100BaseFx enable                                  */
   __IOM uint16_t                  MDI        : 1;             /*!< [8..8] MII Line MDI                                      */
   __IOM MDR_ETH_PHY_CTRL_MDIO_SEL MDIO_SEL   : 1;             /*!< [9..9] MDIO select control                               */
-  __IOM uint16_t MDC                         : 1;             /*!< [10..10] MII Line MDC                                    */
+  __IOM uint16_t                  MDC        : 1;             /*!< [10..10] MII Line MDC                                    */
   __IOM uint16_t                  PHY_ADDR   : 5;             /*!< [15..11] Phy Address                                     */
 } MDR_ETH_PHY_CTRL_Bits;
 

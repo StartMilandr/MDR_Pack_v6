@@ -1,5 +1,5 @@
-#ifndef _MDR_BKP_DEFS_H
-#define _MDR_BKP_DEFS_H
+#ifndef _MDR_CAN_DEFS_H
+#define _MDR_CAN_DEFS_H
 
 
 #ifdef __cplusplus
@@ -42,7 +42,7 @@ extern "C" {
 
 /* ========================================================  CONTROL  ======================================================== */
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff CAN_EN     : 1;            /*!< [0..0] Enable CAN                                                         */
   __IOM MDR_OnOff ROM        : 1;            /*!< [1..1] Read Only Mode                                                     */
   __IOM MDR_OnOff STM        : 1;            /*!< [2..2] Self Test Mode                                                     */
@@ -70,7 +70,7 @@ typedef enum {                                  /*!< MDR_CAN1_STATUS_ERR_Status 
   MDR_CAN_ERR_BusOff    = 2,     /*!< BusOff : Bus Disable                                                      */
 } MDR_CAN_ERR_STATUS;
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff             RX_Ready    : 1;            /*!< [0..0] Some Buff Data received                                            */
   __IOM MDR_OnOff             TX_Ready    : 1;            /*!< [1..1] Some buff has data to send                                         */
   __IOM MDR_OnOff             ERR_Over    : 1;            /*!< [2..2] TEC o REC exceeds ERROR_MAX                                        */
@@ -138,13 +138,18 @@ typedef enum {                             /*!< MDR_CAN1_BITTMNG_SJW            
   MDR_CAN_BITTMNG_SJW_4TQ         = 3,     /*!< 4TQ : Delay                                                               */
 } MDR_CAN_BITTMNG_SJW;
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM uint16_t                  BRP        : 16;           /*!< [15..0] Boud Rate Prescaler to TQ                                         */
-  __IOM MDR_CAN_BITTMNG_TQ        PSEG       : 3;            /*!< [18..16] Propagation time in TQ                                           */
-  __IOM MDR_CAN_BITTMNG_TQ        SEG1       : 3;            /*!< [21..19] Delay before line sampling                                       */
-  __IOM MDR_CAN_BITTMNG_TQ        SEG2       : 3;            /*!< [24..22] Delay after line sampling                                        */
-  __IOM MDR_CAN_BITTMNG_SJW       SJW        : 2;            /*!< [26..25] Sync phase deviation                                             */
-  __IOM MDR_OnOff                 SB_Triple  : 1;            /*!< [27..27] Line Sampling Count                                              */
+  //__IOM MDR_CAN_BITTMNG_TQ        PSEG       : 3;            /*!< [18..16] Propagation time in TQ                                           */
+  //__IOM MDR_CAN_BITTMNG_TQ        SEG1       : 3;            /*!< [21..19] Delay before line sampling                                       */
+  //__IOM MDR_CAN_BITTMNG_TQ        SEG2       : 3;            /*!< [24..22] Delay after line sampling                                        */
+  //__IOM MDR_CAN_BITTMNG_SJW       SJW        : 2;            /*!< [26..25] Sync phase deviation                                             */
+  __IOM uint32_t                  PSEG       : 3;            /*!< [18..16] Propagation time in TQ                                           */
+  __IOM uint32_t                  SEG1       : 3;            /*!< [21..19] Delay before line sampling                                       */
+  __IOM uint32_t                  SEG2       : 3;            /*!< [24..22] Delay after line sampling                                        */  
+  __IOM uint32_t                  SJW        : 2;            /*!< [26..25] Sync phase deviation                                             */
+  //__IOM MDR_OnOff                 SB_Triple  : 1;            /*!< [27..27] Line Sampling Count                                              */
+  __IOM uint32_t                 SB_Triple  : 1;            /*!< [27..27] Line Sampling Count                                              */
   __IM  uint32_t                             : 4;
 } MDR_CAN_BITTMNG_Bits;
 
@@ -162,7 +167,7 @@ typedef struct {
 #define MDR_CAN_BITTMNG_SB_Msk           (0x8000000UL)             /*!< MDR_CAN1 BITTMNG: SB (Bitfield-Mask: 0x01)            */
 
 /* ========================================================  INT_EN  ========================================================= */
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff                    GLB_IntEn    : 1;            /*!< [0..0] IRQ Enable Global                                                  */
   __IOM MDR_OnOff                    RX_IntEn     : 1;            /*!< [1..1] Enable IRQ on RX                                                   */
   __IOM MDR_OnOff                    TX_IntEn     : 1;            /*!< [2..2] Enable IRQ on TX                                                   */
@@ -183,9 +188,10 @@ typedef struct {
 #define MDR_CAN_INT_EN_ErrOV_IntEn_Msk   (0x10UL)                  /*!< MDR_CAN1 INT_EN: ErrOV_IntEn (Bitfield-Mask: 0x01)    */
 
 /* =========================================================  OVER  ========================================================== */
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM uint32_t ERROR_MAX  : 8;            /*!< [7..0] Level of TEC or REC errors to OverIRQ                              */
-  __IM  uint32_t            : 24;
+  __IOM uint32_t            : 24;
+  //__IM  uint32_t            : 24;
 } MDR_CAN_OVER_Bits;
 
 
@@ -194,7 +200,7 @@ typedef struct {
 
 /* =========================================================  RX_ID, TX_ID  ========================================================= */
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM uint32_t EID        : 18;           /*!< [17..0] Extended frame ID                                                 */
   __IOM uint32_t SID        : 11;           /*!< [28..18] Standard frame ID                                                */
   __IM  uint32_t            : 3; 
@@ -225,7 +231,7 @@ typedef enum {                         /*!< MDR_CAN1_BUF_DLC_DLC                
 } MDR_CAN_DLC;                         
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_CAN_DLC         DLC : 4;            /*!< [3..0] Data Length Code                                                   */
   __IM  uint32_t                : 4;
   __IOM MDR_OnOff           RTR : 1;            /*!< [8..8] Remote transmission Request                                        */
@@ -256,7 +262,7 @@ typedef struct {
 
 /* ======================================================= RX_DATAL, TX_DATAL  ======================================================== */
 
-typedef struct {
+typedef __PACKED_STRUCT {
       __IOM uint32_t DB0        : 8;            /*!< [7..0] Byte 0                                                             */
       __IOM uint32_t DB1        : 8;            /*!< [15..8] Byte 1                                                            */
       __IOM uint32_t DB2        : 8;            /*!< [23..16] Byte 2                                                           */
@@ -273,7 +279,7 @@ typedef struct {
 #define MDR_CAN_DATAL_DB3_Msk         (0xff000000UL)            /*!< MDR_CAN1 TX_DATAL: DB3 (Bitfield-Mask: 0xff)          */
 
 /* ====================================================== RX_DATAH, TX_DATAH  ======================================================== */
-typedef struct {
+typedef __PACKED_STRUCT {
       __IOM uint32_t DB4        : 8;            /*!< [7..0] Byte 0                                                             */
       __IOM uint32_t DB5        : 8;            /*!< [15..8] Byte 1                                                            */
       __IOM uint32_t DB6        : 8;            /*!< [23..16] Byte 2                                                           */
@@ -296,7 +302,7 @@ typedef enum {                                  /*!< MDR_CAN1_BUF_CON_BUF_CON_BU
   MDR_CAN_BUF_DIR_RX = 1,                        /*!< RX : Input buffer                                                        */
 } MDR_CAN_BUF_DIR;
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM MDR_OnOff         EN         : 1;            /*!< [0..0] Buffer enable                                                      */
   __IOM MDR_CAN_BUF_DIR   RX_TX      : 1;            /*!< [1..1] Buffer Direction                                                   */
   __IOM MDR_OnOff         OVER_EN    : 1;            /*!< [2..2] Overwrite enable                                                   */
@@ -308,7 +314,7 @@ typedef struct {
   __IM  uint32_t                     : 24;
 } MDR_CAN_BUF_CON_Bits;
 
-typedef union { //MDR_CAN_BUF_COUNT
+typedef __PACKED_UNION { //MDR_CAN_BUF_COUNT
   __IOM uint32_t              CTRL;                    /*!< (@ 0x00000040) Buffer control                                             */
   MDR_CAN_BUF_CON_Bits        CTRL_b;    
 } MDR_CAN_BUF_CON;
@@ -333,7 +339,7 @@ typedef union { //MDR_CAN_BUF_COUNT
 #define MDR_CAN_BUF_CON_TX_Msk           (0x0UL)
 
 /* ==============================================  INT_RX, RX, INT_TX, TX,  ==================================================== */
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM uint32_t SEL_BUF0 : 1;            /*!< [0..0] Enable Buffs' RX IRQ                                               */
   __IOM uint32_t SEL_BUF1 : 1;            /*!< [1..1] Enable Buffs' RX IRQ                                               */
   __IOM uint32_t SEL_BUF2 : 1;            /*!< [2..2] Enable Buffs' RX IRQ                                               */
@@ -372,73 +378,73 @@ typedef struct {
 #define MDR_CAN_INT_RX_RX_IRQ_En_Msk     (0x1UL)                   /*!< MDR_CAN1 INT_RX: RX_IRQ_En (Bitfield-Mask: 0x01)      */
 
 
-typedef struct {
-  union {
+typedef __PACKED_STRUCT {
+  __PACKED_UNION {
     __IOM uint32_t              ID;                       /*!< (@ 0x00000020) Last Received ID                                           */
     MDR_CAN_ID_Bits             ID_b;
   } ;  
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              DLC;                      /*!< (@ 0x00000024) Last Received ControlField                                 */
     MDR_CAN_DLC_Bits            DLC_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              DATAL;                    /*!< (@ 0x00000028) Received Byte[0]..Byte[3]                                  */
     MDR_CAN_DATAH_Bits          DATAL_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              DATAH;                    /*!< (@ 0x0000002C) Received Byte[4]..Byte[7]                                  */
     MDR_CAN_DATAH_Bits          DATAH_b;
   } ;
 } MDR_CAN_BUFFER;                            /*!< Size = 16 (0x10)                                                          */
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   __IOM uint32_t  MASK;                         /*!< (@ 0x00000000) MASK for receiver ID                                       */
   __IOM uint32_t  FILTER;                       /*!< (@ 0x00000004) FILTER for receiver ID                                     */
 } MDR_CAN_FILTER_Type;  
 
     
 typedef struct {                                /*!< (@ 0x40090000) MDR_CAN1 Structure                                         */  
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              CONTROL;                     /*!< (@ 0x00000000) Control register                                           */
     MDR_CAN_CONTROL_Bits        CONTROL_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              STATUS;                      /*!< (@ 0x00000004) STATUS register                                            */
     MDR_CAN_STATUS_Bits         STATUS_b;
   };  
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              BITTMNG;                     /*!< (@ 0x00000008) Bit Timing register                                        */
     MDR_CAN_BITTMNG_Bits        BITTMNG_b;    
   } ;
   __IM  uint32_t                reserved1;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              INT_EN;                      /*!< (@ 0x00000010) IRQ Enable                                                 */
     MDR_CAN_INT_EN_Bits         INT_EN_b;
   } ;
   __IM  uint32_t                reserved2[2];
-  union {
+  //__PACKED_UNION {
     __IOM uint32_t              OVER;                        /*!< (@ 0x0000001C) ERROR_MAX level                                            */
-    MDR_CAN_OVER_Bits           OVER_b;
-  } ;
+//    MDR_CAN_OVER_Bits           OVER_b;
+//  } ;
   
   MDR_CAN_BUFFER                RX_BUF;
   MDR_CAN_BUFFER                TX_BUF;
   
   MDR_CAN_BUF_CON               BUF_CON[MDR_CAN_BUF_COUNT];  /*!< (@ 0x00000040) Buffer control                                             */
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              INT_RX;                      /*!< (@ 0x000000C0) Enable Buffs' RX IRQ                                       */
     MDR_CAN_SEL_BUF_Bits        INT_RX_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              RX;                          /*!< (@ 0x000000C4) Buffs' RX_FIFO Full                                        */
     MDR_CAN_SEL_BUF_Bits        RX_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              INT_TX;                      /*!< (@ 0x000000C8) Enable Buffs' TX IRQ                                       */
     MDR_CAN_SEL_BUF_Bits        INT_TX_b;
   } ;
-  union {
+  __PACKED_UNION {
     __IOM uint32_t              TX;                          /*!< (@ 0x000000CC) TX_nReq buffs' state                                       */
     MDR_CAN_SEL_BUF_Bits        TX_b;
   } ;
@@ -449,7 +455,7 @@ typedef struct {                                /*!< (@ 0x40090000) MDR_CAN1 Str
 } MDR_CAN_Type;                                              /*!< Size = 1536 (0x600)                                                       */
 
 
-typedef struct {
+typedef __PACKED_STRUCT {
   MDR_CAN_BUF_CON               CON;
   uint32_t                      reserved1[0x70];   //  (0x200-0x40) / 4
   MDR_CAN_BUFFER                BUF;
@@ -480,4 +486,4 @@ typedef struct {
 }
 #endif
 
-#endif  //_MDR_BKP_DEFS_H
+#endif  //_MDR_CAN_DEFS_H

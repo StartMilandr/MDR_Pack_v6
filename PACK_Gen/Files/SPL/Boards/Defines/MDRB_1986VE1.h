@@ -10,6 +10,8 @@
 #define HSE_EEPROM_DELAY_MAX    EEPROM_Delay_le150MHz
 
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CPU_CFG_PLL_HSE_RES_DEF(HSE_PLL_MUL_MAX, HSE_EEPROM_DELAY_MAX, HSE_LOW_SELRI_MAX)
+#define MDRB_CLK_PLL_HSE_RES_40MHz   MDR_CPU_CFG_PLL_HSE_RES_DEF(MDR_x5, EEPROM_Delay_le50MHz, MDR_LOWRI_le40MHz)
+#define MDRB_CLK_PLL_HSE_RES_80MHz   MDR_CPU_CFG_PLL_HSE_RES_DEF(MDR_x10, EEPROM_Delay_le100MHz, MDR_LOWRI_le80MHz)
 
 //===================================    Заметки по плате    ========================================
 // -  Кнопки Up и Down совпадают в выводами JTAG. Поэтому, при работе с кнопками необходимо подключаться по Jtag_А. В файле MDR_Congif.h выбрать USE_JTAG_А.
@@ -457,6 +459,26 @@
   #define MDRB_UART2_TX_PD13_Func	   MDR_PIN_MAIN
 	#define MDRB_UART2_RX_PD14_Func	   MDR_PIN_MAIN
 
+
+//  ---------------  CAN1 Pin Definition ----------------
+  #define MDRB_CAN1_TX_PC10_Port      MDR_GPIO_C
+  #define MDRB_CAN1_RX_PC9_Port       MDR_GPIO_C
+  
+  #define MDRB_CAN1_TX_PC10_Ind       10
+  #define MDRB_CAN1_RX_PC9_Ind        9
+  
+  #define MDRB_CAN1_TX_PC10_Func      MDR_PIN_OVER
+  #define MDRB_CAN1_RX_PC9_Func       MDR_PIN_OVER
+  
+//  ---------------  CAN2 Pin Definition ----------------
+  #define MDRB_CAN2_TX_PC12_Port      MDR_GPIO_C
+  #define MDRB_CAN2_RX_PC11_Port      MDR_GPIO_C
+  
+  #define MDRB_CAN2_TX_PC12_Ind       12
+  #define MDRB_CAN2_RX_PC11_Ind       11
+  
+  #define MDRB_CAN2_TX_PC12_Func      MDR_PIN_OVER
+  #define MDRB_CAN2_RX_PC11_Func      MDR_PIN_OVER  
 
 
 #else

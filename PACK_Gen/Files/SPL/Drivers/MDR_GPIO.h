@@ -462,7 +462,12 @@ __STATIC_INLINE void MDR_GPIO_Disable(const MDR_GPIO_Port *GPIO_Port)
     #define  MDR_GPIO_TxClearPins     MDR_GPIO_ClearPins
     #define  MDR_GPIO_TxTogglePins    MDR_GPIO_TogglePins
 
-    __STATIC_INLINE uint32_t MDR_GPIO_TxGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->PORTx->RDTX; }
+    //  Rename VE1 reg names to VE8 style names
+    #ifdef MDR_GPIO_LIKE_VE8
+      __STATIC_INLINE uint32_t MDR_GPIO_TxGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->PORTx->RXTX_Set; }
+    #else  
+      __STATIC_INLINE uint32_t MDR_GPIO_TxGet(const MDR_GPIO_Port *GPIO_Port) { return GPIO_Port->PORTx->RDTX; }
+    #endif   
     
     #define MDR_GPIO_TxEnable(a, b)       UNUSED(0)
     #define MDR_GPIO_TxDisable(a, b)      UNUSED(0)
@@ -588,6 +593,20 @@ typedef struct {
   uint32_t       selPins;
 } MDR_GPIO_CfgPinPort;
 
+typedef struct {
+  const MDR_GPIO_Port *portGPIO;
+  uint32_t       pinIndex;
+  MDR_PIN_FUNC   pinFunc;
+} MDR_GPIO_CfgPinIndFunc;
+
+
+typedef struct {
+  const MDR_GPIO_CfgPinIndFunc *pPinTX;  
+  const MDR_GPIO_CfgPinIndFunc *pPinRX;
+} MDR_GPIO_CfgPinRXTX;
+
+
+void MDR_GPIO_InitPinsRXTX(const MDR_GPIO_CfgPinRXTX *pinsCfg, MDR_PIN_PWR pinsPower);
 
 //  ====  Получение информации для переключения функции для пина  ====
 #ifdef MDR_GPIO_HAS_KEY 

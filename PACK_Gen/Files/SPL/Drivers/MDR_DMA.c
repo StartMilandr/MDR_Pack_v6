@@ -7,8 +7,8 @@ static const MDR_DMA_ProtAHB _DMA_ProtAHB_Def = {
   .Fields.Cachable   = MDR_On,
 };
 
-#define _DMA_CH_ProtAHB_Def_Msk   ( MDR_DMA_ChCtrl_SrcPrivileged_Msk  | MDR_DMA_ChCtrl_SrcBufferable_Msk  | MDR_DMA_ChCtrl_SrcCachable_Msk    \
-                                  | MDR_DMA_ChCtrl_DestPrivileged_Msk | MDR_DMA_ChCtrl_DestBufferable_Msk | MDR_DMA_ChCtrl_DestCachable_Msk)
+//#define _DMA_CH_ProtAHB_Def_Msk   ( MDR_DMA_ChCtrl_SrcPrivileged_Msk  | MDR_DMA_ChCtrl_SrcBufferable_Msk  | MDR_DMA_ChCtrl_SrcCachable_Msk    \
+//                                  | MDR_DMA_ChCtrl_DestPrivileged_Msk | MDR_DMA_ChCtrl_DestBufferable_Msk | MDR_DMA_ChCtrl_DestCachable_Msk)
 
 
 //============    Глобальная структура каналов DMA ================
@@ -306,13 +306,13 @@ void  MDR_DMA_RunNextBuff32_Pri(uint32_t chIndex, MDR_DMA_ChCtrl chCtrl, uint32_
 //  Готовые функции копирования массивов с использованием DMA
 //  Необходима предварительная инициализация блока - MDR_DMA_Init()
 
-#define _DMA_CtrlCopy8   ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
-                         | VAL2FLD_Pos(DMA_Arbitr_1024,       MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data8,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data8,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc8,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc8,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
-                         | _DMA_CH_ProtAHB_Def_Msk )
+//#define _DMA_CtrlCopy8   ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+//                         | VAL2FLD_Pos(DMA_Arbitr_1024,       MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data8,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data8,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc8,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc8,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+//                         | _DMA_CH_ProtAHB_Def_Msk )
 
 void MDR_DMA_CopyStart8 (uint32_t chIndex, uint8_t  *src, uint8_t  *dest, uint16_t count)
 {
@@ -326,13 +326,13 @@ void MDR_DMA_CopyStart8 (uint32_t chIndex, uint8_t  *src, uint8_t  *dest, uint16
   MDR_DMA_StartChannelSoft(chIndex, MDR_On, true);  
 }
 
-#define _DMA_CtrlCopy16  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
-                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data16,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data16,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc16,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc16,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
-                         | _DMA_CH_ProtAHB_Def_Msk )
+//#define _DMA_CtrlCopy16  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+//                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data16,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data16,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc16,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc16,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+//                         | _DMA_CH_ProtAHB_Def_Msk )
 
 void MDR_DMA_CopyStart16(uint32_t chIndex, uint16_t *src, uint16_t *dest, uint16_t count)
 {
@@ -347,13 +347,13 @@ void MDR_DMA_CopyStart16(uint32_t chIndex, uint16_t *src, uint16_t *dest, uint16
 }
 
 
-#define _DMA_CtrlCopy32  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
-                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
-                         | _DMA_CH_ProtAHB_Def_Msk )
+//#define _DMA_CtrlCopy32  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+//                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+//                         | _DMA_CH_ProtAHB_Def_Msk )
 
 void MDR_DMA_CopyStart32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
 {
@@ -386,16 +386,16 @@ void MDR_DMA_Copy32(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t co
 }
 
 
-#define _DMA_CtrlCopy32_FromNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
-                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
-                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
-                         | _DMA_CH_ProtAHB_Def_Msk )
+//#define _DMA_CtrlCopy32_FromNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+//                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+//                         | _DMA_CH_ProtAHB_Def_Msk )
 
 
-void MDR_DMA_Copy32_FromNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+void MDR_DMA_Copy32_FromNoInc_Start(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
 {
   MDR_DMA_ChCfg chCfg;
   
@@ -405,20 +405,24 @@ void MDR_DMA_Copy32_FromNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, u
   
   MDR_DMA_CtrlTablePri(chIndex) = chCfg;
   MDR_DMA_StartChannelSoft(chIndex, MDR_On, true);  
-  
+}
+
+void MDR_DMA_Copy32_FromNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+{
+  MDR_DMA_Copy32_FromNoInc_Start(chIndex, src, dest, count);
   while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 
-#define _DMA_CtrlCopy32_ToNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
-                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
-                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
-                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
-                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
-                         | _DMA_CH_ProtAHB_Def_Msk )
+//#define _DMA_CtrlCopy32_ToNoInc  ( VAL2FLD_Pos(DMA_MODE_AutoRequest,  MDR_DMA_ChCtrl_Mode_Pos)         \
+//                         | VAL2FLD_Pos(DMA_Arbitr_1024,        MDR_DMA_ChCtrl_ArbitrCount_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_SrcDataSize_Pos)  \
+//                         | VAL2FLD_Pos(MDR_DMA_Data32,         MDR_DMA_ChCtrl_DestDataSize_Pos) \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrInc32,      MDR_DMA_ChCtrl_SrcAddrInc_Pos)   \
+//                         | VAL2FLD_Pos(MDR_DMA_AddrIncOff,     MDR_DMA_ChCtrl_DestAddrInc_Pos)  \
+//                         | _DMA_CH_ProtAHB_Def_Msk )
 
 
-void MDR_DMA_Copy32_ToNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+void MDR_DMA_Copy32_ToNoInc_Start(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
 {
   MDR_DMA_ChCfg chCfg;
   
@@ -428,7 +432,12 @@ void MDR_DMA_Copy32_ToNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uin
   
   MDR_DMA_CtrlTablePri(chIndex) = chCfg;
   MDR_DMA_StartChannelSoft(chIndex, MDR_On, true); 
-  
+}
+
+
+void MDR_DMA_Copy32_ToNoInc(uint32_t chIndex, uint32_t *src, uint32_t *dest, uint16_t count)
+{
+  MDR_DMA_Copy32_ToNoInc_Start(chIndex, src, dest, count);  
   while (!MDR_DMA_CopyGetCompleted(chIndex));
 }
 

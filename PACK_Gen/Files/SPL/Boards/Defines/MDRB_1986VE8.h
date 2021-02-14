@@ -11,6 +11,7 @@
 
 #define MDRB_CLK_PLL_HSE_RES_MAX     MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_MAX, MDRB_PLL_10MHz_FSUPP_MAX)
 
+#define MDRB_CLK_PLL_HSE_RES_40MHz   MDR_CLK_PLL_HSE_RES_DEF(MDRB_PLL_10MHz_TO_40MHz, MDRB_CPU_FREQ_SUPP_40MHz) 
 
 //  Переопределение пинов для удобства поиска конфликтов
     //  Port_A
@@ -106,6 +107,16 @@
     #define MDRB_SPI1_RX_PA10_Func 		   MDR_PIN_FUNC_6
     #define MDRB_SPI1_TX_PA7_Func		     MDR_PIN_FUNC_6
     
+//  ---------------  CAN1 Pin Definition ----------------
+  #define MDRB_CAN1_TX_PD21_Port      MDR_GPIO_D
+  #define MDRB_CAN1_RX_PD22_Port      MDR_GPIO_D
+  
+  #define MDRB_CAN1_TX_PD21_Ind       21
+  #define MDRB_CAN1_RX_PD22_Ind       22
+  
+  #define MDRB_CAN1_TX_PD21_Func      MDR_PIN_FUNC_4
+  #define MDRB_CAN1_RX_PD22_Func      MDR_PIN_FUNC_4
+
 
 #else
    Please, select board in MDRB_BoardSelect.h!

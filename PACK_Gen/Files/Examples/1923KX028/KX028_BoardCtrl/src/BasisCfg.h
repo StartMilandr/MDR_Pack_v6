@@ -11,7 +11,7 @@
 void PhyResetPinsInit(void);
 void vResetPhys( void );
 
-extern uint32_t SFP_PinSel[SFP_COUNT];
+extern uint32_t SFP_PinSel[SFP_COUNT_MAX];
 
 void SFP_PresencePinsInit(void);
 uint32_t SFP_PresenceGetMask(void);

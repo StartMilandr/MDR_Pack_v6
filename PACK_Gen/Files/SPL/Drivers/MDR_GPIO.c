@@ -597,3 +597,28 @@ void MDR_GPIO_PinFunc_SetPort(MDR_GPIO_PinFuncMasks *pinFuncMasks)
   REG32(pinFuncMasks->addrFuncReg) = MDR_MaskClrSet(regValue, pinFuncMasks->maskPinPort, 0);    
 }
 
+
+void MDR_GPIO_InitPinsRXTX(const MDR_GPIO_CfgPinRXTX *pinsCfg, MDR_PIN_PWR pinsPower)
+{
+  MDR_PinDig_PermRegs pinPermCfg;
+
+#ifdef MDR_GPIO_HAS_GFEN_SCHMT  
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, MDR_Off, MDR_Off, &pinPermCfg);
+#else
+  MDR_Port_InitDigGroupPinCfg(MDR_Off, pinsPower, &pinPermCfg);  
+#endif
+  
+  //  TX
+  if (pinsCfg->pPinTX != NULL)
+  {
+    MDR_GPIO_Enable(pinsCfg->pPinTX->portGPIO);
+    MDR_GPIO_InitDigPin(pinsCfg->pPinTX->portGPIO, pinsCfg->pPinTX->pinIndex, MDR_Pin_In, pinsCfg->pPinTX->pinFunc, &pinPermCfg);  
+  }
+  //  RX
+  if (pinsCfg->pPinRX != NULL)
+  {
+    MDR_GPIO_Enable(pinsCfg->pPinRX->portGPIO);
+    MDR_GPIO_InitDigPin(pinsCfg->pPinRX->portGPIO, pinsCfg->pPinRX->pinIndex, MDR_Pin_In, pinsCfg->pPinRX->pinFunc, &pinPermCfg);
+  }
+}
+
